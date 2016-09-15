@@ -13,6 +13,7 @@ LazyData: TRUE
 LinkingTo: RcppEigen, Rcpp, bigmemory, BH
 Imports: Rcpp
 Depends: R (>= 3.2.3), bigmemory
+Remotes: kaneplusplus/bigmemory
 RoxygenNote: 5.0.1
 Suggests: testthat, covr
 URL: https://github.com/privefl/bigstatsr
