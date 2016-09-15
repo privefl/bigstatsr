@@ -6,6 +6,30 @@
 
 using namespace Rcpp;
 
+// bigcolsums
+NumericVector bigcolsums(SEXP pBigMat, const IntegerVector& rowInd);
+RcppExport SEXP bigstatsr_bigcolsums(SEXP pBigMatSEXP, SEXP rowIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(bigcolsums(pBigMat, rowInd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// bigcolvars
+NumericVector bigcolvars(SEXP pBigMat, const IntegerVector& rowInd);
+RcppExport SEXP bigstatsr_bigcolvars(SEXP pBigMatSEXP, SEXP rowIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(bigcolvars(pBigMat, rowInd));
+    return rcpp_result_gen;
+END_RCPP
+}
 // tcrossprodEigen
 void tcrossprodEigen(SEXP res, const Eigen::Map<Eigen::MatrixXd> bM);
 RcppExport SEXP bigstatsr_tcrossprodEigen(SEXP resSEXP, SEXP bMSEXP) {

@@ -8,15 +8,7 @@
 #' weights are used to make the results independent
 #' from the proportion of cases / controls
 #' (see parameter \emph{weights} of \code{lm}).
-#' @param X A big.matrix.
-#' @param y Either \itemize{
-#' \item a vector of \{-1, 1\}
-#' in the case of classification (suffix Class),
-#' \item a vector of more than two unique values
-#' in the case of regression (suffix Reg).
-#' }
-#' @param ind.train An optional vector of the row indices that are used.
-#' If not specified, all data are used.
+#' @inheritParams bigstatsr-package
 #' @return \itemize{
 #' \item \code{RsqReg} and \code{RsqClass} return a vector of
 #' the coefficient of determination \eqn{R^2} of each regression,

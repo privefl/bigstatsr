@@ -26,7 +26,8 @@ in the case of classification (suffix Class),
 in the case of regression (suffix Reg).
 }}
 
-\item{ind.train}{An optional vector of the row indices that are used.
+\item{ind.train}{An optional vector of the row indices that are used,
+for the training part.
 If not specified, all data are used.}
 }
 \value{

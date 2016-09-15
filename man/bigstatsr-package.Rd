@@ -5,7 +5,14 @@
 \alias{bigstatsr-package}
 \title{Statistical Tools for bigmemory Matrices.}
 \arguments{
-\item{x}{A \code{bigSNP}.}
+\item{X}{A big.matrix.}
+
+\item{y}{Either \itemize{
+\item a vector of \{-1, 1\}
+in the case of classification (suffix Class),
+\item a vector of more than two unique values
+in the case of regression (suffix Reg).
+}}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part.
