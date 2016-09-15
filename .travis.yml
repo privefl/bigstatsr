@@ -19,8 +19,5 @@ notifications:
     on_success: change
     on_failure: change
 
-r_packages:
-  - covr
-
 after_success:
   - Rscript -e 'covr::codecov()'
