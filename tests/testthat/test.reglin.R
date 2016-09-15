@@ -41,6 +41,7 @@ test_that("equality with lm in case of classification", {
 })
 
 test_that("expect error from regression", {
+  X <- as.big.matrix(x3)
   expect_error(CoeffsReg(X, y))
   expect_error(RsqReg(X, y))
 })
@@ -72,6 +73,7 @@ test_that("equality with lm in case of regression", {
 })
 
 test_that("expect error from classification", {
+  X <- as.big.matrix(x3)
   expect_error(CoeffsClass(X, y2))
   expect_error(RsqClass(X, y2))
 })
