@@ -1,6 +1,7 @@
 // [[Rcpp::depends(bigmemory)]]
 #include <Rcpp.h>
 #include <bigmemory/MatrixAccessor.hpp>
+#include "utils.h"
 
 using namespace Rcpp;
 
@@ -42,8 +43,7 @@ NumericVector bigcolsums(SEXP pBigMat,
   case 8:
     return bigcolsums(xpMat, MatrixAccessor<double>(*xpMat), rowInd);
   default:
-    Function err("ERROR_TYPE");
-    throw Rcpp::exception(as<const char*>(err()));
+    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 
@@ -89,8 +89,7 @@ NumericVector bigcolvars(SEXP pBigMat,
   case 8:
     return bigcolvars(xpMat, MatrixAccessor<double>(*xpMat), rowInd);
   default:
-    Function err("ERROR_TYPE");
-    throw Rcpp::exception(as<const char*>(err()));
+    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 

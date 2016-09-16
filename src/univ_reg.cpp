@@ -1,6 +1,7 @@
 // [[Rcpp::depends(bigmemory)]]
 #include <Rcpp.h>
 #include <bigmemory/MatrixAccessor.hpp>
+#include "utils.h"
 
 using namespace Rcpp;
 
@@ -85,8 +86,7 @@ NumericVector R_squared(SEXP pBigMat,
     // This case should never be encountered unless the implementation of
     // big.matrix changes, but is necessary to implement shut up compiler
     // warnings.
-    Function err("ERROR_TYPE");
-    throw Rcpp::exception(as<const char*>(err()));
+    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 
@@ -174,8 +174,7 @@ NumericMatrix betasRegLin(SEXP pBigMat,
     // This case should never be encountered unless the implementation of
     // big.matrix changes, but is necessary to implement shut up compiler
     // warnings.
-    Function err("ERROR_TYPE");
-    throw Rcpp::exception(as<const char*>(err()));
+    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 

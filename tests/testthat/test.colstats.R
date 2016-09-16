@@ -33,7 +33,7 @@ test_that("Expect error from unknown type", {
   X <- as.big.matrix(matrix(x), type = "raw")
   for (f in ALL.FUN) {
     eval(parse(text = sprintf(
-      "expect_error(col%ss(X), ERROR_TYPE(), fixed = TRUE)", f)))
+      "expect_error(col%ss(X), ERROR_TYPE, fixed = TRUE)", f)))
   }
 })
 
