@@ -30,9 +30,7 @@ test_that("Equality with matrix operations", {
 
 test_that("Expect error from unknown type", {
   x <- as.raw(sample(0:255, 100))
-  X <- big.matrix(10, 10, type = "raw")
-  X[] <- x
-  # as.big.matrix(x, type = "raw")
+  X <- as.big.matrix(matrix(x), type = "raw")
   for (f in ALL.FUN) {
     eval(parse(text = sprintf(
       "expect_error(col%ss(X), ERROR_TYPE(), fixed = TRUE)", f)))

@@ -108,9 +108,8 @@ test_that("equality with lm in case of regression with half of the data", {
 
 test_that("Expect error from unknown type", {
   x <- as.raw(sample(0:255, 100))
-  X <- big.matrix(10, 10, type = "raw")
-  X[] <- x
-  # as.big.matrix(x, type = "raw")
+  X <- as.big.matrix(matrix(x), type = "raw")
+  print(ERROR_TYPE())
   expect_error(CoeffsClass(X, y), ERROR_TYPE(), fixed = TRUE)
   expect_error(RsqClass(X, y), ERROR_TYPE(), fixed = TRUE)
 })
