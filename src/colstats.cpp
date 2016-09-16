@@ -42,7 +42,8 @@ NumericVector bigcolsums(SEXP pBigMat,
   case 8:
     return bigcolsums(xpMat, MatrixAccessor<double>(*xpMat), rowInd);
   default:
-    throw Rcpp::exception("unknown type detected for big.matrix object!");
+    Function err("ERROR_TYPE");
+    throw Rcpp::exception(as<const char*>(err()));
   }
 }
 
@@ -88,7 +89,8 @@ NumericVector bigcolvars(SEXP pBigMat,
   case 8:
     return bigcolvars(xpMat, MatrixAccessor<double>(*xpMat), rowInd);
   default:
-    throw Rcpp::exception("unknown type detected for big.matrix object!");
+    Function err("ERROR_TYPE");
+    throw Rcpp::exception(as<const char*>(err()));
   }
 }
 

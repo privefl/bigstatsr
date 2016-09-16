@@ -30,8 +30,7 @@ RsqReg <- function(X, y, ind.train = seq(nrow(X))) {
   if (length(unique(y[ind.train])) > 2) {
     return(R_squared(X@address, y, ind.train, rep(1, length(ind.train))))
   } else {
-    stop(paste0("y has not enough unique elements.\n",
-                "Try using RsqClass instead."))
+    stop(ERROR_REG)
   }
 }
 
@@ -48,7 +47,7 @@ RsqClass <- function(X, y, ind.train = seq(nrow(X))) {
     weights <- ifelse(y[ind.train] > 0, ratio, 1)
     return(R_squared(X@address, y, ind.train, weights))
   } else {
-    stop("y should be a vector of 1 (cases) and -1 (controls).")
+    stop(ERROR_CLASS)
   }
 }
 
@@ -62,8 +61,7 @@ CoeffsReg <- function(X, y, ind.train = seq(nrow(X))) {
   if (length(unique(y[ind.train])) > 2) {
     return(betasRegLin(X@address, y, ind.train, rep(1, length(ind.train))))
   } else {
-    stop(paste0("y has not enough unique elements.\n",
-                "Try using CoeffsClass instead."))
+    stop(ERROR_REG)
   }
 }
 
@@ -80,7 +78,7 @@ CoeffsClass <- function(X, y, ind.train = seq(nrow(X))) {
     weights <- ifelse(y[ind.train] > 0, ratio, 1)
     return(betasRegLin(X@address, y, ind.train, weights))
   } else {
-    stop("y should be a vector of 1 (cases) and -1 (controls).")
+    stop(ERROR_CLASS)
   }
 }
 

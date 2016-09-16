@@ -42,8 +42,8 @@ test_that("equality with lm in case of classification", {
 
 test_that("expect error from regression", {
   X <- as.big.matrix(x3)
-  expect_error(CoeffsReg(X, y))
-  expect_error(RsqReg(X, y))
+  expect_error(CoeffsReg(X, y), ERROR_REG, fixed = TRUE)
+  expect_error(RsqReg(X, y), ERROR_REG, fixed = TRUE)
 })
 
 ################################################################################
@@ -74,8 +74,8 @@ test_that("equality with lm in case of regression", {
 
 test_that("expect error from classification", {
   X <- as.big.matrix(x3)
-  expect_error(CoeffsClass(X, y2))
-  expect_error(RsqClass(X, y2))
+  expect_error(CoeffsClass(X, y2), ERROR_CLASS, fixed = TRUE)
+  expect_error(RsqClass(X, y2), ERROR_CLASS, fixed = TRUE)
 })
 
 ################################################################################
@@ -102,6 +102,17 @@ test_that("equality with lm in case of regression with half of the data", {
     X <- as.big.matrix(x3, type = t)
     expect_equal(get_res2_reg_train(X, y2), get_res_train(X, y2))
   }
+})
+
+################################################################################
+
+test_that("Expect error from unknown type", {
+  x <- as.raw(sample(0:255, 100))
+  X <- big.matrix(10, 10, type = "raw")
+  X[] <- x
+  # as.big.matrix(x, type = "raw")
+  expect_error(CoeffsClass(X, y), ERROR_TYPE(), fixed = TRUE)
+  expect_error(RsqClass(X, y), ERROR_TYPE(), fixed = TRUE)
 })
 
 ################################################################################

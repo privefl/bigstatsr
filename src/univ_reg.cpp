@@ -85,7 +85,8 @@ NumericVector R_squared(SEXP pBigMat,
     // This case should never be encountered unless the implementation of
     // big.matrix changes, but is necessary to implement shut up compiler
     // warnings.
-    throw Rcpp::exception("unknown type detected for big.matrix object!");
+    Function err("ERROR_TYPE");
+    throw Rcpp::exception(as<const char*>(err()));
   }
 }
 
@@ -173,7 +174,8 @@ NumericMatrix betasRegLin(SEXP pBigMat,
     // This case should never be encountered unless the implementation of
     // big.matrix changes, but is necessary to implement shut up compiler
     // warnings.
-    throw Rcpp::exception("unknown type detected for big.matrix object!");
+    Function err("ERROR_TYPE");
+    throw Rcpp::exception(as<const char*>(err()));
   }
 }
 
