@@ -28,6 +28,22 @@ test_that("equality with tcrossprod", {
 
 ################################################################################
 
+test_that("equality with tcrossprod with use.Eigen=FALSE", {
+  for (t in ALL.TYPES) {
+    X <- as.big.matrix(x, type = t)
+    test <- BigXYt(X = X,
+                   block.size = 10,
+                   vec.center = vec.center,
+                   vec.scale = vec.scale,
+                   use.Eigen = FALSE)
+    mat <- sweep(sweep(X[,], 2, vec.center, '-'), 2, vec.scale, '/')
+    diff <- test[,] - tcrossprod(mat)
+    expect_equal(max(abs(diff)), 0)
+  }
+})
+
+################################################################################
+
 test_that("equality with tcrossprod with half of the data", {
   ind <- sample(N, N/2)
   for (t in ALL.TYPES) {
