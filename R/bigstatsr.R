@@ -6,6 +6,7 @@
 #' statistical tools. Use bigmemory matrices.
 #' @name bigstatsr-package
 #' @param X A big.matrix.
+#' You shouldn't have missing values in your data.
 #' @param y Either \itemize{
 #' \item a vector of \{-1, 1\}
 #' in the case of classification (suffix Class),

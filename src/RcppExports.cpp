@@ -6,6 +6,29 @@
 
 using namespace Rcpp;
 
+// tcrossprodEigen
+void tcrossprodEigen(SEXP res, const Eigen::Map<Eigen::MatrixXd> bM);
+RcppExport SEXP bigstatsr_tcrossprodEigen(SEXP resSEXP, SEXP bMSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type res(resSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type bM(bMSEXP);
+    tcrossprodEigen(res, bM);
+    return R_NilValue;
+END_RCPP
+}
+// tcrossprodEigen2
+void tcrossprodEigen2(SEXP res, const Eigen::Map<Eigen::MatrixXd> X, const Eigen::Map<Eigen::MatrixXd> Y);
+RcppExport SEXP bigstatsr_tcrossprodEigen2(SEXP resSEXP, SEXP XSEXP, SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type res(resSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Y(YSEXP);
+    tcrossprodEigen2(res, X, Y);
+    return R_NilValue;
+END_RCPP
+}
 // bigcolsums
 NumericVector bigcolsums(SEXP pBigMat, const IntegerVector& rowInd);
 RcppExport SEXP bigstatsr_bigcolsums(SEXP pBigMatSEXP, SEXP rowIndSEXP) {
@@ -28,29 +51,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     rcpp_result_gen = Rcpp::wrap(bigcolvars(pBigMat, rowInd));
     return rcpp_result_gen;
-END_RCPP
-}
-// tcrossprodEigen
-void tcrossprodEigen(SEXP res, const Eigen::Map<Eigen::MatrixXd> bM);
-RcppExport SEXP bigstatsr_tcrossprodEigen(SEXP resSEXP, SEXP bMSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type res(resSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type bM(bMSEXP);
-    tcrossprodEigen(res, bM);
-    return R_NilValue;
-END_RCPP
-}
-// tcrossprodEigen2
-void tcrossprodEigen2(SEXP res, const Eigen::Map<Eigen::MatrixXd> X, const Eigen::Map<Eigen::MatrixXd> Y);
-RcppExport SEXP bigstatsr_tcrossprodEigen2(SEXP resSEXP, SEXP XSEXP, SEXP YSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type res(resSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Y(YSEXP);
-    tcrossprodEigen2(res, X, Y);
-    return R_NilValue;
 END_RCPP
 }
 // R_squared

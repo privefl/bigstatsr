@@ -17,7 +17,8 @@ CoeffsReg(X, y, ind.train = seq(nrow(X)))
 CoeffsClass(X, y, ind.train = seq(nrow(X)))
 }
 \arguments{
-\item{X}{A big.matrix.}
+\item{X}{A big.matrix.
+You shouldn't have missing values in your data.}
 
 \item{y}{Either \itemize{
 \item a vector of \{-1, 1\}
