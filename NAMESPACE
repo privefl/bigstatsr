@@ -3,6 +3,7 @@
 export(BigXYt)
 export(CoeffsClass)
 export(CoeffsReg)
+export(DualBigPCA)
 export(RsqClass)
 export(RsqReg)
 export(colmeans)

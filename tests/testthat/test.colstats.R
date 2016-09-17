@@ -2,7 +2,8 @@
 
 context("COLSTATS")
 
-opt.save <- options(bigmemory.typecast.warning = FALSE)
+opt.save <- options(bigmemory.typecast.warning = FALSE,
+                    bigmemory.default.shared = FALSE)
 
 # Simulating some data
 x <- matrix(rnorm(100, 0, 5), 10, 10)

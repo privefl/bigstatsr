@@ -1,9 +1,11 @@
 ################################################################################
 
-context("BIGXYT")
+context("DUALBIGPCA")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
+
+TOL <- 1e-5
 
 # Simulating some data
 N <- 50
@@ -12,20 +14,29 @@ x <- matrix(rnorm(N*M), N)
 vec.center <- rnorm(M)
 vec.scale <- rnorm(M)
 
+# function for comparing
+diffPCs <- function(test, rot) {
+  k <- ncol(test)
+  diff1 <- test - rot[, 1:k]
+  diff2 <- test + rot[, 1:k]
+  diff <- pmin(abs(diff1), abs(diff2))
+  max(diff)
+}
+
 ################################################################################
 
 test_that("equality with tcrossprod", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
     mat <- sweep(sweep(X[,], 2, vec.center, '-'), 2, vec.scale, '/')
-    for (use in c(TRUE, FALSE)) {
-      test <- BigXYt(X = X,
-                     block.size = 10,
-                     vec.center = vec.center,
-                     vec.scale = vec.scale,
-                     use.Eigen = use)
-      diff <- test[,] - tcrossprod(mat)
-      expect_equal(max(abs(diff)), 0)
+    for (k in c(NULL, 2, 10)) {
+      test <- DualBigPCA(X = X,
+                         block.size = 10,
+                         vec.center = vec.center,
+                         vec.scale = vec.scale,
+                         k = k)
+      pca <- prcomp(mat, center = FALSE, scale. = FALSE)
+      expect_equal(diffPCs(test, pca$x), 0, tolerance = TOL)
     }
   }
 })
@@ -38,17 +49,17 @@ test_that("equality with tcrossprod with half of the data", {
     X <- as.big.matrix(x, type = t)
     mat1 <- sweep(sweep(X[ind, ],  2, vec.center, '-'), 2, vec.scale, '/')
     mat2 <- sweep(sweep(X[-ind, ], 2, vec.center, '-'), 2, vec.scale, '/')
-    for (use in c(TRUE, FALSE)) {
-      test <- BigXYt(X = X,
-                     block.size = 10,
-                     ind.train = ind,
-                     vec.center = vec.center,
-                     vec.scale = vec.scale,
-                     use.Eigen = use)
-      diff1 <- test[[1]][,] - tcrossprod(mat1)
-      diff2 <- test[[2]][,] - tcrossprod(mat2, mat1)
-      expect_equal(max(abs(diff1)), 0)
-      expect_equal(max(abs(diff2)), 0)
+    for (k in c(NULL, 2, 10)) {
+      test <- DualBigPCA(X = X,
+                         block.size = 10,
+                         ind.train = ind,
+                         vec.center = vec.center,
+                         vec.scale = vec.scale,
+                         k = k)
+      pca <- prcomp(mat1, center = FALSE, scale. = FALSE)
+      expect_equal(diffPCs(test[ind, ], pca$x), 0, tolerance = TOL)
+      pred <- predict(pca, mat2)
+      expect_equal(diffPCs(test[-ind, ], pred), 0, tolerance = TOL)
     }
   }
 })

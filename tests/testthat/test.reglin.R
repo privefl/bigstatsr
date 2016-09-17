@@ -2,7 +2,8 @@
 
 context("REGLIN")
 
-opt.save <- options(bigmemory.typecast.warning = FALSE)
+opt.save <- options(bigmemory.typecast.warning = FALSE,
+                    bigmemory.default.shared = FALSE)
 
 # Simulating some data
 N1 <- 3000
