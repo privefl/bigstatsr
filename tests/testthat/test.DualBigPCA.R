@@ -5,7 +5,7 @@ context("DUALBIGPCA")
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
 
-TOL <- 1e-5
+TOL <- 1e-3
 
 # Simulating some data
 N <- 50
@@ -17,9 +17,9 @@ vec.scale <- rnorm(M)
 # function for comparing
 diffPCs <- function(test, rot) {
   k <- ncol(test)
-  diff1 <- test - rot[, 1:k]
-  diff2 <- test + rot[, 1:k]
-  diff <- pmin(abs(diff1), abs(diff2))
+  diff1 <- 2 * abs(test - rot[, 1:k]) / (abs(test) + abs(rot[, 1:k]))
+  diff2 <- 2 * abs(test + rot[, 1:k]) / (abs(test) + abs(rot[, 1:k]))
+  diff <- pmin(diff1, diff2)
   max(diff)
 }
 

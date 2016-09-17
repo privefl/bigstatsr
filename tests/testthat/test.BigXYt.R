@@ -12,6 +12,10 @@ x <- matrix(rnorm(N*M), N)
 vec.center <- rnorm(M)
 vec.scale <- rnorm(M)
 
+relDiff <- function(test, mat) {
+  max(2 * abs(test - mat) / (abs(test) + abs(mat)))
+}
+
 ################################################################################
 
 test_that("equality with tcrossprod", {
@@ -24,8 +28,7 @@ test_that("equality with tcrossprod", {
                      vec.center = vec.center,
                      vec.scale = vec.scale,
                      use.Eigen = use)
-      diff <- test[,] - tcrossprod(mat)
-      expect_equal(max(abs(diff)), 0)
+      expect_equal(relDiff(test[,], tcrossprod(mat)), 0)
     }
   }
 })
@@ -45,10 +48,8 @@ test_that("equality with tcrossprod with half of the data", {
                      vec.center = vec.center,
                      vec.scale = vec.scale,
                      use.Eigen = use)
-      diff1 <- test[[1]][,] - tcrossprod(mat1)
-      diff2 <- test[[2]][,] - tcrossprod(mat2, mat1)
-      expect_equal(max(abs(diff1)), 0)
-      expect_equal(max(abs(diff2)), 0)
+      expect_equal(relDiff(test[[1]][,], tcrossprod(mat1)), 0)
+      expect_equal(relDiff(test[[2]][,], tcrossprod(mat2, mat1)), 0)
     }
   }
 })
