@@ -28,6 +28,26 @@ test_that("equality with tcrossprod", {
 
 ################################################################################
 
+test_that("equality with tcrossprod with half of the data", {
+  ind <- sample(N, N/2)
+  for (t in ALL.TYPES) {
+    X <- as.big.matrix(x, type = t)
+    test <- BigXYt(X = X,
+                   block.size = 10,
+                   ind.train = ind,
+                   vec.center = vec.center,
+                   vec.scale = vec.scale)
+    mat1 <- sweep(sweep(X[ind, ],  2, vec.center, '-'), 2, vec.scale, '/')
+    mat2 <- sweep(sweep(X[-ind, ], 2, vec.center, '-'), 2, vec.scale, '/')
+    diff1 <- test[[1]][,] - tcrossprod(mat1)
+    diff2 <- test[[2]][,] - tcrossprod(mat2, mat1)
+    expect_equal(max(abs(diff1)), 0)
+    expect_equal(max(abs(diff2)), 0)
+  }
+})
+
+################################################################################
+
 test_that("equality with tcrossprod with use.Eigen=FALSE", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
@@ -44,7 +64,7 @@ test_that("equality with tcrossprod with use.Eigen=FALSE", {
 
 ################################################################################
 
-test_that("equality with tcrossprod with half of the data", {
+test_that("equality with tcrossprod with half of the data and use.Eigen = F", {
   ind <- sample(N, N/2)
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
@@ -52,7 +72,8 @@ test_that("equality with tcrossprod with half of the data", {
                    block.size = 10,
                    ind.train = ind,
                    vec.center = vec.center,
-                   vec.scale = vec.scale)
+                   vec.scale = vec.scale,
+                   use.Eigen = FALSE)
     mat1 <- sweep(sweep(X[ind, ],  2, vec.center, '-'), 2, vec.scale, '/')
     mat2 <- sweep(sweep(X[-ind, ], 2, vec.center, '-'), 2, vec.scale, '/')
     diff1 <- test[[1]][,] - tcrossprod(mat1)
