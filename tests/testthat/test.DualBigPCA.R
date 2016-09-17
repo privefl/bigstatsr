@@ -5,7 +5,7 @@ context("DUALBIGPCA")
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
 
-TOL <- 1e-3
+TOL <- 1e-5
 
 # Simulating some data
 N <- 50
@@ -29,7 +29,7 @@ test_that("equality with tcrossprod", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
     mat <- sweep(sweep(X[,], 2, vec.center, '-'), 2, vec.scale, '/')
-    for (k in c(NULL, 2, 10)) {
+    for (k in list(NULL, 2, 10)) {
       test <- DualBigPCA(X = X,
                          block.size = 10,
                          vec.center = vec.center,
@@ -49,7 +49,7 @@ test_that("equality with tcrossprod with half of the data", {
     X <- as.big.matrix(x, type = t)
     mat1 <- sweep(sweep(X[ind, ],  2, vec.center, '-'), 2, vec.scale, '/')
     mat2 <- sweep(sweep(X[-ind, ], 2, vec.center, '-'), 2, vec.scale, '/')
-    for (k in c(NULL, 2, 10)) {
+    for (k in list(NULL, 2, 10)) {
       test <- DualBigPCA(X = X,
                          block.size = 10,
                          ind.train = ind,
