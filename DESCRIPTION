@@ -11,7 +11,7 @@ Description: Easy-to-use, efficient, flexible and scalable
 License: GPL-3
 LazyData: TRUE
 LinkingTo: RcppEigen, Rcpp, bigmemory, BH
-Imports: Rcpp
+Imports: Rcpp, utils
 Depends: R (>= 3.2.3), bigmemory
 Remotes: kaneplusplus/bigmemory
 RoxygenNote: 5.0.1

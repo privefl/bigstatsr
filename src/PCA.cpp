@@ -42,3 +42,70 @@ void tcrossprodEigen2(SEXP res,
 }
 
 /******************************************************************************/
+
+// [[Rcpp::export]]
+NumericMatrix& scaling(NumericMatrix& source,
+                       const NumericVector& mean,
+                       const NumericVector& sd) {
+  int n = source.rows();
+  int m = source.cols();
+
+  for (int j = 0; j < m; j++) {
+    for (int i = 0; i < n; i++) {
+      source(i,j) -= mean[j];
+      source(i,j) /= sd[j];
+    }
+  }
+
+  return(source);
+}
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+void incrSup(SEXP pBigMat, const NumericMatrix& source) {
+  XPtr<BigMatrix> xpMat(pBigMat);
+  MatrixAccessor<double> macc(*xpMat);
+
+  for (int j = 0; j < xpMat->ncol(); j++) {
+    for (int i = 0; i <= j; i++) {
+      macc[j][i] += source(i,j);
+    }
+  }
+
+  return;
+}
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+void incrAll(SEXP pBigMat, const NumericMatrix& source) {
+  XPtr<BigMatrix> xpMat(pBigMat);
+  MatrixAccessor<double> macc(*xpMat);
+
+  for (int j = 0; j < xpMat->ncol(); j++) {
+    for (int i = 0; i < xpMat->nrow(); i++) {
+      macc[j][i] += source(i,j);
+    }
+  }
+
+  return;
+}
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+void complete(SEXP pBigMat) {
+  XPtr<BigMatrix> xpMat(pBigMat);
+  MatrixAccessor<double> macc(*xpMat);
+
+  for (int j = 0; j < xpMat->ncol()-1; j++) {
+    for (int i = j+1; i < xpMat->nrow(); i++) {
+      macc[j][i] = macc[i][j];
+    }
+  }
+
+  return;
+}
+
+/******************************************************************************/
