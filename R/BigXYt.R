@@ -9,7 +9,7 @@
 #' See \code{\link{colmeans}}.
 #' @param vec.scale Vector that will be divided to the matrix
 #' (after the substraction), columnwise.
-#' Typically, the sd of each column? See \code{\link{colsds}}.
+#' Typically, the sd of each column. See \code{\link{colsds}}.
 #' @param progress Use a progress bar for the computation
 #' of the correlation matrix? Default is \code{TRUE}.
 #' @param use.Eigen Use the \code{Eigen} library to compute

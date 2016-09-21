@@ -24,7 +24,7 @@ See \code{\link{colmeans}}.}
 
 \item{vec.scale}{Vector that will be divided to the matrix
 (after the substraction), columnwise.
-Typically, the sd of each column? See \code{\link{colsds}}.}
+Typically, the sd of each column. See \code{\link{colsds}}.}
 
 \item{progress}{Use a progress bar for the computation
 of the correlation matrix? Default is \code{TRUE}.}

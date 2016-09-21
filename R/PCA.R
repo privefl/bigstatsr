@@ -4,20 +4,6 @@
 #' @title Principal Components of a "big.matrix".
 #' @description Get k or all Principal Components (PCs) of a \code{big.matrix}
 #' which has more columns than rows.
-#' @inheritParams BigXYt
-#' @param k Number of PCs to compute. Default is all.
-#' @param thr.eigval Threshold to remove "unsignificant" PCs.
-#' Default is \code{1e-3}.
-#' @export
-#' @return A \code{matrix} of PCs.
-#' @details See \code{\link{BigXYt}}.
-#'
-#' Note that for the Eigen decomposition, only \code{R} is
-#' used because is faster (see \href{http://goo.gl/UYJcCw}{stackoverflow}).
-#' If you want a large number of eigenvectors/values, you should
-#' really considerer using Microsoft R Open for speed.
-#' @example examples/example.DualBigPCA.R
-#' @seealso \code{\link{prcomp}}
 DualBigPCA <- function(X,
                        block.size,
                        k = NULL,
@@ -73,11 +59,6 @@ DualBigPCA <- function(X,
 #' @title Principal Components of a "big.matrix".
 #' @description Get k or all Principal Components (PCs) of a \code{big.matrix}
 #' which has more rows than columns.
-#' @inheritParams DualBigPCA
-#' @export
-#' @return A \code{matrix} of PCs.
-#' @example examples/example.PrimalBigPCA.R
-#' @seealso \code{\link{prcomp}}
 PrimalBigPCA <- function(X,
                          block.size,
                          k = NULL,
@@ -108,6 +89,45 @@ PrimalBigPCA <- function(X,
                         vec.center, vec.scale)
 
   return(rotated)
+}
+
+################################################################################
+
+#' @name BigPCA
+#' @title Principal Components of a "big.matrix".
+#' @description Get k or all Principal Components (PCs) of a \code{big.matrix}.
+#' @inheritParams BigXYt
+#' @param k Number of PCs to compute. Default is all.
+#' @param thr.eigval Threshold to remove "unsignificant" PCs.
+#' Default is \code{1e-3}.
+#' @export
+#' @return A \code{matrix} of PCs.
+#' @details See \code{\link{BigXYt}}.
+#'
+#' Note that for the Eigen decomposition, only \code{R} is
+#' used because is faster (see \href{http://goo.gl/UYJcCw}{stackoverflow}).
+#' If you want a large number of eigenvectors/values, you should
+#' really considerer using Microsoft R Open for speed.
+#' @example examples/example.BigPCA.R
+#' @seealso \code{\link{prcomp}}
+BigPCA <- function(X,
+                   block.size,
+                   k = NULL,
+                   ind.train = seq(nrow(X)),
+                   vec.center = rep(0, length(ind.train)),
+                   vec.scale = rep(1, length(ind.train)),
+                   thr.eigval = 1e-3,
+                   use.Eigen = TRUE,
+                   progress = TRUE) {
+  if (ncol(X) > nrow(X)) {
+    return(DualBigPCA(X, block.size, k, ind.train,
+                      vec.center, vec.scale,
+                      thr.eigval, use.Eigen, progress))
+  } else {
+    return(PrimalBigPCA(X, block.size, k, ind.train,
+                        vec.center, vec.scale,
+                        thr.eigval, progress))
+  }
 }
 
 ################################################################################
