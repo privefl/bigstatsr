@@ -25,7 +25,7 @@ NULL
 #' @rdname reglin
 #' @export
 RsqReg <- function(X, y, ind.train = seq(nrow(X))) {
-  if (class(X) != "big.matrix") stop("X must be a big.matrix")
+  check_X(X)
 
   if (length(unique(y[ind.train])) > 2) {
     return(R_squared(X@address, y, ind.train, rep(1, length(ind.train))))
@@ -39,7 +39,7 @@ RsqReg <- function(X, y, ind.train = seq(nrow(X))) {
 #' @rdname reglin
 #' @export
 RsqClass <- function(X, y, ind.train = seq(nrow(X))) {
-  if (class(X) != "big.matrix") stop("X must be a big.matrix")
+  check_X(X)
 
   if (all(sort(unique(y)) == c(-1, 1))) {
     prop.case <- mean(y[ind.train] == 1)
@@ -56,7 +56,7 @@ RsqClass <- function(X, y, ind.train = seq(nrow(X))) {
 #' @rdname reglin
 #' @export
 CoeffsReg <- function(X, y, ind.train = seq(nrow(X))) {
-  if (class(X) != "big.matrix") stop("X must be a big.matrix")
+  check_X(X)
 
   if (length(unique(y[ind.train])) > 2) {
     return(betasRegLin(X@address, y, ind.train, rep(1, length(ind.train))))
@@ -70,7 +70,7 @@ CoeffsReg <- function(X, y, ind.train = seq(nrow(X))) {
 #' @rdname reglin
 #' @export
 CoeffsClass <- function(X, y, ind.train = seq(nrow(X))) {
-  if (class(X) != "big.matrix") stop("X must be a big.matrix")
+  check_X(X)
 
   if (all(sort(unique(y)) == c(-1, 1))) {
     prop.case <- mean(y[ind.train] == 1)

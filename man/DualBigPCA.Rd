@@ -32,12 +32,12 @@ Typically, the sd of each column? See \code{\link{colsds}}.}
 \item{thr.eigval}{Threshold to remove "unsignificant" PCs.
 Default is \code{1e-3}.}
 
-\item{use.Eigen}{Use the \code{Eigen} library to compute \eqn{X X^T},
-the default.
+\item{use.Eigen}{Use the \code{Eigen} library to compute
+\eqn{X X^T}? \code{TRUE} is the default.
 If \code{FALSE}, use \code{R}'s \code{tcrossprod}. See details.}
 
-\item{progress}{Use a progress bar for the computation of \eqn{X X^T}?
-Default is \code{TRUE}.}
+\item{progress}{Use a progress bar for the computation
+of the correlation matrix? Default is \code{TRUE}.}
 }
 \value{
 A \code{matrix} of PCs.

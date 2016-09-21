@@ -27,7 +27,7 @@ DualBigPCA <- function(X,
                        thr.eigval = 1e-3,
                        use.Eigen = TRUE,
                        progress = TRUE) {
-  if (class(X) != "big.matrix") stop("X must be a big.matrix")
+  check_X(X)
 
   res <- BigXYt(X = X,
                 block.size = block.size,

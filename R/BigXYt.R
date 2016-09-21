@@ -10,10 +10,10 @@
 #' @param vec.scale Vector that will be divided to the matrix
 #' (after the substraction), columnwise.
 #' Typically, the sd of each column? See \code{\link{colsds}}.
-#' @param progress Use a progress bar for the computation of \eqn{X X^T}?
-#' Default is \code{TRUE}.
-#' @param use.Eigen Use the \code{Eigen} library to compute \eqn{X X^T},
-#' the default.
+#' @param progress Use a progress bar for the computation
+#' of the correlation matrix? Default is \code{TRUE}.
+#' @param use.Eigen Use the \code{Eigen} library to compute
+#' \eqn{X X^T}? \code{TRUE} is the default.
 #' If \code{FALSE}, use \code{R}'s \code{tcrossprod}. See details.
 #' @details To compute \eqn{X X^T}, using \code{Eigen} library is faster.
 #' However, if you link \code{R} with an optimized math library,
@@ -49,7 +49,7 @@ BigXYt <- function(X,
                    vec.scale = rep(1, length(ind.train)),
                    use.Eigen = TRUE,
                    progress = TRUE) {
-  if (class(X) != "big.matrix") stop("X must be a big.matrix")
+  check_X(X)
 
   progress <- progress & interactive()
   n <- length(ind.train)

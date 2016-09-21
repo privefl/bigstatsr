@@ -14,24 +14,28 @@ NULL
 #' @rdname colstats
 #' @export
 colsums <- function(X, ind.train = seq_len(nrow(X))) {
+  check_X(X)
   bigcolsums(X@address, ind.train)
 }
 
 #' @rdname colstats
 #' @export
 colmeans <- function(X, ind.train = seq_len(nrow(X))) {
+  check_X(X)
   colsums(X, ind.train) / length(ind.train)
 }
 
 #' @rdname colstats
 #' @export
 colvars <- function(X, ind.train = seq_len(nrow(X))) {
+  check_X(X)
   bigcolvars(X@address, ind.train)
 }
 
 #' @rdname colstats
 #' @export
 colsds <- function(X, ind.train = seq_len(nrow(X))) {
+  check_X(X)
   sqrt(colvars(X, ind.train))
 }
 
