@@ -4,6 +4,7 @@
 #' @title Principal Components of a "big.matrix".
 #' @description Get k or all Principal Components (PCs) of a \code{big.matrix}
 #' which has more columns than rows.
+#' @inheritParams BigPCA
 DualBigPCA <- function(X,
                        block.size,
                        k = NULL,
@@ -59,6 +60,7 @@ DualBigPCA <- function(X,
 #' @title Principal Components of a "big.matrix".
 #' @description Get k or all Principal Components (PCs) of a \code{big.matrix}
 #' which has more rows than columns.
+#' @inheritParams BigPCA
 PrimalBigPCA <- function(X,
                          block.size,
                          k = NULL,

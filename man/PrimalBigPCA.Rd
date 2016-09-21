@@ -8,6 +8,12 @@ PrimalBigPCA(X, block.size, k = NULL, ind.train = seq(nrow(X)),
   vec.center = rep(0, length(ind.train)), vec.scale = rep(1,
   length(ind.train)), thr.eigval = 0.001, progress = TRUE)
 }
+\arguments{
+\item{k}{Number of PCs to compute. Default is all.}
+
+\item{thr.eigval}{Threshold to remove "unsignificant" PCs.
+Default is \code{1e-3}.}
+}
 \description{
 Get k or all Principal Components (PCs) of a \code{big.matrix}
 which has more rows than columns.

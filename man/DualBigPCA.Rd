@@ -9,6 +9,12 @@ DualBigPCA(X, block.size, k = NULL, ind.train = seq(nrow(X)),
   length(ind.train)), thr.eigval = 0.001, use.Eigen = TRUE,
   progress = TRUE)
 }
+\arguments{
+\item{k}{Number of PCs to compute. Default is all.}
+
+\item{thr.eigval}{Threshold to remove "unsignificant" PCs.
+Default is \code{1e-3}.}
+}
 \description{
 Get k or all Principal Components (PCs) of a \code{big.matrix}
 which has more columns than rows.
