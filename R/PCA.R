@@ -46,9 +46,6 @@ DualBigPCA <- function(X,
   }
   rm(res)
 
-  #means <- bigcolsumsDouble(bigK@address) / n
-  #symCenter(bigK@address, means, mean(means))
-  #if (!only1) colCenter(bigK2@address, means)
 
   if (is.null(k)) {
     eig <- eigen(bigK[,], symmetric = TRUE)
@@ -66,6 +63,49 @@ DualBigPCA <- function(X,
   rotated <- matrix(0, nrow(X), lastEig)
   rotated[ind.train, ] <- bigK[,] %*% alphas
   if (n2 != 0) rotated[-ind.train, ] <- bigK2[,] %*% alphas
+
+  return(rotated)
+}
+
+################################################################################
+
+#' @name PrimalBigPCA
+#' @title Principal Components of a "big.matrix".
+#' @description Get k or all Principal Components (PCs) of a \code{big.matrix}
+#' which has more rows than columns.
+#' @inheritParams DualBigPCA
+#' @export
+#' @return A \code{matrix} of PCs.
+#' @example examples/example.PrimalBigPCA.R
+#' @seealso \code{\link{prcomp}}
+PrimalBigPCA <- function(X,
+                         block.size,
+                         k = NULL,
+                         ind.train = seq(nrow(X)),
+                         vec.center = rep(0, length(ind.train)),
+                         vec.scale = rep(1, length(ind.train)),
+                         thr.eigval = 1e-3,
+                         progress = TRUE) {
+  check_X(X)
+
+  bigK <- BigXtX(X = X,
+                 block.size = block.size,
+                 ind.train = ind.train,
+                 vec.center = vec.center,
+                 vec.scale = vec.scale,
+                 progress = progress)
+
+
+  if (is.null(k)) {
+    eig <- eigen(bigK[,], symmetric = TRUE)
+  } else {
+    eig <- RSpectra::eigs_sym(bigK[,], k)
+  }
+
+  lastEig <- max(which(eig$values > (thr.eigval * length(ind.train))))
+
+  rotated <- multScaled(X, block.size, eig$vectors[, 1:lastEig],
+                        vec.center, vec.scale)
 
   return(rotated)
 }

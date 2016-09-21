@@ -9,6 +9,10 @@ bigcolvars <- function(pBigMat, rowInd) {
     .Call('bigstatsr_bigcolvars', PACKAGE = 'bigstatsr', pBigMat, rowInd)
 }
 
+incrMat <- function(dest, source) {
+    .Call('bigstatsr_incrMat', PACKAGE = 'bigstatsr', dest, source)
+}
+
 tcrossprodEigen <- function(res, bM) {
     invisible(.Call('bigstatsr_tcrossprodEigen', PACKAGE = 'bigstatsr', res, bM))
 }

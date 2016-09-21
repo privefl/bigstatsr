@@ -30,6 +30,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// incrMat
+NumericMatrix& incrMat(NumericMatrix& dest, const NumericMatrix& source);
+RcppExport SEXP bigstatsr_incrMat(SEXP destSEXP, SEXP sourceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type dest(destSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
+    rcpp_result_gen = Rcpp::wrap(incrMat(dest, source));
+    return rcpp_result_gen;
+END_RCPP
+}
 // tcrossprodEigen
 void tcrossprodEigen(SEXP res, const Eigen::Map<Eigen::MatrixXd> bM);
 RcppExport SEXP bigstatsr_tcrossprodEigen(SEXP resSEXP, SEXP bMSEXP) {

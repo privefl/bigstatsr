@@ -16,7 +16,7 @@ ALL.FUN <- c("sum", "mean", "sd", "var")
 
 test_that("Equality with matrix operations", {
   for (t in ALL.TYPES) {
-    printf("\nTesting type %s\n", t)
+    #printf("\nTesting type %s\n", t)
 
     X <- as.big.matrix(x, type = t)
 
