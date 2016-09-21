@@ -5,7 +5,7 @@ context("DUALBIGPCA")
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
 
-TOL <- 1e-4
+TOL <- 1e-3
 
 # Simulating some data
 N <- 50
@@ -27,7 +27,7 @@ diffPCs <- function(test, rot) {
 
 ################################################################################
 
-test_that("equality with tcrossprod", {
+test_that("equality with prcomp", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
     mat <- sweep(sweep(X[,], 2, vec.center, '-'), 2, vec.scale, '/')
@@ -45,7 +45,7 @@ test_that("equality with tcrossprod", {
 
 ################################################################################
 
-test_that("equality with tcrossprod with half of the data", {
+test_that("equality with prcomp with half of the data", {
   ind <- sample(N, N/2)
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
