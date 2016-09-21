@@ -50,13 +50,14 @@ NumericVector bigcolsums(SEXP pBigMat,
 /******************************************************************************/
 
 template <typename T>
-NumericVector bigcolvars(XPtr<BigMatrix> xpMat,
-                         MatrixAccessor<T> macc,
-                         const IntegerVector& rowInd) {
+ListOf<NumericVector> bigcolvars(XPtr<BigMatrix> xpMat,
+                                 MatrixAccessor<T> macc,
+                                 const IntegerVector& rowInd) {
   double n = rowInd.size();
   int m = xpMat->ncol();
 
   NumericVector res(m);
+  NumericVector res2(m);
   double x, xSum, xxSum;
 
   for (int j = 0; j < m; j++) {
@@ -67,15 +68,17 @@ NumericVector bigcolvars(XPtr<BigMatrix> xpMat,
       xxSum += x*x;
     }
     res[j] = xxSum - xSum * xSum / n;
+    res2[j] = xSum;
   }
 
-  return(res / (n-1));
+  return(List::create(_["sum"] = res2,
+                      _["var"] = res/(n-1)));
 }
 
 // Dispatch function for bigcolvars
 // [[Rcpp::export]]
-NumericVector bigcolvars(SEXP pBigMat,
-                         const IntegerVector& rowInd) {
+ListOf<NumericVector> bigcolvars(SEXP pBigMat,
+                                 const IntegerVector& rowInd) {
   XPtr<BigMatrix> xpMat(pBigMat);
   switch(xpMat->matrix_type()) {
   case 1:

@@ -29,7 +29,7 @@ colmeans <- function(X, ind.train = seq_len(nrow(X))) {
 #' @export
 colvars <- function(X, ind.train = seq_len(nrow(X))) {
   check_X(X)
-  bigcolvars(X@address, ind.train)
+  bigcolvars(X@address, ind.train)$var
 }
 
 #' @rdname colstats
@@ -37,6 +37,15 @@ colvars <- function(X, ind.train = seq_len(nrow(X))) {
 colsds <- function(X, ind.train = seq_len(nrow(X))) {
   check_X(X)
   sqrt(colvars(X, ind.train))
+}
+
+#' @rdname colstats
+#' @export
+colmeans_sds <- function(X, ind.train = seq_len(nrow(X))) {
+  check_X(X)
+  tmp <- bigcolvars(X@address, ind.train)
+  list(mean = tmp$sum / length(ind.train),
+       sd = sqrt(tmp$var))
 }
 
 ################################################################################

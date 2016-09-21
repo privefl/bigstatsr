@@ -19,7 +19,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // bigcolvars
-NumericVector bigcolvars(SEXP pBigMat, const IntegerVector& rowInd);
+ListOf<NumericVector> bigcolvars(SEXP pBigMat, const IntegerVector& rowInd);
 RcppExport SEXP bigstatsr_bigcolvars(SEXP pBigMatSEXP, SEXP rowIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

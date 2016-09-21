@@ -2,6 +2,7 @@
 % Please edit documentation in R/colstats.R
 \name{colstats}
 \alias{colmeans}
+\alias{colmeans_sds}
 \alias{colsds}
 \alias{colstats}
 \alias{colsums}
@@ -15,6 +16,8 @@ colmeans(X, ind.train = seq_len(nrow(X)))
 colvars(X, ind.train = seq_len(nrow(X)))
 
 colsds(X, ind.train = seq_len(nrow(X)))
+
+colmeans_sds(X, ind.train = seq_len(nrow(X)))
 }
 \arguments{
 \item{X}{A big.matrix.

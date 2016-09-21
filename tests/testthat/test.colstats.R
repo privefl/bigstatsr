@@ -29,6 +29,26 @@ test_that("Equality with matrix operations", {
   }
 })
 
+################################################################################
+
+test_that("Equality with colmeans_sd", {
+  for (t in ALL.TYPES) {
+    #printf("\nTesting type %s\n", t)
+
+    X <- as.big.matrix(x, type = t)
+
+    res <- colmeans_sds(X)
+    expect_equal(res$mean, colmeans(X))
+    expect_equal(res$sd, colsds(X))
+
+    res <- colmeans_sds(X, ind)
+    expect_equal(res$mean, colmeans(X, ind))
+    expect_equal(res$sd, colsds(X, ind))
+  }
+})
+
+################################################################################
+
 test_that("Expect error from unknown type", {
   x <- as.raw(sample(0:255, 100))
   X <- as.big.matrix(matrix(x), type = "raw")
