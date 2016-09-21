@@ -6,3 +6,4 @@ examples
 ^\.travis\.yml$
 ^README\.Rmd$
 ^README\.html$
+tmp-tests

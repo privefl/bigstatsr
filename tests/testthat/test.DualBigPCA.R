@@ -5,14 +5,16 @@ context("DUALBIGPCA")
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
 
-TOL <- 1e-5
+TOL <- 1e-4
 
 # Simulating some data
 N <- 50
 M <- 100
-x <- matrix(rnorm(N*M), N)
-vec.center <- rnorm(M)
-vec.scale <- rnorm(M)
+s <- matrix(rnorm(N * M), N, M)
+sigma <- crossprod(s)
+x <- MASS::mvrnorm(N, mu = rep(0, M), Sigma = sigma) #matrix(rnorm(N*M), N)
+vec.center <- rnorm(ncol(x))
+vec.scale <- rnorm(ncol(x))
 
 # function for comparing
 diffPCs <- function(test, rot) {
