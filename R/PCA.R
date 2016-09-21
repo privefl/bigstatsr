@@ -14,7 +14,6 @@ DualBigPCA <- function(X,
                        thr.eigval = 1e-3,
                        use.Eigen = TRUE,
                        progress = TRUE) {
-  check_X(X)
 
   res <- BigXYt(X = X,
                 block.size = block.size,
@@ -69,7 +68,6 @@ PrimalBigPCA <- function(X,
                          vec.scale = rep(1, length(ind.train)),
                          thr.eigval = 1e-3,
                          progress = TRUE) {
-  check_X(X)
 
   bigK <- BigXtX(X = X,
                  block.size = block.size,
@@ -121,6 +119,8 @@ BigPCA <- function(X,
                    thr.eigval = 1e-3,
                    use.Eigen = TRUE,
                    progress = TRUE) {
+  check_X(X)
+
   if (ncol(X) > nrow(X)) {
     return(DualBigPCA(X, block.size, k, ind.train,
                       vec.center, vec.scale,
