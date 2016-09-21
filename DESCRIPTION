@@ -15,6 +15,6 @@ Imports: Rcpp, RSpectra
 Depends: R (>= 3.2.3), bigmemory
 Remotes: privefl/bigmemory
 RoxygenNote: 5.0.1
-Suggests: testthat, covr
+Suggests: testthat, covr, MASS
 URL: https://github.com/privefl/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
