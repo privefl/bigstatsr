@@ -6,7 +6,7 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
 
 # Simulating some data
-x <- matrix(rnorm(100, 0, 5), 20, 5)
+x <- matrix(rnorm(2e4, 0, 5), 200, 100)
 
 ################################################################################
 
