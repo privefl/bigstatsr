@@ -4,7 +4,7 @@
 #' @description Standard statistics for comulns of a big.matrix.
 #' For now, the sum, mean, sd and var are implemented.
 #' @inheritParams bigstatsr-package
-#' @return A numeric vector with the column statistics.
+#' @return Numeric vectors with the column statistics.
 #' @example examples/example.colstats.R
 #' @name colstats
 NULL

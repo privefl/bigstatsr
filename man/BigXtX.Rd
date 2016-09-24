@@ -5,8 +5,7 @@
 \title{Crossprod for a big.matrix.}
 \usage{
 BigXtX(X, block.size, ind.train = seq(nrow(X)), vec.center = rep(0,
-  length(ind.train)), vec.scale = rep(1, length(ind.train)),
-  progress = TRUE)
+  ncol(X)), vec.scale = rep(1, ncol(X)), progress = TRUE)
 }
 \arguments{
 \item{X}{A big.matrix.
@@ -38,7 +37,7 @@ after applying a particular scaling to it.
 }
 \examples{
 # Simulating some data
-X <- big.matrix(100, 100)
+X <- big.matrix(17, 41)
 X[] <- rnorm(length(X))
 
 

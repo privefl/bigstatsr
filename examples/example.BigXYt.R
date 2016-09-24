@@ -1,5 +1,5 @@
 # Simulating some data
-X <- big.matrix(100, 100)
+X <- big.matrix(19, 43)
 X[] <- rnorm(length(X))
 
 

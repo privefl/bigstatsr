@@ -5,9 +5,8 @@
 \title{Principal Components of a "big.matrix".}
 \usage{
 BigPCA(X, block.size, k = NULL, ind.train = seq(nrow(X)),
-  vec.center = rep(0, length(ind.train)), vec.scale = rep(1,
-  length(ind.train)), thr.eigval = 0.001, use.Eigen = TRUE,
-  progress = TRUE)
+  vec.center = rep(0, ncol(X)), vec.scale = rep(1, ncol(X)),
+  thr.eigval = 0.001, use.Eigen = TRUE, progress = TRUE)
 }
 \arguments{
 \item{X}{A big.matrix.

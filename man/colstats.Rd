@@ -28,7 +28,7 @@ for the training part.
 If not specified, all data are used.}
 }
 \value{
-A numeric vector with the column statistics.
+Numeric vectors with the column statistics.
 }
 \description{
 Standard statistics for comulns of a big.matrix.

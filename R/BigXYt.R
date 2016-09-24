@@ -45,8 +45,8 @@
 BigXYt <- function(X,
                    block.size,
                    ind.train = seq(nrow(X)),
-                   vec.center = rep(0, length(ind.train)),
-                   vec.scale = rep(1, length(ind.train)),
+                   vec.center = rep(0, ncol(X)),
+                   vec.scale = rep(1, ncol(X)),
                    use.Eigen = TRUE,
                    progress = TRUE) {
   check_X(X)

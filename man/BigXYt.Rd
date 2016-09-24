@@ -5,8 +5,8 @@
 \title{Linear kernel matrices for a big.matrix.}
 \usage{
 BigXYt(X, block.size, ind.train = seq(nrow(X)), vec.center = rep(0,
-  length(ind.train)), vec.scale = rep(1, length(ind.train)),
-  use.Eigen = TRUE, progress = TRUE)
+  ncol(X)), vec.scale = rep(1, ncol(X)), use.Eigen = TRUE,
+  progress = TRUE)
 }
 \arguments{
 \item{X}{A big.matrix.
@@ -67,7 +67,7 @@ if you do!).}
 }
 \examples{
 # Simulating some data
-X <- big.matrix(100, 100)
+X <- big.matrix(19, 43)
 X[] <- rnorm(length(X))
 
 
