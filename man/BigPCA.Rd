@@ -68,7 +68,6 @@ diffPCs <- function(test, rot) {
 # Simulating some data
 X <- big.matrix(100, 50, shared = FALSE)
 X[] <- rnorm(length(X))
-X2 <- as.big.matrix(matrix(rnorm(100), 10))
 
 # center and scale
 vec.center <- colmeans(X)

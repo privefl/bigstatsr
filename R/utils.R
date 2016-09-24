@@ -5,6 +5,7 @@ ALL.TYPES <- c("char", "short", "integer", "float", "double")
 ERROR_CLASS <- "y should be a vector of 1 (cases) and -1 (controls)."
 ERROR_REG <- paste0("y has not enough unique elements.\n",
                     "Try using CoeffsClass instead.")
+ERROR_BIGMATRIX <- "X must be a big.matrix."
 
 # also defined in src/utils.h
 ERROR_TYPE <- "unknown type detected for big.matrix object!"
@@ -12,7 +13,7 @@ ERROR_TYPE <- "unknown type detected for big.matrix object!"
 ################################################################################
 
 check_X <- function(X) {
-  if (class(X) != "big.matrix") stop("X must be a big.matrix")
+  if (class(X) != "big.matrix") stop(ERROR_BIGMATRIX)
 }
 
 ################################################################################
