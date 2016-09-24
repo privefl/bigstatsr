@@ -32,11 +32,11 @@ test_that("equality with prcomp", {
     X <- as.big.matrix(x, type = t)
     mat <- sweep(sweep(X[,], 2, vec.center, '-'), 2, vec.scale, '/')
     for (k in list(NULL, 2, 10)) {
-      test <- DualBigPCA(X = X,
-                         block.size = 10,
-                         vec.center = vec.center,
-                         vec.scale = vec.scale,
-                         k = k)
+      test <- BigPCA(X = X,
+                     block.size = 10,
+                     vec.center = vec.center,
+                     vec.scale = vec.scale,
+                     k = k)
       pca <- prcomp(mat, center = FALSE, scale. = FALSE)
       expect_equal(diffPCs(test, pca$x), 0, tolerance = TOL)
     }
@@ -52,12 +52,12 @@ test_that("equality with prcomp with half of the data", {
     mat1 <- sweep(sweep(X[ind, ],  2, vec.center, '-'), 2, vec.scale, '/')
     mat2 <- sweep(sweep(X[-ind, ], 2, vec.center, '-'), 2, vec.scale, '/')
     for (k in list(NULL, 2, 10)) {
-      test <- DualBigPCA(X = X,
-                         block.size = 10,
-                         ind.train = ind,
-                         vec.center = vec.center,
-                         vec.scale = vec.scale,
-                         k = k)
+      test <- BigPCA(X = X,
+                     block.size = 10,
+                     ind.train = ind,
+                     vec.center = vec.center,
+                     vec.scale = vec.scale,
+                     k = k)
       pca <- prcomp(mat1, center = FALSE, scale. = FALSE)
       expect_equal(diffPCs(test[ind, ], pca$x), 0, tolerance = TOL)
       pred <- predict(pca, mat2)
