@@ -36,7 +36,7 @@ For now, the sum, mean, sd and var are implemented.
 }
 \examples{
 # Simulating some data
-X <- big.matrix(10, 10)
+X <- big.matrix(10, 10, shared = FALSE)
 X[] <- rnorm(100)
 
 # Check the results

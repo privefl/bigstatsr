@@ -37,7 +37,7 @@ after applying a particular scaling to it.
 }
 \examples{
 # Simulating some data
-X <- big.matrix(17, 41)
+X <- big.matrix(17, 41, shared = FALSE)
 X[] <- rnorm(length(X))
 
 

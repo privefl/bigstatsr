@@ -67,7 +67,7 @@ if you do!).}
 }
 \examples{
 # Simulating some data
-X <- big.matrix(19, 43)
+X <- big.matrix(19, 43, shared = FALSE)
 X[] <- rnorm(length(X))
 
 

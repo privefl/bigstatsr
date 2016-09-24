@@ -1,14 +1,17 @@
 // [[Rcpp::depends(bigmemory, BH)]]
-
 #include <Rcpp.h>
 #include <bigmemory/MatrixAccessor.hpp>
+#include "utils.h"
 
 using namespace Rcpp;
 
 
+/******************************************************************************/
 
-void transpose3_rec(MatrixAccessor<char> macc,
-                    MatrixAccessor<char> macc2,
+// recursive divide and conquer function
+template <typename T>
+void transpose3_rec(MatrixAccessor<T> macc,
+                    MatrixAccessor<T> macc2,
                     int i_min, int i_max,
                     int j_min, int j_max) {
 
@@ -24,7 +27,7 @@ void transpose3_rec(MatrixAccessor<char> macc,
     } else {
       for (int j = j_min; j < j_max; j++) {
         for (int i = i_min; i < i_max; i++) {
-          macc[i][j] = macc2[j][i];
+          macc[j][i] = macc2[i][j];
         }
       }
     }
@@ -33,15 +36,40 @@ void transpose3_rec(MatrixAccessor<char> macc,
   return;
 }
 
-// [[Rcpp::export]]
-void transpose3(SEXP pBigMat, const SEXP pBigMat2) {
-  XPtr<BigMatrix> xpMat(pBigMat);
-  MatrixAccessor<char> macc(*xpMat);
+template <typename T>
+void transpose3(XPtr<BigMatrix> xpMat,
+                MatrixAccessor<T> macc,
+                MatrixAccessor<T> macc2) {
 
-  XPtr<BigMatrix> xpMat2(pBigMat2);
-  MatrixAccessor<char> macc2(*xpMat2);
-
-  transpose3_rec(macc, macc2, 0, xpMat2->nrow(), 0, xpMat2->ncol());
+  transpose3_rec(macc, macc2, 0, xpMat->nrow(), 0, xpMat->ncol());
 
   return;
 }
+
+// Dispatch function for transpose3
+// [[Rcpp::export]]
+void transpose3(SEXP pBigMat, SEXP pBigMat2) {
+  XPtr<BigMatrix> xpMat(pBigMat);
+  XPtr<BigMatrix> xpMat2(pBigMat2);
+  switch(xpMat->matrix_type()) {
+  case 1:
+    return transpose3(xpMat, MatrixAccessor<char>(*xpMat),
+                      MatrixAccessor<char>(*xpMat2));
+  case 2:
+    return transpose3(xpMat, MatrixAccessor<short>(*xpMat),
+                      MatrixAccessor<short>(*xpMat2));
+  case 4:
+    return transpose3(xpMat, MatrixAccessor<int>(*xpMat),
+                      MatrixAccessor<int>(*xpMat2));
+  case 6:
+    return transpose3(xpMat, MatrixAccessor<float>(*xpMat),
+                      MatrixAccessor<float>(*xpMat2));
+  case 8:
+    return transpose3(xpMat, MatrixAccessor<double>(*xpMat),
+                      MatrixAccessor<double>(*xpMat2));
+  default:
+    throw Rcpp::exception(ERROR_TYPE);
+  }
+}
+
+/******************************************************************************/
