@@ -31,8 +31,7 @@ DualBigPCA <- function(X,
   if (is.null(k)) {
     eig <- eigen(bigK[,], symmetric = TRUE)
   } else {
-    eig <- RSpectra::eigs_sym(bigK[,], k,
-                              opts = list(tol = .Machine$double.eps))
+    eig <- RSpectra::eigs_sym(bigK[,], k)
   }
 
   lastEig <- max(which(eig$values > (thr.eigval * ncol(X))))
@@ -71,8 +70,7 @@ PrimalBigPCA <- function(X,
   if (is.null(k)) {
     eig <- eigen(bigK[,], symmetric = TRUE)
   } else {
-    eig <- RSpectra::eigs_sym(bigK[,], k,
-                              opts = list(tol = .Machine$double.eps))
+    eig <- RSpectra::eigs_sym(bigK[,], k)
   }
 
   lastEig <- max(which(eig$values > (thr.eigval * length(ind.train))))

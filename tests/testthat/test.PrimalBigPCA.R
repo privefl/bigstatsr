@@ -5,7 +5,7 @@ context("PRIMALBIGPCA")
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
 
-TOL <- 1e-4
+TOL <- 1e-3
 
 # Simulating some data
 N <- 200
