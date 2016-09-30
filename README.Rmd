@@ -14,3 +14,4 @@ public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus
 
 # bigstatsr
 Statistical tools for bigmemory matrices
+
