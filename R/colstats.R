@@ -1,8 +1,8 @@
 ################################################################################
 
-#' @title Standard statistics for comulns of a big.matrix
-#' @description Standard statistics for comulns of a big.matrix.
-#' For now, the sum, mean, sd and var are implemented.
+#' @title Standard statistics for **columns** of a big.matrix
+#' @description Standard statistics for **columns** of a big.matrix.
+#' For now, the `sum`, `mean`, `sd` and `var` are implemented.
 #' @inheritParams bigstatsr-package
 #' @return Numeric vectors with the column statistics.
 #' @example examples/example.colstats.R

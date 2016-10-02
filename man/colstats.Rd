@@ -7,7 +7,7 @@
 \alias{colstats}
 \alias{colsums}
 \alias{colvars}
-\title{Standard statistics for comulns of a big.matrix}
+\title{Standard statistics for \strong{columns} of a big.matrix}
 \usage{
 colsums(X, ind.train = seq_len(nrow(X)))
 
@@ -20,7 +20,7 @@ colsds(X, ind.train = seq_len(nrow(X)))
 colmeans_sds(X, ind.train = seq_len(nrow(X)))
 }
 \arguments{
-\item{X}{A big.matrix.
+\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
@@ -31,8 +31,8 @@ If not specified, all data are used.}
 Numeric vectors with the column statistics.
 }
 \description{
-Standard statistics for comulns of a big.matrix.
-For now, the sum, mean, sd and var are implemented.
+Standard statistics for \strong{columns} of a big.matrix.
+For now, the \code{sum}, \code{mean}, \code{sd} and \code{var} are implemented.
 }
 \examples{
 # Simulating some data

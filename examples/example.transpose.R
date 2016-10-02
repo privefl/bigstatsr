@@ -3,6 +3,6 @@ X[] <- rnorm(length(X))
 
 Xt <- transpose(X, shared = FALSE)
 
-print(all.equal(t(X[,]), Xt[,]))
+print(identical(t(X[,]), Xt[,]))
 
 

@@ -8,7 +8,7 @@ BigXtX(X, block.size, ind.train = seq(nrow(X)), vec.center = rep(0,
   ncol(X)), vec.scale = rep(1, ncol(X)), progress = TRUE)
 }
 \arguments{
-\item{X}{A big.matrix.
+\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
 \item{block.size}{Maximum number of columns read at once.}

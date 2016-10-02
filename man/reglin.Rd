@@ -17,12 +17,12 @@ CoeffsReg(X, y, ind.train = seq(nrow(X)))
 CoeffsClass(X, y, ind.train = seq(nrow(X)))
 }
 \arguments{
-\item{X}{A big.matrix.
+\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
-\item{y}{Either \itemize{
-\item a vector of \{-1, 1\}
-in the case of classification (suffix Class),
+\item{y}{Either
+\itemize{
+\item a vector of \{-1, 1\} in the case of classification (suffix Class),
 \item a vector of more than two unique values
 in the case of regression (suffix Reg).
 }}

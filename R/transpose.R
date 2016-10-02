@@ -3,11 +3,9 @@
 #' cache-oblivious algorithm for the transposition of
 #' a "big.matrix".
 #' @param X	A big.matrix. You may have missing values in your data.
-#' @param ... Other parameters passed to
-#' \code{\link[bigmemory]{big.matrix}}. Note that
-#' \code{nrow}, \code{ncol} and \code{type} of the
-#' resulting \code{big.matrix} are automatically defined.
-#' @return The transposed big.matrix
+#' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init
+#' @return The transposed big.matrix. Its dimension and type
+#' are automatically determined from the input \code{big.matrix}.
 #' @export
 #' @example examples/example.transpose.R
 transpose <- function(X, ...) {

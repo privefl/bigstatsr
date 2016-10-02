@@ -9,7 +9,7 @@ BigPCA(X, block.size, k = NULL, ind.train = seq(nrow(X)),
   thr.eigval = 0.001, use.Eigen = TRUE, progress = TRUE)
 }
 \arguments{
-\item{X}{A big.matrix.
+\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
 \item{block.size}{Maximum number of columns read at once.}

@@ -9,13 +9,34 @@ transpose(X, ...)
 \arguments{
 \item{X}{A big.matrix. You may have missing values in your data.}
 
-\item{...}{Other parameters passed to
-\code{\link[bigmemory]{big.matrix}}. Note that
-\code{nrow}, \code{ncol} and \code{type} of the
-resulting \code{big.matrix} are automatically defined.}
+\item{...}{Arguments passed on to \code{bigmemory::big.matrix}
+\describe{
+  \item{dimnames}{a list of the row and column names; use with caution 
+for large objects.}
+  \item{separated}{use separated column organization of the data; 
+see details.}
+  \item{backingfile}{the root name for the file(s) for the cache of \code{x}.}
+  \item{backingpath}{the path to the directory containing the file 
+backing cache.}
+  \item{descriptorfile}{the name of the file to hold the backingfile 
+description, for subsequent use with \code{\link{attach.big.matrix}}; 
+if \code{NULL}, the \code{backingfile} is used as the root part of the 
+descriptor file name.  The descriptor file is placed in the same directory 
+as the backing files.}
+  \item{binarydescriptor}{the flag to specify if the binary RDS format 
+should be used for the backingfile description, for subsequent use with 
+\code{\link{attach.big.matrix}}; if \code{NULL} of \code{FALSE}, the 
+\code{dput()} file format is used.}
+  \item{shared}{\code{TRUE} by default, and always \code{TRUE} if the 
+\code{big.matrix} is file-backed.  For a non-filebacked \code{big.matrix}, 
+\code{shared=FALSE} uses non-shared memory, which can be more stable for 
+large (say, >50\% of RAM) objects.  Shared memory allocation can sometimes 
+fail in such cases due to exhausted shared-memory resources in the system.}
+}}
 }
 \value{
-The transposed big.matrix
+The transposed big.matrix. Its dimension and type
+are automatically determined from the input \code{big.matrix}.
 }
 \description{
 This function implements a simple
@@ -28,7 +49,7 @@ X[] <- rnorm(length(X))
 
 Xt <- transpose(X, shared = FALSE)
 
-print(all.equal(t(X[,]), Xt[,]))
+print(identical(t(X[,]), Xt[,]))
 
 
 }
