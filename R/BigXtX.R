@@ -3,6 +3,8 @@
 #' after applying a particular scaling to it.
 #' @title Crossprod for a big.matrix.
 #' @inheritParams BigXYt
+#' @param use.Eigen Use the \code{Eigen} library to compute
+#' \eqn{X^T X}? \code{TRUE} is the default.
 #' @seealso \code{\link{crossprod}}
 #' @return \eqn{X.train^T X.train}
 #' @export
@@ -12,13 +14,14 @@ BigXtX <- function(X,
                    ind.train = seq(nrow(X)),
                    vec.center = rep(0, ncol(X)),
                    vec.scale = rep(1, ncol(X)),
+                   use.Eigen = TRUE,
                    progress = TRUE) {
   check_X(X)
 
   progress <- progress & interactive()
   m <- ncol(X)
 
-  bigK <- bigmemory::big.matrix(m, m, type = "double", shared = FALSE)
+  bigK <- big.matrix(m, m, type = "double", shared = FALSE)
 
   # function to compute X^T*X
   intervals <- CutBySize(m, block.size)
@@ -36,7 +39,11 @@ BigXtX <- function(X,
       if (progress) utils::setTxtProgressBar(pb, j*(j - 1)/2 + (i - 1))
       ind2 <- seq2(intervals[i, ])
       tmp2 <- scaling(X[ind.train, ind2], vec.center[ind2], vec.scale[ind2])
-      bigK[ind2, ind1] <- crossprod(tmp2, tmp1)
+      if (use.Eigen) {
+        bigK[ind2, ind1] <- crossprodEigen5(tmp2, tmp1)
+      } else {
+        bigK[ind2, ind1] <- crossprod(tmp2, tmp1)
+      }
     }
   }
 

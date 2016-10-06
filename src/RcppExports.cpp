@@ -65,6 +65,18 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// crossprodEigen5
+Eigen::MatrixXd crossprodEigen5(const Eigen::Map<Eigen::MatrixXd> X, const Eigen::Map<Eigen::MatrixXd> Y);
+RcppExport SEXP bigstatsr_crossprodEigen5(SEXP XSEXP, SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Y(YSEXP);
+    rcpp_result_gen = Rcpp::wrap(crossprodEigen5(X, Y));
+    return rcpp_result_gen;
+END_RCPP
+}
 // scaling
 NumericMatrix& scaling(NumericMatrix& source, const NumericVector& mean, const NumericVector& sd);
 RcppExport SEXP bigstatsr_scaling(SEXP sourceSEXP, SEXP meanSEXP, SEXP sdSEXP) {

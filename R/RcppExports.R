@@ -21,6 +21,10 @@ tcrossprodEigen2 <- function(res, X, Y) {
     invisible(.Call('bigstatsr_tcrossprodEigen2', PACKAGE = 'bigstatsr', res, X, Y))
 }
 
+crossprodEigen5 <- function(X, Y) {
+    .Call('bigstatsr_crossprodEigen5', PACKAGE = 'bigstatsr', X, Y)
+}
+
 scaling <- function(source, mean, sd) {
     .Call('bigstatsr_scaling', PACKAGE = 'bigstatsr', source, mean, sd)
 }

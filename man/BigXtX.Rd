@@ -5,7 +5,8 @@
 \title{Crossprod for a big.matrix.}
 \usage{
 BigXtX(X, block.size, ind.train = seq(nrow(X)), vec.center = rep(0,
-  ncol(X)), vec.scale = rep(1, ncol(X)), progress = TRUE)
+  ncol(X)), vec.scale = rep(1, ncol(X)), use.Eigen = TRUE,
+  progress = TRUE)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -24,6 +25,9 @@ See \code{\link{colmeans}}.}
 \item{vec.scale}{Vector that will be divided to the matrix
 (after the substraction), columnwise.
 Typically, the sd of each column. See \code{\link{colsds}}.}
+
+\item{use.Eigen}{Use the \code{Eigen} library to compute
+\eqn{X^T X}? \code{TRUE} is the default.}
 
 \item{progress}{Use a progress bar for the computation
 of the correlation matrix? Default is \code{TRUE}.}
