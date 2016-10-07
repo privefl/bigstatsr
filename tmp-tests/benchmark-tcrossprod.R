@@ -11,7 +11,7 @@ test <- AttachBigSNP("celiac_impute3", "../thesis-celiac/backingfiles")
 # 87 min with Eigen.
 # 6 min with MRO.
 print(system.time(test2 <- BigXYt(test$genotypes, block.size = 1e4,
-                                  use.Eigen = FALSE)))
+                                  use.Eigen = TRUE)))
 
 test3 <- transpose(test$genotypes, shared = FALSE)
 

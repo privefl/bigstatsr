@@ -36,7 +36,7 @@ void tcrossprodEigen2(SEXP res,
                                 xpMatRes->nrow(),
                                 xpMatRes->ncol());
 
-  bMRes += X * Y.transpose();
+  bMRes += X * Y.adjoint();
 
   return;
 }
