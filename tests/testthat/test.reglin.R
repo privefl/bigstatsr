@@ -11,24 +11,26 @@ N2 <- 1000
 x1 <- rnorm(N1, 0.5)
 x2 <- rnorm(N2, -0.5)
 weights <- c(rep(N2, N1), rep(N1, N2))
+weights2 <- rep(1, N1 + N2)
 
 x <- c(x1, x2)
 x3 <- cbind(x, x + 1, 2*x)
 
 ################################################################################
 
-get_res_weights <- function(X, y) {
+get_res_weights <- function(X, y, weighted = FALSE) {
   res <- matrix(0, 3, ncol(X))
   for (j in 1:ncol(X)) {
-    mylm <- lm(y ~ X[, j], weights = weights)
+    mylm <- lm(y ~ X[, j], weights = `if`(weighted, weights, weights2))
     res[1:2, j] <- mylm$coefficients
     res[3, j] <- summary(mylm)$r.squared
   }
   res
 }
 
-get_res2_class <- function(X, y) {
-  rbind(CoeffsClass(X, y), RsqClass(X, y))
+get_res2_class <- function(X, y, weighted = FALSE) {
+  rbind(CoeffsClass(X, y, weighted = weighted),
+        RsqClass(X, y, weighted = weighted))
 }
 
 # In a case of classification
@@ -37,7 +39,10 @@ y <- c(rep(1, N1), rep(-1, N2))
 test_that("equality with lm in case of classification", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x3, type = t)
-    expect_equal(get_res2_class(X, y), get_res_weights(X, y))
+    for (w in c(TRUE, FALSE)) {
+      expect_equal(get_res2_class(X, y, weighted = w),
+                   get_res_weights(X, y, weighted = w))
+    }
   }
 })
 

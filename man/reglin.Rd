@@ -10,11 +10,11 @@
 \usage{
 RsqReg(X, y, ind.train = seq(nrow(X)))
 
-RsqClass(X, y, ind.train = seq(nrow(X)))
+RsqClass(X, y, ind.train = seq(nrow(X)), weighted = FALSE)
 
 CoeffsReg(X, y, ind.train = seq(nrow(X)))
 
-CoeffsClass(X, y, ind.train = seq(nrow(X)))
+CoeffsClass(X, y, ind.train = seq(nrow(X)), weighted = FALSE)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -30,6 +30,8 @@ in the case of regression (suffix Reg).
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part.
 If not specified, all data are used.}
+
+\item{weighted}{Use weigths? Default is \code{FALSE}.}
 }
 \value{
 \itemize{
@@ -44,7 +46,7 @@ Operations of \bold{univariate} linear regression
 (intercept, slope and coefficient of determination)
 on all the columns of a \code{big.matrix}\cr
 In the case of classification,
-weights are used to make the results independent
+weights can be used to make the results independent
 from the proportion of cases / controls
 (see parameter \emph{weights} of \code{lm}).
 }
