@@ -40,8 +40,8 @@ test_that("equality with lm in case of classification", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x3, type = t)
     for (w in c(TRUE, FALSE)) {
-      expect_equal(get_res2_class(X, y, weighted = w),
-                   get_res_weights(X, y, weighted = w))
+      expect_equivalent(get_res2_class(X, y, weighted = w),
+                        get_res_weights(X, y, weighted = w))
     }
   }
 })
@@ -74,7 +74,7 @@ y2 <- x + rnorm(length(x), 0, 0.1)
 test_that("equality with lm in case of regression", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x3, type = t)
-    expect_equal(get_res2_reg(X, y2), get_res(X, y2))
+    expect_equivalent(get_res2_reg(X, y2), get_res(X, y2))
   }
 })
 
@@ -106,7 +106,7 @@ get_res2_reg_train <- function(X, y) {
 test_that("equality with lm in case of regression with half of the data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x3, type = t)
-    expect_equal(get_res2_reg_train(X, y2), get_res_train(X, y2))
+    expect_equivalent(get_res2_reg_train(X, y2), get_res_train(X, y2))
   }
 })
 
