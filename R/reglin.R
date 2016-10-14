@@ -57,7 +57,9 @@ RsqClass <- function(X, y, ind.train = seq(nrow(X)),
 CoeffsReg <- function(X, y, ind.train = seq(nrow(X))) {
   check_X(X, y, y.type = "reg")
 
-  betasRegLin(X@address, y, ind.train, rep(1, length(ind.train)))
+  res <- betasRegLin(X@address, y, ind.train, rep(1, length(ind.train)))
+  rownames(res) <- c("Intercepts", "Slopes")
+  res
 }
 
 ################################################################################
@@ -76,7 +78,9 @@ CoeffsClass <- function(X, y, ind.train = seq(nrow(X)),
     weights <- rep(1, length(ind.train))
   }
 
-  betasRegLin(X@address, y, ind.train, weights)
+  res <- betasRegLin(X@address, y, ind.train, weights)
+  rownames(res) <- c("Intercepts", "Slopes")
+  res
 }
 
 ################################################################################
