@@ -134,30 +134,28 @@ BEGIN_RCPP
 END_RCPP
 }
 // R_squared
-NumericVector R_squared(SEXP pBigMat, const NumericVector& y, const IntegerVector& rowInd, const NumericVector& weights);
-RcppExport SEXP bigstatsr_R_squared(SEXP pBigMatSEXP, SEXP ySEXP, SEXP rowIndSEXP, SEXP weightsSEXP) {
+NumericVector R_squared(SEXP pBigMat, const NumericVector& y, const IntegerVector& rowInd);
+RcppExport SEXP bigstatsr_R_squared(SEXP pBigMatSEXP, SEXP ySEXP, SEXP rowIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(R_squared(pBigMat, y, rowInd, weights));
+    rcpp_result_gen = Rcpp::wrap(R_squared(pBigMat, y, rowInd));
     return rcpp_result_gen;
 END_RCPP
 }
 // betasRegLin
-NumericMatrix betasRegLin(SEXP pBigMat, const NumericVector& y, const IntegerVector& rowInd, const NumericVector& weights);
-RcppExport SEXP bigstatsr_betasRegLin(SEXP pBigMatSEXP, SEXP ySEXP, SEXP rowIndSEXP, SEXP weightsSEXP) {
+NumericMatrix betasRegLin(SEXP pBigMat, const NumericVector& y, const IntegerVector& rowInd);
+RcppExport SEXP bigstatsr_betasRegLin(SEXP pBigMatSEXP, SEXP ySEXP, SEXP rowIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(betasRegLin(pBigMat, y, rowInd, weights));
+    rcpp_result_gen = Rcpp::wrap(betasRegLin(pBigMat, y, rowInd));
     return rcpp_result_gen;
 END_RCPP
 }

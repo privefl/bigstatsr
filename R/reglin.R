@@ -3,13 +3,8 @@
 #' @title Operations of linear regression
 #' @description Operations of \bold{univariate} linear regression
 #' (intercept, slope and coefficient of determination)
-#' on all the columns of a \code{big.matrix}\cr
-#' In the case of classification,
-#' weights can be used to make the results independent
-#' from the proportion of cases / controls
-#' (see parameter \emph{weights} of \code{lm}).
+#' on all the columns of a \code{big.matrix}.
 #' @inheritParams bigstatsr-package
-#' @param weighted Use weigths? Default is \code{FALSE}.
 #' @return \itemize{
 #' \item \code{RsqReg} and \code{RsqClass} return a vector of
 #' the coefficient of determination \eqn{R^2} of each regression,
@@ -25,60 +20,19 @@ NULL
 
 #' @rdname reglin
 #' @export
-RsqReg <- function(X, y, ind.train = seq(nrow(X))) {
-  check_X(X, y, y.type = "reg")
-
-  R_squared(X@address, y, ind.train, rep(1, length(ind.train)))
+RsqRegLin <- function(X, y, ind.train = seq(nrow(X))) {
+  check_X(X)
+  R_squared(X@address, y, ind.train)
 }
 
 ################################################################################
 
 #' @rdname reglin
 #' @export
-RsqClass <- function(X, y, ind.train = seq(nrow(X)),
-                     weighted = FALSE) {
-  check_X(X, y, y.type = "class")
+CoeffsRegLin <- function(X, y, ind.train = seq(nrow(X))) {
+  check_X(X)
 
-  prop.case <- mean(y[ind.train] == 1)
-  ratio <- 1 / prop.case - 1
-  if (weighted) {
-    weights <- ifelse(y[ind.train] > 0, ratio, 1)
-  } else {
-    weights <- rep(1, length(ind.train))
-  }
-
-  R_squared(X@address, y, ind.train, weights)
-}
-
-################################################################################
-
-#' @rdname reglin
-#' @export
-CoeffsReg <- function(X, y, ind.train = seq(nrow(X))) {
-  check_X(X, y, y.type = "reg")
-
-  res <- betasRegLin(X@address, y, ind.train, rep(1, length(ind.train)))
-  rownames(res) <- c("Intercepts", "Slopes")
-  res
-}
-
-################################################################################
-
-#' @rdname reglin
-#' @export
-CoeffsClass <- function(X, y, ind.train = seq(nrow(X)),
-                        weighted = FALSE) {
-  check_X(X, y, y.type = "class")
-
-  prop.case <- mean(y[ind.train] == 1)
-  ratio <- 1 / prop.case - 1
-  if (weighted) {
-    weights <- ifelse(y[ind.train] > 0, ratio, 1)
-  } else {
-    weights <- rep(1, length(ind.train))
-  }
-
-  res <- betasRegLin(X@address, y, ind.train, weights)
+  res <- betasRegLin(X@address, y, ind.train)
   rownames(res) <- c("Intercepts", "Slopes")
   res
 }

@@ -12,24 +12,26 @@ template <typename T>
 NumericVector R_squared(XPtr<BigMatrix> xpMat,
                         MatrixAccessor<T> macc,
                         const NumericVector& y,
-                        const IntegerVector& rowInd) {
+                        const IntegerVector& rowInd,
+                        const NumericVector& weights) {
   int n = rowInd.size();
   int m = xpMat->ncol();
 
   NumericVector res(m);
 
-  double ySum = 0, yySum = 0;
-  double tmpY;
+  double ySum = 0, yySum = 0, wSum = 0;
+  double tmpY, tmpW;
   int ind;
-  double nd = (double)n;
 
   for (int i = 0; i < n; i++) {
     ind = rowInd[i] - 1;
+    tmpW = weights[i];
     tmpY = y[ind];
-    ySum += tmpY;
-    yySum += tmpY * tmpY;
+    wSum += tmpW;
+    ySum += tmpY * tmpW;
+    yySum += tmpY * tmpY * tmpW;
   }
-  double denoY = yySum - ySum * ySum / nd;
+  double denoY = yySum - ySum * ySum / wSum;
 
   double xSum, xySum, xxSum;
   double tmp;
@@ -39,13 +41,14 @@ NumericVector R_squared(XPtr<BigMatrix> xpMat,
     xSum = xySum = xxSum = 0;
     for (int i = 0; i < n; i++) {
       ind = rowInd[i] - 1;
+      tmpW = weights[i];
       tmp = macc[j][ind];
-      xSum += tmp;
-      xySum += tmp * y[ind];
-      xxSum += tmp * tmp;
+      xSum += tmp * tmpW;
+      xySum += tmp * y[ind] * tmpW;
+      xxSum += tmp * tmp * tmpW;
     }
-    num = xySum - xSum * ySum / nd;
-    denoX = xxSum - xSum * xSum / nd;
+    num = xySum - xSum * ySum / wSum;
+    denoX = xxSum - xSum * xSum / wSum;
     res[j] = num * num / (denoX * denoY);
   }
 
@@ -56,7 +59,8 @@ NumericVector R_squared(XPtr<BigMatrix> xpMat,
 // [[Rcpp::export]]
 NumericVector R_squared(SEXP pBigMat,
                         const NumericVector& y,
-                        const IntegerVector& rowInd) {
+                        const IntegerVector& rowInd,
+                        const NumericVector& weights) {
   // First we have to tell Rcpp what class to use for big.matrix objects.
   // This object stores the attributes of the big.matrix object passed to it
   // by R.
@@ -69,15 +73,15 @@ NumericVector R_squared(SEXP pBigMat,
   // simply correspond to the number of bytes used for each element.
   switch(xpMat->matrix_type()) {
   case 1:
-    return R_squared(xpMat, MatrixAccessor<char>(*xpMat),   y, rowInd);
+    return R_squared(xpMat, MatrixAccessor<char>(*xpMat),   y, rowInd, weights);
   case 2:
-    return R_squared(xpMat, MatrixAccessor<short>(*xpMat),  y, rowInd);
+    return R_squared(xpMat, MatrixAccessor<short>(*xpMat),  y, rowInd, weights);
   case 4:
-    return R_squared(xpMat, MatrixAccessor<int>(*xpMat),    y, rowInd);
+    return R_squared(xpMat, MatrixAccessor<int>(*xpMat),    y, rowInd, weights);
   case 6:
-    return R_squared(xpMat, MatrixAccessor<float>(*xpMat),  y, rowInd);
+    return R_squared(xpMat, MatrixAccessor<float>(*xpMat),  y, rowInd, weights);
   case 8:
-    return R_squared(xpMat, MatrixAccessor<double>(*xpMat), y, rowInd);
+    return R_squared(xpMat, MatrixAccessor<double>(*xpMat), y, rowInd, weights);
   default:
     // This case should never be encountered unless the implementation of
     // big.matrix changes, but is necessary to implement shut up compiler
@@ -92,19 +96,22 @@ template <typename T>
 NumericMatrix betasRegLin(XPtr<BigMatrix> xpMat,
                           MatrixAccessor<T> macc,
                           const NumericVector& y,
-                          const IntegerVector& rowInd) {
+                          const IntegerVector& rowInd,
+                          const NumericVector& weights) {
   int n = rowInd.size();
   int m = xpMat->ncol();
 
   NumericMatrix res(2, m);
 
-  double ySum = 0;
+  double ySum = 0, wSum = 0;
+  double tmpW;
   int ind;
-  double nd = (double)n;
 
   for (int i = 0; i < n; i++) {
     ind = rowInd[i] - 1;
-    ySum += y[ind];
+    tmpW = weights[i];
+    wSum += tmpW;
+    ySum += y[ind] * tmpW;
   }
 
   double xSum, xySum, xxSum;
@@ -116,15 +123,16 @@ NumericMatrix betasRegLin(XPtr<BigMatrix> xpMat,
     for (int i = 0; i < n; i++) {
       ind = rowInd[i] - 1;
       tmp = macc[j][ind];
-      xSum += tmp;
-      xySum += tmp * y[ind];
-      xxSum += tmp * tmp;
+      tmpW = weights[i];
+      xSum += tmp * tmpW;
+      xySum += tmp * y[ind] * tmpW;
+      xxSum += tmp * tmp * tmpW;
     }
-    num = xySum - xSum * ySum / nd;
-    denoX = xxSum - xSum * xSum / nd;
+    num = xySum - xSum * ySum / wSum;
+    denoX = xxSum - xSum * xSum / wSum;
     tmpB = num / denoX;
     res(1, j) = tmpB;
-    res(0, j) = (ySum - tmpB * xSum) / nd;
+    res(0, j) = (ySum - tmpB * xSum) / wSum;
   }
 
   return(res);
@@ -134,7 +142,8 @@ NumericMatrix betasRegLin(XPtr<BigMatrix> xpMat,
 // [[Rcpp::export]]
 NumericMatrix betasRegLin(SEXP pBigMat,
                           const NumericVector& y,
-                          const IntegerVector& rowInd) {
+                          const IntegerVector& rowInd,
+                          const NumericVector& weights) {
   // First we have to tell Rcpp what class to use for big.matrix objects.
   // This object stores the attributes of the big.matrix object passed to it
   // by R.
@@ -147,15 +156,20 @@ NumericMatrix betasRegLin(SEXP pBigMat,
   // simply correspond to the number of bytes used for each element.
   switch(xpMat->matrix_type()) {
   case 1:
-    return betasRegLin(xpMat, MatrixAccessor<char>(*xpMat),   y, rowInd);
+    return betasRegLin(xpMat, MatrixAccessor<char>(*xpMat),
+                       y, rowInd, weights);
   case 2:
-    return betasRegLin(xpMat, MatrixAccessor<short>(*xpMat),  y, rowInd);
+    return betasRegLin(xpMat, MatrixAccessor<short>(*xpMat),
+                       y, rowInd, weights);
   case 4:
-    return betasRegLin(xpMat, MatrixAccessor<int>(*xpMat),    y, rowInd);
+    return betasRegLin(xpMat, MatrixAccessor<int>(*xpMat),
+                       y, rowInd, weights);
   case 6:
-    return betasRegLin(xpMat, MatrixAccessor<float>(*xpMat),  y, rowInd);
+    return betasRegLin(xpMat, MatrixAccessor<float>(*xpMat),
+                       y, rowInd, weights);
   case 8:
-    return betasRegLin(xpMat, MatrixAccessor<double>(*xpMat), y, rowInd);
+    return betasRegLin(xpMat, MatrixAccessor<double>(*xpMat),
+                       y, rowInd, weights);
   default:
     // This case should never be encountered unless the implementation of
     // big.matrix changes, but is necessary to implement shut up compiler

@@ -45,11 +45,11 @@ transpose3 <- function(pBigMat, pBigMat2) {
     invisible(.Call('bigstatsr_transpose3', PACKAGE = 'bigstatsr', pBigMat, pBigMat2))
 }
 
-R_squared <- function(pBigMat, y, rowInd, weights) {
-    .Call('bigstatsr_R_squared', PACKAGE = 'bigstatsr', pBigMat, y, rowInd, weights)
+R_squared <- function(pBigMat, y, rowInd) {
+    .Call('bigstatsr_R_squared', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
 }
 
-betasRegLin <- function(pBigMat, y, rowInd, weights) {
-    .Call('bigstatsr_betasRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd, weights)
+betasRegLin <- function(pBigMat, y, rowInd) {
+    .Call('bigstatsr_betasRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
 }
 
