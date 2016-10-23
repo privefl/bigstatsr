@@ -37,11 +37,3 @@ Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X,
 }
 
 /******************************************************************************/
-
-// [[Rcpp::export]]
-Eigen::MatrixXd crossprodEigen5(const Eigen::Map<Eigen::MatrixXd> X,
-                                const Eigen::Map<Eigen::MatrixXd> Y) {
-  return X.adjoint() * Y;
-}
-
-/******************************************************************************/
