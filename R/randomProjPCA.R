@@ -19,6 +19,55 @@ BigCrossprod <- function(X, mat, block.size, use.Eigen = TRUE) {
   res
 }
 
+BigCrossprod2 <- function(X, mat, block.size,
+                          vec.center, vec.scale,
+                          use.Eigen = TRUE) {
+  m <- ncol(X)
+  res <- matrix(0, m, ncol(mat))
+
+  intervals <- CutBySize(m, block.size)
+  nb.block <- nrow(intervals)
+
+  for (j in 1:nb.block) {
+    ind <- seq2(intervals[j, ])
+    tmp <- scaling(X[, ind], vec.center[ind], vec.scale[ind])
+    if (use.Eigen) {
+      res[ind, ] <- crossprodEigen5(tmp, mat)
+    } else {
+      res[ind, ] <- crossprod(tmp, mat)
+    }
+  }
+
+  res
+}
+
+################################################################################
+
+getHnG <- function(X, G.old, block.size,
+                   vec.center, vec.scale,
+                   use.Eigen = TRUE) {
+  n <- nrow(X)
+  m <- ncol(X)
+  m2 <- ncol(G.old)
+  H <- matrix(0, m, m2)
+  G <- matrix(0, n, m2)
+
+  intervals <- CutBySize(m, block.size)
+  nb.block <- nrow(intervals)
+
+  for (j in 1:nb.block) {
+    ind <- seq2(intervals[j, ])
+    tmp <- scaling(X[, ind], vec.center[ind], vec.scale[ind])
+    if (use.Eigen) {
+      G <- incrMat(G, multEigen(tmp, H[ind, ] <- crossprodEigen5(tmp, G.old)))
+    } else {
+      G <- incrMat(G, tmp %*% {H[ind, ] <- crossprod(tmp, G.old)})
+    }
+  }
+
+  list(H = H, G = G / m)
+}
+
 ################################################################################
 
 BigMult <- function(X, mat, block.size, use.Eigen = TRUE) {
@@ -33,6 +82,27 @@ BigMult <- function(X, mat, block.size, use.Eigen = TRUE) {
       res <- incrMat(res, multEigen(X[, ind], mat[ind, ]))
     } else {
       res <- incrMat(res, X[, ind] %*% mat[ind, ])
+    }
+  }
+
+  res
+}
+
+BigMult2 <- function(X, mat, block.size,
+                     vec.center, vec.scale,
+                     use.Eigen = TRUE) {
+  res <- matrix(0, nrow(X), ncol(mat))
+
+  intervals <- CutBySize(ncol(X), block.size)
+  nb.block <- nrow(intervals)
+
+  for (j in 1:nb.block) {
+    ind <- seq2(intervals[j, ])
+    tmp <- scaling(X[, ind], vec.center[ind], vec.scale[ind])
+    if (use.Eigen) { # comparer si vraiment plus rapide
+      res <- incrMat(res, multEigen(tmp, mat[ind, ]))
+    } else {
+      res <- incrMat(res, tmp %*% mat[ind, ])
     }
   }
 
@@ -66,6 +136,33 @@ BigCrossprodSelf <- function(X, block.size2, use.Eigen = TRUE) {
   res
 }
 
+BigCrossprodSelf2 <- function(X, block.size2,
+                             vec.center, vec.scale,
+                             use.Eigen = TRUE) {
+  m <- ncol(X)
+  res <- matrix(0, m, m)
+
+  # function to compute X^T*X
+  intervals <- CutBySize(m, block.size2)
+  nb.block <- nrow(intervals)
+
+  for (j in 1:nb.block) {
+    ind1 <- seq2(intervals[j, ])
+    tmp1 <- scaling(X[, ind1], vec.center[ind1], vec.scale[ind1])
+    for (i in j:nb.block) {
+      ind2 <- seq2(intervals[i, ])
+      tmp2 <- scaling(X[, ind2], vec.center[ind2], vec.scale[ind2])
+      if (use.Eigen) {
+        res[ind2, ind1] <- crossprodEigen5(tmp2, tmp1)
+      } else {
+        res[ind2, ind1] <- crossprod(tmp2, tmp1)
+      }
+    }
+  }
+
+  res
+}
+
 ################################################################################
 
 #' Title
@@ -84,53 +181,62 @@ RandomProjPCA <- function(X, block.size, K = 10, I = 10,
                           use.Eigen = TRUE) {
   check_X(X)
 
-  # scaling
-  p <- colmeans(X) / 2
-  sd <- sqrt(2 * p * (1 - p))
-  Y <- deepcopy(X, type = "double", shared = FALSE)
-  scaled(Y@address, 2 * p, sd)
-  rm(p, sd)
+  t1 <- proc.time()
 
   # parameters
   L <- 2 * K
-  m <- ncol(Y)
-  n <- nrow(Y)
+  n <- nrow(X)
+  m <- ncol(X)
   I <- I + 1
 
+  # scaling
+  means <- colmeans(X)
+  p <- means / 2
+  sds <- sqrt(2 * p * (1 - p))
+
+  t2 <- proc.time()
+  printf("Computing means took %s seconds\n", (t2 - t1)[3])
+
   # computation of G and H
-  H <- big.matrix(m, I * L, type = "double", shared = FALSE)
-  G <- matrix(rnorm(n * L), n, L) # G0
+  H <- list()
+  tmp <- list()
+  tmp$G <- matrix(rnorm(n * L), n, L) # G0
   for (i in 1:I) {
-    tmp.H <- BigCrossprod(Y, G, block.size,
-                          use.Eigen = use.Eigen)
-    H[, 1:L + (i - 1) * L] <- tmp.H
-    if (i < I) G <- BigMult(Y, tmp.H, block.size,
-                            use.Eigen = use.Eigen) / m
+    print(i)
+    # tmp.H <- BigCrossprod2(X, G, block.size, means, sds,
+    #                        use.Eigen = use.Eigen)
+    tmp <- getHnG(X, tmp$G, block.size, means, sds,
+                  use.Eigen = use.Eigen)
+    H[i] <- tmp['H']
+    # if (i < I) G <- BigMult2(X, tmp.H, block.size, means, sds,
+    #                          use.Eigen = use.Eigen) / m
   }
-  rm(G, tmp.H)
+  rm(tmp)
+
+  t3 <- proc.time()
+  printf("Computing H took %s seconds\n", (t3 - t2)[3])
 
   # svds
-  H.svd <- svd(H[,]) # m * L * I
-
-  check_K <- function() {
-    block.size2 <- max(1, floor(n / m * block.size))
-    K.H <- BigCrossprodSelf(H, block.size2)
-    K.H.eigs <- eigen(K.H, symmetric = TRUE)
-    for (i in 1:K) {
-      diff1 <- abs(K.H.eigs$vectors[, i] - H.svd$v[, i])
-      diff2 <- abs(K.H.eigs$vectors[, i] + H.svd$v[, i])
-      diff <- pmin(diff1, diff2)
-      if (!isTRUE(all.equal(max(diff), 0))) {
-        printf("You could take K = %d\n", i - 1)
-        break
-      }
-    }
-  }
-  check_K()
+  H.svd <- svd(do.call(cbind, H), nv = 0) # m * L * I
   rm(H); gc()
 
-  T.t <- BigMult(Y, H.svd$u, block.size)
+  t4 <- proc.time()
+  printf("Computing svd(H) took %s seconds\n", (t4 - t3)[3])
+
+  T.t <- BigMult2(X, H.svd$u, block.size, means, sds,
+                  use.Eigen = use.Eigen)
   rm(H.svd)
   T.svd <- svd(T.t, nv = 0)
-  sweep(T.svd$u[, 1:K], 2, (T.svd$d)[1:K], '*')
+
+  t6 <- proc.time()
+  printf("Computing T and its svd took %s seconds\n", (t6 - t4)[3])
+
+  list(d = T.svd$d[1:K], u = T.svd$u[, 1:K, drop = FALSE])
 }
+
+### mini test:
+# H <- list()
+# l <- list(a = matrix(1:4, 2), b = matrix(5:8, 2))
+# H[1] <- l["a"]
+# l <- list(a = matrix(11:14, 2), b = matrix(5:8, 2))
+# H[2] <- l["a"]

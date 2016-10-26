@@ -9,19 +9,23 @@ using namespace Rcpp;
 /******************************************************************************/
 
 // [[Rcpp::export]]
-void scaled(SEXP pBigMat,
+void scaled(SEXP pBigMat2,
+            SEXP pBigMat,
             const NumericVector& mean,
             const NumericVector& sd) {
   XPtr<BigMatrix> xpMat(pBigMat);
-  MatrixAccessor<double> macc(*xpMat);
+  MatrixAccessor<char> macc(*xpMat);
+  XPtr<BigMatrix> xpMat2(pBigMat2);
+  MatrixAccessor<double> macc2(*xpMat2);
 
   int n = xpMat->nrow();
   int m = xpMat->ncol();
 
   for (int j = 0; j < m; j++) {
     for (int i = 0; i < n; i++) {
-      macc[j][i] -= mean[j];
-      macc[j][i] /= sd[j];
+      macc2[j][i] = macc[j][i];
+      macc2[j][i] -= mean[j];
+      macc2[j][i] /= sd[j];
     }
   }
 

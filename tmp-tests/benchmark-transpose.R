@@ -1,6 +1,7 @@
 #' Date: 2016-10-04
 #' Object: Benchmark "transpose" on Celiac
-#' Results: 16 sec -> very fast
+#' Results: 16 sec - 1 min -> very fast
+#' + deepcopy that takes RAM
 
 library(bigsnpr)
 library(bigstatsr)
