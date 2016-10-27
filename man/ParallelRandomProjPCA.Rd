@@ -5,7 +5,8 @@
 \title{Title}
 \usage{
 ParallelRandomProjPCA(X, block.size, ncores, K = 10, I = 10,
-  backingpath = NULL, tmp.lock.name = "file.lock", TIME = 0.01)
+  use.Eigen = TRUE, backingpath = NULL, tmp.lock.name = "file.lock",
+  TIME = 0.01)
 }
 \description{
 Title

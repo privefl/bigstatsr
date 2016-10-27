@@ -7,7 +7,7 @@ require(bigstatr)
 x <- AttachBigSNP("test_doc", "../bigsnpr/backingfiles")
 X <- x$genotypes
 
-test <- ParallelRandomProjPCA(X, block.size = 10, ncores = 10,
+test <- ParallelRandomProjPCA(X, block.size = 100, ncores = 6,
                               backingpath = "../bigsnpr/backingfiles")
 str(test)
 approx <- sweep(test$u, 2, test$d, '*')

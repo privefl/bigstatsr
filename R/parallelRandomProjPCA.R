@@ -15,6 +15,7 @@
 #' @examples
 ParallelRandomProjPCA <- function(X, block.size, ncores,
                                   K = 10, I = 10,
+                                  use.Eigen = TRUE,
                                   backingpath = NULL,
                                   tmp.lock.name = "file.lock",
                                   TIME = 0.01) {
@@ -25,7 +26,7 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
   n <- nrow(X)
   m <- ncol(X)
   I <- I + 1
-  tmp.lock.names <- paste0(tmp.lock.name, 1:2)
+  tmp.lock.names <- paste0(tmp.lock.name, 1:3)
   ifelse(file.exists(tmp.lock.names), FALSE,
          file.create(tmp.lock.names))
 
@@ -33,12 +34,14 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
   G <- big.matrix(n, L, type = "double", shared = TRUE)
   G[] <- rnorm(n * L) # G0
   H <- big.matrix(m, L * I, type = "double", shared = TRUE)
-  remains <- big.matrix(2, I, type = "integer",
+  U <- big.matrix(m, L * I, type = "double", shared = TRUE)
+  remains <- big.matrix(3, I - 1, type = "integer",
                         init = ncores, shared = TRUE)
   # descriptors
   X.desc <- describe(X)
-  H.desc <- describe(H)
   G.desc <- describe(G)
+  H.desc <- describe(H)
+  U.desc <- describe(U)
   r.desc <- describe(remains)
 
   t2 <- proc.time()
@@ -51,6 +54,7 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
                              backingpath = backingpath)
     G <- attach.big.matrix(G.desc)
     H <- attach.big.matrix(H.desc)
+    U <- attach.big.matrix(U.desc)
     remains <- attach.big.matrix(r.desc)
 
     # scaling
@@ -65,25 +69,32 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
     nb.block <- nrow(intervals)
 
     # computation of G and H
-    for (i in 1:I) {
+    for (i in 1:(I - 1)) {
       # get G, safely
       old.G <- G[,]
       file.lock1 <- flock::lock(tmp.lock.names[1])
+      if (remains[1, i] == 1) G[] <- 0 # init new G with 0s
       remains[1, i] <- remains[1, i] - 1L
-      if (remains[1, i] == 0) G[] <- 0 # init new G with 0s
       flock::unlock(file.lock1)
-      # wait for others at barrier
-      while (remains[1, i] > 0) Sys.sleep(TIME)
 
       tmp.G <- matrix(0, n, L)
       for (j in 1:nb.block) {
         ind <- seq2(intervals[j, ])
         tmp <- scaling(X.part[, ind], means[ind], sds[ind])
-        tmp.H <- crossprodEigen5(tmp, old.G)
+
+        if (use.Eigen) {
+          tmp.H <- crossprodEigen5(tmp, old.G)
+          tmp.G <- incrMat(tmp.G, multEigen(tmp, tmp.H))
+        } else {
+          tmp.H <- crossprod(tmp, old.G)
+          tmp.G <- incrMat(tmp.G, tmp %*% tmp.H)
+        }
+
         H[ind.part[ind], 1:L + (i - 1) * L] <- tmp.H
-        tmp.G <- incrMat(tmp.G, multEigen(tmp, tmp.H))
       }
 
+      # wait for others at barrier
+      while (remains[1, i] > 0) Sys.sleep(TIME)
       # increment G, safely
       file.lock2 <- flock::lock(tmp.lock.names[2])
       incrG(G@address, tmp.G, n, L, m)
@@ -93,28 +104,57 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
       while (remains[2, i] > 0) Sys.sleep(TIME)
     }
 
-    rbind(means, sds)
+    i <- I # no need G_{I + 1}
+    old.G <- G[,]
+    for (j in 1:nb.block) {
+      ind <- seq2(intervals[j, ])
+      tmp <- scaling(X.part[, ind], means[ind], sds[ind])
+
+      if (use.Eigen) {
+        tmp.H <- crossprodEigen5(tmp, old.G)
+      } else {
+        tmp.H <- crossprod(tmp, old.G)
+      }
+
+      H[ind.part[ind], 1:L + (i - 1) * L] <- tmp.H
+    }
+
+    # compute svd(H) once
+    file.lock3 <- flock::lock(tmp.lock.names[3])
+    if (remains[3, 1] == 1) U[] <- svd(H[,], nv = 0)$u
+    remains[3, 1] <- remains[3, 1] - 1L
+    flock::unlock(file.lock3)
+    # wait for others at barrier
+    while (remains[3, 1] > 0) Sys.sleep(TIME)
+
+    # compute transpose(T)
+    tmp.T.t <- matrix(0, n, I * L)
+    for (j in 1:nb.block) {
+      ind <- seq2(intervals[j, ])
+      ind2 <- ind.part[ind]
+      tmp <- scaling(X.part[, ind], means[ind], sds[ind])
+
+      if (use.Eigen) {
+        tmp.T.t <- incrMat(tmp.T.t, multEigen(tmp, U[ind2, ]))
+      } else {
+        tmp.T.t <- incrMat(tmp.T.t, tmp %*% U[ind2, ])
+      }
+    }
+
+    tmp.T.t
   }
 
   intervals <- CutBySize(m, nb = ncores)
   obj <- foreach::foreach(i = 1:nrow(intervals),
-                          .combine = 'cbind',
+                          .combine = '+',
                           .packages = "bigmemory")
   expr_fun <- function(i) part(intervals[i, ])
-  tmp <- foreach2(obj, expr_fun, ncores)
+  T.t <- foreach2(obj, expr_fun, ncores)
 
   t3 <- proc.time()
-  printf("Computing H took %s seconds\n", (t3 - t2)[3])
-
-  # svds
-  H.svd <- svd(H[,], nv = 0) # m * L * I
-  rm(H); gc()
-
+  printf("Computing H, its svd and T.t took %s seconds\n", (t3 - t2)[3])
   t4 <- proc.time()
-  printf("Computing svd(H) took %s seconds\n", (t4 - t3)[3])
 
-  T.t <- BigMult2(X, H.svd$u, block.size, tmp[1, ], tmp[2, ])
-  rm(H.svd)
   T.svd <- svd(T.t, nv = 0)
 
   t6 <- proc.time()
