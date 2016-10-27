@@ -46,9 +46,9 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
   part <- function(lims) {
     # get big.matrices
     X.part <- sub.big.matrix(X.desc,
-                            firstCol = lims[1],
-                            lastCol = lims[2],
-                            backingpath = backingpath)
+                             firstCol = lims[1],
+                             lastCol = lims[2],
+                             backingpath = backingpath)
     G <- attach.big.matrix(G.desc)
     H <- attach.big.matrix(H.desc)
     remains <- attach.big.matrix(r.desc)
@@ -93,8 +93,15 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
       while (remains[2, i] > 0) Sys.sleep(TIME)
     }
 
-    0
+    rbind(means, sds)
   }
+
+  intervals <- CutBySize(m, nb = ncores)
+  obj <- foreach::foreach(i = 1:nrow(intervals),
+                          .combine = 'cbind',
+                          .packages = "bigmemory")
+  expr_fun <- function(i) part(intervals[i, ])
+  tmp <- foreach2(obj, expr_fun, ncores)
 
   t3 <- proc.time()
   printf("Computing H took %s seconds\n", (t3 - t2)[3])
@@ -106,8 +113,7 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
   t4 <- proc.time()
   printf("Computing svd(H) took %s seconds\n", (t4 - t3)[3])
 
-  T.t <- BigMult2(X, H.svd$u, block.size, means, sds,
-                  use.Eigen = use.Eigen)
+  T.t <- BigMult2(X, H.svd$u, block.size, tmp[1, ], tmp[2, ])
   rm(H.svd)
   T.svd <- svd(T.t, nv = 0)
 
@@ -119,10 +125,3 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
 
   list(d = T.svd$d[1:K], u = T.svd$u[, 1:K, drop = FALSE])
 }
-
-### mini test:
-# H <- list()
-# l <- list(a = matrix(1:4, 2), b = matrix(5:8, 2))
-# H[1] <- l["a"]
-# l <- list(a = matrix(11:14, 2), b = matrix(5:8, 2))
-# H[2] <- l["a"]
