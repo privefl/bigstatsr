@@ -4,9 +4,9 @@
 \alias{ParallelRandomProjPCA}
 \title{Title}
 \usage{
-ParallelRandomProjPCA(X, block.size, ncores, K = 10, I = 10,
+ParallelRandomProjPCA(X, fun.scaling, block.size = 1000, K = 10, I = 10,
   use.Eigen = TRUE, backingpath = NULL, tmp.lock.name = "file.lock",
-  TIME = 0.01)
+  TIME = 0.01, ncores)
 }
 \description{
 Title

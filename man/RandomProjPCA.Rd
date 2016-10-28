@@ -4,7 +4,8 @@
 \alias{RandomProjPCA}
 \title{Title}
 \usage{
-RandomProjPCA(X, block.size, K = 10, I = 10, use.Eigen = TRUE)
+RandomProjPCA(X, fun.scaling, block.size = 1000, K = 10, I = 10,
+  use.Eigen = TRUE)
 }
 \description{
 Title

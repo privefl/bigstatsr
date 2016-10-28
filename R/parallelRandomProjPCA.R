@@ -3,22 +3,24 @@
 #' @param X
 #' @param block.size
 #' @param ncores
-#' @param K
-#' @param I
 #' @param backingpath
 #' @param tmp.lock.name
 #' @param TIME
+#' @param fun.scaling
+#' @param use.Eigen
 #'
 #' @return
 #' @export
 #'
 #' @examples
-ParallelRandomProjPCA <- function(X, block.size, ncores,
+ParallelRandomProjPCA <- function(X, fun.scaling,
+                                  block.size = 1e3,
                                   K = 10, I = 10,
                                   use.Eigen = TRUE,
                                   backingpath = NULL,
                                   tmp.lock.name = "file.lock",
-                                  TIME = 0.01) {
+                                  TIME = 0.01,
+                                  ncores) {
   check_X(X)
 
   # parameters
@@ -44,8 +46,6 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
   U.desc <- describe(U)
   r.desc <- describe(remains)
 
-  t2 <- proc.time()
-
   part <- function(lims) {
     # get big.matrices
     X.part <- sub.big.matrix(X.desc,
@@ -58,9 +58,10 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
     remains <- attach.big.matrix(r.desc)
 
     # scaling
-    means <- colmeans(X.part)
-    p <- means / 2
-    sds <- sqrt(2 * p * (1 - p))
+    stats <- fun.scaling(X)
+    means <- stats$mean
+    sds <- stats$sd
+    rm(stats)
 
     # parameters
     ind.part <- seq2(lims)
@@ -149,16 +150,10 @@ ParallelRandomProjPCA <- function(X, block.size, ncores,
                           .combine = '+',
                           .packages = "bigmemory")
   expr_fun <- function(i) part(intervals[i, ])
+
   T.t <- foreach2(obj, expr_fun, ncores)
 
-  t3 <- proc.time()
-  printf("Computing H, its svd and T.t took %s seconds\n", (t3 - t2)[3])
-  t4 <- proc.time()
-
   T.svd <- svd(T.t, nv = 0)
-
-  t6 <- proc.time()
-  printf("Computing T and its svd took %s seconds\n", (t6 - t4)[3])
 
   # delete temporary lock files
   unlink(tmp.lock.names)
