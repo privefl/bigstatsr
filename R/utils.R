@@ -15,7 +15,6 @@ ERROR_TYPE <- "unknown type detected for big.matrix object!"
 
 ################################################################################
 
-
 #' @title Checking of objects
 #' @description Check if X is a `big.matrix` and
 #' possibly if y is compatible with classification or regression.

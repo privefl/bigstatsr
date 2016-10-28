@@ -14,27 +14,21 @@ CoeffsRegLin(X, y, ind.train = seq(nrow(X)))
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
-\item{y}{Either
-\itemize{
-\item a vector of \{-1, 1\} in the case of classification (suffix Class),
-\item a vector of more than two unique values
-in the case of regression (suffix Reg).
-}}
+\item{y}{Vector of responses.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part.
-If not specified, all data are used.}
+for the training part. If not specified, all data are used.}
 }
 \value{
 \itemize{
-\item \code{RsqReg} and \code{RsqClass} return a vector of
+\item \code{RsqRegLin} returns a vector of
 the coefficient of determination \eqn{R^2} of each regression,
-\item \code{CoeffsReg} and \code{CoeffsClass} return a matrix of
-the intercepts (first row) and slopes (second row) of each regression.
+\item \code{CoeffsRegLin} returns a matrix of the intercepts (first row)
+and slopes (second row) of each regression.
 }
 }
 \description{
-Operations of \bold{univariate} linear regression
+Operations of \strong{univariate} linear regression
 (intercept, slope and coefficient of determination)
 on all the columns of a \code{big.matrix}.
 }
@@ -71,6 +65,6 @@ print(rbind(CoeffsRegLin(x.big, y2, ind.train),
             RsqRegLin(x.big, y2, ind.train)))
 }
 \seealso{
-\code{\link[bigmemory]{big.matrix-class}} \code{\link[stats]{lm}}
+\link[stats:lm]{lm}
 }
 

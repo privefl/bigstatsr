@@ -9,16 +9,10 @@
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
-\item{y}{Either
-\itemize{
-\item a vector of \{-1, 1\} in the case of classification (suffix Class),
-\item a vector of more than two unique values
-in the case of regression (suffix Reg).
-}}
+\item{y}{Vector of responses.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part.
-If not specified, all data are used.}
+for the training part. If not specified, all data are used.}
 }
 \description{
 Easy-to-use, efficient, flexible and scalable

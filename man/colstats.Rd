@@ -24,8 +24,7 @@ colmeans_sds(X, ind.train = seq_len(nrow(X)))
 You shouldn't have missing values in your data.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part.
-If not specified, all data are used.}
+for the training part. If not specified, all data are used.}
 }
 \value{
 Numeric vectors with the column statistics.
