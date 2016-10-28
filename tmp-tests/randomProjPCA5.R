@@ -7,7 +7,15 @@ require(bigstatr)
 x <- AttachBigSNP("test_doc", "../bigsnpr/backingfiles")
 X <- x$genotypes
 
-test <- ParallelRandomProjPCA(X, block.size = 100, ncores = 6,
+f1 <- function(X) {
+  means <- colmeans(X)
+  p <- means / 2
+  sds <- sqrt(2 * p * (1 - p))
+  list(mean = means, sd = sds)
+}
+
+test <- ParallelRandomProjPCA(X, fun.scaling = colmeans_sds,
+                              block.size = 100, ncores = 6,
                               backingpath = "../bigsnpr/backingfiles")
 str(test)
 approx <- sweep(test$u, 2, test$d, '*')

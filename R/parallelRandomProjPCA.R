@@ -1,13 +1,15 @@
 #' Title
 #'
 #' @param X
+#' @param fun.scaling
 #' @param block.size
-#' @param ncores
+#' @param K
+#' @param I
+#' @param use.Eigen
 #' @param backingpath
 #' @param tmp.lock.name
 #' @param TIME
-#' @param fun.scaling
-#' @param use.Eigen
+#' @param ncores
 #'
 #' @return
 #' @export
