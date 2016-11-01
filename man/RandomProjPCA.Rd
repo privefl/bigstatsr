@@ -7,6 +7,9 @@
 RandomProjPCA(X, fun.scaling, block.size = 1000, K = 10, I = 10,
   use.Eigen = TRUE)
 }
+\arguments{
+\item{fun.scaling}{}
+}
 \description{
 Title
 }
