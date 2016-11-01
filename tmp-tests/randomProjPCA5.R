@@ -3,7 +3,7 @@
 #' Results: OK
 
 require(bigsnpr)
-require(bigstatr)
+require(bigstatsr)
 x <- AttachBigSNP("test_doc", "../bigsnpr/backingfiles")
 X <- x$genotypes
 
@@ -14,8 +14,13 @@ f1 <- function(X) {
   list(mean = means, sd = sds)
 }
 
-test <- ParallelRandomProjPCA(X, fun.scaling = colmeans_sds,
-                              block.size = 100, ncores = 6,
+f2 <- function(X) {
+  m <- ncol(X)
+  list(mean = rep(0, m), sd = rep(1, m))
+}
+
+test <- ParallelRandomProjPCA(X, fun.scaling = f2,
+                              block.size = 100, ncores = 2,
                               backingpath = "../bigsnpr/backingfiles")
 str(test)
 approx <- sweep(test$u, 2, test$d, '*')

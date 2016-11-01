@@ -48,6 +48,9 @@ ParallelRandomProjPCA <- function(X, fun.scaling,
   U.desc <- describe(U)
   r.desc <- describe(remains)
 
+  # export function
+  FUN <- fun.scaling
+
   part <- function(lims) {
     # get big.matrices
     X.part <- sub.big.matrix(X.desc,
@@ -60,10 +63,10 @@ ParallelRandomProjPCA <- function(X, fun.scaling,
     remains <- attach.big.matrix(r.desc)
 
     # scaling
-    stats <- fun.scaling(X)
-    means <- stats$mean
-    sds <- stats$sd
-    rm(stats)
+    means_sds <- FUN(X.part)
+    means <- means_sds$mean
+    sds <- means_sds$sd
+    rm(means_sds)
 
     # parameters
     ind.part <- seq2(lims)
@@ -152,7 +155,6 @@ ParallelRandomProjPCA <- function(X, fun.scaling,
                           .combine = '+',
                           .packages = "bigmemory")
   expr_fun <- function(i) part(intervals[i, ])
-
   T.t <- foreach2(obj, expr_fun, ncores)
 
   T.svd <- svd(T.t, nv = 0)
