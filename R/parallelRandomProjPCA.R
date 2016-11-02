@@ -30,7 +30,7 @@ ParallelRandomProjPCA <- function(X, fun.scaling,
   n <- nrow(X)
   m <- ncol(X)
   I <- I + 1
-  tmp.lock.names <- paste0(tmp.lock.name, 1:3)
+  tmp.lock.names <- paste0(tmp.lock.name, 1:5)
   ifelse(file.exists(tmp.lock.names), FALSE,
          file.create(tmp.lock.names))
 
@@ -39,13 +39,21 @@ ParallelRandomProjPCA <- function(X, fun.scaling,
   G[] <- rnorm(n * L) # G0
   H <- big.matrix(m, L * I, type = "double", shared = TRUE)
   U <- big.matrix(m, L * I, type = "double", shared = TRUE)
-  remains <- big.matrix(3, I - 1, type = "integer",
+  T.t <- big.matrix(n, L * I, type = "double", shared = TRUE, init = 0)
+  U2 <- big.matrix(n, K, type = "double", shared = TRUE)
+  D <- big.matrix(K, K, type = "double", shared = TRUE, init = 0)
+  V <- big.matrix(m, K, type = "double", shared = TRUE)
+  remains <- big.matrix(5, I - 1, type = "integer",
                         init = ncores, shared = TRUE)
   # descriptors
   X.desc <- describe(X)
   G.desc <- describe(G)
   H.desc <- describe(H)
   U.desc <- describe(U)
+  T.t.desc <- describe(T.t)
+  U2.desc <- describe(U2)
+  D.desc <- describe(D)
+  V.desc <- describe(V)
   r.desc <- describe(remains)
 
   # export function
@@ -60,6 +68,10 @@ ParallelRandomProjPCA <- function(X, fun.scaling,
     G <- attach.big.matrix(G.desc)
     H <- attach.big.matrix(H.desc)
     U <- attach.big.matrix(U.desc)
+    T.t <- attach.big.matrix(T.t.desc)
+    U2 <- attach.big.matrix(U2.desc)
+    D <- attach.big.matrix(D.desc)
+    V <- attach.big.matrix(V.desc)
     remains <- attach.big.matrix(r.desc)
 
     # scaling
@@ -146,21 +158,51 @@ ParallelRandomProjPCA <- function(X, fun.scaling,
         tmp.T.t <- incrMat(tmp.T.t, tmp %*% U[ind2, ])
       }
     }
+    # increment T.t, safely
+    file.lock4 <- flock::lock(tmp.lock.names[4])
+    incrG(T.t@address, tmp.T.t, n, I * L, 1)
+    remains[4, 1] <- remains[4, 1] - 1L
+    flock::unlock(file.lock4)
+    # wait for others at barrier
+    while (remains[4, 1] > 0) Sys.sleep(TIME)
 
-    tmp.T.t
+    # compute svd(T.t) once
+    file.lock5 <- flock::lock(tmp.lock.names[5])
+    if (remains[5, 1] == 1) {
+      T.t.svd <- svd(T.t[,], nu = K, nv = 0)
+      U2[] <- T.t.svd$u
+      diag(D) <- T.t.svd$d[1:K]
+    }
+    remains[5, 1] <- remains[5, 1] - 1L
+    flock::unlock(file.lock5)
+    # wait for others at barrier
+    while (remains[5, 1] > 0) Sys.sleep(TIME)
+
+    # compute V
+    d <- diag(D[,])
+    ud <- U2[,] %*% diag(1 / d)
+    for (j in 1:nb.block) {
+      ind <- seq2(intervals[j, ])
+      tmp <- scaling(X.part[, ind], means[ind], sds[ind])
+
+      if (use.Eigen) {
+        V[ind.part[ind], ] <- crossprodEigen5(tmp, ud)
+      } else {
+        V[ind.part[ind], ] <- crossprod(tmp, ud)
+      }
+    }
+
+    0
   }
 
   intervals <- CutBySize(m, nb = ncores)
-  obj <- foreach::foreach(i = 1:nrow(intervals),
-                          .combine = '+',
-                          .packages = "bigmemory")
+  obj <- foreach::foreach(i = 1:ncores, .packages = "bigmemory")
   expr_fun <- function(i) part(intervals[i, ])
-  T.t <- foreach2(obj, expr_fun, ncores)
 
-  T.svd <- svd(T.t, nv = 0)
+  foreach2(obj, expr_fun, ncores)
 
   # delete temporary lock files
   unlink(tmp.lock.names)
 
-  list(d = T.svd$d[1:K], u = T.svd$u[, 1:K, drop = FALSE])
+  list(d = diag(D[,]), u = U2[,], v = V[,])
 }
