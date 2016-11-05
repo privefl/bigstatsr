@@ -50,6 +50,30 @@ BigMult2 <- function(X, mat, block.size,
 
 ################################################################################
 
+BigCrossprod2 <- function(X, mat, block.size,
+                          vec.center, vec.scale,
+                          use.Eigen = TRUE) {
+  m <- ncol(X)
+  res <- matrix(0, m, ncol(mat))
+
+  intervals <- CutBySize(m, block.size)
+  nb.block <- nrow(intervals)
+
+  for (j in 1:nb.block) {
+    ind <- seq2(intervals[j, ])
+    tmp <- scaling(X[, ind], vec.center[ind], vec.scale[ind])
+    if (use.Eigen) {
+      res[ind, ] <- crossprodEigen5(tmp, mat)
+    } else {
+      res[ind, ] <- crossprod(tmp, mat)
+    }
+  }
+
+  res
+}
+
+################################################################################
+
 #' Title
 #'
 #' @param X
@@ -99,9 +123,16 @@ RandomProjPCA <- function(X, fun.scaling,
   T.t <- BigMult2(X, H.svd$u, block.size, means, sds,
                   use.Eigen = use.Eigen)
   rm(H.svd)
-  T.svd <- svd(T.t, nv = 0)
+  T.svd <- svd(T.t, nu = K, nv = 0)
 
-  list(d = T.svd$d[1:K], u = T.svd$u[, 1:K, drop = FALSE])
+  d <- T.svd$d[1:K]
+  u <- T.svd$u
+  v <- BigCrossprod2(X, u %*% diag(1 / d),
+                     block.size,
+                     means, sds,
+                     use.Eigen = use.Eigen)
+
+  list(d = d, u = u, v = v)
 }
 
 ### mini test:
@@ -110,3 +141,4 @@ RandomProjPCA <- function(X, fun.scaling,
 # H[1] <- l["a"]
 # l <- list(a = matrix(11:14, 2), b = matrix(5:8, 2))
 # H[2] <- l["a"]
+

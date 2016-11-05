@@ -13,6 +13,8 @@ You shouldn't have missing values in your data.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.}
+
+\item{ncores}{Number or cores used. Default doesn't use parallelism.}
 }
 \description{
 Easy-to-use, efficient, flexible and scalable
