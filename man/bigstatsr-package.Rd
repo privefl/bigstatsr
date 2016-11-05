@@ -4,7 +4,7 @@
 \name{bigstatsr-package}
 \alias{bigstatsr}
 \alias{bigstatsr-package}
-\title{Statistical Tools for Bigmemory Matrices}
+\title{bigstatsr: Statistical Tools for Bigmemory Matrices}
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
@@ -17,5 +17,17 @@ for the training part. If not specified, all data are used.}
 \description{
 Easy-to-use, efficient, flexible and scalable
 statistical tools. Use bigmemory matrices.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/privefl/bigstatsr}
+  \item Report bugs at \url{https://github.com/privefl/bigstatsr/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Florian Privé \email{florian.prive.21@gmail.com}
+
 }
 
