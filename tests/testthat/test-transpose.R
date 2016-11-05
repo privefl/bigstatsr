@@ -14,7 +14,7 @@ test_that("Equality with t()", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
 
-    test <- transpose(X)
+    test <- big_transpose(X)
     expect_identical(test[,], t(X[,]))
   }
 })
@@ -24,7 +24,7 @@ test_that("Equality with t()", {
 test_that("Expect error from unknown type", {
   x <- as.raw(sample(0:255, 100))
   X <- as.big.matrix(matrix(x), type = "raw")
-  expect_error(transpose(X), ERROR_TYPE, fixed = TRUE)
+  expect_error(big_transpose(X), ERROR_TYPE, fixed = TRUE)
 })
 
 ################################################################################

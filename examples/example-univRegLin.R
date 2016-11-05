@@ -1,13 +1,10 @@
 # Simulating some data
-N1 <- 3000
-N2 <- 1000
-x1 <- rnorm(N1, 0.5)
-x2 <- rnorm(N2, -0.5)
-x <- c(x1, x2)
+N <- 1000
+x <- rnorm(N)
 x.big <- as.big.matrix(cbind(x, x+1, 2*x))
 
 # With all data
-y2 <- x + rnorm(length(x), 0, 0.1)
+y2 <- x + rnorm(length(x), 0, 0.5)
 res <- matrix(0, 3, ncol(x.big))
 for (j in 1:ncol(x.big)) {
   mylm <- lm(y2 ~ x.big[, j])
@@ -15,7 +12,7 @@ for (j in 1:ncol(x.big)) {
   res[3, j] <- summary(mylm)$r.squared
 }
 print(res)
-print(rbind(CoeffsRegLin(x.big, y2), RsqRegLin(x.big, y2)))
+print(big_univRegLin(x.big, y2))
 
 # With only half of the data
 ind.train <- sort(sample(length(x), length(x) / 2))
@@ -26,5 +23,4 @@ for (j in 1:ncol(x.big)) {
   res[3, j] <- summary(mylm)$r.squared
 }
 print(res)
-print(rbind(CoeffsRegLin(x.big, y2, ind.train),
-            RsqRegLin(x.big, y2, ind.train)))
+print(big_univRegLin(x.big, y2, ind.train))

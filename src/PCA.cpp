@@ -14,6 +14,7 @@ void tcrossprodEigen(SEXP res, const Eigen::Map<Eigen::MatrixXd> bM) {
 
   int n = bM.rows();
 
+  // won't work with a sub.big.matrix
   Eigen::Map<Eigen::MatrixXd> bMRes =
     Eigen::Map<Eigen::MatrixXd>((double*)xpMatRes->matrix(), n, n);
 
@@ -31,6 +32,7 @@ void tcrossprodEigen2(SEXP res,
 
   XPtr<BigMatrix> xpMatRes(res);
 
+  // won't work with a sub.big.matrix
   Eigen::Map<Eigen::MatrixXd> bMRes =
     Eigen::Map<Eigen::MatrixXd>((double*)xpMatRes->matrix(),
                                 xpMatRes->nrow(),

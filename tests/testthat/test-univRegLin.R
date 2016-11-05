@@ -26,17 +26,13 @@ get_res_weights <- function(X, y) {
   res
 }
 
-get_res2_class <- function(X, y) {
-  rbind(CoeffsRegLin(X, y), RsqRegLin(X, y))
-}
-
 # In a case of classification
 y <- c(rep(1, N1), rep(-1, N2))
 
 test_that("equality with lm in case of classification", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x3, type = t)
-    expect_equivalent(get_res2_class(X, y), get_res_weights(X, y))
+    expect_equivalent(big_univRegLin(X, y), get_res_weights(X, y))
   }
 })
 
@@ -52,17 +48,13 @@ get_res <- function(X, y) {
   res
 }
 
-get_res2_reg <- function(X, y) {
-  rbind(CoeffsRegLin(X, y), RsqRegLin(X, y))
-}
-
 # In a case of regression
 y2 <- x + rnorm(length(x), 0, 0.1)
 
 test_that("equality with lm in case of regression", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x3, type = t)
-    expect_equivalent(get_res2_reg(X, y2), get_res(X, y2))
+    expect_equivalent(big_univRegLin(X, y2), get_res(X, y2))
   }
 })
 
@@ -80,15 +72,11 @@ get_res_train <- function(X, y) {
   res
 }
 
-get_res2_reg_train <- function(X, y) {
-  rbind(CoeffsRegLin(X, y, ind.train), RsqRegLin(X, y, ind.train))
-}
-
 # With only half of the data
 test_that("equality with lm in case of regression with half of the data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x3, type = t)
-    expect_equivalent(get_res2_reg_train(X, y2), get_res_train(X, y2))
+    expect_equivalent(big_univRegLin(X, y2, ind.train), get_res_train(X, y2))
   }
 })
 
@@ -97,8 +85,7 @@ test_that("equality with lm in case of regression with half of the data", {
 test_that("Expect error from unknown type", {
   x <- as.raw(sample(0:255, 100))
   X <- as.big.matrix(matrix(x), type = "raw")
-  expect_error(CoeffsRegLin(X, y), ERROR_TYPE, fixed = TRUE)
-  expect_error(RsqRegLin(X, y), ERROR_TYPE, fixed = TRUE)
+  expect_error(big_univRegLin(X, y), ERROR_TYPE, fixed = TRUE)
 })
 
 ################################################################################

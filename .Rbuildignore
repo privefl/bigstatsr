@@ -8,3 +8,4 @@ examples
 ^README\.html$
 tmp-tests
 tmp-save
+^docs$
