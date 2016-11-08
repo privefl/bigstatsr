@@ -5,15 +5,30 @@
 #' @inheritParams BigXYt
 #' @param use.Eigen Use the \code{Eigen} library to compute
 #' \eqn{X^T X}? \code{TRUE} is the default.
-#' @seealso \code{\link{crossprod}}
+#' @seealso [crossprod]
 #' @return \eqn{X.train^T X.train}
 #' @export
 #' @example examples/example.BigXtX.R
+
+#' Crossprod for a "big.matrix".
+#'
+#' Compute \eqn{X^T X} for a "big.matrix" X
+#' after applying a particular scaling to it.
+#'
+#' @inherit params details
+#' @param vec.center
+#' @param vec.scale
+#' @param use.Eigen
+#' @param progress
+#'
+#' @return
+#' @export
+#'
+#' @examples
 BigXtX <- function(X,
                    block.size,
                    ind.train = seq(nrow(X)),
-                   vec.center = rep(0, ncol(X)),
-                   vec.scale = rep(1, ncol(X)),
+                   fun.scaling,
                    use.Eigen = TRUE,
                    progress = TRUE) {
   check_X(X)

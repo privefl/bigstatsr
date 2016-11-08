@@ -19,19 +19,18 @@ f2 <- function(X) {
   list(mean = rep(0, m), sd = rep(1, m))
 }
 
-test <- ParallelRandomProjPCA(X, fun.scaling = f2,
-                              block.size = 100, ncores = 2,
-                              backingpath = "../bigsnpr/backingfiles")
+test <- big_randomSVD(X, fun.scaling = f1,
+                      block.size = 100)
 str(test)
-approx <- sweep(test$u, 2, test$d, '*')
+
 
 # scaling
-p <- colmeans(X) / 2
-sd <- sqrt(2 * p * (1 - p))
-X2 <- sweep(sweep(X[,], 2, 2 * p, '-'), 2, sd, '/')
+tmp <- f1(X)
+X2 <- sweep(sweep(X[,], 2, tmp$mean, '-'), 2, tmp$sd, '/')
 
-pca <- prcomp(X2, center = FALSE)
-true <- pca$x[, 1:10]
+X2.svd <- svd(X2, nu = 10, nv = 10)
+str(X2.svd)
 
 
-plot(as.numeric(true), as.numeric(approx), pch = 19)
+plot(as.numeric(X2.svd$u), as.numeric(test$u), pch = 19)
+plot(as.numeric(X2.svd$v), as.numeric(test$v), pch = 19)

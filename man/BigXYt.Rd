@@ -12,7 +12,8 @@ BigXYt(X, block.size, ind.train = seq(nrow(X)), vec.center = rep(0,
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
-\item{block.size}{Maximum number of columns read at once.}
+\item{block.size}{Maximum number of columns read at once.
+Default is \code{1000}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.}
@@ -25,9 +26,8 @@ See \code{\link{colmeans}}.}
 (after the substraction), columnwise.
 Typically, the sd of each column. See \code{\link{colsds}}.}
 
-\item{use.Eigen}{Use the \code{Eigen} library to compute
-\eqn{X X^T}? \code{TRUE} is the default.
-If \code{FALSE}, use \code{R}'s \code{tcrossprod}. See details.}
+\item{use.Eigen}{Should the \code{Eigen} library be used
+for matrix computations? Default is \code{TRUE}. See details.}
 
 \item{progress}{Use a progress bar for the computation
 of the correlation matrix? Default is \code{TRUE}.}
@@ -45,9 +45,9 @@ Compute linear kernel matrices for a "big.matrix"
 after applying a particular scaling to it.
 }
 \details{
-To compute \eqn{X X^T}, using \code{Eigen} library is faster.
+For matrix computations, using \code{Eigen} library is faster.
 However, if you link \code{R} with an optimized math library,
-using \code{R}'s \code{tcrossprod} can be faster.
+using \code{R}'s base operations should be faster.
 
 For example, you can easily link \code{R} with the
 \href{https://software.intel.com/en-us/intel-mkl}{Intel®

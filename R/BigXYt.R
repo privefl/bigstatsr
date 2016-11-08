@@ -1,9 +1,7 @@
-#' @name BigXYt
 #' @description Compute linear kernel matrices for a "big.matrix"
 #' after applying a particular scaling to it.
 #' @title Linear kernel matrices for a big.matrix.
-#' @inheritParams bigstatsr-package
-#' @param block.size Maximum number of columns read at once.
+#' @inherit bigstatsr-package params details
 #' @param vec.center Vector that will be subtracted to the matrix,
 #' columnwise. Typically, the mean of each column.
 #' See \code{\link{colmeans}}.
@@ -12,27 +10,6 @@
 #' Typically, the sd of each column. See \code{\link{colsds}}.
 #' @param progress Use a progress bar for the computation
 #' of the correlation matrix? Default is \code{TRUE}.
-#' @param use.Eigen Use the \code{Eigen} library to compute
-#' \eqn{X X^T}? \code{TRUE} is the default.
-#' If \code{FALSE}, use \code{R}'s \code{tcrossprod}. See details.
-#' @details To compute \eqn{X X^T}, using \code{Eigen} library is faster.
-#' However, if you link \code{R} with an optimized math library,
-#' using \code{R}'s \code{tcrossprod} can be faster.
-#'
-#' For example, you can easily link \code{R} with the
-#' \href{https://software.intel.com/en-us/intel-mkl}{Intel®
-#' Math Kernel Library} (Intel® MKL) through
-#' \href{https://mran.revolutionanalytics.com/open/}{Microsoft
-#' R Open} (MRO). It really improves performance
-#' of \code{R} and \code{RcppArmadillo} matrix computations,
-#' yet not the ones of \code{RcppEigen} (at least not directly).
-#'
-#' So, \enumerate{
-#' \item \code{Eigen} should be prefered if you don't change anything,
-#' \item base \code{R} should be prefered if you use MRO,
-#' \item \code{Eigen} may be prefered if you manage to link \code{RcppEigen}
-#' with the MKL (please \href{mailto:florian.prive.21@gmail.com}{contact me}
-#' if you do!).}
 #' @seealso \code{\link{tcrossprod}}
 #' @return Either \itemize{
 #' \item A \code{big.matrix} of type \code{double} if all rows are used

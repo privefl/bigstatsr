@@ -12,7 +12,8 @@ BigPCA(X, block.size, k = NULL, ind.train = seq(nrow(X)),
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
-\item{block.size}{Maximum number of columns read at once.}
+\item{block.size}{Maximum number of columns read at once.
+Default is \code{1000}.}
 
 \item{k}{Number of PCs to compute. Default is all.}
 
@@ -30,9 +31,8 @@ Typically, the sd of each column. See \code{\link{colsds}}.}
 \item{thr.eigval}{Threshold to remove "unsignificant" PCs.
 Default is \code{1e-3}.}
 
-\item{use.Eigen}{Use the \code{Eigen} library to compute
-\eqn{X X^T}? \code{TRUE} is the default.
-If \code{FALSE}, use \code{R}'s \code{tcrossprod}. See details.}
+\item{use.Eigen}{Should the \code{Eigen} library be used
+for matrix computations? Default is \code{TRUE}. See details.}
 
 \item{progress}{Use a progress bar for the computation
 of the correlation matrix? Default is \code{TRUE}.}
