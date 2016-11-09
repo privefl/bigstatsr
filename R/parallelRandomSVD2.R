@@ -1,18 +1,20 @@
-ParallelRandomSVD <- function(X, fun.scaling,
-                              ind.train,
-                              block.size,
-                              K, I,
-                              use.Eigen,
-                              backingpath,
-                              ncores) {
+ParallelRandomSVD2 <- function(X, fun.scaling,
+                               ind.train,
+                               block.size,
+                               K, I,
+                               use.Eigen,
+                               backingpath,
+                               ncores) {
   # parameters
-  tmp.lock.name <- "mutex"
-  TIME <- 0.01
   L <- K + 12
   n <- length(ind.train)
   m <- ncol(X)
   I <- I + 1
-  tmp.lock.names <- paste0(tmp.lock.name, 1:4)
+  stopifnot((n - K) >= (I * L))
+
+  TIME <- 0.01
+  tmp.lock.name <- "mutex"
+  tmp.lock.names <- paste0(tmp.lock.name, 1:3)
   ifelse(file.exists(tmp.lock.names), FALSE,
          file.create(tmp.lock.names))
 
@@ -42,11 +44,6 @@ ParallelRandomSVD <- function(X, fun.scaling,
                              firstCol = lims[1],
                              lastCol = lims[2],
                              backingpath = backingpath)
-    G <- attach.big.matrix(G.desc)
-    H <- attach.big.matrix(H.desc)
-    U <- attach.big.matrix(U.desc)
-    T.t <- attach.big.matrix(T.t.desc)
-    remains <- attach.big.matrix(r.desc)
 
     # scaling
     means_sds <- FUN(X.part, ind.train)
@@ -55,12 +52,14 @@ ParallelRandomSVD <- function(X, fun.scaling,
     rm(means_sds)
 
     # parameters
-    ind.part <- seq2(lims)
     m.part <- ncol(X.part)
     intervals <- CutBySize(m.part, block.size)
     nb.block <- nrow(intervals)
 
     # computation of G and H
+    G <- attach.big.matrix(G.desc)
+    H.part <- sub.big.matrix(H.desc, firstRow = lims[1], lastRow = lims[2])
+    remains <- attach.big.matrix(r.desc)
     for (i in 1:(I - 1)) {
       # get G, safely
       old.G <- G[,]
@@ -82,14 +81,14 @@ ParallelRandomSVD <- function(X, fun.scaling,
           tmp.G <- incrMat(tmp.G, tmp %*% tmp.H)
         }
 
-        H[ind.part[ind], 1:L + (i - 1) * L] <- tmp.H
+        H.part[ind, 1:L + (i - 1) * L] <- tmp.H
       }
 
       # wait for others at barrier
       while (remains[1, i] > 0) Sys.sleep(TIME)
       # increment G, safely
       file.lock2 <- flock::lock(tmp.lock.names[2])
-      incrG(G@address, tmp.G, n, L, m)
+      incrG(G@address, tmp.G, n, L, 2*m)
       remains[2, i] <- remains[2, i] - 1L
       flock::unlock(file.lock2)
       # wait for others at barrier
@@ -108,31 +107,40 @@ ParallelRandomSVD <- function(X, fun.scaling,
         tmp.H <- crossprod(tmp, old.G)
       }
 
-      H[ind.part[ind], 1:L + (i - 1) * L] <- tmp.H
+      H.part[ind, 1:L + (i - 1) * L] <- tmp.H
     }
+    rm(G, H.part)
 
     # compute svd(H) once
     file.lock3 <- flock::lock(tmp.lock.names[3])
-    if (remains[3, 1] == 1) U[] <- svd(H[,], nv = 0)$u
+    if (remains[3, 1] == 1) {
+      H <- attach.big.matrix(H.desc)
+      U <- attach.big.matrix(U.desc)
+      U[] <- svd(H[,], nv = 0)$u
+      rm(H, U)
+    }
     remains[3, 1] <- remains[3, 1] - 1L
     flock::unlock(file.lock3)
     # wait for others at barrier
     while (remains[3, 1] > 0) Sys.sleep(TIME)
 
     # compute transpose(T)
+    U.part <- sub.big.matrix(U.desc, firstRow = lims[1], lastRow = lims[2])
     tmp.T.t <- matrix(0, n, I * L)
     for (j in 1:nb.block) {
       ind <- seq2(intervals[j, ])
-      ind2 <- ind.part[ind]
       tmp <- scaling(X.part[ind.train, ind], means[ind], sds[ind])
 
       if (use.Eigen) {
-        tmp.T.t <- incrMat(tmp.T.t, multEigen(tmp, U[ind2, ]))
+        tmp.T.t <- incrMat(tmp.T.t, multEigen(tmp, U.part[ind, ]))
       } else {
-        tmp.T.t <- incrMat(tmp.T.t, tmp %*% U[ind2, ])
+        tmp.T.t <- incrMat(tmp.T.t, tmp %*% U.part[ind, ])
       }
     }
+    rm(U.part)
+
     # increment T.t, safely
+    T.t <- attach.big.matrix(T.t.desc)
     file.lock4 <- flock::lock(tmp.lock.names[4])
     incrG(T.t@address, tmp.T.t, n, I * L, 1)
     remains[4, 1] <- remains[4, 1] - 1L
