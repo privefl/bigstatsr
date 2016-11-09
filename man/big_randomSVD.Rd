@@ -5,7 +5,7 @@
 \title{A randomized algorithm for SVD.}
 \usage{
 big_randomSVD(X, fun.scaling = fun_scale, ind.train = seq(nrow(X)),
-  block.size = 1000, K = 10, I = 10, use.Eigen = TRUE, ncores = 1,
+  block.size = 1000, K = 10, I = 20, use.Eigen = TRUE, ncores = 1,
   backingpath = NULL)
 }
 \arguments{
@@ -25,7 +25,7 @@ Default is \code{1000}.}
 \item{K}{Number of PCs to compute. This algorithm shouldn't
 be used to compute a lot of PCs. Default is \code{10}.}
 
-\item{I}{The number of iterations of the algorithm. Default is \code{10}.}
+\item{I}{The number of iterations of the algorithm. Default is \code{20}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default is \code{TRUE}. See details.}
