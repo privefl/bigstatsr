@@ -46,6 +46,12 @@ void tcrossprodEigen2(SEXP res,
 /******************************************************************************/
 
 // [[Rcpp::export]]
+Eigen::MatrixXd crossprodEigen4(const Eigen::Map<Eigen::MatrixXd> X,
+                                const Eigen::Map<Eigen::MatrixXd> Y) {
+  return X.transpose() * Y;
+}
+
+// [[Rcpp::export]]
 Eigen::MatrixXd crossprodEigen5(const Eigen::Map<Eigen::MatrixXd> X,
                                 const Eigen::Map<Eigen::MatrixXd> Y) {
   return X.adjoint() * Y;

@@ -47,7 +47,7 @@ after applying a particular scaling to it.
 \details{
 For matrix computations, using \code{Eigen} library is faster.
 However, if you link \code{R} with an optimized math library,
-using \code{R}'s base operations should be faster.
+using \code{R}'s base operations is even much faster.
 
 For example, you can easily link \code{R} with the
 \href{https://software.intel.com/en-us/intel-mkl}{Intel®

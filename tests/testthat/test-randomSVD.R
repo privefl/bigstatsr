@@ -1,6 +1,6 @@
 ################################################################################
 
-context("RANDOMSVD") # repair n > m
+context("RANDOM_SVD")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = TRUE)

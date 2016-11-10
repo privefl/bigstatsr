@@ -9,3 +9,4 @@ examples
 tmp-tests
 tmp-save
 ^docs$
+*mutex*

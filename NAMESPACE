@@ -2,8 +2,8 @@
 
 export(BigPCA)
 export(BigXYt)
-export(BigXtX)
 export(big_center)
+export(big_crossprodSelf)
 export(big_noscale)
 export(big_randomSVD)
 export(big_scale)
