@@ -3,6 +3,7 @@ X <- big.matrix(17, 41)
 X[] <- rnorm(length(X))
 
 # Comparing with tcrossprod
+big_noscale <- big_scale(center = FALSE)
 test <- big_tcrossprodSelf(X, fun.scaling = big_noscale)
 print(dim(test))
 print(all.equal(test[,], tcrossprod(X[,])))

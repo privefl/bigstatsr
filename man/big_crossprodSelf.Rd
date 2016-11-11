@@ -13,7 +13,7 @@ You shouldn't have missing values in your data.}
 
 \item{fun.scaling}{A function that returns a named list of mean and
 sd for every column, to scale each of their elements such as followed:
-\eqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
+\deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.}
@@ -83,6 +83,7 @@ X <- big.matrix(41, 17)
 X[] <- rnorm(length(X))
 
 # Comparing with tcrossprod
+big_noscale <- big_scale(center = FALSE)
 test <- big_crossprodSelf(X, fun.scaling = big_noscale)
 print(dim(test))
 print(all.equal(test[,], crossprod(X[,])))

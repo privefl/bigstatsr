@@ -9,7 +9,7 @@
 #' @return \eqn{X.train^T X.train} as a `big.matrix`. Its dimensions
 #' are both `ncol(X)` and its type is `double`.
 #' @export
-#' @seealso [crossprod]
+#' @seealso [crossprod][base::crossprod]
 #'
 #' @example examples/example-crossprodSelf.R
 big_crossprodSelf <- function(X,

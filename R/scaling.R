@@ -8,10 +8,10 @@
 #' @param scale A logical value: whether to return sds or 1s. __You can't
 #' use scale without using center.__
 #' @return
-#' A new function that returns a named list of two vectors "mean" and "sd"
+#' A new __function__ that returns a named list of two vectors "mean" and "sd"
 #' which are as long as the number of columns of `X`.
 #' @seealso [scale]
-#' @examples
+#' @example examples/example-scaling.R
 #' @export
 big_scale <- function(center = TRUE, scale = TRUE) {
   function(X, ind.train = seq(nrow(X))) {
@@ -19,10 +19,10 @@ big_scale <- function(center = TRUE, scale = TRUE) {
     if (center) {
       tmp <- big_colstats(X, ind.train)
       means <- tmp$sum / length(ind.train)
-      sd <- `if`(scale, sqrt(tmp$var), rep(1, m))
+      sds <- `if`(scale, sqrt(tmp$var), rep(1, m))
     } else {
-      mean <- rep(0, m)
-      sd <- rep(1, m)
+      means <- rep(0, m)
+      sds <- rep(1, m)
     }
     list(mean = means, sd = sds)
   }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tcrossprodSelf.R
 \name{big_tcrossprodSelf}
 \alias{big_tcrossprodSelf}
-\title{Tcrossprod for a "big.matrix".}
+\title{Tcrossprod}
 \usage{
 big_tcrossprodSelf(X, fun.scaling, ind.train = seq(nrow(X)),
   block.size = 1000, use.Eigen = TRUE, ...)
@@ -13,7 +13,7 @@ You shouldn't have missing values in your data.}
 
 \item{fun.scaling}{A function that returns a named list of mean and
 sd for every column, to scale each of their elements such as followed:
-\eqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
+\deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.}
@@ -83,6 +83,7 @@ X <- big.matrix(17, 41)
 X[] <- rnorm(length(X))
 
 # Comparing with tcrossprod
+big_noscale <- big_scale(center = FALSE)
 test <- big_tcrossprodSelf(X, fun.scaling = big_noscale)
 print(dim(test))
 print(all.equal(test[,], tcrossprod(X[,])))
@@ -95,6 +96,6 @@ print(dim(test2))
 print(all.equal(test2[,], tcrossprod(X[ind, ])))
 }
 \seealso{
-\link{tcrossprod}
+\link[base:tcrossprod]{tcrossprod}
 }
 

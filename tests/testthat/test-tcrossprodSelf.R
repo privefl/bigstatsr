@@ -10,6 +10,8 @@ N <- 43
 M <- 101
 x <- matrix(rnorm(N*M), N)
 
+big_noscale <- big_scale(center = FALSE)
+
 ################################################################################
 
 test_that("equality with tcrossprod", {

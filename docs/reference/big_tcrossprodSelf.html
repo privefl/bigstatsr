@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tcrossprod for a big.matrix. — big_tcrossprodSelf • bigstatsr</title>
+<title>Tcrossprod — big_tcrossprodSelf • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -71,7 +71,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tcrossprod for a big.matrix.</h1>
+    <h1>Tcrossprod</h1>
     </div>
 
     
@@ -90,7 +90,7 @@ You shouldn&#39;t have missing values in your data.</dd>
       <dt>fun.scaling</dt>
       <dd>A function that returns a named list of mean and
 sd for every column, to scale each of their elements such as followed:
-\(\frac{X_{i,j} - mean_j}{sd_j}\).</dd>
+$$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
       <dt>ind.train</dt>
       <dd>An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.</dd>
@@ -166,6 +166,7 @@ if you do!).</li>
 <span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
 
 <span class='co'># Comparing with tcrossprod</span>
+<span class='no'>big_noscale</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
 <span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test</span>))</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>[,], <span class='fu'>tcrossprod</span>(<span class='no'>X</span>[,])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data for "training"</span>

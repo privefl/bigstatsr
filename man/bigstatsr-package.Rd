@@ -21,7 +21,7 @@ Default is \code{1000}.}
 
 \item{fun.scaling}{A function that returns a named list of mean and
 sd for every column, to scale each of their elements such as followed:
-\eqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
+\deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default is \code{TRUE}. See details.}

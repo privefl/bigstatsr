@@ -16,6 +16,14 @@ diffPCs <- function(test, rot) {
   mean(diff)
 }
 
+# function for sampling scaling
+sampleScale <- function() {
+  tmp <- sample(list(c(TRUE, FALSE),
+                     c(TRUE, TRUE),
+                     c(FALSE, FALSE)))[[1]]
+  list(center = tmp[1], scale = tmp[2])
+}
+
 # Simulating some data
 M <- 781
 N <- 1501
@@ -25,33 +33,18 @@ x <- matrix(rnorm(N*M, sd = 5), N)
 
 test_that("equality with prcomp", {
   for (t in ALL.TYPES) {
-    printf("\nTesting type %s\n", t)
     X <- as.big.matrix(x, type = t)
-    for (k in c(2, 20)) {
-      test <- big_randomSVD(X = X,
-                            block.size = 100,
-                            fun.scaling = big_noscale,
-                            K = k)
-      pca <- prcomp(X[,], center = FALSE, scale. = FALSE)
-      expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
-      expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
 
-      test <- big_randomSVD(X = X,
-                            block.size = 100,
-                            fun.scaling = big_center,
-                            K = k)
-      pca <- prcomp(X[,], center = TRUE, scale. = FALSE)
-      expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
-      expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
+    k <- sample(c(2, 20), 1) # 2 or 20
+    sc <- sampleScale()
 
-      test <- big_randomSVD(X = X,
-                            block.size = 100,
-                            fun.scaling = big_scale,
-                            K = k)
-      pca <- prcomp(X[,], center = TRUE, scale. = TRUE)
-      expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
-      expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
-    }
+    test <- big_randomSVD(X = X,
+                          fun.scaling = big_scale(center = sc$center,
+                                                  scale = sc$scale),
+                          K = k)
+    pca <- prcomp(X[,], center = sc$center, scale. = sc$scale)
+    expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
   }
 })
 
@@ -60,36 +53,19 @@ test_that("equality with prcomp", {
 test_that("equality with prcomp with half of the data", {
   ind <- sample(N, N/2)
   for (t in ALL.TYPES) {
-    printf("\nTesting type %s\n", t)
     X <- as.big.matrix(x, type = t)
-    for (k in c(2, 20)) {
-      test <- big_randomSVD(X = X,
-                            ind.train = ind,
-                            block.size = 100,
-                            fun.scaling = big_noscale,
-                            K = k)
-      pca <- prcomp(X[ind, ], center = FALSE, scale. = FALSE)
-      expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
-      expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
 
-      test <- big_randomSVD(X = X,
-                            ind.train = ind,
-                            block.size = 100,
-                            fun.scaling = big_center,
-                            K = k)
-      pca <- prcomp(X[ind, ], center = TRUE, scale. = FALSE)
-      expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
-      expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
+    k <- sample(c(2, 20), 1) # 2 or 20
+    sc <- sampleScale()
 
-      test <- big_randomSVD(X = X,
-                            ind.train = ind,
-                            block.size = 100,
-                            fun.scaling = big_scale,
-                            K = k)
-      pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
-      expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
-      expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
-    }
+    test <- big_randomSVD(X = X,
+                          ind.train = ind,
+                          fun.scaling = big_scale(center = sc$center,
+                                                  scale = sc$scale),
+                          K = k)
+    pca <- prcomp(X[ind, ], center = sc$center, scale. = sc$scale)
+    expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
   }
 })
 

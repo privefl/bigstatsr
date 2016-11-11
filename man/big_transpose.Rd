@@ -2,7 +2,7 @@
 % Please edit documentation in R/transpose.R
 \name{big_transpose}
 \alias{big_transpose}
-\title{Transposition of a "big.matrix".}
+\title{Transposition}
 \usage{
 big_transpose(X, ...)
 }

@@ -14,7 +14,7 @@ You shouldn't have missing values in your data.}
 
 \item{fun.scaling}{A function that returns a named list of mean and
 sd for every column, to scale each of their elements such as followed:
-\eqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
+\deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.}
@@ -38,6 +38,26 @@ the path where are stored the files that are backing \code{X}.}
 \description{
 A randomized algorithm for SVD (or PCA) of a "big.matrix".
 }
+\details{
+For matrix computations, using \code{Eigen} library is faster.
+However, if you link \code{R} with an optimized math library,
+using \code{R}'s base operations is even much faster.
+
+For example, you can easily link \code{R} with the
+\href{https://software.intel.com/en-us/intel-mkl}{Intel®
+Math Kernel Library} (Intel® MKL) through
+\href{https://mran.revolutionanalytics.com/open/}{Microsoft
+R Open} (MRO). It really improves performance
+of \code{R} and \code{RcppArmadillo} matrix computations,
+yet not the ones of \code{RcppEigen} (at least not directly).
+
+So, \enumerate{
+\item \code{Eigen} should be prefered if you don't change anything,
+\item base \code{R} should be prefered if you use MRO,
+\item \code{Eigen} may be prefered if you manage to link \code{RcppEigen}
+with the MKL (please \href{mailto:florian.prive.21@gmail.com}{contact me}
+if you do!).}
+}
 \examples{
 # Simulating some data
 X <- big.matrix(1023, 511)
@@ -45,7 +65,7 @@ X[] <- rnorm(length(X))
 
 # Comparing with prcomp
 test <- big_randomSVD(X = X,
-                      fun.scaling = big_scale,
+                      fun.scaling = big_scale(),
                       block.size = 50,
                       ncores = 1)
 
@@ -55,7 +75,7 @@ pca <- prcomp(X[,], center = TRUE, scale. = TRUE)
 print(all.equal(test$means, pca$center))
 print(all.equal(test$sds, pca$scale))
 
-# scores or loadings are the same or opposite
+# scores and loadings are the same or opposite
 scores <- test$u \%*\% diag(test$d)
 plot(as.numeric(scores), as.numeric(pca$x[, 1:10]))
 plot(as.numeric(test$v), as.numeric(pca$rotation[, 1:10]))
@@ -65,7 +85,7 @@ plot(as.numeric(test$v), as.numeric(pca$rotation[, 1:10]))
 ind <- sort(sample(nrow(X), nrow(X)/2))
 
 test2 <- big_randomSVD(X = X, ind.train = ind,
-                       fun.scaling = big_scale,
+                       fun.scaling = big_scale(),
                        block.size = 10, ncores = 1)
 
 pca2 <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
@@ -74,7 +94,7 @@ pca2 <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
 print(all.equal(test2$means, pca2$center))
 print(all.equal(test2$sds, pca2$scale))
 
-# scores or loadings are the same or opposite
+# scores and loadings are the same or opposite
 scores2 <- test2$u \%*\% diag(test2$d)
 plot(as.numeric(scores2), as.numeric(pca2$x[, 1:10]))
 plot(as.numeric(test2$v), as.numeric(pca2$rotation[, 1:10]))
@@ -87,6 +107,6 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 doi:10.1137/080736417
 }
 \seealso{
-\link{big_funScaling} \link{prcomp} \link{svd}
+\link{big_scale} \link{prcomp} \link{svd}
 }
 

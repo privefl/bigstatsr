@@ -4,7 +4,7 @@
 #'
 #' A randomized algorithm for SVD (or PCA) of a "big.matrix".
 #'
-#' @inherit bigstatsr-package params
+#' @inherit bigstatsr-package params details
 #' @param K Number of PCs to compute. This algorithm shouldn't
 #' be used to compute a lot of PCs. Default is `10`.
 #' @param I The number of iterations of the algorithm. Default is `20`.
@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @example examples/example-randomSVD.R
-#' @seealso [big_funScaling] [prcomp] [svd]
+#' @seealso [big_scale] [prcomp] [svd]
 #' @references Rokhlin, V., Szlam, A., & Tygert, M. (2010).
 #' A Randomized Algorithm for Principal Component Analysis.
 #' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.

@@ -126,12 +126,12 @@ for the training part. If not specified, all data are used.</dd>
   <span class='no'>res</span>[<span class='fl'>3</span>, <span class='no'>j</span>] <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>mylm</span>)$<span class='no'>r.squared</span>
 }
 <span class='fu'>print</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;              [,1]       [,2]         [,3]
-#&gt; [1,] -0.003323158 -0.9943650 -0.003323158
-#&gt; [2,]  0.991041839  0.9910418  0.495520919
-#&gt; [3,]  0.800588701  0.8005887  0.800588701</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>x.big</span>, <span class='no'>y2</span>))</div><div class='output co'>#&gt;                    [,1]       [,2]         [,3]
-#&gt; Intercepts -0.003323158 -0.9943650 -0.003323158
-#&gt; Slopes      0.991041839  0.9910418  0.495520919
-#&gt; R2          0.800588701  0.8005887  0.800588701</div><div class='input'>
+#&gt; [1,] -0.003111101 -1.0168568 -0.003111101
+#&gt; [2,]  1.013745650  1.0137457  0.506872825
+#&gt; [3,]  0.811080589  0.8110806  0.811080589</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>x.big</span>, <span class='no'>y2</span>))</div><div class='output co'>#&gt;                    [,1]       [,2]         [,3]
+#&gt; Intercepts -0.003111101 -1.0168568 -0.003111101
+#&gt; Slopes      1.013745650  1.0137457  0.506872825
+#&gt; R2          0.811080589  0.8110806  0.811080589</div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='fu'>length</span>(<span class='no'>x</span>), <span class='fu'>length</span>(<span class='no'>x</span>) / <span class='fl'>2</span>))
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='fl'>3</span>, <span class='fu'>ncol</span>(<span class='no'>x.big</span>))
@@ -140,13 +140,13 @@ for the training part. If not specified, all data are used.</dd>
   <span class='no'>res</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='no'>j</span>] <span class='kw'>&lt;-</span> <span class='no'>mylm</span>$<span class='no'>coefficients</span>
   <span class='no'>res</span>[<span class='fl'>3</span>, <span class='no'>j</span>] <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>mylm</span>)$<span class='no'>r.squared</span>
 }
-<span class='fu'>print</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;             [,1]       [,2]        [,3]
-#&gt; [1,] -0.01702889 -1.0246311 -0.01702889
-#&gt; [2,]  1.00760223  1.0076022  0.50380112
-#&gt; [3,]  0.79992691  0.7999269  0.79992691</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>x.big</span>, <span class='no'>y2</span>, <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;                   [,1]       [,2]        [,3]
-#&gt; Intercepts -0.01702889 -1.0246311 -0.01702889
-#&gt; Slopes      1.00760223  1.0076022  0.50380112
-#&gt; R2          0.79992691  0.7999269  0.79992691</div></pre>
+<span class='fu'>print</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;              [,1]       [,2]         [,3]
+#&gt; [1,] -0.005158171 -1.0265664 -0.005158171
+#&gt; [2,]  1.021408263  1.0214083  0.510704131
+#&gt; [3,]  0.808541310  0.8085413  0.808541310</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>x.big</span>, <span class='no'>y2</span>, <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;                    [,1]       [,2]         [,3]
+#&gt; Intercepts -0.005158171 -1.0265664 -0.005158171
+#&gt; Slopes      1.021408263  1.0214083  0.510704131
+#&gt; R2          0.808541310  0.8085413  0.808541310</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

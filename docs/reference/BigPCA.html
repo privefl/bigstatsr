@@ -126,9 +126,7 @@ really considerer using Microsoft R Open for speed.</p>
 <span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
 
 <span class='co'># center and scale</span>
-<span class='no'>vec.center</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='colstats.html'>colmeans</a></span>(<span class='no'>X</span>)
-<span class='no'>vec.scale</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='colstats.html'>colsds</a></span>(<span class='no'>X</span>)
-
+<span class='no'>vec.center</span> <span class='kw'>&lt;-</span> <span class='fu'>colmeans</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): impossible de trouver la fonction &quot;colmeans&quot;</span></div><div class='input'><span class='no'>vec.scale</span> <span class='kw'>&lt;-</span> <span class='fu'>colsds</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): impossible de trouver la fonction &quot;colsds&quot;</span></div><div class='input'>
 
 <span class='co'># Comparing with prcomp</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>BigPCA</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>,
@@ -143,9 +141,7 @@ really considerer using Microsoft R Open for speed.</p>
 
 <span class='co'># Using only half of the data for "training"</span>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='fu'>nrow</span>(<span class='no'>X</span>)/<span class='fl'>2</span>))
-<span class='no'>vec.center</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='colstats.html'>colmeans</a></span>(<span class='no'>X</span>, <span class='no'>ind</span>)
-<span class='no'>vec.scale</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='colstats.html'>colsds</a></span>(<span class='no'>X</span>, <span class='no'>ind</span>)
-
+<span class='no'>vec.center</span> <span class='kw'>&lt;-</span> <span class='fu'>colmeans</span>(<span class='no'>X</span>, <span class='no'>ind</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): impossible de trouver la fonction &quot;colmeans&quot;</span></div><div class='input'><span class='no'>vec.scale</span> <span class='kw'>&lt;-</span> <span class='fu'>colsds</span>(<span class='no'>X</span>, <span class='no'>ind</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): impossible de trouver la fonction &quot;colsds&quot;</span></div><div class='input'>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>BigPCA</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>,
                <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
                <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind</span>,
@@ -163,9 +159,7 @@ really considerer using Microsoft R Open for speed.</p>
 
 
 <span class='co'># center and scale</span>
-<span class='no'>vec.center</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='colstats.html'>colmeans</a></span>(<span class='no'>X</span>)
-<span class='no'>vec.scale</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='colstats.html'>colsds</a></span>(<span class='no'>X</span>)
-
+<span class='no'>vec.center</span> <span class='kw'>&lt;-</span> <span class='fu'>colmeans</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): impossible de trouver la fonction &quot;colmeans&quot;</span></div><div class='input'><span class='no'>vec.scale</span> <span class='kw'>&lt;-</span> <span class='fu'>colsds</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): impossible de trouver la fonction &quot;colsds&quot;</span></div><div class='input'>
 <span class='co'># Comparing with prcomp</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>BigPCA</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>,
                <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
@@ -174,15 +168,13 @@ really considerer using Microsoft R Open for speed.</p>
 <span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'>prcomp</span>(<span class='no'>X</span>[,], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># Note the difference in dimensions</span>
-<span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test</span>))</div><div class='output co'>#&gt; <span class='error'>Error in print(dim(test)): objet &#39;test&#39; introuvable</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>))</div><div class='output co'>#&gt; [1] 50 50</div><div class='input'><span class='fu'>plot</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>)</div><img src='BigPCA-18.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>print</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>[<span class='fl'>50</span>])</div><div class='output co'>#&gt; [1] 1.045565e-15</div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test</span>))</div><div class='output co'>#&gt; <span class='error'>Error in print(dim(test)): objet &#39;test&#39; introuvable</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>))</div><div class='output co'>#&gt; [1] 50 50</div><div class='input'><span class='fu'>plot</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>)</div><img src='BigPCA-30.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>print</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>[<span class='fl'>50</span>])</div><div class='output co'>#&gt; [1] 1.040065e-15</div><div class='input'>
 <span class='co'># PCs are the same or opposite</span>
 <span class='fu'>print</span>(<span class='fu'>diffPCs</span>(<span class='no'>test</span>, <span class='no'>pca</span>$<span class='no'>x</span>))</div><div class='output co'>#&gt; <span class='error'>Error in ncol(test): objet &#39;test&#39; introuvable</span></div><div class='input'>
 
 <span class='co'># Using only half of the data for "training"</span>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='fu'>nrow</span>(<span class='no'>X</span>)/<span class='fl'>2</span>))
-<span class='no'>vec.center</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='colstats.html'>colmeans</a></span>(<span class='no'>X</span>, <span class='no'>ind</span>)
-<span class='no'>vec.scale</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='colstats.html'>colsds</a></span>(<span class='no'>X</span>, <span class='no'>ind</span>)
-
+<span class='no'>vec.center</span> <span class='kw'>&lt;-</span> <span class='fu'>colmeans</span>(<span class='no'>X</span>, <span class='no'>ind</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): impossible de trouver la fonction &quot;colmeans&quot;</span></div><div class='input'><span class='no'>vec.scale</span> <span class='kw'>&lt;-</span> <span class='fu'>colsds</span>(<span class='no'>X</span>, <span class='no'>ind</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): impossible de trouver la fonction &quot;colsds&quot;</span></div><div class='input'>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>BigPCA</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>,
                <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
                <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind</span>,
