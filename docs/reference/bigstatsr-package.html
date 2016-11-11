@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>bigstatsr: Statistical Tools for Bigmemory Matrices � bigstatsr-package • bigstatsr</title>
+<title>bigstatsr: Statistical Tools for Bigmemory Matrices — bigstatsr-package • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -90,9 +90,41 @@ You shouldn&#39;t have missing values in your data.</dd>
       <dt>ind.train</dt>
       <dd>An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.</dd>
+      <dt>block.size</dt>
+      <dd>Maximum number of columns read at once.
+Default is <code>1000</code>.</dd>
       <dt>ncores</dt>
       <dd>Number or cores used. Default doesn&#39;t use parallelism.</dd>
+      <dt>fun.scaling</dt>
+      <dd>A function that returns a named list of mean and
+sd for every column, to scale each of their elements such as followed:
+\(\frac{X_{i,j} - mean_j}{sd_j}\).</dd>
+      <dt>use.Eigen</dt>
+      <dd>Should the <code>Eigen</code> library be used
+for matrix computations? Default is <code>TRUE</code>. See details.</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For matrix computations, using <code>Eigen</code> library is faster.
+However, if you link <code>R</code> with an optimized math library,
+using <code>R</code>&#39;s base operations is even much faster.</p>
+    <p>For example, you can easily link <code>R</code> with the
+<a href = 'Intel®
+Math Kernel Library'>https://software.intel.com/en-us/intel-mkl</a> (Intel® MKL) through
+<a href = 'Microsoft
+R Open'>https://mran.revolutionanalytics.com/open/</a> (MRO). It really improves performance
+of <code>R</code> and <code>RcppArmadillo</code> matrix computations,
+yet not the ones of <code>RcppEigen</code> (at least not directly).</p>
+    <p>So, <ol>
+<li> <code>Eigen</code> should be prefered if you don&#39;t change anything,
+</li>
+<li> base <code>R</code> should be prefered if you use MRO,
+</li>
+<li> <code>Eigen</code> may be prefered if you manage to link <code>RcppEigen</code>
+with the MKL (please <a href = 'contact me'>mailto:florian.prive.21@gmail.com</a>
+if you do!).</li>
+</ol></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -111,12 +143,14 @@ for the training part. If not specified, all data are used.</dd>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
           </ul>
 
     <h2>Author</h2>
     
-<strong>Maintainer</strong>: Florian Priv� <a href='mailto:florian.prive.21@gmail.com'>florian.prive.21@gmail.com</a>
+<strong>Maintainer</strong>: Florian Privé <a href='mailto:florian.prive.21@gmail.com'>florian.prive.21@gmail.com</a>
 
 
   </div>

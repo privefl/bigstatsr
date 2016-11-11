@@ -1,46 +1,29 @@
-#' Some scaling functions.
+#' Some scaling functions
 #'
 #' Some scaling functions for a "big.matrix" to be used as
 #' the `fun.scaling` parameter of some functions of this package.
 #'
 #' @inheritParams bigstatsr-package
+#' @param center A logical value: whether to return means or 0s.
+#' @param scale A logical value: whether to return sds or 1s. __You can't
+#' use scale without using center.__
 #' @return
-#' A named list of two vectors "mean" and "sd" which are as long as
-#' the number of columns of `X`. Equivalence with [scale]:
-#' - `big_noscale`: `center = FALSE` & `scale = FALSE`,
-#' - `big_center`:  `center = TRUE`  & `scale = FALSE`,
-#' - `big_scale`:   `center = TRUE`  & `scale = TRUE`.
+#' A new function that returns a named list of two vectors "mean" and "sd"
+#' which are as long as the number of columns of `X`.
+#' @seealso [scale]
 #' @examples
-#' print(big_center)
-#' print(big_scale)
-#' print(big_noscale)
-#' @name big_funScaling
-
-
-################################################################################
-
 #' @export
-#' @rdname big_funScaling
-big_center <- function(X, ind.train = seq(nrow(X))) {
-  means <- colmeans(X, ind.train)
-  list(mean = means, sd = rep(1, ncol(X)))
+big_scale <- function(center = TRUE, scale = TRUE) {
+  function(X, ind.train = seq(nrow(X))) {
+    m <- ncol(X)
+    if (center) {
+      tmp <- big_colstats(X, ind.train)
+      means <- tmp$sum / length(ind.train)
+      sd <- `if`(scale, sqrt(tmp$var), rep(1, m))
+    } else {
+      mean <- rep(0, m)
+      sd <- rep(1, m)
+    }
+    list(mean = means, sd = sds)
+  }
 }
-
-################################################################################
-
-#' @export
-#' @rdname big_funScaling
-big_scale <- function(X, ind.train = seq(nrow(X))) {
-  colmeans_sds(X, ind.train)
-}
-
-################################################################################
-
-#' @export
-#' @rdname big_funScaling
-big_noscale <- function(X, ind.train = seq(nrow(X))) {
-  m <- ncol(X)
-  list(mean = rep(0, m), sd = rep(1, m))
-}
-
-################################################################################

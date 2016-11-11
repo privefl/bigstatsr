@@ -1,6 +1,6 @@
 ################################################################################
 
-#' A randomized algorithm for SVD.
+#' A randomized algorithm for SVD
 #'
 #' A randomized algorithm for SVD (or PCA) of a "big.matrix".
 #'

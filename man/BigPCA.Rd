@@ -9,33 +9,10 @@ BigPCA(X, block.size, k = NULL, ind.train = seq(nrow(X)),
   thr.eigval = 0.001, use.Eigen = TRUE, progress = TRUE)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
-
-\item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}.}
-
 \item{k}{Number of PCs to compute. Default is all.}
-
-\item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all data are used.}
-
-\item{vec.center}{Vector that will be subtracted to the matrix,
-columnwise. Typically, the mean of each column.
-See \code{\link{colmeans}}.}
-
-\item{vec.scale}{Vector that will be divided to the matrix
-(after the substraction), columnwise.
-Typically, the sd of each column. See \code{\link{colsds}}.}
 
 \item{thr.eigval}{Threshold to remove "unsignificant" PCs.
 Default is \code{1e-3}.}
-
-\item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default is \code{TRUE}. See details.}
-
-\item{progress}{Use a progress bar for the computation
-of the correlation matrix? Default is \code{TRUE}.}
 }
 \value{
 A \code{matrix} of PCs.

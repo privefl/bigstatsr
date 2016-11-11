@@ -1,14 +1,15 @@
-#' Crossprod for a big.matrix.
+#' Crossprod
 #'
-#' Compute \eqn{X.train^T X.train} for a `big.matrix` X
+#' Compute \eqn{X.train^T X.train} for a `big.matrix` `X`
 #' after applying a particular scaling to it.
 #'
 #' @inherit bigstatsr-package params details
 #' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init
 #'
-#' @return \eqn{X.train^T X.train} as a `big.matrix`. Its dimension
-#' is ncol(X) x ncol(X) and its type is `double`.
+#' @return \eqn{X.train^T X.train} as a `big.matrix`. Its dimensions
+#' are both `ncol(X)` and its type is `double`.
 #' @export
+#' @seealso [crossprod]
 #'
 #' @example examples/example-crossprodSelf.R
 big_crossprodSelf <- function(X,

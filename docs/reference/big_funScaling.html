@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transposition of a &quot;big.matrix&quot;. — big_transpose • bigstatsr</title>
+<title>Some scaling functions. — big_funScaling • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -71,65 +71,57 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transposition of a &quot;big.matrix&quot;.</h1>
+    <h1>Some scaling functions.</h1>
     </div>
 
     
-    <p>This function implements a simple cache-oblivious
-algorithm for the transposition of a &quot;big.matrix&quot;.</p>
+    <p>Some scaling functions for a &quot;big.matrix&quot; to be used as
+the <code>fun.scaling</code> parameter of some functions of this package.</p>
     
 
-    <pre><span class='fu'>big_transpose</span>(<span class='no'>X</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>big_center</span>(<span class='no'>X</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)))
+
+<span class='fu'>big_scale</span>(<span class='no'>X</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)))
+
+<span class='fu'>big_noscale</span>(<span class='no'>X</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>X</dt>
       <dd>A <a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix-class'>big.matrix</a>.
 You shouldn&#39;t have missing values in your data.</dd>
-      <dt>...</dt>
-      <dd>Arguments passed on to <code>bigmemory::big.matrix</code>
-<dl class='dl-horizontal'>
-  <dt>dimnames</dt><dd>a list of the row and column names; use with caution 
-for large objects.</dd>
-  <dt>separated</dt><dd>use separated column organization of the data; 
-see details.</dd>
-  <dt>backingfile</dt><dd>the root name for the file(s) for the cache of <code>x</code>.</dd>
-  <dt>backingpath</dt><dd>the path to the directory containing the file 
-backing cache.</dd>
-  <dt>descriptorfile</dt><dd>the name of the file to hold the backingfile 
-description, for subsequent use with <code>attach.big.matrix</code>; 
-if <code>NULL</code>, the <code>backingfile</code> is used as the root part of the 
-descriptor file name.  The descriptor file is placed in the same directory 
-as the backing files.</dd>
-  <dt>binarydescriptor</dt><dd>the flag to specify if the binary RDS format 
-should be used for the backingfile description, for subsequent use with 
-<code>attach.big.matrix</code>; if <code>NULL</code> of <code>FALSE</code>, the 
-<code>dput()</code> file format is used.</dd>
-  <dt>shared</dt><dd><code>TRUE</code> by default, and always <code>TRUE</code> if the 
-<code>big.matrix</code> is file-backed.  For a non-filebacked <code>big.matrix</code>, 
-<code>shared=FALSE</code> uses non-shared memory, which can be more stable for 
-large (say, &gt;50% of RAM) objects.  Shared memory allocation can sometimes 
-fail in such cases due to exhausted shared-memory resources in the system.</dd>
-</dl>
-</dd>
+      <dt>ind.train</dt>
+      <dd>An optional vector of the row indices that are used,
+for the training part. If not specified, all data are used.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The transposed big.matrix. Its dimension and type
-are automatically determined from the input <code>big.matrix</code>.</p>
+    <p>A named list of two vectors &quot;mean&quot; and &quot;sd&quot; which are as long as
+the number of columns of <code>X</code>. Equivalence with scale:
+<ul>
+<li> <code>big_noscale</code>: <code>center = FALSE</code> &amp; <code>scale = FALSE</code>,
+</li>
+<li> <code>big_center</code>:  <code>center = TRUE</code>  &amp; <code>scale = FALSE</code>,
+</li>
+<li> <code>big_scale</code>:   <code>center = TRUE</code>  &amp; <code>scale = TRUE</code>.
+</li>
+</ul></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>big.matrix</span>(<span class='fl'>11</span>, <span class='fl'>23</span>, <span class='kw'>shared</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
-
-<span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>, <span class='kw'>shared</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>print</span>(<span class='fu'>identical</span>(
-  <span class='fu'>t</span>(<span class='no'>X</span>[,]),
-  <span class='no'>Xt</span>[,]
-))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>print</span>(<span class='no'>big_center</span>)</div><div class='output co'>#&gt; function(X, ind.train = seq(nrow(X))) {
+#&gt;   means &lt;- colmeans(X, ind.train)
+#&gt;   list(mean = means, sd = rep(1, ncol(X)))
+#&gt; }
+#&gt; &lt;environment: namespace:bigstatsr&gt;</div><div class='input'><span class='fu'>print</span>(<span class='no'>big_scale</span>)</div><div class='output co'>#&gt; function(X, ind.train = seq(nrow(X))) {
+#&gt;   colmeans_sds(X, ind.train)
+#&gt; }
+#&gt; &lt;environment: namespace:bigstatsr&gt;</div><div class='input'><span class='fu'>print</span>(<span class='no'>big_noscale</span>)</div><div class='output co'>#&gt; function(X, ind.train = seq(nrow(X))) {
+#&gt;   m &lt;- ncol(X)
+#&gt;   list(mean = rep(0, m), sd = rep(1, m))
+#&gt; }
+#&gt; &lt;environment: namespace:bigstatsr&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

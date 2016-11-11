@@ -19,42 +19,32 @@ void tcrossprodEigen(SEXP res, const Eigen::Map<Eigen::MatrixXd> bM) {
     Eigen::Map<Eigen::MatrixXd>((double*)xpMatRes->matrix(), n, n);
 
   bMRes.selfadjointView<Eigen::Upper>().rankUpdate(bM);
-
-  return;
 }
 
 /******************************************************************************/
 
-// [[Rcpp::export]]
-void tcrossprodEigen2(SEXP res,
-                      const Eigen::Map<Eigen::MatrixXd> X,
-                      const Eigen::Map<Eigen::MatrixXd> Y) {
-
-  XPtr<BigMatrix> xpMatRes(res);
-
-  // won't work with a sub.big.matrix
-  Eigen::Map<Eigen::MatrixXd> bMRes =
-    Eigen::Map<Eigen::MatrixXd>((double*)xpMatRes->matrix(),
-                                xpMatRes->nrow(),
-                                xpMatRes->ncol());
-
-  bMRes += X * Y.adjoint();
-
-  return;
-}
+// // [[Rcpp::export]]
+// void tcrossprodEigen2(SEXP res,
+//                       const Eigen::Map<Eigen::MatrixXd> X,
+//                       const Eigen::Map<Eigen::MatrixXd> Y) {
+//
+//   XPtr<BigMatrix> xpMatRes(res);
+//
+//   // won't work with a sub.big.matrix
+//   Eigen::Map<Eigen::MatrixXd> bMRes =
+//     Eigen::Map<Eigen::MatrixXd>((double*)xpMatRes->matrix(),
+//                                 xpMatRes->nrow(),
+//                                 xpMatRes->ncol());
+//
+//   bMRes += X * Y.transpose();
+// }
 
 /******************************************************************************/
-
-// [[Rcpp::export]]
-Eigen::MatrixXd crossprodEigen4(const Eigen::Map<Eigen::MatrixXd> X,
-                                const Eigen::Map<Eigen::MatrixXd> Y) {
-  return X.transpose() * Y;
-}
 
 // [[Rcpp::export]]
 Eigen::MatrixXd crossprodEigen5(const Eigen::Map<Eigen::MatrixXd> X,
                                 const Eigen::Map<Eigen::MatrixXd> Y) {
-  return X.adjoint() * Y;
+  return X.transpose() * Y;
 }
 
 /******************************************************************************/
@@ -88,8 +78,6 @@ void incrSup(SEXP pBigMat, const NumericMatrix& source) {
       macc[j][i] += source(i,j);
     }
   }
-
-  return;
 }
 
 /******************************************************************************/
@@ -104,8 +92,6 @@ void incrAll(SEXP pBigMat, const NumericMatrix& source) {
       macc[j][i] += source(i,j);
     }
   }
-
-  return;
 }
 
 /******************************************************************************/
@@ -120,8 +106,6 @@ void complete(SEXP pBigMat) {
       macc[j][i] = macc[i][j];
     }
   }
-
-  return;
 }
 
 /******************************************************************************/

@@ -2,7 +2,7 @@
 % Please edit documentation in R/randomSVD.R
 \name{big_randomSVD}
 \alias{big_randomSVD}
-\title{A randomized algorithm for SVD.}
+\title{A randomized algorithm for SVD}
 \usage{
 big_randomSVD(X, fun.scaling = fun_scale, ind.train = seq(nrow(X)),
   block.size = 1000, K = 10, I = 20, use.Eigen = TRUE, ncores = 1,

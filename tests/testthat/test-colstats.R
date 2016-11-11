@@ -10,40 +10,20 @@ x <- matrix(rnorm(100, 0, 5), 10, 10)
 ind <- 1:5
 
 # variables to test
-ALL.FUN <- c("sum", "mean", "sd", "var")
+ALL.FUN <- c("sum", "var")
 
 ################################################################################
 
 test_that("Equality with matrix operations", {
   for (t in ALL.TYPES) {
-    #printf("\nTesting type %s\n", t)
-
     X <- as.big.matrix(x, type = t)
 
     for (f in ALL.FUN) {
       eval(parse(text = sprintf(
-        "expect_equal(apply(X[,], 2, %s), col%ss(X))", f, f)))
+        "expect_equal(big_colstats(X)$%s, apply(X[,], 2, %s))", f, f)))
       eval(parse(text = sprintf(
-        "expect_equal(apply(X[ind, ], 2, %s), col%ss(X, ind))", f, f)))
+        "expect_equal(big_colstats(X, ind)$%s, apply(X[ind, ], 2, %s))", f, f)))
     }
-  }
-})
-
-################################################################################
-
-test_that("Equality with colmeans_sd", {
-  for (t in ALL.TYPES) {
-    #printf("\nTesting type %s\n", t)
-
-    X <- as.big.matrix(x, type = t)
-
-    res <- colmeans_sds(X)
-    expect_equal(res$mean, colmeans(X))
-    expect_equal(res$sd, colsds(X))
-
-    res <- colmeans_sds(X, ind)
-    expect_equal(res$mean, colmeans(X, ind))
-    expect_equal(res$sd, colsds(X, ind))
   }
 })
 
@@ -54,7 +34,7 @@ test_that("Expect error from unknown type", {
   X <- as.big.matrix(matrix(x), type = "raw")
   for (f in ALL.FUN) {
     eval(parse(text = sprintf(
-      "expect_error(col%ss(X), ERROR_TYPE, fixed = TRUE)", f)))
+      "expect_error(big_colstats(X)$%s, ERROR_TYPE, fixed = TRUE)", f)))
   }
 })
 
