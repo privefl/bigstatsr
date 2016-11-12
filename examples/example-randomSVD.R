@@ -2,11 +2,13 @@
 X <- big.matrix(1023, 511)
 X[] <- rnorm(length(X))
 
+
 # Comparing with prcomp
 test <- big_randomSVD(X = X,
                       fun.scaling = big_scale(),
                       block.size = 50,
                       ncores = 1)
+str(test)
 
 pca <- prcomp(X[,], center = TRUE, scale. = TRUE)
 
@@ -37,4 +39,3 @@ print(all.equal(test2$sds, pca2$scale))
 scores2 <- test2$u %*% diag(test2$d)
 plot(as.numeric(scores2), as.numeric(pca2$x[, 1:10]))
 plot(as.numeric(test2$v), as.numeric(pca2$rotation[, 1:10]))
-

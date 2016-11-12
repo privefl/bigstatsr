@@ -5,7 +5,7 @@
 \title{Crossprod}
 \usage{
 big_crossprodSelf(X, fun.scaling, ind.train = seq(nrow(X)),
-  block.size = 1000, use.Eigen = TRUE, ...)
+  block.size = 1000, use.Eigen = TRUE, returnScale = FALSE, ...)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -23,6 +23,10 @@ Default is \code{1000}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default is \code{TRUE}. See details.}
+
+\item{returnScale}{Boolean whether to return a list with
+the two vectors \code{mean} and \code{sd} used for scaling along
+with \eqn{K = X.train X.train^T}. Default is \code{FALSE}.}
 
 \item{...}{Arguments passed on to \code{bigmemory::big.matrix}
 \describe{
@@ -96,6 +100,6 @@ print(dim(test2))
 print(all.equal(test2[,], crossprod(X[ind, ])))
 }
 \seealso{
-\link{crossprod}
+\link[base:crossprod]{crossprod}
 }
 

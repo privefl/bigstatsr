@@ -5,6 +5,9 @@
 #'
 #' @inherit bigstatsr-package params details
 #' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init
+#' @param returnScale Boolean whether to return a list with
+#' the two vectors `mean` and `sd` used for scaling along
+#' with \eqn{K = X.train X.train^T}. Default is `FALSE`.
 #'
 #' @return \eqn{X.train X.train^T} as a `big.matrix`. Its dimensions
 #' are both `length(ind.train)` and its type is `double`.
@@ -17,6 +20,7 @@ big_tcrossprodSelf <- function(X,
                                ind.train = seq(nrow(X)),
                                block.size = 1000,
                                use.Eigen = TRUE,
+                               returnScale = FALSE,
                                ...) {
   check_X(X)
 
@@ -44,5 +48,5 @@ big_tcrossprodSelf <- function(X,
   # Complete the lower part of the symmetric matrix
   complete(bigK@address)
 
-  bigK
+  `if`(returnScale, c(K = bigK, means_sds), bigK)
 }

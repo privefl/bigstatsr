@@ -5,6 +5,7 @@
 #'
 #' @inherit bigstatsr-package params details
 #' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init
+#' @inheritParams big_tcrossprodSelf
 #'
 #' @return \eqn{X.train^T X.train} as a `big.matrix`. Its dimensions
 #' are both `ncol(X)` and its type is `double`.
@@ -17,6 +18,7 @@ big_crossprodSelf <- function(X,
                               ind.train = seq(nrow(X)),
                               block.size = 1000,
                               use.Eigen = TRUE,
+                              returnScale = FALSE,
                               ...) {
   check_X(X)
 
@@ -49,5 +51,5 @@ big_crossprodSelf <- function(X,
   # Complete the lower part of the symmetric big.matrix
   complete(bigK@address)
 
-  bigK
+  `if`(returnScale, c(K = bigK, means_sds), bigK)
 }

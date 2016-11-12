@@ -20,7 +20,7 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
 
   # shared big.matrices
   G <- big.matrix(n, L, type = "double", shared = TRUE)
-  G[] <- rnorm(n * L) # G0
+  G[] <- stats::rnorm(n * L) # G0
   H <- big.matrix(m, L * I, type = "double", shared = TRUE)
   U <- big.matrix(m, L * I, type = "double", shared = TRUE)
   T.t <- big.matrix(n, L * I, type = "double", shared = TRUE, init = 0)

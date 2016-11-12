@@ -48,30 +48,6 @@ BigMult2 <- function(X, mat, ind.train, block.size,
 
 ################################################################################
 
-# BigCrossprod2 <- function(X, mat, block.size,
-#                           vec.center, vec.scale,
-#                           use.Eigen = TRUE) {
-#   m <- ncol(X)
-#   res <- matrix(0, m, ncol(mat))
-#
-#   intervals <- CutBySize(m, block.size)
-#   nb.block <- nrow(intervals)
-#
-#   for (j in 1:nb.block) {
-#     ind <- seq2(intervals[j, ])
-#     tmp <- scaling(X[, ind], vec.center[ind], vec.scale[ind])
-#     if (use.Eigen) {
-#       res[ind, ] <- crossprodEigen5(tmp, mat)
-#     } else {
-#       res[ind, ] <- crossprod(tmp, mat)
-#     }
-#   }
-#
-#   res
-# }
-
-################################################################################
-
 #' A randomized algorithm for SVD.
 #'
 #' A randomized algorithm for SVD (or PCA) of a "big.matrix".

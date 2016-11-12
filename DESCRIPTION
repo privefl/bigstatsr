@@ -2,7 +2,7 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Bigmemory Matrices
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: person("Florian", "Privé",
     email = "florian.prive.21@gmail.com",
     role = c("aut", "cre"))
@@ -11,11 +11,11 @@ Description: Easy-to-use, efficient, flexible and scalable
 License: GPL-3
 LazyData: TRUE
 LinkingTo: RcppEigen, Rcpp, bigmemory, BH
-Imports: Rcpp, RSpectra
+Imports: Rcpp, RSpectra, stats
 Depends: R (>= 3.2.3), bigmemory
 RoxygenNote: 5.0.1.9000
 Roxygen: list(markdown = TRUE)
-Suggests: testthat, covr, MASS, foreach, parallel, doParallel, flock
+Suggests: testthat, covr, foreach, parallel, doParallel, flock
 Remotes: privefl/bigmemory, systematicinvestor/flock
 URL: https://github.com/privefl/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
