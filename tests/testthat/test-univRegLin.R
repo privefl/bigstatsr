@@ -1,6 +1,6 @@
 ################################################################################
 
-context("REGLIN")
+context("UNIV_REG_LIN")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)

@@ -1,5 +1,3 @@
-################################################################################
-
 #' @title Univariate linear regression
 #' @description Results of __univariate__ linear regressions
 #' (intercept, slope and coefficient of determination)
@@ -19,5 +17,3 @@ big_univRegLin <- function(X, y, ind.train = seq(nrow(X))) {
   rownames(res) <- c("Intercepts", "Slopes", "R2")
   res
 }
-
-################################################################################

@@ -6,6 +6,9 @@ examples
 ^\.travis\.yml$
 ^README\.Rmd$
 ^README\.html$
-tmp-tests
-tmp-save
+^tmp-tests$
+^tmp-save$
+^tmp-docs$
+^tmp-results$
 ^docs$
+mutex

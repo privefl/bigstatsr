@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Univariate linear regression � big_univRegLin • bigstatsr</title>
+<title>Univariate linear regression — big_univRegLin • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -125,13 +125,13 @@ for the training part. If not specified, all data are used.</dd>
   <span class='no'>res</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='no'>j</span>] <span class='kw'>&lt;-</span> <span class='no'>mylm</span>$<span class='no'>coefficients</span>
   <span class='no'>res</span>[<span class='fl'>3</span>, <span class='no'>j</span>] <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>mylm</span>)$<span class='no'>r.squared</span>
 }
-<span class='fu'>print</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;            [,1]       [,2]       [,3]
-#&gt; [1,] 0.01253224 -0.9848709 0.01253224
-#&gt; [2,] 0.99740313  0.9974031 0.49870156
-#&gt; [3,] 0.81428674  0.8142867 0.81428674</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>x.big</span>, <span class='no'>y2</span>))</div><div class='output co'>#&gt;                  [,1]       [,2]       [,3]
-#&gt; Intercepts 0.01253224 -0.9848709 0.01253224
-#&gt; Slopes     0.99740313  0.9974031 0.49870156
-#&gt; R2         0.81428674  0.8142867 0.81428674</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;             [,1]       [,2]        [,3]
+#&gt; [1,] 0.001958976 -1.0106413 0.001958976
+#&gt; [2,] 1.012600237  1.0126002 0.506300119
+#&gt; [3,] 0.797800703  0.7978007 0.797800703</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>x.big</span>, <span class='no'>y2</span>))</div><div class='output co'>#&gt;                   [,1]       [,2]        [,3]
+#&gt; Intercepts 0.001958976 -1.0106413 0.001958976
+#&gt; Slopes     1.012600237  1.0126002 0.506300119
+#&gt; R2         0.797800703  0.7978007 0.797800703</div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='fu'>length</span>(<span class='no'>x</span>), <span class='fu'>length</span>(<span class='no'>x</span>) / <span class='fl'>2</span>))
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='fl'>3</span>, <span class='fu'>ncol</span>(<span class='no'>x.big</span>))
@@ -140,13 +140,13 @@ for the training part. If not specified, all data are used.</dd>
   <span class='no'>res</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='no'>j</span>] <span class='kw'>&lt;-</span> <span class='no'>mylm</span>$<span class='no'>coefficients</span>
   <span class='no'>res</span>[<span class='fl'>3</span>, <span class='no'>j</span>] <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>mylm</span>)$<span class='no'>r.squared</span>
 }
-<span class='fu'>print</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;            [,1]       [,2]       [,3]
-#&gt; [1,] 0.03228072 -0.9625701 0.03228072
-#&gt; [2,] 0.99485083  0.9948508 0.49742541
-#&gt; [3,] 0.80227481  0.8022748 0.80227481</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>x.big</span>, <span class='no'>y2</span>, <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;                  [,1]       [,2]       [,3]
-#&gt; Intercepts 0.03228072 -0.9625701 0.03228072
-#&gt; Slopes     0.99485083  0.9948508 0.49742541
-#&gt; R2         0.80227481  0.8022748 0.80227481</div></pre>
+<span class='fu'>print</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;              [,1]       [,2]         [,3]
+#&gt; [1,] -0.006866116 -0.9876956 -0.006866116
+#&gt; [2,]  0.980829520  0.9808295  0.490414760
+#&gt; [3,]  0.792188737  0.7921887  0.792188737</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>x.big</span>, <span class='no'>y2</span>, <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;                    [,1]       [,2]         [,3]
+#&gt; Intercepts -0.006866116 -0.9876956 -0.006866116
+#&gt; Slopes      0.980829520  0.9808295  0.490414760
+#&gt; R2          0.792188737  0.7921887  0.792188737</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

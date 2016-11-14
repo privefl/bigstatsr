@@ -1,51 +1,18 @@
-################################################################################
-
-#' @title Standard statistics for **columns** of a big.matrix
-#' @description Standard statistics for **columns** of a big.matrix.
-#' For now, the `sum`, `mean`, `sd` and `var` are implemented.
+#' Standard univariate statistics
+#'
+#' Standard __univariate statistics__ for columns of a big.matrix.
+#' For now, the `sum` and `var` are implemented
+#' (the `mean` and `sd` can easily be deduced, see examples).
+#'
 #' @inheritParams bigstatsr-package
-#' @return Numeric vectors with the column statistics.
-#' @example examples/example.colstats.R
-#' @name colstats
-NULL
-
-################################################################################
-
-#' @rdname colstats
+#'
+#' @return List of two numeric vectors `sum` and `var` with the
+#' corresponding column statistics.
 #' @export
-colsums <- function(X, ind.train = seq_len(nrow(X))) {
+#'
+#' @seealso [colSums] [apply]
+#' @example examples/example-colstats.R
+big_colstats <- function(X, ind.train = seq_len(nrow(X))) {
   check_X(X)
-  bigcolsums(X@address, ind.train)
+  bigcolvars(X@address, ind.train)
 }
-
-#' @rdname colstats
-#' @export
-colmeans <- function(X, ind.train = seq_len(nrow(X))) {
-  check_X(X)
-  colsums(X, ind.train) / length(ind.train)
-}
-
-#' @rdname colstats
-#' @export
-colvars <- function(X, ind.train = seq_len(nrow(X))) {
-  check_X(X)
-  bigcolvars(X@address, ind.train)$var
-}
-
-#' @rdname colstats
-#' @export
-colsds <- function(X, ind.train = seq_len(nrow(X))) {
-  check_X(X)
-  sqrt(colvars(X, ind.train))
-}
-
-#' @rdname colstats
-#' @export
-colmeans_sds <- function(X, ind.train = seq_len(nrow(X))) {
-  check_X(X)
-  tmp <- bigcolvars(X@address, ind.train)
-  list(mean = tmp$sum / length(ind.train),
-       sd = sqrt(tmp$var))
-}
-
-################################################################################

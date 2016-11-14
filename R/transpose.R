@@ -1,6 +1,6 @@
 ################################################################################
 
-#' @title Transposition of a "big.matrix".
+#' @title Transposition
 #' @description This function implements a simple cache-oblivious
 #' algorithm for the transposition of a "big.matrix".
 #' @inheritParams bigstatsr-package
