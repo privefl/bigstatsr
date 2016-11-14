@@ -3,15 +3,16 @@ l <- list(a = 2)
 require(foreach)
 
 test <- function(x, ncores) {
-  cl <- parallel::makeCluster(ncores)
-  doParallel::registerDoParallel(cl)
-
-  res <- foreach(i = 1:ncores, .combine = 'c') %dopar% {
+  if (is.seq <- (ncores == 1)) {
+    foreach::registerDoSEQ()
+  } else {
+    cl <- parallel::makeCluster(ncores)
+    doParallel::registerDoParallel(cl)
+  }
+  res <- foreach(i = seq_len(ncores), .combine = 'c') %dopar% {
     x
   }
-
-  parallel::stopCluster(cl)
-
+  if (!is.seq) parallel::stopCluster(cl)
   res
 }
 
