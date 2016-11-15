@@ -5,8 +5,8 @@
 \title{SVD}
 \usage{
 big_SVD(X, fun.scaling, ind.train = seq(nrow(X)), block.size = 1000,
-  k = NULL, thr.eigval = 0.001, use.Eigen = TRUE, returnU = TRUE,
-  returnV = TRUE)
+  k = NULL, thr.eigval = 0.001, use.Eigen = !detect_MRO(),
+  returnU = TRUE, returnV = TRUE)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -28,11 +28,11 @@ Default is \code{1000}.}
 Default is \code{1e-3}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default is \code{TRUE}. See details.}
+for matrix computations? Default tries to detect MRO. See details.}
 
-\item{returnU}{Logical whether to return U or not.}
+\item{returnU}{Logical whether to return U or not. Default is \code{TRUE}.}
 
-\item{returnV}{Logical whether to return V or not.}
+\item{returnV}{Logical whether to return V or not. Default is \code{TRUE}.}
 }
 \description{
 An algorithm for SVD (or PCA) of a \code{big.matrix} through the eigen

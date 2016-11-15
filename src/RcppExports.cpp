@@ -6,6 +6,44 @@
 
 using namespace Rcpp;
 
+// bigcolvars
+ListOf<NumericVector> bigcolvars(SEXP pBigMat, const IntegerVector& rowInd);
+RcppExport SEXP bigstatsr_bigcolvars(SEXP pBigMatSEXP, SEXP rowIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    __result = Rcpp::wrap(bigcolvars(pBigMat, rowInd));
+    return __result;
+END_RCPP
+}
+// incrMat
+NumericMatrix& incrMat(NumericMatrix& dest, const NumericMatrix& source);
+RcppExport SEXP bigstatsr_incrMat(SEXP destSEXP, SEXP sourceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type dest(destSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
+    __result = Rcpp::wrap(incrMat(dest, source));
+    return __result;
+END_RCPP
+}
+// incrG
+void incrG(SEXP pBigMat, const NumericMatrix& source, double n, double L, double m);
+RcppExport SEXP bigstatsr_incrG(SEXP pBigMatSEXP, SEXP sourceSEXP, SEXP nSEXP, SEXP LSEXP, SEXP mSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
+    Rcpp::traits::input_parameter< double >::type n(nSEXP);
+    Rcpp::traits::input_parameter< double >::type L(LSEXP);
+    Rcpp::traits::input_parameter< double >::type m(mSEXP);
+    incrG(pBigMat, source, n, L, m);
+    return R_NilValue;
+END_RCPP
+}
 // tcrossprodEigen
 void tcrossprodEigen(SEXP res, const Eigen::Map<Eigen::MatrixXd> bM);
 RcppExport SEXP bigstatsr_tcrossprodEigen(SEXP resSEXP, SEXP bMSEXP) {
@@ -71,44 +109,6 @@ BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
     complete(pBigMat);
-    return R_NilValue;
-END_RCPP
-}
-// bigcolvars
-ListOf<NumericVector> bigcolvars(SEXP pBigMat, const IntegerVector& rowInd);
-RcppExport SEXP bigstatsr_bigcolvars(SEXP pBigMatSEXP, SEXP rowIndSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    __result = Rcpp::wrap(bigcolvars(pBigMat, rowInd));
-    return __result;
-END_RCPP
-}
-// incrMat
-NumericMatrix& incrMat(NumericMatrix& dest, const NumericMatrix& source);
-RcppExport SEXP bigstatsr_incrMat(SEXP destSEXP, SEXP sourceSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix& >::type dest(destSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
-    __result = Rcpp::wrap(incrMat(dest, source));
-    return __result;
-END_RCPP
-}
-// incrG
-void incrG(SEXP pBigMat, const NumericMatrix& source, double n, double L, double m);
-RcppExport SEXP bigstatsr_incrG(SEXP pBigMatSEXP, SEXP sourceSEXP, SEXP nSEXP, SEXP LSEXP, SEXP mSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
-    Rcpp::traits::input_parameter< double >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type L(LSEXP);
-    Rcpp::traits::input_parameter< double >::type m(mSEXP);
-    incrG(pBigMat, source, n, L, m);
     return R_NilValue;
 END_RCPP
 }

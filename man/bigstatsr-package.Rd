@@ -24,7 +24,7 @@ sd for every column, to scale each of their elements such as followed:
 \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default is \code{TRUE}. See details.}
+for matrix computations? Default tries to detect MRO. See details.}
 }
 \description{
 Easy-to-use, efficient, flexible and scalable

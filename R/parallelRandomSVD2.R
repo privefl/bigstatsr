@@ -14,7 +14,7 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
 
   TIME <- 0.01
   tmp.lock.name <- "mutex"
-  tmp.lock.names <- paste0(tmp.lock.name, 1:3)
+  tmp.lock.names <- paste(tmp.lock.name, Sys.getpid(), 1:3, sep = '-')
   ifelse(file.exists(tmp.lock.names), FALSE,
          file.create(tmp.lock.names))
 
@@ -125,7 +125,6 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
       H <- attach.big.matrix(H.desc)
       U <- attach.big.matrix(U.desc)
       U[] <- svd(H[,], nv = 0)$u
-      rm(H, U)
     }
     remains[3, 1] <- remains[3, 1] - 1L
     flock::unlock(file.lock3)

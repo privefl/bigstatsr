@@ -5,7 +5,7 @@
 \title{Crossprod}
 \usage{
 big_crossprodSelf(X, fun.scaling, ind.train = seq(nrow(X)),
-  block.size = 1000, use.Eigen = TRUE, returnScale = FALSE, ...)
+  block.size = 1000, use.Eigen = !detect_MRO(), returnScale = FALSE, ...)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -22,7 +22,7 @@ for the training part. If not specified, all data are used.}
 Default is \code{1000}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default is \code{TRUE}. See details.}
+for matrix computations? Default tries to detect MRO. See details.}
 
 \item{returnScale}{Boolean whether to return a list with
 the two vectors \code{mean} and \code{sd} used for scaling along
