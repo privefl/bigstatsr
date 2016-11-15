@@ -35,10 +35,18 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
   T.t.desc <- describe(T.t)
   r.desc <- describe(remains)
 
-  # export function
-  FUN <- fun.scaling
 
-  part <- function(lims) {
+  intervals <- CutBySize(m, nb = ncores)
+
+  if (is.seq <- (ncores == 1)) {
+    registerDoSEQ()
+  } else {
+    cl <- parallel::makeCluster(ncores)
+    doParallel::registerDoParallel(cl)
+  }
+  scaling <- foreach(ic = seq_len(ncores), .combine = 'cbind') %dopar% {
+    lims <- intervals[ic, ]
+
     # get big.matrices
     X.part <- sub.big.matrix(X.desc,
                              firstCol = lims[1],
@@ -46,7 +54,7 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
                              backingpath = backingpath)
 
     # scaling
-    means_sds <- FUN(X.part, ind.train)
+    means_sds <- fun.scaling(X.part, ind.train)
     means <- means_sds$mean
     sds <- means_sds$sd
     rm(means_sds)
@@ -150,13 +158,7 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
 
     rbind(means, sds)
   }
-
-  intervals <- CutBySize(m, nb = ncores)
-  obj <- foreach::foreach(i = 1:ncores, .combine = 'cbind',
-                          .packages = "bigmemory")
-  expr_fun <- function(i) part(intervals[i, ])
-
-  scaling <- foreach2(obj, expr_fun, ncores)
+  if (!is.seq) parallel::stopCluster(cl)
 
   # delete temporary lock files
   unlink(tmp.lock.names)
