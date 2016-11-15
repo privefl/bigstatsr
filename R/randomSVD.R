@@ -11,6 +11,8 @@
 #' @param backingpath If `X` is filebacked and parallelism is used,
 #' the path where are stored the files that are backing `X`.
 #'
+#' @import foreach
+#'
 #' @return
 #' @export
 #'

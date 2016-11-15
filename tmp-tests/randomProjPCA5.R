@@ -7,30 +7,25 @@ require(bigstatsr)
 x <- AttachBigSNP("test_doc", "../bigsnpr/backingfiles")
 X <- x$genotypes
 
-f1 <- function(X) {
-  means <- colmeans(X)
+f1 <- function(X, ind.train) {
+  means <- big_colstats(X, ind.train)$sum / length(ind.train)
   p <- means / 2
   sds <- sqrt(2 * p * (1 - p))
   list(mean = means, sd = sds)
 }
 
-f2 <- function(X) {
+f2 <- function(X, ind.train) {
   m <- ncol(X)
   list(mean = rep(0, m), sd = rep(1, m))
 }
 
-test <- big_randomSVD(X, fun.scaling = f1,
-                      block.size = 100)
+test <- big_randomSVD(X, fun.scaling = f1, block.size = 100,
+                      backingpath = x$backingpath, ncores = 2)
 str(test)
 
 
-# scaling
-tmp <- f1(X)
-X2 <- sweep(sweep(X[,], 2, tmp$mean, '-'), 2, tmp$sd, '/')
+X2 <- big_transpose(X, shared = TRUE)
 
-X2.svd <- svd(X2, nu = 10, nv = 10)
-str(X2.svd)
+test2 <- big_randomSVD(X2, fun.scaling = f1, block.size = 100, ncores = 2)
+str(test2)
 
-
-plot(as.numeric(X2.svd$u), as.numeric(test$u), pch = 19)
-plot(as.numeric(X2.svd$v), as.numeric(test$v), pch = 19)
