@@ -5,7 +5,7 @@ DualBigPCA <- function(X, fun.scaling,
                        block.size = 1e3,
                        k = NULL,
                        thr.eigval = 1e-3,
-                       use.Eigen = TRUE,
+                       use.Eigen = !detect_MRO(),
                        returnU = TRUE,
                        returnV = TRUE) {
 

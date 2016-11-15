@@ -101,6 +101,7 @@ plot(as.numeric(scores2), as.numeric(pca2$x[, 1:10]))
 plot(as.numeric(test2$v), as.numeric(pca2$rotation[, 1:10]))
 }
 \references{
+The "blanczos" algorithm in
 Rokhlin, V., Szlam, A., & Tygert, M. (2010).
 A Randomized Algorithm for Principal Component Analysis.
 SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.

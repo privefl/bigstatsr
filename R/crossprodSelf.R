@@ -17,7 +17,7 @@ big_crossprodSelf <- function(X,
                               fun.scaling,
                               ind.train = seq(nrow(X)),
                               block.size = 1000,
-                              use.Eigen = TRUE,
+                              use.Eigen = !detect_MRO(),
                               returnScale = FALSE,
                               ...) {
   check_X(X)
