@@ -53,6 +53,10 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
                              lastCol = lims[2],
                              backingpath = backingpath)
 
+    # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
+    multi <- (!is.seq) && detect_MRO()
+    if (multi) nthreads.save <- RevoUtilsMath::setMKLthreads(1)
+
     # scaling
     means_sds <- fun.scaling(X.part, ind.train)
     means <- means_sds$mean
@@ -118,7 +122,9 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
     file.lock3 <- flock::lock(tmp.lock.names[3])
     if (remains[3, 1] == 1) {
       R <- attach.big.matrix(R.desc)
+      if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)
       Q[] <- svd(R[,], nv = 0)$u
+      if (multi) nthreads.save <- RevoUtilsMath::setMKLthreads(1)
     }
     remains[3, 1] <- remains[3, 1] - 1L
     flock::unlock(file.lock3)
@@ -138,12 +144,11 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
       }
     }
 
+    if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)
+
     rbind(means, sds)
   }
   if (!is.seq) parallel::stopCluster(cl)
-
-                         # .packages = "bigmemory")
-
 
   # delete temporary lock files
   unlink(tmp.lock.names)

@@ -53,6 +53,10 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
                              lastCol = lims[2],
                              backingpath = backingpath)
 
+    # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
+    multi <- (!is.seq) && detect_MRO()
+    if (multi) nthreads.save <- RevoUtilsMath::setMKLthreads(1)
+
     # scaling
     means_sds <- fun.scaling(X.part, ind.train)
     means <- means_sds$mean
@@ -124,7 +128,9 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
     if (remains[3, 1] == 1) {
       H <- attach.big.matrix(H.desc)
       U <- attach.big.matrix(U.desc)
+      if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)
       U[] <- svd(H[,], nv = 0)$u
+      if (multi) nthreads.save <- RevoUtilsMath::setMKLthreads(1)
     }
     remains[3, 1] <- remains[3, 1] - 1L
     flock::unlock(file.lock3)
@@ -154,6 +160,8 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
     flock::unlock(file.lock4)
     # wait for others at barrier
     while (remains[4, 1] > 0) Sys.sleep(TIME)
+
+    if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)
 
     rbind(means, sds)
   }
