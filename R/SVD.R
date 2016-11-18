@@ -1,13 +1,13 @@
 ################################################################################
 
 DualBigPCA <- function(X, fun.scaling,
-                       ind.train = seq(nrow(X)),
-                       block.size = 1e3,
-                       k = NULL,
-                       thr.eigval = 1e-3,
-                       use.Eigen = !detect_MRO(),
-                       returnU = TRUE,
-                       returnV = TRUE) {
+                       ind.train,
+                       block.size,
+                       k,
+                       thr.eigval,
+                       use.Eigen,
+                       returnU,
+                       returnV) {
 
   tmp <- big_tcrossprodSelf(X = X,
                             fun.scaling = fun.scaling,
@@ -39,13 +39,13 @@ DualBigPCA <- function(X, fun.scaling,
 ################################################################################
 
 PrimalBigPCA <- function(X, fun.scaling,
-                         ind.train = seq(nrow(X)),
-                         block.size = 1e3,
-                         k = NULL,
-                         thr.eigval = 1e-3,
-                         use.Eigen = TRUE,
-                         returnU = TRUE,
-                         returnV = TRUE) {
+                         ind.train,
+                         block.size,
+                         k,
+                         thr.eigval,
+                         use.Eigen,
+                         returnU,
+                         returnV) {
 
   tmp <- big_crossprodSelf(X = X,
                            fun.scaling = fun.scaling,
