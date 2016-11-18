@@ -34,16 +34,13 @@ big_randomSVD <- function(X, fun.scaling,
 
   if (length(ind.train) > ncol(X)) {
     printf("(1)")
-    res <- ParallelRandomSVD1(X, fun.scaling, ind.train, block.size,
-                              K, I, use.Eigen, backingpath, ncores)
+    ParallelRandomSVD1(X, fun.scaling, ind.train, block.size,
+                       K, I, use.Eigen, backingpath, ncores)
   } else {
     printf("(2)")
-    res <- ParallelRandomSVD2(X, fun.scaling, ind.train, block.size,
-                              K, I, use.Eigen, backingpath, ncores)
+    ParallelRandomSVD2(X, fun.scaling, ind.train, block.size,
+                       K, I, use.Eigen, backingpath, ncores)
   }
-
-  if (file.exists("NA")) unlink("NA")
-  res
 }
 
 ################################################################################

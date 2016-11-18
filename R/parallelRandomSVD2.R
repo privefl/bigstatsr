@@ -14,7 +14,7 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
 
   TIME <- 0.01
   tmp.lock.name <- "mutex"
-  tmp.lock.names <- paste(tmp.lock.name, Sys.getpid(), 1:3, sep = '-')
+  tmp.lock.names <- paste(tmp.lock.name, Sys.getpid(), 1:4, sep = '-')
   ifelse(file.exists(tmp.lock.names), FALSE,
          file.create(tmp.lock.names))
 
