@@ -1,13 +1,13 @@
 ################################################################################
 
 DualBigPCA <- function(X, fun.scaling,
-                       ind.train = seq(nrow(X)),
-                       block.size = 1e3,
-                       k = NULL,
-                       thr.eigval = 1e-3,
-                       use.Eigen = TRUE,
-                       returnU = TRUE,
-                       returnV = TRUE) {
+                       ind.train,
+                       block.size,
+                       k,
+                       thr.eigval,
+                       use.Eigen,
+                       returnU,
+                       returnV) {
 
   tmp <- big_tcrossprodSelf(X = X,
                             fun.scaling = fun.scaling,
@@ -39,13 +39,13 @@ DualBigPCA <- function(X, fun.scaling,
 ################################################################################
 
 PrimalBigPCA <- function(X, fun.scaling,
-                         ind.train = seq(nrow(X)),
-                         block.size = 1e3,
-                         k = NULL,
-                         thr.eigval = 1e-3,
-                         use.Eigen = TRUE,
-                         returnU = TRUE,
-                         returnV = TRUE) {
+                         ind.train,
+                         block.size,
+                         k,
+                         thr.eigval,
+                         use.Eigen,
+                         returnU,
+                         returnV) {
 
   tmp <- big_crossprodSelf(X = X,
                            fun.scaling = fun.scaling,
@@ -86,8 +86,8 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' @param k Number of PCs to compute. Default is all.
 #' @param thr.eigval Threshold to remove "unsignificant" PCs.
 #' Default is \code{1e-3}.
-#' @param returnU Logical whether to return U or not.
-#' @param returnV Logical whether to return V or not.
+#' @param returnU Logical whether to return U or not. Default is `TRUE`.
+#' @param returnV Logical whether to return V or not. Default is `TRUE`.
 #'
 #' @export
 #' @return
@@ -99,7 +99,7 @@ big_SVD <- function(X, fun.scaling,
                     block.size = 1e3,
                     k = NULL,
                     thr.eigval = 1e-3,
-                    use.Eigen = TRUE,
+                    use.Eigen = !detect_MRO(),
                     returnU = TRUE,
                     returnV = TRUE) {
   check_X(X)

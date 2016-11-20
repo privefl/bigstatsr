@@ -14,7 +14,7 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
 
   TIME <- 0.01
   tmp.lock.name <- "mutex"
-  tmp.lock.names <- paste0(tmp.lock.name, 1:3)
+  tmp.lock.names <- paste(tmp.lock.name, Sys.getpid(), 1:3, sep = '-')
   ifelse(file.exists(tmp.lock.names), FALSE,
          file.create(tmp.lock.names))
 
@@ -35,18 +35,30 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
   T.t.desc <- describe(T.t)
   r.desc <- describe(remains)
 
-  # export function
-  FUN <- fun.scaling
 
-  part <- function(lims) {
+  intervals <- CutBySize(m, nb = ncores)
+
+  if (is.seq <- (ncores == 1)) {
+    registerDoSEQ()
+  } else {
+    cl <- parallel::makeCluster(ncores)
+    doParallel::registerDoParallel(cl)
+  }
+  scaling <- foreach(ic = seq_len(ncores), .combine = 'cbind') %dopar% {
+    lims <- intervals[ic, ]
+
     # get big.matrices
     X.part <- sub.big.matrix(X.desc,
                              firstCol = lims[1],
                              lastCol = lims[2],
                              backingpath = backingpath)
 
+    # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
+    multi <- (!is.seq) && detect_MRO()
+    if (multi) nthreads.save <- RevoUtilsMath::setMKLthreads(1)
+
     # scaling
-    means_sds <- FUN(X.part, ind.train)
+    means_sds <- fun.scaling(X.part, ind.train)
     means <- means_sds$mean
     sds <- means_sds$sd
     rm(means_sds)
@@ -110,7 +122,9 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
     file.lock3 <- flock::lock(tmp.lock.names[3])
     if (remains[3, 1] == 1) {
       R <- attach.big.matrix(R.desc)
+      if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)
       Q[] <- svd(R[,], nv = 0)$u
+      if (multi) nthreads.save <- RevoUtilsMath::setMKLthreads(1)
     }
     remains[3, 1] <- remains[3, 1] - 1L
     flock::unlock(file.lock3)
@@ -130,15 +144,11 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
       }
     }
 
+    if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)
+
     rbind(means, sds)
   }
-
-  intervals <- CutBySize(m, nb = ncores)
-  obj <- foreach::foreach(i = 1:ncores, .combine = 'cbind',
-                          .packages = "bigmemory")
-  expr_fun <- function(i) part(intervals[i, ])
-
-  scaling <- foreach2(obj, expr_fun, ncores)
+  if (!is.seq) parallel::stopCluster(cl)
 
   # delete temporary lock files
   unlink(tmp.lock.names)

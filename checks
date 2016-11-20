@@ -1,0 +1,234 @@
+─  Building package
+─  Uploading package
+─  Preparing build, see status at
+   http://builder.r-hub.io/status/bigstatsr_0.1.0.9000.tar.gz-2185fdb508244e7c91b996dc70a31509
+   http://builder.r-hub.io/status/bigstatsr_0.1.0.9000.tar.gz-98ee153fb7784f5f866d15155a99a607
+   http://builder.r-hub.io/status/bigstatsr_0.1.0.9000.tar.gz-ddbf623de9a1424db0197d164afda9b8
+   http://builder.r-hub.io/status/bigstatsr_0.1.0.9000.tar.gz-afb604e9b9d54f48a6b6e844c6c31ac2
+─  Build started
+─  Creating new user
+─  Downloading and unpacking package file
+─  Querying package dependencies
+─  Installing package dependencies
+─  Running R CMD check
+   setting _R_CHECK_FORCE_SUGGESTS_ to false
+   setting _R_CHECK_FORCE_SUGGESTS_ to true
+─  using log directory 'C:/Users/USERnaHNfbLyCg/bigstatsr.Rcheck'
+─  using R version 3.2.5 (2016-04-14)
+─  using platform: x86_64-w64-mingw32 (64-bit)
+─  using session charset: ISO8859-1
+─  using option '--as-cran'
+✔  checking for file 'bigstatsr/DESCRIPTION'
+─  checking extension type ... Package
+─  this is package 'bigstatsr' version '0.1.0.9000'
+─  package encoding: UTF-8
+N  checking CRAN incoming feasibility
+   Maintainer: 'Florian Priv� <florian.prive.21@gmail.com>'
+   New submission
+
+   Unknown, possibly mis-spelled, fields in DESCRIPTION:
+     'Remotes'
+✔  checking package namespace information
+✔  checking package dependencies
+✔  checking if this is a source package
+✔  checking if there is a namespace
+✔  checking for executable files
+✔  checking for hidden files and directories
+✔  checking for portable file names
+✔  checking whether package 'bigstatsr' can be installed
+✔  checking package directory
+✔  checking DESCRIPTION meta-information
+✔  checking installed package size
+✔  checking for left-over files
+✔  checking index information
+✔  checking package subdirectories
+✔  checking R files for non-ASCII characters
+✔  checking R files for syntax errors
+─  loading checks for arch 'i386'
+✔  ** checking whether the package can be loaded
+✔  checking top-level files
+✔  ** checking whether the package can be loaded with stated dependencies
+✔  ** checking whether the package can be unloaded cleanly
+✔  ** checking whether the namespace can be loaded with stated dependencies
+✔  ** checking loading without being on the library search path
+✔  ** checking whether the namespace can be unloaded cleanly
+✔  ** checking use of S3 registration
+─  loading checks for arch 'x64'
+✔  ** checking whether the package can be loaded
+✔  ** checking whether the package can be loaded with stated dependencies
+✔  ** checking whether the package can be unloaded cleanly
+✔  ** checking whether the namespace can be loaded with stated dependencies
+✔  ** checking whether the namespace can be unloaded cleanly
+✔  ** checking loading without being on the library search path
+✔  ** checking use of S3 registration
+✔  checking dependencies in R code
+✔  checking S3 generic/method consistency
+✔  checking replacement functions
+✔  checking foreign function calls
+N  checking R code for possible problems
+   ParallelRandomSVD1: no visible binding for global variable 'ic'
+   ParallelRandomSVD2: no visible binding for global variable 'ic'
+✔  checking Rd files
+✔  checking Rd metadata
+✔  checking Rd line widths
+✔  checking Rd cross-references
+✔  checking for missing documentation entries
+✔  checking for code/documentation mismatches
+✔  checking Rd \usage sections
+✔  checking Rd contents
+✔  checking for unstated dependencies in examples
+✔  checking line endings in C/C++/Fortran sources/headers
+✔  checking compiled code
+─  checking examples ...
+E  ** running examples for arch 'i386'
+   Running examples in 'bigstatsr-Ex.R' failed
+   The error most likely occurred in:
+
+   > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+   > ### Name: big_randomSVD
+   > ### Title: Partial SVD
+   > ### Aliases: big_randomSVD
+   >
+─  > ### ** Examples
+   >
+   > # Simulating some data
+   > X <- big.matrix(1023, 511)
+   > X[] <- rnorm(length(X))
+   >
+   >
+   > # Comparing with prcomp
+   > test <- big_randomSVD(X = X,
+   +                       fun.scaling = big_scale(),
+   +                       block.size = 50,
+   +                       ncores = 1)
+   (1)> str(test)
+   List of 5
+    $ d    : num [1:10] 54.2 54 53.6 53 53 ...
+    $ u    : num [1:1023, 1:10] 0.06788 -0.03055 0.023501 -0.018473 -0.000867 ...
+    $ v    : num [1:511, 1:10] -0.06586 0.00247 0.03189 0.02274 -0.04374 ...
+    $ means: num [1:511] -0.01827 -0.02483 0.04418 -0.00981 -0.02287 ...
+    $ sds  : num [1:511] 1.04 1.04 1.04 1.02 0.99 ...
+   >
+   > pca <- prcomp(X[,], center = TRUE, scale. = TRUE)
+   >
+   > # same scaling
+   > print(all.equal(test$means, pca$center))
+   [1] TRUE
+   > print(all.equal(test$sds, pca$scale))
+   [1] TRUE
+   >
+   > # scores and loadings are the same or opposite
+   > scores <- test$u %*% diag(test$d)
+   > plot(as.numeric(scores), as.numeric(pca$x[, 1:10]))
+   > plot(as.numeric(test$v), as.numeric(pca$rotation[, 1:10]))
+   >
+   >
+   > # Using only half of the data for "training"
+   > ind <- sort(sample(nrow(X), nrow(X)/2))
+   >
+   > test2 <- big_randomSVD(X = X, ind.train = ind,
+   +                        fun.scaling = big_scale(),
+   +                        block.size = 10, ncores = 1)
+   (2)Error in ParallelRandomSVD2(X, fun.scaling, ind.train, block.size, K,  :
+     object 'U' not found
+   Calls: big_randomSVD -> ParallelRandomSVD2
+   Execution halted
+E  ** running examples for arch 'x64'
+   Running examples in 'bigstatsr-Ex.R' failed
+
+   > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+   The error most likely occurred in:
+   > ### Name: big_randomSVD
+   > ### Title: Partial SVD
+   >
+   > ### Aliases: big_randomSVD
+─  > ### ** Examples
+   >
+   > # Simulating some data
+   > X <- big.matrix(1023, 511)
+   > X[] <- rnorm(length(X))
+   >
+   >
+   > # Comparing with prcomp
+   > test <- big_randomSVD(X = X,
+   +                       fun.scaling = big_scale(),
+   +                       block.size = 50,
+   +                       ncores = 1)
+   (1)> str(test)
+   List of 5
+    $ d    : num [1:10] 54.2 54 53.6 53 53 ...
+    $ u    : num [1:1023, 1:10] -0.06788 0.03055 -0.023501 0.018473 0.000867 ...
+    $ v    : num [1:511, 1:10] 0.06586 -0.00247 -0.03189 -0.02274 0.04374 ...
+    $ means: num [1:511] -0.01827 -0.02483 0.04418 -0.00981 -0.02287 ...
+    $ sds  : num [1:511] 1.04 1.04 1.04 1.02 0.99 ...
+   >
+   > pca <- prcomp(X[,], center = TRUE, scale. = TRUE)
+   >
+   > # same scaling
+   > print(all.equal(test$means, pca$center))
+   [1] TRUE
+   > print(all.equal(test$sds, pca$scale))
+   [1] TRUE
+   >
+   > # scores and loadings are the same or opposite
+   > plot(as.numeric(scores), as.numeric(pca$x[, 1:10]))
+   > plot(as.numeric(test$v), as.numeric(pca$rotation[, 1:10]))
+   >
+   > # Using only half of the data for "training"
+   > ind <- sort(sample(nrow(X), nrow(X)/2))
+   >
+   > test2 <- big_randomSVD(X = X, ind.train = ind,
+   +                        fun.scaling = big_scale(),
+   +                        block.size = 10, ncores = 1)
+   (2)Error in ParallelRandomSVD2(X, fun.scaling, ind.train, block.size, K,  :
+     object 'U' not found
+   Calls: big_randomSVD -> ParallelRandomSVD2
+   > scores <- test$u %*% diag(test$d)
+   Execution halted
+   >
+✔  checking for unstated dependencies in 'tests'
+─  checking tests ...** running tests for arch 'i386' ...
+     Running 'testthat.R' [69s]
+   Warning message:
+   running command '"C:/PROGRA~1/R/R-32~1.5/bin/i386/R" CMD BATCH --vanilla  "testthat.R" "testthat.Rout"' had status 1
+    ERROR
+   Running the tests in 'tests/testthat.R' failed.
+   Last 13 lines of output:
+     1: big_randomSVD(X = X, ind.train = ind, fun.scaling = big_scale(center = sc$center,
+            scale = sc$scale), K = k) at testthat/test-randomSVD.R:52
+     2: ParallelRandomSVD2(X, fun.scaling, ind.train, block.size, K, I, use.Eigen, backingpath,
+            ncores)
+
+     testthat results ================================================================
+     OK: 94 SKIPPED: 0 FAILED: 3
+     1. Failure: equality with prcomp (@test-randomSVD.R#37)
+     2. Failure: equality with prcomp (@test-randomSVD.R#37)
+     3. Error: equality with prcomp with half of the data (@test-randomSVD.R#52)
+
+     Error: testthat unit tests failed
+     Execution halted
+─  ** running tests for arch 'x64' ...
+     Running 'testthat.R' [71s]
+   Warning message:
+   running command '"C:/PROGRA~1/R/R-32~1.5/bin/x64/R" CMD BATCH --vanilla  "testthat.R" "testthat.Rout"' had status 1
+    ERROR
+   Running the tests in 'tests/testthat.R' failed.
+   Last 13 lines of output:
+     (1)(1)(1)(1)(1)(2)(2)(2)(2)(2)(1)(1)(1)(1)(1)(2)1. Error: equality with prcomp with half of the data (@test-randomSVD.R#52) ----
+     object 'U' not found
+     1: big_randomSVD(X = X, ind.train = ind, fun.scaling = big_scale(center = sc$center,
+            scale = sc$scale), K = k) at testthat/test-randomSVD.R:52
+     2: ParallelRandomSVD2(X, fun.scaling, ind.train, block.size, K, I, use.Eigen, backingpath,
+            ncores)
+
+     testthat results ================================================================
+     OK: 96 SKIPPED: 0 FAILED: 1
+     1. Error: equality with prcomp with half of the data (@test-randomSVD.R#52)
+
+     Error: testthat unit tests failed
+     Execution halted
+✔  checking PDF version of manual
+
+
+── 4 errors ✖ | 0 warnings ✔ | 2 notes ✖
+─  Cleaning up files and user

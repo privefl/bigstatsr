@@ -17,6 +17,12 @@ check_X <- function(X, y = NULL, y.type = "null") {
 
 ################################################################################
 
+detect_MRO <- function() {
+  is.element("RevoUtilsMath", rownames(installed.packages()))
+}
+
+################################################################################
+
 # function for comparing PCs
 diffPCs <- function(test, rot) {
   k <- ncol(test)

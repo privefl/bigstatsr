@@ -5,7 +5,8 @@
 \title{Partial SVD}
 \usage{
 big_randomSVD(X, fun.scaling, ind.train = seq(nrow(X)), block.size = 1000,
-  K = 10, I = 20, use.Eigen = TRUE, ncores = 1, backingpath = NULL)
+  K = 10, I = 20, use.Eigen = !detect_MRO(), ncores = 1,
+  backingpath = NULL)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -27,7 +28,7 @@ be used to compute a lot of PCs. Default is \code{10}.}
 \item{I}{The number of iterations of the algorithm. Default is \code{20}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default is \code{TRUE}. See details.}
+for matrix computations? Default tries to detect MRO. See details.}
 
 \item{ncores}{Number or cores used. Default doesn't use parallelism.}
 
@@ -101,6 +102,7 @@ plot(as.numeric(scores2), as.numeric(pca2$x[, 1:10]))
 plot(as.numeric(test2$v), as.numeric(pca2$rotation[, 1:10]))
 }
 \references{
+The "blanczos" algorithm in
 Rokhlin, V., Szlam, A., & Tygert, M. (2010).
 A Randomized Algorithm for Principal Component Analysis.
 SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.

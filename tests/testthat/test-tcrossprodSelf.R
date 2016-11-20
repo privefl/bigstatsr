@@ -18,7 +18,8 @@ test_that("equality with tcrossprod", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
 
-    test <- big_tcrossprodSelf(X = X, fun.scaling = big_noscale)
+    test <- big_tcrossprodSelf(X = X, fun.scaling = big_noscale,
+                               use.Eigen = (runif(1) > 0.5))
     expect_equal(test[,], tcrossprod(X[,]))
   }
 })
@@ -31,7 +32,8 @@ test_that("equality with tcrossprod with half of the data", {
     X <- as.big.matrix(x, type = t)
 
     test <- big_tcrossprodSelf(X = X, fun.scaling = big_noscale,
-                               ind.train = ind)
+                               ind.train = ind,
+                               use.Eigen = (runif(1) > 0.5))
     expect_equal(test[,], tcrossprod(X[ind, ]))
   }
 })

@@ -20,7 +20,7 @@
 #' \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.
 #'
 #' @param use.Eigen Should the `Eigen` library be used
-#' for matrix computations? Default is `TRUE`. See details.
+#' for matrix computations? Default tries to detect MRO. See details.
 #' @details For matrix computations, using \code{Eigen} library is faster.
 #' However, if you link \code{R} with an optimized math library,
 #' using \code{R}'s base operations is even much faster.
