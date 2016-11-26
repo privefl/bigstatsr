@@ -1,3 +1,5 @@
+source('R/utils.R')
+
 ################################################################################
 
 getHnG <- function(X, G.old, ind.train, block.size,
@@ -68,53 +70,46 @@ BigMult2 <- function(X, mat, ind.train, block.size,
 #' A Randomized Algorithm for Principal Component Analysis.
 #' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 #' doi:10.1137/080736417
-big_randomSVD <- function(X, fun.scaling = fun_scale,
+big_randomSVD2 <- function(X, fun.scaling,
                           ind.train = seq(nrow(X)),
                           block.size = 1e3,
                           K = 10, I = 10,
-                          use.Eigen = TRUE,
-                          ncores = 1,
-                          backingpath = NULL) {
+                          use.Eigen = TRUE) {
   check_X(X)
   stopifnot((ncol(X) - K) >= ((I + 1) * (K + 12)))
 
-  if (ncores >= 1) {
-    ParallelRandomSVD(X, fun.scaling, ind.train, block.size,
-                      K, I, use.Eigen, backingpath, ncores)
-  } else {
-    # parameters
-    L <- K + 12
-    n <- length(ind.train)
-    m <- ncol(X)
-    I <- I + 1
+  # parameters
+  L <- K + 12
+  n <- length(ind.train)
+  m <- ncol(X)
+  I <- I + 1
 
-    # scaling
-    stats <- fun.scaling(X, ind.train)
-    means <- stats$mean
-    sds <- stats$sd
-    rm(stats)
+  # scaling
+  stats <- fun.scaling(X, ind.train)
+  means <- stats$mean
+  sds <- stats$sd
+  rm(stats)
 
-    # computation of G and H
-    H <- list()
-    tmp <- list(G = matrix(rnorm(n * L), n, L)) # G0
-    for (i in 1:I) {
-      tmp <- getHnG(X, tmp$G, ind.train, block.size, means, sds,
-                    use.Eigen = use.Eigen)
-      H[i] <- tmp['H']
-    }
-    rm(tmp)
-
-    # svds
-    H.svd <- svd(do.call(cbind, H), nv = 0) # m * L * I
-    rm(H); gc()
-
-    T.t <- BigMult2(X, H.svd$u, ind.train, block.size, means, sds,
-                    use.Eigen = use.Eigen)
-    T.svd <- svd(T.t, nu = K, nv = K)
-
-    list(d = T.svd$d[1:K], u = T.svd$u, v = H.svd$u %*% T.svd$v,
-         means = means, sds = sds)
+  # computation of G and H
+  H <- list()
+  tmp <- list(G = matrix(rnorm(n * L), n, L)) # G0
+  for (i in 1:I) {
+    tmp <- getHnG(X, tmp$G, ind.train, block.size, means, sds,
+                  use.Eigen = use.Eigen)
+    H[i] <- tmp['H']
   }
+  rm(tmp)
+
+  # svds
+  H.svd <- svd(do.call(cbind, H), nv = 0) # m * L * I
+  rm(H); gc()
+
+  T.t <- BigMult2(X, H.svd$u, ind.train, block.size, means, sds,
+                  use.Eigen = use.Eigen)
+  T.svd <- svd(T.t, nu = K, nv = K)
+
+  list(d = T.svd$d[1:K], u = T.svd$u, v = H.svd$u %*% T.svd$v,
+       means = means, sds = sds)
 }
 
 ### mini test:
