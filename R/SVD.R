@@ -13,12 +13,12 @@ DualBigPCA <- function(X, fun.scaling,
                             fun.scaling = fun.scaling,
                             ind.train = ind.train,
                             block.size = block.size,
-                            use.Eigen = use.Eigen,
-                            returnScale = TRUE)
+                            use.Eigen = use.Eigen)
 
   eig <- `if`(is.null(k),
-              eigen(tmp$K[,], symmetric = TRUE),
-              RSpectra::eigs_sym(tmp$K[,], k))
+              eigen(tmp$K, symmetric = TRUE),
+              RSpectra::eigs_sym(tmp$K, k))
+  tmp$K <- NULL
 
   lastEig <- max(which(eig$values > (thr.eigval * ncol(X))))
 
@@ -51,12 +51,12 @@ PrimalBigPCA <- function(X, fun.scaling,
                            fun.scaling = fun.scaling,
                            ind.train = ind.train,
                            block.size = block.size,
-                           use.Eigen = use.Eigen,
-                           returnScale = TRUE)
+                           use.Eigen = use.Eigen)
 
   eig <- `if`(is.null(k),
-              eigen(tmp$K[,], symmetric = TRUE),
-              RSpectra::eigs_sym(tmp$K[,], k))
+              eigen(tmp$K, symmetric = TRUE),
+              RSpectra::eigs_sym(tmp$K, k))
+  tmp$K <- NULL
 
   lastEig <- max(which(eig$values > (thr.eigval * length(ind.train))))
 

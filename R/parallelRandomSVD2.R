@@ -85,13 +85,8 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
         ind <- seq2(intervals[j, ])
         tmp <- scaling(X.part[ind.train, ind], means[ind], sds[ind])
 
-        if (use.Eigen) {
-          tmp.H <- crossprodEigen5(tmp, old.G)
-          tmp.G <- incrMat(tmp.G, multEigen(tmp, tmp.H))
-        } else {
-          tmp.H <- crossprod(tmp, old.G)
-          tmp.G <- incrMat(tmp.G, tmp %*% tmp.H)
-        }
+        tmp.H <- cross(tmp, old.G, use.Eigen)
+        tmp.G <- incrMat(tmp.G, mult(tmp, tmp.H, use.Eigen))
 
         H.part[ind, 1:L + (i - 1) * L] <- tmp.H
       }
@@ -113,11 +108,7 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
       ind <- seq2(intervals[j, ])
       tmp <- scaling(X.part[ind.train, ind], means[ind], sds[ind])
 
-      if (use.Eigen) {
-        tmp.H <- crossprodEigen5(tmp, old.G)
-      } else {
-        tmp.H <- crossprod(tmp, old.G)
-      }
+      tmp.H <- cross(tmp, old.G, use.Eigen)
 
       H.part[ind, 1:L + (i - 1) * L] <- tmp.H
     }
@@ -144,11 +135,7 @@ ParallelRandomSVD2 <- function(X, fun.scaling,
       ind <- seq2(intervals[j, ])
       tmp <- scaling(X.part[ind.train, ind], means[ind], sds[ind])
 
-      if (use.Eigen) {
-        tmp.T.t <- incrMat(tmp.T.t, multEigen(tmp, U.part[ind, ]))
-      } else {
-        tmp.T.t <- incrMat(tmp.T.t, tmp %*% U.part[ind, ])
-      }
+      tmp.T.t <- incrMat(tmp.T.t, mult(tmp, U.part[ind, ], use.Eigen))
     }
     rm(U.part)
 

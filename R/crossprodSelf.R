@@ -4,11 +4,11 @@
 #' after applying a particular scaling to it.
 #'
 #' @inherit bigstatsr-package params details
-#' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init
-#' @inheritParams big_tcrossprodSelf
 #'
-#' @return \eqn{X.train^T X.train} as a `big.matrix`. Its dimensions
-#' are both `ncol(X)` and its type is `double`.
+#' @return A list of
+#' - \eqn{K = X.train^T X.train},
+#' - a numeric vector `mean` of column scaling,
+#' - a numeric vector `sd` of column scaling.
 #' @export
 #' @seealso [crossprod][base::crossprod]
 #'
@@ -17,19 +17,16 @@ big_crossprodSelf <- function(X,
                               fun.scaling,
                               ind.train = seq(nrow(X)),
                               block.size = 1000,
-                              use.Eigen = !detect_MRO(),
-                              returnScale = FALSE,
-                              ...) {
+                              use.Eigen = !detect_MRO()) {
   check_X(X)
 
   m <- ncol(X)
-  bigK <- big.matrix(m, m, type = "double", ...)
-
-  # function to compute X^T*X
-  intervals <- CutBySize(m, block.size)
-  nb.block <- nrow(intervals)
+  K <- matrix(NA_real_, m, m)
 
   means_sds <- fun.scaling(X, ind.train)
+
+  intervals <- CutBySize(m, block.size)
+  nb.block <- nrow(intervals)
 
   for (j in 1:nb.block) {
     ind1 <- seq2(intervals[j, ])
@@ -42,14 +39,10 @@ big_crossprodSelf <- function(X,
                       means_sds$mean[ind2],
                       means_sds$sd[ind2])
 
-      bigK[ind2, ind1] <- `if`(use.Eigen,
-                               crossprodEigen5(tmp2, tmp1),
-                               crossprod(tmp2, tmp1))
+      K[ind2, ind1] <- cross(tmp2, tmp1, use.Eigen)
     }
   }
 
-  # Complete the lower part of the symmetric big.matrix
-  complete(bigK@address)
-
-  `if`(returnScale, c(K = bigK, means_sds), bigK)
+  # Complete the lower part of the symmetric matrix
+  list(K =  complete2(K), mean = means_sds$mean, sd = means_sds$sd)
 }

@@ -20,7 +20,7 @@ test_that("equality with tcrossprod", {
 
     test <- big_tcrossprodSelf(X = X, fun.scaling = big_noscale,
                                use.Eigen = (runif(1) > 0.5))
-    expect_equal(test[,], tcrossprod(X[,]))
+    expect_equal(test$K, tcrossprod(X[,]))
   }
 })
 
@@ -34,7 +34,7 @@ test_that("equality with tcrossprod with half of the data", {
     test <- big_tcrossprodSelf(X = X, fun.scaling = big_noscale,
                                ind.train = ind,
                                use.Eigen = (runif(1) > 0.5))
-    expect_equal(test[,], tcrossprod(X[ind, ]))
+    expect_equal(test$K, tcrossprod(X[ind, ]))
   }
 })
 

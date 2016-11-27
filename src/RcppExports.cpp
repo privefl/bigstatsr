@@ -74,6 +74,40 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// complete2
+NumericMatrix& complete2(NumericMatrix& mat);
+RcppExport SEXP bigstatsr_complete2(SEXP matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
+    rcpp_result_gen = Rcpp::wrap(complete2(mat));
+    return rcpp_result_gen;
+END_RCPP
+}
+// incrSup2
+NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source);
+RcppExport SEXP bigstatsr_incrSup2(SEXP matSEXP, SEXP sourceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
+    rcpp_result_gen = Rcpp::wrap(incrSup2(mat, source));
+    return rcpp_result_gen;
+END_RCPP
+}
+// tcrossprodEigen3
+void tcrossprodEigen3(Eigen::Map<Eigen::MatrixXd> res, const Eigen::Map<Eigen::MatrixXd> bM);
+RcppExport SEXP bigstatsr_tcrossprodEigen3(SEXP resSEXP, SEXP bMSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type res(resSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type bM(bMSEXP);
+    tcrossprodEigen3(res, bM);
+    return R_NilValue;
+END_RCPP
+}
 // bigcolvars
 ListOf<NumericVector> bigcolvars(SEXP pBigMat, const IntegerVector& rowInd);
 RcppExport SEXP bigstatsr_bigcolvars(SEXP pBigMatSEXP, SEXP rowIndSEXP) {

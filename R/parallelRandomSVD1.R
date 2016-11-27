@@ -74,11 +74,7 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
       ind <- seq2(intervals[j, ])
       tmp <- scaling(X.part[ind.train, ind], means[ind], sds[ind])
 
-      if (use.Eigen) {
-        tmp.R <- incrMat(tmp.R, multEigen(tmp, G.part[ind, ]))
-      } else {
-        tmp.R <- incrMat(tmp.R, tmp %*% G.part[ind, ])
-      }
+      tmp.R <- incrMat(tmp.R, mult(tmp, G.part[ind, ], use.Eigen))
     }
     rm(G.part)
 
@@ -99,11 +95,7 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
         ind <- seq2(intervals[j, ])
         tmp <- scaling(X.part[ind.train, ind], means[ind], sds[ind])
 
-        if (use.Eigen) {
-          tmp.R <- incrMat(tmp.R, multEigen(tmp, crossprodEigen5(tmp, R.part[,])))
-        } else {
-          tmp.R <- incrMat(tmp.R, tmp %*% crossprod(tmp, R.part[,]))
-        }
+        tmp.R <- incrMat(tmp.R, mult(tmp, cross(tmp, R.part[,], use.Eigen), use.Eigen))
       }
 
       # increment R_i, safely
@@ -137,11 +129,7 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
       ind <- seq2(intervals[j, ])
       tmp <- scaling(X.part[ind.train, ind], means[ind], sds[ind])
 
-      if (use.Eigen) {
-        T.t.part[ind, ] <- crossprodEigen5(tmp, Q[,])
-      } else {
-        T.t.part[ind, ] <- crossprod(tmp, Q[,])
-      }
+      T.t.part[ind, ] <- cross(tmp, Q[,], use.Eigen)
     }
 
     if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)

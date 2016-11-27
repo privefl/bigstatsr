@@ -4,13 +4,11 @@
 #' after applying a particular scaling to it.
 #'
 #' @inherit bigstatsr-package params details
-#' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init
-#' @param returnScale Boolean whether to return a list with
-#' the two vectors `mean` and `sd` used for scaling along
-#' with \eqn{K = X.train X.train^T}. Default is `FALSE`.
 #'
-#' @return \eqn{X.train X.train^T} as a `big.matrix`. Its dimensions
-#' are both `length(ind.train)` and its type is `double`.
+#' @return A list of
+#' - \eqn{K = X.train X.train^T},
+#' - a numeric vector `mean` of column scaling,
+#' - a numeric vector `sd` of column scaling.
 #' @export
 #' @seealso [tcrossprod][base::tcrossprod]
 #'
@@ -19,19 +17,16 @@ big_tcrossprodSelf <- function(X,
                                fun.scaling,
                                ind.train = seq(nrow(X)),
                                block.size = 1000,
-                               use.Eigen = !detect_MRO(),
-                               returnScale = FALSE,
-                               ...) {
+                               use.Eigen = !detect_MRO()) {
   check_X(X)
 
   n <- length(ind.train)
-  bigK <- big.matrix(n, n, type = "double", init = 0, ...)
-
-  # function to compute X*X^T
-  intervals <- CutBySize(ncol(X), block.size)
-  nb.block <- nrow(intervals)
+  K <- matrix(0, n, n)
 
   means_sds <- fun.scaling(X, ind.train)
+
+  intervals <- CutBySize(ncol(X), block.size)
+  nb.block <- nrow(intervals)
 
   for (j in 1:nb.block) {
     ind <- seq2(intervals[j, ])
@@ -39,14 +34,12 @@ big_tcrossprodSelf <- function(X,
                    means_sds$mean[ind],
                    means_sds$sd[ind])
     if (use.Eigen) {
-      tcrossprodEigen(bigK@address, tmp)
+      tcrossprodEigen3(K, tmp)
     } else {
-      incrSup(bigK@address, tcrossprod(tmp))
+      K <- incrSup2(K, tcrossprod(tmp))
     }
   }
 
   # Complete the lower part of the symmetric matrix
-  complete(bigK@address)
-
-  `if`(returnScale, c(K = bigK, means_sds), bigK)
+  list(K = complete2(K), mean = means_sds$mean, sd = means_sds$sd)
 }

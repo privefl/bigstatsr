@@ -25,6 +25,18 @@ complete <- function(pBigMat) {
     invisible(.Call('bigstatsr_complete', PACKAGE = 'bigstatsr', pBigMat))
 }
 
+complete2 <- function(mat) {
+    .Call('bigstatsr_complete2', PACKAGE = 'bigstatsr', mat)
+}
+
+incrSup2 <- function(mat, source) {
+    .Call('bigstatsr_incrSup2', PACKAGE = 'bigstatsr', mat, source)
+}
+
+tcrossprodEigen3 <- function(res, bM) {
+    invisible(.Call('bigstatsr_tcrossprodEigen3', PACKAGE = 'bigstatsr', res, bM))
+}
+
 bigcolvars <- function(pBigMat, rowInd) {
     .Call('bigstatsr_bigcolvars', PACKAGE = 'bigstatsr', pBigMat, rowInd)
 }

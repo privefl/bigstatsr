@@ -109,3 +109,37 @@ void complete(SEXP pBigMat) {
 }
 
 /******************************************************************************/
+
+// [[Rcpp::export]]
+NumericMatrix& complete2(NumericMatrix& mat) {
+  for (int j = 0; j < mat.ncol()-1; j++) {
+    for (int i = j+1; i < mat.nrow(); i++) {
+      mat(i, j) = mat(j, i);
+    }
+  }
+
+  return mat;
+}
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
+  for (int j = 0; j < mat.ncol(); j++) {
+    for (int i = 0; i <= j; i++) {
+      mat(i, j) += source(i,j);
+    }
+  }
+
+  return mat;
+}
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+void tcrossprodEigen3(Eigen::Map<Eigen::MatrixXd> res,
+                      const Eigen::Map<Eigen::MatrixXd> bM) {
+  res.selfadjointView<Eigen::Upper>().rankUpdate(bM);
+}
+
+/******************************************************************************/

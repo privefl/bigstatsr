@@ -5,7 +5,7 @@
 \title{Crossprod}
 \usage{
 big_crossprodSelf(X, fun.scaling, ind.train = seq(nrow(X)),
-  block.size = 1000, use.Eigen = !detect_MRO(), returnScale = FALSE, ...)
+  block.size = 1000, use.Eigen = !detect_MRO())
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -23,39 +23,14 @@ Default is \code{1000}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default tries to detect MRO. See details.}
-
-\item{returnScale}{Boolean whether to return a list with
-the two vectors \code{mean} and \code{sd} used for scaling along
-with \eqn{K = X.train X.train^T}. Default is \code{FALSE}.}
-
-\item{...}{Arguments passed on to \code{bigmemory::big.matrix}
-\describe{
-  \item{dimnames}{a list of the row and column names; use with caution 
-for large objects.}
-  \item{separated}{use separated column organization of the data; 
-see details.}
-  \item{backingfile}{the root name for the file(s) for the cache of \code{x}.}
-  \item{backingpath}{the path to the directory containing the file 
-backing cache.}
-  \item{descriptorfile}{the name of the file to hold the backingfile 
-description, for subsequent use with \code{\link{attach.big.matrix}}; 
-if \code{NULL}, the \code{backingfile} is used as the root part of the 
-descriptor file name.  The descriptor file is placed in the same directory 
-as the backing files.}
-  \item{binarydescriptor}{the flag to specify if the binary RDS format 
-should be used for the backingfile description, for subsequent use with 
-\code{\link{attach.big.matrix}}; if \code{NULL} of \code{FALSE}, the 
-\code{dput()} file format is used.}
-  \item{shared}{\code{TRUE} by default, and always \code{TRUE} if the 
-\code{big.matrix} is file-backed.  For a non-filebacked \code{big.matrix}, 
-\code{shared=FALSE} uses non-shared memory, which can be more stable for 
-large (say, >50\% of RAM) objects.  Shared memory allocation can sometimes 
-fail in such cases due to exhausted shared-memory resources in the system.}
-}}
 }
 \value{
-\eqn{X.train^T X.train} as a \code{big.matrix}. Its dimensions
-are both \code{ncol(X)} and its type is \code{double}.
+A list of
+\itemize{
+\item \eqn{K = X.train^T X.train},
+\item a numeric vector \code{mean} of column scaling,
+\item a numeric vector \code{sd} of column scaling.
+}
 }
 \description{
 Compute \eqn{X.train^T X.train} for a \code{big.matrix} \code{X}
