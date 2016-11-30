@@ -76,7 +76,6 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
 
       tmp.R <- incrMat(tmp.R, mult(tmp, G.part[ind, ], use.Eigen))
     }
-    rm(G.part)
 
     # increment R_0, safely
     remains <- attach.big.matrix(r.desc)
@@ -107,7 +106,6 @@ ParallelRandomSVD1 <- function(X, fun.scaling,
       # wait for others at barrier
       while (remains[2, i] > 0) Sys.sleep(TIME)
     }
-    rm(R.part)
 
     # compute svd(R) once
     Q <- attach.big.matrix(Q.desc)

@@ -17,8 +17,8 @@ A new \strong{function} that returns a named list of two vectors "mean" and "sd"
 which are as long as the number of columns of \code{X}.
 }
 \description{
-Some scaling functions for a "big.matrix" to be used as
-the \code{fun.scaling} parameter of some functions of this package.
+Some scaling functions for a \code{big.matrix} to be used as
+the \strong{\code{fun.scaling}} parameter of some functions of this package.
 }
 \examples{
 # Simulating some data

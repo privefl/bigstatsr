@@ -1,12 +1,14 @@
+source('R/utils.R')
+
 ################################################################################
 
-getNextR <- function(X, R.old, ind.train, block.size,
-                     vec.center, vec.scale, use.Eigen) {
+getHnG <- function(X, G.old, ind.train, block.size,
+                   vec.center, vec.scale, use.Eigen) {
   n <- length(ind.train)
   m <- ncol(X)
-  L <- nrow(R.old)
-  R <- matrix(NA, L, m)
-  G <- matrix(0, L, n)
+  m2 <- ncol(G.old)
+  H <- matrix(0, m, m2)
+  G <- matrix(0, n, m2)
 
   intervals <- CutBySize(m, block.size)
   nb.block <- nrow(intervals)
@@ -14,20 +16,14 @@ getNextR <- function(X, R.old, ind.train, block.size,
   for (j in 1:nb.block) {
     ind <- seq2(intervals[j, ])
     tmp <- scaling(X[ind.train, ind], vec.center[ind], vec.scale[ind])
-
-    G <- incrMat(G, tcrossprod(R.old[, ind], tmp)) # use.Eigen
+    if (use.Eigen) {
+      G <- incrMat(G, multEigen(tmp, H[ind, ] <- crossprodEigen5(tmp, G.old)))
+    } else {
+      G <- incrMat(G, tmp %*% {H[ind, ] <- crossprod(tmp, G.old)})
+    }
   }
 
-  for (j in 1:nb.block) {
-    ind <- seq2(intervals[j, ])
-    tmp <- scaling(X[ind.train, ind], vec.center[ind], vec.scale[ind])
-
-    R[, ind] <- mult(G, tmp, use.Eigen)
-  }
-
-  R <- R / m
-  # MSE <- mean((R - R.old)^2)
-  # list(R = R, MSE = MSE)
+  list(H = H, G = G / m)
 }
 
 ################################################################################
@@ -47,26 +43,6 @@ BigMult2 <- function(X, mat, ind.train, block.size,
     } else {
       res <- incrMat(res, tmp %*% mat[ind, ])
     }
-  }
-
-  res
-}
-
-################################################################################
-
-BigMult3 <- function(mat, X, ind.train, block.size,
-                     vec.center, vec.scale, use.Eigen) {
-  m <- ncol(X)
-  res <- matrix(0, nrow(mat), m)
-
-  intervals <- CutBySize(m, block.size)
-  nb.block <- nrow(intervals)
-
-  for (j in 1:nb.block) {
-    ind <- seq2(intervals[j, ])
-    tmp <- scaling(X[ind.train, ind], vec.center[ind], vec.scale[ind])
-
-    res[, ind] <- mult(mat, tmp, use.Eigen)
   }
 
   res
@@ -95,17 +71,18 @@ BigMult3 <- function(mat, X, ind.train, block.size,
 #' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 #' doi:10.1137/080736417
 big_randomSVD2 <- function(X, fun.scaling,
-                           ind.train = seq(nrow(X)),
-                           block.size = 1e3,
-                           K = 10, max.I = 20,
-                           use.Eigen = TRUE) {
+                          ind.train = seq(nrow(X)),
+                          block.size = 1e3,
+                          K = 10, I = 10,
+                          use.Eigen = TRUE) {
   check_X(X)
-  stopifnot((ncol(X) - K) >= ((max.I + 1) * (K + 12)))
+  stopifnot((ncol(X) - K) >= ((I + 1) * (K + 12)))
 
   # parameters
   L <- K + 12
   n <- length(ind.train)
   m <- ncol(X)
+  I <- I + 1
 
   # scaling
   stats <- fun.scaling(X, ind.train)
@@ -114,30 +91,18 @@ big_randomSVD2 <- function(X, fun.scaling,
   rm(stats)
 
   # computation of G and H
-  R <- list()
-  R[[1]] <- BigMult3(mat = matrix(rnorm(L * n), L, n), # G0
-                     X, ind.train, block.size,
-                     means, sds, use.Eigen) # R0
-  i <- 1
-  MSE.old <- Inf
-  while(i <= max.I) {
-    R[[i+1]] <- getNextR(X, R[[i]], ind.train,
-                    block.size, means, sds,
-                    use.Eigen)
-    mylm <- lm(as.numeric(R[[i+1]]) ~ as.numeric(R[[i]]) - 1)
-    print(r2 <- summary(mylm)$r.squared)
-    if (r2 > (1 - 1e-8)) {
-      printf("Stop after %d interations\n", i)
-      break
-    }
-    i <- i + 1
+  H <- list()
+  tmp <- list(G = matrix(rnorm(n * L), n, L)) # G0
+  for (i in 1:I) {
+    tmp <- getHnG(X, tmp$G, ind.train, block.size, means, sds,
+                  use.Eigen = use.Eigen)
+    H[i] <- tmp['H']
   }
-
-  #return(t(do.call(rbind, R)))
+  rm(tmp)
 
   # svds
-  H.svd <- svd(t(do.call(rbind, R)), nv = 0) # m * L * I or just V
-  rm(R); gc()
+  H.svd <- svd(do.call(cbind, H), nv = 0) # m * L * I
+  rm(H); gc()
 
   T.t <- BigMult2(X, H.svd$u, ind.train, block.size, means, sds,
                   use.Eigen = use.Eigen)
