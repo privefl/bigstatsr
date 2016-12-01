@@ -49,9 +49,9 @@ big_scale <- function(center = TRUE, scale = TRUE) {
 #' X[] <- rnorm(length(X))
 #' y <- rnorm(nrow(X), X[, 9], abs(X[, 9]))
 #'
-#' X.svd <- bigstatsr::big_SVD(X, fun.scaling = big_yaware_scale(y))
+#' X.svd <- bigstatsr::big_SVD(X, fun.scaling = big_scaleYaware(y))
 #' plot(X.svd$v[, 1], type = "h")
-big_yaware_scale <- function(y) {
+big_scaleYaware <- function(y) {
   function(X, ind.train = seq(nrow(X))) {
     means <- big_colstats(X, ind.train)$sum / length(ind.train)
     betas <- big_univRegLin(X, y, ind.train)["Slopes", ]

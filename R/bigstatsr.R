@@ -15,9 +15,9 @@
 #'
 #' @param ncores Number or cores used. Default doesn't use parallelism.
 #'
-#' @param fun.scaling A function that returns a named list of mean and
-#' sd for every column, to scale each of their elements such as followed:
-#' \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.
+#' @param fun.scaling A function that returns a named list of
+#' __`mean`__ and __`sd`__ for every column, to scale each of their elements
+#' such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.
 #'
 #' @param use.Eigen Should the `Eigen` library be used
 #' for matrix computations? Default tries to detect MRO. See details.

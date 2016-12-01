@@ -32,7 +32,7 @@ big_randomSVD <- function(X, fun.scaling,
                           backingpath = NULL) {
   check_X(X)
 
-  if (length(ind.train) < ncol(X)) {
+  if (length(ind.train) > ncol(X)) {
     printf("(1)")
     ParallelRandomSVD1(X, fun.scaling, ind.train, block.size,
                        K, I, use.Eigen, backingpath, ncores)
