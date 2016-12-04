@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • bigstatsr</title>
+<title>Y-aware scaling — big_scaleYaware • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -34,7 +34,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -69,70 +69,57 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Function reference</h1>
-      <h4>version&nbsp;0.1.0.9000</h4>
+    <h1>Y-aware scaling</h1>
     </div>
 
-    <div class="contents">
-      <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-      <p class="section-desc"></p>
-
-      
-      <p><a href="big_colstats.html">Standard univariate statistics</a></p>
-      <ul>
-        <li><code><a href="big_colstats.html">big_colstats</a></code></li>
-      </ul>
-      
-      <p><a href="big_crossprodSelf.html">Crossprod</a></p>
-      <ul>
-        <li><code><a href="big_crossprodSelf.html">big_crossprodSelf</a></code></li>
-      </ul>
-      
-      <p><a href="big_scale.html">Some scaling functions</a></p>
-      <ul>
-        <li><code><a href="big_scale.html">big_scale</a></code></li>
-      </ul>
-      
-      <p><a href="big_scaleYaware.html">Y-aware scaling</a></p>
-      <ul>
-        <li><code><a href="big_scaleYaware.html">big_scaleYaware</a></code></li>
-      </ul>
-      
-      <p><a href="big_SVD.html">SVD</a></p>
-      <ul>
-        <li><code><a href="big_SVD.html">big_SVD</a></code></li>
-      </ul>
-      
-      <p><a href="big_tcrossprodSelf.html">Tcrossprod</a></p>
-      <ul>
-        <li><code><a href="big_tcrossprodSelf.html">big_tcrossprodSelf</a></code></li>
-      </ul>
-      
-      <p><a href="big_transpose.html">Transposition</a></p>
-      <ul>
-        <li><code><a href="big_transpose.html">big_transpose</a></code></li>
-      </ul>
-      
-      <p><a href="big_univRegLin.html">Univariate linear regression</a></p>
-      <ul>
-        <li><code><a href="big_univRegLin.html">big_univRegLin</a></code></li>
-      </ul>
-      
-      <p><a href="bigstatsr-package.html">bigstatsr: Statistical Tools for Bigmemory Matrices</a></p>
-      <ul>
-        <li><code><a href="bigstatsr-package.html">bigstatsr</a></code></li><li><code><a href="bigstatsr-package.html">bigstatsr-package</a></code></li>
-      </ul>
     
-    </div>
-  </div>
+    <p>Y-aware scaling</p>
+    
 
+    <pre><span class='fu'>big_scaleYaware</span>(<span class='no'>y</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>y</dt>
+      <dd>Vector of responses.</dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A new <strong>function</strong> that returns a named list of
+two vectors <strong><code>mean</code></strong> and <strong><code>sd</code></strong>
+which are as long as the number of columns of <strong><code>X</code></strong>.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>&quot;y-aware&quot; scaling center columns, then multiply them
+by betas of univariate linear regression.
+So, <strong><code>mean</code></strong> are column means and <strong><code>sd</code></strong> are the inverse of slopes.
+See <a href = 'this blog post'>https://goo.gl/8G8WMa</a> for details.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Simulating some data</span>
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>big.matrix</span>(<span class='fl'>41</span>, <span class='fl'>17</span>)
+<span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='no'>X</span>[, <span class='fl'>9</span>], <span class='fu'>abs</span>(<span class='no'>X</span>[, <span class='fl'>9</span>]))
+
+<span class='no'>X.svd</span> <span class='kw'>&lt;-</span> <span class='kw'>bigstatsr</span><span class='kw'>::</span><span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'>big_scaleYaware</span>(<span class='no'>y</span>))</div><div class='output co'>#&gt; (1)</div><div class='input'><span class='fu'>plot</span>(<span class='no'>X.svd</span>$<span class='no'>v</span>[, <span class='fl'>1</span>], <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"h"</span>)</div><img src='big_scaleYaware-4.png' alt='' width='540' height='400' /></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

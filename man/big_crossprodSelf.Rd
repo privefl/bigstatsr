@@ -11,9 +11,9 @@ big_crossprodSelf(X, fun.scaling, ind.train = seq(nrow(X)),
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
-\item{fun.scaling}{A function that returns a named list of mean and
-sd for every column, to scale each of their elements such as followed:
-\deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
+\item{fun.scaling}{A function that returns a named list of
+\strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
+such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.}

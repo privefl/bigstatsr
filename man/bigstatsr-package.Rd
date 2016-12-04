@@ -19,9 +19,9 @@ Default is \code{1000}.}
 
 \item{ncores}{Number or cores used. Default doesn't use parallelism.}
 
-\item{fun.scaling}{A function that returns a named list of mean and
-sd for every column, to scale each of their elements such as followed:
-\deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
+\item{fun.scaling}{A function that returns a named list of
+\strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
+such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default tries to detect MRO. See details.}

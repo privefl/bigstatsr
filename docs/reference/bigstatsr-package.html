@@ -96,12 +96,12 @@ Default is <code>1000</code>.</dd>
       <dt>ncores</dt>
       <dd>Number or cores used. Default doesn&#39;t use parallelism.</dd>
       <dt>fun.scaling</dt>
-      <dd>A function that returns a named list of mean and
-sd for every column, to scale each of their elements such as followed:
-$$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
+      <dd>A function that returns a named list of
+<strong><code>mean</code></strong> and <strong><code>sd</code></strong> for every column, to scale each of their elements
+such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
       <dt>use.Eigen</dt>
       <dd>Should the <code>Eigen</code> library be used
-for matrix computations? Default is <code>TRUE</code>. See details.</dd>
+for matrix computations? Default tries to detect MRO. See details.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

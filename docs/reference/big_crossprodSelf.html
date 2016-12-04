@@ -80,7 +80,7 @@ after applying a particular scaling to it.</p>
     
 
     <pre><span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)),
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>use.Eigen</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>returnScale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>use.Eigen</span> <span class='kw'>=</span> !<span class='fu'>detect_MRO</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -88,9 +88,9 @@ after applying a particular scaling to it.</p>
       <dd>A <a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix-class'>big.matrix</a>.
 You shouldn&#39;t have missing values in your data.</dd>
       <dt>fun.scaling</dt>
-      <dd>A function that returns a named list of mean and
-sd for every column, to scale each of their elements such as followed:
-$$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
+      <dd>A function that returns a named list of
+<strong><code>mean</code></strong> and <strong><code>sd</code></strong> for every column, to scale each of their elements
+such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
       <dt>ind.train</dt>
       <dd>An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.</dd>
@@ -99,43 +99,20 @@ for the training part. If not specified, all data are used.</dd>
 Default is <code>1000</code>.</dd>
       <dt>use.Eigen</dt>
       <dd>Should the <code>Eigen</code> library be used
-for matrix computations? Default is <code>TRUE</code>. See details.</dd>
-      <dt>returnScale</dt>
-      <dd>Boolean whether to return a list with
-the two vectors <code>mean</code> and <code>sd</code> used for scaling along
-with \(K = X.train X.train^T\). Default is <code>FALSE</code>.</dd>
-      <dt>...</dt>
-      <dd>Arguments passed on to <code>bigmemory::big.matrix</code>
-<dl class='dl-horizontal'>
-  <dt>dimnames</dt><dd>a list of the row and column names; use with caution 
-for large objects.</dd>
-  <dt>separated</dt><dd>use separated column organization of the data; 
-see details.</dd>
-  <dt>backingfile</dt><dd>the root name for the file(s) for the cache of <code>x</code>.</dd>
-  <dt>backingpath</dt><dd>the path to the directory containing the file 
-backing cache.</dd>
-  <dt>descriptorfile</dt><dd>the name of the file to hold the backingfile 
-description, for subsequent use with <code>attach.big.matrix</code>; 
-if <code>NULL</code>, the <code>backingfile</code> is used as the root part of the 
-descriptor file name.  The descriptor file is placed in the same directory 
-as the backing files.</dd>
-  <dt>binarydescriptor</dt><dd>the flag to specify if the binary RDS format 
-should be used for the backingfile description, for subsequent use with 
-<code>attach.big.matrix</code>; if <code>NULL</code> of <code>FALSE</code>, the 
-<code>dput()</code> file format is used.</dd>
-  <dt>shared</dt><dd><code>TRUE</code> by default, and always <code>TRUE</code> if the 
-<code>big.matrix</code> is file-backed.  For a non-filebacked <code>big.matrix</code>, 
-<code>shared=FALSE</code> uses non-shared memory, which can be more stable for 
-large (say, &gt;50% of RAM) objects.  Shared memory allocation can sometimes 
-fail in such cases due to exhausted shared-memory resources in the system.</dd>
-</dl>
-</dd>
+for matrix computations? Default tries to detect MRO. See details.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>\(X.train^T X.train\) as a <code>big.matrix</code>. Its dimensions
-are both <code>ncol(X)</code> and its type is <code>double</code>.</p>
+    <p>A list of
+<ul>
+<li> \(K = X.train^T X.train\),
+</li>
+<li> a numeric vector <code>mean</code> of column scaling,
+</li>
+<li> a numeric vector <code>sd</code> of column scaling.
+</li>
+</ul></p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -172,12 +149,12 @@ if you do!).</li>
 <span class='co'># Comparing with tcrossprod</span>
 <span class='no'>big_noscale</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
-<span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test</span>))</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>[,], <span class='fu'>crossprod</span>(<span class='no'>X</span>[,])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test</span>$<span class='no'>K</span>))</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>K</span>, <span class='fu'>crossprod</span>(<span class='no'>X</span>[,])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data for "training"</span>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='fu'>nrow</span>(<span class='no'>X</span>)/<span class='fl'>2</span>))
 <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>,
                            <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind</span>)
-<span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test2</span>))</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>[,], <span class='fu'>crossprod</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test2</span>$<span class='no'>K</span>))</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>K</span>, <span class='fu'>crossprod</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
