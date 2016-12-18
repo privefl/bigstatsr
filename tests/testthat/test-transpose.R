@@ -21,11 +21,11 @@ test_that("Equality with t()", {
 
 ################################################################################
 
-test_that("Expect error from unknown type", {
-  x <- as.raw(sample(0:255, 100))
-  X <- as.big.matrix(matrix(x), type = "raw")
-  expect_error(big_transpose(X), ERROR_TYPE, fixed = TRUE)
-})
+# test_that("Expect error from unknown type", {
+#   x <- as.raw(sample(0:255, 100))
+#   X <- as.big.matrix(matrix(x), type = "raw")
+#   expect_error(big_transpose(X), ERROR_TYPE, fixed = TRUE)
+# })
 
 ################################################################################
 

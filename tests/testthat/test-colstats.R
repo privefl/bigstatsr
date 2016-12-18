@@ -29,14 +29,14 @@ test_that("Equality with matrix operations", {
 
 ################################################################################
 
-test_that("Expect error from unknown type", {
-  x <- as.raw(sample(0:255, 100))
-  X <- as.big.matrix(matrix(x), type = "raw")
-  for (f in ALL.FUN) {
-    eval(parse(text = sprintf(
-      "expect_error(big_colstats(X)$%s, ERROR_TYPE, fixed = TRUE)", f)))
-  }
-})
+# test_that("Expect error from unknown type", {
+#   x <- as.raw(sample(0:255, 100))
+#   X <- as.big.matrix(matrix(x), type = "raw")
+#   for (f in ALL.FUN) {
+#     eval(parse(text = sprintf(
+#       "expect_error(big_colstats(X)$%s, ERROR_TYPE, fixed = TRUE)", f)))
+#   }
+# })
 
 ################################################################################
 

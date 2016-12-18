@@ -82,11 +82,11 @@ test_that("equality with lm in case of regression with half of the data", {
 
 ################################################################################
 
-test_that("Expect error from unknown type", {
-  x <- as.raw(sample(0:255, 100))
-  X <- as.big.matrix(matrix(x), type = "raw")
-  expect_error(big_univRegLin(X, y), ERROR_TYPE, fixed = TRUE)
-})
+# test_that("Expect error from unknown type", {
+#   x <- as.raw(sample(0:255, 100))
+#   X <- as.big.matrix(matrix(x), type = "raw")
+#   expect_error(big_univRegLin(X, y), ERROR_TYPE, fixed = TRUE)
+# })
 
 ################################################################################
 

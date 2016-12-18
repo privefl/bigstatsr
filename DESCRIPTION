@@ -11,8 +11,8 @@ Description: Easy-to-use, efficient, flexible and scalable
 License: GPL-3
 LazyData: TRUE
 LinkingTo: RcppEigen, Rcpp, bigmemory, BH
-Imports: Rcpp, RSpectra, stats,
-         foreach, parallel, doParallel, flock
+Imports: Rcpp, RSpectra, 
+         foreach, parallel, doParallel
 Depends: R (>= 3.2.3), bigmemory
 RoxygenNote: 5.0.1.9000
 Roxygen: list(markdown = TRUE)
