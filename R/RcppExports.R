@@ -5,20 +5,16 @@ bigcolvars <- function(pBigMat, rowInd) {
     .Call('bigstatsr_bigcolvars', PACKAGE = 'bigstatsr', pBigMat, rowInd)
 }
 
-scaled <- function(pBigMat2, pBigMat, mean, sd) {
-    invisible(.Call('bigstatsr_scaled', PACKAGE = 'bigstatsr', pBigMat2, pBigMat, mean, sd))
-}
-
-multEigen <- function(X, Y) {
-    .Call('bigstatsr_multEigen', PACKAGE = 'bigstatsr', X, Y)
-}
-
 transpose3 <- function(pBigMat, pBigMat2) {
     invisible(.Call('bigstatsr_transpose3', PACKAGE = 'bigstatsr', pBigMat, pBigMat2))
 }
 
 univRegLin <- function(pBigMat, y, rowInd) {
     .Call('bigstatsr_univRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
+}
+
+multEigen <- function(X, Y) {
+    .Call('bigstatsr_multEigen', PACKAGE = 'bigstatsr', X, Y)
 }
 
 crossprodEigen5 <- function(X, Y) {
@@ -43,9 +39,5 @@ tcrossprodEigen3 <- function(res, bM) {
 
 incrMat <- function(dest, source) {
     .Call('bigstatsr_incrMat', PACKAGE = 'bigstatsr', dest, source)
-}
-
-incrG <- function(pBigMat, source, n, L, m) {
-    invisible(.Call('bigstatsr_incrG', PACKAGE = 'bigstatsr', pBigMat, source, n, L, m))
 }
 

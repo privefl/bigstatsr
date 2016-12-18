@@ -18,31 +18,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// scaled
-void scaled(SEXP pBigMat2, SEXP pBigMat, const NumericVector& mean, const NumericVector& sd);
-RcppExport SEXP bigstatsr_scaled(SEXP pBigMat2SEXP, SEXP pBigMatSEXP, SEXP meanSEXP, SEXP sdSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat2(pBigMat2SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type sd(sdSEXP);
-    scaled(pBigMat2, pBigMat, mean, sd);
-    return R_NilValue;
-END_RCPP
-}
-// multEigen
-Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X, const Eigen::Map<Eigen::MatrixXd> Y);
-RcppExport SEXP bigstatsr_multEigen(SEXP XSEXP, SEXP YSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Y(YSEXP);
-    rcpp_result_gen = Rcpp::wrap(multEigen(X, Y));
-    return rcpp_result_gen;
-END_RCPP
-}
 // transpose3
 void transpose3(SEXP pBigMat, SEXP pBigMat2);
 RcppExport SEXP bigstatsr_transpose3(SEXP pBigMatSEXP, SEXP pBigMat2SEXP) {
@@ -64,6 +39,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     rcpp_result_gen = Rcpp::wrap(univRegLin(pBigMat, y, rowInd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// multEigen
+Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X, const Eigen::Map<Eigen::MatrixXd> Y);
+RcppExport SEXP bigstatsr_multEigen(SEXP XSEXP, SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Y(YSEXP);
+    rcpp_result_gen = Rcpp::wrap(multEigen(X, Y));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -136,19 +123,5 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
     rcpp_result_gen = Rcpp::wrap(incrMat(dest, source));
     return rcpp_result_gen;
-END_RCPP
-}
-// incrG
-void incrG(SEXP pBigMat, const NumericMatrix& source, double n, double L, double m);
-RcppExport SEXP bigstatsr_incrG(SEXP pBigMatSEXP, SEXP sourceSEXP, SEXP nSEXP, SEXP LSEXP, SEXP mSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
-    Rcpp::traits::input_parameter< double >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type L(LSEXP);
-    Rcpp::traits::input_parameter< double >::type m(mSEXP);
-    incrG(pBigMat, source, n, L, m);
-    return R_NilValue;
 END_RCPP
 }

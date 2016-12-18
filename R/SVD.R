@@ -90,7 +90,15 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' @param returnV Logical whether to return V or not. Default is `TRUE`.
 #'
 #' @export
-#' @return
+#' @return A list of
+#' - `d`, the singular values,
+#' - `u`, the left singular vectors if `returnU` is `TRUE`,
+#' - `v`, the right singular vectors if `returnV` is `TRUE`,
+#' - `means`, the centering vector,
+#' - `sds`, the scaling vector.
+#'
+#' Note that to obtain the Principal Components, you just need to
+#' multiply `u` by `diag(d)`. See examples.
 #'
 #' @example examples/example-SVD.R
 #' @seealso [prcomp][stats::prcomp]

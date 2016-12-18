@@ -34,6 +34,19 @@ for matrix computations? Default tries to detect MRO. See details.}
 
 \item{returnV}{Logical whether to return V or not. Default is \code{TRUE}.}
 }
+\value{
+A list of
+\itemize{
+\item \code{d}, the singular values,
+\item \code{u}, the left singular vectors if \code{returnU} is \code{TRUE},
+\item \code{v}, the right singular vectors if \code{returnV} is \code{TRUE},
+\item \code{means}, the centering vector,
+\item \code{sds}, the scaling vector.
+}
+
+Note that to obtain the Principal Components, you just need to
+multiply \code{u} by \code{diag(d)}. See examples.
+}
 \description{
 An algorithm for SVD (or PCA) of a \code{big.matrix} through the eigen
 decomposition of the covariance between variables (primal)
