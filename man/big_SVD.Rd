@@ -117,4 +117,3 @@ plot(as.numeric(test2$v), as.numeric(pca2$rotation[, 1:ncol(scores2)]))
 \seealso{
 \link[stats:prcomp]{prcomp}
 }
-

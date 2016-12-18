@@ -59,4 +59,3 @@ print(big_univRegLin(x.big, y2, ind.train))
 \seealso{
 \link[stats:lm]{lm}
 }
-

@@ -51,4 +51,3 @@ print(big_colstats(X))
 \seealso{
 \link{colSums} \link{apply}
 }
-

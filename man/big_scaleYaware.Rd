@@ -32,4 +32,3 @@ y <- rnorm(nrow(X), X[, 9], abs(X[, 9]))
 X.svd <- bigstatsr::big_SVD(X, fun.scaling = big_scaleYaware(y))
 plot(X.svd$v[, 1], type = "h")
 }
-

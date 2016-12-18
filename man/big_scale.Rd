@@ -43,4 +43,3 @@ print(all.equal(test$sd, apply(X[1:5, ], 2, sd)))
 \seealso{
 \link{scale}
 }
-

@@ -77,4 +77,3 @@ print(all.equal(test2$K, crossprod(X[ind, ])))
 \seealso{
 \link[base:crossprod]{crossprod}
 }
-

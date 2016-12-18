@@ -54,4 +54,3 @@ print(identical(
   Xt[,]
 ))
 }
-
