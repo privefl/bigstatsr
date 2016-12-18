@@ -33,11 +33,3 @@ void scaled(SEXP pBigMat2,
 }
 
 /******************************************************************************/
-
-// [[Rcpp::export]]
-Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X,
-                          const Eigen::Map<Eigen::MatrixXd> Y) {
-  return X * Y;
-}
-
-/******************************************************************************/

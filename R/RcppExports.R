@@ -5,50 +5,6 @@ bigcolvars <- function(pBigMat, rowInd) {
     .Call('bigstatsr_bigcolvars', PACKAGE = 'bigstatsr', pBigMat, rowInd)
 }
 
-incrMat <- function(dest, source) {
-    .Call('bigstatsr_incrMat', PACKAGE = 'bigstatsr', dest, source)
-}
-
-incrG <- function(pBigMat, source, n, L, m) {
-    invisible(.Call('bigstatsr_incrG', PACKAGE = 'bigstatsr', pBigMat, source, n, L, m))
-}
-
-tcrossprodEigen <- function(res, bM) {
-    invisible(.Call('bigstatsr_tcrossprodEigen', PACKAGE = 'bigstatsr', res, bM))
-}
-
-crossprodEigen5 <- function(X, Y) {
-    .Call('bigstatsr_crossprodEigen5', PACKAGE = 'bigstatsr', X, Y)
-}
-
-scaling <- function(source, mean, sd) {
-    .Call('bigstatsr_scaling', PACKAGE = 'bigstatsr', source, mean, sd)
-}
-
-incrSup <- function(pBigMat, source) {
-    invisible(.Call('bigstatsr_incrSup', PACKAGE = 'bigstatsr', pBigMat, source))
-}
-
-incrAll <- function(pBigMat, source) {
-    invisible(.Call('bigstatsr_incrAll', PACKAGE = 'bigstatsr', pBigMat, source))
-}
-
-complete <- function(pBigMat) {
-    invisible(.Call('bigstatsr_complete', PACKAGE = 'bigstatsr', pBigMat))
-}
-
-complete2 <- function(mat) {
-    .Call('bigstatsr_complete2', PACKAGE = 'bigstatsr', mat)
-}
-
-incrSup2 <- function(mat, source) {
-    .Call('bigstatsr_incrSup2', PACKAGE = 'bigstatsr', mat, source)
-}
-
-tcrossprodEigen3 <- function(res, bM) {
-    invisible(.Call('bigstatsr_tcrossprodEigen3', PACKAGE = 'bigstatsr', res, bM))
-}
-
 scaled <- function(pBigMat2, pBigMat, mean, sd) {
     invisible(.Call('bigstatsr_scaled', PACKAGE = 'bigstatsr', pBigMat2, pBigMat, mean, sd))
 }
@@ -63,5 +19,33 @@ transpose3 <- function(pBigMat, pBigMat2) {
 
 univRegLin <- function(pBigMat, y, rowInd) {
     .Call('bigstatsr_univRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
+}
+
+crossprodEigen5 <- function(X, Y) {
+    .Call('bigstatsr_crossprodEigen5', PACKAGE = 'bigstatsr', X, Y)
+}
+
+scaling <- function(source, mean, sd) {
+    .Call('bigstatsr_scaling', PACKAGE = 'bigstatsr', source, mean, sd)
+}
+
+complete2 <- function(mat) {
+    .Call('bigstatsr_complete2', PACKAGE = 'bigstatsr', mat)
+}
+
+incrSup2 <- function(mat, source) {
+    .Call('bigstatsr_incrSup2', PACKAGE = 'bigstatsr', mat, source)
+}
+
+tcrossprodEigen3 <- function(res, bM) {
+    invisible(.Call('bigstatsr_tcrossprodEigen3', PACKAGE = 'bigstatsr', res, bM))
+}
+
+incrMat <- function(dest, source) {
+    .Call('bigstatsr_incrMat', PACKAGE = 'bigstatsr', dest, source)
+}
+
+incrG <- function(pBigMat, source, n, L, m) {
+    invisible(.Call('bigstatsr_incrG', PACKAGE = 'bigstatsr', pBigMat, source, n, L, m))
 }
 
