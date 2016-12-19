@@ -55,24 +55,3 @@ seq2 <- function(lims) {
 }
 
 ################################################################################
-
-foreach2 <- function(obj, expr_fun, ncores, outfile = NULL) {
-  if (is.seq <- (ncores == 1)) {
-    foreach::registerDoSEQ()
-  } else {
-    if (is.null(outfile)) {
-      cl <- parallel::makeCluster(ncores)
-    } else {
-      cl <- parallel::makeCluster(ncores, outfile = outfile)
-    }
-    doParallel::registerDoParallel(cl)
-  }
-  res <- eval(parse(text = sprintf("foreach::`%%dopar%%`(obj, expr_fun(%s))",
-                                   obj$argnames)))
-  if (!is.seq) parallel::stopCluster(cl)
-
-  return(res)
-}
-
-################################################################################
-
