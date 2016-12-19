@@ -3,6 +3,7 @@
 export(big_SVD)
 export(big_colstats)
 export(big_crossprodSelf)
+export(big_predScoresPCA)
 export(big_scale)
 export(big_scaleYaware)
 export(big_tcrossprodSelf)

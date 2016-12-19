@@ -34,7 +34,7 @@ test_that("equality with prcomp", {
                                             scale = sc$scale),
                     k = k, use.Eigen = (runif(1) > 0.5))
     pca <- prcomp(X[,], center = sc$center, scale. = sc$scale)
-    expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
   }
 })
@@ -43,6 +43,7 @@ test_that("equality with prcomp", {
 
 test_that("equality with prcomp with half of the data", {
   ind <- sample(N, N/2)
+  ind2 <- setdiff(1:N, ind)
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
 
@@ -55,8 +56,12 @@ test_that("equality with prcomp with half of the data", {
                                             scale = sc$scale),
                     k = k, use.Eigen = (runif(1) > 0.5))
     pca <- prcomp(X[ind, ], center = sc$center, scale. = sc$scale)
-    expect_equal(diffPCs(test$u %*% diag(test$d), pca$x), 0, tolerance = TOL)
+
+    expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
+
+    expect_equal(diffPCs(big_predScoresPCA(test, X, ind.test = ind2),
+                         predict(pca, X[ind2, ])), 0, tolerance = TOL)
   }
 })
 

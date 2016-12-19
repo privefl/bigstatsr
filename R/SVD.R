@@ -124,3 +124,39 @@ big_SVD <- function(X, fun.scaling,
 }
 
 ################################################################################
+
+#' Scores of PCA
+#'
+#' Get the scores of PCA associated with an svd decomposition
+#' using function `big_SVD`.
+#'
+#' @inherit bigstatsr-package params
+#' @param obj.svd A list returned by `big_SVD`.
+#' @param ind.test Vector of indices of samples to be projected.
+#' Don't use negative indices here.
+#'
+#' @export
+#' @return A matrix of size `n * K` where n is the number of samples
+#' corresponding to indices of `ind.test` and K the number of PCs
+#' computed in `obj.svd`. If `X` is not specified, this just returns
+#' the scores of the training set of `obj.svd`.
+#'
+#' @example examples/example-SVD.R
+#' @seealso [predict][stats::predict.prcomp] [big_SVD]
+big_predScoresPCA <- function(obj.svd, X = NULL,
+                              ind.test = seq(nrow(X)),
+                              block.size = 1000,
+                              use.Eigen = !detect_MRO()) {
+  if (is.null(X)) {
+    obj.svd$u %*% diag(obj.svd$d)
+  } else {
+    stopifnot(all(ind.test > 0))
+    multScaled(X, mat = obj.svd$v,
+               ind.test, block.size,
+               vec.center = obj.svd$means,
+               vec.scale = obj.svd$sds,
+               use.Eigen)
+  }
+}
+
+################################################################################
