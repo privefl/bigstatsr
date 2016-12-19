@@ -122,23 +122,23 @@ which are as long as the number of columns of <code>X</code>.</p>
 <span class='co'># Centering</span>
 <span class='no'>big_center</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>print</span>(<span class='fu'>big_center</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt; $mean
-#&gt;  [1] -0.07376648 -0.25932683 -0.19646230 -0.16035114  0.21224444 -0.48983288
-#&gt;  [7] -0.08434935  0.04082948  0.22828540  0.14248646  0.18224363 -0.22549647
-#&gt; [13] -0.04449430  0.25031149  0.01612221  0.18043020  0.18428189
+#&gt;  [1]  0.19728549  0.10618530 -0.27338724 -0.09691088 -0.13808392  0.04508504
+#&gt;  [7]  0.06391175 -0.11578813  0.19390636  0.24291342  0.08676105  0.28331784
+#&gt; [13] -0.07894416  0.05404656 -0.06758716  0.12365584  0.16139489
 #&gt; 
 #&gt; $sd
 #&gt;  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 #&gt; </div><div class='input'><span class='co'># + scaling</span>
 <span class='fu'>print</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>()(<span class='no'>X</span>, <span class='fl'>1</span>:<span class='fl'>5</span>)) <span class='co'># note that big_scale() is a function</span></div><div class='output co'>#&gt; $mean
-#&gt;  [1] -0.008564808  0.290281873 -0.364288843 -0.137087174  0.002599303
-#&gt;  [6] -0.516994734 -0.241953769  0.753523640  0.225174394 -0.054998260
-#&gt; [11]  0.277181288 -0.108770338 -0.249249598  0.147172818  0.255645720
-#&gt; [16] -0.155503995 -0.162564338
+#&gt;  [1] -0.5174596674 -0.1338099291 -0.5232721700  0.2962544024 -0.3672392842
+#&gt;  [6]  0.0675924298  0.8255243377  0.2882485619  0.3470733265 -0.0473455983
+#&gt; [11] -0.7222461341 -0.0009355725  0.5999761984  0.0575834871 -0.0002809985
+#&gt; [16]  0.0168633960  0.1431180810
 #&gt; 
 #&gt; $sd
-#&gt;  [1] 0.6596598 1.1225398 0.6108999 1.1067161 1.2890436 1.1004375 0.9998248
-#&gt;  [8] 0.4695924 0.6416575 1.2021877 0.8500464 0.5461798 0.8646184 1.2226307
-#&gt; [15] 0.8729338 1.0623704 1.4852248
+#&gt;  [1] 1.2237682 1.4010876 1.3655102 0.5688388 1.2492848 1.4240795 1.2072633
+#&gt;  [8] 1.1448961 0.4985260 1.2459639 1.1500712 0.4539137 0.6649315 0.6409716
+#&gt; [15] 0.9785205 1.1079142 0.6501422
 #&gt; </div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>mean</span>, <span class='fu'>colMeans</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>sd</span>, <span class='fu'>apply</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ], <span class='fl'>2</span>, <span class='no'>sd</span>)))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
