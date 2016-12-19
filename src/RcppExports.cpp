@@ -2,6 +2,7 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include <RcppEigen.h>
+#include <RcppArmadillo.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -39,6 +40,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     rcpp_result_gen = Rcpp::wrap(univRegLin(pBigMat, y, rowInd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// regLin
+ListOf<SEXP> regLin(SEXP pBigMat, arma::mat& covar, arma::mat& XtX, arma::vec& Xty, const arma::vec& y, const IntegerVector& rowInd);
+RcppExport SEXP bigstatsr_regLin(SEXP pBigMatSEXP, SEXP covarSEXP, SEXP XtXSEXP, SEXP XtySEXP, SEXP ySEXP, SEXP rowIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type covar(covarSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type XtX(XtXSEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type Xty(XtySEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(regLin(pBigMat, covar, XtX, Xty, y, rowInd));
     return rcpp_result_gen;
 END_RCPP
 }

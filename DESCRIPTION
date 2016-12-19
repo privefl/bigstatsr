@@ -10,7 +10,7 @@ Description: Easy-to-use, efficient, flexible and scalable
     statistical tools. Use bigmemory matrices.
 License: GPL-3
 LazyData: TRUE
-LinkingTo: RcppEigen, Rcpp, bigmemory, BH
+LinkingTo: RcppEigen, RcppArmadillo, Rcpp, bigmemory, BH
 Imports: Rcpp, RSpectra, 
          foreach, parallel, doParallel
 Depends: R (>= 3.2.3), bigmemory

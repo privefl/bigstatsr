@@ -13,6 +13,10 @@ univRegLin <- function(pBigMat, y, rowInd) {
     .Call('bigstatsr_univRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
 }
 
+regLin <- function(pBigMat, covar, XtX, Xty, y, rowInd) {
+    .Call('bigstatsr_regLin', PACKAGE = 'bigstatsr', pBigMat, covar, XtX, Xty, y, rowInd)
+}
+
 multEigen <- function(X, Y) {
     .Call('bigstatsr_multEigen', PACKAGE = 'bigstatsr', X, Y)
 }
