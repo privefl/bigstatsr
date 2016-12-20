@@ -54,7 +54,7 @@ big_scale <- function(center = TRUE, scale = TRUE) {
 big_scaleYaware <- function(y) {
   function(X, ind.train = seq(nrow(X))) {
     means <- big_colstats(X, ind.train)$sum / length(ind.train)
-    betas <- big_univRegLin(X, y, ind.train)["Slopes", ]
+    betas <- big_univRegLin(X, y, ind.train)$estim
     list(mean = means, sd = 1 / betas)
   }
 }
