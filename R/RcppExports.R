@@ -9,6 +9,10 @@ transpose3 <- function(pBigMat, pBigMat2) {
     invisible(.Call('bigstatsr_transpose3', PACKAGE = 'bigstatsr', pBigMat, pBigMat2))
 }
 
+univRegLin <- function(pBigMat, y, rowInd) {
+    .Call('bigstatsr_univRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
+}
+
 univRegLin2 <- function(pBigMat, covar, y, rowInd) {
     .Call('bigstatsr_univRegLin2', PACKAGE = 'bigstatsr', pBigMat, covar, y, rowInd)
 }

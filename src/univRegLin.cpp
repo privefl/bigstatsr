@@ -1,15 +1,11 @@
-// [[Rcpp::depends(bigmemory, BH)]]
-#include <Rcpp.h>
-#include <bigmemory/MatrixAccessor.hpp>
-#include "utils.h"
 
-using namespace Rcpp;
+#include "utils.h"
 
 
 /******************************************************************************/
 
 template <typename T>
-NumericMatrix univRegLin(XPtr<BigMatrix> xpMat,
+ListOf<SEXP> univRegLin(XPtr<BigMatrix> xpMat,
                          MatrixAccessor<T> macc,
                          const NumericVector& y,
                          const IntegerVector& rowInd) {
@@ -17,7 +13,8 @@ NumericMatrix univRegLin(XPtr<BigMatrix> xpMat,
   double nd = (double)n;
   int m = xpMat->ncol();
 
-  NumericMatrix res(3, m);
+  NumericVector res(m);
+  NumericVector std(m);
 
   double ySum = 0, yySum = 0;
   double tmpY;
@@ -32,7 +29,7 @@ NumericMatrix univRegLin(XPtr<BigMatrix> xpMat,
   double denoY = yySum - ySum * ySum / nd;
 
   double xSum, xySum, xxSum;
-  double tmp, tmpB;
+  double tmp, tmpB, tmpR;
   double num, denoX;
 
   for (int j = 0; j < m; j++) {
@@ -47,19 +44,20 @@ NumericMatrix univRegLin(XPtr<BigMatrix> xpMat,
     num = xySum - xSum * ySum / nd;
     denoX = xxSum - xSum * xSum / nd;
     tmpB = num / denoX;
-    res(1, j) = tmpB;
-    res(0, j) = (ySum - tmpB * xSum) / nd;
-    res(2, j) = num * num / (denoX * denoY);
+    res[j] = tmpB;
+    tmpR = num / sqrt(denoX * denoY);
+    std[j] = tmpB / tmpR * sqrt((1 - tmpR * tmpR) / (n - 2));
   }
 
-  return(res);
+  return(List::create(_["estim"] = res,
+                      _["std.err"] = std));
 }
 
 /******************************************************************************/
 
 // Dispatch function for univRegLin
 // [[Rcpp::export]]
-NumericMatrix univRegLin(SEXP pBigMat,
+ListOf<SEXP> univRegLin(SEXP pBigMat,
                          const NumericVector& y,
                          const IntegerVector& rowInd) {
   XPtr<BigMatrix> xpMat(pBigMat);

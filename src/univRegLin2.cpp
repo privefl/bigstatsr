@@ -1,9 +1,5 @@
-// [[Rcpp::depends(bigmemory, BH, RcppArmadillo)]]
-#include <RcppArmadillo.h> // Sys.setenv("PKG_LIBS" = "-llapack")
-#include <bigmemory/MatrixAccessor.hpp>
-#include "utils.h"
 
-using namespace Rcpp;
+#include "utils.h"
 
 
 /******************************************************************************/
@@ -58,8 +54,8 @@ ListOf<SEXP> univRegLin2(XPtr<BigMatrix> xpMat,
     var[j] = tmp(0, 0) * sum(eps % eps) / (n - K);
   }
 
-  return(List::create(_["betas"] = res,
-                      _["std"] = sqrt(var)));
+  return(List::create(_["estim"] = res,
+                      _["std.err"] = sqrt(var)));
 }
 
 /******************************************************************************/

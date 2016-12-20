@@ -16,19 +16,19 @@
 big_univRegLin <- function(X, y, ind.train = seq(nrow(X)), covar = NULL) {
   check_X(X)
 
-  y.train <- y[ind.train]
   n <- length(ind.train)
 
   if (is.null(covar)) {
-    covar <- cbind(rep(0, n), rep(1, n))
+    K <- 2
+    res <- univRegLin(X@address, y = y, rowInd = ind.train)
   } else {
     covar <- cbind(0, 1, covar)
+    stopifnot(n == nrow(covar))
+    K <- ncol(covar)
+    res <- univRegLin2(X@address, covar = covar, y = y[ind.train],
+                       rowInd = ind.train)
   }
-  stopifnot(n == nrow(covar))
-  K <- ncol(covar)
-
-  res <- univRegLin2(X@address, covar = covar, y = y, rowInd = ind.train)
-  t.scores <- res$betas / res$std
+  t.scores <- res[[1]] / res[[2]]
   p.values <- 2 * pt(abs(t.scores), df = n - K, lower.tail = FALSE)
-  data.frame(res, t.scores = t.scores, p.values = p.values)
+  data.frame(res, t.score = t.scores, p.value = p.values)
 }

@@ -1,9 +1,5 @@
-// [[Rcpp::depends(bigmemory)]]
-#include <Rcpp.h>
-#include <bigmemory/MatrixAccessor.hpp>
-#include "utils.h"
 
-using namespace Rcpp;
+#include "utils.h"
 
 
 /******************************************************************************/

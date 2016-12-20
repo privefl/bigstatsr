@@ -1,26 +1,33 @@
 # Simulating some data
-N <- 1000
-x <- rnorm(N)
-x.big <- as.big.matrix(cbind(x, x+1, 2*x))
+data("trees")
+N <- nrow(trees)
+covar <- matrix(rnorm(N * 3), N)
+X <- as.big.matrix(as.matrix(trees[, -1]))
+y <- trees[, 1]
+
+# without covar
+lmVol0 <- summary(lm(Girth ~ Volume, data = trees))
+lmHei0 <- summary(lm(Girth ~ Height, data = trees))
+
+print(big_univRegLin(X, y))
+print(rbind(lmHei0$coefficients[2, ], lmVol0$coefficients[2, ]))
 
 # With all data
-y2 <- x + rnorm(length(x), 0, 0.5)
-res <- matrix(0, 3, ncol(x.big))
-for (j in 1:ncol(x.big)) {
-  mylm <- lm(y2 ~ x.big[, j])
-  res[1:2, j] <- mylm$coefficients
-  res[3, j] <- summary(mylm)$r.squared
-}
-print(res)
-print(big_univRegLin(x.big, y2))
+# lm
+lmVol <- summary(lm(Girth ~ Volume + covar, data = trees))
+lmHei <- summary(lm(Girth ~ Height + covar, data = trees))
+
+print(big_univRegLin(X, y, covar = covar))
+print(rbind(lmHei$coefficients[2, ], lmVol$coefficients[2, ]))
 
 # With only half of the data
-ind.train <- sort(sample(length(x), length(x) / 2))
-res <- matrix(0, 3, ncol(x.big))
-for (j in 1:ncol(x.big)) {
-  mylm <- lm(y2[ind.train] ~ x.big[ind.train, j])
-  res[1:2, j] <- mylm$coefficients
-  res[3, j] <- summary(mylm)$r.squared
-}
-print(res)
-print(big_univRegLin(x.big, y2, ind.train))
+ind.train <- sort(sample(N, N / 2))
+
+# lm
+lmVol2 <- summary(lm(Girth ~ Volume + covar, data = trees, subset = ind.train))
+lmHei2 <- summary(lm(Girth ~ Height + covar, data = trees, subset = ind.train))
+
+print(big_univRegLin(X, y,
+                     covar = covar[ind.train, ],
+                     ind.train = ind.train))
+print(rbind(lmHei2$coefficients[2, ], lmVol2$coefficients[2, ]))
