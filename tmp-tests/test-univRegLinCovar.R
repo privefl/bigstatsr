@@ -5,16 +5,12 @@ n <- length(y)
 
 print(system.time(
   test <- big_univRegLin(X, y)
-))
+)) # 14 sec
 
 print(system.time(
-  test <- big_univRegLin(X, y)
-))
-
-print(system.time(
-  test2 <- univRegLin2(X@address, covar = cbind(rep(0, n), rep(1, n)),
+  test2 <- univRegLin2(X@address, covar = cbind(rep(0, n), rep(1, n), rnorm(n)),
                        y = y, rowInd = 1:n)
-))
+)) # 39 sec -> 48 sec with one additional covar
 
 print(all.equal(test["Slopes", ], test2$betas))
 stats <- cbind(n * test["R2", ], (test2$betas / test2$std)^2)
