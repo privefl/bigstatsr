@@ -1,5 +1,8 @@
+// [[Rcpp::depends(RcppArmadillo, bigmemory, BH)]]
+#include <RcppArmadillo.h>
+#include <bigmemory/MatrixAccessor.hpp>
 
-#include "utils.h"
+using namespace Rcpp;
 
 
 /******************************************************************************/
@@ -63,9 +66,9 @@ ListOf<SEXP> univRegLin2(XPtr<BigMatrix> xpMat,
 // Dispatch function for univRegLin2
 // [[Rcpp::export]]
 ListOf<SEXP> univRegLin2(SEXP pBigMat,
-                          arma::mat& covar,
-                          arma::vec y,
-                          const IntegerVector& rowInd) {
+                         arma::mat& covar,
+                         arma::vec y,
+                         const IntegerVector& rowInd) {
   XPtr<BigMatrix> xpMat(pBigMat);
 
   switch(xpMat->matrix_type()) {
@@ -80,7 +83,7 @@ ListOf<SEXP> univRegLin2(SEXP pBigMat,
   case 8:
     return univRegLin2(xpMat, MatrixAccessor<double>(*xpMat), covar, y, rowInd);
   default:
-    throw Rcpp::exception(ERROR_TYPE);
+    throw Rcpp::exception("unknown type detected for big.matrix object!");
   }
 }
 

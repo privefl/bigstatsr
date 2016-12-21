@@ -1,14 +1,17 @@
+// [[Rcpp::depends(bigmemory, BH)]]
+#include <bigmemory/MatrixAccessor.hpp>
+#include <Rcpp.h>
 
-#include "utils.h"
+using namespace Rcpp;
 
 
 /******************************************************************************/
 
 template <typename T>
 ListOf<SEXP> univRegLin(XPtr<BigMatrix> xpMat,
-                         MatrixAccessor<T> macc,
-                         const NumericVector& y,
-                         const IntegerVector& rowInd) {
+                        MatrixAccessor<T> macc,
+                        const NumericVector& y,
+                        const IntegerVector& rowInd) {
   int n = rowInd.size();
   double nd = (double)n;
   int m = xpMat->ncol();
@@ -58,8 +61,8 @@ ListOf<SEXP> univRegLin(XPtr<BigMatrix> xpMat,
 // Dispatch function for univRegLin
 // [[Rcpp::export]]
 ListOf<SEXP> univRegLin(SEXP pBigMat,
-                         const NumericVector& y,
-                         const IntegerVector& rowInd) {
+                        const NumericVector& y,
+                        const IntegerVector& rowInd) {
   XPtr<BigMatrix> xpMat(pBigMat);
 
   switch(xpMat->matrix_type()) {
@@ -74,7 +77,7 @@ ListOf<SEXP> univRegLin(SEXP pBigMat,
   case 8:
     return univRegLin(xpMat, MatrixAccessor<double>(*xpMat), y, rowInd);
   default:
-    throw Rcpp::exception(ERROR_TYPE);
+    throw Rcpp::exception("unknown type detected for big.matrix object!");
   }
 }
 

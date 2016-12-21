@@ -1,5 +1,8 @@
+// [[Rcpp::depends(bigmemory, BH)]]
+#include <bigmemory/MatrixAccessor.hpp>
+#include <Rcpp.h>
 
-#include "utils.h"
+using namespace Rcpp;
 
 
 /******************************************************************************/
@@ -64,7 +67,7 @@ void transpose3(SEXP pBigMat, SEXP pBigMat2) {
     return transpose3(xpMat, MatrixAccessor<double>(*xpMat),
                       MatrixAccessor<double>(*xpMat2));
   default:
-    throw Rcpp::exception(ERROR_TYPE);
+    throw Rcpp::exception("unknown type detected for big.matrix object!");
   }
 }
 

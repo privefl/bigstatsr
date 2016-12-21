@@ -1,47 +1,9 @@
+// [[Rcpp::depends(bigmemory, BH)]]
+#include <bigmemory/MatrixAccessor.hpp>
+#include <Rcpp.h>
 
-#include "utils.h"
+using namespace Rcpp;
 
-
-/******************************************************************************/
-
-// template <typename T>
-// NumericVector bigcolsums(XPtr<BigMatrix> xpMat,
-//                          MatrixAccessor<T> macc,
-//                          const IntegerVector& rowInd) {
-//   int n = rowInd.size();
-//   int m = xpMat->ncol();
-//
-//   NumericVector res(m);
-//
-//   for (int j = 0; j < m; j++) {
-//     for (int i = 0; i < n; i++) {
-//       res[j] += macc[j][rowInd[i] - 1];
-//     }
-//   }
-//
-//   return(res);
-// }
-//
-// // Dispatch function for bigcolsums
-// // [[Rcpp::export]]
-// NumericVector bigcolsums(SEXP pBigMat,
-//                          const IntegerVector& rowInd) {
-//   XPtr<BigMatrix> xpMat(pBigMat);
-//   switch(xpMat->matrix_type()) {
-//   case 1:
-//     return bigcolsums(xpMat, MatrixAccessor<char>(*xpMat),   rowInd);
-//   case 2:
-//     return bigcolsums(xpMat, MatrixAccessor<short>(*xpMat),  rowInd);
-//   case 4:
-//     return bigcolsums(xpMat, MatrixAccessor<int>(*xpMat),    rowInd);
-//   case 6:
-//     return bigcolsums(xpMat, MatrixAccessor<float>(*xpMat),  rowInd);
-//   case 8:
-//     return bigcolsums(xpMat, MatrixAccessor<double>(*xpMat), rowInd);
-//   default:
-//     throw Rcpp::exception(ERROR_TYPE);
-//   }
-// }
 
 /******************************************************************************/
 
@@ -88,7 +50,7 @@ ListOf<NumericVector> bigcolvars(SEXP pBigMat,
   case 8:
     return bigcolvars(xpMat, MatrixAccessor<double>(*xpMat), rowInd);
   default:
-    throw Rcpp::exception(ERROR_TYPE);
+    throw Rcpp::exception("unknown type detected for big.matrix object!");
   }
 }
 

@@ -16,7 +16,8 @@ You shouldn't have missing values in your data.}
 for the training part. If not specified, all data are used.}
 
 \item{covar}{Matrix of covariables to be added in each model
-to correct for confounders (e.g. the scores of PCA).}
+to correct for confounders (e.g. the scores of PCA). Default
+is \code{NULL} and correspond to only adding an Intercept to each model.}
 }
 \value{
 A data.frame with 4 elements:

@@ -4,7 +4,8 @@
 #' Covariates can be added to correct for confounders.
 #' @inheritParams bigstatsr-package
 #' @param covar Matrix of covariables to be added in each model
-#' to correct for confounders (e.g. the scores of PCA).
+#' to correct for confounders (e.g. the scores of PCA). Default
+#' is `NULL` and correspond to only adding an Intercept to each model.
 #' @return A data.frame with 4 elements:
 #' 1. the slopes of each regression,
 #' 2. the standard errors of each slope,
@@ -29,6 +30,6 @@ big_univRegLin <- function(X, y, ind.train = seq(nrow(X)), covar = NULL) {
                        rowInd = ind.train)
   }
   t.scores <- res[[1]] / res[[2]]
-  p.values <- 2 * pt(abs(t.scores), df = n - K, lower.tail = FALSE)
+  p.values <- 2 * stats::pt(abs(t.scores), df = n - K, lower.tail = FALSE)
   data.frame(res, t.score = t.scores, p.value = p.values)
 }

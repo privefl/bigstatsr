@@ -101,6 +101,7 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' multiply `u` by `diag(d)`. See examples.
 #'
 #' @example examples/example-SVD.R
+#' @example examples/example-newScale.R
 #' @seealso [prcomp][stats::prcomp]
 big_SVD <- function(X, fun.scaling,
                     ind.train = seq(nrow(X)),

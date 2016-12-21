@@ -1,5 +1,7 @@
+// [[Rcpp::depends(RcppEigen)]]
+#include <RcppEigen.h>
 
-#include "utils.h"
+using namespace Rcpp;
 
 
 /******************************************************************************/
