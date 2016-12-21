@@ -9,7 +9,7 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
 data("trees")
 N <- nrow(trees)
 covar0 <- matrix(rnorm(N * 3), N)
-sampleCovar <- function() sample(list(NULL, covar0), 1)[[1]]
+lcovar <- list(NULL, covar0)
 X0 <- as.matrix(trees[, -1])
 y <- trees[, 1]
 
@@ -18,12 +18,13 @@ y <- trees[, 1]
 test_that("equality with lm with all data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(X0, type = t)
-    covar <- sampleCovar()
-    lm1 <- summary(lm(y ~ cbind(X[, 1, drop = FALSE], covar)))
-    lm2 <- summary(lm(y ~ cbind(X[, 2, drop = FALSE], covar)))
-    expect_equivalent(as.matrix(big_univRegLin(X, y, covar = covar)),
-                      rbind(lm1$coefficients[2, ],
-                            lm2$coefficients[2, ]))
+    for (covar in lcovar) {
+      lm1 <- summary(lm(y ~ cbind(X[, 1, drop = FALSE], covar)))
+      lm2 <- summary(lm(y ~ cbind(X[, 2, drop = FALSE], covar)))
+      expect_equivalent(as.matrix(big_univRegLin(X, y, covar = covar)),
+                        rbind(lm1$coefficients[2, ],
+                              lm2$coefficients[2, ]))
+    }
   }
 })
 
@@ -34,12 +35,13 @@ ind <- sort(sample(N, N / 2))
 test_that("equality with lm with only half the data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(X0, type = t)
-    covar <- sampleCovar()
-    lm1 <- summary(lm(y ~ cbind(X[, 1, drop = FALSE], covar), subset = ind))
-    lm2 <- summary(lm(y ~ cbind(X[, 2, drop = FALSE], covar), subset = ind))
-    expect_equivalent(as.matrix(big_univRegLin(X, y, covar = covar[ind, ],
-                                               ind.train = ind)),
-                      rbind(lm1$coefficients[2, ], lm2$coefficients[2, ]))
+    for (covar in lcovar) {
+      lm1 <- summary(lm(y ~ cbind(X[, 1, drop = FALSE], covar), subset = ind))
+      lm2 <- summary(lm(y ~ cbind(X[, 2, drop = FALSE], covar), subset = ind))
+      expect_equivalent(as.matrix(big_univRegLin(X, y, covar = covar[ind, ],
+                                                 ind.train = ind)),
+                        rbind(lm1$coefficients[2, ], lm2$coefficients[2, ]))
+    }
   }
 })
 
