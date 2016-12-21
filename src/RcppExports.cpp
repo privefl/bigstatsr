@@ -3,7 +3,6 @@
 
 #include <RcppArmadillo.h>
 #include <RcppEigen.h>
-#include <Rcpp.h>
 
 using namespace Rcpp;
 
