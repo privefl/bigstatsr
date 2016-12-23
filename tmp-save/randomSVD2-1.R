@@ -98,7 +98,7 @@ BigMult2 <- function(X, mat, ind.train, block.size,
 #' A Randomized Algorithm for Principal Component Analysis.
 #' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 #' doi:10.1137/080736417
-big_randomSVD2 <- function(X, fun.scaling = fun_scale,
+big_randomSVD2 <- function(X, fun.scaling,
                            ind.train = seq(nrow(X)),
                            block.size = 1e3,
                            K = 10, I = 10,

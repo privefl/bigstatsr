@@ -17,6 +17,10 @@ univRegLin2 <- function(pBigMat, covar, y, rowInd) {
     .Call('bigstatsr_univRegLin2', PACKAGE = 'bigstatsr', pBigMat, covar, y, rowInd)
 }
 
+IRLS <- function(pBigMat, covar, y, z0, w0, rowInd, tol, maxiter) {
+    .Call('bigstatsr_IRLS', PACKAGE = 'bigstatsr', pBigMat, covar, y, z0, w0, rowInd, tol, maxiter)
+}
+
 multEigen <- function(X, Y) {
     .Call('bigstatsr_multEigen', PACKAGE = 'bigstatsr', X, Y)
 }

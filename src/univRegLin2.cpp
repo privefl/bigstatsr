@@ -7,6 +7,7 @@ using namespace Rcpp;
 
 /******************************************************************************/
 
+// change this with a better idea?
 double crossprod(double* colX, double* col, int n) {
   double sum = 0;
   for (int i = 0; i < n; i++) {
@@ -18,11 +19,11 @@ double crossprod(double* colX, double* col, int n) {
 /******************************************************************************/
 
 template <typename T>
-ListOf<SEXP> univRegLin2(XPtr<BigMatrix> xpMat,
-                         MatrixAccessor<T> macc,
-                         arma::mat& covar,
-                         arma::vec y,
-                         const IntegerVector& rowInd) {
+ListOf<NumericVector> univRegLin2(XPtr<BigMatrix> xpMat,
+                                  MatrixAccessor<T> macc,
+                                  arma::mat& covar,
+                                  arma::vec y,
+                                  const IntegerVector& rowInd) {
   int n = rowInd.size();
   int m = xpMat->ncol();
   int K = covar.n_cols;
@@ -65,10 +66,10 @@ ListOf<SEXP> univRegLin2(XPtr<BigMatrix> xpMat,
 
 // Dispatch function for univRegLin2
 // [[Rcpp::export]]
-ListOf<SEXP> univRegLin2(SEXP pBigMat,
-                         arma::mat& covar,
-                         arma::vec y,
-                         const IntegerVector& rowInd) {
+ListOf<NumericVector> univRegLin2(SEXP pBigMat,
+                                  arma::mat& covar,
+                                  arma::vec y,
+                                  const IntegerVector& rowInd) {
   XPtr<BigMatrix> xpMat(pBigMat);
 
   switch(xpMat->matrix_type()) {
