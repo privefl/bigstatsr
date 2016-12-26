@@ -6,7 +6,7 @@ X <- MASS::mvrnorm(N, mu = rep(0, M), Sigma = S)
 X <- scale(X)
 
 k <- 10
-L <- k + 30
+L <- k + 50
 n <- nrow(X)
 m <- ncol(X)
 I <- 5
@@ -24,36 +24,36 @@ diffPCs <- function(test, rot) {
 }
 
 # computation of G and H
-set.seed(1)
-G1 <- list(matrix(rnorm(n * L), n, L)) # G0
-G2 <- list(matrix(rnorm(n * L), n, L)) # G0
+G1 <- matrix(rnorm(n * L), n, L) # G0
+G2 <- matrix(rnorm(n * L), n, L) # G0
+R1 <- list(crossprod(X, G1)) # m * L
+R2 <- list(crossprod(X, G2))
 conv <- FALSE
 it <- 0
 while (!conv && it < 10) {
   print(it <- it + 1) # track of time
   for (i in 1:I) {
-    G1[[i + 1]] <- X %*% (crossprod(X, G1[[i]])) / m
-    # print(apply(G1[[i + 1]], 2, sd))
-    G2[[i + 1]] <- X %*% (crossprod(X, G2[[i]])) / m
+    R1[[i + 1]] <- crossprod(X,  X %*% R1[[i]]) / n
+    R2[[i + 1]] <- crossprod(X,  X %*% R2[[i]]) / n
   }
-  U1.new <- svd(do.call(cbind, G1), nv = 0)$u # n * L * I
-  U2.new <- svd(do.call(cbind, G2), nv = 0)$u # n * L * I
+  U1.new <- svd(do.call(cbind, R1), nv = 0)$u # m * L * I
+  U2.new <- svd(do.call(cbind, R2), nv = 0)$u # m * L * I
 
-  T1.t <- crossprod(X, U1.new)
-  T2.t <- crossprod(X, U2.new)
+  T1.t <- X %*% U1.new # n * L * I
+  T2.t <- X %*% U2.new
   T1.svd <- svd(T1.t, nu = L, nv = L)
   T2.svd <- svd(T2.t, nu = L, nv = L)
-  u1 = U1.new %*% T1.svd$v
-  v1 = T1.svd$u
-  u2 = U2.new %*% T2.svd$v
-  v2 = T2.svd$u
+  u1 = T1.svd$u
+  v1 = U1.new %*% T1.svd$v
+  u2 = T2.svd$u
+  v2 = U2.new %*% T2.svd$v
   diff1 <- diffPCs(u1[, 1:k], u2)
   diff2 <- diffPCs(v1[, 1:k], v2)
   print(m1 <- max(diff1, diff2))
   conv <- (m1 < tol)
 
-  G1 <- list(u1)
-  G2 <- list(u2)
+  R1 <- list(v1)
+  R2 <- list(v2)
 } # conv of U?
 
 test <- list(d = T1.svd$d[1:k], u = u1[, 1:k], v = v1[, 1:k])
@@ -72,25 +72,3 @@ R2 <- foreach(i = 1:k, .combine = 'cbind') %do% {
 print(R2)
 print(diffPCs(true$u, test$u))
 print(diffPCs(test$v, true$v))
-
-
-# X2 <- as.big.matrix(X, backingfile = "tmp")
-# print(system.time(
-#   test2 <- ParallelRandomSVD2(X2, big_scale(center = FALSE, scale = FALSE),
-#                               ncores = 3)
-# ))
-# print(all.equal(test2$d, true$d[1:k]))
-# plot(test2$u, true$u)
-# plot(test2$v, true$v)
-
-require(bigstatsr)
-X2 <- attach.big.matrix("tmp.desc")
-print(system.time(
-  test3 <- ParallelRandomSVD2.2(X2, big_scale(center = FALSE, scale = FALSE),
-                                ncores = 3)
-))
-k <- 10
-true <- svd(X2[,], nu = k, nv = k)
-print(all.equal(test3$d, true$d[1:k]))
-plot(test3$u, true$u)
-plot(test3$v, true$v)

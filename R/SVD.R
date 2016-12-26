@@ -97,8 +97,8 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' - `means`, the centering vector,
 #' - `sds`, the scaling vector.
 #'
-#' Note that to obtain the Principal Components, you just need to
-#' multiply `u` by `diag(d)`. See examples.
+#' Note that to obtain the Principal Components, you must use
+#' `big_predScoresPCA` on the result. See examples.
 #'
 #' @example examples/example-SVD.R
 #' @example examples/example-newScale.R

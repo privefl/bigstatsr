@@ -1,8 +1,121 @@
-// [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::depends(RcppEigen, bigmemory, BH)]]
 #include <RcppEigen.h>
+#include <bigmemory/MatrixAccessor.hpp>
 
 using namespace Rcpp;
 
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+NumericMatrix& scaling2(NumericMatrix& source,
+                       const NumericVector& sd) {
+  int n = source.rows();
+  int m = source.cols();
+
+  for (int j = 0; j < m; j++) {
+    for (int i = 0; i < n; i++) {
+      source(i, j) /= sd[i];
+    }
+  }
+
+  return(source);
+}
+
+// [[Rcpp::export]]
+NumericMatrix& scaling3(NumericMatrix& source,
+                        const NumericVector& mean) {
+  int n = source.rows();
+  int m = source.cols();
+
+  double mj;
+
+  for (int j = 0; j < m; j++) {
+    mj = mean[j];
+    for (int i = 0; i < n; i++) {
+      source(i, j) -= mj;
+    }
+  }
+
+  return(source);
+}
+
+/******************************************************************************/
+
+// typedef Eigen::Matrix<char, Eigen::Dynamic, Eigen::Dynamic> MatrixXchar;
+//
+// // [[Rcpp::export]]
+// Eigen::VectorXd produ(SEXP xpMat, const Eigen::Map<Eigen::VectorXd> x) {
+//
+//   XPtr<BigMatrix> bMPtr(xpMat);
+//
+//   // won't work with a sub.big.matrix
+//   Eigen::Map<MatrixXchar> bM((char *)bMPtr->matrix(),
+//                              bMPtr->nrow(), bMPtr->ncol());
+//
+//   return bM.cast<double>() * x;
+// }
+
+// [[Rcpp::export]]
+NumericVector produ2(SEXP xpMat, const NumericVector& x) {
+
+  XPtr<BigMatrix> bMPtr(xpMat);
+  MatrixAccessor<char> macc(*bMPtr);
+
+  int n = bMPtr->nrow();
+  int m = bMPtr->ncol();
+
+  NumericVector res(n);
+  double xj;
+  int i, j;
+
+  for (j = 0; j < m; j++) {
+    xj = x[j];
+    for (i = 0; i < n; i++) {
+      res[i] += macc[j][i] * xj;
+    }
+  }
+
+  return res;
+}
+
+/******************************************************************************/
+
+// // [[Rcpp::export]]
+// Eigen::VectorXd crossprodu(SEXP xpMat, const Eigen::Map<Eigen::VectorXd> x) {
+//
+//   XPtr<BigMatrix> bMPtr(xpMat);
+//
+//   // won't work with a sub.big.matrix
+//   Eigen::Map<MatrixXchar> bM((char *)bMPtr->matrix(),
+//                              bMPtr->nrow(), bMPtr->ncol());
+//
+//   return bM.transpose().cast<double>() * x;
+// }
+
+// [[Rcpp::export]]
+NumericVector crossprodu2(SEXP xpMat, const NumericVector& x) {
+
+  XPtr<BigMatrix> bMPtr(xpMat);
+  MatrixAccessor<char> macc(*bMPtr);
+
+  int n = bMPtr->nrow();
+  int m = bMPtr->ncol();
+
+  NumericVector res(m);
+  double tmp;
+  int i, j;
+
+  for (j = 0; j < m; j++) {
+    tmp = 0;
+    for (i = 0; i < n; i++) {
+      tmp += macc[j][i] * x[i];
+    }
+    res[j] = tmp;
+  }
+
+  return res;
+}
 
 /******************************************************************************/
 
@@ -86,13 +199,13 @@ NumericMatrix& incrMat(NumericMatrix& dest, const NumericMatrix& source) {
 
 // // [[Rcpp::export]]
 // void incrG(SEXP pBigMat, const NumericMatrix& source,
-//            double n, double L, double m) {
+//            double n, double offset, double L, double m) {
 //   XPtr<BigMatrix> xpMat(pBigMat);
 //   MatrixAccessor<double> macc(*xpMat);
 //
 //   for (int j = 0; j < L; j++) {
 //     for (int i = 0; i < n; i++) {
-//       macc[j][i] += source(i, j) / m;
+//       macc[j + offset][i] += source(i, j) / m;
 //     }
 //   }
 //
