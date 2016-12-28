@@ -8,7 +8,16 @@
 #' @return The transposed big.matrix. Its dimension and type
 #' are automatically determined from the input `big.matrix`.
 #' @export
-#' @example examples/example-transpose.R
+#' @examples
+#' X <- big.matrix(11, 23, shared = FALSE)
+#' X[] <- rnorm(length(X))
+#'
+#' Xt <- big_transpose(X, shared = FALSE)
+#'
+#' print(identical(
+#'   t(X[,]),
+#'     Xt[,]
+#'     ))
 big_transpose <- function(X, ...) {
   check_X(X)
 
