@@ -1,7 +1,7 @@
 #' @export
-p <- function(X, x) produ2(X@address, x)
+produ <- function(X, x) produ3(X@address, x)
 #' @export
-cp <- function(X, x) crossprodu2(X@address, x)
+cprodu <- function(X, x) crossprodu3(X@address, x)
 
 ################################################################################
 

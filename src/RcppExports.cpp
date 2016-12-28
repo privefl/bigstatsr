@@ -20,17 +20,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// transpose3
-void transpose3(SEXP pBigMat, SEXP pBigMat2);
-RcppExport SEXP bigstatsr_transpose3(SEXP pBigMatSEXP, SEXP pBigMat2SEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat2(pBigMat2SEXP);
-    transpose3(pBigMat, pBigMat2);
-    return R_NilValue;
-END_RCPP
-}
 // univRegLin
 ListOf<SEXP> univRegLin(SEXP pBigMat, const NumericVector& y, const IntegerVector& rowInd);
 RcppExport SEXP bigstatsr_univRegLin(SEXP pBigMatSEXP, SEXP ySEXP, SEXP rowIndSEXP) {
@@ -112,6 +101,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// produ3
+NumericVector produ3(SEXP xpMat, const NumericVector& x);
+RcppExport SEXP bigstatsr_produ3(SEXP xpMatSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(produ3(xpMat, x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // crossprodu2
 NumericVector crossprodu2(SEXP xpMat, const NumericVector& x);
 RcppExport SEXP bigstatsr_crossprodu2(SEXP xpMatSEXP, SEXP xSEXP) {
@@ -121,6 +122,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type xpMat(xpMatSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(crossprodu2(xpMat, x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// crossprodu3
+NumericVector crossprodu3(SEXP xpMat, const NumericVector& x);
+RcppExport SEXP bigstatsr_crossprodu3(SEXP xpMatSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(crossprodu3(xpMat, x));
     return rcpp_result_gen;
 END_RCPP
 }

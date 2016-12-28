@@ -2,7 +2,7 @@
 % Please edit documentation in R/randomSVD.R
 \name{big_randomSVD}
 \alias{big_randomSVD}
-\title{Random SVD}
+\title{Randomized SVD}
 \usage{
 big_randomSVD(X, fun.scaling, k = 10, tol = 1e-04, verbose = FALSE,
   ncores = 1)
@@ -15,12 +15,14 @@ You shouldn't have missing values in your data.}
 \strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
-\item{k}{Number of PCs to compute. Default is \code{10}.}
+\item{k}{Number of singular vectors/values to compute. Default is \code{10}.
+\strong{This algorithm should be used to compute only a
+few singular vectors/values.}}
 
 \item{tol}{Precision parameter of \link[RSpectra:svds]{svds}.
 Default is \code{1e-4}.}
 
-\item{verbose}{Should some progress be print? Default is \code{FALSE}.}
+\item{verbose}{Should some progress be printed? Default is \code{FALSE}.}
 
 \item{ncores}{Number or cores used. Default doesn't use parallelism.}
 }
@@ -28,8 +30,8 @@ Default is \code{1e-4}.}
 A list of
 \itemize{
 \item \code{d}, the singular values,
-\item \code{u}, the left singular vectors if \code{returnU} is \code{TRUE},
-\item \code{v}, the right singular vectors if \code{returnV} is \code{TRUE},
+\item \code{u}, the left singular vectors,
+\item \code{v}, the right singular vectors,
 \item \code{niter}, the number of the iteration of the algorithm,
 \item \code{nops}, number of Matrix-Vector multiplications used,
 \item \code{means}, the centering vector,
@@ -42,9 +44,9 @@ Note that to obtain the Principal Components, you must use
 \description{
 An algorithm for SVD (or PCA) of a \code{big.matrix} based on the algorithm
 in RSpectra (by Yixuan Qiu and Jiali Mei).
-This should be used to compute only a few PCs, but for very large matrices
-because this algorithm is linear in all dimensions (in time) and is
-very memory-efficient.
+\cr
+This algorithm is linear in time in all dimensions and is very
+memory-efficient. Thus, it can be used on very large big.matrices.
 }
 \examples{
 # Simulating some data

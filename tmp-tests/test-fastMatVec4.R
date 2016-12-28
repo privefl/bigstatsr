@@ -5,7 +5,7 @@ require(foreach)
 source('R/utils.R')
 
 
-# X2 <- attach.big.matrix("tmp.desc")
+X2 <- attach.big.matrix("tmp.desc")
 # y1 <- rnorm(nrow(X2))
 # y2 <- rnorm(ncol(X2))
 # require(microbenchmark)
@@ -127,9 +127,9 @@ svds4 <- function(X, fun.scaling, k = 10, tol = 1e-4,
   res
 }
 
-# print(system.time(
-#   test <- svds4(X2, snp_scaleBinom, ncores = 4, k = 20)
-# ))
+print(system.time(
+  test <- svds4(X2, snp_scaleBinom, ncores = 4, k = 10)
+))
 # 85 sec with ncores = 4 -> 190 sec with k = 20
 # 109 sec with ncores = 3
 # 148 sec with ncores = 2
@@ -147,8 +147,8 @@ svds4 <- function(X, fun.scaling, k = 10, tol = 1e-4,
 # print(diffPCs(test$u, true$u))
 # print(diffPCs(test$v, true$v))
 
-celiac <- AttachBigSNP("../bigsnpr/backingfiles/celiac_impute1_sub1.bk")
-X3 <- celiac$genotypes
-print(system.time(
-  test3 <- svds4(X3, snp_scaleBinom, ncores = 3, k = 10, verbose = TRUE)
-))
+# celiac <- AttachBigSNP("../bigsnpr/backingfiles/celiac_impute1_sub1.bk")
+# X3 <- celiac$genotypes
+# print(system.time(
+#   test3 <- svds4(X3, snp_scaleBinom, ncores = 3, k = 10, verbose = TRUE)
+# ))

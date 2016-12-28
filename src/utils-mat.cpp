@@ -56,6 +56,7 @@ NumericMatrix& scaling3(NumericMatrix& source,
 //   return bM.cast<double>() * x;
 // }
 
+
 // [[Rcpp::export]]
 NumericVector produ2(SEXP xpMat, const NumericVector& x) {
 
@@ -66,13 +67,46 @@ NumericVector produ2(SEXP xpMat, const NumericVector& x) {
   int m = bMPtr->ncol();
 
   NumericVector res(n);
-  double xj;
   int i, j;
+  double xj;
 
   for (j = 0; j < m; j++) {
     xj = x[j];
+    for (i = 0; i <= n; i++) {
+      res[i] += xj * macc[j][i];
+    }
+  }
+
+  return res;
+}
+
+// [[Rcpp::export]]
+NumericVector produ3(SEXP xpMat, const NumericVector& x) {
+
+  XPtr<BigMatrix> bMPtr(xpMat);
+  MatrixAccessor<char> macc(*bMPtr);
+
+  int n = bMPtr->nrow();
+  int m = bMPtr->ncol();
+
+  NumericVector res(n);
+  int i, j;
+
+  for (j = 0; j <= m - 16; j += 16) {
+    for (i = 0; i < n; i++) { // unrolling optimization
+      res[i] += (((x[j] * macc[j][i] + x[j+1] * macc[j+1][i]) +
+        (x[j+2] * macc[j+2][i] + x[j+3] * macc[j+3][i])) +
+        ((x[j+4] * macc[j+4][i] + x[j+5] * macc[j+5][i]) +
+        (x[j+6] * macc[j+6][i] + x[j+7] * macc[j+7][i]))) +
+        (((x[j+8] * macc[j+8][i] + x[j+9] * macc[j+9][i]) +
+        (x[j+10] * macc[j+10][i] + x[j+11] * macc[j+11][i])) +
+        ((x[j+12] * macc[j+12][i] + x[j+13] * macc[j+13][i]) +
+        (x[j+14] * macc[j+14][i] + x[j+15] * macc[j+15][i])));
+    }
+  }
+  for (; j < m; j++) {
     for (i = 0; i < n; i++) {
-      res[i] += macc[j][i] * xj;
+      res[i] += x[j] * macc[j][i];
     }
   }
 
@@ -109,6 +143,40 @@ NumericVector crossprodu2(SEXP xpMat, const NumericVector& x) {
   for (j = 0; j < m; j++) {
     tmp = 0;
     for (i = 0; i < n; i++) {
+      tmp += macc[j][i] * x[i];
+    }
+    res[j] = tmp;
+  }
+
+  return res;
+}
+
+// [[Rcpp::export]]
+NumericVector crossprodu3(SEXP xpMat, const NumericVector& x) {
+
+  XPtr<BigMatrix> bMPtr(xpMat);
+  MatrixAccessor<char> macc(*bMPtr);
+
+  int n = bMPtr->nrow();
+  int m = bMPtr->ncol();
+
+  NumericVector res(m);
+  double tmp;
+  int i, j;
+
+  for (j = 0; j < m; j++) {
+    tmp = 0;
+    for (i = 0; i <= n - 16; i += 16) { // unrolling optimization
+      tmp += (((macc[j][i] * x[i] + macc[j][i+1] * x[i+1]) +
+        (macc[j][i+2] * x[i+2] + macc[j][i+3] * x[i+3])) +
+        ((macc[j][i+4] * x[i+4] + macc[j][i+5] * x[i+5]) +
+        (macc[j][i+6] * x[i+6] + macc[j][i+7] * x[i+7]))) +
+        (((macc[j][i+8] * x[i+8] + macc[j][i+9] * x[i+9]) +
+        (macc[j][i+10] * x[i+10] + macc[j][i+11] * x[i+11])) +
+        ((macc[j][i+12] * x[i+12] + macc[j][i+13] * x[i+13]) +
+        (macc[j][i+14] * x[i+14] + macc[j][i+15] * x[i+15])));
+    }
+    for (; i < n; i++) {
       tmp += macc[j][i] * x[i];
     }
     res[j] = tmp;

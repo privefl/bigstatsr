@@ -81,11 +81,11 @@ svds4.par <- function(X, fun.scaling, k, tol, verbose, ncores) {
         if (c == 1) { # var?
           # compute A * x
           x <- Atx.part[,] / ms$sd
-          Ax[, ic] <- bigstatsr::p(X.part, x) - sum(x * ms$mean)
+          Ax[, ic] <- produ(X.part, x) - sum(x * ms$mean)
         } else if (c == 2) {
           # compute At * x
           x <- Ax[, 1]
-          Atx.part[] <- (bigstatsr::cp(X.part, x) - sum(x) * ms$mean) / ms$sd
+          Atx.part[] <- (cprodu(X.part, x) - sum(x) * ms$mean) / ms$sd
         } else { # end
           break
         }
@@ -142,25 +142,28 @@ svds4.seq <- function(X, fun.scaling, k, tol, verbose) {
 
 ################################################################################
 
-#' Random SVD
+#' Randomized SVD
 #'
 #' An algorithm for SVD (or PCA) of a `big.matrix` based on the algorithm
 #' in RSpectra (by Yixuan Qiu and Jiali Mei).
-#' This should be used to compute only a few PCs, but for very large matrices
-#' because this algorithm is linear in all dimensions (in time) and is
-#' very memory-efficient.
+#' \cr
+#' This algorithm is linear in time in all dimensions and is very
+#' memory-efficient. Thus, it can be used on very large big.matrices.
+#'
 #'
 #' @inherit bigstatsr-package params
-#' @param k Number of PCs to compute. Default is `10`.
+#' @param k Number of singular vectors/values to compute. Default is `10`.
+#' __This algorithm should be used to compute only a
+#' few singular vectors/values.__
 #' @param tol Precision parameter of [svds][RSpectra::svds].
 #' Default is `1e-4`.
-#' @param verbose Should some progress be print? Default is `FALSE`.
+#' @param verbose Should some progress be printed? Default is `FALSE`.
 #'
 #' @export
 #' @return A list of
 #' - `d`, the singular values,
-#' - `u`, the left singular vectors if `returnU` is `TRUE`,
-#' - `v`, the right singular vectors if `returnV` is `TRUE`,
+#' - `u`, the left singular vectors,
+#' - `v`, the right singular vectors,
 #' - `niter`, the number of the iteration of the algorithm,
 #' - `nops`, number of Matrix-Vector multiplications used,
 #' - `means`, the centering vector,
