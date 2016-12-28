@@ -1,8 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 .git
-backingfiles
-examples
+^backingfiles$
+^examples$
 ^\.travis\.yml$
 ^README\.Rmd$
 ^README\.html$
@@ -10,5 +10,6 @@ examples
 ^tmp-save$
 ^tmp-docs$
 ^tmp-results$
+^tmp-data$
 ^docs$
 mutex
