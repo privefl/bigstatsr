@@ -4,41 +4,40 @@
 \alias{big_univRegLog}
 \title{Univariate logistic regression}
 \usage{
-big_univRegLog(X, y01, ind.train = seq(nrow(X)), covar = NULL, ncores = 1,
-  backingpath = NULL, tol = 1e-08, maxiter = 20)
+big_univRegLog(X, y01.train, ind.train = seq(nrow(X)), covar.train = NULL,
+  ncores = 1, tol = 1e-08, maxiter = 20)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
-\item{y01}{Vector of responses. Must be 0s and 1s.}
+\item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
+Must be 0s and 1s.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all data are used.}
 
-\item{covar}{Matrix of covariables to be added in each model
-to correct for confounders (e.g. the scores of PCA). Default
-is \code{NULL} and correspond to only adding an Intercept to each model.}
+\item{covar.train}{Matrix of covariables to be added in each model to correct
+for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
+Default is \code{NULL} and corresponds to only adding an Intercept to each model.}
 
 \item{ncores}{Number or cores used. Default doesn't use parallelism.}
-
-\item{backingpath}{If the matrix is filebacked, specify the directory
-where the \code{big.matrix} is stored.}
 
 \item{tol}{Relative tolerance to assess convergence of the coefficient.
 Default is \code{1e-8}.}
 
 \item{maxiter}{Maximum number of iterations before giving up.
-Default is \code{20}.
-Usually, convergence is reached within 3 or 4 iterations.
+Default is \code{20}. Usually, convergence is reached within 3 or 4 iterations.
 If there is not convergence,
 \link[stats:glm]{glm} is used instead for the corresponding column.}
 }
 \value{
-A data.frame with 4 elements:
+A data.frame with as elements:
 \enumerate{
 \item the slopes of each regression,
 \item the standard errors of each slope,
+\item the number of iteration for each slope. If is \code{NA}, this means that the
+algorithm didn't converge, and \link[stats:glm]{glm} was used instead.
 \item the z-scores associated with each slope,
 \item the p-values associated with each z-score.
 }

@@ -4,28 +4,32 @@ require(bigstatsr)
 celiac <- AttachBigSNP("../bigsnpr/backingfiles/celiac_impute1_sub1.bk")
 X <- celiac$genotypes
 
-print(system.time(
-  test <- big_randomSVD(X, snp_scaleBinom, k = 10,
-                        verbose = TRUE, ncores = 4)
-)) # 166 sec
-
-BigToBed(celiac, "tmp-data/celiac.bed")
-
-require(flashpcaR)
-print(system.time(
-  testFlash <- flashpca("tmp-data/celiac", ndim = 10,
-                        stand = "binom2", do_loadings = TRUE)
-)) # 589 sec
-plot(test$u, testFlash$vectors)
-s <- c(rep(FALSE, 29), TRUE)
-plot(test$v[s], testFlash$loadings[s])
+# print(system.time(
+#   test <- big_randomSVD(X, snp_scaleBinom, k = 10,
+#                         verbose = TRUE, ncores = 4)
+# )) # 166 sec
+#
+# BigToBed(celiac, "tmp-data/celiac.bed")
+#
+# require(flashpcaR)
+# print(system.time(
+#   testFlash <- flashpca("tmp-data/celiac", ndim = 10,
+#                         stand = "binom2", do_loadings = TRUE)
+# )) # 589 sec
+# plot(test$u, testFlash$vectors)
+# s <- c(rep(FALSE, 29), TRUE)
+# plot(test$v[s], testFlash$loadings[s])
 
 x1 <- rnorm(ncol(X))
 x2 <- rnorm(nrow(X))
 
 print(system.time(
   test3 <- produ3(X@address, x1)
-)) # 17 sec
+)) # 10- sec
+
+print(system.time(
+  test5 <- produ4(X@address, x1)
+)) # 10- sec
 
 print(system.time(
   test1 <- produ2(X@address, x1)

@@ -59,8 +59,8 @@ ListOf<SEXP> IRLS(XPtr<BigMatrix> xpMat,
       tcovar = getXtW(covar, w);
       betas_new = solve(tcovar * covar, tcovar * z);
 
-      diff = 2 * abs(betas_old(0) - betas_new(0))
-        / (abs(betas_old(0)) + abs(betas_new(0)));
+      diff = 2 * max(abs(betas_old - betas_new)
+        / (abs(betas_old) + abs(betas_new)));
     } while (diff > tol && c < maxiter);
 
     res[j] = betas_new(0);

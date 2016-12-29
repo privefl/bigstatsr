@@ -72,7 +72,7 @@ NumericVector produ2(SEXP xpMat, const NumericVector& x) {
 
   for (j = 0; j < m; j++) {
     xj = x[j];
-    for (i = 0; i <= n; i++) {
+    for (i = 0; i < n; i++) {
       res[i] += xj * macc[j][i];
     }
   }
@@ -112,6 +112,8 @@ NumericVector produ3(SEXP xpMat, const NumericVector& x) {
 
   return res;
 }
+
+
 
 /******************************************************************************/
 

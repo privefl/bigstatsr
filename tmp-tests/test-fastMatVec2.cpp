@@ -8,11 +8,9 @@ using namespace Rcpp;
 /******************************************************************************/
 
 // [[Rcpp::export]]
-arma::vec test(XPtr<BigMatrix> xpMat,
+arma::vec test(XPtr<BigMatrix> xpA,
                const arma::vec& x,
                const arma::Row<uint32_t>& rowInd) {
-
-  XPtr<BigMatrix> xpA(xpMat);
 
   // won't work with a sub.big.matrix
   arma::Mat<char> Am((char*) xpA->matrix(), xpA->nrow(), xpA->ncol(), false);
@@ -21,10 +19,8 @@ arma::vec test(XPtr<BigMatrix> xpMat,
 }
 
 // [[Rcpp::export]]
-arma::vec test2(XPtr<BigMatrix> xpMat,
+arma::vec test2(XPtr<BigMatrix> xpA,
                const arma::vec& x) {
-
-  XPtr<BigMatrix> xpA(xpMat);
 
   // won't work with a sub.big.matrix
   arma::Mat<char> Am((char*) xpA->matrix(), xpA->nrow(), xpA->ncol(), false);

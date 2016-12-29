@@ -4,15 +4,18 @@
 ALL.TYPES <- c("char", "short", "integer", "float", "double")
 
 ERROR_BIGMATRIX <- "X must be a big.matrix."
+ERROR_SHARED <- "You can't use parallelism with a non-shared big.matrix"
 
-# also defined in src/utils.h
 ERROR_TYPE <- "unknown type detected for big.matrix object!"
 
 ################################################################################
 
-check_X <- function(X, y = NULL, y.type = "null") {
+check_X <- function(X, ncores = 1) {
   if (class(X) != "big.matrix")
     stop(ERROR_BIGMATRIX)
+
+  if (ncores > 1 && !is.shared(X))
+    stop(ERROR_SHARED)
 }
 
 ################################################################################
