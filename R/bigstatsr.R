@@ -19,6 +19,10 @@
 #' __`mean`__ and __`sd`__ for every column, to scale each of their elements
 #' such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.
 #'
+#' @param covar.train Matrix of covariables to be added in each model to correct
+#' for confounders (e.g. the scores of PCA), corresponding to `ind.train`.
+#' Default is `NULL` and corresponds to only adding an Intercept to each model.
+#'
 #' @param use.Eigen Should the `Eigen` library be used
 #' for matrix computations? Default tries to detect MRO. See details.
 #' @details For matrix computations, using \code{Eigen} library is faster.

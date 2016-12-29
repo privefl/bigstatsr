@@ -23,6 +23,10 @@ Default is \code{1000}.}
 \strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
+\item{covar.train}{Matrix of covariables to be added in each model to correct
+for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
+Default is \code{NULL} and corresponds to only adding an Intercept to each model.}
+
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default tries to detect MRO. See details.}
 }

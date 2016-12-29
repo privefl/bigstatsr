@@ -4,10 +4,9 @@
 #' @description Slopes of __univariate__ logistic regressions of each column
 #' of a `big.matrix`, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
+#'
 #' @inheritParams bigstatsr-package
-#' @param covar.train Matrix of covariables to be added in each model to correct
-#' for confounders (e.g. the scores of PCA), corresponding to `ind.train`.
-#' Default is `NULL` and corresponds to only adding an Intercept to each model.
+#'
 #' @param y01.train Vector of responses, corresponding to `ind.train`.
 #' Must be 0s and 1s.
 #' @param tol Relative tolerance to assess convergence of the coefficient.
@@ -87,7 +86,11 @@ big_univRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
         mod <- stats::glm(y01.train ~ X.part[ind.train, j] + covar.train - 1,
                           family = "binomial",
                           control = list(epsilon = tol, maxit = 100))
-        coeffs <- summary(mod)$coefficients
+        if (a$converged) {
+          coeffs <- summary(mod)$coefficients
+        } else {
+          coeffs <- c(NA, NA)
+        }
         res$betas[j] <- coeffs[1]
         res$std[j] <- coeffs[2]
       }
