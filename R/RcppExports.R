@@ -5,6 +5,14 @@ bigcolvars <- function(pBigMat, rowInd) {
     .Call('bigstatsr_bigcolvars', PACKAGE = 'bigstatsr', pBigMat, rowInd)
 }
 
+pMatVec4 <- function(xpMat, x, rowInd, colInd) {
+    .Call('bigstatsr_pMatVec4', PACKAGE = 'bigstatsr', xpMat, x, rowInd, colInd)
+}
+
+cpMatVec4 <- function(xpMat, x, rowInd, colInd) {
+    .Call('bigstatsr_cpMatVec4', PACKAGE = 'bigstatsr', xpMat, x, rowInd, colInd)
+}
+
 univRegLin <- function(pBigMat, y, rowInd) {
     .Call('bigstatsr_univRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
 }
@@ -17,8 +25,8 @@ IRLS <- function(pBigMat, covar, y, z0, w0, rowInd, tol, maxiter) {
     .Call('bigstatsr_IRLS', PACKAGE = 'bigstatsr', pBigMat, covar, y, z0, w0, rowInd, tol, maxiter)
 }
 
-scaling2 <- function(source, sd) {
-    .Call('bigstatsr_scaling2', PACKAGE = 'bigstatsr', source, sd)
+scaling2 <- function(source, sd, w) {
+    .Call('bigstatsr_scaling2', PACKAGE = 'bigstatsr', source, sd, w)
 }
 
 scaling3 <- function(source, mean) {

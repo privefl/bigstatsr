@@ -13,3 +13,11 @@ print(system.time(
 ))
 
 str(test)
+man <- data.frame(CHR = celiac$map$chromosome,
+                  BP = celiac$map$physical.pos,
+                  P = test$p.value,
+                  SNP = celiac$map$marker.ID)
+
+require(manhattanly)
+manhattanly(man, snp = "SNP")
+qqly(man, snp = "SNP")

@@ -5,6 +5,7 @@ ALL.TYPES <- c("char", "short", "integer", "float", "double")
 
 ERROR_BIGMATRIX <- "X must be a big.matrix."
 ERROR_SHARED <- "You can't use parallelism with a non-shared big.matrix"
+WARNING_NCORES <- "You shouldn't try to use more cores that you actually have"
 
 ERROR_TYPE <- "unknown type detected for big.matrix object!"
 
@@ -16,6 +17,9 @@ check_X <- function(X, ncores = 1) {
 
   if (ncores > 1 && !is.shared(X))
     stop(ERROR_SHARED)
+
+  if (ncores > parallel::detectCores())
+    warning(WARNING_NCORES)
 }
 
 ################################################################################

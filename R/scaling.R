@@ -8,8 +8,8 @@
 #' @param scale A logical value: whether to return sds or 1s. __You can't
 #' use scale without using center.__
 #' @return
-#' A new __function__ that returns a named list of two vectors "mean" and "sd"
-#' which are as long as the number of columns of `X`.
+#' A new __function__ that returns a data.frame of two vectors
+#' "mean" and "sd" which are as long as the number of columns of `X`.
 #' @seealso [scale]
 #' @example examples/example-scaling.R
 #' @export
@@ -24,6 +24,6 @@ big_scale <- function(center = TRUE, scale = TRUE) {
       means <- rep(0, m)
       sds <- rep(1, m)
     }
-    list(mean = means, sd = sds)
+    data.frame(mean = means, sd = sds)
   }
 }

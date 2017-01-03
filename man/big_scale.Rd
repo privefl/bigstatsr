@@ -13,8 +13,8 @@ big_scale(center = TRUE, scale = TRUE)
 use scale without using center.}}
 }
 \value{
-A new \strong{function} that returns a named list of two vectors "mean" and "sd"
-which are as long as the number of columns of \code{X}.
+A new \strong{function} that returns a data.frame of two vectors
+"mean" and "sd" which are as long as the number of columns of \code{X}.
 }
 \description{
 Some scaling functions for a \code{big.matrix} to be used as

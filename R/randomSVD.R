@@ -1,11 +1,10 @@
 ################################################################################
 
 # parallel implementation
-svds4.par <- function(X, fun.scaling, k, tol, verbose, ncores) {
+svds4.par <- function(X, fun.scaling, ind.train, k, tol, verbose, ncores) {
   stopifnot(ncores > 1)
-  stopifnot(ncores <= parallel::detectCores())
 
-  n <- nrow(X)
+  n <- length(ind.train)
   m <- ncol(X)
   intervals <- CutBySize(m, nb = ncores)
 
@@ -65,13 +64,14 @@ svds4.par <- function(X, fun.scaling, k, tol, verbose, ncores) {
       # get their part
       lo <- intervals[ic, "lower"]
       up <- intervals[ic, "upper"]
+      m.part <- up - lo + 1
       X.part <- sub.big.matrix(X.desc, firstCol = lo, lastCol = up)
       Ax <- attach.big.matrix(Ax.desc)
       Atx.part <- sub.big.matrix(Atx.desc, firstRow = lo, lastRow = up)
       calc <- attach.big.matrix(calc.desc)
 
       # scaling
-      ms <- fun.scaling(X.part)
+      ms <- fun.scaling(X.part, ind.train)
 
       repeat {
         # slaves wait for their master to give them orders
@@ -81,11 +81,13 @@ svds4.par <- function(X, fun.scaling, k, tol, verbose, ncores) {
         if (c == 1) { # var?
           # compute A * x
           x <- Atx.part[,] / ms$sd
-          Ax[, ic] <- produ(X.part, x) - sum(x * ms$mean)
+          Ax[, ic] <- pMatVec4(X.part@address, x, ind.train, 1:m.part) -
+            sum(x * ms$mean)
         } else if (c == 2) {
           # compute At * x
           x <- Ax[, 1]
-          Atx.part[] <- (cprodu(X.part, x) - sum(x) * ms$mean) / ms$sd
+          Atx.part[] <- (cpMatVec4(X.part@address, x, ind.train, 1:m.part) -
+                           sum(x) * ms$mean) / ms$sd
         } else { # end
           break
         }
@@ -110,12 +112,12 @@ svds4.par <- function(X, fun.scaling, k, tol, verbose, ncores) {
 ################################################################################
 
 # signel cor implementation
-svds4.seq <- function(X, fun.scaling, k, tol, verbose) {
-  n <- nrow(X)
+svds4.seq <- function(X, fun.scaling, ind.train, k, tol, verbose) {
+  n <- length(ind.train)
   m <- ncol(X)
 
   # scaling
-  ms <- fun.scaling(X)
+  ms <- fun.scaling(X, ind.train)
 
   printf <- function(...) if (verbose) cat(sprintf(...))
   it <- 0
@@ -123,12 +125,12 @@ svds4.seq <- function(X, fun.scaling, k, tol, verbose) {
   A <- function(x, args) {
     printf("%d - computing A * x\n", it <<- it + 1)
     x <- x / ms$sd
-    bigstatsr::p(X, x) - sum(x * ms$mean)
+    pMatVec4(X@address, x, ind.train, 1:m) - sum(x * ms$mean)
   }
   # Atrans
   Atrans <- function(x, args) {
     printf("%d - computing At * x\n", it <<- it + 1)
-    (bigstatsr::cp(X, x) - sum(x) * ms$mean) / ms$sd
+    (cpMatVec4(X@address, x, ind.train, 1:m) - sum(x) * ms$mean) / ms$sd
   }
 
   res <- RSpectra::svds(A, k, nu = k, nv = k, opts = list(tol = tol),
@@ -175,12 +177,16 @@ svds4.seq <- function(X, fun.scaling, k, tol, verbose) {
 #' @example examples/example-SVD.R
 #' @example examples/example-newScale.R
 #' @seealso [svds][RSpectra::svds] [flashpca][flashpcaR::flashpca]
-big_randomSVD <- function(X, fun.scaling, k = 10, tol = 1e-4,
+big_randomSVD <- function(X, fun.scaling,
+                          ind.train = seq(nrow(X)),
+                          k = 10, tol = 1e-4,
                           verbose = FALSE, ncores = 1) {
+  check_X(X, ncores)
+
   if (ncores > 1) {
-    svds4.par(X, fun.scaling, k, tol, verbose, ncores)
+    svds4.par(X, fun.scaling, ind.train, k, tol, verbose, ncores)
   } else {
-    svds4.seq(X, fun.scaling, k, tol, verbose)
+    svds4.seq(X, fun.scaling, ind.train, k, tol, verbose)
   }
 }
 
