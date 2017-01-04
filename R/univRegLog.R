@@ -86,7 +86,7 @@ big_univRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
         mod <- stats::glm(y01.train ~ X.part[ind.train, j] + covar.train - 1,
                           family = "binomial",
                           control = list(epsilon = tol, maxit = 100))
-        if (a$converged) {
+        if (mod$converged) {
           coeffs <- summary(mod)$coefficients
         } else {
           coeffs <- c(NA, NA)

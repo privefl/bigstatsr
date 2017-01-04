@@ -38,7 +38,8 @@ test_that("equality with lm with only half the data", {
     for (covar in lcovar) {
       lm1 <- summary(lm(y ~ cbind(X[, 1, drop = FALSE], covar), subset = ind))
       lm2 <- summary(lm(y ~ cbind(X[, 2, drop = FALSE], covar), subset = ind))
-      expect_equivalent(as.matrix(big_univRegLin(X, y, covar = covar[ind, ],
+      expect_equivalent(as.matrix(big_univRegLin(X, y[ind],
+                                                 covar = covar[ind, ],
                                                  ind.train = ind)),
                         rbind(lm1$coefficients[2, ], lm2$coefficients[2, ]))
     }

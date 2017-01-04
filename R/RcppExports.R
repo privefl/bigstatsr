@@ -25,8 +25,8 @@ IRLS <- function(pBigMat, covar, y, z0, w0, rowInd, tol, maxiter) {
     .Call('bigstatsr_IRLS', PACKAGE = 'bigstatsr', pBigMat, covar, y, z0, w0, rowInd, tol, maxiter)
 }
 
-scaling2 <- function(source, sd, w) {
-    .Call('bigstatsr_scaling2', PACKAGE = 'bigstatsr', source, sd, w)
+scaling2 <- function(source, sd) {
+    .Call('bigstatsr_scaling2', PACKAGE = 'bigstatsr', source, sd)
 }
 
 scaling3 <- function(source, mean) {

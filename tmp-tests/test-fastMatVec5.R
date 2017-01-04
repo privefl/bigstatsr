@@ -1,7 +1,7 @@
 require(bigsnpr)
 require(bigstatsr)
 
-celiac <- AttachBigSNP("../bigsnpr/backingfiles/celiac_impute1_sub1.bk")
+celiac <- AttachBigSNP("../thesis-celiac/backingfiles/celiac_sub2_impute1.bk")
 X <- celiac$genotypes
 
 # X <- deepcopy(X, type = "double", backingfile = "celiac-double",
@@ -9,8 +9,14 @@ X <- celiac$genotypes
 
 print(system.time(
   test <- big_randomSVD(X, snp_scaleBinom, k = 10,
-                        verbose = TRUE, ncores = 4)
+                        verbose = TRUE, ncores = 11)
 )) # 166 sec
+# new PC:
+# 12 -> 117
+# 11 -> 125
+# 10 -> 131
+# 6 -> 210
+
 #
 # BigToBed(celiac, "tmp-data/celiac.bed")
 #
