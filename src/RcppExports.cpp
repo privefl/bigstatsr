@@ -94,15 +94,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // scaling2
-NumericMatrix& scaling2(NumericMatrix& source, const NumericVector& sd, int w);
-RcppExport SEXP bigstatsr_scaling2(SEXP sourceSEXP, SEXP sdSEXP, SEXP wSEXP) {
+NumericMatrix& scaling2(NumericMatrix& source, const NumericVector& sd);
+RcppExport SEXP bigstatsr_scaling2(SEXP sourceSEXP, SEXP sdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix& >::type source(sourceSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type sd(sdSEXP);
-    Rcpp::traits::input_parameter< int >::type w(wSEXP);
-    rcpp_result_gen = Rcpp::wrap(scaling2(source, sd, w));
+    rcpp_result_gen = Rcpp::wrap(scaling2(source, sd));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -24,8 +24,7 @@ ListOf<SEXP> univRegLin(XPtr<BigMatrix> xpMat,
   int ind;
 
   for (int i = 0; i < n; i++) {
-    ind = rowInd[i] - 1;
-    tmpY = y[ind];
+    tmpY = y[i];
     ySum += tmpY;
     yySum += tmpY * tmpY;
   }
@@ -41,7 +40,7 @@ ListOf<SEXP> univRegLin(XPtr<BigMatrix> xpMat,
       ind = rowInd[i] - 1;
       tmp = macc[j][ind];
       xSum += tmp;
-      xySum += tmp * y[ind];
+      xySum += tmp * y[i];
       xxSum += tmp * tmp;
     }
     num = xySum - xSum * ySum / nd;
