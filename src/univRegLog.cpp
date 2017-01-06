@@ -43,7 +43,7 @@ ListOf<SEXP> IRLS(XPtr<BigMatrix> xpMat,
     }
     z = z0;
     w = w0;
-    tcovar = getXtW(covar, w);
+    tcovar = getXtW(covar, w); // use warm start before looping?
     betas_new = solve(tcovar * covar, tcovar * z);
     c = 1;
 
