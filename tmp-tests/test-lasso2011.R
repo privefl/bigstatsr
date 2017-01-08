@@ -43,20 +43,22 @@ cp0 <- abs(crossprod(X, y.simu)) / sc
 lseq <- function(from, to, N) {
   exp(seq(log(from), log(to), length.out = N))
 }
-lam <- lseq(max(cp0), max(cp0) / 10, 20)
+lam <- lseq(max(cp0), max(cp0) / 1000, 100)
 print(lam[1])
 print(glmnet(X, y.simu)$lambda[1])
 print(lam[1]) / print(glmnet(X, y.simu)$lambda[1])
 
 soft_thr <- function(z, g) sign(z) * max(abs(z) - g, 0)
+b <- integer(length(lam))
 
-ever_ind <- integer(0)
-all_betas <- numeric(ncol(X))
-cp <- cp0
 # i <- 1
 printf <- function(...) cat(sprintf(...))
 
 time <- proc.time()
+ever_ind <- integer(0)
+all_betas <- numeric(ncol(X))
+cp <- cp0
+r <- y.simu
 for (i in 2:length(lam)) {
   print(i)
   print(length(ind <- which(cp > (2 * lam[i] - lam[i - 1]))))
@@ -65,37 +67,37 @@ for (i in 2:length(lam)) {
   ever_ind <- sort(union(ever_ind, ind))
 
   mat <- X[, ever_ind, drop = FALSE]
-  n.ind <- length(ever_ind)
-  # printf("Before: ")
   betas <- all_betas[ever_ind]
-  r <- y.simu
   # j <- 1
-  remains <- rep(TRUE, n.ind)
+  remains <- rep(TRUE, length(betas))
   conv <- FALSE
-  tol <- 1e-7
+  tol <- 1e-4
 
   while (!conv) { # CD # TODO: warm starts
     conv <- TRUE
     for (j in which(remains)) {
       # print(j)
-      r <- y.simu - mat[, -j, drop = FALSE] %*% betas[-j] / sc # TIME1
-      tmpB <- sum(mat[, j] * r) / sc                           # TIME2
+      # r <- y.simu - mat[, -j, drop = FALSE] %*% betas[-j] / sc # TIME1: 230K
+      # tmpB <- crossprod(mat[, j], r) / sc + betas[j]             # TIME2: 1K
+      tmpB <- crossprodCpp(mat, j, r) / sc + betas[j]
       tmp <- soft_thr(tmpB, lam[i]) # TODO: combine conds
-      if (abs(betas[j] - tmp) > tol) {
+      if (abs(diff <- (tmp - betas[j])) > tol) {
         if (tmp == 0) remains[j] <- FALSE
         betas[j] <- tmp
+        r <- r - mat[, j] * diff
         conv <- FALSE
       }
       # print(betas)
     }
   }
   # printf("After: ")
-  # print(all_betas[ever_ind] <- betas)
+  all_betas[ever_ind] <- betas
+  b[i] <- sum(betas != 0)
   # mod <- glmnet(mat, y.simu, lambda = lam[i] / sqrt(1000))
   # print(mod$beta)
   # pred <- mat %*% mod$beta
-  pred <- mat %*% betas
-  cp <- abs(cp0 - crossprod(X, pred)) / sc
+  # pred <- mat %*% betas
+  cp <- abs(crossprod(X, r)) / sc
   print(length(bad_KKT <- which(cp[-ever_ind] > lam[i])))
   # print(set1 <- which(cp >= lam[i]))
   # print(set2 <- ever_ind[which(betas != 0)])
@@ -119,3 +121,11 @@ for (i in 2:length(lam)) {
 
 }
 print(proc.time() - time)
+print(b)
+print(system.time(mod <- glmnet(X, y.simu, lambda = lam / sqrt(1000))))
+print(colSums(mod$beta != 0))
+
+require(biglasso)
+X.big <- as.big.matrix(X)
+print(system.time(mod2 <- biglasso(X.big, y.simu, lambda = lam / sqrt(1000))))
+print(all.equal(mod$beta, mod2$beta[-1, ]))
