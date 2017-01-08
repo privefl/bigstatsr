@@ -1,10 +1,3 @@
-# require(bigsnpr)
-# require(bigstatsr)
-#
-# # backingfile <- "../thesis-celiac/backingfiles/celiac_sub2_impute1.bk"
-# backingfile <- "../bigsnpr/backingfiles/celiac_impute1_sub1.bk"
-# X2 <- AttachBigSNP(backingfile)$genotypes[1:1000, 1:1000]
-
 X2 <- matrix(0, 1000, 1000)
 X2[] <- rnorm(length(X2))
 
@@ -51,23 +44,24 @@ print(lam[1]) / print(glmnet(X, y.simu)$lambda[1])
 soft_thr <- function(z, g) sign(z) * max(abs(z) - g, 0)
 b <- integer(length(lam))
 
-# i <- 1
 printf <- function(...) cat(sprintf(...))
 
 time <- proc.time()
-ever_ind <- integer(0)
+ever_ind <- which(cp0 > (2 * lam[2] - lam[1]))
 all_betas <- numeric(ncol(X))
 cp <- cp0
 r <- y.simu
 for (i in 2:length(lam)) {
   KKT_NOK <- TRUE
-  print(i)
-  print(length(ind <- which(cp > (2 * lam[i] - lam[i - 1]))))
-  ever_ind <- sort(union(ever_ind, ind))
+  printf("i = %d\n", i)
+  strong_ind <- which(cp > (2 * lam[i] - lam[i - 1]))
+  l <- length(ever_ind)
+  ever_ind <- sort(union(ever_ind, strong_ind))
+  printf("Lengths: A: %d, S: %d, AuS: %s\n",
+         l, length(strong_ind), length(ever_ind))
   while (KKT_NOK) {
     mat <- X[, ever_ind, drop = FALSE]
     betas <- all_betas[ever_ind]
-    # j <- 1
     remains <- rep(TRUE, length(betas))
     conv <- FALSE
     tol <- 1e-4
@@ -76,44 +70,26 @@ for (i in 2:length(lam)) {
       conv <- TRUE
       for (j in which(remains)) {
         # print(j)
-        # r <- y.simu - mat[, -j, drop = FALSE] %*% betas[-j] / sc # TIME1: 230K
-        # tmpB <- crossprod(mat[, j], r) / sc + betas[j]             # TIME2: 1K
         tmpB <- crossprodCpp(mat, j, r) / sc + betas[j]
         tmp <- soft_thr(tmpB, lam[i]) # TODO: combine conds
         if (abs(diff <- (tmp - betas[j])) > tol) {
           if (abs(tmp) > tol) {
             betas[j] <- tmp
-            r <- r - mat[, j] * diff # need reupdating?
+            r <- updateR(r, mat, j, diff) # need absolute reupdating?
           } else {
             betas[j] <- 0
             remains[j] <- FALSE
           }
           conv <- FALSE
         }
-        # print(betas)
       }
     }
-    # printf("After: ")
     all_betas[ever_ind] <- betas
     b[i] <- sum(betas != 0)
-    # mod <- glmnet(mat, y.simu, lambda = lam[i] / sqrt(1000))
-    # print(mod$beta)
-    # pred <- mat %*% mod$beta
-    # pred <- mat %*% betas
+
     r <- y.simu - mat %*% betas # reupdating (due to possible floating errors)
     cp <- abs(crossprod(X, r)) / sc
     print(length(bad_KKT <- which(cp > lam[i] * 1.02)))
-    # print(set1 <- which(cp >= lam[i]))
-    # print(set2 <- ever_ind[which(betas != 0)])
-    # diff <- setdiff(set1, set2)
-    # stopifnot(cond <- identical(set1, set2)) # TODO: add KKT fails
-    # if (cond) {
-    #   ind <- which(cp >= lam[i] * (1 - 1e-6))
-    # }
-    # print(cp[ind])
-    # plot(cp)
-    # abline(h = lam[i], col = "red")
-    # print(ever_ind[betas != 0])
 
     if (length(bad_KKT)) {
       warning("BAD BAD BAD BAD BAD BAD BAD!!!!")
