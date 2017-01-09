@@ -33,7 +33,7 @@ print(colSums(X^2))
 
 # sc <- sqrt(n * (n - 1))
 sc <- 1
-tol <- 1e-7
+tol <- 1e-4
 cp0 <- abs(crossprod(X, y.simu)) / sc
 # sc <- 999
 lseq <- function(from, to, N) {
@@ -44,35 +44,10 @@ print(lam[1])
 print(glmnet(X, y.simu)$lambda[1])
 print(lam[1]) / print(glmnet(X, y.simu)$lambda[1])
 
-soft_thr <- function(z, g) sign(z) * max(abs(z) - g, 0)
 b <- integer(length(lam))
 
 printf <- function(...) cat(sprintf(...))
-CD_lasso <- function(mat, r, betas, lambda) {
-  remains <- rep(TRUE, length(betas))
-  conv <- FALSE
 
-  while (!conv) { # CD # TODO: warm starts
-    conv <- TRUE
-    for (j in which(remains)) {
-      # print(j)
-      tmpB <- crossprodCpp(mat, j, r) / sc + betas[j]
-      tmp <- soft_thr(tmpB, lambda) # TODO: combine conds
-      if (abs(diff <- (tmp - betas[j])) > tol) {
-        if (abs(tmp) > tol) {
-          betas[j] <- tmp
-          r <- updateR(r, mat, j, diff) # need absolute reupdating?
-        } else {
-          betas[j] <- 0
-          remains[j] <- FALSE
-        }
-        conv <- FALSE
-      }
-    }
-  }
-
-  betas
-}
 
 time <- proc.time()
 A_ind <- which(cp0 > (2 * lam[2] - lam[1]))
@@ -84,20 +59,20 @@ for (i in 2:length(lam)) {
   eps_ind <- A_ind
   seq_strong_thr <- 2 * lam[i] - lam[i - 1]
   KKT_thr <- lam[i] * 1.02
-  # strong_ind <- which(cp > (2 * lam[i] - lam[i - 1]))
-  # if (i == 2) A_ind <- strong_ind
-  # l <- length(A_ind)
-  # A_ind <- sort(union(A_ind, strong_ind))
-  # printf("Lengths: A: %d, S: %d, AuS: %s\n",
-  #        l, length(strong_ind), length(A_ind))
+
   while (TRUE) {
     printf("Length of eps_ind: %d\n", length(eps_ind))
     mat <- X[, eps_ind, drop = FALSE]
-    betas <- all_betas[eps_ind]
-    betas <- CD_lasso(mat, r, betas, lam[i])
-    all_betas[eps_ind] <- betas
+    betas.old <- all_betas[eps_ind]
+    # printf("Before: "); print(betas)
+    betas.new <- CD_lasso_Cpp(mat, r, all_betas[eps_ind], lam[i], sc, tol)
+    all_betas[eps_ind] <- betas.new
+    # printf("After: "); print(betas)
+    # if (i == 10) stop("Greve!")
+    ind0 <- (betas.old == 0)
+    printf("Ratio: %.2g\n", mean(betas.new[!ind0] / betas.old[!ind0]))
 
-    r <- y.simu - mat %*% betas # reupdating (due to possible floating errors)
+    r <- y.simu - mat %*% betas.new # reupdating (due to possible floating errors)
     cp <- abs(crossprod(X, r)) / sc
 
     # step c
@@ -125,14 +100,17 @@ for (i in 2:length(lam)) {
 }
 print(proc.time() - time)
 
+
 plot(cp)
 abline(h = lam[i], col = "red")
 
-print(b)
-print(system.time(mod <- glmnet(X, y.simu, lambda = lam / sqrt(1000))))
+
+print(system.time(mod <- glmnet(X, y.simu, lambda = lam / sqrt(1000), dfmax = 300)))
 print(colSums(mod$beta != 0))
 
 require(biglasso)
 X.big <- as.big.matrix(X)
-print(system.time(mod2 <- biglasso(X.big, y.simu, lambda = lam / sqrt(1000))))
+print(system.time(mod2 <- biglasso(X.big, y.simu, lambda = lam / sqrt(1000), dfmax = 100)))
 print(all.equal(mod$beta, mod2$beta[-1, ]))
+
+print(cbind(b, colSums(mod$beta != 0), colSums(mod2$beta != 0)))
