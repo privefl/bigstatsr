@@ -82,14 +82,10 @@ NumericVector& CD_lasso_Cpp(const NumericMatrix& mat,
         tmp = soft_thr(tmpB, lambda);
         diff = tmp - betas[j];
         if (abs(diff) > tol) {
-          if (abs(tmp) > tol) {
-            betas[j] = tmp;
-            r = updateR2(r, mat, j, diff);
-          } else {
-            betas[j] = 0;
-            remains[j] = false;
-          }
-          conv = false;
+          betas[j] = tmp;
+          r = updateR2(r, mat, j, diff);
+          if (tmp == 0) remains[j] = false;
+          if (conv) conv = false;
         }
       }
     }
@@ -98,77 +94,33 @@ NumericVector& CD_lasso_Cpp(const NumericMatrix& mat,
   return betas;
 }
 
-/******************************************************************************/
+// [[Rcpp::export]]
+NumericVector& CD_lasso_Cpp2(const NumericMatrix& mat,
+                             NumericVector& r,
+                             NumericVector& betas,
+                             double lambda,
+                             double sc, double tol) {
+  int m = betas.size();
 
-// template <typename T>
-//
-// ListOf<NumericVector> univRegLin2(XPtr<BigMatrix> xpMat,
-//                                   MatrixAccessor<T> macc,
-//                                   arma::mat& covar,
-//                                   arma::vec y,
-//                                   const IntegerVector& rowInd) {
-//   int n = rowInd.size();
-//   int m = xpMat->ncol();
-//   int K = covar.n_cols;
-//   arma::mat tmp;
-//   arma::vec betas, eps;
-//   double* colX;
-//   int i, j, k;
-//
-//   arma::mat XtX = covar.t() * covar;
-//   arma::vec Xty = covar.t() * y;
-//
-//   // indices begin at 1 in R and 0 in C++
-//   IntegerVector trains = rowInd - 1;
-//
-//   NumericVector res(m);
-//   NumericVector var(m);
-//
-//   for (j = 0; j < m; j++) {
-//     colX = covar.colptr(0);
-//     for (i = 0; i < n; i++) {
-//       colX[i] = macc[j][trains[i]];
-//     }
-//     for (k = 0; k < K; k++) {
-//       XtX(0, k) = XtX(k, 0) = crossprod(colX, covar.colptr(k), n);
-//     }
-//     Xty(0) = crossprod(colX, y.memptr(), n);
-//
-//     tmp = inv(XtX);
-//     betas = tmp * Xty;
-//     eps = y - covar * betas;
-//     res[j] = betas(0);
-//     var[j] = tmp(0, 0) * sum(eps % eps) / (n - K);
-//   }
-//
-//   return(List::create(_["estim"] = res,
-//                       _["std.err"] = sqrt(var)));
-// }
+  double tmpB, tmp, diff;
+  int j;
+  bool conv;
 
-/******************************************************************************/
+  do {
+    conv = true;
+    for (j = 0; j < m; j++) {
+      tmpB = crossprodCpp2(mat, j, r) / sc + betas[j];
+      tmp = soft_thr(tmpB, lambda);
+      diff = tmp - betas[j];
+      if (abs(diff) > tol) {
+        betas[j] = tmp;
+        r = updateR2(r, mat, j, diff);
+        conv = false;
+      }
+    }
+  } while (!conv);
 
-// // Dispatch function for univRegLin2
-// // [[Rcpp::export]]
-// ListOf<NumericVector> univRegLin2(SEXP pBigMat,
-//                                   arma::mat& covar,
-//                                   arma::vec y,
-//                                   const IntegerVector& rowInd) {
-//   XPtr<BigMatrix> xpMat(pBigMat);
-//
-//   switch(xpMat->matrix_type()) {
-//   case 1:
-//     return univRegLin2(xpMat, MatrixAccessor<char>(*xpMat),   covar, y, rowInd);
-//   case 2:
-//     return univRegLin2(xpMat, MatrixAccessor<short>(*xpMat),  covar, y, rowInd);
-//   case 4:
-//     return univRegLin2(xpMat, MatrixAccessor<int>(*xpMat),    covar, y, rowInd);
-//   case 6:
-//     return univRegLin2(xpMat, MatrixAccessor<float>(*xpMat),  covar, y, rowInd);
-//   case 8:
-//     return univRegLin2(xpMat, MatrixAccessor<double>(*xpMat), covar, y, rowInd);
-//   default:
-//     throw Rcpp::exception("unknown type detected for big.matrix object!");
-//   }
-// }
+  return betas;
+}
 
 /******************************************************************************/

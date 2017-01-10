@@ -13,6 +13,10 @@ cpMatVec4 <- function(xpMat, x, rowInd, colInd) {
     .Call('bigstatsr_cpMatVec4', PACKAGE = 'bigstatsr', xpMat, x, rowInd, colInd)
 }
 
+transpose3 <- function(pBigMat, pBigMat2) {
+    invisible(.Call('bigstatsr_transpose3', PACKAGE = 'bigstatsr', pBigMat, pBigMat2))
+}
+
 univRegLin <- function(pBigMat, y, rowInd) {
     .Call('bigstatsr_univRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
 }

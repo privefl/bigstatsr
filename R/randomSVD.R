@@ -78,7 +78,7 @@ svds4.par <- function(X, fun.scaling, ind.train, k, tol, verbose, ncores) {
         while (calc[ic, 1] == 0) Sys.sleep(TIME)
         c <-  calc[ic, 1]
         # slaves do the hard work
-        if (c == 1) { # var?
+        if (c == 1) {
           # compute A * x
           x <- Atx.part[,] / ms$sd
           Ax[, ic] <- pMatVec4(X.part@address, x, ind.train, 1:m.part) -
@@ -88,8 +88,10 @@ svds4.par <- function(X, fun.scaling, ind.train, k, tol, verbose, ncores) {
           x <- Ax[, 1]
           Atx.part[] <- (cpMatVec4(X.part@address, x, ind.train, 1:m.part) -
                            sum(x) * ms$mean) / ms$sd
-        } else { # end
+        } else if (c == 3) { # end
           break
+        } else {
+          stop("You shouldn't be here")
         }
         calc[ic, 1] <- 0
       }
@@ -111,7 +113,7 @@ svds4.par <- function(X, fun.scaling, ind.train, k, tol, verbose, ncores) {
 
 ################################################################################
 
-# signel cor implementation
+# single core implementation
 svds4.seq <- function(X, fun.scaling, ind.train, k, tol, verbose) {
   n <- length(ind.train)
   m <- ncol(X)

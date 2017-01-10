@@ -1,0 +1,70 @@
+################################################################################
+
+context("RANDOM_SVD")
+
+opt.save <- options(bigmemory.typecast.warning = FALSE,
+                    bigmemory.default.shared = FALSE)
+
+TOL <- 1e-6
+
+# function for sampling scaling
+sampleScale <- function() {
+  tmp <- sample(list(c(TRUE, FALSE),
+                     c(TRUE, TRUE),
+                     c(FALSE, FALSE)))[[1]]
+  list(center = tmp[1], scale = tmp[2])
+}
+
+# Simulating some data
+N <- 73
+M <- 43
+x <- matrix(rnorm(N*M, sd = 5), N)
+
+###############################################################################
+
+test_that("equality with prcomp", {
+  for (t in ALL.TYPES) {
+    X <- as.big.matrix(x, type = t)
+
+    k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
+    sc <- sampleScale()
+
+    test <- big_randomSVD(X = X, k = k, tol = 1e-6,
+                          fun.scaling = big_scale(center = sc$center,
+                                                  scale = sc$scale))
+    pca <- prcomp(X[,], center = sc$center, scale. = sc$scale)
+    expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
+  }
+})
+
+###############################################################################
+
+test_that("equality with prcomp with half of the data", {
+  ind <- sample(N, N/2)
+  ind2 <- setdiff(1:N, ind)
+  for (t in ALL.TYPES) {
+    X <- as.big.matrix(x, type = t)
+
+    k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
+    sc <- sampleScale()
+
+    test <- big_randomSVD(X = X,
+                          ind.train = ind, k = k, tol = 1e-10,
+                          fun.scaling = big_scale(center = sc$center,
+                                                  scale = sc$scale))
+    pca <- prcomp(X[ind, ], center = sc$center, scale. = sc$scale)
+
+    expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
+
+    expect_equal(diffPCs(big_predScoresPCA(test, X, ind.test = ind2),
+                         predict(pca, X[ind2, ])), 0, tolerance = TOL)
+  }
+})
+
+################################################################################
+
+options(opt.save)
+
+################################################################################
