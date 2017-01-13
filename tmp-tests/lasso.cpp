@@ -85,7 +85,7 @@ NumericVector& CD_lasso_Cpp(const NumericMatrix& mat,
           betas[j] = tmp;
           r = updateR2(r, mat, j, diff);
           if (tmp == 0) remains[j] = false;
-          if (conv) conv = false;
+          conv = false;
         }
       }
     }
