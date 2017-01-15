@@ -1,5 +1,5 @@
 // [[Rcpp::depends(bigmemory, BH)]]
-#include <bigstatsr.h>
+#include <bigmemory/MatrixAccessor.hpp>
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -8,10 +8,12 @@ using namespace Rcpp;
 /******************************************************************************/
 
 template <typename T>
-NumericVector pMatVec4(SubMatrixAccessor<T> macc,
-                       const NumericVector &x) {
-  int n = macc.nrow();
-  int m = macc.ncol();
+NumericVector pMatVec4(MatrixAccessor<T> macc,
+                       const NumericVector &x,
+                       const IntegerVector &rowInd,
+                       const IntegerVector &colInd) {
+  int n = rowInd.size();
+  int m = colInd.size();
 
   IntegerVector rows = rowInd - 1;
   IntegerVector cols = colInd - 1;
@@ -44,15 +46,15 @@ NumericVector pMatVec4(XPtr<BigMatrix> xpMat,
                        const IntegerVector &colInd) {
   switch(xpMat->matrix_type()) {
   case 1:
-    return pMatVec4(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),   x);
+    return pMatVec4(MatrixAccessor<char>(*xpMat),   x, rowInd, colInd);
   case 2:
-    return pMatVec4(SubMatrixAccessor<short>(*xpMat, rowInd-1, colInd-1),  x);
+    return pMatVec4(MatrixAccessor<short>(*xpMat),  x, rowInd, colInd);
   case 4:
-    return pMatVec4(SubMatrixAccessor<int>(*xpMat, rowInd-1, colInd-1),    x);
+    return pMatVec4(MatrixAccessor<int>(*xpMat),    x, rowInd, colInd);
   case 6:
-    return pMatVec4(SubMatrixAccessor<float>(*xpMat, rowInd-1, colInd-1),  x);
+    return pMatVec4(MatrixAccessor<float>(*xpMat),  x, rowInd, colInd);
   case 8:
-    return pMatVec4(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1), x);
+    return pMatVec4(MatrixAccessor<double>(*xpMat), x, rowInd, colInd);
   default:
     throw Rcpp::exception("unknown type detected for big.matrix object!");
   }
@@ -61,7 +63,7 @@ NumericVector pMatVec4(XPtr<BigMatrix> xpMat,
 /******************************************************************************/
 
 template <typename T>
-NumericVector cpMatVec4(SubMatrixAccessor<T> macc,
+NumericVector cpMatVec4(MatrixAccessor<T> macc,
                         const NumericVector &x,
                         const IntegerVector &rowInd,
                         const IntegerVector &colInd) {
@@ -99,15 +101,15 @@ NumericVector cpMatVec4(XPtr<BigMatrix> xpMat,
                         const IntegerVector &colInd) {
   switch(xpMat->matrix_type()) {
   case 1:
-    return cpMatVec4(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),   x);
+    return cpMatVec4(MatrixAccessor<char>(*xpMat),   x, rowInd, colInd);
   case 2:
-    return cpMatVec4(SubMatrixAccessor<short>(*xpMat, rowInd-1, colInd-1),  x);
+    return cpMatVec4(MatrixAccessor<short>(*xpMat),  x, rowInd, colInd);
   case 4:
-    return cpMatVec4(SubMatrixAccessor<int>(*xpMat, rowInd-1, colInd-1),    x);
+    return cpMatVec4(MatrixAccessor<int>(*xpMat),    x, rowInd, colInd);
   case 6:
-    return cpMatVec4(SubMatrixAccessor<float>(*xpMat, rowInd-1, colInd-1),  x);
+    return cpMatVec4(MatrixAccessor<float>(*xpMat),  x, rowInd, colInd);
   case 8:
-    return cpMatVec4(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1), x);
+    return cpMatVec4(MatrixAccessor<double>(*xpMat), x, rowInd, colInd);
   default:
     throw Rcpp::exception("unknown type detected for big.matrix object!");
   }

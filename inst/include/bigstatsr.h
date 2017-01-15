@@ -20,8 +20,8 @@ public:
     _ncol = col_ind.size();
   }
 
-  inline T* operator() (int i, int j) {
-    return *(_pMat + _totalRows * _col_ind[j]  + _row_ind[i]);
+  inline T operator() (int i, int j) {
+    return *(_pMat + _totalRows * _col_ind[j] + _row_ind[i]);
   }
 
   int nrow() const {
