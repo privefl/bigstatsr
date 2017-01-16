@@ -9,15 +9,15 @@
 #' use scale without using center.__
 #' @return
 #' A new __function__ that returns a data.frame of two vectors
-#' "mean" and "sd" which are as long as the number of columns of `X`.
+#' "mean" and "sd" which are as the length of __`ind.col`__.
 #' @seealso [scale]
 #' @example examples/example-scaling.R
 #' @export
 big_scale <- function(center = TRUE, scale = TRUE) {
-  function(X, ind.train = seq(nrow(X))) {
-    m <- ncol(X)
+  function(X, ind.train = seq(nrow(X)), ind.col = seq(ncol(X))) {
+    m <- length(ind.col)
     if (center) {
-      tmp <- big_colstats(X, ind.train)
+      tmp <- big_colstats(X, ind.train, ind.col)
       means <- tmp$sum / length(ind.train)
       sds <- `if`(scale, sqrt(tmp$var), rep(1, m))
     } else {

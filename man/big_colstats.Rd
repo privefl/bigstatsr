@@ -4,17 +4,20 @@
 \alias{big_colstats}
 \title{Standard univariate statistics}
 \usage{
-big_colstats(X, ind.train = seq_len(nrow(X)))
+big_colstats(X, ind.train = seq(nrow(X)), ind.col = seq(ncol(X)))
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all data are used.}
+for the training part. If not specified, all rows are used.}
+
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used.}
 }
 \value{
-List of two numeric vectors \code{sum} and \code{var} with the
+Data.frame of two numeric vectors \code{sum} and \code{var} with the
 corresponding column statistics.
 }
 \description{

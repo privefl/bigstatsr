@@ -1,3 +1,5 @@
+################################################################################
+
 #' Standard univariate statistics
 #'
 #' Standard __univariate statistics__ for columns of a big.matrix.
@@ -6,13 +8,15 @@
 #'
 #' @inheritParams bigstatsr-package
 #'
-#' @return List of two numeric vectors `sum` and `var` with the
+#' @return Data.frame of two numeric vectors `sum` and `var` with the
 #' corresponding column statistics.
 #' @export
 #'
 #' @seealso [colSums] [apply]
 #' @example examples/example-colstats.R
-big_colstats <- function(X, ind.train = seq_len(nrow(X))) {
+big_colstats <- function(X, ind.train = seq(nrow(X)), ind.col = seq(ncol(X))) {
   check_X(X)
-  bigcolvars(X@address, ind.train)
+  data.frame(bigcolvars(X@address, ind.train, ind.col))
 }
+
+################################################################################

@@ -1,9 +1,6 @@
-// [[Rcpp::depends(bigmemory, BH)]]
-#include "../inst/include/bigstatsr.h"
-#include <Rcpp.h>
+/******************************************************************************/
 
-using namespace Rcpp;
-
+#include "bigstatsr.h"
 
 /******************************************************************************/
 
@@ -49,7 +46,7 @@ NumericVector pMatVec4(XPtr<BigMatrix> xpMat,
   case 8:
     return pMatVec4(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1), x);
   default:
-    throw Rcpp::exception("unknown type detected for big.matrix object!");
+    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 
@@ -98,7 +95,7 @@ NumericVector cpMatVec4(XPtr<BigMatrix> xpMat,
   case 8:
     return cpMatVec4(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1), x);
   default:
-    throw Rcpp::exception("unknown type detected for big.matrix object!");
+    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 

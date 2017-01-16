@@ -1,27 +1,22 @@
-// [[Rcpp::depends(bigmemory, BH)]]
-#include <bigmemory/MatrixAccessor.hpp>
-#include <Rcpp.h>
+/******************************************************************************/
 
-using namespace Rcpp;
-
+#include "bigstatsr.h"
 
 /******************************************************************************/
 
 template <typename T>
-ListOf<NumericVector> bigcolvars(XPtr<BigMatrix> xpMat,
-                                 MatrixAccessor<T> macc,
-                                 const IntegerVector& rowInd) {
-  double n = rowInd.size();
-  int m = xpMat->ncol();
+ListOf<NumericVector> bigcolvars(SubMatrixAccessor<T> macc) {
+  double n = macc.nrow();
+  int m = macc.ncol();
 
-  NumericVector res(m);
-  NumericVector res2(m);
+  NumericVector res(m), res2(m);
   double x, xSum, xxSum;
+  int i, j;
 
-  for (int j = 0; j < m; j++) {
+  for (j = 0; j < m; j++) {
     xSum = xxSum = 0;
-    for (int i = 0; i < n; i++) {
-      x = macc[j][rowInd[i] - 1];
+    for (i = 0; i < n; i++) {
+      x = macc(i, j);
       xSum += x;
       xxSum += x*x;
     }
@@ -35,22 +30,22 @@ ListOf<NumericVector> bigcolvars(XPtr<BigMatrix> xpMat,
 
 // Dispatch function for bigcolvars
 // [[Rcpp::export]]
-ListOf<NumericVector> bigcolvars(SEXP pBigMat,
-                                 const IntegerVector& rowInd) {
-  XPtr<BigMatrix> xpMat(pBigMat);
+ListOf<NumericVector> bigcolvars(XPtr<BigMatrix> xpMat,
+                                 const IntegerVector& rowInd,
+                                 const IntegerVector& colInd) {
   switch(xpMat->matrix_type()) {
   case 1:
-    return bigcolvars(xpMat, MatrixAccessor<char>(*xpMat),   rowInd);
+    return bigcolvars(SubMatrixAccessor<char>(*xpMat,   rowInd-1, colInd-1));
   case 2:
-    return bigcolvars(xpMat, MatrixAccessor<short>(*xpMat),  rowInd);
+    return bigcolvars(SubMatrixAccessor<short>(*xpMat,  rowInd-1, colInd-1));
   case 4:
-    return bigcolvars(xpMat, MatrixAccessor<int>(*xpMat),    rowInd);
+    return bigcolvars(SubMatrixAccessor<int>(*xpMat,    rowInd-1, colInd-1));
   case 6:
-    return bigcolvars(xpMat, MatrixAccessor<float>(*xpMat),  rowInd);
+    return bigcolvars(SubMatrixAccessor<float>(*xpMat,  rowInd-1, colInd-1));
   case 8:
-    return bigcolvars(xpMat, MatrixAccessor<double>(*xpMat), rowInd);
+    return bigcolvars(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1));
   default:
-    throw Rcpp::exception("unknown type detected for big.matrix object!");
+    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 

@@ -18,5 +18,5 @@ RoxygenNote: 5.0.1.9000
 Roxygen: list(markdown = TRUE)
 Suggests: testthat, covr
 Remotes: kaneplusplus/bigmemory
-URL: https://github.com/privefl/bigstatsr
+URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues

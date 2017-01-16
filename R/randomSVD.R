@@ -1,11 +1,12 @@
 ################################################################################
 
 # parallel implementation
-svds4.par <- function(X, fun.scaling, ind.train, k, tol, verbose, ncores) {
+svds4.par <- function(X, fun.scaling, ind.train, ind.col,
+                      k, tol, verbose, ncores) {
   stopifnot(ncores > 1)
 
   n <- length(ind.train)
-  m <- ncol(X)
+  m <- length(ind.col)
   intervals <- CutBySize(m, nb = ncores)
 
   TIME <- 0.001
@@ -64,14 +65,14 @@ svds4.par <- function(X, fun.scaling, ind.train, k, tol, verbose, ncores) {
       # get their part
       lo <- intervals[ic, "lower"]
       up <- intervals[ic, "upper"]
-      m.part <- up - lo + 1
-      X.part <- sub.big.matrix(X.desc, firstCol = lo, lastCol = up)
+      ind.col.part <- ind.col[lo:up]
+      X <- attach.big.matrix(X.desc)
       Ax <- attach.big.matrix(Ax.desc)
       Atx.part <- sub.big.matrix(Atx.desc, firstRow = lo, lastRow = up)
       calc <- attach.big.matrix(calc.desc)
 
       # scaling
-      ms <- fun.scaling(X.part, ind.train)
+      ms <- fun.scaling(X, ind.train, ind.col.part)
 
       repeat {
         # slaves wait for their master to give them orders
@@ -81,12 +82,12 @@ svds4.par <- function(X, fun.scaling, ind.train, k, tol, verbose, ncores) {
         if (c == 1) {
           # compute A * x
           x <- Atx.part[,] / ms$sd
-          Ax[, ic] <- pMatVec4(X.part@address, x, ind.train, 1:m.part) -
+          Ax[, ic] <- pMatVec4(X@address, x, ind.train, ind.col.part) -
             sum(x * ms$mean)
         } else if (c == 2) {
           # compute At * x
           x <- Ax[, 1]
-          Atx.part[] <- (cpMatVec4(X.part@address, x, ind.train, 1:m.part) -
+          Atx.part[] <- (cpMatVec4(X@address, x, ind.train, ind.col.part) -
                            sum(x) * ms$mean) / ms$sd
         } else if (c == 3) { # end
           break
@@ -114,12 +115,12 @@ svds4.par <- function(X, fun.scaling, ind.train, k, tol, verbose, ncores) {
 ################################################################################
 
 # single core implementation
-svds4.seq <- function(X, fun.scaling, ind.train, k, tol, verbose) {
+svds4.seq <- function(X, fun.scaling, ind.train, ind.col, k, tol, verbose) {
   n <- length(ind.train)
-  m <- ncol(X)
+  m <- length(ind.col)
 
   # scaling
-  ms <- fun.scaling(X, ind.train)
+  ms <- fun.scaling(X, ind.train, ind.col)
 
   printf <- function(...) if (verbose) cat(sprintf(...))
   it <- 0
@@ -127,12 +128,12 @@ svds4.seq <- function(X, fun.scaling, ind.train, k, tol, verbose) {
   A <- function(x, args) {
     printf("%d - computing A * x\n", it <<- it + 1)
     x <- x / ms$sd
-    pMatVec4(X@address, x, ind.train, 1:m) - sum(x * ms$mean)
+    pMatVec4(X@address, x, ind.train, ind.col) - sum(x * ms$mean)
   }
   # Atrans
   Atrans <- function(x, args) {
     printf("%d - computing At * x\n", it <<- it + 1)
-    (cpMatVec4(X@address, x, ind.train, 1:m) - sum(x) * ms$mean) / ms$sd
+    (cpMatVec4(X@address, x, ind.train, ind.col) - sum(x) * ms$mean) / ms$sd
   }
 
   res <- RSpectra::svds(A, k, nu = k, nv = k, opts = list(tol = tol),
@@ -181,14 +182,15 @@ svds4.seq <- function(X, fun.scaling, ind.train, k, tol, verbose) {
 #' @seealso [svds][RSpectra::svds] [flashpca][flashpcaR::flashpca]
 big_randomSVD <- function(X, fun.scaling,
                           ind.train = seq(nrow(X)),
+                          ind.col = seq(ncol(X)),
                           k = 10, tol = 1e-4,
                           verbose = FALSE, ncores = 1) {
   check_X(X, ncores)
 
   if (ncores > 1) {
-    svds4.par(X, fun.scaling, ind.train, k, tol, verbose, ncores)
+    svds4.par(X, fun.scaling, ind.train, ind.col, k, tol, verbose, ncores)
   } else {
-    svds4.seq(X, fun.scaling, ind.train, k, tol, verbose)
+    svds4.seq(X, fun.scaling, ind.train, ind.col, k, tol, verbose)
   }
 }
 

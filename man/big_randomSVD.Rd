@@ -4,8 +4,9 @@
 \alias{big_randomSVD}
 \title{Randomized SVD}
 \usage{
-big_randomSVD(X, fun.scaling, ind.train = seq(nrow(X)), k = 10,
-  tol = 1e-04, verbose = FALSE, ncores = 1)
+big_randomSVD(X, fun.scaling, ind.train = seq(nrow(X)),
+  ind.col = seq(ncol(X)), k = 10, tol = 1e-04, verbose = FALSE,
+  ncores = 1)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -16,7 +17,10 @@ You shouldn't have missing values in your data.}
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all data are used.}
+for the training part. If not specified, all rows are used.}
+
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used.}
 
 \item{k}{Number of singular vectors/values to compute. Default is \code{10}.
 \strong{This algorithm should be used to compute only a

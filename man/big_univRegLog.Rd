@@ -15,7 +15,7 @@ You shouldn't have missing values in your data.}
 Must be 0s and 1s.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all data are used.}
+for the training part. If not specified, all rows are used.}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.

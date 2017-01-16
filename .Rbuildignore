@@ -13,3 +13,4 @@
 ^tmp-data$
 ^docs$
 mutex
+^_pkgdown\.yml$

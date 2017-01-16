@@ -9,14 +9,15 @@
 using namespace Rcpp;
 
 // bigcolvars
-ListOf<NumericVector> bigcolvars(SEXP pBigMat, const IntegerVector& rowInd);
-RcppExport SEXP bigstatsr_bigcolvars(SEXP pBigMatSEXP, SEXP rowIndSEXP) {
+ListOf<NumericVector> bigcolvars(XPtr<BigMatrix> xpMat, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP bigstatsr_bigcolvars(SEXP xpMatSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(bigcolvars(pBigMat, rowInd));
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(bigcolvars(xpMat, rowInd, colInd));
     return rcpp_result_gen;
 END_RCPP
 }

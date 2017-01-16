@@ -16,7 +16,7 @@ You shouldn't have missing values in your data.}
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all data are used.}
+for the training part. If not specified, all rows are used.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}.}

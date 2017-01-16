@@ -12,7 +12,10 @@ You shouldn't have missing values in your data.}
 \item{y}{Vector of responses.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all data are used.}
+for the training part. If not specified, all rows are used.}
+
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}.}
@@ -57,7 +60,7 @@ if you do!).}
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/privefl/bigstatsr}
+  \item \url{https://privefl.github.io/bigstatsr}
   \item Report bugs at \url{https://github.com/privefl/bigstatsr/issues}
 }
 
