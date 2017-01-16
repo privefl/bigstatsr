@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -36,7 +36,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -49,14 +49,24 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">Home</a>
+</li>
+<li>
+  <a href="../reference/index.html">Manual</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="https://privefl.github.io/about.html">
+    <span class="fa fa-user"></span>
+     
+    About
+  </a>
+</li>
+<li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -92,8 +102,8 @@ use scale without using center.</strong></dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A new <strong>function</strong> that returns a named list of two vectors &quot;mean&quot; and &quot;sd&quot;
-which are as long as the number of columns of <code>X</code>.</p>
+    <p>A new <strong>function</strong> that returns a data.frame of two vectors
+&quot;mean&quot; and &quot;sd&quot; which are as the length of <strong><code>ind.col</code></strong>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -107,39 +117,80 @@ which are as long as the number of columns of <code>X</code>.</p>
 
 <span class='co'># No scaling</span>
 <span class='no'>big_noscale</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>print</span>(<span class='fu'>class</span>(<span class='no'>big_noscale</span>)) <span class='co'># big_scale returns a new function</span></div><div class='output co'>#&gt; [1] &quot;function&quot;</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_noscale</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt; $mean
-#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-#&gt; 
-#&gt; $sd
-#&gt;  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-#&gt; </div><div class='input'><span class='no'>big_noscale2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>print</span>(<span class='fu'>big_noscale2</span>(<span class='no'>X</span>)) <span class='co'># you can't scale without centering</span></div><div class='output co'>#&gt; $mean
-#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-#&gt; 
-#&gt; $sd
-#&gt;  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-#&gt; </div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>class</span>(<span class='no'>big_noscale</span>)) <span class='co'># big_scale returns a new function</span></div><div class='output co'>#&gt; [1] &quot;function&quot;</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_noscale</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt;    mean sd
+#&gt; 1     0  1
+#&gt; 2     0  1
+#&gt; 3     0  1
+#&gt; 4     0  1
+#&gt; 5     0  1
+#&gt; 6     0  1
+#&gt; 7     0  1
+#&gt; 8     0  1
+#&gt; 9     0  1
+#&gt; 10    0  1
+#&gt; 11    0  1
+#&gt; 12    0  1
+#&gt; 13    0  1
+#&gt; 14    0  1
+#&gt; 15    0  1
+#&gt; 16    0  1
+#&gt; 17    0  1</div><div class='input'><span class='no'>big_noscale2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>print</span>(<span class='fu'>big_noscale2</span>(<span class='no'>X</span>)) <span class='co'># you can't scale without centering</span></div><div class='output co'>#&gt;    mean sd
+#&gt; 1     0  1
+#&gt; 2     0  1
+#&gt; 3     0  1
+#&gt; 4     0  1
+#&gt; 5     0  1
+#&gt; 6     0  1
+#&gt; 7     0  1
+#&gt; 8     0  1
+#&gt; 9     0  1
+#&gt; 10    0  1
+#&gt; 11    0  1
+#&gt; 12    0  1
+#&gt; 13    0  1
+#&gt; 14    0  1
+#&gt; 15    0  1
+#&gt; 16    0  1
+#&gt; 17    0  1</div><div class='input'>
 <span class='co'># Centering</span>
 <span class='no'>big_center</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>print</span>(<span class='fu'>big_center</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt; $mean
-#&gt;  [1]  0.19728549  0.10618530 -0.27338724 -0.09691088 -0.13808392  0.04508504
-#&gt;  [7]  0.06391175 -0.11578813  0.19390636  0.24291342  0.08676105  0.28331784
-#&gt; [13] -0.07894416  0.05404656 -0.06758716  0.12365584  0.16139489
-#&gt; 
-#&gt; $sd
-#&gt;  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-#&gt; </div><div class='input'><span class='co'># + scaling</span>
-<span class='fu'>print</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>()(<span class='no'>X</span>, <span class='fl'>1</span>:<span class='fl'>5</span>)) <span class='co'># note that big_scale() is a function</span></div><div class='output co'>#&gt; $mean
-#&gt;  [1] -0.5174596674 -0.1338099291 -0.5232721700  0.2962544024 -0.3672392842
-#&gt;  [6]  0.0675924298  0.8255243377  0.2882485619  0.3470733265 -0.0473455983
-#&gt; [11] -0.7222461341 -0.0009355725  0.5999761984  0.0575834871 -0.0002809985
-#&gt; [16]  0.0168633960  0.1431180810
-#&gt; 
-#&gt; $sd
-#&gt;  [1] 1.2237682 1.4010876 1.3655102 0.5688388 1.2492848 1.4240795 1.2072633
-#&gt;  [8] 1.1448961 0.4985260 1.2459639 1.1500712 0.4539137 0.6649315 0.6409716
-#&gt; [15] 0.9785205 1.1079142 0.6501422
-#&gt; </div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>mean</span>, <span class='fu'>colMeans</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>sd</span>, <span class='fu'>apply</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ], <span class='fl'>2</span>, <span class='no'>sd</span>)))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>print</span>(<span class='fu'>big_center</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt;            mean sd
+#&gt; 1  -0.200709756  1
+#&gt; 2  -0.277946462  1
+#&gt; 3  -0.027360940  1
+#&gt; 4  -0.048253526  1
+#&gt; 5   0.034282784  1
+#&gt; 6  -0.062963800  1
+#&gt; 7  -0.001136811  1
+#&gt; 8   0.305391414  1
+#&gt; 9   0.226475111  1
+#&gt; 10  0.293764335  1
+#&gt; 11 -0.158197256  1
+#&gt; 12 -0.076982727  1
+#&gt; 13  0.078506188  1
+#&gt; 14  0.236264932  1
+#&gt; 15  0.188931341  1
+#&gt; 16 -0.184458543  1
+#&gt; 17  0.002223050  1</div><div class='input'><span class='co'># + scaling</span>
+<span class='fu'>print</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>()(<span class='no'>X</span>, <span class='fl'>1</span>:<span class='fl'>5</span>)) <span class='co'># note that big_scale() is a function</span></div><div class='output co'>#&gt;           mean        sd
+#&gt; 1  -0.13928978 0.9339712
+#&gt; 2  -0.82512875 1.1827331
+#&gt; 3   0.15339819 1.1493312
+#&gt; 4  -0.77731141 0.5121043
+#&gt; 5  -0.05979601 0.6243820
+#&gt; 6  -0.04351798 1.4350963
+#&gt; 7  -0.17359492 1.4186100
+#&gt; 8  -0.21223391 0.8279347
+#&gt; 9  -0.17972529 0.5825889
+#&gt; 10  0.31307012 0.7622535
+#&gt; 11  0.83073168 0.7530221
+#&gt; 12 -0.15999022 0.6355549
+#&gt; 13  0.72777160 0.7524711
+#&gt; 14  0.51736231 1.2704050
+#&gt; 15  0.33155165 1.3777686
+#&gt; 16 -0.14007561 1.0231829
+#&gt; 17  0.08410473 1.2217688</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>mean</span>, <span class='fu'>colMeans</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>sd</span>, <span class='fu'>apply</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ], <span class='fl'>2</span>, <span class='no'>sd</span>)))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
