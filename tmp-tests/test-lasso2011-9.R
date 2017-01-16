@@ -86,3 +86,4 @@ plot(find_knee2(mod$dev.ratio, nbBetas))
 plot(find_knee2(log(mod$dev.ratio[-1]), nbBetas))
 plot(find_knee2(X.svd$d))
 which.min(find_knee2(X.svd$d))
+
