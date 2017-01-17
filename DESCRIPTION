@@ -17,6 +17,6 @@ Depends: R (>= 3.2.3), bigmemory
 RoxygenNote: 5.0.1.9000
 Roxygen: list(markdown = TRUE)
 Suggests: testthat, covr, RevoUtilsMath
-Remotes: kaneplusplus/bigmemory
+Remotes: privefl/bigmemory
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
