@@ -90,7 +90,7 @@ using function <code>big_SVD</code>.</p>
     
 
     <pre><span class='fu'>big_predScoresPCA</span>(<span class='no'>obj.svd</span>, <span class='kw'>X</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ind.test</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)),
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>use.Eigen</span> <span class='kw'>=</span> !<span class='fu'>detect_MRO</span>())</pre>
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>ncol</span>(<span class='no'>X</span>)), <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>use.Eigen</span> <span class='kw'>=</span> !<span class='fu'>detect_MRO</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -102,6 +102,9 @@ You shouldn&#39;t have missing values in your data.</dd>
       <dt>ind.test</dt>
       <dd>Vector of indices of samples to be projected.
 Don&#39;t use negative indices here.</dd>
+      <dt>ind.col</dt>
+      <dd>An optional vector of the column indices that are used.
+If not specified, all columns are used.</dd>
       <dt>block.size</dt>
       <dd>Maximum number of columns read at once.
 Default is <code>1000</code>.</dd>

@@ -161,9 +161,11 @@ Default is <code>NULL</code> and corresponds to only adding an Intercept to each
 <span class='no'>lmVol2</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Volume</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))
 <span class='no'>lmHei2</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Height</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))
 
-<span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>X</span>, <span class='no'>y</span>,
+<span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>],
                      <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
-                     <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt; <span class='error'>Error: n == length(y.train) is not TRUE</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate Std. Error   t value     Pr(&gt;|t|)
+                     <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;       estim    std.err   t.score      p.value
+#&gt; 1 0.3291031 0.15816327  2.080781 6.411376e-02
+#&gt; 2 0.1860538 0.01252233 14.857762 3.831391e-08</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate Std. Error   t value     Pr(&gt;|t|)
 #&gt; [1,] 0.3291031 0.15816327  2.080781 6.411376e-02
 #&gt; [2,] 0.1860538 0.01252233 14.857762 3.831391e-08</div></pre>
   </div>
