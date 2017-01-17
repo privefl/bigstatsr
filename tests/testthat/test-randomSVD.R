@@ -20,7 +20,7 @@ N <- 73
 M <- 43
 x <- matrix(rnorm(N*M, sd = 5), N)
 
-###############################################################################
+################################################################################
 
 test_that("equality with prcomp", {
   for (t in ALL.TYPES) {
@@ -29,7 +29,7 @@ test_that("equality with prcomp", {
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
     sc <- sampleScale()
 
-    test <- big_randomSVD(X = X, k = k, tol = 1e-6,
+    test <- big_randomSVD(X = X, k = k, tol = 1e-10,
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
     pca <- prcomp(X[,], center = sc$center, scale. = sc$scale)
@@ -38,7 +38,7 @@ test_that("equality with prcomp", {
   }
 })
 
-###############################################################################
+################################################################################
 
 test_that("equality with prcomp with half of the data", {
   ind <- sample(N, N/2)
@@ -60,6 +60,33 @@ test_that("equality with prcomp with half of the data", {
 
     expect_equal(diffPCs(big_predScoresPCA(test, X, ind.test = ind2),
                          predict(pca, X[ind2, ])), 0, tolerance = TOL)
+  }
+})
+
+################################################################################
+
+test_that("equality with prcomp with half of half of the data", {
+  ind <- sample(N, N/2)
+  ind2 <- setdiff(1:N, ind)
+  ind.col <- sample(M, M/2)
+  for (t in ALL.TYPES) {
+    X <- as.big.matrix(x, type = t)
+
+    k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
+    sc <- sampleScale()
+
+    test <- big_randomSVD(X = X, ind.train = ind, ind.col = ind.col,
+                          k = k, tol = 1e-10,
+                          fun.scaling = big_scale(center = sc$center,
+                                                  scale = sc$scale))
+    pca <- prcomp(X[ind, ind.col], center = sc$center, scale. = sc$scale)
+
+    expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
+
+    expect_equal(diffPCs(big_predScoresPCA(test, X, ind.test = ind2,
+                                           ind.col = ind.col),
+                         predict(pca, X[ind2, ind.col])), 0, tolerance = TOL)
   }
 })
 

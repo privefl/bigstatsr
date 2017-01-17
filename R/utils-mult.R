@@ -1,7 +1,7 @@
-#' @export
-produ <- function(X, x) produ3(X@address, x)
-#' @export
-cprodu <- function(X, x) crossprodu3(X@address, x)
+# #' @export
+# produ <- function(X, x) produ3(X@address, x)
+# #' @export
+# cprodu <- function(X, x) crossprodu3(X@address, x)
 
 ################################################################################
 
@@ -59,10 +59,42 @@ crossprodScaled <- function(X, mat, ind.train, block.size,
 
 ################################################################################
 
-#' @export
-big_mult <- function(X, mat, ind.train, block.size, use.Eigen) {
-  if (!is.matrix(mat)) mat <- as.matrix(mat)
-  m <- ncol(X)
+# #' @export
+# big_mult <- function(X, mat, ind.train, block.size, use.Eigen) {
+#   if (!is.matrix(mat)) mat <- as.matrix(mat)
+#   m <- ncol(X)
+#   stopifnot(m == nrow(mat))
+#   res <- matrix(0, length(ind.train), ncol(mat))
+#
+#   intervals <- CutBySize(m, block.size)
+#   nb.block <- nrow(intervals)
+#
+#   for (j in 1:nb.block) {
+#     ind <- seq2(intervals[j, ])
+#     res <- incrMat(res, mult(X[ind.train, ind], mat[ind, ], use.Eigen))
+#   }
+#
+#   res
+# }
+#
+# #' @export
+# big_multScaled <- function(X, mat, ind.train, block.size,
+#                            vec.center, vec.scale, use.Eigen) {
+#   if (!is.matrix(mat)) mat <- as.matrix(mat)
+#   mat <- scaling2(mat, vec.scale)
+#   tmp <- big_mult(X, mat, ind.train, block.size, use.Eigen)
+#   tmp2 <- crossprod(vec.center, mat)
+#   scaling3(tmp, as.numeric(tmp2))
+# }
+
+multScaled2 <- function(X, mat,
+                        ind.train = seq(nrow(X)),
+                        ind.col = seq(ncol(X)),
+                        block.size = 1000,
+                        vec.center = rep(0, m),
+                        vec.scale = rep(1, m),
+                        use.Eigen = TRUE) {
+  m <- length(ind.col)
   stopifnot(m == nrow(mat))
   res <- matrix(0, length(ind.train), ncol(mat))
 
@@ -71,18 +103,10 @@ big_mult <- function(X, mat, ind.train, block.size, use.Eigen) {
 
   for (j in 1:nb.block) {
     ind <- seq2(intervals[j, ])
-    res <- incrMat(res, mult(X[ind.train, ind], mat[ind, ], use.Eigen))
+    tmp <- scaling(X[ind.train, ind.col[ind]], vec.center[ind], vec.scale[ind])
+
+    res <- incrMat(res, mult(tmp, mat[ind, ], use.Eigen))
   }
 
   res
-}
-
-#' @export
-big_multScaled <- function(X, mat, ind.train, block.size,
-                           vec.center, vec.scale, use.Eigen) {
-  if (!is.matrix(mat)) mat <- as.matrix(mat)
-  mat <- scaling2(mat, vec.scale)
-  tmp <- big_mult(X, mat, ind.train, block.size, use.Eigen)
-  tmp2 <- crossprod(vec.center, mat)
-  scaling3(tmp, as.numeric(tmp2))
 }

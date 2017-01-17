@@ -63,7 +63,7 @@ ind.train <- sort(sample(N, N / 2))
 lmVol2 <- summary(lm(Girth ~ Volume + covar, data = trees, subset = ind.train))
 lmHei2 <- summary(lm(Girth ~ Height + covar, data = trees, subset = ind.train))
 
-print(big_univRegLin(X, y,
+print(big_univRegLin(X, y[ind.train],
                      covar = covar[ind.train, ],
                      ind.train = ind.train))
 print(rbind(lmHei2$coefficients[2, ], lmVol2$coefficients[2, ]))

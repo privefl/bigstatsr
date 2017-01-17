@@ -5,7 +5,7 @@ context("SVD")
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
 
-TOL <- 1e-6
+TOL <- 1e-5
 
 # function for sampling scaling
 sampleScale <- function() {

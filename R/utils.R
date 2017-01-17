@@ -26,7 +26,8 @@ check_X <- function(X, ncores = 1) {
 ################################################################################
 
 detect_MRO <- function() {
-  is.element("RevoUtilsMath", rownames(utils::installed.packages()))
+  # is.element("RevoUtilsMath", rownames(utils::installed.packages()))
+  requireNamespace("RevoUtilsMath", quietly = TRUE)
 }
 
 ################################################################################

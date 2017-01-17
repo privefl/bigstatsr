@@ -1,3 +1,8 @@
+#' Date: 2017-01-17
+#' Object: Test the knee heuristic on loss vs nb predictors
+#' Results: Works well
+
+
 require(bigsnpr)
 require(bigstatsr)
 require(biglasso)
@@ -56,9 +61,23 @@ print(system.time(
                     family = "binomial", screen = "COPY-SSR", verbose = TRUE,
                     ncores = 12, lambda.min = 1e-3, dfmax = 1000)
 ))
-testAUC2 <- predict(X, test4)
+# testAUC2 <- predict(X, test4)
 nbBeta2 <- colSums(test4$beta[-1, ] != 0)
-plot(nbBeta2[-1], testAUC2[-1], xlim = c(0, 200))
-plot(nbBeta2, test4$loss, xlim = c(0, 500)) # better
-pred <- produ(X, test4$beta[-1, 35])
-snp_aucSample(pred, y)
+# plot(nbBeta2[-1], testAUC2[-1], xlim = c(0, 200))
+plot(nbBeta2, test4$loss) # better
+# plot(nbBeta2, log(test4$loss)) # better
+# pred <- produ(X, test4$beta[-1, 35])
+# snp_aucSample(pred, y)
+
+find_knee2 <- function(y, x = seq_along(y)) {
+  n <- length(y)
+  r2 <- matrix(NA, n, 2)
+  for (i in 2:(n-1)) {
+    r2[i, 1] <- summary(lm(y ~ x, subset = 1:i))$r.squared
+    r2[i, 2] <- summary(lm(y ~ x, subset = i:n))$r.squared
+  }
+  rowSums(sweep(r2, 2, c(1, 1), '-')^2)
+}
+test <- find_knee2(test4$loss, nbBeta2)
+k <- which.min(test)
+plot(test)

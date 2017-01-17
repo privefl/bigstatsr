@@ -27,3 +27,4 @@ for (i in 1:3) {
   print(summary(glm(y ~ trees[, i] + covar, subset = ind.train,
                     family = "binomial"))$coefficients[2, ])
 }
+

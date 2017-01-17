@@ -16,3 +16,22 @@ navbar:
       href: https://privefl.github.io/about.html
     - icon: fa-github
       href: https://github.com/privefl/bigstatsr
+
+reference:
+  - title: "SVD and PCA"
+    contents:
+      - big_SVD
+      - big_randomSVD
+      - big_predScoresPCA
+  - title: "Linear and logistic models"
+    desc: "Univariate and sparce multivariate linear and logistic models."
+    contents:
+      - big_univRegLin
+      - big_univRegLog
+  - title: "Utilities"
+    contents:
+      - big_colstats
+      - big_scale
+      - big_transpose
+      - big_crossprodSelf
+      - big_tcrossprodSelf

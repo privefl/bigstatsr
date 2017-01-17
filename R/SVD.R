@@ -146,14 +146,15 @@ big_SVD <- function(X, fun.scaling,
 #' @seealso [predict][stats::predict.prcomp] [big_SVD]
 big_predScoresPCA <- function(obj.svd, X = NULL,
                               ind.test = seq(nrow(X)),
+                              ind.col = seq(ncol(X)),
                               block.size = 1000,
                               use.Eigen = !detect_MRO()) {
   if (is.null(X)) {
     obj.svd$u %*% diag(obj.svd$d)
   } else {
     stopifnot(all(ind.test > 0))
-    multScaled(X, mat = obj.svd$v,
-               ind.test, block.size,
+    multScaled2(X, mat = obj.svd$v,
+               ind.test, ind.col, block.size,
                vec.center = obj.svd$means,
                vec.scale = obj.svd$sds,
                use.Eigen)

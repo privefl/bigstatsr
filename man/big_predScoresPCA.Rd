@@ -5,7 +5,7 @@
 \title{Scores of PCA}
 \usage{
 big_predScoresPCA(obj.svd, X = NULL, ind.test = seq(nrow(X)),
-  block.size = 1000, use.Eigen = !detect_MRO())
+  ind.col = seq(ncol(X)), block.size = 1000, use.Eigen = !detect_MRO())
 }
 \arguments{
 \item{obj.svd}{A list returned by \code{big_SVD}.}
@@ -15,6 +15,9 @@ You shouldn't have missing values in your data.}
 
 \item{ind.test}{Vector of indices of samples to be projected.
 Don't use negative indices here.}
+
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}.}
