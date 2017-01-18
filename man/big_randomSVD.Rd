@@ -112,5 +112,5 @@ X.svd <- big_SVD(X, fun.scaling = big_scaleYaware(y))
 plot(X.svd$v[, 1], type = "h")
 }
 \seealso{
-\link[RSpectra:svds]{svds} \link[flashpcaR:flashpca]{flashpca}
+\link[RSpectra:svds]{svds}
 }
