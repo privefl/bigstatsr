@@ -179,7 +179,7 @@ svds4.seq <- function(X, fun.scaling, ind.train, ind.col, k, tol, verbose) {
 #'
 #' @example examples/example-SVD.R
 #' @example examples/example-newScale.R
-#' @seealso [svds][RSpectra::svds] [flashpca][flashpcaR::flashpca]
+#' @seealso [svds][RSpectra::svds]
 big_randomSVD <- function(X, fun.scaling,
                           ind.train = seq(nrow(X)),
                           ind.col = seq(ncol(X)),
