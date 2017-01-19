@@ -177,8 +177,7 @@ svds4.seq <- function(X, fun.scaling, ind.train, ind.col, k, tol, verbose) {
 #' Note that to obtain the Principal Components, you must use
 #' `big_predScoresPCA` on the result. See examples.
 #'
-#' @example examples/example-SVD.R
-#' @example examples/example-newScale.R
+#' @example examples/example-randomSVD.R
 #' @seealso [svds][RSpectra::svds]
 big_randomSVD <- function(X, fun.scaling,
                           ind.train = seq(nrow(X)),
