@@ -29,30 +29,6 @@ IRLS <- function(pBigMat, covar, y, z0, w0, rowInd, tol, maxiter) {
     .Call('bigstatsr_IRLS', PACKAGE = 'bigstatsr', pBigMat, covar, y, z0, w0, rowInd, tol, maxiter)
 }
 
-scaling2 <- function(source, sd) {
-    .Call('bigstatsr_scaling2', PACKAGE = 'bigstatsr', source, sd)
-}
-
-scaling3 <- function(source, mean) {
-    .Call('bigstatsr_scaling3', PACKAGE = 'bigstatsr', source, mean)
-}
-
-produ2 <- function(xpMat, x) {
-    .Call('bigstatsr_produ2', PACKAGE = 'bigstatsr', xpMat, x)
-}
-
-produ3 <- function(xpMat, x) {
-    .Call('bigstatsr_produ3', PACKAGE = 'bigstatsr', xpMat, x)
-}
-
-crossprodu2 <- function(xpMat, x) {
-    .Call('bigstatsr_crossprodu2', PACKAGE = 'bigstatsr', xpMat, x)
-}
-
-crossprodu3 <- function(xpMat, x) {
-    .Call('bigstatsr_crossprodu3', PACKAGE = 'bigstatsr', xpMat, x)
-}
-
 multEigen <- function(X, Y) {
     .Call('bigstatsr_multEigen', PACKAGE = 'bigstatsr', X, Y)
 }
