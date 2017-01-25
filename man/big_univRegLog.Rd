@@ -2,7 +2,7 @@
 % Please edit documentation in R/univRegLog.R
 \name{big_univRegLog}
 \alias{big_univRegLog}
-\title{Univariate logistic regression}
+\title{Column-wise logistic regression}
 \usage{
 big_univRegLog(X, y01.train, ind.train = seq(nrow(X)), covar.train = NULL,
   ncores = 1, tol = 1e-08, maxiter = 20)

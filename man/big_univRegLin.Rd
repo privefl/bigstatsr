@@ -2,7 +2,7 @@
 % Please edit documentation in R/univRegLin.R
 \name{big_univRegLin}
 \alias{big_univRegLin}
-\title{Univariate linear regression}
+\title{Column-wise linear regression}
 \usage{
 big_univRegLin(X, y.train, ind.train = seq(nrow(X)), covar.train = NULL)
 }

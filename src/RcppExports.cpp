@@ -88,12 +88,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // IRLS
-ListOf<SEXP> IRLS(SEXP pBigMat, arma::mat& covar, const arma::vec& y, const arma::vec& z0, const arma::vec& w0, const IntegerVector& rowInd, double tol, int maxiter);
-RcppExport SEXP bigstatsr_IRLS(SEXP pBigMatSEXP, SEXP covarSEXP, SEXP ySEXP, SEXP z0SEXP, SEXP w0SEXP, SEXP rowIndSEXP, SEXP tolSEXP, SEXP maxiterSEXP) {
+List IRLS(XPtr<BigMatrix> xpMat, arma::mat& covar, const arma::vec& y, const arma::vec& z0, const arma::vec& w0, const IntegerVector& rowInd, double tol, int maxiter);
+RcppExport SEXP bigstatsr_IRLS(SEXP xpMatSEXP, SEXP covarSEXP, SEXP ySEXP, SEXP z0SEXP, SEXP w0SEXP, SEXP rowIndSEXP, SEXP tolSEXP, SEXP maxiterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type covar(covarSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type z0(z0SEXP);
@@ -101,7 +101,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    rcpp_result_gen = Rcpp::wrap(IRLS(pBigMat, covar, y, z0, w0, rowInd, tol, maxiter));
+    rcpp_result_gen = Rcpp::wrap(IRLS(xpMat, covar, y, z0, w0, rowInd, tol, maxiter));
     return rcpp_result_gen;
 END_RCPP
 }

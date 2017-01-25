@@ -2,7 +2,7 @@
 % Please edit documentation in R/biglasso.R
 \name{big_spRegLog}
 \alias{big_spRegLog}
-\title{Sparse multivariate logistic regression}
+\title{Sparse logistic regression}
 \usage{
 big_spRegLog(X, y01.train, ind.train = seq(nrow(X)), covar.train = NULL,
   ...)

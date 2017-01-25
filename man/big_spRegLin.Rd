@@ -2,7 +2,7 @@
 % Please edit documentation in R/biglasso.R
 \name{big_spRegLin}
 \alias{big_spRegLin}
-\title{Sparse multivariate linear regression}
+\title{Sparse linear regression}
 \usage{
 big_spRegLin(X, y.train, ind.train = seq(nrow(X)), covar.train = NULL, ...)
 }
