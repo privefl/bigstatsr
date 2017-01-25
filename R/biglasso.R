@@ -38,11 +38,10 @@ big_spRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
                          covar.train = NULL, ...) {
   check_biglasso()
 
-  y <- numeric(nrow(X))
-  y[ind.train] <- y.train
-
-  biglasso::biglasso(X, y, row.idx = ind.train, covar = covar.train,
-                     family = "gaussian", screen = "COPY-SSR", ...)
+  biglasso::biglasso(X, y.train, ind.train, covar.train,
+                     family = "gaussian",
+                     screen = "COPY-SSR",
+                     ...)
 }
 
 ################################################################################
@@ -68,11 +67,10 @@ big_spRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
                          covar.train = NULL, ...) {
   check_biglasso()
 
-  y <- numeric(nrow(X))
-  y[ind.train] <- y01.train
-
-  biglasso::biglasso(X, y, row.idx = ind.train, covar = covar.train,
-                     family = "binomial", screen = "COPY-SSR", ...)
+  biglasso::biglasso(X, y01.train, ind.train, covar.train,
+                     family = "binomial",
+                     screen = "COPY-SSR",
+                     ...)
 }
 
 ################################################################################
