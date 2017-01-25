@@ -1,6 +1,6 @@
 ################################################################################
 
-#' @title Univariate logistic regression
+#' @title Column-wise logistic regression
 #' @description Slopes of __univariate__ logistic regressions of each column
 #' of a `big.matrix`, with some other associated statistics.
 #' Covariates can be added to correct for confounders.

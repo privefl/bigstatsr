@@ -1,6 +1,16 @@
 ################################################################################
 
-#' Sparse multivariate linear regression
+check_biglasso <- function() {
+  if (utils::packageVersion("biglasso") != "1.3.1.6670")
+    stop(paste0("Please use my fork for now ",
+                "(until I merge it with Yaohui Zeng's repo).\n",
+                "You can get it via ",
+                "'devtools::install_github(\"privefl/biglasso\")'."))
+}
+
+################################################################################
+
+#' Sparse linear regression
 #'
 #' Fit lasso penalized linear regression path for a `big.matrix`.
 #' Covariates can be added to correct for confounders.
@@ -37,7 +47,7 @@ big_spRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
 
 ################################################################################
 
-#' Sparse multivariate logistic regression
+#' Sparse logistic regression
 #'
 #' Fit lasso penalized logistic regression path for a `big.matrix`.
 #' Covariates can be added to correct for confounders.

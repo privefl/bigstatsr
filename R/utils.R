@@ -12,16 +12,6 @@ ERROR_TYPE <- "unknown type detected for big.matrix object!"
 
 ################################################################################
 
-check_biglasso <- function() {
-  if(utils::packageVersion("biglasso") != "1.3.1.6670")
-    stop(paste0("Please use my fork for now ",
-                "(until I merge it with Yaohui Zeng's repo.)\n",
-                "You can get it via ",
-                "'devtools::install_github(\"privefl/biglasso\")'."))
-}
-
-################################################################################
-
 check_X <- function(X, ncores = 1) {
   if (class(X) != "big.matrix")
     stop(ERROR_BIGMATRIX)
