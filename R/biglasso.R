@@ -14,10 +14,9 @@ check_biglasso <- function() {
 #'
 #' Fit lasso penalized linear regression path for a `big.matrix`.
 #' Covariates can be added to correct for confounders.
-#' This is a wrapper of [biglasso][biglasso::biglasso].
+#' This is a wrapper of a modified version of [biglasso][biglasso::biglasso].
 #'
 #' @inheritParams bigstatsr-package
-#' @param y.train Vector of responses, corresponding to `ind.train`.
 #' @inheritDotParams biglasso::biglasso
 #' alpha penalty nlambda lambda.min dfmax verbose ncores
 #'
@@ -38,10 +37,10 @@ big_spRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
                          covar.train = NULL, ...) {
   check_biglasso()
 
-  biglasso::biglasso(X, y.train, ind.train, covar.train,
-                     family = "gaussian",
-                     screen = "COPY-SSR",
-                     ...)
+  biglasso::COPY_biglasso(X, y.train, ind.train, covar.train,
+                          family = "gaussian",
+                          screen = "COPY-SSR",
+                          ...)
 }
 
 ################################################################################
@@ -50,11 +49,9 @@ big_spRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
 #'
 #' Fit lasso penalized logistic regression path for a `big.matrix`.
 #' Covariates can be added to correct for confounders.
-#' This is a wrapper of [biglasso][biglasso::biglasso].
+#' This is a wrapper of a modified version of [biglasso][biglasso::biglasso].
 #'
 #' @inheritParams bigstatsr-package
-#' @param y01.train Vector of responses, corresponding to `ind.train`.
-#' Must be 0s and 1s.
 #' @inheritDotParams biglasso::biglasso
 #' alpha penalty nlambda lambda.min dfmax verbose ncores
 #'
@@ -67,10 +64,10 @@ big_spRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
                          covar.train = NULL, ...) {
   check_biglasso()
 
-  biglasso::biglasso(X, y01.train, ind.train, covar.train,
-                     family = "binomial",
-                     screen = "COPY-SSR",
-                     ...)
+  biglasso::COPY_biglasso(X, y01.train, ind.train, covar.train,
+                          family = "binomial",
+                          screen = "COPY-SSR",
+                          ...)
 }
 
 ################################################################################

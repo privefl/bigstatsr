@@ -7,8 +7,6 @@
 #'
 #' @inheritParams bigstatsr-package
 #'
-#' @param y01.train Vector of responses, corresponding to `ind.train`.
-#' Must be 0s and 1s.
 #' @param tol Relative tolerance to assess convergence of the coefficient.
 #' Default is `1e-8`.
 #' @param maxiter Maximum number of iterations before giving up.

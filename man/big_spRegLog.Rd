@@ -60,7 +60,7 @@ An object with S3 class \code{"biglasso"} with following variables.
 \description{
 Fit lasso penalized logistic regression path for a \code{big.matrix}.
 Covariates can be added to correct for confounders.
-This is a wrapper of \link[biglasso:biglasso]{biglasso}.
+This is a wrapper of a modified version of \link[biglasso:biglasso]{biglasso}.
 }
 \examples{
 

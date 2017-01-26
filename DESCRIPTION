@@ -11,12 +11,12 @@ Description: Easy-to-use, efficient, flexible and scalable
 License: GPL-3
 LazyData: TRUE
 LinkingTo: RcppArmadillo, RcppEigen, Rcpp, bigmemory, BH
-Imports: Rcpp, RSpectra, stats, biglasso,
+Imports: Rcpp, RSpectra, stats, biglasso, sparseSVM,
          foreach, parallel, doParallel
 Depends: R (>= 3.2.3), bigmemory
 RoxygenNote: 5.0.1.9000
 Roxygen: list(markdown = TRUE)
-Suggests: testthat, covr, RevoUtilsMath, glmnet
-Remotes: privefl/bigmemory, privefl/biglasso
+Suggests: testthat, covr, RevoUtilsMath, glmnet, LiblineaR
+Remotes: privefl/bigmemory, privefl/biglasso, privefl/sparseSVM
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues

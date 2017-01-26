@@ -9,7 +9,10 @@
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
-\item{y}{Vector of responses.}
+\item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
+
+\item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
+Must be 0s and 1s.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.}

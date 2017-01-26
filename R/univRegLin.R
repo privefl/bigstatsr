@@ -4,7 +4,6 @@
 #' Covariates can be added to correct for confounders.
 #'
 #' @inheritParams bigstatsr-package
-#' @param y.train Vector of responses, corresponding to `ind.train`.
 #'
 #' @return A data.frame with 4 elements:
 #' 1. the slopes of each regression,
