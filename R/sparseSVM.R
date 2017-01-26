@@ -32,7 +32,7 @@ big_spSVM <- function(X, y01.train, ind.train = seq(nrow(X)),
                          covar.train = NULL, ...) {
   check_sparseSVM()
 
-  sparseSVM::COPY_sparseSVM(X, y.train, ind.train, covar.train,
+  sparseSVM::COPY_sparseSVM(X, y01.train, ind.train, covar.train,
                             ...)
 }
 
