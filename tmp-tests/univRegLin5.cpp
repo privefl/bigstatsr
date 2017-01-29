@@ -7,24 +7,24 @@ using namespace Rcpp;
 
 /******************************************************************************/
 
-inline arma::vec y_XBXty(const arma::mat& X, const arma::mat& B, const arma::vec& y) {
-  return y - X * (B * (X.t() * y));
+inline arma::vec y_UUty(const arma::mat& U, const arma::vec& y) {
+  // printf("address: %p\n", &Ut);
+  return y - U * (U.t() * y);
 }
 
 /******************************************************************************/
 
 template <typename T>
-List univRegLin3(MatrixAccessor<T> macc,
-                 const arma::mat& covar,
+List univRegLin5(MatrixAccessor<T> macc,
+                 const arma::mat& U,
                  const arma::vec& y,
                  const IntegerVector& rowInd) {
   int n = rowInd.size();
   int m = macc.ncol();
-  int K = covar.n_cols;
-  arma::vec tmp, eps;
-  arma::vec v(n);
-  arma::mat B = inv(covar.t() * covar);
-  arma::vec y2 = y_XBXty(covar, B, y);
+  int K = U.n_cols;
+  arma::vec x2, eps;
+  arma::vec x(n);
+  arma::vec y2 = y_UUty(U, y); // (4.5)
   double d, beta;
   int i, j;
 
@@ -36,12 +36,12 @@ List univRegLin3(MatrixAccessor<T> macc,
 
   for (j = 0; j < m; j++) {
     for (i = 0; i < n; i++) {
-      v(i) = macc[j][trains[i]];
+      x(i) = macc[j][trains[i]];
     }
-    tmp = y_XBXty(covar, B, v);
-    d = 1 / dot(v, tmp);
-    beta = d * dot(v, y2);
-    eps = y2 - beta * tmp;
+    x2 = y_UUty(U, x); // (4.4)
+    d = 1 / dot(x, x2);
+    beta = d * dot(x, y2);
+    eps = y2 - beta * x2;
     res[j] = beta;
     var[j] = d * dot(eps, eps) / (n - K - 1);
   }
@@ -52,24 +52,24 @@ List univRegLin3(MatrixAccessor<T> macc,
 
 /******************************************************************************/
 
-// Dispatch function for univRegLin3
+// Dispatch function for univRegLin5
 // [[Rcpp::export]]
-List univRegLin3(XPtr<BigMatrix> xpMat,
-                 const arma::mat& covar,
+List univRegLin5(XPtr<BigMatrix> xpMat,
+                 const arma::mat& covar_U,
                  const arma::vec& y,
                  const IntegerVector& rowInd) {
 
   switch(xpMat->matrix_type()) {
   case 1:
-    return univRegLin3(MatrixAccessor<char>(*xpMat),   covar, y, rowInd);
+    return univRegLin5(MatrixAccessor<char>(*xpMat),   covar_U, y, rowInd);
   case 2:
-    return univRegLin3(MatrixAccessor<short>(*xpMat),  covar, y, rowInd);
+    return univRegLin5(MatrixAccessor<short>(*xpMat),  covar_U, y, rowInd);
   case 4:
-    return univRegLin3(MatrixAccessor<int>(*xpMat),    covar, y, rowInd);
+    return univRegLin5(MatrixAccessor<int>(*xpMat),    covar_U, y, rowInd);
   case 6:
-    return univRegLin3(MatrixAccessor<float>(*xpMat),  covar, y, rowInd);
+    return univRegLin5(MatrixAccessor<float>(*xpMat),  covar_U, y, rowInd);
   case 8:
-    return univRegLin3(MatrixAccessor<double>(*xpMat), covar, y, rowInd);
+    return univRegLin5(MatrixAccessor<double>(*xpMat), covar_U, y, rowInd);
   default:
     throw Rcpp::exception(ERROR_TYPE);
   }
