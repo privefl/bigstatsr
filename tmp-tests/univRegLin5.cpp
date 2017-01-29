@@ -7,9 +7,9 @@ using namespace Rcpp;
 
 /******************************************************************************/
 
-inline arma::vec y_UUty(const arma::mat& U, const arma::vec& y) {
+inline arma::vec UUty(const arma::mat& U, const arma::vec& y) {
   // printf("address: %p\n", &Ut);
-  return y - U * (U.t() * y);
+  return U * (U.t() * y);
 }
 
 /******************************************************************************/
@@ -22,10 +22,10 @@ List univRegLin5(MatrixAccessor<T> macc,
   int n = rowInd.size();
   int m = macc.ncol();
   int K = U.n_cols;
-  arma::vec x2, eps;
-  arma::vec x(n);
-  arma::vec y2 = y_UUty(U, y); // (4.5)
-  double d, beta;
+  arma::vec x(n), x2(n);
+  arma::vec y2 = y - UUty(U, y);
+  double y2_sumSq = dot(y2, y2);
+  double beta, x_tmp, x_diff, x2_sumSq, beta_num, beta_deno, RSS;
   int i, j;
 
   // indices begin at 1 in R and 0 in C++
@@ -38,12 +38,20 @@ List univRegLin5(MatrixAccessor<T> macc,
     for (i = 0; i < n; i++) {
       x(i) = macc[j][trains[i]];
     }
-    x2 = y_UUty(U, x); // (4.4)
-    d = 1 / dot(x, x2);
-    beta = d * dot(x, y2);
-    eps = y2 - beta * x2;
+    x2 = UUty(U, x);
+
+    beta_num = beta_deno = x2_sumSq = 0;
+    for (i = 0; i < n; i++) {
+      x_tmp = x[i];
+      x_diff = x_tmp - x2[i];
+      beta_num += x_tmp * y2[i];
+      beta_deno += x_tmp * x_diff;
+      x2_sumSq += x_diff * x_diff;
+    }
+    beta = beta_num / beta_deno;
+    RSS = y2_sumSq - beta * beta * x2_sumSq;
     res[j] = beta;
-    var[j] = d * dot(eps, eps) / (n - K - 1);
+    var[j] = RSS / (beta_deno * (n - K - 1));
   }
 
   return(List::create(_["estim"] = res,

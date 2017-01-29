@@ -2,7 +2,7 @@ require(bigsnpr)
 
 celiac <- AttachBigSNP("../bigsnpr/backingfiles/celiac_impute1_sub1.bk")
 X <- celiac$genotypes
-X2 <- sub.big.matrix(X)
+X2 <- sub.big.matrix(X, lastCol = 10e3)
 # print(dim(X2))
 N <- nrow(X)
 y <- rnorm(N)
