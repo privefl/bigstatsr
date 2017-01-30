@@ -1,8 +1,9 @@
 require(bigsnpr)
 
-celiac <- AttachBigSNP("../bigsnpr/backingfiles/celiac_impute1_sub1.bk")
+# celiac <- AttachBigSNP("../bigsnpr/backingfiles/celiac_impute1_sub1.bk")
+celiac <- AttachBigSNP("../thesis-celiac/backingfiles/celiac_sub2_impute1.bk")
 X <- celiac$genotypes
-X2 <- sub.big.matrix(X, lastCol = 10e3)
+X2 <- sub.big.matrix(X, lastCol = 100e3)
 # print(dim(X2))
 N <- nrow(X)
 y <- rnorm(N)
@@ -13,7 +14,7 @@ Rcpp::sourceCpp('tmp-tests/univRegLin3.cpp')
 Rcpp::sourceCpp('src/univRegLin.cpp')
 Rcpp::sourceCpp('tmp-tests/univRegLin5.cpp')
 
-K <- 0
+K <- 20
 ind.train <- sort(sample(N, 20000, TRUE))
 covar <- cbind(1, matrix(rnorm(N*K), N))
 

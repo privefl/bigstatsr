@@ -17,12 +17,8 @@ transpose3 <- function(pBigMat, pBigMat2) {
     invisible(.Call('bigstatsr_transpose3', PACKAGE = 'bigstatsr', pBigMat, pBigMat2))
 }
 
-univRegLin <- function(pBigMat, y, rowInd) {
-    .Call('bigstatsr_univRegLin', PACKAGE = 'bigstatsr', pBigMat, y, rowInd)
-}
-
-univRegLin2 <- function(pBigMat, covar, y, rowInd) {
-    .Call('bigstatsr_univRegLin2', PACKAGE = 'bigstatsr', pBigMat, covar, y, rowInd)
+univRegLin5 <- function(xpMat, covar_U, y, rowInd) {
+    .Call('bigstatsr_univRegLin5', PACKAGE = 'bigstatsr', xpMat, covar_U, y, rowInd)
 }
 
 IRLS <- function(xpMat, covar, y, z0, w0, rowInd, tol, maxiter) {

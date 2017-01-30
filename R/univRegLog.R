@@ -45,7 +45,7 @@ big_univRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
   stopifnot(n == nrow(covar.train))
 
   # no intercept because already in covar.train
-  mod0 <- stats::glm(y01.train ~ covar.train - 1, family = "binomial")
+  mod0 <- stats::glm(y01.train ~ covar.train[, -1] - 1, family = "binomial")
   p0 <- mod0$fitted
   w0 <- p0 * (1 - p0)
   z0 <- log(p0 / (1 - p0)) + (y01.train - p0) / w0

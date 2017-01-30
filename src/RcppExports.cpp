@@ -60,30 +60,17 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// univRegLin
-ListOf<SEXP> univRegLin(SEXP pBigMat, const NumericVector& y, const IntegerVector& rowInd);
-RcppExport SEXP bigstatsr_univRegLin(SEXP pBigMatSEXP, SEXP ySEXP, SEXP rowIndSEXP) {
+// univRegLin5
+List univRegLin5(XPtr<BigMatrix> xpMat, const arma::mat& covar_U, const arma::vec& y, const IntegerVector& rowInd);
+RcppExport SEXP bigstatsr_univRegLin5(SEXP xpMatSEXP, SEXP covar_USEXP, SEXP ySEXP, SEXP rowIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type covar_U(covar_USEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(univRegLin(pBigMat, y, rowInd));
-    return rcpp_result_gen;
-END_RCPP
-}
-// univRegLin2
-ListOf<NumericVector> univRegLin2(SEXP pBigMat, arma::mat& covar, arma::vec y, const IntegerVector& rowInd);
-RcppExport SEXP bigstatsr_univRegLin2(SEXP pBigMatSEXP, SEXP covarSEXP, SEXP ySEXP, SEXP rowIndSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< arma::mat& >::type covar(covarSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(univRegLin2(pBigMat, covar, y, rowInd));
+    rcpp_result_gen = Rcpp::wrap(univRegLin5(xpMat, covar_U, y, rowInd));
     return rcpp_result_gen;
 END_RCPP
 }
