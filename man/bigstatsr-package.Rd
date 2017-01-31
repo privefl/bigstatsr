@@ -23,7 +23,10 @@ If not specified, all columns are used.}
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}.}
 
-\item{ncores}{Number or cores used. Default doesn't use parallelism.}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.}
+
+\item{ncores2}{Number of cores used. Default doesn't use parallelism.
+For this function, use only half of the cores you have.}
 
 \item{fun.scaling}{A function that returns a named list of
 \strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements

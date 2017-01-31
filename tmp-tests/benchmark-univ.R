@@ -11,7 +11,7 @@ K <- 10
 covar <- matrix(rnorm(N*K), N)
 
 print(system.time(
-  test <- big_univRegLin(X, y, covar.train = covar, ncores = 7)
+  test <- big_univRegLin(X, celiac$fam$affection-1, covar.train = covar, ncores2 = 6)
 ))
 # 19 sec with 3 cores
 # 13 sec with 5 cores
@@ -19,14 +19,14 @@ print(system.time(
 # 13 sec with 7 cores
 # 13 sec with 10 cores
 
-# print(system.time(
-#   test2 <- big_univRegLog(X, celiac$fam$affection-1, covar.train = covar, ncores = 10)
-# ))
-# 323 sec with 6 cores
-# 516 sec with 10 cores?
-
 print(system.time(
-  test3 <- big_randomSVD(X, big_scale(), verbose = TRUE, ncores = 10)
+  test2 <- big_univRegLog(X, celiac$fam$affection-1, covar.train = covar, ncores2 = 10)
 ))
+# 323 sec with 6 cores -> 273 with MRO
+# 516 sec with 10 cores -> 484 with MRO
+
+# print(system.time(
+#   test3 <- big_randomSVD(X, big_scale(), verbose = TRUE, ncores = 10)
+# ))
 # 192 sec with 6 cores
 # 128 sec with 10 cores

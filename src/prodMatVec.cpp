@@ -34,6 +34,8 @@ NumericVector pMatVec4(XPtr<BigMatrix> xpMat,
                        const NumericVector &x,
                        const IntegerVector &rowInd,
                        const IntegerVector &colInd) {
+  myassert(colInd.size() == x.size(), ERROR_DIM);
+
   switch(xpMat->matrix_type()) {
   case 1:
     return pMatVec4(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),   x);
@@ -83,6 +85,8 @@ NumericVector cpMatVec4(XPtr<BigMatrix> xpMat,
                         const NumericVector &x,
                         const IntegerVector &rowInd,
                         const IntegerVector &colInd) {
+  myassert(rowInd.size() == x.size(), ERROR_DIM);
+
   switch(xpMat->matrix_type()) {
   case 1:
     return cpMatVec4(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),   x);

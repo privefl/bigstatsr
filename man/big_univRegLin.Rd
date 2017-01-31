@@ -5,7 +5,7 @@
 \title{Column-wise linear regression}
 \usage{
 big_univRegLin(X, y.train, ind.train = seq(nrow(X)), covar.train = NULL,
-  ncores = 1)
+  ncores2 = 1)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
@@ -20,7 +20,8 @@ for the training part. If not specified, all rows are used.}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an Intercept to each model.}
 
-\item{ncores}{Number or cores used. Default doesn't use parallelism.}
+\item{ncores2}{Number of cores used. Default doesn't use parallelism.
+For this function, use only half of the cores you have.}
 }
 \value{
 A data.frame with 4 elements:

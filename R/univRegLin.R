@@ -17,28 +17,28 @@
 #' @export
 #' @import foreach
 big_univRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
-                           covar.train = NULL, ncores = 1) {
-  check_X(X, ncores = ncores)
+                           covar.train = NULL, ncores2 = 1) {
+  check_X(X, ncores2 = ncores2)
 
   n <- length(ind.train)
   stopifnot(n == length(y.train))
   stopifnot(n == nrow(covar.train))
 
-  is.seq <- (ncores == 1)
+  is.seq <- (ncores2 == 1)
   if (!is.seq) X.desc <- describe(X)
 
   SVD <- svd(cbind(rep(1, n), covar.train), nv = 0)
   K <- sum(SVD$d / sqrt(n) > 1e-3)
 
-  range.parts <- CutBySize(ncol(X), nb = ncores)
+  range.parts <- CutBySize(ncol(X), nb = ncores2)
 
   if (is.seq) {
     registerDoSEQ()
   } else {
-    cl <- parallel::makeCluster(ncores)
+    cl <- parallel::makeCluster(ncores2)
     doParallel::registerDoParallel(cl)
   }
-  res.all <- foreach(ic = seq_len(ncores), .combine = 'rbind') %dopar% {
+  res.all <- foreach(ic = seq_len(ncores2), .combine = 'rbind') %dopar% {
     lims <- range.parts[ic, ]
 
     if (is.seq) {

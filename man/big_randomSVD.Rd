@@ -31,7 +31,7 @@ Default is \code{1e-4}.}
 
 \item{verbose}{Should some progress be printed? Default is \code{FALSE}.}
 
-\item{ncores}{Number or cores used. Default doesn't use parallelism.}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.}
 }
 \value{
 A list of

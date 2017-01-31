@@ -26,12 +26,12 @@
 #' @export
 #' @import foreach
 big_univRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
-                           covar.train = NULL, ncores = 1,
+                           covar.train = NULL, ncores2 = 1,
                            tol = 1e-8, maxiter = 20) {
-  check_X(X, ncores = ncores)
+  check_X(X, ncores2 = ncores2)
   stopifnot(sort(unique(y01.train)) == 0:1)
 
-  is.seq <- (ncores == 1)
+  is.seq <- (ncores2 == 1)
   if (!is.seq) X.desc <- describe(X)
   n <- length(ind.train)
   stopifnot(n == length(y01.train))
@@ -45,21 +45,22 @@ big_univRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
   stopifnot(n == nrow(covar.train))
 
   # no intercept because already in covar.train
-  mod0 <- stats::glm(y01.train ~ covar.train[, -1] - 1, family = "binomial")
+  mod0 <- stats::glm(y01.train ~ covar.train[, -1] - 1,
+                     family = "binomial")
   p0 <- mod0$fitted
   w0 <- p0 * (1 - p0)
   z0 <- log(p0 / (1 - p0)) + (y01.train - p0) / w0
   rm(mod0, p0)
 
-  range.parts <- CutBySize(ncol(X), nb = ncores)
+  range.parts <- CutBySize(ncol(X), nb = ncores2)
 
   if (is.seq) {
     registerDoSEQ()
   } else {
-    cl <- parallel::makeCluster(ncores)
+    cl <- parallel::makeCluster(ncores2)
     doParallel::registerDoParallel(cl)
   }
-  res.all <- foreach(ic = seq_len(ncores), .combine = 'cbind') %dopar% {
+  res.all <- foreach(ic = seq_len(ncores2), .combine = 'cbind') %dopar% {
     lims <- range.parts[ic, ]
 
     if (is.seq) {
@@ -81,7 +82,8 @@ big_univRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
                    "using glm for those instead.\n", sep = "; "), l)
 
       for (j in indNoConv) {
-        mod <- stats::glm(y01.train ~ X.part[ind.train, j] + covar.train - 1,
+        mod <- stats::glm(y01.train ~ X.part[ind.train, j] +
+                            covar.train[, -1] - 1,
                           family = "binomial",
                           control = list(epsilon = tol, maxit = 100))
         if (mod$converged) {
@@ -99,6 +101,9 @@ big_univRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
     rbind(res$betas, res$std, res$conv)
   }
   if (!is.seq) parallel::stopCluster(cl)
+
+  if (nbNA <- sum(is.na(res.all[1, ])))
+    warning(sprintf("For %d columns, glm has not converged either.", nbNA))
 
   z.scores <- res.all[1, ] / res.all[2, ]
   p.values <- 2 * stats::pnorm(abs(z.scores), lower.tail = FALSE)

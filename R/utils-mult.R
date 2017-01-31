@@ -1,7 +1,35 @@
-# #' @export
-# produ <- function(X, x) produ3(X@address, x)
-# #' @export
-# cprodu <- function(X, x) crossprodu3(X@address, x)
+################################################################################
+
+#' Product between a "big.matrix" and a vector
+#'
+#' @inheritParams bigstatsr-package
+#'
+#' @return \eqn{X /cdot y}.
+#' @export
+#'
+#' @examples
+#' N <- 100
+#' M <- 20
+#' X <- big.matrix(N, M)
+#' X[] <- rnorm(length(X))
+#' y <- rnorm(M)
+#'
+#' test <- big_prodVec(X, y) # vector
+#' true <- X[,] %*% y        # one-column matrix
+#' print(all.equal(test, as.numeric(true)))
+#'
+#' # subsetting
+#' ind.row <- sample(N, N/2)
+#' ind.col <- sample(M, M/2)
+#'
+#' # test2 <- big_prodVec(X, y, ind.row, ind.col)
+#' # returns an error. You need to use the subset of y:
+#' test2 <- big_prodVec(X, y[ind.col], ind.row, ind.col)
+#' true2 <- X[ind.row, ind.col] %*% y[ind.col]
+#' print(all.equal(test2, as.numeric(true2)))
+big_prodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
+  pMatVec4(X@address, y, ind.row, ind.col)
+}
 
 ################################################################################
 
@@ -110,3 +138,5 @@ multScaled2 <- function(X, mat,
 
   res
 }
+
+################################################################################
