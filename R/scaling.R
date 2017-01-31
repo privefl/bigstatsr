@@ -3,13 +3,12 @@
 #' Some scaling functions for a `big.matrix` to be used as
 #' the __`fun.scaling`__ parameter of some functions of this package.
 #'
-#' @inheritParams bigstatsr-package
 #' @param center A logical value: whether to return means or 0s.
 #' @param scale A logical value: whether to return sds or 1s. __You can't
 #' use scale without using center.__
 #' @return
 #' A new __function__ that returns a data.frame of two vectors
-#' "mean" and "sd" which are as the length of __`ind.col`__.
+#' "mean" and "sd" which are of the length of __`ind.col`__.
 #' @seealso [scale]
 #' @example examples/example-scaling.R
 #' @export
