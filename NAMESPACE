@@ -2,6 +2,7 @@
 
 export(big_SVD)
 export(big_colstats)
+export(big_cprodVec)
 export(big_crossprodSelf)
 export(big_predScoresPCA)
 export(big_prodVec)

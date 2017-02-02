@@ -14,7 +14,7 @@ use scale without using center.}}
 }
 \value{
 A new \strong{function} that returns a data.frame of two vectors
-"mean" and "sd" which are as the length of \strong{\code{ind.col}}.
+"mean" and "sd" which are of the length of \strong{\code{ind.col}}.
 }
 \description{
 Some scaling functions for a \code{big.matrix} to be used as

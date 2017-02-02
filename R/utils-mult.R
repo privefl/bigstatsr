@@ -31,6 +31,37 @@ big_prodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
   pMatVec4(X@address, y, ind.row, ind.col)
 }
 
+#' Cross-product between a "big.matrix" and a vector
+#'
+#' @inheritParams bigstatsr-package
+#'
+#' @return \eqn{X^T /cdot y}.
+#' @export
+#'
+#' @examples
+#' N <- 100
+#' M <- 20
+#' X <- big.matrix(N, M)
+#' X[] <- rnorm(length(X))
+#' y <- rnorm(N)
+#'
+#' test <- big_cprodVec(X, y) # vector
+#' true <- crossprod(X[,], y) # one-column matrix
+#' print(all.equal(test, as.numeric(true)))
+#'
+#' # subsetting
+#' ind.row <- sample(N, N/2)
+#' ind.col <- sample(M, M/2)
+#'
+#' # test2 <- big_cprodVec(X, y, ind.row, ind.col)
+#' # returns an error. You need to use the subset of y:
+#' test2 <- big_cprodVec(X, y[ind.row], ind.row, ind.col)
+#' true2 <- crossprod(X[ind.row, ind.col], y[ind.row])
+#' print(all.equal(test2, as.numeric(true2)))
+big_cprodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
+  cpMatVec4(X@address, y, ind.row, ind.col)
+}
+
 ################################################################################
 
 mult <- function(A, B, use.Eigen) {
