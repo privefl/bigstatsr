@@ -1,7 +1,8 @@
 ################################################################################
 
-#' @title Column-wise logistic regression
-#' @description Slopes of __univariate__ logistic regressions of each column
+#' Column-wise logistic regression
+#'
+#' Slopes of __univariate__ logistic regressions of each column
 #' of a `big.matrix`, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
 #'
@@ -19,8 +20,8 @@
 #' 2. the standard errors of each slope,
 #' 3. the number of iteration for each slope. If is `NA`, this means that the
 #' algorithm didn't converge, and [glm][stats::glm] was used instead.
-#' 3. the z-scores associated with each slope,
-#' 4. the p-values associated with each z-score.
+#' 4. the z-scores associated with each slope,
+#' 5. the p-values associated with each z-score.
 #' @example examples/example-univRegLog.R
 #' @seealso [glm][stats::glm]
 #' @export

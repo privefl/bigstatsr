@@ -24,7 +24,7 @@ N <- 100
 M <- 20
 X <- big.matrix(N, M)
 X[] <- rnorm(length(X))
-y <- rnorm(M)
+y <- rnorm(N)
 
 test <- big_cprodVec(X, y) # vector
 true <- crossprod(X[,], y) # one-column matrix
@@ -34,9 +34,9 @@ print(all.equal(test, as.numeric(true)))
 ind.row <- sample(N, N/2)
 ind.col <- sample(M, M/2)
 
-# test2 <- big_prodVec(X, y, ind.row, ind.col)
+# test2 <- big_cprodVec(X, y, ind.row, ind.col)
 # returns an error. You need to use the subset of y:
-test2 <- big_prodVec(X, y[ind.col], ind.row, ind.col)
-true2 <- X[ind.row, ind.col] \%*\% y[ind.col]
+test2 <- big_cprodVec(X, y[ind.row], ind.row, ind.col)
+true2 <- crossprod(X[ind.row, ind.col], y[ind.row])
 print(all.equal(test2, as.numeric(true2)))
 }
