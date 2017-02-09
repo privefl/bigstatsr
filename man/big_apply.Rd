@@ -4,11 +4,12 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X, FUN, .combine, block.size = 1000, ncores = 1)
+big_apply(X, FUN, .combine, block.size = 1000, ind.arg = FALSE,
+  ncores = 1, ...)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
+\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}. Must be the first
+argument of \code{FUN}.}
 
 \item{FUN}{The function to be applied to each column block matrix.}
 
@@ -24,7 +25,12 @@ You shouldn't have missing values in your data.}
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}.}
 
+\item{ind.arg}{Explicitly use column indices as argument? Default is \code{FALSE}.
+If \code{TRUE} indices must be the second argument of \code{FUN}.}
+
 \item{ncores}{Number of cores used. Default doesn't use parallelism.}
+
+\item{...}{Extra arguments to be passed to \code{FUN}.}
 }
 \value{
 The result of \link{foreach}.
@@ -33,6 +39,45 @@ The result of \link{foreach}.
 A Split-Apply-Combine strategy to apply common R functions to a \code{big.matrix}.
 }
 \details{
-This function split a \code{big.matrix} in column blocks, then apply a given
+This function splits a \code{big.matrix} in column blocks, then apply a given
 function to each block matrix and finally combine the results.
+}
+\examples{
+# simulate some data
+N <- 50
+M <- 5000
+X <- big.matrix(N, M)
+X[] <- rnorm(length(X))
+
+# get the means of each column
+colmeans <- big_apply(X, colMeans, .combine = 'c')
+# is the shorter version of
+colmeans2 <- big_apply(X, function(X, ind) {
+  mat <- X[, ind, drop = FALSE]
+  colMeans(mat)
+}, .combine = 'c', ind.arg = TRUE)
+print(all.equal(colmeans, colmeans2))
+
+# get the norms of each column
+colnorms <- big_apply(X, function(mat) sqrt(colSums(mat^2)), .combine = 'c')
+
+# get the sums of each row
+rowsums <- big_apply(X, rowSums, .combine = '+')
+
+# get the maximum element of X (in absolute value)
+maxabs <- max(big_apply(X, function(x) max(abs(x)), .combine = 'c'))
+
+# get the crossproduct between X and a matrix A
+A <- matrix(0, N, 10)
+A[] <- rnorm(length(A))
+XtA <- big_apply(X, function(x) crossprod(x, A), .combine = 'rbind')
+
+# get the product between X and a matrix B
+B <- matrix(0, M, 10)
+B[] <- rnorm(length(B))
+XB <- big_apply(X, function(x, ind, A) {
+  x.part <- x[, ind, drop = FALSE]
+  A.part <- A[ind, , drop = FALSE]
+  x.part \%*\% A.part
+}, .combine = '+', ind.arg = TRUE, A = B, ncores = 2)
 }

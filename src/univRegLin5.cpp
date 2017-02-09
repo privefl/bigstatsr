@@ -36,7 +36,7 @@ List univRegLin5(MatrixAccessor<T> macc,
 
   for (j = 0; j < m; j++) {
     for (i = 0; i < n; i++) {
-      x(i) = macc[j][trains[i]];
+      x[i] = macc[j][trains[i]];
     }
     x2 = UUty(U, x);
 

@@ -21,11 +21,15 @@ big_colstats <- function(X, ind.train = seq(nrow(X)), ind.col = seq(ncol(X))) {
 
 ################################################################################
 
-big_applySeq <- function(X, FUN, .combine, block.size = 1e3) {
-  intervals <- CutBySize(ncol(X), block.size)
+big_applySeq <- function(X, FUN, .combine, block.size, ind.arg, m, ...) {
+  intervals <- CutBySize(m, block.size)
 
   foreach(k = 1:nrow(intervals), .combine = .combine) %do% {
-    FUN(X[, seq2(intervals[k, ]), drop = FALSE])
+    if (ind.arg) {
+      FUN(X, seq2(intervals[k, ]), ...)
+    } else {
+      FUN(X[, seq2(intervals[k, ]), drop = FALSE], ...)
+    }
   }
 }
 
@@ -33,23 +37,29 @@ big_applySeq <- function(X, FUN, .combine, block.size = 1e3) {
 #'
 #' A Split-Apply-Combine strategy to apply common R functions to a `big.matrix`.
 #'
-#' This function split a `big.matrix` in column blocks, then apply a given
+#' This function splits a `big.matrix` in column blocks, then apply a given
 #' function to each block matrix and finally combine the results.
 #'
 #' @inheritParams bigstatsr-package
+#' @param X A [big.matrix][bigmemory::big.matrix-class]. Must be the first
+#' argument of `FUN`.
 #' @param FUN The function to be applied to each column block matrix.
+#' @param ind.arg Explicitly use column indices as argument? Default is `FALSE`.
+#' If `TRUE` indices must be the second argument of `FUN`.
 #' @inheritParams foreach::foreach
+#' @param ... Extra arguments to be passed to `FUN`.
 #'
 #' @return The result of [foreach].
 #' @export
 #' @import foreach
 #'
-#' @examples
-big_apply <- function(X, FUN, .combine, block.size = 1e3, ncores = 1) {
+#' @example examples/example-apply.R
+big_apply <- function(X, FUN, .combine, block.size = 1e3,
+                      ind.arg = FALSE, ncores = 1, ...) {
   if (ncores == 1) {
     check_X(X)
 
-    big_applySeq(X, FUN, .combine, block.size)
+    big_applySeq(X, FUN, .combine, block.size, ind.arg, ncol(X), ...)
   } else {
     check_X(X, ncores = ncores)
 
@@ -62,15 +72,17 @@ big_apply <- function(X, FUN, .combine, block.size = 1e3, ncores = 1) {
 
     foreach(ic = 1:ncores, .combine = .combine) %dopar% {
       lims <- range.parts[ic, ]
+      ind.lims <- seq2(lims)
 
-      X.part <- sub.big.matrix(X.desc, firstCol = lims[1], lastCol = lims[2])
+      X.part <- attach.big.matrix(X.desc)
 
       # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
       if (detect_MRO()) {
         nthreads.save <- RevoUtilsMath::setMKLthreads(1)
         on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)
       }
-      big_applySeq(X.part, FUN, .combine, block.size)
+      big_applySeq(X.part, function(x, ind, ...) FUN(x, ind.lims[ind], ...),
+                   .combine, block.size, ind.arg, length(ind.lims), ...)
     }
   }
 }
