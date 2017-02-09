@@ -41,11 +41,8 @@ big_univRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
   res.all <- foreach(ic = seq_len(ncores2), .combine = 'rbind') %dopar% {
     lims <- range.parts[ic, ]
 
-    if (is.seq) {
-      X.part <- X
-    } else {
-      X.part <- sub.big.matrix(X.desc, firstCol = lims[1], lastCol = lims[2])
-    }
+    X.part <- `if`(is.seq, X, sub.big.matrix(X.desc, firstCol = lims[1],
+                                             lastCol = lims[2]))
 
     # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
     multi <- !is.seq && detect_MRO()
