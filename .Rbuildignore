@@ -11,6 +11,7 @@
 ^tmp-docs$
 ^tmp-results$
 ^tmp-data$
+^vignettes$
 ^docs$
 mutex
 ^_pkgdown\.yml$
