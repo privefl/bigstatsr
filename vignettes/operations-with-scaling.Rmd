@@ -1,0 +1,116 @@
+---
+title: "How to handle operations on a scaled \"big.matrix\""
+# author: "Florian Privé"
+# date: "9 février 2017"
+output: html_document
+---
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand\R{\texttt{R}}
+\newcommand\A{\vect{A}}
+\newcommand\B{\vect{B}}
+\newcommand\X{\vect{X}}
+\newcommand\M{\vect{M}}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(bigstatsr)
+```
+
+## Main problem
+
+The main of problem that we will try to solve in this document is computing the problem between a very large matrix $\X$ (of size $n \times m$) and a smaller one $\M$. $\vect{\widetilde{X}}$ is a scaled version of $\X$, i.e. defined such that $\widetilde{X}_{i,j} = \frac{X_{i,j}-\mu_j}{s_j}$. Usually, $\vect{\mu}$ is the vector of column means (that you can get using the $\R$ command `colMeans(X)`) and $\vect{s}$ is the vector of column standard deviations (that you can get using the $\R$ command `apply(X, 2, sd)`). For now, we will make no such assumptions on $\vect{\mu}$ and $\vect{s}$.
+
+## Rewriting the main problem
+
+Let us denote $\A = \begin{bmatrix}
+    a_{11} & a_{12} \\
+    a_{21} & a_{22} \\
+    a_{31} & a_{32} 
+\end{bmatrix}$ and $\B = \begin{bmatrix}
+    b_{11} & b_{12} \\
+    b_{21} & b_{22} \\
+    b_{31} & b_{32} 
+\end{bmatrix}$. Then $\begin{bmatrix}
+    a_{11} - \mu_1 & a_{12} - \mu_2 \\
+    a_{21} - \mu_1 & a_{22} - \mu_2 \\
+    a_{31} - \mu_1 & a_{32} - \mu_2 
+\end{bmatrix} = \A - \begin{bmatrix}
+    1 \\
+    1 \\
+    1 
+\end{bmatrix} \cdot \begin{bmatrix}
+    \mu_1 & \mu_2 
+\end{bmatrix} = \A - \vect{1}_3 \cdot \vect{\mu}^T$
+and $\begin{bmatrix}
+    b_{11} d_1 & b_{12} d_2 \\
+    b_{21} d_1 & b_{22} d_2 \\
+    b_{31} d_1 & b_{32} d_2
+\end{bmatrix} = \B \cdot \begin{bmatrix}
+    d_1 & 0 \\
+    0 & d_2 
+\end{bmatrix} = \B \cdot \vect{\Delta}$.
+
+Let us generalize: $\vect{\widetilde{X}} = (\X - \vect{1}_n \cdot \vect{\mu}^T) \cdot \vect{\Delta_s}$ where $\vect{\Delta_s} = \begin{bmatrix}
+    1/s_1 & 0 & \cdots & 0 \\
+    0 & \ddots & \ddots & \vdots \\
+    \vdots & \ddots & \ddots & 0 \\
+    0 & \cdots & 0 & 1/s_{m} 
+\end{bmatrix}$. 
+
+So, $\vect{\widetilde{X}} \cdot \M = (\X - \vect{1}_n \cdot \vect{\mu}^T) \cdot \vect{\Delta_s} \cdot \M$. If we denote $\vect{M_s} = \vect{\Delta_s} \cdot \M$, then $\vect{\widetilde{X}} \cdot \M = \X \cdot \vect{M_s} - \vect{1}_n \cdot \vect{\mu}^T \cdot \vect{M_s}$, which doesn't involve any explicit scaling of $\X$. 
+
+Moreover, in the particular case where $\vect{\mu}^T = \vect{1}_n^T \cdot \X$ is the vector of column means of $\X$, then $\vect{\widetilde{X}} \cdot \M = \vect{C_n} \cdot (\X \cdot \vect{M_s})$ where $\vect{C_n} = \vect{I_n} - \vect{1}_n \cdot \vect{1}_n^T$ is the [centering matrix](https://en.wikipedia.org/wiki/Centering_matrix). 
+
+## Conclusion
+
+So, we have shown that we can compute a product between a scaled version of a  large matrix and another matrix without having to explicitly scale this large matrix. This trick could be applied to other problems and you can find other tricks in the [biglasso paper](https://arxiv.org/abs/1701.05936).
+
+## Example
+
+Let use the `big_apply` function to implement the main problem we have treated in this document.
+
+```{r}
+# simulate some data
+n <- 500
+m <- 5000
+X <- big.matrix(n, m)
+X[] <- rnorm(length(X))
+M <- matrix(0, m, 10)
+M[] <- rnorm(length(M))
+```
+
+```{r}
+### Treating mu as any vector
+# get mu and s as the column means and column standard deviations
+stats_scale <- big_apply(X, FUN = function(x) {
+  data.frame(mu = colMeans(x), s = apply(x, 2, sd))
+}, .combine = 'rbind')
+
+# compute M_s
+M_s <- M / stats_scale$s
+
+XM_s <- big_apply(X, FUN = function(x, ind, mat) {
+  X[, ind, drop = FALSE] %*% mat[ind, , drop = FALSE] 
+}, .combine = '+', ind.arg = TRUE, mat = M_s)
+
+final <- sweep(XM_s, 2, crossprod(stats_scale$mu, M_s), '-')
+
+# verification
+print(all.equal(final, scale(X[,]) %*% M))
+
+
+### Knowing that mu is the column means of X
+# get s only
+sds <- big_apply(X, FUN = function(x) apply(x, 2, sd), .combine = 'c')
+
+XM_s2 <- big_apply(X, FUN = function(x, ind, mat) {
+  X[, ind, drop = FALSE] %*% mat[ind, , drop = FALSE] 
+}, .combine = '+', ind.arg = TRUE, mat = M / sds)
+
+final2 <- sweep(XM_s2, 2, colMeans(XM_s2), '-')
+
+# verification
+print(all.equal(final2, scale(X[,]) %*% M))
+```
+
