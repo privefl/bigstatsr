@@ -1,7 +1,8 @@
 ################################################################################
 
 # Global variables
-ALL.TYPES <- c("char", "short", "integer", "float", "double")
+ALL.TYPES <- c("char", "short", "integer", "float", "double") # for tests
+globalVariables("ic") # for foreach
 
 ERROR_BIGMATRIX <- "X must be a big.matrix."
 ERROR_SHARED <- "You can't use parallelism with a non-shared big.matrix."

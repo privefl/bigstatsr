@@ -43,60 +43,6 @@ big_spRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
                           ...)
 }
 
-#' Title
-#'
-#' @param X
-#' @param y.train
-#' @param ind.train
-#' @param covar.train
-#' @param K
-#' @param ncores
-#' @param ...
-#'
-#' @return
-#' @export
-#' @import foreach
-#'
-#' @examples
-big_spRegLinCV <- function(X, y.train, ind.train = seq(nrow(X)),
-                           covar.train = NULL, K = 10, ncores = 1, ...) {
-  check_X(X, ncores = ncores)
-  check_biglasso()
-
-  X.desc <- describe(X)
-  n <- length(ind.train)
-  ind <- sample(rep_len(1:K, n))
-
-  if (is.seq <- (ncores == 1)) {
-    registerDoSEQ()
-  } else {
-    cl <- parallel::makeCluster(ncores)
-    doParallel::registerDoParallel(cl)
-    on.exit(parallel::stopCluster(cl), add = TRUE)
-  }
-  res <- foreach(ic = 0:K) %dopar% {
-    X <- attach.big.matrix(X.desc)
-
-    if (ic == 0) { # main training
-      mod <- big_spRegLin(X, y.train, ind.train, covar.train, ncores = 1, ...)
-      tmp.ind.test <- ind.test
-    } else {
-      i.test <- which(ind == ic)
-      i.train <- setdiff(1:n, i.test)
-
-      mod <- big_spRegLin(X, y.train[i.train], ind.train[i.train],
-                          covar.train[i.train, ], ncores = 1, ...)
-      tmp.ind.test <- ind.train[i.test]
-    }
-
-    betas <- mod$beta
-    ind.col <- sort(unique(betas@i))[-1] # rm intercept
-    scores <- as.matrix(X[tmp.ind.test, ind.col] %*% betas[ind.col + 1, ])
-    rownames(scores) <- tmp.ind.test
-    sweep(scores, 2, betas[1, ], '+')
-  }
-}
-
 ################################################################################
 
 #' Sparse logistic regression
@@ -122,60 +68,6 @@ big_spRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
                           family = "binomial",
                           screen = "COPY-SSR",
                           ...)
-}
-
-#' Title
-#'
-#' @param X
-#' @param y01.train
-#' @param ind.train
-#' @param covar.train
-#' @param K
-#' @param ncores
-#' @param ...
-#'
-#' @return
-#' @export
-#' @import foreach
-#'
-#' @examples
-big_spRegLogCV <- function(X, y01.train, ind.train = seq(nrow(X)),
-                           covar.train = NULL, K = 10, ncores = 1, ...) {
-  check_X(X, ncores = ncores)
-  check_biglasso()
-
-  X.desc <- describe(X)
-  n <- length(ind.train)
-  ind <- sample(rep_len(1:K, n))
-
-  if (is.seq <- (ncores == 1)) {
-    registerDoSEQ()
-  } else {
-    cl <- parallel::makeCluster(ncores)
-    doParallel::registerDoParallel(cl)
-    on.exit(parallel::stopCluster(cl), add = TRUE)
-  }
-  res <- foreach(ic = 0:K) %dopar% {
-    X <- attach.big.matrix(X.desc)
-
-    if (ic == 0) { # main training
-      mod <- big_spRegLog(X, y01.train, ind.train, covar.train, ncores = 1, ...)
-      tmp.ind.test <- ind.test
-    } else {
-      i.test <- which(ind == ic)
-      i.train <- setdiff(1:n, i.test)
-
-      mod <- big_spRegLog(X, y01.train[i.train], ind.train[i.train],
-                          covar.train[i.train, ], ncores = 1, ...)
-      tmp.ind.test <- ind.train[i.test]
-    }
-
-    betas <- mod$beta
-    ind.col <- sort(unique(betas@i))[-1] # without intercept
-    scores <- as.matrix(X[tmp.ind.test, ind.col] %*% betas[ind.col + 1, ])
-    rownames(scores) <- tmp.ind.test
-    sweep(scores, 2, betas[1, ], '+')
-  }
 }
 
 ################################################################################
