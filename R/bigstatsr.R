@@ -1,3 +1,5 @@
+################################################################################
+
 #' @import bigmemory
 #' @useDynLib bigstatsr
 #' @importFrom Rcpp sourceCpp
@@ -16,7 +18,9 @@
 #' If not specified, all columns are used.
 #'
 #' @param block.size Maximum number of columns read at once.
-#' Default is `1000`.
+#' Default is `1000`. This parameter controls the trade-off between
+#' memory usage and speed. Basically, the more you can load at once,
+#' the quicker will be the execution time, at the expense of memory usage.
 #'
 #' @param ncores Number of cores used. Default doesn't use parallelism.
 #' @param ncores2 Number of cores used. Default doesn't use parallelism.
@@ -51,3 +55,5 @@
 #' with the MKL (please \href{mailto:florian.prive.21@gmail.com}{contact me}
 #' if you do!).}
 "_PACKAGE"
+
+################################################################################
