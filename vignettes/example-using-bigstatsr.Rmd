@@ -95,14 +95,13 @@ Let's now train a model on all the matrix at once, a logistic regression with el
 
 ```{r}
 ind.train <- sort(sample(nrow(X), 10e3))
-# scores.PCA <- matrix(0, nrow(X), 10)
-# scores.PCA[] <- rnorm(length(scores.PCA))
+scores.PCA <- matrix(0, nrow(X), 10)
+scores.PCA[] <- rnorm(length(scores.PCA))
 system.time(
-  log.mod <- big_spRegLog(X, y01.train = y[ind.train] - 1, 
-                          covar.train = NULL, #scores.PCA[ind.train, ], 
+  log.mod <- big_spRegLog(X, y01.train = y[ind.train] - 1, ind.train = ind.train,
+                          covar.train = scores.PCA[ind.train, ], 
                           penalty = "enet", alpha = 0.5, 
                           dfmax = 20e3, ncores = 11)
 )
 ```
-#### TODO: Debug function so that it can use covariables
 #### TODO: Use a predict function for models

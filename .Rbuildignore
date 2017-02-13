@@ -13,5 +13,6 @@
 ^tmp-data$
 ^vignettes$
 ^docs$
-mutex
 ^_pkgdown\.yml$
+^cleanup$
+^kill_ipcs\.sh$

@@ -4,20 +4,45 @@ Type: Package
 Title: Statistical Tools for Bigmemory Matrices
 Version: 0.1.0.9000
 Authors@R: c(
-    person("Florian", "Privé", email = "florian.prive.21@gmail.com", role = c("aut", "cre")),
-    person("Michael", "Blum", email = "michael.blum@univ-grenoble-alpes.fr", role = "ths"),
-    person("Hugues", "Aschard", email = "hugues.aschard@pasteur.fr", role = "ths"))
+    person("Florian", "Privé", 
+           email = "florian.prive.21@gmail.com", 
+           role = c("aut", "cre")),
+    person("Michael", "Blum", 
+           email = "michael.blum@univ-grenoble-alpes.fr", 
+           role = "ths"),
+    person("Hugues", "Aschard", 
+           email = "hugues.aschard@pasteur.fr",
+           role = "ths"))
 Description: Easy-to-use, efficient, flexible and scalable
     statistical tools. Use bigmemory matrices.
-License: GPL-3
+License: GPL-3 + file LICENSE
 LazyData: TRUE
-LinkingTo: RcppArmadillo, RcppEigen, Rcpp, bigmemory, BH
-Imports: Rcpp, RSpectra, stats, biglasso, sparseSVM,
-         foreach, parallel, doParallel
-Depends: R (>= 3.2.3), bigmemory
+Depends: 
+    R (>= 3.2.3), 
+    bigmemory
+Imports: 
+    doParallel,
+    foreach, 
+    parallel, 
+    Rcpp, 
+    RSpectra, 
+    stats
+LinkingTo: 
+    BH,
+    bigmemory, 
+    Rcpp,
+    RcppArmadillo, 
+    RcppEigen
+Suggests: 
+    biglasso, 
+    covr, 
+    glmnet,
+    LiblineaR,
+    RevoUtilsMath,
+    sparseSVM,
+    testthat   
 RoxygenNote: 5.0.1.9000
 Roxygen: list(markdown = TRUE)
-Suggests: testthat, covr, RevoUtilsMath, glmnet, LiblineaR
-Remotes: privefl/bigmemory, privefl/biglasso, privefl/sparseSVM
+Remotes: privefl/bigmemory
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues

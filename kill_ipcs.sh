@@ -1,3 +1,4 @@
+# http://stackoverflow.com/a/4262545/6103040
 #!/bin/bash
 
 ME=`whoami`
