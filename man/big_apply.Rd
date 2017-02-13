@@ -79,5 +79,6 @@ XB <- big_apply(X, function(x, ind, A) {
   x.part <- x[, ind, drop = FALSE]
   A.part <- A[ind, , drop = FALSE]
   x.part \%*\% A.part
-}, .combine = '+', ind.arg = TRUE, A = B, ncores = 2)
+}, .combine = '+', ind.arg = TRUE, A = B)
+print(all.equal(XB, X[,] \%*\% B))
 }

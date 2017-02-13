@@ -24,11 +24,11 @@ big_colstats <- function(X, ind.train = seq(nrow(X)), ind.col = seq(ncol(X))) {
 big_applySeq <- function(X, FUN, .combine, block.size, ind.arg, m, ...) {
   intervals <- CutBySize(m, block.size)
 
-  foreach(k = 1:nrow(intervals), .combine = .combine) %do% {
+  foreach(ic = 1:nrow(intervals), .combine = .combine) %do% {
     if (ind.arg) {
-      FUN(X, seq2(intervals[k, ]), ...)
+      FUN(X, seq2(intervals[ic, ]), ...)
     } else {
-      FUN(X[, seq2(intervals[k, ]), drop = FALSE], ...)
+      FUN(X[, seq2(intervals[ic, ]), drop = FALSE], ...)
     }
   }
 }
