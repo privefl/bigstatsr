@@ -1,3 +1,8 @@
+########################################################
+### This is a modified version from package biglasso ###
+###      https://github.com/YaohuiZeng/biglasso      ###
+########################################################
+
 ################################################################################
 
 #' Sparse regression path
@@ -11,89 +16,100 @@
 #' (\code{family = "binomial"}) it is \deqn{-\frac{1}{n} loglike +
 #' \textrm{penalty}.}
 #'
-#' __This is a modified version of package of
-#' [package biglasso](https://github.com/YaohuiZeng/biglasso)__.
-#'
-#'
 #' @param row.idx The integer vector of row indices of \code{X} that used for
 #' fitting the model. \code{1:nrow(X)} by default.
-#' @param penalty The penalty to be applied to the model. Either "lasso" (the
-#' default), "ridge", or "enet" (elastic net).
 #' @param family Either "gaussian" or "binomial", depending on the response.
 #' @param alpha The elastic-net mixing parameter that controls the relative
 #' contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 #' defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
-#' \code{alpha=1} is the lasso penalty, \code{alpha=0} the ridge penalty,
-#' \code{alpha} in between 0 and 1 is the elastic-net ("enet") penalty.
+#' \code{alpha = 1} is the lasso penalty and \code{alpha} in between `0`
+#' (`1e-6`) and `1` is the elastic-net penalty.
 #' @param lambda.min The smallest value for lambda, as a fraction of
-#' lambda.max.  Default is .001 if the number of observations is larger than
-#' the number of covariates and .01 otherwise.
-#' @param nlambda The number of lambda values.  Default is 100.
+#' lambda.max. Default is `.001` if the number of observations is larger than
+#' the number of covariates and `.01` otherwise.
+#' @param nlambda The number of lambda values. Default is `100`.
 #' @param lambda.log.scale Whether compute the grid values of lambda on log
 #' scale (default) or linear scale.
-#' @param lambda A user-specified sequence of lambda values.  By default, a
-#' sequence of values of length \code{nlambda} is computed, equally spaced on
+#' @param lambda A user-specified sequence of lambda values. By default, a
+#' sequence of values of length `nlambda` is computed, equally spaced on
 #' the log scale.
-#' @param eps Convergence threshold for inner coordinate descent.  The
-#' algorithm iterates until the maximum change in the objective after any
-#' coefficient update is less than \code{eps} times the null deviance. Default
-#' value is \code{1e-7}.
-#' @param max.iter Maximum number of iterations. Default is 1000.
-#' @param dfmax Upper bound for the number of nonzero coefficients.  Default is
-#' no upper bound.  However, for large data sets, computational burden may be
+#' @param eps Convergence threshold for inner coordinate descent.
+#' The algorithm iterates until the maximum change in the objective after any
+#' coefficient update is less than `eps` times the null deviance.
+#' Default value is `1e-7`.
+#' @param max.iter Maximum number of iterations. Default is `1000`.
+#' @param dfmax Upper bound for the number of nonzero coefficients. Default is
+#' no upper bound. However, for large data sets, computational burden may be
 #' heavy for models with a large number of nonzero coefficients.
 #' @param penalty.factor A multiplicative factor for the penalty applied to
-#' each coefficient.  If supplied, \code{penalty.factor} must be a numeric
-#' vector of length equal to the number of columns of \code{X}.  The purpose of
-#' \code{penalty.factor} is to apply differential penalization if some
-#' coefficients are thought to be more likely than others to be in the model.
-#' Current package doesn't allow unpenalized coefficients. That
-#' is\code{penalty.factor} cannot be 0.
+#' each coefficient. If supplied, `penalty.factor` must be a numeric
+#' vector of length equal to sum of the number of columns of `X` and the
+#' number of covariables (intercept excluded). The purpose of `penalty.factor`
+#' is to apply differential penalization if some coefficients are thought to be
+#' more likely than others to be in the model. Current package doesn't allow
+#' unpenalized coefficients. That is `penalty.factor` cannot be 0.
 #' @param warn Return warning messages for failures to converge and model
-#' saturation?  Default is TRUE.
+#' saturation? Default is `TRUE`.
 #' @param output.time Whether to print out the start and end time of the model
 #' fitting.
-#' @param verbose Whether to output the timing of each lambda iteration.
-#' Default is FALSE.
-#' @return An object with S3 class \code{"biglasso"} with following variables.
-#' \item{beta}{The fitted matrix of coefficients, store in sparse matrix
-#' representation. The number of rows is equal to the number of coefficients,
-#' whereas the number of columns is equal to \code{nlambda}.} \item{iter}{A
-#' vector of length \code{nlambda} containing the number of iterations until
-#' convergence at each value of \code{lambda}.} \item{lambda}{The sequence of
-#' regularization parameter values in the path.} \item{penalty}{Same as above.}
-#' \item{family}{Same as above.} \item{alpha}{Same as above.} \item{loss}{A
-#' vector containing either the residual sum of squares (\code{for "gaussian"})
-#' or negative log-likelihood (for \code{"binomial"}) of the fitted model at
-#' each value of \code{lambda}.} \item{penalty.factor}{Same as above.}
-#' \item{n}{The number of observations used in the model fitting. It's equal to
-#' \code{length(row.idx)}.} \item{center}{The sample mean vector of the
-#' variables, i.e., column mean of the sub-matrix of \code{X} used for model
-#' fitting.} \item{scale}{The sample standard deviation of the variables, i.e.,
-#' column standard deviation of the sub-matrix of \code{X} used for model
-#' fitting.} \item{y}{The response vector used in the model fitting. Depending
-#' on \code{row.idx}, it could be a subset of the raw input of the response
-#' vector y.} \item{screen}{Same as above.} \item{col.idx}{The indices of
-#' features that have 'scale' value greater than 1e-6. Features with 'scale'
-#' less than 1e-6 are removed from model fitting.} \item{rejections}{The number
-#' of features rejected at each value of \code{lambda}.}
+#' @param verbose Whether to print out the start, the timing of each lambda
+#' iteration and the end. Default is `FALSE`.
 #'
+#' @return A named list with following variables:
+#'   \item{intercept}{A vector of intercepts, corresponding to each lambda.}
+#'   \item{beta}{The fitted matrix of coefficients, store in sparse matrix
+#'     representation. The number of rows is equal to the number of
+#'     coefficients, and the number of columns is equal to `nlambda`.}
+#'   \item{iter}{A vector of length `nlambda` containing the number of
+#'     iterations until convergence at each value of `lambda`.}
+#'   \item{lambda}{The sequence of regularization parameter values in the path.}
+#'   \item{penalty}{Penalty used. See the input parameter `alpha`.}
+#'   \item{family}{Either `"gaussian"` or `"binomial"` depending on the
+#'     function used.}
+#'   \item{alpha}{Input parameter.}
+#'   \item{loss}{A vector containing either the residual sum of squares
+#'     (for linear models) or negative log-likelihood (for logistic models)
+#'     of the fitted model at each value of `lambda`.}
+#'   \item{penalty.factor}{Input parameter.}
+#'   \item{n}{The number of observations used in the model fitting. It's equal
+#'     to `length(row.idx)`.}
+#'   \item{p}{The number of dimensions (including covariables,
+#'     but not the intercept).}
+#'   \item{center}{The sample mean vector of the variables, i.e., column mean
+#'     of the sub-matrix of `X` used for model fitting.}
+#'   \item{scale}{The sample standard deviation of the variables, i.e.,
+#'     column standard deviation of the sub-matrix of `X` used for model
+#'     fitting.}
+#'   \item{y}{The response vector used in the model fitting. Depending on
+#'     `row.idx`, it could be a subset of the raw input of the response vector
+#'     y.}
+#'   \item{col.idx}{The indices of features that have 'scale' value greater
+#'     than `1e-6`. Features with 'scale' less than 1e-6 are removed from
+#'     model fitting.}
+#'   \item{rejections}{The number of features rejected at each value of
+#'   `lambda`.}
+#'
+#' @import Matrix
 COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
                           family = c("gaussian", "binomial"),
                           alpha = 1,
                           lambda.min = `if`(nrow(X) > ncol(X), .001, .01),
                           nlambda = 100, lambda.log.scale = TRUE,
                           lambda, eps = 1e-7, max.iter = 1000,
-                          dfmax = ncol(X)+1,
-                          penalty.factor = rep(1, ncol(X)),
+                          dfmax = p+1,
+                          penalty.factor = NULL,
                           warn = TRUE,
                           verbose = FALSE) {
 
   family <- match.arg(family)
-  penalty <- match.arg(penalty)
   lambda.min <- max(lambda.min, 1e-6)
   if (is.null(covar.train)) covar.train <- matrix(0, 0, 0)
-  penalty.factor <- c(penalty.factor, rep(1, ncol(covar.train)))
+
+  p <- ncol(X) + ncol(covar.train)
+  if (is.null(penalty.factor))
+    penalty.factor <- rep(1, p)
+  if (p != length(penalty.factor))
+    stop("'penalty.factor' has an incompatible length.")
 
   if (alpha == 1) {
     penalty <- "lasso"
@@ -123,18 +139,16 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
     ylab <- ifelse(y.train == 0, -1, 1) # response label vector of {-1, 1}
   }
 
-  if (family=="gaussian") {
+  if (family == "gaussian") {
     yy <- y.train - mean(y.train)
   } else {
     yy <- y.train
   }
 
-  p <- length(penalty.factor)
-
   n <- length(ind.train) ## subset of X. idx: indices of rows.
   if (missing(lambda)) {
     user.lambda <- FALSE
-    lambda <- rep(0.0, nlambda);
+    lambda <- rep(0, nlambda);
   } else {
     nlambda <- length(lambda)
     user.lambda <- TRUE
@@ -199,18 +213,17 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
   if (warn & any(iter==max.iter)) warning("Algorithm failed to converge for some values of lambda")
 
   ## Unstandardize coefficients:
-  beta <- Matrix(0, nrow = (p+1), ncol = length(lambda), sparse = T)
+  beta <- Matrix(0, nrow = p, ncol = length(lambda), sparse = TRUE)
   bb <- b / scale[col.idx]
-  beta[col.idx+1, ] <- bb
-  beta[1,] <- a - crossprod(center[col.idx], bb)
+  beta[col.idx, ] <- bb
+  aa <- a - as.numeric(crossprod(center[col.idx], bb))
 
   ## Names
-  varnames <- if (is.null(colnames(X))) paste("V", 1:p, sep="") else colnames(X)
-  varnames <- c("(Intercept)", varnames)
-  dimnames(beta) <- list(varnames, round(lambda, digits = 4))
+  names(aa) <- colnames(beta) <- round(lambda, digits = 4)
 
   ## Output
-  return.val <- list(
+  list(
+    intercept = aa,
     beta = beta,
     iter = iter,
     lambda = lambda,
@@ -220,15 +233,13 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
     loss = loss,
     penalty.factor = penalty.factor,
     n = n,
+    p = p,
     center = center,
     scale = scale,
     y = yy,
     col.idx = col.idx,
     rejections = rejections
   )
-
-  val <- structure(return.val, class = c("biglasso", 'ncvreg'))
-  val
 }
 
 ################################################################################

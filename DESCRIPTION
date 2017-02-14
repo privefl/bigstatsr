@@ -23,6 +23,7 @@ Depends:
 Imports: 
     doParallel,
     foreach, 
+    Matrix,
     parallel, 
     Rcpp, 
     RSpectra, 

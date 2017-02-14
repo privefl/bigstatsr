@@ -21,7 +21,9 @@ for the training part. If not specified, all rows are used.}
 If not specified, all columns are used.}
 
 \item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}.}
+Default is \code{1000}. This parameter controls the trade-off between
+memory usage and speed. Basically, the more you can load at once,
+the quicker will be the execution time, at the expense of memory usage.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.}
 

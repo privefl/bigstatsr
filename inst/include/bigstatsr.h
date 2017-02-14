@@ -84,12 +84,12 @@ protected:
 /******************************************************************************/
 
 template<typename T>
-class CovarMatrixAccessor {
+class SubMatrixCovarAccessor {
 public:
   typedef T value_type;
 
 public:
-  CovarMatrixAccessor(BigMatrix &bm,
+  SubMatrixCovarAccessor(BigMatrix &bm,
                     const IntegerVector &row_ind,
                     const NumericMatrix &covar) {
     if (covar.nrow() != 0) {

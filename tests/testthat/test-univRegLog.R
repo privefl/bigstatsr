@@ -8,16 +8,13 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
 TOL <- 1e-5
 
 # Simulating some data
-mydata <- read.csv("http://www.ats.ucla.edu/stat/data/binary.csv")
-N <- nrow(mydata)
-keep <- 2:4
-M <- length(keep)
+N <- 73
+M <- 43
+x <- matrix(rnorm(N*M, sd = 5), N)
+y <- sample(0:1, size = N, replace = TRUE)
+
 covar0 <- matrix(rnorm(N * 3), N)
 lcovar <- list(NULL, covar0)
-X0 <- as.matrix(mydata[, keep])
-X0[, 1] <- X0[, 1] / 10
-X0[, 2:3] <- X0[, 2:3] * 10
-y <- mydata$admit
 
 ################################################################################
 
@@ -37,7 +34,7 @@ getGLM <- function(X, y, covar, ind = NULL) {
 
 test_that("equality with glm with all data", {
   for (t in ALL.TYPES) {
-    X <- as.big.matrix(X0, type = t)
+    X <- as.big.matrix(x, type = t)
     for (covar in lcovar) {
       mod <- big_univRegLog(X, y, covar.train = covar)
       mat <- as.matrix(mod[, -3])
@@ -56,7 +53,7 @@ while (mean(y[ind]) < 0.2 || mean(y[ind]) > 0.8) {
 
 test_that("equality with glm with only half the data", {
   for (t in ALL.TYPES) {
-    X <- as.big.matrix(X0, type = t)
+    X <- as.big.matrix(x, type = t)
     for (covar in lcovar) {
       mod <- big_univRegLog(X, y[ind], covar.train = covar[ind, ],
                             ind.train = ind)

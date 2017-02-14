@@ -1,4 +1,9 @@
-#include "../inst/include/biglasso.h"
+/********************************************************/
+/*** This is a modified version from package biglasso ***/
+/***      https://github.com/YaohuiZeng/biglasso      ***/
+/********************************************************/
+
+#include "../inst/include/bigstatsr.h"
 #include <time.h>
 
 /******************************************************************************/
@@ -29,7 +34,7 @@ void COPY_standardize_and_get_residual(NumericVector &center,
                                        vector<int> &col_idx, //columns to keep, removing columns whose scale < 1e-6
                                        vector<double> &z,
                                        double *lambda_max_ptr,
-                                       SubMatrixAccessor<T> xAcc,
+                                       SubMatrixCovarAccessor<T> xAcc,
                                        const NumericVector &y,
                                        double lambda_min,
                                        double alpha,
@@ -79,7 +84,7 @@ double COPY_lasso(double z, double l1, double l2, double v) {
 // check KKT conditions over features in the strong set
 template <typename T>
 int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, vector<double> &z,
-                          SubMatrixAccessor<T> xAcc, const NumericVector &beta_old,
+                          SubMatrixCovarAccessor<T> xAcc, const NumericVector &beta_old,
                           const vector<int> &col_idx,
                           const NumericVector &center, const NumericVector &scale,
                           double lambda, double sumResid, double alpha,
@@ -110,7 +115,7 @@ int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, vector
 // check KKT conditions over features in the rest set
 template <typename T>
 int COPY_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, vector<double> &z,
-                        SubMatrixAccessor<T> xAcc, const NumericVector &beta_old,
+                        SubMatrixCovarAccessor<T> xAcc, const NumericVector &beta_old,
                         const vector<int> &col_idx,
                         const NumericVector &center, const NumericVector &scale,
                         double lambda, double sumResid, double alpha,
@@ -142,7 +147,7 @@ int COPY_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, vector<double>
 
 //crossprod_resid - given specific rows of X: separate computation
 template <typename T>
-double COPY_crossprod_resid(SubMatrixAccessor<T> xAcc, int jj, const NumericVector &y_,
+double COPY_crossprod_resid(SubMatrixCovarAccessor<T> xAcc, int jj, const NumericVector &y_,
                             double sumY_, double center_, double scale_, int n_row) {
   double sum = 0.0;
   for (int i = 0; i < n_row; i++) {
@@ -154,7 +159,7 @@ double COPY_crossprod_resid(SubMatrixAccessor<T> xAcc, int jj, const NumericVect
 
 // update residul vector
 template <typename T>
-void COPY_update_resid(SubMatrixAccessor<T> xAcc, int jj, NumericVector &r, double shift,
+void COPY_update_resid(SubMatrixCovarAccessor<T> xAcc, int jj, NumericVector &r, double shift,
                        double center_, double scale_, int n_row, double *sumResid) {
   double shift_scaled = shift / scale_;
   double update;
@@ -176,7 +181,7 @@ double COPY_gLoss(const NumericVector &r, int n) {
 
 // Coordinate descent for gaussian models
 template <typename T>
-ListOf<SEXP> COPY_cdfit_gaussian_hsr(SubMatrixAccessor<T> xAcc,
+ListOf<SEXP> COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
                                      const NumericVector &y,
                                      NumericVector &lambda,
                                      int L,
@@ -191,7 +196,7 @@ ListOf<SEXP> COPY_cdfit_gaussian_hsr(SubMatrixAccessor<T> xAcc,
                                      bool verbose) {
   int n = xAcc.nrow(); // number of observations used for fitting model
   int p = xAcc.ncol();
-  printf("p = %d\n", p); //DEBUG
+  // printf("p = %d\n", p); //DEBUG
 
   NumericVector center(p);
   NumericVector scale(p);
@@ -208,7 +213,7 @@ ListOf<SEXP> COPY_cdfit_gaussian_hsr(SubMatrixAccessor<T> xAcc,
                                        y, lambda_min, alpha, n, p);
 
   p = p_keep;   // set p = p_keep, only loop over columns whose scale > 1e-6
-  printf("p_keep = %d\n", p); //DEBUG
+  // printf("p_keep = %d\n", p); //DEBUG
 
   print_time(verbose, true);
 
@@ -348,27 +353,27 @@ List COPY_cdfit_gaussian_hsr(XPtr<BigMatrix> xpMat,
                              bool verbose) {
   switch(xpMat->matrix_type()) {
   case 1:
-    return COPY_cdfit_gaussian_hsr(SubMatrixAccessor<char>(*xpMat, row_idx, covar),
+    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<char>(*xpMat, row_idx, covar),
                                    y, lambda, L, lam_scale, lambda_min,
                                    alpha, user, eps, max_iter, m,
                                    dfmax, verbose);
   case 2:
-    return COPY_cdfit_gaussian_hsr(SubMatrixAccessor<short>(*xpMat, row_idx, covar),
+    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<short>(*xpMat, row_idx, covar),
                                    y, lambda, L, lam_scale, lambda_min,
                                    alpha, user, eps, max_iter, m,
                                    dfmax, verbose);
   case 4:
-    return COPY_cdfit_gaussian_hsr(SubMatrixAccessor<int>(*xpMat, row_idx, covar),
+    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<int>(*xpMat, row_idx, covar),
                                    y, lambda, L, lam_scale, lambda_min,
                                    alpha, user, eps, max_iter, m,
                                    dfmax, verbose);
   case 6:
-    return COPY_cdfit_gaussian_hsr(SubMatrixAccessor<float>(*xpMat, row_idx, covar),
+    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<float>(*xpMat, row_idx, covar),
                                    y, lambda, L, lam_scale, lambda_min,
                                    alpha, user, eps, max_iter, m,
                                    dfmax, verbose);
   case 8:
-    return COPY_cdfit_gaussian_hsr(SubMatrixAccessor<double>(*xpMat, row_idx, covar),
+    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<double>(*xpMat, row_idx, covar),
                                    y, lambda, L, lam_scale, lambda_min,
                                    alpha, user, eps, max_iter, m,
                                    dfmax, verbose);

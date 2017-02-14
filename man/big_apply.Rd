@@ -23,7 +23,9 @@ argument of \code{FUN}.}
     By default, the results are returned in a list.}
 
 \item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}.}
+Default is \code{1000}. This parameter controls the trade-off between
+memory usage and speed. Basically, the more you can load at once,
+the quicker will be the execution time, at the expense of memory usage.}
 
 \item{ind.arg}{Explicitly use column indices as argument? Default is \code{FALSE}.
 If \code{TRUE} indices must be the second argument of \code{FUN}.}
