@@ -1,4 +1,4 @@
-#include "../inst/include/bigstatsr.h"
+#include "bigstatsr.h"
 
 // [[Rcpp::depends(bigmemory, BH, RcppArmadillo)]]
 #include <RcppArmadillo.h> // Sys.setenv("PKG_LIBS" = "-llapack")

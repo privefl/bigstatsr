@@ -3,7 +3,7 @@
 /***      https://github.com/YaohuiZeng/biglasso      ***/
 /********************************************************/
 
-#include "../inst/include/bigstatsr.h"
+#include "bigstatsr.h"
 #include <time.h>
 
 /******************************************************************************/
