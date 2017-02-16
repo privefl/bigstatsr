@@ -111,8 +111,11 @@ y <- rnorm(N)
 covar <- matrix(rnorm(N * 3), N)
 
 # error, only handle `double` `big.matrix` objects
-test <- biglasso::biglasso(X, y, family = "gaussian")
-print(summary(test$scale))
+tryCatch({
+  test <- biglasso::biglasso(X, y, family = "gaussian")
+  print(summary(test$scale))
+}, error = function() message("One error has been catched."))
+
 # OK here
 test2 <- big_spRegLin(X, y)
 str(test2)

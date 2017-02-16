@@ -112,8 +112,10 @@ y <- sample(0:1, size = N, replace = TRUE)
 covar <- matrix(rnorm(N * 3), N)
 
 # error, only handle `double` `big.matrix` objects
-tryCatch(test <- biglasso::biglasso(X, y, family = "binomial"),
-         error = function(e) message("One error has been catched."))
+tryCatch({
+  test <- biglasso::biglasso(X, y, family = "binomial")
+  print(summary(test$scale))
+}, error = function() message("One error has been catched."))
 # OK here
 test2 <- big_spRegLog(X, y)
 str(test2)
