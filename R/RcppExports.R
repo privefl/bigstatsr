@@ -21,6 +21,10 @@ cpMatVec4 <- function(xpMat, x, rowInd, colInd) {
     .Call('bigstatsr_cpMatVec4', PACKAGE = 'bigstatsr', xpMat, x, rowInd, colInd)
 }
 
+COPY_sparse_svm <- function(xpMat, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message) {
+    .Call('bigstatsr_COPY_sparse_svm', PACKAGE = 'bigstatsr', xpMat, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message)
+}
+
 transpose3 <- function(pBigMat, pBigMat2) {
     invisible(.Call('bigstatsr_transpose3', PACKAGE = 'bigstatsr', pBigMat, pBigMat2))
 }

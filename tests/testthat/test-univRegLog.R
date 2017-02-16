@@ -46,12 +46,12 @@ test_that("equality with glm with all data", {
 
 ################################################################################
 
-ind <- sort(sample(N, N / 2))
-while (mean(y[ind]) < 0.2 || mean(y[ind]) > 0.8) {
-  ind <- sort(sample(N, N / 2))
-}
-
 test_that("equality with glm with only half the data", {
+  ind <- sample(N, N / 2)
+  while (mean(y[ind]) < 0.2 || mean(y[ind]) > 0.8) {
+    ind <- sample(N, N / 2)
+  }
+
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
     for (covar in lcovar) {

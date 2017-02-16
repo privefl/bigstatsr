@@ -16,8 +16,6 @@
 #' (\code{family = "binomial"}) it is \deqn{-\frac{1}{n} loglike +
 #' \textrm{penalty}.}
 #'
-#' @param row.idx The integer vector of row indices of \code{X} that used for
-#' fitting the model. \code{1:nrow(X)} by default.
 #' @param family Either "gaussian" or "binomial", depending on the response.
 #' @param alpha The elastic-net mixing parameter that controls the relative
 #' contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
@@ -50,8 +48,6 @@
 #' unpenalized coefficients. That is `penalty.factor` cannot be 0.
 #' @param warn Return warning messages for failures to converge and model
 #' saturation? Default is `TRUE`.
-#' @param output.time Whether to print out the start and end time of the model
-#' fitting.
 #' @param verbose Whether to print out the start, the timing of each lambda
 #' iteration and the end. Default is `FALSE`.
 #'
@@ -96,7 +92,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
                           lambda.min = `if`(nrow(X) > ncol(X), .001, .01),
                           nlambda = 100, lambda.log.scale = TRUE,
                           lambda, eps = 1e-7, max.iter = 1000,
-                          dfmax = p+1,
+                          dfmax = p + 1,
                           penalty.factor = NULL,
                           warn = TRUE,
                           verbose = FALSE) {

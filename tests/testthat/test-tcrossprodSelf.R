@@ -28,6 +28,7 @@ test_that("equality with tcrossprod", {
 
 test_that("equality with tcrossprod with half of the data", {
   ind <- sample(N, N/2)
+
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
 

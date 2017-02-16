@@ -56,12 +56,6 @@ saturation? Default is \code{TRUE}.}
 
 \item{verbose}{Whether to print out the start, the timing of each lambda
 iteration and the end. Default is \code{FALSE}.}
-
-\item{row.idx}{The integer vector of row indices of \code{X} that used for
-fitting the model. \code{1:nrow(X)} by default.}
-
-\item{output.time}{Whether to print out the start and end time of the model
-fitting.}
 }
 \value{
 A named list with following variables:

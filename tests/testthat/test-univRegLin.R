@@ -30,9 +30,9 @@ test_that("equality with lm with all data", {
 
 ################################################################################
 
-ind <- sort(sample(N, N / 2))
-
 test_that("equality with lm with only half the data", {
+  ind <- sample(N, N / 2)
+
   for (t in ALL.TYPES) {
     X <- as.big.matrix(X0, type = t)
     for (covar in lcovar) {

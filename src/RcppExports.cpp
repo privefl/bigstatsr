@@ -100,6 +100,31 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// COPY_sparse_svm
+List COPY_sparse_svm(XPtr<BigMatrix> xpMat, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, const NumericVector& pf, double gamma, double alpha, double thresh, double lambda_min, int scrflag, int dfmax, int max_iter, bool user, bool message);
+RcppExport SEXP bigstatsr_COPY_sparse_svm(SEXP xpMatSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP pfSEXP, SEXP gammaSEXP, SEXP alphaSEXP, SEXP threshSEXP, SEXP lambda_minSEXP, SEXP scrflagSEXP, SEXP dfmaxSEXP, SEXP max_iterSEXP, SEXP userSEXP, SEXP messageSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pf(pfSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type thresh(threshSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda_min(lambda_minSEXP);
+    Rcpp::traits::input_parameter< int >::type scrflag(scrflagSEXP);
+    Rcpp::traits::input_parameter< int >::type dfmax(dfmaxSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< bool >::type user(userSEXP);
+    Rcpp::traits::input_parameter< bool >::type message(messageSEXP);
+    rcpp_result_gen = Rcpp::wrap(COPY_sparse_svm(xpMat, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message));
+    return rcpp_result_gen;
+END_RCPP
+}
 // transpose3
 void transpose3(SEXP pBigMat, SEXP pBigMat2);
 RcppExport SEXP bigstatsr_transpose3(SEXP pBigMatSEXP, SEXP pBigMat2SEXP) {

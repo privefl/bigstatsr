@@ -181,19 +181,19 @@ double COPY_gLoss(const NumericVector &r, int n) {
 
 // Coordinate descent for gaussian models
 template <typename T>
-ListOf<SEXP> COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
-                                     const NumericVector &y,
-                                     NumericVector &lambda,
-                                     int L,
-                                     int lam_scale,
-                                     double lambda_min,
-                                     double alpha,
-                                     bool user,
-                                     double eps,
-                                     int max_iter,
-                                     const NumericVector &m,
-                                     int dfmax,
-                                     bool verbose) {
+List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
+                             const NumericVector &y,
+                             NumericVector &lambda,
+                             int L,
+                             int lam_scale,
+                             double lambda_min,
+                             double alpha,
+                             bool user,
+                             double eps,
+                             int max_iter,
+                             const NumericVector &m,
+                             int dfmax,
+                             bool verbose) {
   int n = xAcc.nrow(); // number of observations used for fitting model
   int p = xAcc.ncol();
   // printf("p = %d\n", p); //DEBUG

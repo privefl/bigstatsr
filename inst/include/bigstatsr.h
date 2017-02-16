@@ -83,6 +83,7 @@ protected:
 
 /******************************************************************************/
 
+// For biglasso
 template<typename T>
 class SubMatrixCovarAccessor {
 public:
@@ -140,6 +141,7 @@ protected:
 
 /******************************************************************************/
 
+// For sparseSVM
 template<typename T>
 class SubInterceptMatrixCovarAccessor {
 public:
@@ -150,7 +152,7 @@ public:
                                   const IntegerVector &row_ind,
                                   const NumericMatrix &covar) {
     if (covar.nrow() != 0) {
-      assert(bm.nrow() == covar.nrow());
+      myassert(row_ind.length() == covar.nrow(), ERROR_DIM);
       _ncoladd = covar.ncol();
       _covar = covar;
     }  else {

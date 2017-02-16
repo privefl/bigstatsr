@@ -44,6 +44,7 @@ test_that("equality with prcomp", {
 test_that("equality with prcomp with half of the data", {
   ind <- sample(N, N/2)
   ind2 <- setdiff(1:N, ind)
+
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
 

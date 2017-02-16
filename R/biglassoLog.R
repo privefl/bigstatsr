@@ -21,7 +21,6 @@ big_spRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
 #'
 #' @inheritParams bigstatsr-package
 #' @param K
-#' @param ncores
 #' @param ...
 #'
 #' @return
