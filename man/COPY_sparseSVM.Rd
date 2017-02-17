@@ -84,3 +84,4 @@ objective function is defined to be \deqn{\frac{1}{n} \sum hingeLoss(y_i
 b))/n + \lambda*penalty(w).} where \deqn{hingeLoss(t) = max(0, 1-t)} and the
 intercept \code{b} is unpenalized.
 }
+\keyword{internal}

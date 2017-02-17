@@ -74,14 +74,14 @@ big_apply <- function(X, FUN, .combine, block.size = 1e3,
       lims <- range.parts[ic, ]
       ind.lims <- seq2(lims)
 
-      X.part <- attach.big.matrix(X.desc)
+      X2 <- attach.big.matrix(X.desc)
 
       # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
       if (detect_MRO()) {
         nthreads.save <- RevoUtilsMath::setMKLthreads(1)
         on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)
       }
-      big_applySeq(X.part, function(x, ind, ...) FUN(x, ind.lims[ind], ...),
+      big_applySeq(X2, function(x, ind, ...) FUN(x, ind.lims[ind], ...),
                    .combine, block.size, ind.arg, length(ind.lims), ...)
     }
   }

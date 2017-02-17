@@ -103,3 +103,4 @@ The objective function for linear regression (\code{family = "gaussian"}) is
 (\code{family = "binomial"}) it is \deqn{-\frac{1}{n} loglike +
 \textrm{penalty}.}
 }
+\keyword{internal}

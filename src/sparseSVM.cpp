@@ -30,22 +30,26 @@ void standardize(SubInterceptMatrixCovarAccessor<T> macc,
   int i, j;
   double tmp, xSum, xxSum, csum_pos, csum_neg, mj, sj;
 
-  for (j = 0; j < p; j++) {
-    if (j == 0) { // do not change the intercept and include it in the model
-      shift[0] = 0;
-      scale[0] = 1;
-    } else {
-      xSum = xxSum = 0;
+  // j == 0 -> intercept
+  shift[0] = 0;
+  scale[0] = 1;
+  csum_pos = Rcpp::sum(y > 0);
+  csum_neg = n - csum_pos;
+  sx_pos[0] = csum_pos;
+  sx_neg[0] = csum_neg;
+  syx[0] = csum_pos - csum_neg;
+  // j > 0
+  for (j = 1; j < p; j++) {
+    xSum = xxSum = 0;
 
-      for (i = 0; i < n; i++) {
-        tmp = macc(i, j);
-        xSum += tmp;
-        xxSum += tmp * tmp;
-      }
-
-      shift[j] = xSum / n;
-      scale[j] = sqrt((xxSum - xSum * xSum / n) / n); // not (n-1)?
+    for (i = 0; i < n; i++) {
+      tmp = macc(i, j);
+      xSum += tmp;
+      xxSum += tmp * tmp;
     }
+
+    shift[j] = xSum / n;
+    scale[j] = sqrt((xxSum - xSum * xSum / n) / n); // not (n-1)?
 
     if (scale[j] > 1e-6) nonconst[j] = true;
 
@@ -65,10 +69,6 @@ void standardize(SubInterceptMatrixCovarAccessor<T> macc,
     sx_neg[j] = csum_neg;
     syx[j] = csum_pos - csum_neg;
   }
-
-  // unscaled intercept?
-  shift[0] = 0;
-  scale[0] = 1;
 }
 
 
@@ -106,7 +106,7 @@ List COPY_sparse_svm(SubInterceptMatrixCovarAccessor<T> macc,
   int n = macc.nrow();
   int p = macc.ncol();
 
-  printf("n = %d ; p = %d\n", n, p);
+  // printf("n = %d ; p = %d\n", n, p); //DEBUG
 
   // returns
   int nlam = lambda.size();

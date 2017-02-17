@@ -86,6 +86,7 @@
 #'   `lambda`.}
 #'
 #' @import Matrix
+#' @keywords internal
 COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
                           family = c("gaussian", "binomial"),
                           alpha = 1,

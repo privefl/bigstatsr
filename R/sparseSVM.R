@@ -68,6 +68,7 @@
 #'   \item{penalty.factor}{Input parameter.}
 #'   \item{levels}{Levels of the output class labels.}
 #'
+#' @keywords internal
 COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
                            alpha = 1, gamma = 0.1, nlambda = 100,
                            lambda.min = `if`(nrow(X) > ncol(X), 0.01, 0.05),

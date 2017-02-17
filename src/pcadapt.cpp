@@ -12,11 +12,10 @@ NumericMatrix linRegPcadapt(MatrixAccessor<T> macc,
   int n = rowInd.size();
   int m = macc.ncol();
   int K = U.n_cols;
-  arma::vec betas(K), eps(n);
-  int i, j;
 
-  arma::vec y(n);
   arma::mat res(K, m);
+  arma::vec y(n), betas(K), eps(n);
+  int i, j;
 
   // indices begin at 1 in R and 0 in C++
   IntegerVector trains = rowInd - 1;
@@ -55,6 +54,7 @@ NumericMatrix linRegPcadapt(MatrixAccessor<T> macc,
 //'
 //' @export
 //' @keywords internal
+// [[Rcpp::export]]
 NumericMatrix linRegPcadapt(XPtr<BigMatrix> xpMat,
                             arma::mat &U,
                             const IntegerVector &rowInd,

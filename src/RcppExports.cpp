@@ -72,6 +72,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// linRegPcadapt
+NumericMatrix linRegPcadapt(XPtr<BigMatrix> xpMat, arma::mat& U, const IntegerVector& rowInd, const NumericVector& center, const NumericVector& scale);
+RcppExport SEXP bigstatsr_linRegPcadapt(SEXP xpMatSEXP, SEXP USEXP, SEXP rowIndSEXP, SEXP centerSEXP, SEXP scaleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type center(centerSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
+    rcpp_result_gen = Rcpp::wrap(linRegPcadapt(xpMat, U, rowInd, center, scale));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pMatVec4
 NumericVector pMatVec4(XPtr<BigMatrix> xpMat, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP bigstatsr_pMatVec4(SEXP xpMatSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {

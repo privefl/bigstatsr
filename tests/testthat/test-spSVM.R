@@ -7,7 +7,7 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
 
 
 # Simulating some data
-N <- 73
+N <- 511 # Some issues for small sample sizes
 M <- 230
 x <- matrix(rnorm(N*M, sd = 5), N)
 y <- sample(0:1, size = N, replace = TRUE)
@@ -68,7 +68,7 @@ test_that("equality with sparseSVM with only half the data", {
                                             penalty.factor = m)
 
       expect_equal(mod.bigstatsr$lambda, mod.sparseSVM$lambda)
-      # expect_equivalent(mod.bigstatsr$beta, mod.sparseSVM$weights[-1, ])
+      expect_equivalent(mod.bigstatsr$beta, mod.sparseSVM$weights[-1, ])
       expect_equal(mod.bigstatsr$intercept, mod.sparseSVM$weights[1, ])
     }
   }
