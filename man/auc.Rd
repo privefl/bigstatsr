@@ -2,13 +2,13 @@
 % Please edit documentation in R/AUC.R
 \name{auc}
 \alias{auc}
-\alias{big_aucSample}
-\alias{big_aucSampleConf}
+\alias{aucSample}
+\alias{aucSampleConf}
 \title{AUC}
 \usage{
-big_aucSample(pred, target, nsim = 1e+07, seed = NA, digits = 3)
+aucSample(pred, target, nsim = 1e+07, seed = NA, digits = 3)
 
-big_aucSampleConf(pred, target, nboot = 10000, nsim = 10000, seed = NA,
+aucSampleConf(pred, target, nboot = 10000, nsim = 10000, seed = NA,
   digits = 4)
 }
 \arguments{
@@ -45,13 +45,13 @@ one being greater than the other.
 \examples{
 set.seed(1)
 
-big_aucSample(c(0, 0), 0:1) # Equality of scores
-big_aucSample(c(0.2, 0.1, 1), c(-1, -1, 1)) # Perfect AUC
+aucSample(c(0, 0), 0:1) # Equality of scores
+aucSample(c(0.2, 0.1, 1), c(-1, -1, 1)) # Perfect AUC
 x <- rnorm(100)
 z <- rnorm(length(x), x, abs(x))
 y <- sign(z)
-print(big_aucSample(x, y))
-print(big_aucSampleConf(x, y, nboot = 1e4, nsim = 1e3))
+print(aucSample(x, y))
+print(aucSampleConf(x, y, nboot = 1e4, nsim = 1e3))
 }
 \references{
 Tom Fawcett. 2006. An introduction to ROC analysis.

@@ -30,22 +30,22 @@
 #' @examples
 #' set.seed(1)
 #'
-#' big_aucSample(c(0, 0), 0:1) # Equality of scores
-#' big_aucSample(c(0.2, 0.1, 1), c(-1, -1, 1)) # Perfect AUC
+#' aucSample(c(0, 0), 0:1) # Equality of scores
+#' aucSample(c(0.2, 0.1, 1), c(-1, -1, 1)) # Perfect AUC
 #' x <- rnorm(100)
 #' z <- rnorm(length(x), x, abs(x))
 #' y <- sign(z)
-#' print(big_aucSample(x, y))
-#' print(big_aucSampleConf(x, y, nboot = 1e4, nsim = 1e3))
+#' print(aucSample(x, y))
+#' print(aucSampleConf(x, y, nboot = 1e4, nsim = 1e3))
 #' @name auc
 NULL
 
 ################################################################################
 
-#' @name big_aucSample
+#' @name aucSample
 #' @rdname auc
 #' @export
-big_aucSample <- function(pred, target, nsim = 1e7, seed = NA, digits = 3) {
+aucSample <- function(pred, target, nsim = 1e7, seed = NA, digits = 3) {
   stopifnot(length(pred) == length(target))
 
   y <- transform_levels(target)
@@ -71,10 +71,10 @@ big_aucSample <- function(pred, target, nsim = 1e7, seed = NA, digits = 3) {
 
 ################################################################################
 
-#' @name big_aucSampleConf
+#' @name aucSampleConf
 #' @rdname auc
 #' @export
-big_aucSampleConf <- function(pred, target, nboot = 1e4, nsim = 1e4,
+aucSampleConf <- function(pred, target, nboot = 1e4, nsim = 1e4,
                               seed = NA, digits = 4) {
   stopifnot(length(pred) == length(target))
 
