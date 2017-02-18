@@ -33,7 +33,7 @@ A data.frame with 4 elements:
 }
 }
 \description{
-Slopes of \strong{univariate} linear regressions of each column
+Slopes of column-wise linear regressions of each column
 of a \code{big.matrix}, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }

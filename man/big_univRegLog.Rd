@@ -44,7 +44,7 @@ algorithm didn't converge, and \link[stats:glm]{glm} was used instead.
 }
 }
 \description{
-Slopes of \strong{univariate} logistic regressions of each column
+Slopes of column-wise logistic regressions of each column
 of a \code{big.matrix}, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }

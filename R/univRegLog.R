@@ -2,7 +2,7 @@
 
 #' Column-wise logistic regression
 #'
-#' Slopes of __univariate__ logistic regressions of each column
+#' Slopes of column-wise logistic regressions of each column
 #' of a `big.matrix`, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
 #'

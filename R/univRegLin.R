@@ -1,7 +1,7 @@
 ################################################################################
 
 #' @title Column-wise linear regression
-#' @description Slopes of __univariate__ linear regressions of each column
+#' @description Slopes of column-wise linear regressions of each column
 #' of a `big.matrix`, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
 #'
