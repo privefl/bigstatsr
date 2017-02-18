@@ -10,6 +10,9 @@ big_prodVec(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X)))
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
+\item{ind.row}{An optional vector of the row indices that are used.
+If not specified, all rows are used.}
+
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used.}
 }

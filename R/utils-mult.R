@@ -31,6 +31,8 @@ big_prodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
   pMatVec4(X@address, y, ind.row, ind.col)
 }
 
+################################################################################
+
 #' Cross-product between a "big.matrix" and a vector
 #'
 #' @inheritParams bigstatsr-package
@@ -62,6 +64,21 @@ big_cprodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
   cpMatVec4(X@address, y, ind.row, ind.col)
 }
 
+################################################################################
+
+big_prodMat <- function(X, A, ind.row = seq(nrow(X)),
+                        ind.col = seq(ncol(X)),
+                        block.size = 1000,
+                        ncores2 = 1) {
+  m <- length(ind.col)
+  stopifnot(m == nrow(A))
+
+  big_apply(X, FUN = function(x, ind, A, ind.row, ind.col) {
+    x[ind.row, ind.col[ind]] %*% A[ind, ]
+  }, .combine = '+', block.size = block.size, m = m,
+  ind.arg = TRUE, ncores = ncores2, A = A,
+  ind.row = ind.row, ind.col = ind.col)
+}
 ################################################################################
 
 mult <- function(A, B, use.Eigen) {

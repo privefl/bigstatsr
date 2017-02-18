@@ -4,8 +4,8 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X, FUN, .combine, block.size = 1000, ind.arg = FALSE,
-  ncores = 1, ...)
+big_apply(X, FUN, .combine, block.size = 1000, m = ncol(X),
+  ind.arg = FALSE, ncores = 1, ...)
 }
 \arguments{
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}. Must be the first
@@ -26,6 +26,9 @@ argument of \code{FUN}.}
 Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
+
+\item{m}{Effective size of \code{X}. For example, if using a parameter \code{ind.col} in
+\code{FUN}, then \code{m} should be equal to \code{length(ind.col)}. Default is \code{ncol(X)}.}
 
 \item{ind.arg}{Explicitly use column indices as argument? Default is \code{FALSE}.
 If \code{TRUE} indices must be the second argument of \code{FUN}.}

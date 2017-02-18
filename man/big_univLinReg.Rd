@@ -18,7 +18,7 @@ for the training part. If not specified, all rows are used.}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
-Default is \code{NULL} and corresponds to only adding an Intercept to each model.}
+Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
 \item{ncores2}{Number of cores used. Default doesn't use parallelism.
 For this function, use only half of the cores you have.}

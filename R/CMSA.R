@@ -49,6 +49,8 @@ get_beta <- function(betas, method) {
 #' @param feval Custimized evaluation function. You should always aim at
 #' maximizing this function. If `feval` is like a loss function (which you
 #' want to minimize), you should use its opposite instead.
+#' Its only two arguments should be `pred` and `target`
+#' (e.g. `function(pred, target) big_aucSample(pred, target, nsim = 1e5)`).
 #' @param method Method for combining vectors of coefficients. The default uses
 #' the [geometric median](https://en.wikipedia.org/wiki/Geometric_median).
 #'
@@ -61,6 +63,7 @@ get_beta <- function(betas, method) {
 big_CMSA <- function(FUN, X, y, ind.train = seq(nrow(X)),
                      covar = NULL, K = 10, ncores = 1,
                      method = c("geometric-median", "mean-wise", "median-wise"),
+                     block.size = 1000,
                      ...) {
   check_X(X, ncores = ncores)
 
@@ -82,27 +85,25 @@ big_CMSA <- function(FUN, X, y, ind.train = seq(nrow(X)),
     tmp.ind.test <- ind.train[in.val]
     tmp.ind.train <- ind.train[!in.val]
 
-    mod <- FUN(X2, y[tmp.ind.train], tmp.ind.train,
-               covar.[tmp.ind.train, ], ...)
+    mod <- FUN(X2, y[!in.val], ind.train[!in.val], covar[!in.val, ], ...)
 
-    # TODO: replace by predict
-    betas <- mod$beta
-    ind.col <- sort(unique(betas@i))
-    scores <- as.matrix(X2[tmp.ind.test, ind.col] %*% betas[ind.col, ])
-    rownames(scores) <- tmp.ind.test
+    scores <- predict.big_sp(mod, X, ind.row = ind.train[in.val],
+                             covar.row = covar[in.val, ],
+                             block.size = block.size,
+                             ncores2 = max(1, ncores / 2))
 
-    list(betas = betas, scores = sweep(scores, 2, mod$intercept, '+'))
+    list(betas = mod$beta, scores = scores)
   }
 
+  # select best coefficients for each fold
   betas <- sapply(cross.res, function(x) {
     tmp <- x$scores
     ind <- as.numeric(rownames(tmp))
-    AUCs <- apply(tmp, 2, snp_aucSample, target = pheno[ind], nsim = 1e5)
-    a <- AUCs[k <- which.max(AUCs)]
-    c(a, x$betas[, k])
+    seval <- apply(tmp, 2, feval, target = pheno[ind])
+    x$betas[, which.max(seval)]
   })
-  AUCs <- betas[1, ]
-  betas <- betas[-1, ]
+  # average these coefficients
+  get_beta(betas, method)
 }
 
 ################################################################################

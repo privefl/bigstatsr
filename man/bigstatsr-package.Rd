@@ -17,6 +17,9 @@ Must be 0s and 1s.}
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.}
 
+\item{ind.row}{An optional vector of the row indices that are used.
+If not specified, all rows are used.}
+
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used.}
 
@@ -36,7 +39,11 @@ such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
-Default is \code{NULL} and corresponds to only adding an Intercept to each model.}
+Default is \code{NULL} and corresponds to only adding an intercept to each model.}
+
+\item{covar.row}{Matrix of covariables to be added in each model to correct
+for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
+Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default tries to detect MRO. See details.}
