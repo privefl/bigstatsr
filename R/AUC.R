@@ -53,7 +53,12 @@ big_aucSample <- function(pred, target, nsim = 1e7, seed = NA, digits = 3) {
   pred.case    <- pred[y == 1]
   pred.control <- pred[y == 0]
 
-  if (!is.na(seed)) set.seed(seed)
+  if (!is.na(seed)) {
+    # http://stackoverflow.com/a/14324316/6103040
+    old <- .Random.seed
+    on.exit( { .Random.seed <<- old } )
+    set.seed(seed)
+  }
 
   pred.case.sample    <- sample(pred.case,    nsim, replace = TRUE)
   pred.control.sample <- sample(pred.control, nsim, replace = TRUE)
@@ -78,7 +83,12 @@ big_aucSampleConf <- function(pred, target, nboot = 1e4, nsim = 1e4,
   pred.case    <- pred[y == 1]
   pred.control <- pred[y == 0]
 
-  if (!is.na(seed)) set.seed(seed)
+  if (!is.na(seed)) {
+    # http://stackoverflow.com/a/14324316/6103040
+    old <- .Random.seed
+    on.exit( { .Random.seed <<- old } )
+    set.seed(seed)
+  }
 
   sampleRes <- function() {
     ind.case <- sample(length(pred.case), replace = TRUE)

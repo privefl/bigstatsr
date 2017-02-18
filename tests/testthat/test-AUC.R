@@ -2,19 +2,37 @@
 
 context("AUC")
 
-x <- rnorm(134)
-y <- sample(c(-1, 1), size = length(x), replace = TRUE)
+N <- 100
+x0 <- rnorm(N, mean = runif(1))
+x1 <- rnorm(N, mean = 2*runif(1))
+x <- c(x0, x1)
+y <- c(rep(-1, N), rep(1, N))
 
 ################################################################################
 
 auc <- big_aucSample(x, y, nsim = 1e6, seed = 1)
-auc2 <- snp_aucSample(x, y, nsim = 1e6, seed = 1)
-auc.conf <- snp_aucSampleConf(x, y, nboot = 1e4, nsim = 1e3, seed = 1)
-auc.conf2 <- snp_aucSampleConf(x, y, nboot = 1e4, nsim = 1e3, seed = 1)
+auc2 <- big_aucSample(x, y, nsim = 1e6, seed = 1)
+auc.conf <- big_aucSampleConf(x, y, nboot = 1e4, nsim = 1e3, seed = 1)
+auc.conf2 <- big_aucSampleConf(x, y, nboot = 1e4, nsim = 1e3, seed = 1)
 
 test_that("Same results of AUC with seed", {
   expect_equal(auc, auc2)
   expect_equal(auc.conf, auc.conf2)
+})
+
+################################################################################
+
+repl <- replicate(1e4, {
+  ind <- sample(2*N, replace = TRUE)
+  big_aucSample(x[ind], y[ind], nsim = 1e3)
+})
+
+repl.conf <- c("Mean" = mean(repl),
+               quantile(repl, probs = c(0.025, 0.975)),
+               "Sd" = sd(repl))
+
+test_that("Same results than simple bootstrap implementation", {
+  expect_equal(repl.conf, auc.conf, tolerance = 1e-2) # OK over 1000 runs
 })
 
 ################################################################################

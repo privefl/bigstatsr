@@ -72,3 +72,14 @@ seq2 <- function(lims) {
 }
 
 ################################################################################
+
+transform_levels <- function(y, new.levels = 0:1) {
+  y2 <- factor(y, ordered = TRUE)
+  lvl <- levels(y2)
+  if (length(lvl) != 2)
+    stop("You must have exactly two levels in y.")
+  levels(y2) <- new.levels
+  as.numeric(as.character(y2))
+}
+
+################################################################################
