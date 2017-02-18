@@ -3,6 +3,8 @@
 export(big_CMSA)
 export(big_SVD)
 export(big_apply)
+export(big_aucSample)
+export(big_aucSampleConf)
 export(big_colstats)
 export(big_cprodVec)
 export(big_crossprodSelf)
