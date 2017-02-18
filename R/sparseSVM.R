@@ -136,16 +136,16 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
   colnames(weights) <- round(lambda, 4)
 
   # Output
-  list(call = call,
-       intercept = weights[1, ],
-       beta = weights[-1, ],
-       iter = iter,
-       saturated = saturated,
-       lambda = lambda,
-       alpha = alpha,
-       gamma = gamma,
-       penalty.factor = penalty.factor[-1],
-       levels = levels)
+  structure(list(call = call,
+                 intercept = weights[1, ],
+                 beta = weights[-1, ],
+                 iter = iter,
+                 saturated = saturated,
+                 lambda = lambda,
+                 alpha = alpha,
+                 gamma = gamma,
+                 penalty.factor = penalty.factor[-1],
+                 levels = levels), class = "big_spSVM")
 }
 
 

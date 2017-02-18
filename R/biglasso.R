@@ -219,7 +219,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
   names(aa) <- colnames(beta) <- round(lambda, digits = 4)
 
   ## Output
-  list(
+  structure(list(
     intercept = aa,
     beta = beta,
     iter = iter,
@@ -236,7 +236,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
     y = yy,
     col.idx = col.idx,
     rejections = rejections
-  )
+  ), class = `if`(family == 'gaussian', "big_spLinReg", "big_spLogReg"))
 }
 
 ################################################################################
@@ -257,7 +257,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
 #'
 #' @inherit COPY_biglasso return
 #'
-#' @example examples/example-spRegLin.R
+#' @example examples/example-spLinReg.R
 #'
 #' @seealso [glmnet][glmnet::glmnet] [biglasso][biglasso::biglasso]
 #' @references
@@ -273,7 +273,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
 #' arXiv preprint arXiv:1701.05936. \url{https://arxiv.org/abs/1701.05936}.
 #'
 #' @export
-big_spRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
+big_spLinReg <- function(X, y.train, ind.train = seq(nrow(X)),
                          covar.train = NULL, ...) {
   COPY_biglasso(X, y.train, ind.train, covar.train, family = "gaussian", ...)
 }
@@ -285,12 +285,12 @@ big_spRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
 #' @inheritParams bigstatsr-package
 #' @inheritDotParams COPY_biglasso -X -y.train -ind.train -covar.train -family
 #'
-#' @inherit big_spRegLin return description details seealso references
+#' @inherit big_spLinReg return description details seealso references
 #'
-#' @example examples/example-spRegLog.R
+#' @example examples/example-spLogReg.R
 #'
 #' @export
-big_spRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
+big_spLogReg <- function(X, y01.train, ind.train = seq(nrow(X)),
                          covar.train = NULL, ...) {
   COPY_biglasso(X, y01.train, ind.train, covar.train, family = "binomial", ...)
 }
