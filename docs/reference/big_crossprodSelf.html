@@ -106,7 +106,9 @@ such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
 for the training part. If not specified, all rows are used.</dd>
       <dt>block.size</dt>
       <dd>Maximum number of columns read at once.
-Default is <code>1000</code>.</dd>
+Default is <code>1000</code>. This parameter controls the trade-off between
+memory usage and speed. Basically, the more you can load at once,
+the quicker will be the execution time, at the expense of memory usage.</dd>
       <dt>use.Eigen</dt>
       <dd>Should the <code>Eigen</code> library be used
 for matrix computations? Default tries to detect MRO. See details.</dd>

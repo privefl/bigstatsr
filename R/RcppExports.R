@@ -51,8 +51,8 @@ transpose3 <- function(pBigMat, pBigMat2) {
     invisible(.Call('bigstatsr_transpose3', PACKAGE = 'bigstatsr', pBigMat, pBigMat2))
 }
 
-univRegLin5 <- function(xpMat, covar_U, y, rowInd) {
-    .Call('bigstatsr_univRegLin5', PACKAGE = 'bigstatsr', xpMat, covar_U, y, rowInd)
+univLinReg5 <- function(xpMat, covar_U, y, rowInd) {
+    .Call('bigstatsr_univLinReg5', PACKAGE = 'bigstatsr', xpMat, covar_U, y, rowInd)
 }
 
 IRLS <- function(xpMat, covar, y, z0, w0, rowInd, tol, maxiter) {

@@ -12,11 +12,11 @@
 #' 2. the standard errors of each slope,
 #' 3. the t-scores associated with each slope,
 #' 4. the p-values associated with each t-score.
-#' @example examples/example-univRegLin2.R
+#' @example examples/example-univLinReg.R
 #' @seealso [lm][stats::lm]
 #' @export
 #' @import foreach
-big_univRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
+big_univLinReg <- function(X, y.train, ind.train = seq(nrow(X)),
                            covar.train = NULL, ncores2 = 1) {
   check_X(X, ncores2 = ncores2)
 
@@ -47,7 +47,7 @@ big_univRegLin <- function(X, y.train, ind.train = seq(nrow(X)),
     # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
     multi <- !is.seq && detect_MRO()
     if (multi) nthreads.save <- RevoUtilsMath::setMKLthreads(1)
-    res <- univRegLin5(X.part@address, SVD$u[, 1:K, drop = FALSE],
+    res <- univLinReg5(X.part@address, SVD$u[, 1:K, drop = FALSE],
                        y.train, ind.train)
     if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)
 

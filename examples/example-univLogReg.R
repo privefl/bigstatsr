@@ -6,13 +6,13 @@ X <- as.big.matrix(as.matrix(trees))
 y <- sample(0:1, size = N, replace = TRUE)
 
 # without covar
-print(big_univRegLog(X, y))
+print(big_univLogReg(X, y))
 for (i in 1:3) {
   print(summary(glm(y ~ trees[, i], family = "binomial"))$coefficients[2, ])
 }
 
 # With all data
-print(big_univRegLog(X, y, covar.train = covar))
+print(big_univLogReg(X, y, covar.train = covar))
 for (i in 1:3) {
   print(summary(glm(y ~ trees[, i] + covar,
                     family = "binomial"))$coefficients[2, ])
@@ -21,7 +21,7 @@ for (i in 1:3) {
 # With only half of the data
 ind.train <- sort(sample(N, N / 2))
 
-print(big_univRegLog(X, y[ind.train], covar.train = covar[ind.train, ],
+print(big_univLogReg(X, y[ind.train], covar.train = covar[ind.train, ],
                      ind.train = ind.train))
 for (i in 1:3) {
   print(summary(glm(y ~ trees[, i] + covar, subset = ind.train,

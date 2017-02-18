@@ -1,6 +1,6 @@
 ################################################################################
 
-context("UNIV_REG_LOG")
+context("UNIV_LOG_REG")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = FALSE)
@@ -36,7 +36,7 @@ test_that("equality with glm with all data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
     for (covar in lcovar) {
-      mod <- big_univRegLog(X, y, covar.train = covar)
+      mod <- big_univLogReg(X, y, covar.train = covar)
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
       expect_equal(mat, getGLM(X, y, covar), tolerance = TOL)
@@ -55,7 +55,7 @@ test_that("equality with glm with only half the data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
     for (covar in lcovar) {
-      mod <- big_univRegLog(X, y[ind], covar.train = covar[ind, ],
+      mod <- big_univLogReg(X, y[ind], covar.train = covar[ind, ],
                             ind.train = ind)
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
@@ -63,14 +63,6 @@ test_that("equality with glm with only half the data", {
     }
   }
 })
-
-################################################################################
-
-# test_that("Expect error from unknown type", {
-#   x <- as.raw(sample(0:255, 100))
-#   X <- as.big.matrix(matrix(x), type = "raw")
-#   expect_error(big_univRegLin(X, y), ERROR_TYPE, fixed = TRUE)
-# })
 
 ################################################################################
 

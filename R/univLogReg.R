@@ -22,11 +22,11 @@
 #' algorithm didn't converge, and [glm][stats::glm] was used instead.
 #' 4. the z-scores associated with each slope,
 #' 5. the p-values associated with each z-score.
-#' @example examples/example-univRegLog.R
+#' @example examples/example-univLogReg.R
 #' @seealso [glm][stats::glm]
 #' @export
 #' @import foreach
-big_univRegLog <- function(X, y01.train, ind.train = seq(nrow(X)),
+big_univLogReg <- function(X, y01.train, ind.train = seq(nrow(X)),
                            covar.train = NULL, ncores2 = 1,
                            tol = 1e-8, maxiter = 20) {
   check_X(X, ncores2 = ncores2)

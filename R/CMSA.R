@@ -42,7 +42,7 @@ get_beta <- function(betas, method) {
 #' @inheritParams bigstatsr-package
 #' @param FUN Function that computes a linear scores for different
 #' values along a regularization path. For now, this is relevant to
-#' [big_spRegLin], [big_spRegLog] and [big_spSVM].
+#' [big_spLinReg], [big_spLogReg] and [big_spSVM].
 #' The corresponding `<FUN>.predict` function should exists.
 #' @param K Number of folds that are used.
 #' @param ... Extra parameters to be passed to FUN.

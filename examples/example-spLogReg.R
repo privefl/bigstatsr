@@ -11,14 +11,14 @@ tryCatch({
   print(summary(test$scale))
 }, error = function(e) message("One error has been catched."))
 # OK here
-test2 <- big_spRegLog(X, y)
+test2 <- big_spLogReg(X, y)
 str(test2)
 
 # how to use covariables?
 X2 <- as.big.matrix(cbind(X[,], covar), type = "double")
 test <- biglasso::biglasso(X2, y, family = "binomial", lambda.min = 0.01,
                            alpha = 0.5, penalty = "enet")
-test2 <- big_spRegLog(X, y, covar.train = covar, alpha = 0.5)
+test2 <- big_spLogReg(X, y, covar.train = covar, alpha = 0.5)
 # verification
 print(all.equal(test2$lambda, test$lambda))
 print(all.equal(test2$beta@x, test$beta[-1, ]@x))

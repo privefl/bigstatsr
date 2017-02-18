@@ -15,7 +15,7 @@ inline arma::vec UUty(const arma::mat& U, const arma::vec& y) {
 /******************************************************************************/
 
 template <typename T>
-List univRegLin5(MatrixAccessor<T> macc,
+List univLinReg5(MatrixAccessor<T> macc,
                  const arma::mat& U,
                  const arma::vec& y,
                  const IntegerVector& rowInd) {
@@ -60,24 +60,24 @@ List univRegLin5(MatrixAccessor<T> macc,
 
 /******************************************************************************/
 
-// Dispatch function for univRegLin5
+// Dispatch function for univLinReg5
 // [[Rcpp::export]]
-List univRegLin5(XPtr<BigMatrix> xpMat,
+List univLinReg5(XPtr<BigMatrix> xpMat,
                  const arma::mat& covar_U,
                  const arma::vec& y,
                  const IntegerVector& rowInd) {
 
   switch(xpMat->matrix_type()) {
   case 1:
-    return univRegLin5(MatrixAccessor<char>(*xpMat),   covar_U, y, rowInd);
+    return univLinReg5(MatrixAccessor<char>(*xpMat),   covar_U, y, rowInd);
   case 2:
-    return univRegLin5(MatrixAccessor<short>(*xpMat),  covar_U, y, rowInd);
+    return univLinReg5(MatrixAccessor<short>(*xpMat),  covar_U, y, rowInd);
   case 4:
-    return univRegLin5(MatrixAccessor<int>(*xpMat),    covar_U, y, rowInd);
+    return univLinReg5(MatrixAccessor<int>(*xpMat),    covar_U, y, rowInd);
   case 6:
-    return univRegLin5(MatrixAccessor<float>(*xpMat),  covar_U, y, rowInd);
+    return univLinReg5(MatrixAccessor<float>(*xpMat),  covar_U, y, rowInd);
   case 8:
-    return univRegLin5(MatrixAccessor<double>(*xpMat), covar_U, y, rowInd);
+    return univLinReg5(MatrixAccessor<double>(*xpMat), covar_U, y, rowInd);
   default:
     throw Rcpp::exception(ERROR_TYPE);
   }

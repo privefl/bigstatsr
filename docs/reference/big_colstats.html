@@ -121,24 +121,24 @@ corresponding column statistics.</p>
 <span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
 
 <span class='co'># Check the results</span>
-<span class='fu'>print</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt;            sum       var
-#&gt; 1 -0.003010285 1.0949455
-#&gt; 2  7.649088519 1.1210312
-#&gt; 3  1.350159144 0.9183947
-#&gt; 4  4.335068110 0.8801451
-#&gt; 5  5.829699799 1.5262439
-#&gt; 6 -3.901864366 0.8653047
-#&gt; 7  2.526804528 1.1147029</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt;         sum       var
+#&gt; 1 -2.077357 1.2049367
+#&gt; 2  1.261039 0.8672623
+#&gt; 3 -9.458770 0.8151757
+#&gt; 4 12.130566 1.0229330
+#&gt; 5  2.710006 1.2582299
+#&gt; 6 -8.844654 0.9613270
+#&gt; 7  2.526466 0.6622671</div><div class='input'>
 <span class='co'># Only with the first 10 rows</span>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>10</span>
-<span class='fu'>print</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>, <span class='no'>ind</span>))</div><div class='output co'>#&gt;          sum       var
-#&gt; 1 -1.0311363 1.3675630
-#&gt; 2  2.3823528 1.6796840
-#&gt; 3  0.7462801 0.9265305
-#&gt; 4  2.9074259 0.7511339
-#&gt; 5  0.3666418 2.0708160
-#&gt; 6  0.2296901 0.6593327
-#&gt; 7 -2.7341583 1.5149690</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='fu'>colSums</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>var</span>, <span class='fu'>apply</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>var</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>, <span class='no'>ind</span>))</div><div class='output co'>#&gt;           sum       var
+#&gt; 1  2.69195033 1.0160267
+#&gt; 2  0.50652224 0.8966887
+#&gt; 3 -2.79466993 0.2228012
+#&gt; 4  0.02753026 0.5934445
+#&gt; 5  2.32821278 0.8872320
+#&gt; 6  0.79318123 1.1819570
+#&gt; 7  0.02530883 0.7607667</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='fu'>colSums</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>var</span>, <span class='fu'>apply</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>var</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># deduce mean and sd</span>
 <span class='co'># note that the are also implemented in big_scale()</span>
 <span class='no'>means</span> <span class='kw'>&lt;-</span> <span class='no'>test</span>$<span class='no'>sum</span> / <span class='fu'>length</span>(<span class='no'>ind</span>) <span class='co'># if using all rows,</span>
@@ -147,14 +147,14 @@ corresponding column statistics.</p>
 <span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>sds</span>, <span class='fu'>apply</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>sd</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># NA in, NA out</span>
 <span class='no'>X</span>[<span class='fl'>2</span>, <span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
-<span class='fu'>print</span>(<span class='fu'>big_colstats</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt;            sum       var
-#&gt; 1 -0.003010285 1.0949455
-#&gt; 2  7.649088519 1.1210312
-#&gt; 3  1.350159144 0.9183947
-#&gt; 4  4.335068110 0.8801451
-#&gt; 5           NA        NA
-#&gt; 6 -3.901864366 0.8653047
-#&gt; 7  2.526804528 1.1147029</div></pre>
+<span class='fu'>print</span>(<span class='fu'>big_colstats</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt;         sum       var
+#&gt; 1 -2.077357 1.2049367
+#&gt; 2  1.261039 0.8672623
+#&gt; 3 -9.458770 0.8151757
+#&gt; 4 12.130566 1.0229330
+#&gt; 5        NA        NA
+#&gt; 6 -8.844654 0.9613270
+#&gt; 7  2.526466 0.6622671</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

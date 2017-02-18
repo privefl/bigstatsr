@@ -9,7 +9,7 @@ y <- trees[, 1]
 lmVol0 <- summary(lm(Girth ~ Volume, data = trees))
 lmHei0 <- summary(lm(Girth ~ Height, data = trees))
 
-print(big_univRegLin(X, y))
+print(big_univLinReg(X, y))
 print(rbind(lmHei0$coefficients[2, ], lmVol0$coefficients[2, ]))
 
 # With all data
@@ -17,7 +17,7 @@ print(rbind(lmHei0$coefficients[2, ], lmVol0$coefficients[2, ]))
 lmVol <- summary(lm(Girth ~ Volume + covar, data = trees))
 lmHei <- summary(lm(Girth ~ Height + covar, data = trees))
 
-print(big_univRegLin(X, y, covar = covar))
+print(big_univLinReg(X, y, covar = covar))
 print(rbind(lmHei$coefficients[2, ], lmVol$coefficients[2, ]))
 
 # With only half of the data
@@ -27,7 +27,7 @@ ind.train <- sort(sample(N, N / 2))
 lmVol2 <- summary(lm(Girth ~ Volume + covar, data = trees, subset = ind.train))
 lmHei2 <- summary(lm(Girth ~ Height + covar, data = trees, subset = ind.train))
 
-print(big_univRegLin(X, y[ind.train],
+print(big_univLinReg(X, y[ind.train],
                      covar = covar[ind.train, ],
                      ind.train = ind.train))
 print(rbind(lmHei2$coefficients[2, ], lmVol2$coefficients[2, ]))

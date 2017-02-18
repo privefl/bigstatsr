@@ -26,8 +26,8 @@ reference:
   - title: "Linear and logistic models"
     desc: "Univariate and sparce multivariate linear and logistic models."
     contents:
-      - big_univRegLin
-      - big_univRegLog
+      - big_univLinReg
+      - big_univLogReg
   - title: "Utilities"
     contents:
       - big_colstats

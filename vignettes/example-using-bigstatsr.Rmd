@@ -77,7 +77,7 @@ We now want to analyze the disease status and firstly see which features (column
 
 ```{r}
 system.time(
-  gwas <- big_univRegLog(X, y - 1, covar.train = scores.PCA, ncores2 = 6)
+  gwas <- big_univLogReg(X, y - 1, covar.train = scores.PCA, ncores2 = 6)
 )
 ```
 
@@ -98,7 +98,7 @@ ind.train <- sort(sample(nrow(X), 10e3))
 scores.PCA <- matrix(0, nrow(X), 10)
 scores.PCA[] <- rnorm(length(scores.PCA))
 system.time(
-  log.mod <- big_spRegLog(X, y01.train = y[ind.train] - 1, ind.train = ind.train,
+  log.mod <- big_spLogReg(X, y01.train = y[ind.train] - 1, ind.train = ind.train,
                           covar.train = scores.PCA[ind.train, ], 
                           penalty = "enet", alpha = 0.5, 
                           dfmax = 20e3, ncores = 11)
