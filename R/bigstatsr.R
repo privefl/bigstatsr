@@ -13,6 +13,8 @@
 #'
 #' @param ind.train An optional vector of the row indices that are used,
 #' for the training part. If not specified, all rows are used.
+#' @param ind.row An optional vector of the row indices that are used.
+#' If not specified, all rows are used.
 #'
 #' @param ind.col An optional vector of the column indices that are used.
 #' If not specified, all columns are used.
@@ -32,7 +34,10 @@
 #'
 #' @param covar.train Matrix of covariables to be added in each model to correct
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.train`.
-#' Default is `NULL` and corresponds to only adding an Intercept to each model.
+#' Default is `NULL` and corresponds to only adding an intercept to each model.
+#' @param covar.row Matrix of covariables to be added in each model to correct
+#' for confounders (e.g. the scores of PCA), corresponding to `ind.row`.
+#' Default is `NULL` and corresponds to only adding an intercept to each model.
 #'
 #' @param use.Eigen Should the `Eigen` library be used
 #' for matrix computations? Default tries to detect MRO. See details.

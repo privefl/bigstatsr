@@ -236,7 +236,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
     y = yy,
     col.idx = col.idx,
     rejections = rejections
-  ), class = `if`(family == 'gaussian', "big_spLinReg", "big_spLogReg"))
+  ), class = "big_sp")
 }
 
 ################################################################################

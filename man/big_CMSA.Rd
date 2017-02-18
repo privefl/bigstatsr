@@ -6,7 +6,7 @@
 \usage{
 big_CMSA(FUN, X, y, ind.train = seq(nrow(X)), covar = NULL, K = 10,
   ncores = 1, method = c("geometric-median", "mean-wise", "median-wise"),
-  ...)
+  block.size = 1000, ...)
 }
 \arguments{
 \item{FUN}{Function that computes a linear scores for different
@@ -27,11 +27,18 @@ for the training part. If not specified, all rows are used.}
 \item{method}{Method for combining vectors of coefficients. The default uses
 the \href{https://en.wikipedia.org/wiki/Geometric_median}{geometric median}.}
 
+\item{block.size}{Maximum number of columns read at once.
+Default is \code{1000}. This parameter controls the trade-off between
+memory usage and speed. Basically, the more you can load at once,
+the quicker will be the execution time, at the expense of memory usage.}
+
 \item{...}{Extra parameters to be passed to FUN.}
 
 \item{feval}{Custimized evaluation function. You should always aim at
 maximizing this function. If \code{feval} is like a loss function (which you
-want to minimize), you should use its opposite instead.}
+want to minimize), you should use its opposite instead.
+Its only two arguments should be \code{pred} and \code{target}
+(e.g. \code{function(pred, target) aucSample(pred, target, nsim = 1e5)}).}
 }
 \value{
 A vector of resulting coefficients (intercept excluded), which

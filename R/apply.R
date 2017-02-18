@@ -48,22 +48,24 @@ big_applySeq <- function(X, FUN, .combine, block.size, ind.arg, m, ...) {
 #' If `TRUE` indices must be the second argument of `FUN`.
 #' @inheritParams foreach::foreach
 #' @param ... Extra arguments to be passed to `FUN`.
+#' @param m Effective size of `X`. For example, if using a parameter `ind.col` in
+#' `FUN`, then `m` should be equal to `length(ind.col)`. Default is `ncol(X)`.
 #'
 #' @return The result of [foreach].
 #' @export
 #' @import foreach
 #'
 #' @example examples/example-apply.R
-big_apply <- function(X, FUN, .combine, block.size = 1e3,
+big_apply <- function(X, FUN, .combine, block.size = 1e3, m = ncol(X),
                       ind.arg = FALSE, ncores = 1, ...) {
   if (ncores == 1) {
     check_X(X)
 
-    big_applySeq(X, FUN, .combine, block.size, ind.arg, ncol(X), ...)
+    big_applySeq(X, FUN, .combine, block.size, ind.arg, m, ...)
   } else {
     check_X(X, ncores = ncores)
 
-    range.parts <- CutBySize(ncol(X), nb = ncores)
+    range.parts <- CutBySize(m, nb = ncores)
 
     X.desc <- describe(X)
     cl <- parallel::makeCluster(ncores)

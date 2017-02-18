@@ -145,7 +145,7 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
                  alpha = alpha,
                  gamma = gamma,
                  penalty.factor = penalty.factor[-1],
-                 levels = levels), class = "big_spSVM")
+                 levels = levels), class = "big_sp")
 }
 
 
