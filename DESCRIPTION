@@ -37,8 +37,6 @@ LinkingTo:
 Suggests: 
     biglasso, 
     covr, 
-    glmnet,
-    LiblineaR,
     RevoUtilsMath,
     sparseSVM,
     testthat   
