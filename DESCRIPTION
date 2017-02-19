@@ -40,7 +40,7 @@ Suggests:
     RevoUtilsMath,
     sparseSVM,
     testthat   
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 Remotes: privefl/bigmemory
 URL: https://privefl.github.io/bigstatsr
