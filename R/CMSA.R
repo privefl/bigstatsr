@@ -70,7 +70,7 @@ big_CMSA <- function(FUN, X, y.train, ind.train = seq(nrow(X)),
 
   X.desc <- describe(X)
   n <- length(ind.train)
-  ind <- sample(rep_len(1:K, n))
+  indCV <- sample(rep_len(1:K, n))
 
   if (is.seq <- (ncores == 1)) {
     registerDoSEQ()
@@ -82,7 +82,7 @@ big_CMSA <- function(FUN, X, y.train, ind.train = seq(nrow(X)),
   cross.res <- foreach(ic = 1:K) %dopar% {
     X2 <- attach.big.matrix(X.desc)
 
-    in.val <- (ind == ic)
+    in.val <- (indCV == ic)
 
     mod <- FUN(X2, y.train[!in.val], ind.train[!in.val],
                covar.train[!in.val, ], ...)
