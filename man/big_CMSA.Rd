@@ -4,9 +4,9 @@
 \alias{big_CMSA}
 \title{Cross-Model Selection and Averaging.}
 \usage{
-big_CMSA(FUN, X, y, ind.train = seq(nrow(X)), covar = NULL, K = 10,
-  ncores = 1, method = c("geometric-median", "mean-wise", "median-wise"),
-  block.size = 1000, ...)
+big_CMSA(FUN, X, y.train, ind.train = seq(nrow(X)), covar.train = NULL,
+  K = 10, ncores = 1, method = c("geometric-median", "mean-wise",
+  "median-wise"), block.size = 1000, ...)
 }
 \arguments{
 \item{FUN}{Function that computes a linear scores for different
@@ -17,8 +17,14 @@ The corresponding \code{<FUN>.predict} function should exists.}
 \item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
 You shouldn't have missing values in your data.}
 
+\item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
+
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.}
+
+\item{covar.train}{Matrix of covariables to be added in each model to correct
+for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
+Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
 \item{K}{Number of folds that are used.}
 

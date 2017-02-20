@@ -60,12 +60,13 @@ get_beta <- function(betas, method) {
 #' @export
 #' @import foreach
 #'
-big_CMSA <- function(FUN, X, y, ind.train = seq(nrow(X)),
-                     covar = NULL, K = 10, ncores = 1,
+big_CMSA <- function(FUN, X, y.train, ind.train = seq(nrow(X)),
+                     covar.train = NULL, K = 10, ncores = 1,
                      method = c("geometric-median", "mean-wise", "median-wise"),
                      block.size = 1000,
                      ...) {
   check_X(X, ncores = ncores)
+  stopifnot(length(ind.train) == length(y.train))
 
   X.desc <- describe(X)
   n <- length(ind.train)
@@ -82,13 +83,12 @@ big_CMSA <- function(FUN, X, y, ind.train = seq(nrow(X)),
     X2 <- attach.big.matrix(X.desc)
 
     in.val <- (ind == ic)
-    tmp.ind.test <- ind.train[in.val]
-    tmp.ind.train <- ind.train[!in.val]
 
-    mod <- FUN(X2, y[!in.val], ind.train[!in.val], covar[!in.val, ], ...)
+    mod <- FUN(X2, y.train[!in.val], ind.train[!in.val],
+               covar.train[!in.val, ], ...)
 
     scores <- predict.big_sp(mod, X, ind.row = ind.train[in.val],
-                             covar.row = covar[in.val, ],
+                             covar.row = covar.train[in.val, ],
                              block.size = block.size,
                              ncores2 = max(1, ncores / 2))
 
@@ -99,7 +99,9 @@ big_CMSA <- function(FUN, X, y, ind.train = seq(nrow(X)),
   betas <- sapply(cross.res, function(x) {
     tmp <- x$scores
     ind <- as.numeric(rownames(tmp))
-    seval <- apply(tmp, 2, feval, target = pheno[ind])
+    stopifnot(all(ind %in% ind.train))
+    ind2 <- match(ind, ind.train)
+    seval <- apply(tmp, 2, feval, target = y.train[ind2])
     x$betas[, which.max(seval)]
   })
   # average these coefficients
