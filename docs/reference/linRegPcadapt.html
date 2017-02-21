@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Checking of objects � check_X • bigstatsr</title>
+<title>T-scores used in pcadapt — linRegPcadapt • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -36,7 +36,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -49,14 +49,24 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">Home</a>
+</li>
+<li>
+  <a href="../reference/index.html">Manual</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="https://privefl.github.io/about.html">
+    <span class="fa fa-user"></span>
+     
+    About
+  </a>
+</li>
+<li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -71,52 +81,37 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Checking of objects</h1>
+    <h1>T-scores used in pcadapt</h1>
     </div>
 
     
-    <p>Check if X is a <code>big.matrix</code> and
-possibly if y is compatible with classification or regression.</p>
+    <p>Compute matrix of t-scores (SNPs x scores) used in pcadapt.</p>
     
 
-    <pre><span class='fu'>check_X</span>(<span class='no'>X</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y.type</span> <span class='kw'>=</span> <span class='st'>"null"</span>)</pre>
+    <pre><span class='fu'>linRegPcadapt</span>(<span class='no'>xpMat</span>, <span class='no'>U</span>, <span class='no'>rowInd</span>, <span class='no'>center</span>, <span class='no'>scale</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>X</dt>
-      <dd>A matrix-like object you want to check as being a
-<a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix-class'>big.matrix</a>.</dd>
-      <dt>y</dt>
-      <dd>A vector of responses you want to check compatibility with
-what you are doing (either classification or regression).</dd>
-      <dt>y.type</dt>
-      <dd>A string, either
-<ul>
-<li> &quot;reg&quot; if you want to check the compatibility with regression,
-</li>
-<li> &quot;class&quot; if you want to check the compatibility with classification.
-</li>
-</ul>
-</dd>
+      <dt>xpMat</dt>
+      <dd>Slot <code>address</code> of a <code>big.matrix</code> object.</dd>
+      <dt>U</dt>
+      <dd>Matrix of left singular vectors (from partial SVD).</dd>
+      <dt>rowInd</dt>
+      <dd>Vector of row indices of the <code>big.matrix</code> that are used.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Throwing an error if something is wrong.</p>
+    <p>A matrix of t-scores where rows correspond to each SNP and
+columns correspond to each left singular vector.</p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Keurcien Luu and Michael Blum (2017).
+pcadapt: Fast Principal Component Analysis for Outlier Detection.
+R package version 3.0.4. https://CRAN.R-project.org/package=pcadapt.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># </span>
-<span class='co'>#   X &lt;- big.matrix(4, 4)</span>
-<span class='co'>#   check_X(X) # OK</span>
-<span class='co'>#   mat &lt;- as.matrix(X)</span>
-<span class='co'>#   check_X(mat) # NOK</span>
-<span class='co'># </span>
-<span class='co'>#   y &lt;- rnorm(4)</span>
-<span class='co'>#   check_X(X, y, y.type = "reg") # OK</span>
-<span class='co'>#   check_X(X, y, y.type = "class") # NOK</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -124,9 +119,9 @@ what you are doing (either classification or regression).</dd>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+
+      <li><a href="#references">References</a></li>
+          </ul>
 
   </div>
 </div>

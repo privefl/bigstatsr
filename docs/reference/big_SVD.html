@@ -108,7 +108,9 @@ such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
 for the training part. If not specified, all rows are used.</dd>
       <dt>block.size</dt>
       <dd>Maximum number of columns read at once.
-Default is <code>1000</code>.</dd>
+Default is <code>1000</code>. This parameter controls the trade-off between
+memory usage and speed. Basically, the more you can load at once,
+the quicker will be the execution time, at the expense of memory usage.</dd>
       <dt>k</dt>
       <dd>Number of PCs to compute. Default is all.</dd>
       <dt>thr.eigval</dt>
@@ -179,11 +181,11 @@ if you do!).</li>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_SVD</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>,
                  <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(),
                  <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'><span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 5
-#&gt;  $ d    : num [1:35] 11.38 10.9 10.44 9.62 9.45 ...
-#&gt;  $ u    : num [1:36, 1:35] 0.1263 -0.0902 0.07 0.1146 -0.0492 ...
-#&gt;  $ v    : num [1:43, 1:35] -0.010388 0.000194 -0.216085 0.071675 -0.00719 ...
-#&gt;  $ means: num [1:43] -0.2018 -0.0504 -0.1283 0.0557 -0.1235 ...
-#&gt;  $ sds  : num [1:43] 1.075 1.014 0.959 0.957 0.952 ...</div><div class='input'>
+#&gt;  $ d    : num [1:35] 12.3 10.6 10.46 10.3 9.81 ...
+#&gt;  $ u    : num [1:36, 1:35] -0.139 0.0147 -0.1112 0.0292 -0.0882 ...
+#&gt;  $ v    : num [1:43, 1:35] -0.1182 0.3047 0.2507 -0.0684 -0.1023 ...
+#&gt;  $ means: num [1:43] -0.14924 -0.00471 -0.0604 -0.23675 -0.03925 ...
+#&gt;  $ sds  : num [1:43] 1.092 1.163 0.934 1.226 0.844 ...</div><div class='input'>
 <span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'>prcomp</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># same scaling</span>
@@ -193,29 +195,31 @@ if you do!).</li>
 <span class='co'># due to centering of columns</span>
 <span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='no'>test</span>$<span class='no'>u</span> <span class='kw'>%*%</span> <span class='fu'>diag</span>(<span class='no'>test</span>$<span class='no'>d</span>)
 <span class='no'>scores2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_predScoresPCA.html'>big_predScoresPCA</a></span>(<span class='no'>test</span>) <span class='co'># use this function to predict scores</span>
-<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>scores</span>, <span class='no'>scores2</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>scores</span>))</div><div class='output co'>#&gt; [1] 36 35</div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>))</div><div class='output co'>#&gt; [1] 36 36</div><div class='input'><span class='fu'>print</span>(<span class='fu'>tail</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>))</div><div class='output co'>#&gt; [1] 3.477472e-01 3.208923e-01 3.001966e-01 2.604825e-01 1.903947e-01
-#&gt; [6] 8.542969e-16</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-18.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-20.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>scores</span>, <span class='no'>scores2</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>scores</span>))</div><div class='output co'>#&gt; [1] 36 35</div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>))</div><div class='output co'>#&gt; [1] 36 36</div><div class='input'><span class='fu'>print</span>(<span class='fu'>tail</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>))</div><div class='output co'>#&gt; [1] 3.258815e-01 2.891123e-01 2.594483e-01 2.340041e-01 1.652486e-01
+#&gt; [6] 9.234035e-16</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-18.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-20.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># projecting on new data</span>
 <span class='no'>X.test</span> <span class='kw'>&lt;-</span> <span class='fu'>sweep</span>(<span class='fu'>sweep</span>(<span class='no'>X</span>[-<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>means</span>, <span class='st'>'-'</span>), <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>sds</span>, <span class='st'>'/'</span>)
 <span class='no'>scores.test</span> <span class='kw'>&lt;-</span> <span class='no'>X.test</span> <span class='kw'>%*%</span> <span class='no'>test</span>$<span class='no'>v</span>
 <span class='no'>ind2</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='no'>ind</span>)
 <span class='no'>scores.test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_predScoresPCA.html'>big_predScoresPCA</a></span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.test</span> <span class='kw'>=</span> <span class='no'>ind2</span>) <span class='co'># use this</span>
 <span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>scores.test</span>, <span class='no'>scores.test2</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>scores.test3</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>pca</span>, <span class='no'>X</span>[-<span class='no'>ind</span>, ])
-<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores.test2</span>)])</div><img src='big_SVD-24.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores.test2</span>)])</div><img src='big_SVD-24.png' alt='' width='540' height='400' /><div class='input'><span class='co'>################################################################################</span>
+
 <span class='co'>## new scaling function</span>
 <span class='co'># "y-aware" scaling center columns, then multiply them by betas of</span>
 <span class='co'># univariate linear regression. See https://goo.gl/8G8WMa for details.</span>
 <span class='no'>big_scaleYaware</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>y</span>) {
   <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>))) {
     <span class='no'>means</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>, <span class='no'>ind.train</span>)$<span class='no'>sum</span> / <span class='fu'>length</span>(<span class='no'>ind.train</span>)
-    <span class='no'>betas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_univRegLin.html'>big_univRegLin</a></span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='no'>ind.train</span>)$<span class='no'>estim</span>
+    <span class='no'>betas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_univLinReg.html'>big_univLinReg</a></span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='no'>ind.train</span>)$<span class='no'>estim</span>
     <span class='fu'>list</span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='no'>means</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>1</span> / <span class='no'>betas</span>)
   }
 }
 <span class='co'># Simulating some data</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='no'>X</span>[, <span class='fl'>9</span>], <span class='fu'>abs</span>(<span class='no'>X</span>[, <span class='fl'>9</span>]))
 
-<span class='no'>X.svd</span> <span class='kw'>&lt;-</span> <span class='fu'>big_SVD</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'>big_scaleYaware</span>(<span class='no'>y</span>))</div><div class='output co'>#&gt; (1)</div><div class='input'><span class='fu'>plot</span>(<span class='no'>X.svd</span>$<span class='no'>v</span>[, <span class='fl'>1</span>], <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"h"</span>)</div><img src='big_SVD-28.png' alt='' width='540' height='400' /></pre>
+<span class='no'>X.svd</span> <span class='kw'>&lt;-</span> <span class='fu'>big_SVD</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'>big_scaleYaware</span>(<span class='no'>y</span>))</div><div class='output co'>#&gt; (1)</div><div class='input'><span class='fu'>plot</span>(<span class='no'>X.svd</span>$<span class='no'>v</span>[, <span class='fl'>1</span>], <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"h"</span>)</div><img src='big_SVD-28.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'>################################################################################</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

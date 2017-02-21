@@ -5,7 +5,7 @@ covar <- matrix(rnorm(N * 3), N)
 X <- as.big.matrix(as.matrix(trees[, -1]))
 y <- trees[, 1]
 
-# without covar
+# Without covar
 lmVol0 <- summary(lm(Girth ~ Volume, data = trees))
 lmHei0 <- summary(lm(Girth ~ Height, data = trees))
 

@@ -1,0 +1,107 @@
+---
+title: "Example on how to use \"bigstatsr\""
+# author: "Florian Privé"
+date: "February 13, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center',
+                      out.width = 600, out.height = 480)
+
+require(bigsnpr)
+celiac <- snp_attach("../../thesis-celiac/backingfiles/celiac_sub2_impute1.desc")
+y <- celiac$fam$affection
+pop <- celiac$fam$pop
+```
+
+## Introduction on the data
+
+We attach a `big.matrix` from a backing file (stored on disk). It is a matrix of `char` (one byte signed integer) representing genotypes of a case-control study on [celiac disease](https://en.wikipedia.org/wiki/Coeliac_disease). 
+```{r}
+require(bigstatsr)
+X <- attach.big.matrix("../../thesis-celiac/backingfiles/celiac_sub2_impute1.desc")
+```
+ 
+```{r}
+dim(X)
+typeof(X)
+```
+
+We also have, for each individual of the study, their disease status (1 for a control; 2 for a case) and their country(4 for the UK; 1 for the Netherlands; 2 for Italy; 5 for Finland).
+
+```{r}
+table(y)
+rle(pop)
+```
+
+## Get more information on the data
+
+We would like to know more about our data. For example, let's get the number of missing values for every column.
+
+```{r}
+parallel::detectCores() # number of available cores
+
+system.time(
+  nbNA <- big_apply(X, FUN = function(x) colSums(is.na(x)), 
+                    .combine = 'c', block.size = 1000, ncores = 11)
+)
+
+all(nbNA == 0)
+```
+
+Here, we used the `big_apply` function which splits the data into column chunks of the `big.matrix`, load them in memory, apply a standard __R__ function and then combine the results. The `block.size` parameter controls the trade-off between speed and memory usage. Here we can see there is no missing value in our dataset (because it has already been imputed).
+
+## Some statistical analysis
+
+Let's apply Partial Singular Value Decomposition (PSVD) on our data to learn more about it.
+
+```{r}
+system.time(
+  X.svd <- big_randomSVD(X, big_scale(center = TRUE, scale = TRUE),
+                     k = 10, ncores = 11)
+)
+```
+
+To get the scores of Principal Component Analysis (PCA), use 
+```{r}
+scores.PCA <- big_predScoresPCA(X.svd)
+dim(scores.PCA)
+plot(scores.PCA, col = pop, pch = 19, cex = 0.5)
+```
+We can see that PCA captures the "population structure" of the data. 
+
+## Importance of each feature
+
+We now want to analyze the disease status and firstly see which features (columns) are associated with the disease. 
+
+```{r}
+system.time(
+  gwas <- big_univLogReg(X, y - 1, covar.train = scores.PCA, ncores2 = 6)
+)
+```
+
+The previous function trains `r ncol(X)` models, i.e. one for each column of the `X`. Each model is a logistic regression including one column of `X`, an intercept and the matrix of covariables (here, the PCs to correct for possible confounders, such as population structure). 
+
+```{r}
+plot(-log10(gwas$p.value), pch = 19, cex = 0.5)
+```
+
+We can see that around the 190,000-th feature, there are some features that are highly correlated with the disease.
+
+## A more sophisticated model
+
+Let's now train a model on all the matrix at once, a logistic regression with elastic-net regularization.
+
+```{r}
+ind.train <- sort(sample(nrow(X), 10e3))
+scores.PCA <- matrix(0, nrow(X), 10)
+scores.PCA[] <- rnorm(length(scores.PCA))
+system.time(
+  log.mod <- big_spLogReg(X, y01.train = y[ind.train] - 1, ind.train = ind.train,
+                          covar.train = scores.PCA[ind.train, ], 
+                          penalty = "enet", alpha = 0.5, 
+                          dfmax = 20e3, ncores = 11)
+)
+```
+#### TODO: Use a predict function for models

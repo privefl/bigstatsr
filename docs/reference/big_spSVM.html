@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>bigstatsr: Statistical Tools for Bigmemory Matrices — bigstatsr-package • bigstatsr</title>
+<title>Sparse SVM — big_spSVM • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -81,118 +81,103 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>bigstatsr: Statistical Tools for Bigmemory Matrices</h1>
+    <h1>Sparse SVM</h1>
     </div>
 
     
-    <p>Easy-to-use, efficient, flexible and scalable
-statistical tools. Use bigmemory matrices.</p>
+    <p>Fit solution paths for sparse linear SVM regularized by lasso or elastic-net
+over a grid of values for the regularization parameter lambda.</p>
     
 
+    <pre><span class='fu'>big_spSVM</span>(<span class='no'>X</span>, <span class='no'>y01.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>X</dt>
       <dd>A <a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix-class'>big.matrix</a>.
 You shouldn&#39;t have missing values in your data.</dd>
-      <dt>y.train</dt>
-      <dd>Vector of responses, corresponding to <code>ind.train</code>.</dd>
       <dt>y01.train</dt>
       <dd>Vector of responses, corresponding to <code>ind.train</code>.
 Must be 0s and 1s.</dd>
       <dt>ind.train</dt>
       <dd>An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.</dd>
-      <dt>ind.row</dt>
-      <dd>An optional vector of the row indices that are used.
-If not specified, all rows are used.</dd>
-      <dt>ind.col</dt>
-      <dd>An optional vector of the column indices that are used.
-If not specified, all columns are used.</dd>
-      <dt>block.size</dt>
-      <dd>Maximum number of columns read at once.
-Default is <code>1000</code>. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.</dd>
-      <dt>ncores</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.</dd>
-      <dt>ncores2</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.
-For this function, use only half of the cores you have.</dd>
-      <dt>fun.scaling</dt>
-      <dd>A function that returns a named list of
-<strong><code>mean</code></strong> and <strong><code>sd</code></strong> for every column, to scale each of their elements
-such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
       <dt>covar.train</dt>
       <dd>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
 Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>covar.row</dt>
-      <dd>Matrix of covariables to be added in each model to correct
-for confounders (e.g. the scores of PCA), corresponding to <code>ind.row</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>use.Eigen</dt>
-      <dd>Should the <code>Eigen</code> library be used
-for matrix computations? Default tries to detect MRO. See details.</dd>
+      <dt>...</dt>
+      <dd>Arguments passed on to <code>COPY_sparseSVM</code>
+<dl class='dl-horizontal'>
+  <dt>alpha</dt><dd>The elastic-net mixing parameter that controls the relative
+contribution from the lasso and the ridge penalty. It must be a number
+between <code>0</code> and <code>1</code>. <code>alpha=1</code> is the lasso penalty and <code>alpha=0</code>
+the ridge penalty.</dd>
+  <dt>gamma</dt><dd>The tuning parameter for huberization smoothing of hinge loss.
+Default is <code>0.1</code>.</dd>
+  <dt>nlambda</dt><dd>The number of lambda values. Default is <code>100</code>.</dd>
+  <dt>lambda.min</dt><dd>The smallest value for lambda, as a fraction of
+<code>lambda.max</code>, the data derived entry value. Default is <code>0.01</code> if the number
+of observations is larger than the number of variables and <code>0.05</code> otherwise.</dd>
+  <dt>lambda</dt><dd>A user-specified sequence of lambda values. Typical usage is
+to leave blank and have the program automatically compute a <code>lambda</code>
+sequence based on <code>nlambda</code> and <code>lambda.min</code>. Specifying
+<code>lambda</code> overrides this. This argument should be used with care and
+supplied with a decreasing sequence instead of a single value.</dd>
+  <dt>screen</dt><dd>Screening rule to be applied at each <code>lambda</code> that
+discards variables for speed. Either &quot;ASR&quot; (default), &quot;SR&quot; or &quot;none&quot;. &quot;SR&quot;
+stands for the strong rule, and &quot;ASR&quot; for the adaptive strong rule. Using
+&quot;ASR&quot; typically requires fewer iterations to converge than &quot;SR&quot;, but the
+computing time are generally close. Note that the option &quot;none&quot; is used
+mainly for debugging, which may lead to much longer computing time.</dd>
+  <dt>max.iter</dt><dd>Maximum number of iterations. Default is 1000.</dd>
+  <dt>eps</dt><dd>Convergence threshold. The algorithms continue until the maximum
+change in the objective after any coefficient update is less than <code>eps</code>
+times the null deviance.  Default is <code>1E-7</code>.</dd>
+  <dt>dfmax</dt><dd>Upper bound for the number of nonzero coefficients. The
+algorithm exits and returns a partial path if <code>dfmax</code> is reached.
+Useful for very large dimensions.</dd>
+  <dt>penalty.factor</dt><dd>A numeric vector of length equal to the number of
+variables. Each component multiplies <code>lambda</code> to allow differential
+penalization. Can be 0 for some variables, in which case the variable is
+always in the model without penalization. Default is <code>1</code> for all variables.</dd>
+  <dt>message</dt><dd>If set to <code>TRUE</code>, <code>sparseSVM</code> will inform the user of its
+progress. Default is <code>FALSE</code>.</dd>
+</dl>
+</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A named list containing:</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For matrix computations, using <code>Eigen</code> library is faster.
-However, if you link <code>R</code> with an optimized math library,
-using <code>R</code>&#39;s base operations is even much faster.</p>
-    <p>For example, you can easily link <code>R</code> with the
-<a href = 'Intel®
-Math Kernel Library'>https://software.intel.com/en-us/intel-mkl</a> (Intel® MKL) through
-<a href = 'Microsoft
-R Open'>https://mran.revolutionanalytics.com/open/</a> (MRO). It really improves performance
-of <code>R</code> and <code>RcppArmadillo</code> matrix computations,
-yet not the ones of <code>RcppEigen</code> (at least not directly).</p>
-    <p>So, <ol>
-<li> <code>Eigen</code> should be prefered if you don&#39;t change anything,
-</li>
-<li> base <code>R</code> should be prefered if you use MRO,
-</li>
-<li> <code>Eigen</code> may be prefered if you manage to link <code>RcppEigen</code>
-with the MKL (please <a href = 'contact me'>mailto:florian.prive.21@gmail.com</a>
-if you do!).</li>
-</ol></p>
+    <p><strong>This is a modified version of one function of
+<a href = 'package sparseSVM'>https://github.com/CY-dev/sparseSVM</a></strong>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Useful links:
-<ul>
-<li> <a href = 'https://privefl.github.io/bigstatsr'>https://privefl.github.io/bigstatsr</a>
-  </li>
-<li> Report bugs at <a href = 'https://github.com/privefl/bigstatsr/issues'>https://github.com/privefl/bigstatsr/issues</a>
-</li>
-</ul></p>
+    <p><a href='http://www.rdocumentation.org/packages/LiblineaR/topics/LiblineaR'>LiblineaR</a> <a href='http://www.rdocumentation.org/packages/sparseSVM/topics/sparseSVM'>sparseSVM</a></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    
-<strong>Maintainer</strong>: Florian Privé <a href='mailto:florian.prive.21@gmail.com'>florian.prive.21@gmail.com</a>
-
-Other contributors:
-<ul>
-<li> Michael Blum <a href='mailto:michael.blum@univ-grenoble-alpes.fr'>michael.blum@univ-grenoble-alpes.fr</a> [thesis advisor]
-  </li>
-<li> Hugues Aschard <a href='mailto:hugues.aschard@pasteur.fr'>hugues.aschard@pasteur.fr</a> [thesis advisor]
-</li>
-</ul>
-
-
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

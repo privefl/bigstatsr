@@ -108,9 +108,9 @@ vector (see the <code>method</code> parameter).
 </ol></p>
     
 
-    <pre><span class='fu'>big_CMSA</span>(<span class='no'>FUN</span>, <span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='kw'>covar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"geometric-median"</span>, <span class='st'>"mean-wise"</span>, <span class='st'>"median-wise"</span>),
-  <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>big_CMSA</span>(<span class='no'>FUN</span>, <span class='no'>X</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"geometric-median"</span>, <span class='st'>"mean-wise"</span>,
+  <span class='st'>"median-wise"</span>), <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -122,9 +122,15 @@ The corresponding <code>&lt;FUN&gt;.predict</code> function should exists.</dd>
       <dt>X</dt>
       <dd>A <a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix-class'>big.matrix</a>.
 You shouldn&#39;t have missing values in your data.</dd>
+      <dt>y.train</dt>
+      <dd>Vector of responses, corresponding to <code>ind.train</code>.</dd>
       <dt>ind.train</dt>
       <dd>An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.</dd>
+      <dt>covar.train</dt>
+      <dd>Matrix of covariables to be added in each model to correct
+for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
+Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
       <dt>K</dt>
       <dd>Number of folds that are used.</dd>
       <dt>ncores</dt>
@@ -132,12 +138,19 @@ for the training part. If not specified, all rows are used.</dd>
       <dt>method</dt>
       <dd>Method for combining vectors of coefficients. The default uses
 the <a href = 'geometric median'>https://en.wikipedia.org/wiki/Geometric_median</a>.</dd>
+      <dt>block.size</dt>
+      <dd>Maximum number of columns read at once.
+Default is <code>1000</code>. This parameter controls the trade-off between
+memory usage and speed. Basically, the more you can load at once,
+the quicker will be the execution time, at the expense of memory usage.</dd>
       <dt>...</dt>
       <dd>Extra parameters to be passed to FUN.</dd>
       <dt>feval</dt>
       <dd>Custimized evaluation function. You should always aim at
 maximizing this function. If <code>feval</code> is like a loss function (which you
-want to minimize), you should use its opposite instead.</dd>
+want to minimize), you should use its opposite instead.
+Its only two arguments should be <code>pred</code> and <code>target</code>
+(e.g. <code>function(pred, target) aucSample(pred, target, nsim = 1e5)</code>).</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>

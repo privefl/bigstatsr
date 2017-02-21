@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Univariate linear regression — big_univRegLin • bigstatsr</title>
+<title>Column-wise linear regression — big_univLinReg • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -81,16 +81,17 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Univariate linear regression</h1>
+    <h1>Column-wise linear regression</h1>
     </div>
 
     
-    <p>Slopes of <strong>univariate</strong> linear regressions of each column
+    <p>Slopes of column-wise linear regressions of each column
 of a <code>big.matrix</code>, with some other associated statistics.
 Covariates can be added to correct for confounders.</p>
     
 
-    <pre><span class='fu'>big_univRegLin</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre><span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ncores2</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -105,7 +106,10 @@ for the training part. If not specified, all rows are used.</dd>
       <dt>covar.train</dt>
       <dd>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an Intercept to each model.</dd>
+Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
+      <dt>ncores2</dt>
+      <dd>Number of cores used. Default doesn&#39;t use parallelism.
+For this function, use only half of the cores you have.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -135,11 +139,11 @@ Default is <code>NULL</code> and corresponds to only adding an Intercept to each
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>as.matrix</span>(<span class='no'>trees</span>[, -<span class='fl'>1</span>]))
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>trees</span>[, <span class='fl'>1</span>]
 
-<span class='co'># without covar</span>
+<span class='co'># Without covar</span>
 <span class='no'>lmVol0</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Volume</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>))
 <span class='no'>lmHei0</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Height</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>))
 
-<span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>X</span>, <span class='no'>y</span>))</div><div class='output co'>#&gt;       estim     std.err   t.score      p.value
+<span class='fu'>print</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>))</div><div class='output co'>#&gt;       estim     std.err   t.score      p.value
 #&gt; 1 0.2557471 0.078158298  3.272169 2.757815e-03
 #&gt; 2 0.1846321 0.009015995 20.478288 8.644334e-19</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei0</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol0</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate  Std. Error   t value     Pr(&gt;|t|)
 #&gt; [1,] 0.2557471 0.078158298  3.272169 2.757815e-03
@@ -149,11 +153,11 @@ Default is <code>NULL</code> and corresponds to only adding an Intercept to each
 <span class='no'>lmVol</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Volume</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>))
 <span class='no'>lmHei</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Height</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>))
 
-<span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt;      estim     std.err   t.score      p.value
-#&gt; 1 0.302445 0.094607626  3.196835 3.631120e-03
-#&gt; 2 0.187917 0.009135129 20.570805 1.305399e-17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;      Estimate  Std. Error   t value     Pr(&gt;|t|)
-#&gt; [1,] 0.302445 0.094607626  3.196835 3.631120e-03
-#&gt; [2,] 0.187917 0.009135129 20.570805 1.305399e-17</div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt;       estim    std.err   t.score      p.value
+#&gt; 1 0.2442342 0.07639586  3.196956 3.630031e-03
+#&gt; 2 0.1830719 0.01007099 18.178148 2.656209e-16</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate Std. Error   t value     Pr(&gt;|t|)
+#&gt; [1,] 0.2442342 0.07639586  3.196956 3.630031e-03
+#&gt; [2,] 0.1830719 0.01007099 18.178148 2.656209e-16</div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>N</span>, <span class='no'>N</span> / <span class='fl'>2</span>))
 
@@ -161,13 +165,13 @@ Default is <code>NULL</code> and corresponds to only adding an Intercept to each
 <span class='no'>lmVol2</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Volume</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))
 <span class='no'>lmHei2</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Height</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))
 
-<span class='fu'>print</span>(<span class='fu'>big_univRegLin</span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>],
+<span class='fu'>print</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>],
                      <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
                      <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;       estim    std.err   t.score      p.value
-#&gt; 1 0.3291031 0.15816327  2.080781 6.411376e-02
-#&gt; 2 0.1860538 0.01252233 14.857762 3.831391e-08</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate Std. Error   t value     Pr(&gt;|t|)
-#&gt; [1,] 0.3291031 0.15816327  2.080781 6.411376e-02
-#&gt; [2,] 0.1860538 0.01252233 14.857762 3.831391e-08</div></pre>
+#&gt; 1 0.3533896 0.10878771  3.248433 8.743651e-03
+#&gt; 2 0.1840921 0.01681063 10.950938 6.872047e-07</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate Std. Error   t value     Pr(&gt;|t|)
+#&gt; [1,] 0.3533896 0.10878771  3.248433 8.743651e-03
+#&gt; [2,] 0.1840921 0.01681063 10.950938 6.872047e-07</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

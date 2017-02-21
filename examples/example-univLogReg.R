@@ -5,7 +5,7 @@ covar <- matrix(rnorm(N * 3), N)
 X <- as.big.matrix(as.matrix(trees))
 y <- sample(0:1, size = N, replace = TRUE)
 
-# without covar
+# Without covar
 print(big_univLogReg(X, y))
 for (i in 1:3) {
   print(summary(glm(y ~ trees[, i], family = "binomial"))$coefficients[2, ])
