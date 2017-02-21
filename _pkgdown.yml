@@ -10,6 +10,8 @@ navbar:
       href: index.html
     - text: "Manual"
       href: reference/index.html
+    - text: "Vignettes"
+      href: articles/index.html
   right:
     - text: "About"
       icon: fa-user
@@ -23,11 +25,16 @@ reference:
       - big_SVD
       - big_randomSVD
       - big_predScoresPCA
-  - title: "Linear and logistic models"
-    desc: "Univariate and sparce multivariate linear and logistic models."
+  - title: "Statistical models"
+    desc: "Colum-wise and sparse multivariate linear and logistic models."
     contents:
       - big_univLinReg
       - big_univLogReg
+      - big_spLinReg
+      - big_spLogReg
+      - big_spSVM
+      - predict.big_sp
+      - big_CMSA
   - title: "Utilities"
     contents:
       - big_colstats
@@ -35,3 +42,10 @@ reference:
       - big_transpose
       - big_crossprodSelf
       - big_tcrossprodSelf
+      - big_prodVec
+      - big_cprodVec
+      - big_apply
+      - auc
+  - title: "Package"
+    contents:
+      - bigstatsr-package
