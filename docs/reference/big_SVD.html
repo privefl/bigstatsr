@@ -54,6 +54,9 @@
 <li>
   <a href="../reference/index.html">Manual</a>
 </li>
+<li>
+  <a href="../articles/index.html">Vignettes</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -181,11 +184,11 @@ if you do!).</li>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_SVD</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>,
                  <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(),
                  <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'><span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 5
-#&gt;  $ d    : num [1:35] 12.3 10.6 10.46 10.3 9.81 ...
-#&gt;  $ u    : num [1:36, 1:35] -0.139 0.0147 -0.1112 0.0292 -0.0882 ...
-#&gt;  $ v    : num [1:43, 1:35] -0.1182 0.3047 0.2507 -0.0684 -0.1023 ...
-#&gt;  $ means: num [1:43] -0.14924 -0.00471 -0.0604 -0.23675 -0.03925 ...
-#&gt;  $ sds  : num [1:43] 1.092 1.163 0.934 1.226 0.844 ...</div><div class='input'>
+#&gt;  $ d    : num [1:35] 12.52 10.79 10.44 10 9.79 ...
+#&gt;  $ u    : num [1:36, 1:35] -0.1651 -0.0609 0.0203 -0.1739 0.0389 ...
+#&gt;  $ v    : num [1:43, 1:35] -0.00749 0.0761 0.02554 0.24145 0.01501 ...
+#&gt;  $ means: num [1:43] 0.088 0.1279 0.0198 0.0834 0.0546 ...
+#&gt;  $ sds  : num [1:43] 1.134 0.916 1.134 1.153 0.943 ...</div><div class='input'>
 <span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'>prcomp</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># same scaling</span>
@@ -195,8 +198,8 @@ if you do!).</li>
 <span class='co'># due to centering of columns</span>
 <span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='no'>test</span>$<span class='no'>u</span> <span class='kw'>%*%</span> <span class='fu'>diag</span>(<span class='no'>test</span>$<span class='no'>d</span>)
 <span class='no'>scores2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_predScoresPCA.html'>big_predScoresPCA</a></span>(<span class='no'>test</span>) <span class='co'># use this function to predict scores</span>
-<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>scores</span>, <span class='no'>scores2</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>scores</span>))</div><div class='output co'>#&gt; [1] 36 35</div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>))</div><div class='output co'>#&gt; [1] 36 36</div><div class='input'><span class='fu'>print</span>(<span class='fu'>tail</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>))</div><div class='output co'>#&gt; [1] 3.258815e-01 2.891123e-01 2.594483e-01 2.340041e-01 1.652486e-01
-#&gt; [6] 9.234035e-16</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-18.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-20.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>scores</span>, <span class='no'>scores2</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>scores</span>))</div><div class='output co'>#&gt; [1] 36 35</div><div class='input'><span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>))</div><div class='output co'>#&gt; [1] 36 36</div><div class='input'><span class='fu'>print</span>(<span class='fu'>tail</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>))</div><div class='output co'>#&gt; [1] 3.465713e-01 2.996299e-01 2.616351e-01 2.117721e-01 1.207832e-01
+#&gt; [6] 9.394723e-16</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-18.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-20.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># projecting on new data</span>
 <span class='no'>X.test</span> <span class='kw'>&lt;-</span> <span class='fu'>sweep</span>(<span class='fu'>sweep</span>(<span class='no'>X</span>[-<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>means</span>, <span class='st'>'-'</span>), <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>sds</span>, <span class='st'>'/'</span>)
 <span class='no'>scores.test</span> <span class='kw'>&lt;-</span> <span class='no'>X.test</span> <span class='kw'>%*%</span> <span class='no'>test</span>$<span class='no'>v</span>

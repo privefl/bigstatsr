@@ -8,19 +8,14 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = 'center',
                       out.width = 600, out.height = 480)
-
-require(bigsnpr)
-celiac <- snp_attach("../../thesis-celiac/backingfiles/celiac_sub2_impute1.desc")
-y <- celiac$fam$affection
-pop <- celiac$fam$pop
 ```
 
 ## Introduction on the data
 
-We attach a `big.matrix` from a backing file (stored on disk). It is a matrix of `char` (one byte signed integer) representing genotypes of a case-control study on [celiac disease](https://en.wikipedia.org/wiki/Coeliac_disease). 
+We attach a `big.matrix` from a backing file (stored on disk). It is a matrix of `char` (one byte signed integer) representing dense genotype matrix of 1385 individuals. 
 ```{r}
 require(bigstatsr)
-X <- attach.big.matrix("../../thesis-celiac/backingfiles/celiac_sub2_impute1.desc")
+X <- attach.big.matrix("../../bigsnpr/backingfiles/popres.desc")
 ```
  
 ```{r}
@@ -28,23 +23,16 @@ dim(X)
 typeof(X)
 ```
 
-We also have, for each individual of the study, their disease status (1 for a control; 2 for a case) and their country(4 for the UK; 1 for the Netherlands; 2 for Italy; 5 for Finland).
-
-```{r}
-table(y)
-rle(pop)
-```
-
 ## Get more information on the data
 
 We would like to know more about our data. For example, let's get the number of missing values for every column.
 
 ```{r}
-parallel::detectCores() # number of available cores
+NCORES <- parallel::detectCores() - 1 # number of available cores (minus 1)
 
 system.time(
   nbNA <- big_apply(X, FUN = function(x) colSums(is.na(x)), 
-                    .combine = 'c', block.size = 1000, ncores = 11)
+                    .combine = 'c', block.size = 1000, ncores = NCORES)
 )
 
 all(nbNA == 0)

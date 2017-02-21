@@ -54,6 +54,9 @@
 <li>
   <a href="../reference/index.html">Manual</a>
 </li>
+<li>
+  <a href="../articles/index.html">Vignettes</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -153,45 +156,45 @@ algorithm didn&#39;t converge, and <a href='http://www.rdocumentation.org/packag
 
 <span class='co'># Without covar</span>
 <span class='fu'>print</span>(<span class='fu'>big_univLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>))</div><div class='output co'>#&gt;         estim    std.err niter    z.score   p.value
-#&gt; 1 -0.13530714 0.12196104     4 -1.1094292 0.2672451
-#&gt; 2 -0.02037495 0.05857651     4 -0.3478348 0.7279643
-#&gt; 3 -0.02311041 0.02311723     4 -0.9997053 0.3174532</div><div class='input'><span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>3</span>) {
+#&gt; 1 0.108929576 0.12022736     4 0.90602984 0.3649201
+#&gt; 2 0.003374246 0.05811205     3 0.05806449 0.9536973
+#&gt; 3 0.018010782 0.02276155     4 0.79128087 0.4287801</div><div class='input'><span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>3</span>) {
   <span class='fu'>print</span>(<span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y</span> ~ <span class='no'>trees</span>[, <span class='no'>i</span>], <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ])
 }</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
-#&gt; -0.1353071  0.1219610 -1.1094294  0.2672450 
+#&gt;  0.1089296  0.1202274  0.9060299  0.3649200 
 #&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
-#&gt; -0.02037495  0.05857651 -0.34783477  0.72796428 
-#&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
-#&gt; -0.02311041  0.02311722 -0.99970536  0.31745312 </div><div class='input'>
+#&gt; 0.003374246 0.058112047 0.058064492 0.953697258 
+#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
+#&gt; 0.01801078 0.02276155 0.79128089 0.42878010 </div><div class='input'>
 <span class='co'># With all data</span>
-<span class='fu'>print</span>(<span class='fu'>big_univLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt;         estim    std.err niter    z.score   p.value
-#&gt; 1 -0.11584156 0.12790470     4 -0.9056865 0.3651018
-#&gt; 2 -0.01119162 0.06174302     4 -0.1812613 0.8561625
-#&gt; 3 -0.01826804 0.02461764     4 -0.7420710 0.4580443</div><div class='input'><span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>3</span>) {
+<span class='fu'>print</span>(<span class='fu'>big_univLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt;         estim    std.err niter   z.score   p.value
+#&gt; 1 0.106069054 0.12123827     4 0.8748810 0.3816387
+#&gt; 2 0.006004763 0.05983028     4 0.1003633 0.9200559
+#&gt; 3 0.017388184 0.02313515     4 0.7515916 0.4522967</div><div class='input'><span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>3</span>) {
   <span class='fu'>print</span>(<span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y</span> ~ <span class='no'>trees</span>[, <span class='no'>i</span>] + <span class='no'>covar</span>,
                     <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ])
 }</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
-#&gt; -0.1158416  0.1279047 -0.9056867  0.3651017 
+#&gt;  0.1060691  0.1212383  0.8748810  0.3816386 
 #&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
-#&gt; -0.01119162  0.06174300 -0.18126136  0.85616243 
-#&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
-#&gt; -0.01826804  0.02461764 -0.74207108  0.45804427 </div><div class='input'>
+#&gt; 0.006004763 0.059830279 0.100363274 0.920055926 
+#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
+#&gt; 0.01738818 0.02313515 0.75159162 0.45229669 </div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>N</span>, <span class='no'>N</span> / <span class='fl'>2</span>))
 
 <span class='fu'>print</span>(<span class='fu'>big_univLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>], <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
-                     <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;         estim    std.err niter    z.score   p.value
-#&gt; 1 -0.15522201 0.20501404     5 -0.7571287 0.4489728
-#&gt; 2 -0.68590808 0.55056883     9 -1.2458171 0.2128315
-#&gt; 3 -0.03743351 0.03754174     5 -0.9971169 0.3187078</div><div class='input'><span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>3</span>) {
+                     <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;        estim    std.err niter    z.score   p.value
+#&gt; 1 0.09134580 0.22913439     5 0.39865600 0.6901467
+#&gt; 2 0.01111145 0.11876223     4 0.09356047 0.9254583
+#&gt; 3 0.02798717 0.04669304     5 0.59938645 0.5489152</div><div class='input'><span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>3</span>) {
   <span class='fu'>print</span>(<span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y</span> ~ <span class='no'>trees</span>[, <span class='no'>i</span>] + <span class='no'>covar</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
                     <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ])
 }</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
-#&gt; -0.1552220  0.2050044 -0.7571642  0.4489515 
+#&gt;  0.0913458  0.2291344  0.3986560  0.6901467 
 #&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
-#&gt; -0.6859081  0.5505452 -1.2458707  0.2128119 
-#&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
-#&gt; -0.03743351  0.03754174 -0.99711698  0.31870773 </div><div class='input'>
+#&gt; 0.01111145 0.11876221 0.09356049 0.92545830 
+#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
+#&gt; 0.02798717 0.04669288 0.59938843 0.54891389 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
