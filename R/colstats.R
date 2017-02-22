@@ -15,8 +15,8 @@
 #' @seealso [colSums] [apply]
 #' @example examples/example-colstats.R
 big_colstats <- function(X.desc,
-                         ind.row = seq_len(nrow(X.desc)),
-                         ind.col = seq_len(ncol(X.desc))) {
+                         ind.row = rows_along(X.desc),
+                         ind.col = cols_along(X.desc)) {
   address <- big_address(X.desc)
   data.frame(bigcolvars(address, ind.row, ind.col))
 }

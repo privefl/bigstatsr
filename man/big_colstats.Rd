@@ -4,8 +4,8 @@
 \alias{big_colstats}
 \title{Standard univariate statistics}
 \usage{
-big_colstats(X.desc, ind.row = seq_len(nrow(X.desc)),
-  ind.col = seq_len(ncol(X.desc)))
+big_colstats(X.desc, ind.row = rows_along(X.desc),
+  ind.col = cols_along(X.desc))
 }
 \arguments{
 \item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.

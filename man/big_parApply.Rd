@@ -4,21 +4,12 @@
 \alias{big_parApply}
 \title{Split-parApply-Combine}
 \usage{
-big_parApply(X.desc, MARGIN, FUN, .combine, ncores, block.size = 1000,
-  ind.row = seq_len(nrow(X.desc)), ind.col = seq_len(ncol(X.desc)), ...)
+big_parApply(X.desc, a.FUN, a.combine, ncores, block.size = 1000,
+  ind = cols_along(X.desc), ...)
 }
 \arguments{
 \item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.
 You shouldn't have missing values in your data.}
-
-\item{.combine}{function that is used to process the tasks results as
-    they generated.  This can be specified as either a function or
-    a non-empty character string naming the function.
-    Specifying 'c' is useful for concatenating the results into
-    a vector, for example.  The values 'cbind' and 'rbind' can combine
-    vectors into a matrix.  The values '+' and '*' can be used to
-    process numeric data.
-    By default, the results are returned in a list.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.}
 
@@ -26,12 +17,6 @@ You shouldn't have missing values in your data.}
 Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
-
-\item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used.}
-
-\item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used.}
 
 \item{...}{Extra arguments to be passed to \code{FUN}.}
 
@@ -42,11 +27,13 @@ and it should have two other arguments, \code{ind.row} and \code{ind.col}.}
 The result of \link{foreach}.
 }
 \description{
-A Split-Apply-Combine strategy to parallelize the evaluation of a function.
+A Split-Apply-Combine strategy to parallelize the evaluation of
+\code{big_apply} on a function.
 }
 \details{
-This function splits indices in parts, then apply a given function to each
-part and finally combine the results.
+This function splits indices in parts for parallelization, then split again
+them on each core, apply a given function to each part and finally combine
+the results (on each cluster and then from each cluster).
 }
 \examples{
 X.desc <- big_attachExtdata()

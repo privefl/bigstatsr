@@ -15,6 +15,10 @@ ERROR_TYPE <- "unknown type detected for big.matrix object!"
 
 ################################################################################
 
+
+
+################################################################################
+
 check_X <- function(X, ncores = 1, ncores2 = 1) {
   if (class(X) != "big.matrix")
     stop(ERROR_BIGMATRIX)

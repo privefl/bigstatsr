@@ -4,8 +4,8 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X.desc, a.MARGIN, a.FUN, a.combine, block.size = 1000,
-  ind.row = seq_len(nrow(X.desc)), ind.col = seq_len(ncol(X.desc)), ...)
+big_apply(X.desc, a.FUN, a.combine, block.size = 1000,
+  ind = cols_along(X.desc), ...)
 }
 \arguments{
 \item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.
@@ -18,13 +18,7 @@ Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
 
-\item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used.}
-
-\item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used.}
-
-\item{...}{Extra arguments to be passed to \code{FUN}.}
+\item{...}{Extra arguments to be passed to \code{a.FUN}.}
 }
 \value{
 The result of \link{foreach}.

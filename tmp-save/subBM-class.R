@@ -23,19 +23,19 @@ NULL
 ## Dimensions
 
 #' @rdname subBM-class
-#' @S3method subBM nrow
+#' @S3method nrow subBM
 nrow.subBM <- function(x) length(x$rows)
 
 #' @rdname subBM-class
-#' @export
+#' @S3method ncol subBM
 ncol.subBM <- function(x) length(x$cols)
 
 #' @rdname subBM-class
-#' @export
+#' @S3method dim subBM
 dim.subBM <- function(x) c(nrow(x), ncol(x))
 
 #' @rdname subBM-class
-#' @export
+#' @S3method length subBM
 length.subBM <- function(x) prod(dim(x))
 
 ################################################################################
