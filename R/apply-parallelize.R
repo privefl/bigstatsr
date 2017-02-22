@@ -9,7 +9,17 @@
 #'
 #' @inheritParams bigstatsr-package
 #' @param a.FUN The function to be applied to each subset matrix.
-#' @inheritParams foreach::foreach
+#' It must take a `big.matrix` as first argument and `ind`, a vector of
+#' indices, which are used to split the data. Example: if you want to apply
+#' a function to `X[ind.row, ind.col]`, you may use
+#' \code{X[ind.row, ind.col[ind]]} in `a.FUN`.
+#' @param a.combine function that is used by [foreach] to process the tasks
+#' results as they generated. This can be specified as either a function or a
+#' non-empty character string naming the function. Specifying 'c' is useful
+#' for concatenating the results into a vector, for example. The values 'cbind'
+#' and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
+#' used to process numeric data. By default, the results are returned in a list.
+#' @param ind Initial vector of subsetting indices.
 #' @param ... Extra arguments to be passed to `a.FUN`.
 #'
 #' @return The result of [foreach].
@@ -40,8 +50,14 @@ big_apply <- function(X.desc, a.FUN, a.combine, block.size = 1000,
 #'
 #' @inheritParams bigstatsr-package
 #' @param p.FUN The function to be applied. `X.desc` must be its first argument
-#' and it should have two other arguments, `ind.row` and `ind.col`.
-#' @inheritParams foreach::foreach
+#' and it must provide some arguments for subsetting.
+#' @param p.combine function that is used by [foreach] to process the tasks
+#' results as they generated. This can be specified as either a function or a
+#' non-empty character string naming the function. Specifying 'c' is useful
+#' for concatenating the results into a vector, for example. The values 'cbind'
+#' and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
+#' used to process numeric data. By default, the results are returned in a list.
+#' @param ind Initial vector of subsetting indices.
 #' @param ... Extra arguments to be passed to `p.FUN`.
 #'
 #' @return The result of [foreach].
@@ -82,11 +98,7 @@ big_parallelize <- function(X.desc, p.FUN, p.combine, ncores,
 #' them on each core, apply a given function to each part and finally combine
 #' the results (on each cluster and then from each cluster).
 #'
-#' @inheritParams bigstatsr-package
-#' @param p.FUN The function to be applied. `X.desc` must be its first argument
-#' and it should have two other arguments, `ind.row` and `ind.col`.
-#' @inheritParams foreach::foreach
-#' @param ... Extra arguments to be passed to `FUN`.
+#' @inheritParams big_apply
 #'
 #' @return The result of [foreach].
 #' @export
@@ -96,15 +108,24 @@ big_parallelize <- function(X.desc, p.FUN, p.combine, ncores,
 big_parApply <- function(X.desc, a.FUN, a.combine, ncores, block.size = 1000,
                          ind = cols_along(X.desc),
                          ...) {
-  big_parallelize(X.desc,
-                  p.FUN = big_apply,
-                  p.combine = a.combine,
-                  ncores = ncores,
-                  ind = ind,
-                  a.FUN = a.FUN,
-                  a.combine = a.combine,
-                  block.size = block.size,
-                  ...)
-}
+  if (ncores == 1) {
+    big_apply(X.desc,
+              a.FUN = a.FUN,
+              a.combine = a.combine,
+              block.size = block.size,
+              ind = ind,
+              ...)
+  } else {
+    big_parallelize(X.desc,
+                    p.FUN = big_apply,
+                    p.combine = a.combine,
+                    ncores = ncores,
+                    ind = ind,
+                    a.FUN = a.FUN,
+                    a.combine = a.combine,
+                    block.size = block.size,
+                    ...)
+  }
+} # TODO: replace with big_apply and big_applySeq
 
 ################################################################################

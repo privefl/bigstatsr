@@ -12,9 +12,18 @@ big_parallelize(X.desc, p.FUN, p.combine, ncores, ind = cols_along(X.desc),
 You shouldn't have missing values in your data.}
 
 \item{p.FUN}{The function to be applied. \code{X.desc} must be its first argument
-and it should have two other arguments, \code{ind.row} and \code{ind.col}.}
+and it must provide some arguments for subsetting.}
+
+\item{p.combine}{function that is used by \link{foreach} to process the tasks
+results as they generated. This can be specified as either a function or a
+non-empty character string naming the function. Specifying 'c' is useful
+for concatenating the results into a vector, for example. The values 'cbind'
+and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
+used to process numeric data. By default, the results are returned in a list.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.}
+
+\item{ind}{Initial vector of subsetting indices.}
 
 \item{...}{Extra arguments to be passed to \code{p.FUN}.}
 }
@@ -48,8 +57,8 @@ all.equal(test, true)
 ### Computation on a part of the matrix
 n <- nrow(X.desc)
 m <- ncol(X.desc)
-rows <- sort(sample(n, n/2))
-cols <- sort(sample(m, m/2))
+rows <- sort(sample(n, n/2)) # sort to provide some locality in accesses
+cols <- sort(sample(m, m/2)) # idem
 
 true2 <- big_colstats(X.desc, ind.row = rows, ind.col = cols)
 

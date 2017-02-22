@@ -11,12 +11,25 @@ big_apply(X.desc, a.FUN, a.combine, block.size = 1000,
 \item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.
 You shouldn't have missing values in your data.}
 
-\item{a.FUN}{The function to be applied to each subset matrix.}
+\item{a.FUN}{The function to be applied to each subset matrix.
+It must take a \code{big.matrix} as first argument and \code{ind}, a vector of
+indices, which are used to split the data. Example: if you want to apply
+a function to \code{X[ind.row, ind.col]}, you may use
+\code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.}
+
+\item{a.combine}{function that is used by \link{foreach} to process the tasks
+results as they generated. This can be specified as either a function or a
+non-empty character string naming the function. Specifying 'c' is useful
+for concatenating the results into a vector, for example. The values 'cbind'
+and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
+used to process numeric data. By default, the results are returned in a list.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
+
+\item{ind}{Initial vector of subsetting indices.}
 
 \item{...}{Extra arguments to be passed to \code{a.FUN}.}
 }
@@ -31,42 +44,36 @@ This function splits indices in parts, then apply a given function to each
 subset matrix and finally combine the results.
 }
 \examples{
-# simulate some data
-N <- 50
-M <- 5000
-X <- big.matrix(N, M)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
 
 # get the means of each column
-colmeans <- big_apply(X, colMeans, .combine = 'c')
-# is the shorter version of
-colmeans2 <- big_apply(X, function(X, ind) {
-  mat <- X[, ind, drop = FALSE]
-  colMeans(mat)
-}, .combine = 'c', ind.arg = TRUE)
-print(all.equal(colmeans, colmeans2))
+colMeans_sub <- function(X, ind) colMeans(X[, ind])
+colmeans <- big_apply(X.desc, a.FUN = colMeans_sub, a.combine = 'c')
 
 # get the norms of each column
-colnorms <- big_apply(X, function(mat) sqrt(colSums(mat^2)), .combine = 'c')
+colNorms_sub <- function(X, ind) sqrt(colSums(X[, ind]^2))
+colnorms <- big_apply(X.desc, colNorms_sub, a.combine = 'c')
 
 # get the sums of each row
-rowsums <- big_apply(X, rowSums, .combine = '+')
+# split along rows: need to change the "complete" `ind` parameter
+rowsums <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[ind, ]),
+                     ind = rows_along(X.desc), a.combine = 'c',
+                     block.size = 100)
+# it is usually preferred to split along columns
+# because `big.matrix` are stored by column.
+rowsums2 <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[, ind]),
+                      a.combine = '+')
 
-# get the maximum element of X (in absolute value)
-maxabs <- max(big_apply(X, function(x) max(abs(x)), .combine = 'c'))
 
 # get the crossproduct between X and a matrix A
-A <- matrix(0, N, 10)
+A <- matrix(0, nrow(X.desc), 10)
 A[] <- rnorm(length(A))
-XtA <- big_apply(X, function(x) crossprod(x, A), .combine = 'rbind')
+XtA <- big_apply(X.desc, function(X, ind) crossprod(X[, ind], A),
+                 a.combine = 'rbind')
 
 # get the product between X and a matrix B
-B <- matrix(0, M, 10)
+B <- matrix(0, ncol(X.desc), 10)
 B[] <- rnorm(length(B))
-XB <- big_apply(X, function(x, ind, A) {
-  x.part <- x[, ind, drop = FALSE]
-  A.part <- A[ind, , drop = FALSE]
-  x.part \%*\% A.part
-}, .combine = '+', ind.arg = TRUE, A = B)
-print(all.equal(XB, X[,] \%*\% B))
+XB <- big_apply(X.desc, function(X, ind, mat) X[, ind] \%*\% mat[ind, ],
+                a.combine = '+', mat = B)
 }

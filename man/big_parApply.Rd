@@ -11,17 +11,27 @@ big_parApply(X.desc, a.FUN, a.combine, ncores, block.size = 1000,
 \item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.
 You shouldn't have missing values in your data.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.}
+\item{a.FUN}{The function to be applied to each subset matrix.
+It must take a \code{big.matrix} as first argument and \code{ind}, a vector of
+indices, which are used to split the data. Example: if you want to apply
+a function to \code{X[ind.row, ind.col]}, you may use
+\code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.}
+
+\item{a.combine}{function that is used by \link{foreach} to process the tasks
+results as they generated. This can be specified as either a function or a
+non-empty character string naming the function. Specifying 'c' is useful
+for concatenating the results into a vector, for example. The values 'cbind'
+and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
+used to process numeric data. By default, the results are returned in a list.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
 
-\item{...}{Extra arguments to be passed to \code{FUN}.}
+\item{ind}{Initial vector of subsetting indices.}
 
-\item{p.FUN}{The function to be applied. \code{X.desc} must be its first argument
-and it should have two other arguments, \code{ind.row} and \code{ind.col}.}
+\item{...}{Extra arguments to be passed to \code{a.FUN}.}
 }
 \value{
 The result of \link{foreach}.
@@ -38,9 +48,22 @@ the results (on each cluster and then from each cluster).
 \examples{
 X.desc <- big_attachExtdata()
 
-test <- big_colstats(X.desc)
-test2 <- big_parallelize(X.desc, 2, big_colstats,
-                         p.combine = 'rbind', ncores = 2)
+# Brute force true result
+X <- attach.big.matrix(X.desc)
+true <- colSums(X[,])
+rm(X)
 
-all.equal(test2, test)
+# Use `big_apply` to get the result of a simple R function, `colSums`
+colSums_sub <- function(X, ind) colSums(X[, ind])
+test1 <- big_apply(X.desc, a.FUN = colSums_sub, a.combine = 'c')
+all.equal(test1, true)
+
+# Parallelize this `big_apply` call
+test2 <- big_parallelize(X.desc, p.FUN = big_apply, p.combine = 'c', ncores = 2,
+                         a.FUN = colSums_sub, a.combine = 'c')
+all.equal(test2, true)
+
+# Wrapper around previous call
+test3 <- big_parApply(X.desc, a.FUN = colSums_sub, a.combine = 'c', ncores = 2)
+all.equal(test3, true)
 }
