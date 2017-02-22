@@ -7,9 +7,6 @@
 big_transpose(X, ...)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
-
 \item{...}{Arguments passed on to \code{bigmemory::big.matrix}
 \describe{
   \item{separated}{use separated column organization of the data; 

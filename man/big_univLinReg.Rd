@@ -8,9 +8,6 @@ big_univLinReg(X, y.train, ind.train = seq(nrow(X)), covar.train = NULL,
   ncores2 = 1)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
-
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,

@@ -4,7 +4,7 @@
 #' @useDynLib bigstatsr
 #' @importFrom Rcpp sourceCpp
 #'
-#' @param X A [big.matrix][bigmemory::big.matrix-class].
+#' @param X.desc A [big.matrix.descriptor][big.matrix.descriptor-class].
 #' You shouldn't have missing values in your data.
 #'
 #' @param y.train Vector of responses, corresponding to `ind.train`.

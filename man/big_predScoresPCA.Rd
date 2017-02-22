@@ -10,9 +10,6 @@ big_predScoresPCA(obj.svd, X = NULL, ind.test = seq(nrow(X)),
 \arguments{
 \item{obj.svd}{A list returned by \code{big_SVD}.}
 
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
-
 \item{ind.test}{Vector of indices of samples to be projected.
 Don't use negative indices here.}
 

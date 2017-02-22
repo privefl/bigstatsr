@@ -7,9 +7,6 @@
 big_spSVM(X, y01.train, ind.train = seq(nrow(X)), covar.train = NULL, ...)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
-
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 Must be 0s and 1s.}
 

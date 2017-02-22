@@ -8,9 +8,6 @@ big_crossprodSelf(X, fun.scaling, ind.train = seq(nrow(X)),
   block.size = 1000, use.Eigen = !detect_MRO())
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
-
 \item{fun.scaling}{A function that returns a named list of
 \strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
