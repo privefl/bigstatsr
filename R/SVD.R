@@ -121,7 +121,7 @@ big_SVD <- function(X, fun.scaling,
 #' the scores of the training set of `obj.svd`.
 #'
 #' @example examples/example-SVD.R
-#' @seealso [predict][stats::predict.prcomp] [big_SVD]
+#' @seealso [predict][stats::prcomp] [big_SVD] [big_randomSVD]
 big_predScoresPCA <- function(obj.svd, X. = NULL,
                               ind.row = rows_along(X.),
                               ind.col = cols_along(X.),

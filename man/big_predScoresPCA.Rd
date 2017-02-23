@@ -78,5 +78,5 @@ scores.test3 <- predict(pca, X[-ind, ])
 plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])
 }
 \seealso{
-\link[stats:predict.prcomp]{predict} \link{big_SVD}
+\link[stats:prcomp]{predict} \link{big_SVD} \link{big_randomSVD}
 }

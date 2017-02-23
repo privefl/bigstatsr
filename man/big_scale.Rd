@@ -21,24 +21,20 @@ Some scaling functions for a \code{big.matrix} to be used as
 the \strong{\code{fun.scaling}} parameter of some functions of this package.
 }
 \examples{
-# Simulating some data
-X <- big.matrix(41, 17)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
 
 # No scaling
 big_noscale <- big_scale(center = FALSE, scale = FALSE)
-print(class(big_noscale)) # big_scale returns a new function
-print(big_noscale(X))
+class(big_noscale) # big_scale returns a new function
+str(big_noscale(X.desc))
 big_noscale2 <- big_scale(center = FALSE)
-print(big_noscale2(X)) # you can't scale without centering
+str(big_noscale2(X.desc)) # you can't scale without centering
 
 # Centering
 big_center <- big_scale(scale = FALSE)
-print(big_center(X))
+str(big_center(X.desc))
 # + scaling
-print(test <- big_scale()(X, 1:5)) # note that big_scale() is a function
-print(all.equal(test$mean, colMeans(X[1:5, ])))
-print(all.equal(test$sd, apply(X[1:5, ], 2, sd)))
+str(big_scale()(X.desc))
 }
 \seealso{
 \link{scale}

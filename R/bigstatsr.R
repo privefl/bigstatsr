@@ -56,12 +56,11 @@
 #' of \code{R} and \code{RcppArmadillo} matrix computations,
 #' yet not the ones of \code{RcppEigen} (at least not directly).
 #'
-#' So, \enumerate{
-#' \item \code{Eigen} should be prefered if you don't change anything,
-#' \item base \code{R} should be prefered if you use MRO,
-#' \item \code{Eigen} may be prefered if you manage to link \code{RcppEigen}
-#' with the MKL (please \href{mailto:florian.prive.21@gmail.com}{contact me}
-#' if you do!).}
+#' So,
+#' 1. `Eigen` should be prefered if you don't change anything,
+#' 2. base `R` should be prefered if you use MRO,
+#' 3. `Eigen` may be prefered if you manage to link `RcppEigen` with the MKL
+#' (please \href{mailto:florian.prive.21@gmail.com}{contact me} if you do!).
 "_PACKAGE"
 
 ################################################################################

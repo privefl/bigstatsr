@@ -4,19 +4,19 @@
 \alias{big_tcrossprodSelf}
 \title{Tcrossprod}
 \usage{
-big_tcrossprodSelf(X, fun.scaling, ind.train = seq(nrow(X)),
+big_tcrossprodSelf(X., fun.scaling, ind.row = rows_along(X.),
   block.size = 1000, use.Eigen = !detect_MRO())
 }
 \arguments{
-\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
-\item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.
-Don't use negative indices.}
+\item{ind.row}{An optional vector of the row indices that are used.
+If not specified, all rows are used. Don't use negative indices.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}. This parameter controls the trade-off between
@@ -29,13 +29,13 @@ for matrix computations? Default tries to detect MRO. See details.}
 \value{
 A list of
 \itemize{
-\item \eqn{K = X.train X.train^T},
+\item \eqn{K = X.row X.row^T},
 \item a numeric vector \code{mean} of column scaling,
 \item a numeric vector \code{sd} of column scaling.
 }
 }
 \description{
-Compute \eqn{X.train X.train^T} for a \code{big.matrix} \code{X}
+Compute \eqn{X.row X.row^T} for a \code{big.matrix} \code{X}
 after applying a particular scaling to it.
 }
 \details{
@@ -51,31 +51,35 @@ R Open} (MRO). It really improves performance
 of \code{R} and \code{RcppArmadillo} matrix computations,
 yet not the ones of \code{RcppEigen} (at least not directly).
 
-So, \enumerate{
+So,
+\enumerate{
 \item \code{Eigen} should be prefered if you don't change anything,
 \item base \code{R} should be prefered if you use MRO,
-\item \code{Eigen} may be prefered if you manage to link \code{RcppEigen}
-with the MKL (please \href{mailto:florian.prive.21@gmail.com}{contact me}
-if you do!).}
+\item \code{Eigen} may be prefered if you manage to link \code{RcppEigen} with the MKL
+(please \href{mailto:florian.prive.21@gmail.com}{contact me} if you do!).
+}
 }
 \examples{
-# Simulating some data
-X <- big.matrix(17, 41)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
 
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)
-test <- big_tcrossprodSelf(X, fun.scaling = big_noscale)
-print(dim(test$K))
-print(all.equal(test$K, tcrossprod(X[,])))
+test <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale)
+dim(test$K)
 
-# Using only half of the data for "training"
-ind <- sort(sample(nrow(X), nrow(X)/2))
-test2 <- big_tcrossprodSelf(X, fun.scaling = big_noscale,
-                            ind.train = ind)
-print(dim(test2$K))
-print(all.equal(test2$K, tcrossprod(X[ind, ])))
+true <- tcrossprod(attach.BM(X.desc)[,])
+all.equal(test$K, true)
+
+# Using only half of the data
+n <- nrow(X.desc)
+ind <- sort(sample(n, n/2))
+test2 <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale,
+                            ind.row = ind)
+dim(test2$K)
+
+true2 <- tcrossprod(attach.BM(X.desc)[ind, ])
+all.equal(test2$K, true2)
 }
 \seealso{
-\link[base:tcrossprod]{tcrossprod}
+\link{tcrossprod}
 }

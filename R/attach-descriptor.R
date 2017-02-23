@@ -32,26 +32,3 @@ big_attachExtdata <- function() {
 }
 
 ################################################################################
-
-#' Address of the described "big.matrix"
-#'
-#' @inheritParams bigstatsr-package
-#'
-#' @return The slot `address` of the described `big.matrix`.
-#' @export
-#'
-#' @examples
-#' tmpfile <- tempfile()
-#' test <- big.matrix(10, 10, backingfile = basename(tmpfile),
-#'                    backingpath = dirname(tmpfile),
-#'                    descriptorfile = paste0(basename(tmpfile), ".desc"))
-#' X.desc <- describe(test)
-#' address <- big_address(X.desc)
-#' all.equal(address, test@address)
-big_address <- function(X.desc) {
-  X <- attach.big.matrix(X.desc)
-  X@address
-}
-
-################################################################################
-

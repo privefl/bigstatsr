@@ -26,30 +26,28 @@ For now, the \code{sum} and \code{var} are implemented
 (the \code{mean} and \code{sd} can easily be deduced, see examples).
 }
 \examples{
-# Simulating some data
-X <- big.matrix(41, 7)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
 
 # Check the results
-print(test <- big_colstats(X))
+str(test <- big_colstats(X.desc))
 
-# Only with the first 10 rows
-ind <- 1:10
-print(test <- big_colstats(X, ind))
-print(all.equal(test$sum, colSums(X[ind, ])))
-print(all.equal(test$var, apply(X[ind, ], 2, var)))
+# Only with the first 100 rows
+ind <- 1:100
+str(test2 <- big_colstats(X.desc, ind.row = ind))
+plot(test$sum, test2$sum)
+abline(lm(test2$sum ~ test$sum), col = "red", lwd = 2)
+
+X.ind <- attach.BM(X.desc)[ind, ]
+all.equal(test2$sum, colSums(X.ind))
+all.equal(test2$var, apply(X.ind, 2, var))
 
 # deduce mean and sd
 # note that the are also implemented in big_scale()
-means <- test$sum / length(ind) # if using all rows,
-                                # divide by nrow(X) instead
-print(all.equal(means, colMeans(X[ind, ])))
-sds <- sqrt(test$var)
-print(all.equal(sds, apply(X[ind, ], 2, sd)))
-
-# NA in, NA out
-X[2, 5] <- NA
-print(big_colstats(X))
+means <- test2$sum / length(ind) # if using all rows,
+                                 # divide by nrow(X) instead
+all.equal(means, colMeans(X.ind))
+sds <- sqrt(test2$var)
+all.equal(sds, apply(X.ind, 2, sd))
 }
 \seealso{
 \link{colSums} \link{apply}
