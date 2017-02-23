@@ -18,12 +18,12 @@ rowsums <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[ind, ]),
 rowsums2 <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[, ind]),
                       a.combine = '+')
 
-
+## Every extra parameter to `a.FUN` should be passed to `big_apply`
 # get the crossproduct between X and a matrix A
 A <- matrix(0, nrow(X.desc), 10)
 A[] <- rnorm(length(A))
-XtA <- big_apply(X.desc, function(X, ind) crossprod(X[, ind], A),
-                 a.combine = 'rbind')
+XtA <- big_apply(X.desc, function(X, ind, mat) crossprod(X[, ind], mat),
+                 a.combine = 'rbind', mat = A)
 
 # get the product between X and a matrix B
 B <- matrix(0, ncol(X.desc), 10)

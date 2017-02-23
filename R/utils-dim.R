@@ -10,6 +10,16 @@ setMethod('ncol', signature(x = "big.matrix.descriptor"),
 
 #' @export
 #' @keywords internal
+setMethod('dim', signature(x = "big.matrix.descriptor"),
+          function(x) c(nrow(x), ncol(x)))
+
+#' @export
+#' @keywords internal
+setMethod('length', signature(x = "big.matrix.descriptor"),
+          function(x) prod(dim(x)))
+
+#' @export
+#' @keywords internal
 rows_along <- function(x) seq_len(nrow(x))
 
 #' @export

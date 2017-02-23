@@ -4,7 +4,7 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X.desc, a.FUN, a.combine, block.size = 1000,
+big_apply(X.desc, a.FUN, a.combine, ncores = 1, block.size = 1000,
   ind = cols_along(X.desc), ...)
 }
 \arguments{
@@ -24,6 +24,8 @@ for concatenating the results into a vector, for example. The values 'cbind'
 and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
 used to process numeric data. By default, the results are returned in a list.}
 
+\item{ncores}{Number of cores used. Default doesn't use parallelism.}
+
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
@@ -41,7 +43,10 @@ A Split-Apply-Combine strategy to apply common R functions to a \code{big.matrix
 }
 \details{
 This function splits indices in parts, then apply a given function to each
-subset matrix and finally combine the results.
+subset matrix and finally combine the results. If parallelization is used,
+this function splits indices in parts for parallelization, then split again
+them on each core, apply a given function to each part and finally combine
+the results (on each cluster and then from each cluster).
 }
 \examples{
 X.desc <- big_attachExtdata()
@@ -64,12 +69,12 @@ rowsums <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[ind, ]),
 rowsums2 <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[, ind]),
                       a.combine = '+')
 
-
+## Every extra parameter to `a.FUN` should be passed to `big_apply`
 # get the crossproduct between X and a matrix A
 A <- matrix(0, nrow(X.desc), 10)
 A[] <- rnorm(length(A))
-XtA <- big_apply(X.desc, function(X, ind) crossprod(X[, ind], A),
-                 a.combine = 'rbind')
+XtA <- big_apply(X.desc, function(X, ind, mat) crossprod(X[, ind], mat),
+                 a.combine = 'rbind', mat = A)
 
 # get the product between X and a matrix B
 B <- matrix(0, ncol(X.desc), 10)
