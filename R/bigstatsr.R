@@ -4,8 +4,10 @@
 #' @useDynLib bigstatsr
 #' @importFrom Rcpp sourceCpp
 #'
+#' @param X A [big.matrix][big.matrix-class].
 #' @param X.desc A [big.matrix.descriptor][big.matrix.descriptor-class].
-#' You shouldn't have missing values in your data.
+#' @param X. Either a [big.matrix][big.matrix-class] or
+#' a [big.matrix.descriptor][big.matrix.descriptor-class].
 #'
 #' @param y.train Vector of responses, corresponding to `ind.train`.
 #' @param y01.train Vector of responses, corresponding to `ind.train`.
@@ -13,11 +15,12 @@
 #'
 #' @param ind.train An optional vector of the row indices that are used,
 #' for the training part. If not specified, all rows are used.
+#' Don't use negative indices.
 #' @param ind.row An optional vector of the row indices that are used.
-#' If not specified, all rows are used.
+#' If not specified, all rows are used. Don't use negative indices.
 #'
 #' @param ind.col An optional vector of the column indices that are used.
-#' If not specified, all columns are used.
+#' If not specified, all columns are used. Don't use negative indices.
 #'
 #' @param block.size Maximum number of columns read at once.
 #' Default is `1000`. This parameter controls the trade-off between

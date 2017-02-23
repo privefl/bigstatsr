@@ -13,11 +13,11 @@
 #' @example examples/example-scaling.R
 #' @export
 big_scale <- function(center = TRUE, scale = TRUE) {
-  function(X, ind.train = seq(nrow(X)), ind.col = seq(ncol(X))) {
+  function(X, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
     m <- length(ind.col)
     if (center) {
-      tmp <- big_colstats(X, ind.train, ind.col)
-      means <- tmp$sum / length(ind.train)
+      tmp <- big_colstats(X, ind.row, ind.col)
+      means <- tmp$sum / length(ind.row)
       sds <- `if`(scale, sqrt(tmp$var), rep(1, m))
     } else {
       means <- rep(0, m)

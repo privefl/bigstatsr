@@ -8,8 +8,9 @@
 #' part and finally combine the results.
 #'
 #' @inheritParams bigstatsr-package
-#' @param p.FUN The function to be applied. `X.desc` must be its first argument
-#' and it must provide some arguments for subsetting.
+#' @param p.FUN The function to be applied. It must take a
+#' big.matrix.descriptor][big.matrix.descriptor-class] as first argument
+#' and provide some arguments for subsetting.
 #' @param p.combine function that is used by [foreach] to process the tasks
 #' results as they generated. This can be specified as either a function or a
 #' non-empty character string naming the function. Specifying 'c' is useful
@@ -24,9 +25,10 @@
 #' @import foreach
 #'
 #' @example examples/example-parallelize.R
-big_parallelize <- function(X.desc, p.FUN, p.combine, ncores,
-                            ind = cols_along(X.desc),
+big_parallelize <- function(X., p.FUN, p.combine, ncores,
+                            ind = cols_along(X.),
                             ...) {
+  X.desc <- describe(X.)
   range.parts <- CutBySize(length(ind), nb = ncores)
 
   cl <- parallel::makeCluster(ncores)
@@ -48,9 +50,8 @@ big_parallelize <- function(X.desc, p.FUN, p.combine, ncores,
 
 ################################################################################
 
-big_applySeq <- function(X.desc, a.FUN, a.combine, block.size, ind, ...) {
-  X <- attach.big.matrix(X.desc)
-
+big_applySeq <- function(X., a.FUN, a.combine, block.size, ind, ...) {
+  X <- attach.BM(X.)
   intervals <- CutBySize(length(ind), block.size)
 
   foreach(ic = 1:nrow(intervals), .combine = a.combine) %do% {
@@ -90,20 +91,13 @@ big_applySeq <- function(X.desc, a.FUN, a.combine, block.size, ind, ...) {
 #' @import foreach
 #'
 #' @example examples/example-apply.R
-big_apply <- function(X.desc, a.FUN, a.combine,
+big_apply <- function(X., a.FUN, a.combine,
                       ncores = 1,
                       block.size = 1000,
-                      ind = cols_along(X.desc),
+                      ind = cols_along(X.),
                       ...) {
-  if (ncores == 1) {
-    big_applySeq(X.desc,
-                 a.FUN = a.FUN,
-                 a.combine = a.combine,
-                 block.size = block.size,
-                 ind = ind,
-                 ...)
-  } else {
-    big_parallelize(X.desc,
+  if (ncores > 1) {
+    big_parallelize(X.,
                     p.FUN = big_applySeq,
                     p.combine = a.combine,
                     ncores = ncores,
@@ -112,6 +106,13 @@ big_apply <- function(X.desc, a.FUN, a.combine,
                     a.combine = a.combine,
                     block.size = block.size,
                     ...)
+  } else {
+    big_applySeq(X.,
+                 a.FUN = a.FUN,
+                 a.combine = a.combine,
+                 block.size = block.size,
+                 ind = ind,
+                 ...)
   }
 }
 

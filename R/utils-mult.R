@@ -1,6 +1,8 @@
 ################################################################################
 
-#' Product between a "big.matrix" and a vector
+#' Product with a vector
+#'
+#' Product between a "big.matrix" and a vector.
 #'
 #' @inheritParams bigstatsr-package
 #'
@@ -8,32 +10,35 @@
 #' @export
 #'
 #' @examples
-#' N <- 100
-#' M <- 20
-#' X <- big.matrix(N, M)
-#' X[] <- rnorm(length(X))
-#' y <- rnorm(M)
+#' X.desc <- big_attachExtdata()
+#' n <- nrow(X.desc)
+#' m <- ncol(X.desc)
+#' y <- rnorm(m)
 #'
-#' test <- big_prodVec(X, y) # vector
-#' true <- X[,] %*% y        # one-column matrix
-#' print(all.equal(test, as.numeric(true)))
+#' test <- big_prodVec(X.desc, y)      # vector
+#' true <- attach.BM(X.desc)[,] %*% y  # one-column matrix
+#' all.equal(test, as.numeric(true))
 #'
 #' # subsetting
-#' ind.row <- sample(N, N/2)
-#' ind.col <- sample(M, M/2)
+#' ind.row <- sample(n, n/2)
+#' ind.col <- sample(m, m/2)
 #'
-#' # test2 <- big_prodVec(X, y, ind.row, ind.col)
+#' # test2 <- big_prodVec(X.desc, y, ind.row, ind.col)
 #' # returns an error. You need to use the subset of y:
-#' test2 <- big_prodVec(X, y[ind.col], ind.row, ind.col)
-#' true2 <- X[ind.row, ind.col] %*% y[ind.col]
-#' print(all.equal(test2, as.numeric(true2)))
-big_prodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
-  pMatVec4(X@address, y, ind.row, ind.col)
+#' test2 <- big_prodVec(X.desc, y[ind.col], ind.row, ind.col)
+#' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% y[ind.col]
+#' all.equal(test2, as.numeric(true2))
+big_prodVec <- function(X., y,
+                        ind.row = rows_along(X.),
+                        ind.col = cols_along(X.)) {
+  pMatVec4(address(X.), y, ind.row, ind.col)
 }
 
 ################################################################################
 
-#' Cross-product between a "big.matrix" and a vector
+#' Cross-product with a vector
+#'
+#' Cross-product between a "big.matrix" and a vector.
 #'
 #' @inheritParams bigstatsr-package
 #'
@@ -41,44 +46,47 @@ big_prodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
 #' @export
 #'
 #' @examples
-#' N <- 100
-#' M <- 20
-#' X <- big.matrix(N, M)
-#' X[] <- rnorm(length(X))
-#' y <- rnorm(N)
+#' X.desc <- big_attachExtdata()
+#' n <- nrow(X.desc)
+#' m <- ncol(X.desc)
+#' y <- rnorm(n)
 #'
-#' test <- big_cprodVec(X, y) # vector
-#' true <- crossprod(X[,], y) # one-column matrix
-#' print(all.equal(test, as.numeric(true)))
+#' test <- big_cprodVec(X.desc, y)             # vector
+#' true <- crossprod(attach.BM(X.desc)[,], y)  # one-column matrix
+#' all.equal(test, as.numeric(true))
 #'
 #' # subsetting
-#' ind.row <- sample(N, N/2)
-#' ind.col <- sample(M, M/2)
+#' ind.row <- sample(n, n/2)
+#' ind.col <- sample(m, m/2)
 #'
-#' # test2 <- big_cprodVec(X, y, ind.row, ind.col)
+#' # test2 <- big_cprodVec(X.desc, y, ind.row, ind.col)
 #' # returns an error. You need to use the subset of y:
-#' test2 <- big_cprodVec(X, y[ind.row], ind.row, ind.col)
-#' true2 <- crossprod(X[ind.row, ind.col], y[ind.row])
-#' print(all.equal(test2, as.numeric(true2)))
-big_cprodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
-  cpMatVec4(X@address, y, ind.row, ind.col)
+#' test2 <- big_cprodVec(X.desc, y[ind.row], ind.row, ind.col)
+#' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], y[ind.row])
+#' all.equal(test2, as.numeric(true2))
+big_cprodVec <- function(X., y,
+                         ind.row = rows_along(X.),
+                         ind.col = cols_along(X.)) {
+  cpMatVec4(address(X.), y, ind.row, ind.col)
 }
 
 ################################################################################
 
-big_prodMat <- function(X, A, ind.row = seq(nrow(X)),
-                        ind.col = seq(ncol(X)),
+#' @export
+#' @keywords internal
+big_prodMat <- function(X., A, ind.row = rows_along(X.),
+                        ind.col = cols_along(X.),
                         block.size = 1000,
                         ncores2 = 1) {
-  m <- length(ind.col)
-  stopifnot(m == nrow(A))
+  stopifnot(length(ind.col) == nrow(A))
 
-  big_apply(X, FUN = function(x, ind, A, ind.row, ind.col) {
+  big_apply(X., a.FUN = function(x, ind, A, ind.row, ind.col) {
     x[ind.row, ind.col[ind]] %*% A[ind, ]
-  }, .combine = '+', block.size = block.size, m = m,
-  ind.arg = TRUE, ncores = ncores2, A = A,
+  }, a.combine = '+', block.size = block.size,
+  ind = seq_along(ind.col), ncores = ncores2, A = A,
   ind.row = ind.row, ind.col = ind.col)
 }
+
 ################################################################################
 
 mult <- function(A, B, use.Eigen) {

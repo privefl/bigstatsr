@@ -4,17 +4,20 @@
 \alias{big_predScoresPCA}
 \title{Scores of PCA}
 \usage{
-big_predScoresPCA(obj.svd, X = NULL, ind.test = seq(nrow(X)),
-  ind.col = seq(ncol(X)), block.size = 1000, use.Eigen = !detect_MRO())
+big_predScoresPCA(obj.svd, X. = NULL, ind.row = rows_along(X.),
+  ind.col = cols_along(X.), block.size = 1000, use.Eigen = !detect_MRO())
 }
 \arguments{
-\item{obj.svd}{A list returned by \code{big_SVD}.}
+\item{obj.svd}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
 
-\item{ind.test}{Vector of indices of samples to be projected.
-Don't use negative indices here.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+
+\item{ind.row}{An optional vector of the row indices that are used.
+If not specified, all rows are used. Don't use negative indices.}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used.}
+If not specified, all columns are used. Don't use negative indices.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}. This parameter controls the trade-off between
@@ -25,8 +28,8 @@ the quicker will be the execution time, at the expense of memory usage.}
 for matrix computations? Default tries to detect MRO. See details.}
 }
 \value{
-A matrix of size \code{n * K} where n is the number of samples
-corresponding to indices of \code{ind.test} and K the number of PCs
+A matrix of size \eqn{n \times K} where \code{n} is the number of samples
+corresponding to indices in \code{ind.row} and K the number of PCs
 computed in \code{obj.svd}. If \code{X} is not specified, this just returns
 the scores of the training set of \code{obj.svd}.
 }

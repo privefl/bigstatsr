@@ -25,3 +25,39 @@ rows_along <- function(x) seq_len(nrow(x))
 #' @export
 #' @keywords internal
 cols_along <- function(x) seq_len(ncol(x))
+
+#' @export
+#' @keywords internal
+setGeneric('address', function(x) {
+  standardGeneric('address')
+})
+
+#' @export
+#' @keywords internal
+setMethod('address', signature(x = 'big.matrix'), function(x) x@address)
+
+#' @export
+#' @keywords internal
+setMethod('address', signature(x = 'big.matrix.descriptor'), function(x) {
+  address(attach.big.matrix(x))
+})
+
+#' @export
+#' @keywords internal
+setMethod('describe', signature(x = 'big.matrix.descriptor'), identity)
+
+#' @export
+#' @keywords internal
+setGeneric('attach.BM', function(x) {
+  standardGeneric('attach.BM')
+})
+
+#' @export
+#' @keywords internal
+setMethod('attach.BM', signature(x = 'big.matrix'), identity)
+
+#' @export
+#' @keywords internal
+setMethod('attach.BM', signature(x = 'big.matrix.descriptor'), function(x) {
+  attach.big.matrix(x)
+})

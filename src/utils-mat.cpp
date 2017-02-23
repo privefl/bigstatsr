@@ -13,7 +13,6 @@ Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X,
   return X * Y;
 }
 
-/******************************************************************************/
 
 // [[Rcpp::export]]
 Eigen::MatrixXd crossprodEigen5(const Eigen::Map<Eigen::MatrixXd> X,

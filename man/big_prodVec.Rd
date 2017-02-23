@@ -4,14 +4,17 @@
 \alias{big_prodVec}
 \title{Product between a "big.matrix" and a vector}
 \usage{
-big_prodVec(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X)))
+big_prodVec(X., y, ind.row = rows_along(X.), ind.col = cols_along(X.))
 }
 \arguments{
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used.}
+If not specified, all rows are used. Don't use negative indices.}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used.}
+If not specified, all columns are used. Don't use negative indices.}
 }
 \value{
 \eqn{X /cdot y}.

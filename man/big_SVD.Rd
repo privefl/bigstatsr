@@ -4,41 +4,38 @@
 \alias{big_SVD}
 \title{SVD}
 \usage{
-big_SVD(X, fun.scaling, ind.train = seq(nrow(X)), block.size = 1000,
-  k = NULL, thr.eigval = 0.001, use.Eigen = !detect_MRO(),
-  returnU = TRUE, returnV = TRUE)
+big_SVD(X, fun.scaling, ind.row = seq(nrow(X)), block.size = 1000,
+  k = NULL, thr.eigval = 1e-04, use.Eigen = !detect_MRO())
 }
 \arguments{
+\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+
 \item{fun.scaling}{A function that returns a named list of
 \strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
-\item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+\item{ind.row}{An optional vector of the row indices that are used.
+If not specified, all rows are used. Don't use negative indices.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
 
-\item{k}{Number of PCs to compute. Default is all.}
+\item{k}{Number of singular vectors/values to compute. Default is all.}
 
 \item{thr.eigval}{Threshold to remove "unsignificant" PCs.
-Default is \code{1e-3}.}
+Default is \code{1e-4}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default tries to detect MRO. See details.}
-
-\item{returnU}{Logical whether to return U or not. Default is \code{TRUE}.}
-
-\item{returnV}{Logical whether to return V or not. Default is \code{TRUE}.}
 }
 \value{
 A list of
 \itemize{
 \item \code{d}, the singular values,
-\item \code{u}, the left singular vectors if \code{returnU} is \code{TRUE},
-\item \code{v}, the right singular vectors if \code{returnV} is \code{TRUE},
+\item \code{u}, the left singular vectors,
+\item \code{v}, the right singular vectors,
 \item \code{means}, the centering vector,
 \item \code{sds}, the scaling vector.
 }

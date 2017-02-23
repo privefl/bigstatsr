@@ -4,12 +4,12 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X.desc, a.FUN, a.combine, ncores = 1, block.size = 1000,
-  ind = cols_along(X.desc), ...)
+big_apply(X., a.FUN, a.combine, ncores = 1, block.size = 1000,
+  ind = cols_along(X.), ...)
 }
 \arguments{
-\item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{a.FUN}{The function to be applied to each subset matrix.
 It must take a \code{big.matrix} as first argument and \code{ind}, a vector of

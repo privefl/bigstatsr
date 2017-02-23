@@ -4,9 +4,9 @@
 \alias{big_CMSA}
 \title{Cross-Model Selection and Averaging.}
 \usage{
-big_CMSA(FUN, X, y.train, ind.train = seq(nrow(X)), covar.train = NULL,
-  K = 10, ncores = 1, method = c("geometric-median", "mean-wise",
-  "median-wise"), block.size = 1000, ...)
+big_CMSA(FUN, feval, X, y.train, ind.train = seq(nrow(X)),
+  covar.train = NULL, K = 10, ncores = 1, method = c("geometric-median",
+  "mean-wise", "median-wise"), block.size = 1000, ...)
 }
 \arguments{
 \item{FUN}{Function that computes a linear scores for different
@@ -14,10 +14,19 @@ values along a regularization path. For now, this is relevant to
 \link{big_spLinReg}, \link{big_spLogReg} and \link{big_spSVM}.
 The corresponding \code{<FUN>.predict} function should exists.}
 
+\item{feval}{Custimized evaluation function. You should always aim at
+maximizing this function. If \code{feval} is like a loss function (which you
+want to minimize), you should use its opposite instead.
+Its only two arguments should be \code{pred} and \code{target}
+(e.g. \code{function(pred, target) aucSample(pred, target, nsim = 1e5)}).}
+
+\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+for the training part. If not specified, all rows are used.
+Don't use negative indices.}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
@@ -36,12 +45,6 @@ memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
 
 \item{...}{Extra parameters to be passed to FUN.}
-
-\item{feval}{Custimized evaluation function. You should always aim at
-maximizing this function. If \code{feval} is like a loss function (which you
-want to minimize), you should use its opposite instead.
-Its only two arguments should be \code{pred} and \code{target}
-(e.g. \code{function(pred, target) aucSample(pred, target, nsim = 1e5)}).}
 }
 \value{
 A vector of resulting coefficients (intercept excluded), which

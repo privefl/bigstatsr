@@ -6,8 +6,12 @@
 \alias{bigstatsr-package}
 \title{bigstatsr: Statistical Tools for Bigmemory Matrices}
 \arguments{
-\item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.
-You shouldn't have missing values in your data.}
+\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+
+\item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
@@ -15,13 +19,14 @@ You shouldn't have missing values in your data.}
 Must be 0s and 1s.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+for the training part. If not specified, all rows are used.
+Don't use negative indices.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used.}
+If not specified, all rows are used. Don't use negative indices.}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used.}
+If not specified, all columns are used. Don't use negative indices.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}. This parameter controls the trade-off between

@@ -1,17 +1,15 @@
 ################################################################################
 
 DualBigPCA <- function(X, fun.scaling,
-                       ind.train,
+                       ind.row,
                        block.size,
                        k,
                        thr.eigval,
-                       use.Eigen,
-                       returnU,
-                       returnV) {
+                       use.Eigen) {
 
   tmp <- big_tcrossprodSelf(X = X,
                             fun.scaling = fun.scaling,
-                            ind.train = ind.train,
+                            ind.row = ind.row,
                             block.size = block.size,
                             use.Eigen = use.Eigen)
 
@@ -26,30 +24,24 @@ DualBigPCA <- function(X, fun.scaling,
   d <- sqrt(eig$values[1:lastEig])
   rm(eig)
 
-  if (returnV) {
-    v <- crossprodScaled(X, u, ind.train, block.size, tmp$mean, tmp$sd, use.Eigen)
-    v <- scaling(v, rep(0, lastEig), d)
-  } else {
-    v <- NULL
-  }
+  v <- crossprodScaled(X, u, ind.row, block.size, tmp$mean, tmp$sd, use.Eigen)
+  v <- scaling(v, rep(0, lastEig), d)
 
-  list(d = d, u = `if`(returnU, u, NULL), v = v, means = tmp$mean, sds = tmp$sd)
+  list(d = d, u = u, v = v, means = tmp$mean, sds = tmp$sd)
 }
 
 ################################################################################
 
 PrimalBigPCA <- function(X, fun.scaling,
-                         ind.train,
+                         ind.row,
                          block.size,
                          k,
                          thr.eigval,
-                         use.Eigen,
-                         returnU,
-                         returnV) {
+                         use.Eigen) {
 
   tmp <- big_crossprodSelf(X = X,
                            fun.scaling = fun.scaling,
-                           ind.train = ind.train,
+                           ind.row = ind.row,
                            block.size = block.size,
                            use.Eigen = use.Eigen)
 
@@ -58,20 +50,16 @@ PrimalBigPCA <- function(X, fun.scaling,
               RSpectra::eigs_sym(tmp$K, k))
   tmp$K <- NULL
 
-  lastEig <- max(which(eig$values > (thr.eigval * length(ind.train))))
+  lastEig <- max(which(eig$values > (thr.eigval * length(ind.row))))
 
   v <- eig$vectors[, 1:lastEig]
   d <- sqrt(eig$values[1:lastEig])
   rm(eig)
 
-  if (returnU) {
-    u <- multScaled(X, v, ind.train, block.size, tmp$mean, tmp$sd, use.Eigen)
-    u <- scaling(u, rep(0, lastEig), d)
-  } else {
-    u <- NULL
-  }
+  u <- multScaled(X, v, ind.row, block.size, tmp$mean, tmp$sd, use.Eigen)
+  u <- scaling(u, rep(0, lastEig), d)
 
-  list(d = d, u = u, v = `if`(returnV, v, NULL), means = tmp$mean, sds = tmp$sd)
+  list(d = d, u = u, v = v, means = tmp$mean, sds = tmp$sd)
 }
 
 ################################################################################
@@ -83,17 +71,15 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' or observations (dual).
 #'
 #' @inherit bigstatsr-package params details
-#' @param k Number of PCs to compute. Default is all.
+#' @param k Number of singular vectors/values to compute. Default is all.
 #' @param thr.eigval Threshold to remove "unsignificant" PCs.
-#' Default is \code{1e-3}.
-#' @param returnU Logical whether to return U or not. Default is `TRUE`.
-#' @param returnV Logical whether to return V or not. Default is `TRUE`.
+#' Default is \code{1e-4}.
 #'
 #' @export
 #' @return A list of
 #' - `d`, the singular values,
-#' - `u`, the left singular vectors if `returnU` is `TRUE`,
-#' - `v`, the right singular vectors if `returnV` is `TRUE`,
+#' - `u`, the left singular vectors,
+#' - `v`, the right singular vectors,
 #' - `means`, the centering vector,
 #' - `sds`, the scaling vector.
 #'
@@ -104,23 +90,17 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' @example examples/example-newScale.R
 #' @seealso [prcomp][stats::prcomp]
 big_SVD <- function(X, fun.scaling,
-                    ind.train = seq(nrow(X)),
+                    ind.row = seq(nrow(X)),
                     block.size = 1e3,
                     k = NULL,
-                    thr.eigval = 1e-3,
-                    use.Eigen = !detect_MRO(),
-                    returnU = TRUE,
-                    returnV = TRUE) {
-  check_X(X)
-
-  if (ncol(X) > length(ind.train)) {
+                    thr.eigval = 1e-4,
+                    use.Eigen = !detect_MRO()) {
+  if (ncol(X) > length(ind.row)) {
     printf("(2)")
-    DualBigPCA(X, fun.scaling, ind.train, block.size, k,
-               thr.eigval, use.Eigen, returnU, returnV)
+    DualBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval, use.Eigen)
   } else {
     printf("(1)")
-    PrimalBigPCA(X, fun.scaling, ind.train, block.size, k,
-                 thr.eigval, use.Eigen, returnU, returnV)
+    PrimalBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval, use.Eigen)
   }
 }
 
@@ -132,32 +112,30 @@ big_SVD <- function(X, fun.scaling,
 #' using function `big_SVD`.
 #'
 #' @inherit bigstatsr-package params
-#' @param obj.svd A list returned by `big_SVD`.
-#' @param ind.test Vector of indices of samples to be projected.
-#' Don't use negative indices here.
+#' @param obj.svd A list returned by `big_SVD` or `big_randomSVD`.
 #'
 #' @export
-#' @return A matrix of size `n * K` where n is the number of samples
-#' corresponding to indices of `ind.test` and K the number of PCs
+#' @return A matrix of size \eqn{n \times K} where `n` is the number of samples
+#' corresponding to indices in `ind.row` and K the number of PCs
 #' computed in `obj.svd`. If `X` is not specified, this just returns
 #' the scores of the training set of `obj.svd`.
 #'
 #' @example examples/example-SVD.R
 #' @seealso [predict][stats::predict.prcomp] [big_SVD]
-big_predScoresPCA <- function(obj.svd, X = NULL,
-                              ind.test = seq(nrow(X)),
-                              ind.col = seq(ncol(X)),
+big_predScoresPCA <- function(obj.svd, X. = NULL,
+                              ind.row = rows_along(X.),
+                              ind.col = cols_along(X.),
                               block.size = 1000,
                               use.Eigen = !detect_MRO()) {
-  if (is.null(X)) {
+  if (is.null(X.)) {
     obj.svd$u %*% diag(obj.svd$d)
   } else {
-    stopifnot(all(ind.test > 0))
-    multScaled2(X, mat = obj.svd$v,
-               ind.test, ind.col, block.size,
-               vec.center = obj.svd$means,
-               vec.scale = obj.svd$sds,
-               use.Eigen)
+    stopifnot(all(ind.row > 0))
+    multScaled2(attach.BM(X.), mat = obj.svd$v,
+                ind.row, ind.col, block.size,
+                vec.center = obj.svd$means,
+                vec.scale = obj.svd$sds,
+                use.Eigen)
   }
 }
 

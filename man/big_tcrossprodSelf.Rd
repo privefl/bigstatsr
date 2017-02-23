@@ -8,12 +8,15 @@ big_tcrossprodSelf(X, fun.scaling, ind.train = seq(nrow(X)),
   block.size = 1000, use.Eigen = !detect_MRO())
 }
 \arguments{
+\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+
 \item{fun.scaling}{A function that returns a named list of
 \strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+for the training part. If not specified, all rows are used.
+Don't use negative indices.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default is \code{1000}. This parameter controls the trade-off between

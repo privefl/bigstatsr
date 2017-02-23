@@ -71,46 +71,31 @@ So, we have shown that we can compute a product between a scaled version of a  l
 Let use the `big_apply` function to implement the main problem we have treated in this document.
 
 ```{r}
+X.desc <- big_attachExtdata()
 # simulate some data
-n <- 500
-m <- 5000
-X <- big.matrix(n, m)
-X[] <- rnorm(length(X))
-M <- matrix(0, m, 10)
+M <- matrix(0, ncol(X.desc), 10)
 M[] <- rnorm(length(M))
 ```
 
 ```{r}
 ### Treating mu as any vector
 # get mu and s as the column means and column standard deviations
-stats_scale <- big_apply(X, FUN = function(x) {
-  data.frame(mu = colMeans(x), s = apply(x, 2, sd))
-}, .combine = 'rbind')
+stats_scale <- big_scale(center = TRUE, scale = TRUE)(X.desc)
 
 # compute M_s
-M_s <- M / stats_scale$s
-
-XM_s <- big_apply(X, FUN = function(x, ind, mat) {
-  X[, ind, drop = FALSE] %*% mat[ind, , drop = FALSE] 
-}, .combine = '+', ind.arg = TRUE, mat = M_s)
-
-final <- sweep(XM_s, 2, crossprod(stats_scale$mu, M_s), '-')
+M_s <- M / stats_scale$sd
+# compute the product, without scaling X
+XM_s <- big_prodMat(X.desc, M_s)
+# adjust the result
+final <- sweep(XM_s, 2, crossprod(stats_scale$mean, M_s), '-')
 
 # verification
-print(all.equal(final, scale(X[,]) %*% M))
-
+all.equal(final, scale(attach.BM(X.desc)[,]) %*% M)
 
 ### Knowing that mu is the column means of X
-# get s only
-sds <- big_apply(X, FUN = function(x) apply(x, 2, sd), .combine = 'c')
-
-XM_s2 <- big_apply(X, FUN = function(x, ind, mat) {
-  X[, ind, drop = FALSE] %*% mat[ind, , drop = FALSE] 
-}, .combine = '+', ind.arg = TRUE, mat = M / sds)
-
-final2 <- sweep(XM_s2, 2, colMeans(XM_s2), '-')
+final2 <- sweep(XM_s, 2, colMeans(XM_s), '-')
 
 # verification
-print(all.equal(final2, scale(X[,]) %*% M))
+all.equal(final2, final)
 ```
 

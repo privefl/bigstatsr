@@ -4,15 +4,15 @@
 \alias{big_parallelize}
 \title{Split-parApply-Combine}
 \usage{
-big_parallelize(X.desc, p.FUN, p.combine, ncores, ind = cols_along(X.desc),
-  ...)
+big_parallelize(X., p.FUN, p.combine, ncores, ind = cols_along(X.), ...)
 }
 \arguments{
-\item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
-\item{p.FUN}{The function to be applied. \code{X.desc} must be its first argument
-and it must provide some arguments for subsetting.}
+\item{p.FUN}{The function to be applied. It must take a
+big.matrix.descriptor][big.matrix.descriptor-class] as first argument
+and provide some arguments for subsetting.}
 
 \item{p.combine}{function that is used by \link{foreach} to process the tasks
 results as they generated. This can be specified as either a function or a

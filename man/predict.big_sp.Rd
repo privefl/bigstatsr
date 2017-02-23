@@ -10,8 +10,10 @@
 \arguments{
 \item{object}{Object of class \code{big_spReg}.}
 
+\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used.}
+If not specified, all rows are used. Don't use negative indices.}
 
 \item{covar.row}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.

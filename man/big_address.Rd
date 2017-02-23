@@ -7,8 +7,7 @@
 big_address(X.desc)
 }
 \arguments{
-\item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.
-You shouldn't have missing values in your data.}
+\item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 }
 \value{
 The slot \code{address} of the described \code{big.matrix}.
