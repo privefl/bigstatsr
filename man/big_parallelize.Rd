@@ -67,11 +67,10 @@ big_colstats_sub2 <- function(X.desc, ind, rows, cols) {
 }
 # This doesn't work because, by default, the computation is spread
 # along all columns. We must explictly specify the `ind` parameter.
-testthat::expect_error(
-  test2 <- big_parallelize(X.desc, p.FUN = big_colstats_sub2,
-                           p.combine = 'rbind', ncores = 2,
-                           rows = rows, cols = cols)
-)
+tryCatch(test2 <- big_parallelize(X.desc, p.FUN = big_colstats_sub2,
+                                  p.combine = 'rbind', ncores = 2,
+                                  rows = rows, cols = cols),
+         error = FUN_ERROR)
 # This now works, using `ind = seq_along(cols)`.
 test2 <- big_parallelize(X.desc, p.FUN = big_colstats_sub2,
                          p.combine = 'rbind', ncores = 2,

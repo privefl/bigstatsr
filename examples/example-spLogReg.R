@@ -9,7 +9,7 @@ covar <- matrix(rnorm(N * 3), N)
 tryCatch({
   test <- biglasso::biglasso(X, y, family = "binomial")
   print(summary(test$scale))
-}, error = function(e) message("One error has been catched."))
+}, error = FUN_ERROR)
 # OK here
 test2 <- big_spLogReg(X, y)
 str(test2)
