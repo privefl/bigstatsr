@@ -60,7 +60,7 @@ get_beta <- function(betas, method) {
 #' @export
 #' @import foreach
 #'
-big_CMSA <- function(FUN, X, y.train, ind.train = seq(nrow(X)),
+big_CMSA <- function(FUN, feval, X, y.train, ind.train = seq(nrow(X)),
                      covar.train = NULL, K = 10, ncores = 1,
                      method = c("geometric-median", "mean-wise", "median-wise"),
                      block.size = 1000,
@@ -105,7 +105,7 @@ big_CMSA <- function(FUN, X, y.train, ind.train = seq(nrow(X)),
     x$betas[, which.max(seval)]
   })
   # average these coefficients
-  get_beta(betas, method)
+  get_beta(betas, match.arg(method))
 }
 
 ################################################################################
