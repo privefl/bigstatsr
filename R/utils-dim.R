@@ -38,13 +38,17 @@ setMethod('address', signature(x = 'big.matrix'), function(x) x@address)
 
 #' @export
 #' @keywords internal
-setMethod('address', signature(x = 'big.matrix.descriptor'), function(x) {
-  address(attach.big.matrix(x))
-})
+setMethod('address', signature(x = 'big.matrix.descriptor'),
+          function(x) address(attach.big.matrix(x)))
 
 #' @export
 #' @keywords internal
 setMethod('describe', signature(x = 'big.matrix.descriptor'), identity)
+
+#' @export
+#' @keywords internal
+setMethod('typeof', signature(x = 'big.matrix.descriptor'),
+          function(x) x@description$type)
 
 #' @export
 #' @keywords internal
@@ -58,6 +62,5 @@ setMethod('attach.BM', signature(x = 'big.matrix'), identity)
 
 #' @export
 #' @keywords internal
-setMethod('attach.BM', signature(x = 'big.matrix.descriptor'), function(x) {
-  attach.big.matrix(x)
-})
+setMethod('attach.BM', signature(x = 'big.matrix.descriptor'),
+          function(x) attach.big.matrix(x))
