@@ -1,6 +1,9 @@
-/******************************************************************************/
-
 #include "bigstatsr.h"
+
+// [[Rcpp::depends(bigmemory, BH, RcppArmadillo)]]
+#include <RcppArmadillo.h> // Sys.setenv("PKG_LIBS" = "-llapack")
+#include <bigmemory/MatrixAccessor.hpp>
+using namespace Rcpp;
 
 /******************************************************************************/
 
@@ -12,26 +15,28 @@ inline arma::vec UUty(const arma::mat& U, const arma::vec& y) {
 /******************************************************************************/
 
 template <typename T>
-List univLinReg5(SubMatrixAccessor<T> macc,
+List univLinReg5(MatrixAccessor<T> macc,
                  const arma::mat& U,
-                 const arma::vec& y) {
-  int n = macc.nrow();
+                 const arma::vec& y,
+                 const IntegerVector& rowInd) {
+  int n = rowInd.size();
   int m = macc.ncol();
   int K = U.n_cols;
-  myassert(U.n_rows == n, ERROR_DIM);
-  myassert(y.n_elem == n, ERROR_DIM);
-
   arma::vec x(n), x2(n);
   arma::vec y2 = y - UUty(U, y);
   double y2_sumSq = dot(y2, y2);
   double beta, x_tmp, x_diff, x2_sumSq, beta_num, beta_deno, RSS;
   int i, j;
 
-  NumericVector betas(m), var(m);
+  // indices begin at 1 in R and 0 in C++
+  IntegerVector trains = rowInd - 1;
+
+  NumericVector res(m);
+  NumericVector var(m);
 
   for (j = 0; j < m; j++) {
     for (i = 0; i < n; i++) {
-      x[i] = macc(i, j);
+      x[i] = macc[j][trains[i]];
     }
     x2 = UUty(U, x);
 
@@ -45,12 +50,12 @@ List univLinReg5(SubMatrixAccessor<T> macc,
     }
     beta = beta_num / beta_deno;
     RSS = y2_sumSq - beta * beta * x2_sumSq;
-    betas[j] = beta;
+    res[j] = beta;
     var[j] = RSS / (beta_deno * (n - K - 1));
   }
 
-  return List::create(_["estim"] = betas,
-                      _["std.err"] = sqrt(var));
+  return(List::create(_["estim"] = res,
+                      _["std.err"] = sqrt(var)));
 }
 
 /******************************************************************************/
@@ -60,25 +65,19 @@ List univLinReg5(SubMatrixAccessor<T> macc,
 List univLinReg5(XPtr<BigMatrix> xpMat,
                  const arma::mat& covar_U,
                  const arma::vec& y,
-                 const IntegerVector& rowInd,
-                 const IntegerVector& colInd) {
+                 const IntegerVector& rowInd) {
 
   switch(xpMat->matrix_type()) {
   case 1:
-    return univLinReg5(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
+    return univLinReg5(MatrixAccessor<char>(*xpMat),   covar_U, y, rowInd);
   case 2:
-    return univLinReg5(SubMatrixAccessor<short>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
+    return univLinReg5(MatrixAccessor<short>(*xpMat),  covar_U, y, rowInd);
   case 4:
-    return univLinReg5(SubMatrixAccessor<int>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
+    return univLinReg5(MatrixAccessor<int>(*xpMat),    covar_U, y, rowInd);
   case 6:
-    return univLinReg5(SubMatrixAccessor<float>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
+    return univLinReg5(MatrixAccessor<float>(*xpMat),  covar_U, y, rowInd);
   case 8:
-    return univLinReg5(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
+    return univLinReg5(MatrixAccessor<double>(*xpMat), covar_U, y, rowInd);
   default:
     throw Rcpp::exception(ERROR_TYPE);
   }

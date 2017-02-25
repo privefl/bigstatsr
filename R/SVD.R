@@ -72,8 +72,6 @@ PrimalBigPCA <- function(X, fun.scaling,
 #'
 #' @inherit bigstatsr-package params details
 #' @param k Number of singular vectors/values to compute. Default is all.
-#' @param thr.eigval Threshold to remove "unsignificant" PCs.
-#' Default is \code{1e-4}.
 #'
 #' @export
 #' @return A list of

@@ -152,8 +152,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // univLinReg5
-List univLinReg5(XPtr<BigMatrix> xpMat, const arma::mat& covar_U, const arma::vec& y, const IntegerVector& rowInd);
-RcppExport SEXP bigstatsr_univLinReg5(SEXP xpMatSEXP, SEXP covar_USEXP, SEXP ySEXP, SEXP rowIndSEXP) {
+List univLinReg5(XPtr<BigMatrix> xpMat, const arma::mat& covar_U, const arma::vec& y, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP bigstatsr_univLinReg5(SEXP xpMatSEXP, SEXP covar_USEXP, SEXP ySEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -161,7 +161,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::mat& >::type covar_U(covar_USEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(univLinReg5(xpMat, covar_U, y, rowInd));
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(univLinReg5(xpMat, covar_U, y, rowInd, colInd));
     return rcpp_result_gen;
 END_RCPP
 }

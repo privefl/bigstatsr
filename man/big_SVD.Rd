@@ -24,7 +24,7 @@ the quicker will be the execution time, at the expense of memory usage.}
 
 \item{k}{Number of singular vectors/values to compute. Default is all.}
 
-\item{thr.eigval}{Threshold to remove "unsignificant" PCs.
+\item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
 Default is \code{1e-4}.}
 
 \item{use.Eigen}{Should the \code{Eigen} library be used

@@ -48,10 +48,11 @@ univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
 #' algorithm didn't converge, and [glm][stats::glm] was used instead.
 #' 4. the z-scores associated with each slope,
 #' 5. the p-values associated with each z-score.
+#'
 #' @example examples/example-univLogReg.R
+#'
 #' @seealso [glm][stats::glm]
 #' @export
-#' @import foreach
 big_univLogReg <- function(X., y01.train,
                            ind.train = rows_along(X.),
                            ind.col = cols_along(X.),
@@ -60,9 +61,7 @@ big_univLogReg <- function(X., y01.train,
                            tol = 1e-8, maxiter = 20) {
   n <- length(ind.train)
   stopifnot(n == length(y01.train))
-  covar.train <- `if`(is.null(covar.train),
-                      cbind(rep(0, n), rep(1, n)),
-                      cbind(0, 1, covar.train))
+  covar.train <- cbind(rep(0, n), rep(1, n), covar.train)
   stopifnot(n == nrow(covar.train))
 
   # precompute some estimation with only the covariables (and the intercept)

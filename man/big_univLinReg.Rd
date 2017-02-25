@@ -4,11 +4,13 @@
 \alias{big_univLinReg}
 \title{Column-wise linear regression}
 \usage{
-big_univLinReg(X, y.train, ind.train = seq(nrow(X)), covar.train = NULL,
-  ncores2 = 1)
+big_univLinReg(X., y.train, ind.train = rows_along(X.),
+  ind.col = cols_along(X.), covar.train = NULL, ncores2 = 1,
+  thr.eigval = 1e-04)
 }
 \arguments{
-\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
@@ -16,12 +18,18 @@ big_univLinReg(X, y.train, ind.train = seq(nrow(X)), covar.train = NULL,
 for the training part. If not specified, all rows are used.
 Don't use negative indices.}
 
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used. Don't use negative indices.}
+
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
 \item{ncores2}{Number of cores used. Default doesn't use parallelism.
 For this function, use only half of the cores you have.}
+
+\item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
+Default is \code{1e-4}.}
 }
 \value{
 A data.frame with 4 elements:
@@ -38,39 +46,27 @@ of a \code{big.matrix}, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
 \examples{
-# Simulating some data
-data("trees")
-N <- nrow(trees)
+X.desc <- big_attachExtdata()
+n <- nrow(X.desc)
+y <- rnorm(n)
 covar <- matrix(rnorm(N * 3), N)
-X <- as.big.matrix(as.matrix(trees[, -1]))
-y <- trees[, 1]
+
+X1 <- attach.BM(X.desc)[, 1] # only first column of the `big.matrix`
 
 # Without covar
-lmVol0 <- summary(lm(Girth ~ Volume, data = trees))
-lmHei0 <- summary(lm(Girth ~ Height, data = trees))
-
-print(big_univLinReg(X, y))
-print(rbind(lmHei0$coefficients[2, ], lmVol0$coefficients[2, ]))
+str(big_univLinReg(X.desc, y))
+summary(lm(y ~ X1))$coefficients[2, ]
 
 # With all data
-# lm
-lmVol <- summary(lm(Girth ~ Volume + covar, data = trees))
-lmHei <- summary(lm(Girth ~ Height + covar, data = trees))
-
-print(big_univLinReg(X, y, covar = covar))
-print(rbind(lmHei$coefficients[2, ], lmVol$coefficients[2, ]))
+str(big_univLinReg(X.desc, y, covar = covar))
+summary(lm(y ~ X1 + covar))$coefficients[2, ]
 
 # With only half of the data
-ind.train <- sort(sample(N, N / 2))
-
-# lm
-lmVol2 <- summary(lm(Girth ~ Volume + covar, data = trees, subset = ind.train))
-lmHei2 <- summary(lm(Girth ~ Height + covar, data = trees, subset = ind.train))
-
-print(big_univLinReg(X, y[ind.train],
-                     covar = covar[ind.train, ],
-                     ind.train = ind.train))
-print(rbind(lmHei2$coefficients[2, ], lmVol2$coefficients[2, ]))
+ind.train <- sort(sample(n, n/2))
+str(big_univLinReg(X.desc, y[ind.train],
+                   covar.train = covar[ind.train, ],
+                   ind.train = ind.train))
+summary(lm(y ~ X1 + covar, subset = ind.train))$coefficients[2, ]
 }
 \seealso{
 \link[stats:lm]{lm}

@@ -50,6 +50,9 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
+\item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
+Default is \code{1e-4}.}
+
 \item{use.Eigen}{Should the \code{Eigen} library be used
 for matrix computations? Default tries to detect MRO. See details.}
 }
