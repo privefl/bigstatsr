@@ -55,8 +55,8 @@ univLinReg5 <- function(xpMat, covar_U, y, rowInd) {
     .Call('bigstatsr_univLinReg5', PACKAGE = 'bigstatsr', xpMat, covar_U, y, rowInd)
 }
 
-IRLS <- function(xpMat, covar, y, z0, w0, rowInd, tol, maxiter) {
-    .Call('bigstatsr_IRLS', PACKAGE = 'bigstatsr', xpMat, covar, y, z0, w0, rowInd, tol, maxiter)
+IRLS <- function(xpMat, covar, y, z0, w0, rowInd, colInd, tol, maxiter) {
+    .Call('bigstatsr_IRLS', PACKAGE = 'bigstatsr', xpMat, covar, y, z0, w0, rowInd, colInd, tol, maxiter)
 }
 
 multEigen <- function(X, Y) {

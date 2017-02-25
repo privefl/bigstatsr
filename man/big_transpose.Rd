@@ -4,10 +4,14 @@
 \alias{big_transpose}
 \title{Transposition}
 \usage{
-big_transpose(X, ...)
+big_transpose(X., descriptor = TRUE, ...)
 }
 \arguments{
-\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+
+\item{descriptor}{Return the descriptor of the transposed \code{big.matrix} or
+directly the \code{big.matrix} object? Default is \code{TRUE} (the descriptor).}
 
 \item{...}{Arguments passed on to \code{bigmemory::big.matrix}
 \describe{
@@ -33,21 +37,21 @@ fail in such cases due to exhausted shared-memory resources in the system.}
 }}
 }
 \value{
-The new transposed big.matrix. Its dimension, type and dimnames
-are automatically determined from the input \code{big.matrix}.
+The new transposed \code{big.matrix} (or its descriptor). Its dimension,
+type and dimnames are automatically determined from the input \code{big.matrix}.
 }
 \description{
 This function implements a simple cache-oblivious
 algorithm for the transposition of a "big.matrix".
 }
 \examples{
-X <- big.matrix(11, 23, shared = FALSE)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
 
-Xt <- big_transpose(X, shared = FALSE)
+tmpfile <- tempfile()
+Xt.desc <- big_transpose(X.desc, descriptor = TRUE,
+                         backingfile = basename(tmpfile),
+                         backingpath = dirname(tmpfile),
+                         descriptorfile = paste0(basename(tmpfile), ".desc"))
 
-print(identical(
-  t(X[,]),
-    Xt[,]
-))
+identical(t(attach.BM(X.desc)[,]), attach.BM(Xt.desc)[,])
 }

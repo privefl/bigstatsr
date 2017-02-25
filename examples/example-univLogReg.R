@@ -1,30 +1,16 @@
-# Simulating some data
-data("trees")
-N <- nrow(trees)
-covar <- matrix(rnorm(N * 3), N)
-X <- as.big.matrix(as.matrix(trees))
-y <- sample(0:1, size = N, replace = TRUE)
+X.desc <- big_attachExtdata()
+n <- nrow(X.desc)
+y <- sample(0:1, size = n, replace = TRUE)
+covar <- matrix(rnorm(n * 3), n)
 
 # Without covar
-print(big_univLogReg(X, y))
-for (i in 1:3) {
-  print(summary(glm(y ~ trees[, i], family = "binomial"))$coefficients[2, ])
-}
+str(big_univLogReg(X.desc, y))
 
 # With all data
-print(big_univLogReg(X, y, covar.train = covar))
-for (i in 1:3) {
-  print(summary(glm(y ~ trees[, i] + covar,
-                    family = "binomial"))$coefficients[2, ])
-}
+str(big_univLogReg(X.desc, y, covar.train = covar))
 
 # With only half of the data
-ind.train <- sort(sample(N, N / 2))
-
-print(big_univLogReg(X, y[ind.train], covar.train = covar[ind.train, ],
-                     ind.train = ind.train))
-for (i in 1:3) {
-  print(summary(glm(y ~ trees[, i] + covar, subset = ind.train,
-                    family = "binomial"))$coefficients[2, ])
-}
-
+ind.train <- sort(sample(n, n/2))
+str(big_univLogReg(X.desc, y[ind.train],
+                   covar.train = covar[ind.train, ],
+                   ind.train = ind.train))

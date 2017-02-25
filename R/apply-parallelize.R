@@ -28,23 +28,27 @@
 big_parallelize <- function(X., p.FUN, p.combine, ncores,
                             ind = cols_along(X.),
                             ...) {
-  X.desc <- describe(X.)
-  range.parts <- CutBySize(length(ind), nb = ncores)
+  if (ncores > 1) {
+    X.desc <- describe(X.)
+    range.parts <- CutBySize(length(ind), nb = ncores)
 
-  cl <- parallel::makeCluster(ncores)
-  doParallel::registerDoParallel(cl)
-  on.exit(parallel::stopCluster(cl), add = TRUE)
+    cl <- parallel::makeCluster(ncores)
+    doParallel::registerDoParallel(cl)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
 
-  multi <- detect_MRO()
+    multi <- detect_MRO()
 
-  foreach(ic = 1:ncores, .combine = p.combine) %dopar% {
-    # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
-    if (multi) {
-      nthreads.save <- RevoUtilsMath::setMKLthreads(1)
-      on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)
+    foreach(ic = 1:ncores, .combine = p.combine) %dopar% {
+      # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
+      if (multi) {
+        nthreads.save <- RevoUtilsMath::setMKLthreads(1)
+        on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)
+      }
+
+      p.FUN(X.desc, ind = ind[seq2(range.parts[ic, ])], ...)
     }
-
-    p.FUN(X.desc, ind = ind[seq2(range.parts[ic, ])], ...)
+  } else { # sequential
+    p.FUN(X., ind = ind, ...)
   }
 }
 
@@ -96,24 +100,15 @@ big_apply <- function(X., a.FUN, a.combine,
                       block.size = 1000,
                       ind = cols_along(X.),
                       ...) {
-  if (ncores > 1) {
-    big_parallelize(X.,
-                    p.FUN = big_applySeq,
-                    p.combine = a.combine,
-                    ncores = ncores,
-                    ind = ind,
-                    a.FUN = a.FUN,
-                    a.combine = a.combine,
-                    block.size = block.size,
-                    ...)
-  } else {
-    big_applySeq(X.,
-                 a.FUN = a.FUN,
-                 a.combine = a.combine,
-                 block.size = block.size,
-                 ind = ind,
-                 ...)
-  }
+  big_parallelize(X. = X.,
+                  p.FUN = big_applySeq,
+                  p.combine = a.combine,
+                  ncores = ncores,
+                  ind = ind,
+                  a.FUN = a.FUN,
+                  a.combine = a.combine,
+                  block.size = block.size,
+                  ...)
 }
 
 ################################################################################

@@ -4,11 +4,13 @@
 \alias{big_univLogReg}
 \title{Column-wise logistic regression}
 \usage{
-big_univLogReg(X, y01.train, ind.train = seq(nrow(X)), covar.train = NULL,
-  ncores2 = 1, tol = 1e-08, maxiter = 20)
+big_univLogReg(X., y01.train, ind.train = rows_along(X.),
+  ind.col = cols_along(X.), covar.train = NULL, ncores2 = 1,
+  tol = 1e-08, maxiter = 20)
 }
 \arguments{
-\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 Must be 0s and 1s.}
@@ -16,6 +18,9 @@ Must be 0s and 1s.}
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.
 Don't use negative indices.}
+
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used. Don't use negative indices.}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
@@ -49,15 +54,11 @@ of a \code{big.matrix}, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
 \examples{
-# Simulating some data
-data("trees")
-N <- nrow(trees)
-covar <- matrix(rnorm(N * 3), N)
-X <- as.big.matrix(as.matrix(trees))
-y <- sample(0:1, size = N, replace = TRUE)
+X.desc <- big_attachExtdata()
+y <- sample(0:1, size = nrow(X.desc), replace = TRUE)
 
 # Without covar
-print(big_univLogReg(X, y))
+str(big_univLogReg(X.desc, y))
 for (i in 1:3) {
   print(summary(glm(y ~ trees[, i], family = "binomial"))$coefficients[2, ])
 }

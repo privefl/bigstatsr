@@ -273,8 +273,9 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
 #' arXiv preprint arXiv:1701.05936. \url{https://arxiv.org/abs/1701.05936}.
 #'
 #' @export
-big_spLinReg <- function(X, y.train, ind.train = seq(nrow(X)),
+big_spLinReg <- function(X., y.train, ind.train = rows_along(X.),
                          covar.train = NULL, ...) {
+  X <- attach.BM(X.)
   COPY_biglasso(X, y.train, ind.train, covar.train, family = "gaussian", ...)
 }
 
@@ -290,8 +291,9 @@ big_spLinReg <- function(X, y.train, ind.train = seq(nrow(X)),
 #' @example examples/example-spLogReg.R
 #'
 #' @export
-big_spLogReg <- function(X, y01.train, ind.train = seq(nrow(X)),
+big_spLogReg <- function(X., y01.train, ind.train = rows_along(X.),
                          covar.train = NULL, ...) {
+  X <- attach.BM(X.)
   COPY_biglasso(X, y01.train, ind.train, covar.train, family = "binomial", ...)
 }
 
