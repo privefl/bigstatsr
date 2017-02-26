@@ -28,12 +28,36 @@ NumericVector pMatVec4(SubMatrixAccessor<T> macc,
   return res;
 }
 
+NumericVector pMatVec4_RAW(RawSubMatrixAccessor macc,
+                          const NumericVector &x) {
+  int n = macc.nrow();
+  int m = macc.ncol();
+
+  NumericVector res(n);
+  int i, j;
+
+  for (j = 0; j <= m - 4; j += 4) { // unrolling optimization
+    for (i = 0; i < n; i++) {
+      res[i] += (x[j] * macc(i, j) + x[j+1] * macc(i, j+1)) +
+        (x[j+2] * macc(i, j+2) + x[j+3] * macc(i, j+3));
+    } // The parentheses are somehow important.
+  }
+  for (; j < m; j++) {
+    for (i = 0; i < n; i++) {
+      res[i] += x[j] * macc(i, j);
+    }
+  }
+
+  return res;
+}
+
 // Dispatch function for pMatVec4
 // [[Rcpp::export]]
 NumericVector pMatVec4(XPtr<BigMatrix> xpMat,
                        const NumericVector &x,
                        const IntegerVector &rowInd,
-                       const IntegerVector &colInd) {
+                       const IntegerVector &colInd,
+                       const NumericVector& lookup) {
   myassert(colInd.size() == x.size(), ERROR_DIM);
 
   switch(xpMat->matrix_type()) {
@@ -47,6 +71,8 @@ NumericVector pMatVec4(XPtr<BigMatrix> xpMat,
     return pMatVec4(SubMatrixAccessor<float>(*xpMat, rowInd-1, colInd-1),  x);
   case 8:
     return pMatVec4(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1), x);
+  case 3:
+    return pMatVec4_RAW(RawSubMatrixAccessor(*xpMat, rowInd-1, colInd-1, lookup), x);
   default:
     throw Rcpp::exception(ERROR_TYPE);
   }

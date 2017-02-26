@@ -13,6 +13,14 @@ bigcolvars <- function(xpMat, rowInd, colInd) {
     .Call('bigstatsr_bigcolvars', PACKAGE = 'bigstatsr', xpMat, rowInd, colInd)
 }
 
+decodeMat <- function(source, code) {
+    .Call('bigstatsr_decodeMat', PACKAGE = 'bigstatsr', source, code)
+}
+
+decodeVec <- function(source, code) {
+    .Call('bigstatsr_decodeVec', PACKAGE = 'bigstatsr', source, code)
+}
+
 #'
 #' T-scores used in pcadapt
 #'
@@ -35,8 +43,8 @@ linRegPcadapt <- function(xpMat, U, rowInd, center, scale) {
     .Call('bigstatsr_linRegPcadapt', PACKAGE = 'bigstatsr', xpMat, U, rowInd, center, scale)
 }
 
-pMatVec4 <- function(xpMat, x, rowInd, colInd) {
-    .Call('bigstatsr_pMatVec4', PACKAGE = 'bigstatsr', xpMat, x, rowInd, colInd)
+pMatVec4 <- function(xpMat, x, rowInd, colInd, lookup) {
+    .Call('bigstatsr_pMatVec4', PACKAGE = 'bigstatsr', xpMat, x, rowInd, colInd, lookup)
 }
 
 cpMatVec4 <- function(xpMat, x, rowInd, colInd) {

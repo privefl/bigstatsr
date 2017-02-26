@@ -14,14 +14,10 @@ using namespace Rcpp;
 #define UTILS_H
 
 // also defined in R/utils.R
-const char* const ERROR_TYPE =
-  "unknown type detected for big.matrix object!";
-
+const char* const ERROR_TYPE = "unknown type detected for big.matrix object!";
+const char* const ERROR_DIM = "incompatibility between dimensions";
 const char* const ERROR_SUB =
   "you can't use this function on a sub.big.matrix!";
-
-const char* const ERROR_DIM =
-  "incompatibility between dimensions";
 
 inline void myassert(bool cond, const char *msg) {
   if (!cond) throw Rcpp::exception(msg);
@@ -33,9 +29,6 @@ inline void myassert(bool cond, const char *msg) {
 
 template<typename T>
 class SubMatrixAccessor {
-public:
-  typedef T value_type;
-
 public:
   SubMatrixAccessor(BigMatrix &bm,
                     const IntegerVector &row_ind,
@@ -87,12 +80,11 @@ protected:
 template<typename T>
 class SubMatrixCovarAccessor {
 public:
-  typedef T value_type;
-
-public:
   SubMatrixCovarAccessor(BigMatrix &bm,
-                    const IntegerVector &row_ind,
-                    const NumericMatrix &covar) {
+                         const IntegerVector &row_ind,
+                         const NumericMatrix &covar) {
+    if (bm.is_submatrix()) throw Rcpp::exception(ERROR_SUB);
+
     if (covar.nrow() != 0) {
       myassert(row_ind.length() == covar.nrow(), ERROR_DIM);
       _ncoladd = covar.ncol();
@@ -113,7 +105,7 @@ public:
     _ncolBM = bm.ncol();
   }
 
-  inline double operator() (int i, int j) {
+  inline T operator() (int i, int j) {
     if (j < _ncolBM) {
       return *(_pMat + _totalRows * j + _row_ind[i]);
     } else {
@@ -145,12 +137,11 @@ protected:
 template<typename T>
 class SubInterceptMatrixCovarAccessor {
 public:
-  typedef T value_type;
-
-public:
   SubInterceptMatrixCovarAccessor(BigMatrix &bm,
                                   const IntegerVector &row_ind,
                                   const NumericMatrix &covar) {
+    if (bm.is_submatrix()) throw Rcpp::exception(ERROR_SUB);
+
     if (covar.nrow() != 0) {
       myassert(row_ind.length() == covar.nrow(), ERROR_DIM);
       _ncoladd = covar.ncol();
@@ -171,7 +162,7 @@ public:
     _ncolBM = bm.ncol();
   }
 
-  inline double operator() (int i, int j) {
+  inline T operator() (int i, int j) {
     if (j == 0) {
       return 1;
     } else {
@@ -204,3 +195,22 @@ protected:
 };
 
 /******************************************************************************/
+
+class RawSubMatrixAccessor : public SubMatrixAccessor<unsigned char> {
+public:
+  RawSubMatrixAccessor(BigMatrix &bm,
+                       const IntegerVector &row_ind,
+                       const IntegerVector &col_ind,
+                       const NumericVector &lookup)
+    : SubMatrixAccessor<unsigned char>(bm, row_ind, col_ind) {
+      _lookup = lookup;
+    }
+
+  inline double operator() (int i, int j) {
+    unsigned char tmp = *(_pMat + _totalRows * _col_ind[j] +_row_ind[i]);
+    return _lookup[tmp];
+  }
+
+protected:
+  NumericVector _lookup;
+};

@@ -72,6 +72,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// decodeMat
+NumericMatrix decodeMat(const RawMatrix& source, const NumericVector& code);
+RcppExport SEXP bigstatsr_decodeMat(SEXP sourceSEXP, SEXP codeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const RawMatrix& >::type source(sourceSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type code(codeSEXP);
+    rcpp_result_gen = Rcpp::wrap(decodeMat(source, code));
+    return rcpp_result_gen;
+END_RCPP
+}
+// decodeVec
+NumericVector decodeVec(const RawVector& source, const NumericVector& code);
+RcppExport SEXP bigstatsr_decodeVec(SEXP sourceSEXP, SEXP codeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const RawVector& >::type source(sourceSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type code(codeSEXP);
+    rcpp_result_gen = Rcpp::wrap(decodeVec(source, code));
+    return rcpp_result_gen;
+END_RCPP
+}
 // linRegPcadapt
 NumericMatrix linRegPcadapt(XPtr<BigMatrix> xpMat, arma::mat& U, const IntegerVector& rowInd, const NumericVector& center, const NumericVector& scale);
 RcppExport SEXP bigstatsr_linRegPcadapt(SEXP xpMatSEXP, SEXP USEXP, SEXP rowIndSEXP, SEXP centerSEXP, SEXP scaleSEXP) {
@@ -88,8 +112,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // pMatVec4
-NumericVector pMatVec4(XPtr<BigMatrix> xpMat, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
-RcppExport SEXP bigstatsr_pMatVec4(SEXP xpMatSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
+NumericVector pMatVec4(XPtr<BigMatrix> xpMat, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd, const NumericVector& lookup);
+RcppExport SEXP bigstatsr_pMatVec4(SEXP xpMatSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP lookupSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -97,7 +121,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(pMatVec4(xpMat, x, rowInd, colInd));
+    Rcpp::traits::input_parameter< const NumericVector& >::type lookup(lookupSEXP);
+    rcpp_result_gen = Rcpp::wrap(pMatVec4(xpMat, x, rowInd, colInd, lookup));
     return rcpp_result_gen;
 END_RCPP
 }
