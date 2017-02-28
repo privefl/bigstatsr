@@ -31,7 +31,8 @@
 big_prodVec <- function(X., y,
                         ind.row = rows_along(X.),
                         ind.col = cols_along(X.)) {
-  pMatVec4(address(X.), y, ind.row, ind.col)
+  X <- attach.BM(X.)
+  pMatVec4(X, y, ind.row, ind.col)
 }
 
 ################################################################################

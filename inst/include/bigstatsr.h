@@ -198,19 +198,20 @@ protected:
 
 class RawSubMatrixAccessor : public SubMatrixAccessor<unsigned char> {
 public:
-  RawSubMatrixAccessor(BigMatrix &bm,
-                       const IntegerVector &row_ind,
-                       const IntegerVector &col_ind,
-                       const NumericVector &lookup)
+  RawSubMatrixAccessor(BigMatrix& bm,
+                       const IntegerVector& row_ind,
+                       const IntegerVector& col_ind,
+                       const NumericVector& lookup)
     : SubMatrixAccessor<unsigned char>(bm, row_ind, col_ind) {
       _lookup = lookup;
     }
 
   inline double operator() (int i, int j) {
-    unsigned char tmp = *(_pMat + _totalRows * _col_ind[j] +_row_ind[i]);
-    return _lookup[tmp];
+    return _lookup[SubMatrixAccessor<unsigned char>::operator()(i, j)];
   }
 
 protected:
   NumericVector _lookup;
 };
+
+/******************************************************************************/

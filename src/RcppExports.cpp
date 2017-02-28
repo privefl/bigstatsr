@@ -112,17 +112,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // pMatVec4
-NumericVector pMatVec4(XPtr<BigMatrix> xpMat, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd, const NumericVector& lookup);
-RcppExport SEXP bigstatsr_pMatVec4(SEXP xpMatSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP lookupSEXP) {
+NumericVector pMatVec4(S4& BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP bigstatsr_pMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type lookup(lookupSEXP);
-    rcpp_result_gen = Rcpp::wrap(pMatVec4(xpMat, x, rowInd, colInd, lookup));
+    rcpp_result_gen = Rcpp::wrap(pMatVec4(BM, x, rowInd, colInd));
     return rcpp_result_gen;
 END_RCPP
 }

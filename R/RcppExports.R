@@ -43,8 +43,8 @@ linRegPcadapt <- function(xpMat, U, rowInd, center, scale) {
     .Call('bigstatsr_linRegPcadapt', PACKAGE = 'bigstatsr', xpMat, U, rowInd, center, scale)
 }
 
-pMatVec4 <- function(xpMat, x, rowInd, colInd, lookup) {
-    .Call('bigstatsr_pMatVec4', PACKAGE = 'bigstatsr', xpMat, x, rowInd, colInd, lookup)
+pMatVec4 <- function(BM, x, rowInd, colInd) {
+    .Call('bigstatsr_pMatVec4', PACKAGE = 'bigstatsr', BM, x, rowInd, colInd)
 }
 
 cpMatVec4 <- function(xpMat, x, rowInd, colInd) {
