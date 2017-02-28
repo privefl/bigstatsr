@@ -24,7 +24,9 @@ DualBigPCA <- function(X, fun.scaling,
   d <- sqrt(eig$values[1:lastEig])
   rm(eig)
 
-  v <- crossprodScaled(X, u, ind.row, block.size, tmp$mean, tmp$sd, use.Eigen)
+  # crossprod with clever scaling -> see vignettes
+  v <- (big_cprodMat(X, u, ind.row, block.size = block.size) -
+          tcrossprod(tmp$mean, colSums(u))) / tmp$sd
   v <- scaling(v, rep(0, lastEig), d)
 
   list(d = d, u = u, v = v, means = tmp$mean, sds = tmp$sd)
@@ -56,8 +58,10 @@ PrimalBigPCA <- function(X, fun.scaling,
   d <- sqrt(eig$values[1:lastEig])
   rm(eig)
 
-  u <- multScaled(X, v, ind.row, block.size, tmp$mean, tmp$sd, use.Eigen)
-  u <- scaling(u, rep(0, lastEig), d)
+  # multiplication with clever scaling -> see vignettes
+  v2 <- v / tmp$sd
+  u <- big_prodMat(X, v2, ind.row = ind.row, block.size = block.size)
+  u <- scaling(u, crossprod(tmp$mean, v2), d)
 
   list(d = d, u = u, v = v, means = tmp$mean, sds = tmp$sd)
 }
@@ -109,7 +113,7 @@ big_SVD <- function(X, fun.scaling,
 #' Get the scores of PCA associated with an svd decomposition
 #' using function `big_SVD`.
 #'
-#' @inherit bigstatsr-package params
+#' @inheritParams bigstatsr-package
 #' @param obj.svd A list returned by `big_SVD` or `big_randomSVD`.
 #'
 #' @export
@@ -123,17 +127,15 @@ big_SVD <- function(X, fun.scaling,
 big_predScoresPCA <- function(obj.svd, X. = NULL,
                               ind.row = rows_along(X.),
                               ind.col = cols_along(X.),
-                              block.size = 1000,
-                              use.Eigen = !detect_MRO()) {
+                              block.size = 1000) {
   if (is.null(X.)) {
     obj.svd$u %*% diag(obj.svd$d)
   } else {
-    stopifnot(all(ind.row > 0))
-    multScaled2(attach.BM(X.), mat = obj.svd$v,
-                ind.row, ind.col, block.size,
-                vec.center = obj.svd$means,
-                vec.scale = obj.svd$sds,
-                use.Eigen)
+    X <- attach.BM(X.)
+    # multiplication with clever scaling -> see vignettes
+    v2 <- obj.svd$v / obj.svd$sds
+    tmp <- big_prodMat(X, v2, ind.row, ind.col, block.size)
+    sweep(tmp, 2, crossprod(obj.svd$means, v2), '-')
   }
 }
 

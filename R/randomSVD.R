@@ -75,12 +75,12 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
         if (c == 1) {
           # compute A * x
           x <- Atx.part[,] / ms$sd
-          Ax[, ic] <- pMatVec4(X@address, x, ind.row, ind.col.part) -
-            sum(x * ms$mean)
+          Ax[, ic] <- pMatVec4(X, x, ind.row, ind.col.part) -
+            crossprod(x, ms$mean)
         } else if (c == 2) {
           # compute At * x
           x <- Ax[, 1]
-          Atx.part[] <- (cpMatVec4(X@address, x, ind.row, ind.col.part) -
+          Atx.part[] <- (cpMatVec4(X, x, ind.row, ind.col.part) -
                            sum(x) * ms$mean) / ms$sd
         } else if (c == 3) { # end
           break
@@ -130,12 +130,12 @@ svds4.seq <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
   A <- function(x, args) {
     printf("%d - computing A * x\n", it <<- it + 1)
     x <- x / ms$sd
-    pMatVec4(X@address, x, ind.row, ind.col) - sum(x * ms$mean)
+    pMatVec4(X, x, ind.row, ind.col) - crossprod(x, ms$mean)
   }
   # Atrans
   Atrans <- function(x, args) {
     printf("%d - computing At * x\n", it <<- it + 1)
-    (cpMatVec4(X@address, x, ind.row, ind.col) - sum(x) * ms$mean) / ms$sd
+    (cpMatVec4(X, x, ind.row, ind.col) - sum(x) * ms$mean) / ms$sd
   }
 
   res <- RSpectra::svds(A, k, nu = k, nv = k, opts = list(tol = tol),

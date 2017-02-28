@@ -47,8 +47,8 @@ pMatVec4 <- function(BM, x, rowInd, colInd) {
     .Call('bigstatsr_pMatVec4', PACKAGE = 'bigstatsr', BM, x, rowInd, colInd)
 }
 
-cpMatVec4 <- function(xpMat, x, rowInd, colInd) {
-    .Call('bigstatsr_cpMatVec4', PACKAGE = 'bigstatsr', xpMat, x, rowInd, colInd)
+cpMatVec4 <- function(BM, x, rowInd, colInd) {
+    .Call('bigstatsr_cpMatVec4', PACKAGE = 'bigstatsr', BM, x, rowInd, colInd)
 }
 
 COPY_sparse_svm <- function(xpMat, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message) {
