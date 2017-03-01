@@ -30,9 +30,10 @@ ListOf<NumericVector> bigcolvars(C macc) {
 
 // Dispatch function for bigcolvars
 // [[Rcpp::export]]
-ListOf<NumericVector> bigcolvars(S4& BM,
+ListOf<NumericVector> bigcolvars(const S4& BM,
                                  const IntegerVector& rowInd,
                                  const IntegerVector& colInd) {
+
   XPtr<BigMatrix> xpMat = BM.slot("address");
   IntegerVector rows = rowInd - 1;
   IntegerVector cols = colInd - 1;

@@ -200,8 +200,7 @@ big_randomSVD <- function(X., fun.scaling,
     svds4.par(describe(X.), fun.scaling, ind.row, ind.col,
               k, tol, verbose, ncores)
   } else {
-    svds4.seq(X., fun.scaling, ind.row, ind.col,
-              k, tol, verbose)
+    svds4.seq(X., fun.scaling, ind.row, ind.col, k, tol, verbose)
   }
 }
 

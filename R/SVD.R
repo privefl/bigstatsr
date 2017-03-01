@@ -87,11 +87,12 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' @example examples/example-SVD.R
 #' @example examples/example-newScale.R
 #' @seealso [prcomp][stats::prcomp]
-big_SVD <- function(X, fun.scaling,
-                    ind.row = seq(nrow(X)),
-                    block.size = 1e3,
+big_SVD <- function(X., fun.scaling,
+                    ind.row = rows_along(X.),
+                    block.size = 1000,
                     k = NULL,
                     thr.eigval = 1e-4) {
+  X <- attach.BM(X.)
   if (ncol(X) > length(ind.row)) {
     printf("(2)")
     DualBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)

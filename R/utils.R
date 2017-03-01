@@ -18,25 +18,21 @@ FUN_ERROR <- function(e) message("One error has been catched.")
 
 ################################################################################
 
-
-
-################################################################################
-
-check_X <- function(X, ncores = 1, ncores2 = 1) {
-  if (class(X) != "big.matrix")
-    stop(ERROR_BIGMATRIX)
-
-  if (ncores > 1 && !is.shared(X))
-    stop(ERROR_SHARED)
-
-  Allcores <- parallel::detectCores()
-
-  if (ncores > Allcores)
-    warning(WARNING_NCORES)
-
-  if (ncores2 > max(1, Allcores / 2))
-    warning(WARNING_NCORES2)
-}
+# check_X <- function(X, ncores = 1, ncores2 = 1) {
+#   if (class(X) != "big.matrix")
+#     stop(ERROR_BIGMATRIX)
+#
+#   if (ncores > 1 && !is.shared(X))
+#     stop(ERROR_SHARED)
+#
+#   Allcores <- parallel::detectCores()
+#
+#   if (ncores > Allcores)
+#     warning(WARNING_NCORES)
+#
+#   if (ncores2 > max(1, Allcores / 2))
+#     warning(WARNING_NCORES2)
+# }
 
 ################################################################################
 

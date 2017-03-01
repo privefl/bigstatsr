@@ -15,8 +15,8 @@ inline double sign(double x) {
 }
 
 // standardization of features
-template <typename T>
-void standardize(SubInterceptMatrixCovarAccessor<T> macc,
+template <class C>
+void standardize(C macc,
                  const NumericVector &y,
                  NumericVector &sx_pos,
                  NumericVector &sx_neg,
@@ -95,8 +95,8 @@ arma::sp_mat& postprocess(arma::sp_mat &w,
 }
 
 // Semismooth Newton Coordinate Descent (SNCD) for lasso/elastic-net regularized SVM
-template <typename T>
-List COPY_sparse_svm(SubInterceptMatrixCovarAccessor<T> macc,
+template <class C>
+List COPY_sparse_svm(C macc,
                      NumericVector &lambda,
                      const NumericVector &y, const NumericVector &pf,
                      double gamma, double alpha,
@@ -116,7 +116,7 @@ List COPY_sparse_svm(SubInterceptMatrixCovarAccessor<T> macc,
 
   // Declarations
   int i, j, k, l, lstart, mismatch, nnzero = 0, violations = 0, nv = 0;
-  double gi = 1.0/gamma, pct, lstep, ldiff, lmax, l1, l2, v1, v2, v3,
+  double gi = 1.0/gamma, pct, lstep, ldiff = 0, lmax, l1, l2, v1, v2, v3,
     tmp, mj, sj, change, max_update, update, scrfactor = 1.0;
   NumericVector sx_pos(p); // column sum of x where y = 1
   NumericVector sx_neg(p); // column sum of x where y = -1
@@ -135,7 +135,7 @@ List COPY_sparse_svm(SubInterceptMatrixCovarAccessor<T> macc,
   LogicalVector nonconst(p);
 
   // Preprocessing -> always standardize
-  standardize<T>(macc, y, sx_pos, sx_neg, syx, shift, scale, nonconst);
+  standardize(macc, y, sx_pos, sx_neg, syx, shift, scale, nonconst);
 
   // for (j=0; j<p; j++) printf("(%f ; %f) ", shift[j], scale[j]); //DEBUG
 
@@ -365,35 +365,50 @@ List COPY_sparse_svm(SubInterceptMatrixCovarAccessor<T> macc,
 
 // Dispatch function for COPY_sparse_svm
 // [[Rcpp::export]]
-List COPY_sparse_svm(XPtr<BigMatrix> xpMat, const NumericVector &y,
-                     const IntegerVector &row_idx,
-                     const NumericMatrix &covar, NumericVector &lambda,
-                     const NumericVector &pf, double gamma, double alpha,
+List COPY_sparse_svm(const S4& BM, const NumericVector& y,
+                     const IntegerVector& row_idx,
+                     const NumericMatrix& covar, NumericVector& lambda,
+                     const NumericVector& pf, double gamma, double alpha,
                      double thresh, double lambda_min,
                      int scrflag, int dfmax, int max_iter, bool user, bool message) {
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return COPY_sparse_svm(SubInterceptMatrixCovarAccessor<char>(*xpMat, row_idx, covar),
-                           lambda, y, pf, gamma, alpha, thresh, lambda_min,
-                           scrflag, dfmax, max_iter, user, message);
-  case 2:
-    return COPY_sparse_svm(SubInterceptMatrixCovarAccessor<short>(*xpMat, row_idx, covar),
-                           lambda, y, pf, gamma, alpha, thresh, lambda_min,
-                           scrflag, dfmax, max_iter, user, message);
-  case 4:
-    return COPY_sparse_svm(SubInterceptMatrixCovarAccessor<int>(*xpMat, row_idx, covar),
-                           lambda, y, pf, gamma, alpha, thresh, lambda_min,
-                           scrflag, dfmax, max_iter, user, message);
-  case 6:
-    return COPY_sparse_svm(SubInterceptMatrixCovarAccessor<float>(*xpMat, row_idx, covar),
-                           lambda, y, pf, gamma, alpha, thresh, lambda_min,
-                           scrflag, dfmax, max_iter, user, message);
-  case 8:
-    return COPY_sparse_svm(SubInterceptMatrixCovarAccessor<double>(*xpMat, row_idx, covar),
-                           lambda, y, pf, gamma, alpha, thresh, lambda_min,
-                           scrflag, dfmax, max_iter, user, message);
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
+
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return COPY_sparse_svm(
+      RawSubIntMatCovAcc(*xpMat, row_idx, covar, BM.slot("code")),
+      lambda, y, pf, gamma, alpha, thresh, lambda_min,
+      scrflag, dfmax, max_iter, user, message);
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return COPY_sparse_svm(
+        SubIntMatCovAcc<char>(*xpMat, row_idx, covar),
+        lambda, y, pf, gamma, alpha, thresh, lambda_min,
+        scrflag, dfmax, max_iter, user, message);
+    case 2:
+      return COPY_sparse_svm(
+        SubIntMatCovAcc<short>(*xpMat, row_idx, covar),
+        lambda, y, pf, gamma, alpha, thresh, lambda_min,
+        scrflag, dfmax, max_iter, user, message);
+    case 4:
+      return COPY_sparse_svm(
+        SubIntMatCovAcc<int>(*xpMat, row_idx, covar),
+        lambda, y, pf, gamma, alpha, thresh, lambda_min,
+        scrflag, dfmax, max_iter, user, message);
+    case 6:
+      return COPY_sparse_svm(
+        SubIntMatCovAcc<float>(*xpMat, row_idx, covar),
+        lambda, y, pf, gamma, alpha, thresh, lambda_min,
+        scrflag, dfmax, max_iter, user, message);
+    case 8:
+      return COPY_sparse_svm(
+        SubIntMatCovAcc<double>(*xpMat, row_idx, covar),
+        lambda, y, pf, gamma, alpha, thresh, lambda_min,
+        scrflag, dfmax, max_iter, user, message);
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 

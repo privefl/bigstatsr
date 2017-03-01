@@ -147,7 +147,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
   if (verbose) printf("\nStart biglasso: %s\n", format(Sys.time()))
 
   if (family == 'gaussian') {
-    res <- COPY_cdfit_gaussian_hsr(X@address, yy, ind.train-1, covar.train,
+    res <- COPY_cdfit_gaussian_hsr(X, yy, ind.train-1, covar.train,
                                    lambda, nlambda, lambda.log.scale,
                                    lambda.min, alpha,
                                    user.lambda | any(penalty.factor == 0),
@@ -165,7 +165,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
     col.idx <- res[[8]]
 
   } else if (family == 'binomial') {
-    res <- COPY_cdfit_binomial_hsr(X@address, yy, ind.train-1, covar.train,
+    res <- COPY_cdfit_binomial_hsr(X, yy, ind.train-1, covar.train,
                                    lambda, nlambda, lambda.log.scale,
                                    lambda.min, alpha,
                                    user.lambda | any(penalty.factor == 0),

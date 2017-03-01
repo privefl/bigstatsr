@@ -27,14 +27,14 @@ void print_time2(bool verbose, bool end = false, int l = -1) {
 }
 
 // standardize
-template <typename T>
+template <class C>
 void COPY2_standardize_and_get_residual(NumericVector &center,
                                         NumericVector &scale,
                                         int *p_keep_ptr,
                                         vector<int> &col_idx, //columns to keep, removing columns whose scale < 1e-6
                                         vector<double> &z,
                                         double *lambda_max_ptr,
-                                        SubMatrixCovarAccessor<T> xAcc,
+                                        C xAcc,
                                         const NumericVector &y,
                                         double lambda_min,
                                         double alpha,
@@ -82,11 +82,11 @@ double COPY2_lasso(double z, double l1, double l2, double v) {
 /******************************************************************************/
 
 // check KKT conditions over features in the strong set
-template <typename T>
+template <class C>
 int COPY2_check_strong_set(LogicalVector &in_A,
                            const LogicalVector &in_S,
                            vector<double> &z,
-                           SubMatrixCovarAccessor<T> xAcc,
+                           C xAcc,
                            const NumericVector &beta_old,
                            const vector<int> &col_idx,
                            const NumericVector &center,
@@ -121,9 +121,9 @@ int COPY2_check_strong_set(LogicalVector &in_A,
 }
 
 // check KKT conditions over features in the rest set
-template <typename T>
+template <class C>
 int COPY2_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, vector<double> &z,
-                         SubMatrixCovarAccessor<T> xAcc, const NumericVector &beta_old,
+                         C xAcc, const NumericVector &beta_old,
                          const vector<int> &col_idx,
                          const NumericVector &center, const NumericVector &scale,
                          double lambda, double sumResid, double alpha,
@@ -153,9 +153,9 @@ int COPY2_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, vector<double
 
 /******************************************************************************/
 
-template <typename T>
+template <class C>
 void COPY_update_resid_eta(NumericVector &r, NumericVector &eta,
-                           SubMatrixCovarAccessor<T> xAcc, int jj, double shift,
+                           C xAcc, int jj, double shift,
                            double center_, double scale_, int n) {
   double shift_scaled = shift / scale_;
   double si;
@@ -185,43 +185,10 @@ double COPY_wsum(const NumericVector &r, const NumericVector &w, int n) {
   return rw_sum;
 }
 
-// Weighted cross product of y with jth column of x
-template <typename T>
-double COPY_wcrossprod_resid(SubMatrixCovarAccessor<T> xAcc, int jj, const NumericVector &y,
-                             double sumYW_, double center_, double scale_,
-                             const NumericVector &w, int n_row) {
-  double val = 0.0;
-  for (int i = 0; i < n_row; i++) {
-    val += xAcc(i, jj) * y[i] * w[i];
-  }
-  val = (val - center_ * sumYW_) / scale_;
-
-  return val;
-}
-
-// Weighted sum of squares of jth column of X
-// sum w_i * x_i ^2 = sum w_i * ((x_i - c) / s) ^ 2
-// = 1/s^2 * (sum w_i * x_i^2 - 2 * c * sum w_i x_i + c^2 sum w_i)
-template <typename T>
-double COPY_wsqsum_bm(SubMatrixCovarAccessor<T> xAcc, int jj, const NumericVector &w,
-                      double center_, double scale_, int n_row) {
-  double sum_wx_sq = 0.0;
-  double sum_wx = 0.0;
-  double sum_w = 0.0;
-  double tmp;
-  for (int i = 0; i < n_row; i++) {
-    tmp = xAcc(i, jj);
-    sum_wx_sq += w[i] * pow(tmp, 2);
-    sum_wx += w[i] * tmp;
-    sum_w += w[i]; // TODO: pre-compute SUM_W and
-  }
-  return (sum_wx_sq - 2 * center_ * sum_wx +
-          pow(center_, 2) * sum_w) / pow(scale_, 2);
-}
 
 // Coordinate descent for logistic models
-template <typename T>
-List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
+template <class C>
+List COPY_cdfit_binomial_hsr(C xAcc,
                              const NumericVector &y,
                              NumericVector &lambda,
                              int L,
@@ -253,8 +220,8 @@ List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
   print_time2(verbose);
 
   // standardize: get center, scale; get p_keep_ptr, col_idx; get z, lambda_max;
-  COPY2_standardize_and_get_residual<T>(center, scale, &p_keep, col_idx, z, &lambda_max, xAcc,
-                                        y, lambda_min, alpha, n, p);
+  COPY2_standardize_and_get_residual(center, scale, &p_keep, col_idx, z, &lambda_max, xAcc,
+                                     y, lambda_min, alpha, n, p);
 
   p = p_keep;   // set p = p_keep, only loop over columns whose scale > 1e-6
 
@@ -269,8 +236,9 @@ List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   double xwr, pi, u, v, cutoff, l1, l2, shift, si, lam_l;
+  double sum_wx_sq, sum_wx, sum_w, tmp, tmp2;
   double max_update, update, thresh; // for convergence check
-  int i, j, jj, l, violations, lstart;
+  int i, j, jj, l, ll, violations, lstart;
 
   double ybar = Rcpp::sum(y) / n;
   beta_old0 = beta0[0] = log(ybar / (1-ybar));
@@ -317,7 +285,7 @@ List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
     if (l != 0) {
       // Check dfmax
       if (Rcpp::sum(beta_old != 0) > dfmax) {
-        for (int ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+        for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
         return List::create(beta0, beta, center, scale, lambda, Dev, iter, n_reject,
                             as<IntegerVector>(Rcpp::wrap(col_idx)));
       }
@@ -365,14 +333,14 @@ List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
 
           if (Dev[l] / nullDev < .01) {
             if (warn) warning("Model saturated; exiting...");
-            for (int ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+            for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
             return List::create(beta0, beta, center, scale, lambda, Dev, iter, n_reject,
                                 as<IntegerVector>(Rcpp::wrap(col_idx)));
           }
 
           // Intercept
-          beta0[l] = COPY_wmean(r, w, n) + beta_old0;
-          si = beta0[l] - beta_old0;
+          si = COPY_wmean(r, w, n);
+          beta0[l] = si + beta_old0;
           if (si != 0) {
             beta_old0 = beta0[l];
             for (i = 0; i < n; i++) {
@@ -383,11 +351,25 @@ List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
           sumWResid = COPY_wsum(r, w, n); // update temp result: sum of w * r, used for computing xwr;
 
           max_update = 0.0;
+          sum_w = Rcpp::sum(w);
           for (j = 0; j < p; j++) {
             if (in_A[j]) {
               jj = col_idx[j];
-              xwr = COPY_wcrossprod_resid<T>(xAcc, jj, r, sumWResid, center[jj], scale[jj], w, n);
-              v = COPY_wsqsum_bm<T>(xAcc, jj, w, center[jj], scale[jj], n) / n;
+              // Weighted cross product of y with jth column of x
+              // Weighted sum of squares of jth column of X
+              // sum w_i * x_i ^2 = sum w_i * ((x_i - c) / s) ^ 2
+              // = 1/s^2 * (sum w_i * x_i^2 - 2 * c * sum w_i x_i + c^2 sum w_i)
+              xwr = sum_wx_sq = sum_wx = 0.0;
+              for (i = 0; i < n; i++) {
+                tmp = xAcc(i, jj);
+                tmp2 = tmp * w[i];
+                xwr += tmp2 * r[i];
+                sum_wx += tmp2;
+                sum_wx_sq += tmp * tmp2;
+              }
+              xwr = (xwr - center[jj] * sumWResid) / scale[jj];
+              v = (sum_wx_sq - 2 * center[jj] * sum_wx +
+                pow(center[jj], 2) * sum_w) / pow(scale[jj], 2) / n;
               u = xwr / n + v * beta_old[j];
               l1 = lam_l * m[jj] * alpha;
               l2 = lam_l * m[jj] * (1-alpha);
@@ -398,7 +380,7 @@ List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
                 // update change of objective function
                 update = pow(shift, 2) * v;
                 if (update > max_update) max_update = update;
-                COPY_update_resid_eta<T>(r, eta, xAcc, jj, shift, center[jj], scale[jj], n); // update r
+                COPY_update_resid_eta(r, eta, xAcc, jj, shift, center[jj], scale[jj], n); // update r
                 sumWResid = COPY_wsum(r, w, n); // update temp result w * r, used for computing xwr;
                 beta_old[j] = beta(j, l); // update beta_old
               }
@@ -409,13 +391,13 @@ List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
         }
         // Scan for violations in strong set
         sumS = Rcpp::sum(s);
-        violations = COPY2_check_strong_set<T>(in_A, in_S, z, xAcc, beta_old, col_idx,
-                                               center, scale, lam_l, sumS, alpha, s, m, n, p);
+        violations = COPY2_check_strong_set(in_A, in_S, z, xAcc, beta_old, col_idx,
+                                            center, scale, lam_l, sumS, alpha, s, m, n, p);
         if (violations == 0) break;
       }
       // Scan for violations in rest
-      violations = COPY2_check_rest_set<T>(in_A, in_S, z, xAcc, beta_old, col_idx,
-                                           center, scale, lam_l, sumS, alpha, s, m, n, p);
+      violations = COPY2_check_rest_set(in_A, in_S, z, xAcc, beta_old, col_idx,
+                                        center, scale, lam_l, sumS, alpha, s, m, n, p);
       if (violations == 0) break;
     }
   }
@@ -426,11 +408,11 @@ List COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<T> xAcc,
 
 // Dispatch function for COPY_cdfit_binomial_hsr
 // [[Rcpp::export]]
-List COPY_cdfit_binomial_hsr(XPtr<BigMatrix> xpMat,
-                             const NumericVector &y,
-                             const IntegerVector &row_idx,
-                             const NumericMatrix &covar,
-                             NumericVector &lambda,
+List COPY_cdfit_binomial_hsr(const S4& BM,
+                             const NumericVector& y,
+                             const IntegerVector& row_idx,
+                             const NumericMatrix& covar,
+                             NumericVector& lambda,
                              int L,
                              int lam_scale,
                              double lambda_min,
@@ -442,34 +424,45 @@ List COPY_cdfit_binomial_hsr(XPtr<BigMatrix> xpMat,
                              int dfmax,
                              bool warn,
                              bool verbose) {
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<char>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, warn, verbose);
-  case 2:
-    return COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<short>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, warn, verbose);
-  case 4:
-    return COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<int>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, warn, verbose);
-  case 6:
-    return COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<float>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, warn, verbose);
-  case 8:
-    return COPY_cdfit_binomial_hsr(SubMatrixCovarAccessor<double>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, warn, verbose);
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
+
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return COPY_cdfit_binomial_hsr(
+      RawSubMatCovAcc(*xpMat, row_idx, covar, BM.slot("code")),
+      y, lambda, L, lam_scale, lambda_min,
+      alpha, user, eps, max_iter, m,
+      dfmax, warn, verbose);
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return COPY_cdfit_binomial_hsr(
+        SubMatCovAcc<char>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, warn, verbose);
+    case 2:
+      return COPY_cdfit_binomial_hsr(
+        SubMatCovAcc<short>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, warn, verbose);
+    case 4:
+      return COPY_cdfit_binomial_hsr(
+        SubMatCovAcc<int>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, warn, verbose);
+    case 6:
+      return COPY_cdfit_binomial_hsr(
+        SubMatCovAcc<float>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, warn, verbose);
+    case 8:
+      return COPY_cdfit_binomial_hsr(
+        SubMatCovAcc<double>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, warn, verbose);
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 

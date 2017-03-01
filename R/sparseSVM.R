@@ -119,7 +119,7 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
   # Flag for screening
   scrflag <- switch(screen, ASR = 1, SR = 2, none = 0)
   # Fitting
-  fit <- COPY_sparse_svm(X@address, yy, ind.train-1, covar.train,
+  fit <- COPY_sparse_svm(X, yy, ind.train-1, covar.train,
                          lambda, penalty.factor, gamma, alpha,
                          eps, lambda.min, scrflag, dfmax, max.iter,
                          user, message)
@@ -165,7 +165,7 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
 #'
 #' @inherit COPY_sparseSVM return
 #'
-#' @example
+#' @example examples/example-spSVM.R
 #'
 #' @seealso [LiblineaR][LiblineaR::LiblineaR] [sparseSVM][sparseSVM::sparseSVM]
 #'

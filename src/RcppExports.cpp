@@ -8,12 +8,12 @@
 using namespace Rcpp;
 
 // COPY_cdfit_gaussian_hsr
-List COPY_cdfit_gaussian_hsr(XPtr<BigMatrix> xpMat, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool verbose);
-RcppExport SEXP bigstatsr_COPY_cdfit_gaussian_hsr(SEXP xpMatSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP verboseSEXP) {
+List COPY_cdfit_gaussian_hsr(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool verbose);
+RcppExport SEXP bigstatsr_COPY_cdfit_gaussian_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
@@ -28,17 +28,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type m(mSEXP);
     Rcpp::traits::input_parameter< int >::type dfmax(dfmaxSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(COPY_cdfit_gaussian_hsr(xpMat, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose));
+    rcpp_result_gen = Rcpp::wrap(COPY_cdfit_gaussian_hsr(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
 // COPY_cdfit_binomial_hsr
-List COPY_cdfit_binomial_hsr(XPtr<BigMatrix> xpMat, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool warn, bool verbose);
-RcppExport SEXP bigstatsr_COPY_cdfit_binomial_hsr(SEXP xpMatSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP warnSEXP, SEXP verboseSEXP) {
+List COPY_cdfit_binomial_hsr(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool warn, bool verbose);
+RcppExport SEXP bigstatsr_COPY_cdfit_binomial_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP warnSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
@@ -54,20 +54,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type dfmax(dfmaxSEXP);
     Rcpp::traits::input_parameter< bool >::type warn(warnSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(COPY_cdfit_binomial_hsr(xpMat, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose));
+    rcpp_result_gen = Rcpp::wrap(COPY_cdfit_binomial_hsr(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
 // bigcolvars
-ListOf<NumericVector> bigcolvars(XPtr<BigMatrix> xpMat, const IntegerVector& rowInd, const IntegerVector& colInd);
-RcppExport SEXP bigstatsr_bigcolvars(SEXP xpMatSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
+ListOf<NumericVector> bigcolvars(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP bigstatsr_bigcolvars(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(bigcolvars(xpMat, rowInd, colInd));
+    rcpp_result_gen = Rcpp::wrap(bigcolvars(BM, rowInd, colInd));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -95,28 +95,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// linRegPcadapt
-NumericMatrix linRegPcadapt(XPtr<BigMatrix> xpMat, arma::mat& U, const IntegerVector& rowInd, const NumericVector& center, const NumericVector& scale);
-RcppExport SEXP bigstatsr_linRegPcadapt(SEXP xpMatSEXP, SEXP USEXP, SEXP rowIndSEXP, SEXP centerSEXP, SEXP scaleSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
-    Rcpp::traits::input_parameter< arma::mat& >::type U(USEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type center(centerSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
-    rcpp_result_gen = Rcpp::wrap(linRegPcadapt(xpMat, U, rowInd, center, scale));
-    return rcpp_result_gen;
-END_RCPP
-}
 // pMatVec4
-NumericVector pMatVec4(S4& BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
+NumericVector pMatVec4(const S4& BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP bigstatsr_pMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
@@ -125,12 +110,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpMatVec4
-NumericVector cpMatVec4(S4& BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
+NumericVector cpMatVec4(const S4& BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP bigstatsr_cpMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
@@ -139,12 +124,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // COPY_sparse_svm
-List COPY_sparse_svm(XPtr<BigMatrix> xpMat, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, const NumericVector& pf, double gamma, double alpha, double thresh, double lambda_min, int scrflag, int dfmax, int max_iter, bool user, bool message);
-RcppExport SEXP bigstatsr_COPY_sparse_svm(SEXP xpMatSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP pfSEXP, SEXP gammaSEXP, SEXP alphaSEXP, SEXP threshSEXP, SEXP lambda_minSEXP, SEXP scrflagSEXP, SEXP dfmaxSEXP, SEXP max_iterSEXP, SEXP userSEXP, SEXP messageSEXP) {
+List COPY_sparse_svm(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, const NumericVector& pf, double gamma, double alpha, double thresh, double lambda_min, int scrflag, int dfmax, int max_iter, bool user, bool message);
+RcppExport SEXP bigstatsr_COPY_sparse_svm(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP pfSEXP, SEXP gammaSEXP, SEXP alphaSEXP, SEXP threshSEXP, SEXP lambda_minSEXP, SEXP scrflagSEXP, SEXP dfmaxSEXP, SEXP max_iterSEXP, SEXP userSEXP, SEXP messageSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
@@ -159,43 +144,43 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< bool >::type user(userSEXP);
     Rcpp::traits::input_parameter< bool >::type message(messageSEXP);
-    rcpp_result_gen = Rcpp::wrap(COPY_sparse_svm(xpMat, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message));
+    rcpp_result_gen = Rcpp::wrap(COPY_sparse_svm(BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message));
     return rcpp_result_gen;
 END_RCPP
 }
 // transpose3
-void transpose3(SEXP pBigMat, SEXP pBigMat2);
-RcppExport SEXP bigstatsr_transpose3(SEXP pBigMatSEXP, SEXP pBigMat2SEXP) {
+void transpose3(XPtr<BigMatrix> xpMat, XPtr<BigMatrix> xpMat2);
+RcppExport SEXP bigstatsr_transpose3(SEXP xpMatSEXP, SEXP xpMat2SEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat2(pBigMat2SEXP);
-    transpose3(pBigMat, pBigMat2);
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat2(xpMat2SEXP);
+    transpose3(xpMat, xpMat2);
     return R_NilValue;
 END_RCPP
 }
 // univLinReg5
-List univLinReg5(XPtr<BigMatrix> xpMat, const arma::mat& covar_U, const arma::vec& y, const IntegerVector& rowInd, const IntegerVector& colInd);
-RcppExport SEXP bigstatsr_univLinReg5(SEXP xpMatSEXP, SEXP covar_USEXP, SEXP ySEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
+List univLinReg5(const S4& BM, const arma::mat& covar_U, const arma::vec& y, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP bigstatsr_univLinReg5(SEXP BMSEXP, SEXP covar_USEXP, SEXP ySEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type covar_U(covar_USEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(univLinReg5(xpMat, covar_U, y, rowInd, colInd));
+    rcpp_result_gen = Rcpp::wrap(univLinReg5(BM, covar_U, y, rowInd, colInd));
     return rcpp_result_gen;
 END_RCPP
 }
 // IRLS
-List IRLS(XPtr<BigMatrix> xpMat, arma::mat& covar, const arma::vec& y, const arma::vec& z0, const arma::vec& w0, const IntegerVector& rowInd, const IntegerVector& colInd, double tol, int maxiter);
-RcppExport SEXP bigstatsr_IRLS(SEXP xpMatSEXP, SEXP covarSEXP, SEXP ySEXP, SEXP z0SEXP, SEXP w0SEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP tolSEXP, SEXP maxiterSEXP) {
+List IRLS(const S4& BM, arma::mat& covar, const arma::vec& y, const arma::vec& z0, const arma::vec& w0, const IntegerVector& rowInd, const IntegerVector& colInd, double tol, int maxiter);
+RcppExport SEXP bigstatsr_IRLS(SEXP BMSEXP, SEXP covarSEXP, SEXP ySEXP, SEXP z0SEXP, SEXP w0SEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP tolSEXP, SEXP maxiterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type covar(covarSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type z0(z0SEXP);
@@ -204,7 +189,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    rcpp_result_gen = Rcpp::wrap(IRLS(xpMat, covar, y, z0, w0, rowInd, colInd, tol, maxiter));
+    rcpp_result_gen = Rcpp::wrap(IRLS(BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter));
     return rcpp_result_gen;
 END_RCPP
 }

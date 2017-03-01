@@ -39,46 +39,7 @@ rows_along <- function(x) seq_len(nrow(x))
 cols_along <- function(x) seq_len(ncol(x))
 
 ################################################################################
-# TODO: rm
-#' @export
-setGeneric("address", function(x) standardGeneric("address"))
-
-#' @export
-setMethod("address", signature(x = "big.matrix"), function(x) x@address)
-
-#' @export
-setMethod("address", signature(x = "big.matrix.descriptor"),
-          function(x) address(attach.big.matrix(x)))
-
-################################################################################
-
-#' @export
-setMethod("describe", signature(x = "big.matrix.descriptor"), identity)
-
-#' @export
-setMethod("typeof", signature(x = "big.matrix.descriptor"),
-          function(x) x@description$type)
-
-#' @export
-setGeneric("attach.BM", function(x) standardGeneric("attach.BM"))
-
-#' @export
-setMethod("attach.BM", signature(x = "big.matrix"), identity)
-
-#' @export
-setMethod("attach.BM", signature(x = "big.matrix.descriptor"),
-          function(x) attach.big.matrix(x))
-
-
-
-#' @export
-setMethod("describe", signature(x = "BM.code"), function(x) {
-  new("BM.code.descriptor",
-      description = callNextMethod()@description,
-      code = x@code)
-})
-
-################################################################################
+#### Convert to new type ####
 
 #' @export
 setGeneric("as.BM.code", function(x, code) standardGeneric("as.BM.code"))
@@ -104,6 +65,31 @@ setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
           })
 
 ################################################################################
+#### Methods for completeness ####
+
+#' @export
+setMethod("typeof", signature(x = "big.matrix.descriptor"),
+          function(x) x@description$type)
+
+#' @export
+setMethod("describe", signature(x = "big.matrix.descriptor"), identity)
+
+#' @export
+setMethod("describe", signature(x = "BM.code"), function(x) {
+  new("BM.code.descriptor",
+      description = callNextMethod()@description,
+      code = x@code)
+})
+
+#' @export
+setGeneric("attach.BM", function(x) standardGeneric("attach.BM"))
+
+#' @export
+setMethod("attach.BM", signature(x = "big.matrix"), identity)
+
+#' @export
+setMethod("attach.BM", signature(x = "big.matrix.descriptor"),
+          function(x) attach.big.matrix(x))
 
 #' @export
 setMethod("attach.BM", signature(x = "BM.code.descriptor"),
@@ -154,6 +140,7 @@ setMethod("[", signature(x = "BM.code", i = "numeric",
                          j = "numeric", drop = "logical"),
           function(x, i, j, drop) decode(callNextMethod(), x@code))
 
+#' @export
 setMethod("[", signature(x = "BM.code", i = "matrix",
                          j = "missing", drop = "missing"),
           function(x, i, j, drop) decode(callNextMethod(), x@code))

@@ -4,7 +4,7 @@ univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
                            ind.train, tol, maxiter) {
   X <- attach.BM(X.)
 
-  res <- IRLS(X@address, covar.train, y01.train, z0, w0,
+  res <- IRLS(X, covar.train, y01.train, z0, w0,
               ind.train, ind, tol, maxiter)
 
   # using `glm` if not converged

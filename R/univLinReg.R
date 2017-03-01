@@ -2,7 +2,7 @@
 
 univLinReg_sub <- function(X., ind, U, y.train, ind.train) {
   X <- attach.BM(X.)
-  as.data.frame(univLinReg5(X@address, U, y.train, ind.train, ind))
+  as.data.frame(univLinReg5(X, U, y.train, ind.train, ind))
 }
 
 ################################################################################
