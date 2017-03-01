@@ -10,7 +10,7 @@ big_attach(descriptorfile)
 big_attachExtdata()
 }
 \arguments{
-\item{descriptorfile}{}
+\item{descriptorfile}{Path to a ".desc" file.}
 }
 \value{
 A \link[=big.matrix.descriptor-class]{big.matrix.descriptor} object.
@@ -20,14 +20,14 @@ Attach a "big.matrix.descriptor"
 }
 \examples{
 tmpfile <- tempfile()
-X.desc <- describe(
-  big.matrix(10, 10, backingfile = basename(tmpfile),
+test <- big.matrix(10, 10, backingfile = basename(tmpfile),
              backingpath = dirname(tmpfile),
              descriptorfile = paste0(basename(tmpfile), ".desc"))
-)
 X.desc <- describe(test)
+
 descriptorfile <- paste0(tmpfile, ".desc")
 X.desc2 <- big_attach(descriptorfile)
+
 all.equal(X.desc, X.desc2)
 }
 \keyword{internal}

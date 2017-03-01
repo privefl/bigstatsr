@@ -28,11 +28,11 @@ inline void myassert(bool cond, const char *msg) {
 /******************************************************************************/
 
 template<typename T>
-class SubMatrixAccessor {
+class SubMatAcc {
 public:
-  SubMatrixAccessor(BigMatrix &bm,
-                    const IntegerVector &row_ind,
-                    const IntegerVector &col_ind) {
+  SubMatAcc(BigMatrix &bm,
+            const IntegerVector &row_ind,
+            const IntegerVector &col_ind) {
     if (bm.is_submatrix()) throw Rcpp::exception(ERROR_SUB);
 
     int n = row_ind.size();
@@ -78,11 +78,11 @@ protected:
 
 // For biglasso
 template<typename T>
-class SubMatrixCovarAccessor {
+class SubMatCovAcc {
 public:
-  SubMatrixCovarAccessor(BigMatrix &bm,
-                         const IntegerVector &row_ind,
-                         const NumericMatrix &covar) {
+  SubMatCovAcc(BigMatrix &bm,
+               const IntegerVector &row_ind,
+               const NumericMatrix &covar) {
     if (bm.is_submatrix()) throw Rcpp::exception(ERROR_SUB);
 
     if (covar.nrow() != 0) {
@@ -135,11 +135,11 @@ protected:
 
 // For sparseSVM
 template<typename T>
-class SubInterceptMatrixCovarAccessor {
+class SubIntMatCovAcc {
 public:
-  SubInterceptMatrixCovarAccessor(BigMatrix &bm,
-                                  const IntegerVector &row_ind,
-                                  const NumericMatrix &covar) {
+  SubIntMatCovAcc(BigMatrix &bm,
+                  const IntegerVector &row_ind,
+                  const NumericMatrix &covar) {
     if (bm.is_submatrix()) throw Rcpp::exception(ERROR_SUB);
 
     if (covar.nrow() != 0) {
@@ -196,18 +196,18 @@ protected:
 
 /******************************************************************************/
 
-class RawSubMatrixAccessor : public SubMatrixAccessor<unsigned char> {
+class RawSubMatAcc : public SubMatAcc<unsigned char> {
 public:
-  RawSubMatrixAccessor(BigMatrix& bm,
-                       const IntegerVector& row_ind,
-                       const IntegerVector& col_ind,
-                       const NumericVector& lookup)
-    : SubMatrixAccessor<unsigned char>(bm, row_ind, col_ind) {
+  RawSubMatAcc(BigMatrix& bm,
+               const IntegerVector& row_ind,
+               const IntegerVector& col_ind,
+               const NumericVector& lookup)
+    : SubMatAcc<unsigned char>(bm, row_ind, col_ind) {
       _lookup = lookup;
     }
 
   inline double operator() (int i, int j) {
-    return _lookup[SubMatrixAccessor<unsigned char>::operator()(i, j)];
+    return _lookup[SubMatAcc<unsigned char>::operator()(i, j)];
   }
 
 protected:

@@ -4,14 +4,12 @@ DualBigPCA <- function(X, fun.scaling,
                        ind.row,
                        block.size,
                        k,
-                       thr.eigval,
-                       use.Eigen) {
+                       thr.eigval) {
 
   tmp <- big_tcrossprodSelf(X = X,
                             fun.scaling = fun.scaling,
                             ind.row = ind.row,
-                            block.size = block.size,
-                            use.Eigen = use.Eigen)
+                            block.size = block.size)
 
   eig <- `if`(is.null(k),
               eigen(tmp$K, symmetric = TRUE),
@@ -38,14 +36,12 @@ PrimalBigPCA <- function(X, fun.scaling,
                          ind.row,
                          block.size,
                          k,
-                         thr.eigval,
-                         use.Eigen) {
+                         thr.eigval) {
 
   tmp <- big_crossprodSelf(X = X,
                            fun.scaling = fun.scaling,
                            ind.row = ind.row,
-                           block.size = block.size,
-                           use.Eigen = use.Eigen)
+                           block.size = block.size)
 
   eig <- `if`(is.null(k),
               eigen(tmp$K, symmetric = TRUE),
@@ -74,7 +70,7 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' decomposition of the covariance between variables (primal)
 #' or observations (dual).
 #'
-#' @inherit bigstatsr-package params details
+#' @inheritParams bigstatsr-package
 #' @param k Number of singular vectors/values to compute. Default is all.
 #'
 #' @export
@@ -95,14 +91,13 @@ big_SVD <- function(X, fun.scaling,
                     ind.row = seq(nrow(X)),
                     block.size = 1e3,
                     k = NULL,
-                    thr.eigval = 1e-4,
-                    use.Eigen = !detect_MRO()) {
+                    thr.eigval = 1e-4) {
   if (ncol(X) > length(ind.row)) {
     printf("(2)")
-    DualBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval, use.Eigen)
+    DualBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
   } else {
     printf("(1)")
-    PrimalBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval, use.Eigen)
+    PrimalBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
   }
 }
 

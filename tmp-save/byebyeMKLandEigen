@@ -1,0 +1,52 @@
+#' @param use.Eigen Should the `Eigen` library be used
+#' for matrix computations? Default tries to detect MRO. See details.
+#' @details For matrix computations, using \code{Eigen} library is faster.
+#' However, if you link \code{R} with an optimized math library,
+#' using \code{R}'s base operations is even much faster.
+#'
+#' For example, you can easily link \code{R} with the
+#' \href{https://software.intel.com/en-us/intel-mkl}{Intel®
+#' Math Kernel Library} (Intel® MKL) through
+#' \href{https://mran.revolutionanalytics.com/open/}{Microsoft
+#' R Open} (MRO). It really improves performance
+#' of \code{R} and \code{RcppArmadillo} matrix computations,
+#' yet not the ones of \code{RcppEigen} (at least not directly).
+#'
+#' So,
+#' 1. `Eigen` should be prefered if you don't change anything,
+#' 2. base `R` should be prefered if you use MRO,
+#' 3. `Eigen` may be prefered if you manage to link `RcppEigen` with the MKL
+#' (please \href{mailto:florian.prive.21@gmail.com}{contact me} if you do!).
+
+################################################################################
+
+mult <- function(A, B, use.Eigen) `if`(use.Eigen, multEigen, `%*%`)(A, B)
+
+################################################################################
+
+cross <- function(A, B, use.Eigen)
+  `if`(use.Eigen, crossprodEigen5, crossprod)(A, B)
+
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X,
+                          const Eigen::Map<Eigen::MatrixXd> Y) {
+  return X * Y;
+}
+
+
+// [[Rcpp::export]]
+Eigen::MatrixXd crossprodEigen5(const Eigen::Map<Eigen::MatrixXd> X,
+                                const Eigen::Map<Eigen::MatrixXd> Y) {
+  return X.transpose() * Y;
+}
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+void tcrossprodEigen3(Eigen::Map<Eigen::MatrixXd> res,
+                      const Eigen::Map<Eigen::MatrixXd> bM) {
+  res.selfadjointView<Eigen::Upper>().rankUpdate(bM);
+}

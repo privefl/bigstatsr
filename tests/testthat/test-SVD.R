@@ -32,7 +32,7 @@ test_that("equality with prcomp", {
     test <- big_SVD(X = X,
                     fun.scaling = big_scale(center = sc$center,
                                             scale = sc$scale),
-                    k = k, use.Eigen = (runif(1) > 0.5))
+                    k = k)
     pca <- prcomp(X[,], center = sc$center, scale. = sc$scale)
     expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
@@ -55,7 +55,7 @@ test_that("equality with prcomp with half of the data", {
                     ind.train = ind,
                     fun.scaling = big_scale(center = sc$center,
                                             scale = sc$scale),
-                    k = k, use.Eigen = (runif(1) > 0.5))
+                    k = k)
     pca <- prcomp(X[ind, ], center = sc$center, scale. = sc$scale)
 
     expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)

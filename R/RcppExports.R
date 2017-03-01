@@ -67,14 +67,6 @@ IRLS <- function(xpMat, covar, y, z0, w0, rowInd, colInd, tol, maxiter) {
     .Call('bigstatsr_IRLS', PACKAGE = 'bigstatsr', xpMat, covar, y, z0, w0, rowInd, colInd, tol, maxiter)
 }
 
-multEigen <- function(X, Y) {
-    .Call('bigstatsr_multEigen', PACKAGE = 'bigstatsr', X, Y)
-}
-
-crossprodEigen5 <- function(X, Y) {
-    .Call('bigstatsr_crossprodEigen5', PACKAGE = 'bigstatsr', X, Y)
-}
-
 scaling <- function(source, mean, sd) {
     .Call('bigstatsr_scaling', PACKAGE = 'bigstatsr', source, mean, sd)
 }
@@ -85,10 +77,6 @@ complete2 <- function(mat) {
 
 incrSup2 <- function(mat, source) {
     .Call('bigstatsr_incrSup2', PACKAGE = 'bigstatsr', mat, source)
-}
-
-tcrossprodEigen3 <- function(res, bM) {
-    invisible(.Call('bigstatsr_tcrossprodEigen3', PACKAGE = 'bigstatsr', res, bM))
 }
 
 incrMat <- function(dest, source) {

@@ -3,7 +3,6 @@
 
 #include "../inst/include/bigstatsr.h"
 #include <RcppArmadillo.h>
-#include <RcppEigen.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -209,30 +208,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// multEigen
-Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X, const Eigen::Map<Eigen::MatrixXd> Y);
-RcppExport SEXP bigstatsr_multEigen(SEXP XSEXP, SEXP YSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Y(YSEXP);
-    rcpp_result_gen = Rcpp::wrap(multEigen(X, Y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// crossprodEigen5
-Eigen::MatrixXd crossprodEigen5(const Eigen::Map<Eigen::MatrixXd> X, const Eigen::Map<Eigen::MatrixXd> Y);
-RcppExport SEXP bigstatsr_crossprodEigen5(SEXP XSEXP, SEXP YSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Y(YSEXP);
-    rcpp_result_gen = Rcpp::wrap(crossprodEigen5(X, Y));
-    return rcpp_result_gen;
-END_RCPP
-}
 // scaling
 NumericMatrix& scaling(NumericMatrix& source, const NumericVector& mean, const NumericVector& sd);
 RcppExport SEXP bigstatsr_scaling(SEXP sourceSEXP, SEXP meanSEXP, SEXP sdSEXP) {
@@ -267,17 +242,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
     rcpp_result_gen = Rcpp::wrap(incrSup2(mat, source));
     return rcpp_result_gen;
-END_RCPP
-}
-// tcrossprodEigen3
-void tcrossprodEigen3(Eigen::Map<Eigen::MatrixXd> res, const Eigen::Map<Eigen::MatrixXd> bM);
-RcppExport SEXP bigstatsr_tcrossprodEigen3(SEXP resSEXP, SEXP bMSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type res(resSEXP);
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type bM(bMSEXP);
-    tcrossprodEigen3(res, bM);
-    return R_NilValue;
 END_RCPP
 }
 // incrMat

@@ -73,11 +73,11 @@ void standardize(SubInterceptMatrixCovarAccessor<T> macc,
 
 
 // postprocessing of feature weights
-NumericMatrix& postprocess(NumericMatrix &w,
-                           const NumericVector &shift,
-                           const NumericVector &scale,
-                           const LogicalVector &nonconst,
-                           int nlam, int p) {
+arma::sp_mat& postprocess(arma::sp_mat &w,
+                          const NumericVector &shift,
+                          const NumericVector &scale,
+                          const LogicalVector &nonconst,
+                          int nlam, int p) {
   int l, j;
   double prod;
   for (l = 0; l<nlam; l++) {
@@ -110,7 +110,7 @@ List COPY_sparse_svm(SubInterceptMatrixCovarAccessor<T> macc,
 
   // returns
   int nlam = lambda.size();
-  NumericMatrix w(p, nlam);
+  arma::sp_mat w = arma::sp_mat(p, nlam);
   IntegerVector iter(nlam);
   bool saturated = false;
 

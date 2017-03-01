@@ -40,13 +40,6 @@ check_X <- function(X, ncores = 1, ncores2 = 1) {
 
 ################################################################################
 
-detect_MRO <- function() {
-  # is.element("RevoUtilsMath", rownames(utils::installed.packages()))
-  requireNamespace("RevoUtilsMath", quietly = TRUE)
-}
-
-################################################################################
-
 # function for comparing PCs
 diffPCs <- function(test, rot) {
   k <- ncol(test)

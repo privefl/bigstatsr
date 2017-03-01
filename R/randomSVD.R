@@ -168,7 +168,7 @@ svds4.seq <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 #' \url{http://dx.doi.org/10.1137/080736417}.
 #'
-#' @inherit bigstatsr-package params
+#' @inheritParams bigstatsr-package
 #' @param k Number of singular vectors/values to compute. Default is `10`.
 #' __This algorithm should be used to compute only a
 #' few singular vectors/values.__

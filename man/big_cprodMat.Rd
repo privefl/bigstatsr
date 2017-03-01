@@ -50,6 +50,6 @@ ind.col <- sample(m, m/2)
 # test2 <- big_cprodMat(X.desc, A, ind.row, ind.col)
 # returns an error. You need to use the subset of A:
 test2 <- big_cprodMat(X.desc, A[ind.row, ], ind.row, ind.col)
-true2 <- attach.BM(X.desc)[ind.row, ind.col] \%*\% A[ind.row, ]
+true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], A[ind.row, ])
 all.equal(test2, true2)
 }

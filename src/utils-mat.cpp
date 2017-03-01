@@ -1,24 +1,7 @@
-// [[Rcpp::depends(RcppEigen, bigmemory, BH)]]
-#include <RcppEigen.h>
-#include <bigmemory/MatrixAccessor.hpp>
-
-using namespace Rcpp;
-
-
 /******************************************************************************/
 
-// [[Rcpp::export]]
-Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X,
-                          const Eigen::Map<Eigen::MatrixXd> Y) {
-  return X * Y;
-}
-
-
-// [[Rcpp::export]]
-Eigen::MatrixXd crossprodEigen5(const Eigen::Map<Eigen::MatrixXd> X,
-                                const Eigen::Map<Eigen::MatrixXd> Y) {
-  return X.transpose() * Y;
-}
+#include "Rcpp.h"
+using namespace Rcpp;
 
 /******************************************************************************/
 
@@ -41,36 +24,32 @@ NumericMatrix& scaling(NumericMatrix& source,
 
 /******************************************************************************/
 
+// For a squared matrix
 // [[Rcpp::export]]
 NumericMatrix& complete2(NumericMatrix& mat) {
-  for (int j = 0; j < mat.ncol()-1; j++) {
-    for (int i = j+1; i < mat.nrow(); i++) {
+  int m = mat.ncol();
+  int i, j;
+
+  for (j = 0; j < m; j++)
+    for (i = j+1; i < m; i++)
       mat(i, j) = mat(j, i);
-    }
-  }
 
   return mat;
 }
 
 /******************************************************************************/
 
+// For a squared matrix
 // [[Rcpp::export]]
 NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
-  for (int j = 0; j < mat.ncol(); j++) {
-    for (int i = 0; i <= j; i++) {
+  int m = mat.ncol();
+  int i, j;
+
+  for (j = 0; j < m; j++)
+    for (i = 0; i <= j; i++)
       mat(i, j) += source(i,j);
-    }
-  }
 
   return mat;
-}
-
-/******************************************************************************/
-
-// [[Rcpp::export]]
-void tcrossprodEigen3(Eigen::Map<Eigen::MatrixXd> res,
-                      const Eigen::Map<Eigen::MatrixXd> bM) {
-  res.selfadjointView<Eigen::Upper>().rankUpdate(bM);
 }
 
 /******************************************************************************/

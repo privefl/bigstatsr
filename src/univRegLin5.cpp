@@ -11,10 +11,8 @@ inline arma::vec UUty(const arma::mat& U, const arma::vec& y) {
 
 /******************************************************************************/
 
-template <typename T>
-List univLinReg5(SubMatrixAccessor<T> macc,
-                 const arma::mat& U,
-                 const arma::vec& y) {
+template <class C>
+List univLinReg5(C macc, const arma::mat& U, const arma::vec& y) {
   int n = macc.nrow();
   int m = macc.ncol();
   int K = U.n_cols;
@@ -57,30 +55,34 @@ List univLinReg5(SubMatrixAccessor<T> macc,
 
 // Dispatch function for univLinReg5
 // [[Rcpp::export]]
-List univLinReg5(XPtr<BigMatrix> xpMat,
+List univLinReg5(const S4& BM,
                  const arma::mat& covar_U,
                  const arma::vec& y,
                  const IntegerVector& rowInd,
                  const IntegerVector& colInd) {
 
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return univLinReg5(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+  IntegerVector rows = rowInd - 1;
+  IntegerVector cols = colInd - 1;
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return univLinReg5(RawSubMatAcc(*xpMat, rows, cols, BM.slot("code")),
                        covar_U, y);
-  case 2:
-    return univLinReg5(SubMatrixAccessor<short>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
-  case 4:
-    return univLinReg5(SubMatrixAccessor<int>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
-  case 6:
-    return univLinReg5(SubMatrixAccessor<float>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
-  case 8:
-    return univLinReg5(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1),
-                       covar_U, y);
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return univLinReg5(SubMatAcc<char>(*xpMat,   rows, cols), covar_U, y);
+    case 2:
+      return univLinReg5(SubMatAcc<short>(*xpMat,  rows, cols), covar_U, y);
+    case 4:
+      return univLinReg5(SubMatAcc<int>(*xpMat,    rows, cols), covar_U, y);
+    case 6:
+      return univLinReg5(SubMatAcc<float>(*xpMat,  rows, cols), covar_U, y);
+    case 8:
+      return univLinReg5(SubMatAcc<double>(*xpMat, rows, cols), covar_U, y);
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 

@@ -3,7 +3,7 @@
 #' Compute \eqn{X.row X.row^T} for a `big.matrix` `X`
 #' after applying a particular scaling to it.
 #'
-#' @inherit bigstatsr-package params details
+#' @inheritParams bigstatsr-package
 #'
 #' @return A list of
 #' - \eqn{K = X.row X.row^T},
@@ -13,11 +13,9 @@
 #' @seealso [tcrossprod]
 #'
 #' @example examples/example-tcrossprodSelf.R
-big_tcrossprodSelf <- function(X.,
-                               fun.scaling,
+big_tcrossprodSelf <- function(X., fun.scaling,
                                ind.row = rows_along(X.),
-                               block.size = 1000,
-                               use.Eigen = !detect_MRO()) {
+                               block.size = 1000) {
   X <- attach.BM(X.)
   n <- length(ind.row)
   K <- matrix(0, n, n)
@@ -32,11 +30,8 @@ big_tcrossprodSelf <- function(X.,
     tmp <- scaling(X[ind.row, ind],
                    means_sds$mean[ind],
                    means_sds$sd[ind])
-    if (use.Eigen) {
-      tcrossprodEigen3(K, tmp)
-    } else {
-      K <- incrSup2(K, tcrossprod(tmp))
-    }
+
+    K <- incrSup2(K, tcrossprod(tmp))
   }
 
   # Complete the lower part of the symmetric matrix

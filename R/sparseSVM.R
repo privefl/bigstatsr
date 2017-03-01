@@ -68,6 +68,7 @@
 #'   \item{penalty.factor}{Input parameter.}
 #'   \item{levels}{Levels of the output class labels.}
 #'
+#' @import Matrix
 #' @keywords internal
 COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
                            alpha = 1, gamma = 0.1, nlambda = 100,
@@ -122,7 +123,7 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
                          lambda, penalty.factor, gamma, alpha,
                          eps, lambda.min, scrflag, dfmax, max.iter,
                          user, message)
-  weights <- fit[[1]]
+  weights <- Matrix(fit[[1]], sparse = TRUE)
   iter <- fit[[2]]
   lambda <- fit[[3]]
   saturated <- fit[[4]]

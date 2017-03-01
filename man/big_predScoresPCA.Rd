@@ -5,7 +5,7 @@
 \title{Scores of PCA}
 \usage{
 big_predScoresPCA(obj.svd, X. = NULL, ind.row = rows_along(X.),
-  ind.col = cols_along(X.), block.size = 1000, use.Eigen = !detect_MRO())
+  ind.col = cols_along(X.), block.size = 1000)
 }
 \arguments{
 \item{obj.svd}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
@@ -23,9 +23,6 @@ If not specified, all columns are used. Don't use negative indices.}
 Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
-
-\item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default tries to detect MRO. See details.}
 }
 \value{
 A matrix of size \eqn{n \times K} where \code{n} is the number of samples

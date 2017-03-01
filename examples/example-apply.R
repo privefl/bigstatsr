@@ -20,13 +20,10 @@ rowsums2 <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[, ind]),
 
 ## Every extra parameter to `a.FUN` should be passed to `big_apply`
 # get the crossproduct between X and a matrix A
-A <- matrix(0, nrow(X.desc), 10)
-A[] <- rnorm(length(A))
-XtA <- big_apply(X.desc, function(X, ind, mat) crossprod(X[, ind], mat),
-                 a.combine = 'rbind', mat = A)
+# note that we don't explicitly pass `ind.col` to `a.FUN`
+body(big_cprodMat)
 
 # get the product between X and a matrix B
-B <- matrix(0, ncol(X.desc), 10)
-B[] <- rnorm(length(B))
-XB <- big_apply(X.desc, function(X, ind, mat) X[, ind] %*% mat[ind, ],
-                a.combine = '+', mat = B)
+# here, we must explicitly pass `ind.col` to `a.FUN`
+# because the right matrix also needs to be subsetted.
+body(big_prodMat)

@@ -157,20 +157,10 @@ big_cprodMat <- function(X., A,
                          ncores2 = 1) {
   stopifnot(length(ind.row) == nrow(A))
 
-  big_apply(X., a.FUN = function(x, ind, A, ind.row, ind.col) {
-    crossprod(x[ind.row, ind.col[ind]], A)
+  big_apply(X., a.FUN = function(x, ind, A, ind.row) {
+    crossprod(x[ind.row, ind], A)
   }, a.combine = 'rbind', block.size = block.size,
-  ind = seq_along(ind.col), ncores = ncores2, A = A,
-  ind.row = ind.row, ind.col = ind.col)
+  ind = ind.col, ncores = ncores2, A = A, ind.row = ind.row)
 }
-
-################################################################################
-
-mult <- function(A, B, use.Eigen) `if`(use.Eigen, multEigen, `%*%`)(A, B)
-
-################################################################################
-
-cross <- function(A, B, use.Eigen)
-  `if`(use.Eigen, crossprodEigen5, crossprod)(A, B)
 
 ################################################################################

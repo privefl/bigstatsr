@@ -78,3 +78,6 @@ test2 <- big_parallelize(X.desc, p.FUN = big_colstats_sub2,
                          rows = rows, cols = cols)
 all.equal(test2, true2)
 }
+\seealso{
+\link{big_apply}
+}

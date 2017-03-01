@@ -21,14 +21,15 @@ arma::mat& getXtW(const arma::mat& covar,
 
 /******************************************************************************/
 
-template <typename T>
-List IRLS(SubMatrixAccessor<T> macc,
+template <class C>
+List IRLS(C macc,
           arma::mat &covar,
           const arma::vec &y,
           const arma::vec &z0,
           const arma::vec &w0,
           double tol,
           int maxiter) {
+
   int n = macc.nrow();
   int m = macc.ncol();
   int K = covar.n_cols;
@@ -85,7 +86,7 @@ List IRLS(SubMatrixAccessor<T> macc,
 
 // Dispatch function for IRLS
 // [[Rcpp::export]]
-List IRLS(XPtr<BigMatrix> xpMat,
+List IRLS(const S4& BM,
           arma::mat& covar,
           const arma::vec& y,
           const arma::vec& z0,
@@ -95,24 +96,33 @@ List IRLS(XPtr<BigMatrix> xpMat,
           double tol,
           int maxiter) {
 
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return IRLS(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+  IntegerVector rows = rowInd - 1;
+  IntegerVector cols = colInd - 1;
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return IRLS(RawSubMatAcc(*xpMat, rows, cols, BM.slot("code")),
                 covar, y, z0, w0, tol, maxiter);
-  case 2:
-    return IRLS(SubMatrixAccessor<short>(*xpMat, rowInd-1, colInd-1),
-                covar, y, z0, w0, tol, maxiter);
-  case 4:
-    return IRLS(SubMatrixAccessor<int>(*xpMat, rowInd-1, colInd-1),
-                covar, y, z0, w0, tol, maxiter);
-  case 6:
-    return IRLS(SubMatrixAccessor<float>(*xpMat, rowInd-1, colInd-1),
-                covar, y, z0, w0, tol, maxiter);
-  case 8:
-    return IRLS(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1),
-                covar, y, z0, w0, tol, maxiter);
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return IRLS(SubMatAcc<char>(*xpMat,   rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    case 2:
+      return IRLS(SubMatAcc<short>(*xpMat,  rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    case 4:
+      return IRLS(SubMatAcc<int>(*xpMat,    rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    case 6:
+      return IRLS(SubMatAcc<float>(*xpMat,  rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    case 8:
+      return IRLS(SubMatAcc<double>(*xpMat, rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 

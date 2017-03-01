@@ -5,7 +5,7 @@
 \title{Crossprod}
 \usage{
 big_crossprodSelf(X., fun.scaling, ind.row = rows_along(X.),
-  block.size = 1000, use.Eigen = !detect_MRO())
+  block.size = 1000)
 }
 \arguments{
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
@@ -22,9 +22,6 @@ If not specified, all rows are used. Don't use negative indices.}
 Default is \code{1000}. This parameter controls the trade-off between
 memory usage and speed. Basically, the more you can load at once,
 the quicker will be the execution time, at the expense of memory usage.}
-
-\item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default tries to detect MRO. See details.}
 }
 \value{
 A list of
@@ -37,27 +34,6 @@ A list of
 \description{
 Compute \eqn{X.row^T X.row} for a \code{big.matrix} \code{X}
 after applying a particular scaling to it.
-}
-\details{
-For matrix computations, using \code{Eigen} library is faster.
-However, if you link \code{R} with an optimized math library,
-using \code{R}'s base operations is even much faster.
-
-For example, you can easily link \code{R} with the
-\href{https://software.intel.com/en-us/intel-mkl}{Intel®
-Math Kernel Library} (Intel® MKL) through
-\href{https://mran.revolutionanalytics.com/open/}{Microsoft
-R Open} (MRO). It really improves performance
-of \code{R} and \code{RcppArmadillo} matrix computations,
-yet not the ones of \code{RcppEigen} (at least not directly).
-
-So,
-\enumerate{
-\item \code{Eigen} should be prefered if you don't change anything,
-\item base \code{R} should be prefered if you use MRO,
-\item \code{Eigen} may be prefered if you manage to link \code{RcppEigen} with the MKL
-(please \href{mailto:florian.prive.21@gmail.com}{contact me} if you do!).
-}
 }
 \examples{
 X.desc <- big_attachExtdata()

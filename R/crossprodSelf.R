@@ -3,7 +3,7 @@
 #' Compute \eqn{X.row^T X.row} for a `big.matrix` `X`
 #' after applying a particular scaling to it.
 #'
-#' @inherit bigstatsr-package params details
+#' @inheritParams bigstatsr-package
 #'
 #' @return A list of
 #' - \eqn{K = X.row^T X.row},
@@ -16,8 +16,7 @@
 big_crossprodSelf <- function(X.,
                               fun.scaling,
                               ind.row = rows_along(X.),
-                              block.size = 1000,
-                              use.Eigen = !detect_MRO()) {
+                              block.size = 1000) {
   X <- attach.BM(X.)
   m <- ncol(X)
   K <- matrix(NA_real_, m, m)
@@ -38,7 +37,7 @@ big_crossprodSelf <- function(X.,
                       means_sds$mean[ind2],
                       means_sds$sd[ind2])
 
-      K[ind2, ind1] <- cross(tmp2, tmp1, use.Eigen)
+      K[ind2, ind1] <- crossprod(tmp2, tmp1)
     }
   }
 

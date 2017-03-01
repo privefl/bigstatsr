@@ -5,7 +5,7 @@
 \title{SVD}
 \usage{
 big_SVD(X, fun.scaling, ind.row = seq(nrow(X)), block.size = 1000,
-  k = NULL, thr.eigval = 1e-04, use.Eigen = !detect_MRO())
+  k = NULL, thr.eigval = 1e-04)
 }
 \arguments{
 \item{X}{A \link[=big.matrix-class]{big.matrix}.}
@@ -26,9 +26,6 @@ the quicker will be the execution time, at the expense of memory usage.}
 
 \item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
 Default is \code{1e-4}.}
-
-\item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default tries to detect MRO. See details.}
 }
 \value{
 A list of
@@ -47,27 +44,6 @@ Note that to obtain the Principal Components, you must use
 An algorithm for SVD (or PCA) of a \code{big.matrix} through the eigen
 decomposition of the covariance between variables (primal)
 or observations (dual).
-}
-\details{
-For matrix computations, using \code{Eigen} library is faster.
-However, if you link \code{R} with an optimized math library,
-using \code{R}'s base operations is even much faster.
-
-For example, you can easily link \code{R} with the
-\href{https://software.intel.com/en-us/intel-mkl}{Intel®
-Math Kernel Library} (Intel® MKL) through
-\href{https://mran.revolutionanalytics.com/open/}{Microsoft
-R Open} (MRO). It really improves performance
-of \code{R} and \code{RcppArmadillo} matrix computations,
-yet not the ones of \code{RcppEigen} (at least not directly).
-
-So,
-\enumerate{
-\item \code{Eigen} should be prefered if you don't change anything,
-\item base \code{R} should be prefered if you use MRO,
-\item \code{Eigen} may be prefered if you manage to link \code{RcppEigen} with the MKL
-(please \href{mailto:florian.prive.21@gmail.com}{contact me} if you do!).
-}
 }
 \examples{
 # Simulating some data

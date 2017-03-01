@@ -25,6 +25,7 @@
 #' @import foreach
 #'
 #' @example examples/example-parallelize.R
+#' @seealso [big_apply]
 big_parallelize <- function(X., p.FUN, p.combine, ncores,
                             ind = cols_along(X.),
                             ...) {
@@ -36,13 +37,14 @@ big_parallelize <- function(X., p.FUN, p.combine, ncores,
     doParallel::registerDoParallel(cl)
     on.exit(parallel::stopCluster(cl), add = TRUE)
 
-    multi <- detect_MRO()
+    # Microsoft R Open?
+    multi <- requireNamespace("RevoUtilsMath", quietly = TRUE)
 
     foreach(ic = 1:ncores, .combine = p.combine) %dopar% {
       # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
       if (multi) {
-        nthreads.save <- RevoUtilsMath::setMKLthreads(1)
-        on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)
+        nthreads.save <- setMKLthreads(1)
+        on.exit(setMKLthreads(nthreads.save), add = TRUE)
       }
 
       p.FUN(X.desc, ind = ind[seq2(range.parts[ic, ])], ...)
@@ -95,6 +97,7 @@ big_applySeq <- function(X., a.FUN, a.combine, block.size, ind, ...) {
 #' @import foreach
 #'
 #' @example examples/example-apply.R
+#' @seealso [big_parallelize]
 big_apply <- function(X., a.FUN, a.combine,
                       ncores = 1,
                       block.size = 1000,
