@@ -14,15 +14,12 @@ a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 \item{A}{A matrix with \code{length(ind.row)} rows.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used. Don't use negative indices.}
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used. Don't use negative indices.}
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.}
+\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
 \item{ncores2}{Number of cores used. Default doesn't use parallelism.
 For this function, use only half of the cores you have.}

@@ -13,16 +13,13 @@
 \item{X}{A \link[=big.matrix-class]{big.matrix}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used. Don't use negative indices.}
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{covar.row}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.}
+\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
 \item{ncores2}{Number of cores used. Default doesn't use parallelism.
 For this function, use only half of the cores you have.}

@@ -14,15 +14,12 @@ big_predScoresPCA(obj.svd, X. = NULL, ind.row = rows_along(X.),
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used. Don't use negative indices.}
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used. Don't use negative indices.}
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.}
+\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 }
 \value{
 A matrix of size \eqn{n \times K} where \code{n} is the number of samples

@@ -26,7 +26,7 @@ Its only two arguments should be \code{pred} and \code{target}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.
-Don't use negative indices.}
+\strong{Don't use negative indices.}}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
@@ -39,10 +39,7 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 \item{method}{Method for combining vectors of coefficients. The default uses
 the \href{https://en.wikipedia.org/wiki/Geometric_median}{geometric median}.}
 
-\item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.}
+\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
 \item{...}{Extra parameters to be passed to FUN.}
 }

@@ -13,10 +13,10 @@ a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 \item{y}{A vector of same size as \code{ind.row}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used. Don't use negative indices.}
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used. Don't use negative indices.}
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 }
 \value{
 \eqn{X^T /cdot y}.

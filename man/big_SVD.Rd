@@ -11,16 +11,13 @@ big_SVD(X, fun.scaling, ind.row = seq(nrow(X)), block.size = 1000,
 \item{X}{A \link[=big.matrix-class]{big.matrix}.}
 
 \item{fun.scaling}{A function that returns a named list of
-\strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
+\code{mean} and \code{sd} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used. Don't use negative indices.}
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.}
+\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
 \item{k}{Number of singular vectors/values to compute. Default is all.}
 
