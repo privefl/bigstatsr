@@ -8,29 +8,28 @@
 #' @param object Object of class `big_spReg`.
 #' @inheritParams bigstatsr-package
 #'
-#' @return A vector of scores, corresponding to `ind.row`.
+#' @return A matrix of scores, with rows corresponding to `ind.row`
+#' and columns corresponding to `lambda`.
 #' @export
 #' @import Matrix
 #' @importFrom stats predict
 #'
-#' @examples
-predict.big_sp <- function(object, X, ind.row = seq_len(nrow(X)),
+#' @example examples/example-predict.R
+predict.big_sp <- function(object, X.,
+                           ind.row = rows_along(X.),
                            covar.row = NULL,
-                           block.size = block.size,
-                           ncores2 = 1) {
-  check_X(X, ncores2 = ncores2)
-
+                           block.size = 1000) {
   betas <- object$beta
   if (is.null(covar.row)) {
-    scores <- big_prodMat(X, betas, ind.row = ind.row,
-                          block.size = block.size,
-                          ncores2 = ncores2)
+    scores <- big_prodMat(X., betas,
+                          ind.row = ind.row,
+                          block.size = block.size)
   } else {
     stopifnot(nrow(covar.row) == length(ind.row))
-    ind.X <- seq_len(ncol(X))
-    scores <- big_prodMat(X, betas[ind.X, ], ind.row = ind.row,
-                          block.size = block.size,
-                          ncores2 = ncores2)
+    ind.X <- cols_along(X.)
+    scores <- big_prodMat(X., betas[ind.X, ],
+                          ind.row = ind.row,
+                          block.size = block.size)
     scores <- scores + covar.row %*% betas[-ind.X, ]
   }
 

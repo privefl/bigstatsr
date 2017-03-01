@@ -14,11 +14,18 @@ use scale without using center.}}
 }
 \value{
 A new \strong{function} that returns a data.frame of two vectors
-"mean" and "sd" which are of the length of \strong{\code{ind.col}}.
+"mean" and "sd" which are of the length of \code{ind.col}.
 }
 \description{
 Some scaling functions for a \code{big.matrix} to be used as
 the \strong{\code{fun.scaling}} parameter of some functions of this package.
+}
+\details{
+One could think about less common scalings, such as for example the
+"y-aware" scaling which uses the inverse of betas of column-wise linear
+regression as scaling. See \href{https://goo.gl/8G8WMa}{this post} for details.
+It would be easy to implement it using \code{big_colstats} to get column means
+and \code{big_univLinReg} to get betas (and then inverse them).
 }
 \examples{
 X.desc <- big_attachExtdata()

@@ -60,27 +60,29 @@ get_beta <- function(betas, method) {
 #' @export
 #' @import foreach
 #'
-big_CMSA <- function(FUN, feval, X, y.train, ind.train = seq(nrow(X)),
-                     covar.train = NULL, K = 10, ncores = 1,
+big_CMSA <- function(FUN, feval, X., y.train,
+                     ind.train = rows_along(X.),
+                     covar.train = NULL,
+                     K = 10,
                      method = c("geometric-median", "mean-wise", "median-wise"),
                      block.size = 1000,
+                     ncores = 1,
                      ...) {
-  check_X(X, ncores = ncores)
   stopifnot(length(ind.train) == length(y.train))
 
-  X.desc <- describe(X)
   n <- length(ind.train)
   indCV <- sample(rep_len(1:K, n))
 
   if (is.seq <- (ncores == 1)) {
     registerDoSEQ()
   } else {
+    X.desc <- describe(X.)
     cl <- parallel::makeCluster(ncores)
     doParallel::registerDoParallel(cl)
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
   cross.res <- foreach(ic = 1:K) %dopar% {
-    X2 <- attach.big.matrix(X.desc)
+    X2 <- attach.BM(`if`(is.seq, X., X.desc))
 
     in.val <- (indCV == ic)
 
@@ -89,8 +91,7 @@ big_CMSA <- function(FUN, feval, X, y.train, ind.train = seq(nrow(X)),
 
     scores <- predict.big_sp(mod, X2, ind.row = ind.train[in.val],
                              covar.row = covar.train[in.val, ],
-                             block.size = block.size,
-                             ncores2 = max(1, ncores / 2))
+                             block.size = block.size)
 
     list(betas = mod$beta, scores = scores)
   }

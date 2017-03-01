@@ -65,7 +65,7 @@ plot(test$v, pca$rotation[, 1:ncol(scores2)])
 # projecting on new data
 X.test <- sweep(sweep(X[-ind, ], 2, test$means, '-'), 2, test$sds, '/')
 scores.test <- X.test \%*\% test$v
-ind2 <- setdiff(seq(nrow(X)), ind)
+ind2 <- setdiff(rows_along(X), ind)
 scores.test2 <- big_predScoresPCA(test, X, ind.test = ind2) # use this
 print(all.equal(scores.test, scores.test2))
 scores.test3 <- predict(pca, X[-ind, ])

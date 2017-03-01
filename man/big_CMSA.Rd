@@ -4,9 +4,9 @@
 \alias{big_CMSA}
 \title{Cross-Model Selection and Averaging.}
 \usage{
-big_CMSA(FUN, feval, X, y.train, ind.train = seq(nrow(X)),
-  covar.train = NULL, K = 10, ncores = 1, method = c("geometric-median",
-  "mean-wise", "median-wise"), block.size = 1000, ...)
+big_CMSA(FUN, feval, X., y.train, ind.train = rows_along(X.),
+  covar.train = NULL, K = 10, method = c("geometric-median", "mean-wise",
+  "median-wise"), block.size = 1000, ncores = 1, ...)
 }
 \arguments{
 \item{FUN}{Function that computes a linear scores for different
@@ -20,7 +20,8 @@ want to minimize), you should use its opposite instead.
 Its only two arguments should be \code{pred} and \code{target}
 (e.g. \code{function(pred, target) aucSample(pred, target, nsim = 1e5)}).}
 
-\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
@@ -34,12 +35,12 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 
 \item{K}{Number of folds that are used.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.}
-
 \item{method}{Method for combining vectors of coefficients. The default uses
 the \href{https://en.wikipedia.org/wiki/Geometric_median}{geometric median}.}
 
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.}
 
 \item{...}{Extra parameters to be passed to FUN.}
 }

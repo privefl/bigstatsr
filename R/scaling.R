@@ -5,12 +5,18 @@
 #' Some scaling functions for a `big.matrix` to be used as
 #' the __`fun.scaling`__ parameter of some functions of this package.
 #'
+#' One could think about less common scalings, such as for example the
+#' "y-aware" scaling which uses the inverse of betas of column-wise linear
+#' regression as scaling. See [this post](https://goo.gl/8G8WMa) for details.
+#' It would be easy to implement it using `big_colstats` to get column means
+#' and `big_univLinReg` to get betas (and then inverse them).
+#'
 #' @param center A logical value: whether to return means or 0s.
 #' @param scale A logical value: whether to return sds or 1s. __You can't
 #' use scale without using center.__
 #' @return
 #' A new __function__ that returns a data.frame of two vectors
-#' "mean" and "sd" which are of the length of __`ind.col`__.
+#' "mean" and "sd" which are of the length of `ind.col`.
 #'
 #' @seealso [scale]
 #'

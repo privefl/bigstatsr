@@ -4,13 +4,14 @@
 \alias{predict.big_sp}
 \title{Predict method}
 \usage{
-\method{predict}{big_sp}(object, X, ind.row = seq_len(nrow(X)),
-  covar.row = NULL, block.size = block.size, ncores2 = 1)
+\method{predict}{big_sp}(object, X., ind.row = rows_along(X.),
+  covar.row = NULL, block.size = 1000)
 }
 \arguments{
 \item{object}{Object of class \code{big_spReg}.}
 
-\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
@@ -20,14 +21,27 @@ for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
-
-\item{ncores2}{Number of cores used. Default doesn't use parallelism.
-For this function, use only half of the cores you have.}
 }
 \value{
-A vector of scores, corresponding to \code{ind.row}.
+A matrix of scores, with rows corresponding to \code{ind.row}
+and columns corresponding to \code{lambda}.
 }
 \description{
 Predict method which is applicable to
 \link{big_spLinReg}, \link{big_spLogReg} and \link{big_spSVM}.
+}
+\examples{
+# simulating some data
+N <- 73
+M <- 430
+X.desc <- describe(as.big.matrix(matrix(rnorm(N*M, sd = 5), N)))
+y <- sample(0:1, size = N, replace = TRUE)
+covar <- matrix(rnorm(N * 3), N)
+
+ind.train <- sort(sample(N, N/2))
+test <- big_spSVM(X.desc, y[ind.train], ind.train = ind.train,
+                  covar.train = covar[ind.train, ])
+ind.test <- setdiff(rows_along(X.desc), ind.train)
+pred <- predict(test, X. = X.desc, ind.row = ind.test,
+                covar.row = covar[ind.test, ])
 }
