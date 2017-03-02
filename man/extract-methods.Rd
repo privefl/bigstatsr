@@ -43,3 +43,4 @@
 \description{
 Extract replace big.matrix elements
 }
+\keyword{internal}

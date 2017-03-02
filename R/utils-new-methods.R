@@ -8,6 +8,12 @@
 #' Compared to a [big.matrix][big.matrix-class], it adds a slot `code` which
 #' is used as a lookup table of size 256.
 #'
+#' @param x Either a [big.matrix][big.matrix-class] or
+#' a [big.matrix.descriptor][big.matrix.descriptor-class].
+#' @param code A numeric vector of length 256. You should contruct it with
+#' `rep(NA_real_, 256)` and then replace the values
+#' which are of interest for you.
+#'
 #' @examples
 #' X <- big.matrix(10, 10, type = "raw")
 #' X[] <- sample(as.raw(0:3), size = length(X), replace = TRUE)
@@ -37,25 +43,59 @@ setClass("BM.code.descriptor",
 ################################################################################
 #### New dim elements ####
 
+#' Dimensions
+#'
+#' Dimensions of the described `big.matrix` object. This can be used to know
+#' the dimensions of the underlying `big.matrix` without having to attach it.
+#'
+#' @param x A [big.matrix.descriptor][big.matrix.descriptor-class].
+#'
+#' @examples
+#' X.desc <- big_attachExtdata()
+#' dim(X.desc)
+#' dim(attach.big.matrix(X.desc))
+#'
+#' @rdname dim-desc
 #' @export
 setMethod("nrow", signature(x = "big.matrix.descriptor"),
           function(x) x@description$nrow)
 
+#' @rdname dim-desc
 #' @export
 setMethod("ncol", signature(x = "big.matrix.descriptor"),
           function(x) x@description$ncol)
 
+#' @rdname dim-desc
 #' @export
 setMethod("dim", signature(x = "big.matrix.descriptor"),
           function(x) c(nrow(x), ncol(x)))
 
+#' @rdname dim-desc
 #' @export
 setMethod("length", signature(x = "big.matrix.descriptor"),
           function(x) prod(dim(x)))
 
+################################################################################
+#### Sequence generation ####
+
+#' Sequence generation
+#'
+#' Similar to [seq_along], it creates sequences of size `nrow(x)` or `ncol(x)`.
+#'
+#' @param x Any object on which you can call `nrow` and `ncol`.
+#'
+#' @examples
+#' X.desc <- big_attachExtdata()
+#' dim(X.desc)
+#' str(rows_along(X.desc))
+#' str(cols_along(X.desc))
+#'
+#' @rdname seq-dim
+#' @keywords internal
 #' @export
 rows_along <- function(x) seq_len(nrow(x))
 
+#' @rdname seq-dim
 #' @export
 cols_along <- function(x) seq_len(ncol(x))
 
@@ -91,13 +131,24 @@ setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
 ################################################################################
 #### Methods for completeness ####
 
+#' Extend "bigmemory" methods
+#'
+#' Extend some methods for completeness, so that `big.matrix` objects
+#' or their descriptor can be used interchangeably.
+#'
+#' @param x Either a [big.matrix][big.matrix-class] or
+#' a [big.matrix.descriptor][big.matrix.descriptor-class].
+#'
+#' @rdname completeness-methods
 #' @export
 setMethod("typeof", signature(x = "big.matrix.descriptor"),
           function(x) x@description$type)
 
+#' @rdname completeness-methods
 #' @export
 setMethod("describe", signature(x = "big.matrix.descriptor"), identity)
 
+#' @rdname completeness-methods
 #' @export
 setMethod("describe", signature(x = "BM.code"), function(x) {
   methods::new("BM.code.descriptor",
@@ -105,16 +156,20 @@ setMethod("describe", signature(x = "BM.code"), function(x) {
                code = x@code)
 })
 
+#' @rdname completeness-methods
 #' @export
 setGeneric("attach.BM", function(x) standardGeneric("attach.BM"))
 
+#' @rdname completeness-methods
 #' @export
 setMethod("attach.BM", signature(x = "big.matrix"), identity)
 
+#' @rdname completeness-methods
 #' @export
 setMethod("attach.BM", signature(x = "big.matrix.descriptor"),
           function(x) attach.big.matrix(x))
 
+#' @rdname completeness-methods
 #' @export
 setMethod("attach.BM", signature(x = "BM.code.descriptor"),
           function(x) as.BM.code(x, x@code))
@@ -133,6 +188,7 @@ decode <- function(x, code) `if`(is.matrix(x), decodeMat, decodeVec)(x, code)
 #' @param j Indices specifying the columns.
 #' @param drop Logical indication if reduce to minimum dimensions.
 #' @rdname extract-methods
+#' @keywords internal
 #' @export
 setMethod("[", signature(x = "BM.code", i = "missing",
                          j = "missing", drop = "missing"),

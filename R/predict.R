@@ -18,7 +18,7 @@
 predict.big_sp <- function(object, X.,
                            ind.row = rows_along(X.),
                            covar.row = NULL,
-                           block.size = 1000) {
+                           block.size = 1000) { # FAIL HERE
   betas <- object$beta
   if (is.null(covar.row)) {
     scores <- big_prodMat(X., betas,

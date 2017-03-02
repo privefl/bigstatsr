@@ -16,6 +16,14 @@ as.BM.code(x, code)
 
 \S4method{as.BM.code}{big.matrix.descriptor,numeric}(x, code)
 }
+\arguments{
+\item{x}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+
+\item{code}{A numeric vector of length 256. You should contruct it with
+\code{rep(NA_real_, 256)} and then replace the values
+which are of interest for you.}
+}
 \description{
 A class for storing and accessing up to 256 values using a RAW "big.matrix".
 }

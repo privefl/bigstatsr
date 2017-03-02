@@ -39,8 +39,8 @@ test_that("equality with glm with all data", {
     for (covar in lcovar) {
       mod <- big_univLogReg(X., y, covar.train = covar)
       mat <- as.matrix(mod[, -3])
-      # dimnames(mat) <- NULL
-      expect_equivalent(mat, getGLM(X, y, covar), tolerance = TOL)
+      dimnames(mat) <- NULL
+      expect_equal(mat, getGLM(X, y, covar), tolerance = TOL)
     }
   }
 })
@@ -61,8 +61,8 @@ test_that("equality with glm with only half the data", {
                             covar.train = covar[ind, ],
                             ind.train = ind)
       mat <- as.matrix(mod[, -3])
-      # dimnames(mat) <- NULL
-      expect_equivalent(mat, getGLM(X, y, covar, ind), tolerance = TOL)
+      dimnames(mat) <- NULL
+      expect_equal(mat, getGLM(X, y, covar, ind), tolerance = TOL) # FAIL HERE
     }
   }
 })
