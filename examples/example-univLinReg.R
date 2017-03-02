@@ -1,7 +1,7 @@
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)
 y <- rnorm(n)
-covar <- matrix(rnorm(N * 3), N)
+covar <- matrix(rnorm(n * 3), n)
 
 X1 <- attach.BM(X.desc)[, 1] # only first column of the `big.matrix`
 

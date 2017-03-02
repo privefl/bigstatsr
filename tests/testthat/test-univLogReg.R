@@ -3,7 +3,7 @@
 context("UNIV_LOG_REG")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = FALSE)
+                    bigmemory.default.shared = TRUE)
 
 TOL <- 1e-5
 
@@ -35,11 +35,12 @@ getGLM <- function(X, y, covar, ind = NULL) {
 test_that("equality with glm with all data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
     for (covar in lcovar) {
-      mod <- big_univLogReg(X, y, covar.train = covar)
+      mod <- big_univLogReg(X., y, covar.train = covar)
       mat <- as.matrix(mod[, -3])
-      dimnames(mat) <- NULL
-      expect_equal(mat, getGLM(X, y, covar), tolerance = TOL)
+      # dimnames(mat) <- NULL
+      expect_equivalent(mat, getGLM(X, y, covar), tolerance = TOL)
     }
   }
 })
@@ -54,12 +55,14 @@ test_that("equality with glm with only half the data", {
 
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
     for (covar in lcovar) {
-      mod <- big_univLogReg(X, y[ind], covar.train = covar[ind, ],
+      mod <- big_univLogReg(X., y[ind],
+                            covar.train = covar[ind, ],
                             ind.train = ind)
       mat <- as.matrix(mod[, -3])
-      dimnames(mat) <- NULL
-      expect_equal(mat, getGLM(X, y, covar, ind), tolerance = TOL)
+      # dimnames(mat) <- NULL
+      expect_equivalent(mat, getGLM(X, y, covar, ind), tolerance = TOL)
     }
   }
 })

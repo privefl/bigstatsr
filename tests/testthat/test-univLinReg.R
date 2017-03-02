@@ -3,27 +3,39 @@
 context("UNIV_LIN_REG")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = FALSE)
+                    bigmemory.default.shared = TRUE)
 
 # Simulating some data
-data("trees")
-N <- nrow(trees)
+# Simulating some data
+N <- 73
+M <- 43
+X0 <- matrix(rnorm(N*M, sd = 5), N)
+y <- rnorm(N)
+
 covar0 <- matrix(rnorm(N * 3), N)
 lcovar <- list(NULL, covar0)
-X0 <- as.matrix(trees[, -1])
-y <- trees[, 1]
+
+################################################################################
+
+getLM <- function(X, y, covar, ind = NULL) {
+  res <- matrix(NA, M, 4)
+  for (i in 1:M) {
+    mod <- lm(y ~ cbind(X[, i, drop = FALSE], covar), subset = ind)
+    res[i, ] <- summary(mod)$coefficients[2, ]
+  }
+  res
+}
 
 ################################################################################
 
 test_that("equality with lm with all data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(X0, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+
     for (covar in lcovar) {
-      lm1 <- summary(lm(y ~ cbind(X[, 1, drop = FALSE], covar)))
-      lm2 <- summary(lm(y ~ cbind(X[, 2, drop = FALSE], covar)))
-      expect_equivalent(as.matrix(big_univLinReg(X, y, covar = covar)),
-                        rbind(lm1$coefficients[2, ],
-                              lm2$coefficients[2, ]))
+      mod <- big_univLinReg(X., y, covar.train = covar)
+      expect_equivalent(as.matrix(mod), getLM(X, y, covar))
     }
   }
 })
@@ -35,13 +47,13 @@ test_that("equality with lm with only half the data", {
 
   for (t in ALL.TYPES) {
     X <- as.big.matrix(X0, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+
     for (covar in lcovar) {
-      lm1 <- summary(lm(y ~ cbind(X[, 1, drop = FALSE], covar), subset = ind))
-      lm2 <- summary(lm(y ~ cbind(X[, 2, drop = FALSE], covar), subset = ind))
-      expect_equivalent(as.matrix(big_univLinReg(X, y[ind],
-                                                 covar.train = covar[ind, ],
-                                                 ind.train = ind)),
-                        rbind(lm1$coefficients[2, ], lm2$coefficients[2, ]))
+      mod <- big_univLinReg(X., y[ind],
+                            covar.train = covar[ind, ],
+                            ind.train = ind)
+      expect_equivalent(as.matrix(mod), getLM(X, y, covar, ind))
     }
   }
 })

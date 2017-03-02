@@ -24,6 +24,7 @@ Imports:
     doParallel,
     foreach, 
     Matrix,
+    methods,
     parallel, 
     Rcpp, 
     RSpectra, 
@@ -36,6 +37,7 @@ LinkingTo:
 Suggests: 
     biglasso, 
     covr, 
+    RevoUtilsMath,
     sparseSVM,
     testthat   
 RoxygenNote: 6.0.1

@@ -18,7 +18,7 @@ get_beta <- function(betas, method) {
   } else if (method == "mean-wise") {
     rowMeans(betas)
   } else if (method == "median-wise") {
-    apply(betas, 1, median)
+    apply(betas, 1, stats::median)
   } else {
     stop("This method is not implemented.")
   }
@@ -69,6 +69,7 @@ big_CMSA <- function(FUN, feval, X., y.train,
                      ncores = 1,
                      ...) {
   stopifnot(length(ind.train) == length(y.train))
+  method <- match.arg(method)
 
   n <- length(ind.train)
   indCV <- sample(rep_len(1:K, n))
@@ -89,9 +90,9 @@ big_CMSA <- function(FUN, feval, X., y.train,
     mod <- FUN(X2, y.train[!in.val], ind.train[!in.val],
                covar.train[!in.val, ], ...)
 
-    scores <- predict.big_sp(mod, X2, ind.row = ind.train[in.val],
-                             covar.row = covar.train[in.val, ],
-                             block.size = block.size)
+    scores <- predict(mod, X2, ind.row = ind.train[in.val],
+                      covar.row = covar.train[in.val, ],
+                      block.size = block.size)
 
     list(betas = mod$beta, scores = scores)
   }

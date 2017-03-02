@@ -29,7 +29,7 @@ repl <- replicate(1e4, {
 
 repl.conf <- c("Mean" = mean(repl),
                quantile(repl, probs = c(0.025, 0.975)),
-               "Sd" = sd(repl))
+               "Sd" = stats::sd(repl))
 
 test_that("Same results than simple bootstrap implementation", {
   expect_equal(repl.conf, auc.conf, tolerance = 1e-2) # OK over 1000 runs

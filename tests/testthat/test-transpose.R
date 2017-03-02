@@ -14,7 +14,7 @@ test_that("Equality with t()", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
 
-    test <- big_transpose(X)
+    test <- big_transpose(X, descriptor = FALSE)
     expect_identical(test[,], t(X[,]))
   }
 })

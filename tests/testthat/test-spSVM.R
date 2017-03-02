@@ -3,7 +3,7 @@
 context("SP_SVM")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = FALSE)
+                    bigmemory.default.shared = TRUE)
 
 
 # Simulating some data
@@ -21,13 +21,15 @@ lcovar <- list(NULL, covar0)
 test_that("equality with sparseSVM with all data", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+
     for (covar in lcovar) {
       X2 <- cbind(X[,], covar)
       m <- pmax(0, runif(ncol(X2), min = -0.5, max = 2))
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr <- big_spSVM(X, y, covar.train = covar, alpha = alpha,
+      mod.bigstatsr <- big_spSVM(X., y, covar.train = covar, alpha = alpha,
                                  lambda.min = lambda.min, penalty.factor = m)
       mod.sparseSVM <- sparseSVM::sparseSVM(X2, y.factor,
                                             alpha = alpha,
@@ -35,7 +37,8 @@ test_that("equality with sparseSVM with all data", {
                                             penalty.factor = m)
 
       expect_equal(mod.bigstatsr$lambda, mod.sparseSVM$lambda)
-      expect_equivalent(mod.bigstatsr$beta, mod.sparseSVM$weights[-1, ])
+      expect_equivalent(as.matrix(mod.bigstatsr$beta),
+                        mod.sparseSVM$weights[-1, ])
       expect_equal(mod.bigstatsr$intercept, mod.sparseSVM$weights[1, ])
     }
   }
@@ -51,13 +54,15 @@ test_that("equality with sparseSVM with only half the data", {
 
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+
     for (covar in lcovar) {
       X2 <- cbind(X[,], covar)
       m <- pmax(0, runif(ncol(X2), min = -0.5, max = 2))
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr <- big_spSVM(X, y[ind], ind.train = ind,
+      mod.bigstatsr <- big_spSVM(X., y[ind], ind.train = ind,
                                  covar.train = covar[ind, ],
                                  alpha = alpha,
                                  lambda.min = lambda.min,
@@ -68,7 +73,8 @@ test_that("equality with sparseSVM with only half the data", {
                                             penalty.factor = m)
 
       expect_equal(mod.bigstatsr$lambda, mod.sparseSVM$lambda)
-      expect_equivalent(mod.bigstatsr$beta, mod.sparseSVM$weights[-1, ])
+      expect_equivalent(as.matrix(mod.bigstatsr$beta),
+                        mod.sparseSVM$weights[-1, ])
       expect_equal(mod.bigstatsr$intercept, mod.sparseSVM$weights[1, ])
     }
   }

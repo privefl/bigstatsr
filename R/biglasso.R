@@ -127,7 +127,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
       stop("y.train must numeric or able to be coerced to numeric"))
 
   if (family == "binomial") {
-    yy <- transform_levels(y.train, new.levels = c(-1, 1))
+    yy <- transform_levels(y.train)
   } else if (family == "gaussian") {
     yy <- y.train - mean(y.train)
   } else {

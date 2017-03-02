@@ -13,9 +13,6 @@ WARNING_NCORES2 <- paste("For this function, you shouldn't try to use",
 # also defined in inst/include/bigstatsr.h
 ERROR_TYPE <- "unknown type detected for big.matrix object!"
 
-# used in `tryCatch` examples
-FUN_ERROR <- function(e) message("One error has been catched.")
-
 ################################################################################
 
 # check_X <- function(X, ncores = 1, ncores2 = 1) {

@@ -70,7 +70,7 @@ big_colstats_sub2 <- function(X.desc, ind, rows, cols) {
 tryCatch(test2 <- big_parallelize(X.desc, p.FUN = big_colstats_sub2,
                                   p.combine = 'rbind', ncores = 2,
                                   rows = rows, cols = cols),
-         error = FUN_ERROR)
+         error = function(e) message("One error has been catched."))
 # This now works, using `ind = seq_along(cols)`.
 test2 <- big_parallelize(X.desc, p.FUN = big_colstats_sub2,
                          p.combine = 'rbind', ncores = 2,

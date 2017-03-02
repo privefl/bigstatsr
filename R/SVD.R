@@ -6,7 +6,7 @@ DualBigPCA <- function(X, fun.scaling,
                        k,
                        thr.eigval) {
 
-  tmp <- big_tcrossprodSelf(X = X,
+  tmp <- big_tcrossprodSelf(X,
                             fun.scaling = fun.scaling,
                             ind.row = ind.row,
                             block.size = block.size)
@@ -38,7 +38,7 @@ PrimalBigPCA <- function(X, fun.scaling,
                          k,
                          thr.eigval) {
 
-  tmp <- big_crossprodSelf(X = X,
+  tmp <- big_crossprodSelf(X,
                            fun.scaling = fun.scaling,
                            ind.row = ind.row,
                            block.size = block.size)
