@@ -129,7 +129,7 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
   saturated <- fit[[4]]
   # Eliminate saturated lambda values
   ind <- !is.na(iter)
-  weights <- weights[, ind]
+  weights <- weights[, ind, drop = FALSE]
   iter <- iter[ind]
   lambda <- lambda[ind]
 

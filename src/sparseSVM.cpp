@@ -223,6 +223,7 @@ List COPY_sparse_svm(C macc,
 
   // Solution path
   for (l=lstart; l<nlam; l++) {
+    if (saturated) break;
     if (message) Rprintf("Lambda %d\n", l+1);
     l1 = lambda[l]*alpha;
     l2 = lambda[l]*(1.0-alpha);
@@ -245,7 +246,7 @@ List COPY_sparse_svm(C macc,
       // Check dfmax
       if (nnzero > dfmax) {
         for (int ll = l; ll<nlam; ll++) iter[ll] = NA_INTEGER;
-        saturated = TRUE;
+        saturated = true;
         break;
       }
 
@@ -340,7 +341,7 @@ List COPY_sparse_svm(C macc,
             }
             z[j] = v1;
           }
-          if (w_old[j] != 0.0) nnzero++;
+          if (w(j, l) != 0.0) nnzero++;
         }
         scrfactor /= alpha*ldiff;
         if (message) {
@@ -348,7 +349,7 @@ List COPY_sparse_svm(C macc,
           Rprintf("Variable screening factor = %f\n", scrfactor);
         }
       } else {
-        for (j=0; j<p; j++) if (w_old[j] != 0.0) nnzero++;
+        for (j=0; j<p; j++) if (w(j, l) != 0.0) nnzero++;
       }
       if (message) Rprintf("# iterations = %d\n", iter[l]);
       if (violations==0) break;
