@@ -25,7 +25,7 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 For this function, use only half of the cores you have.}
 }
 \value{
-\eqn{X /cdot A}.
+\eqn{X \cdot A}.
 }
 \description{
 Product between a "big.matrix" and a matrix.

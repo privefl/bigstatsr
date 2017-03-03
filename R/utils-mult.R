@@ -7,7 +7,7 @@
 #' @inheritParams bigstatsr-package
 #' @param y A vector of same size as `ind.col`.
 #'
-#' @return \eqn{X /cdot y}.
+#' @return \eqn{X \cdot y}.
 #' @export
 #'
 #' @examples
@@ -45,7 +45,7 @@ big_prodVec <- function(X., y,
 #' @inheritParams bigstatsr-package
 #' @param y A vector of same size as `ind.row`.
 #'
-#' @return \eqn{X^T /cdot y}.
+#' @return \eqn{X^T \cdot y}.
 #' @export
 #'
 #' @examples
@@ -83,7 +83,7 @@ big_cprodVec <- function(X., y,
 #' @inheritParams bigstatsr-package
 #' @param A A matrix with `length(ind.col)` rows.
 #'
-#' @return \eqn{X /cdot A}.
+#' @return \eqn{X \cdot A}.
 #' @export
 #'
 #' @examples
@@ -128,7 +128,7 @@ big_prodMat <- function(X., A,
 #' @inheritParams bigstatsr-package
 #' @param A A matrix with `length(ind.row)` rows.
 #'
-#' @return \eqn{X^T /cdot A}.
+#' @return \eqn{X^T \cdot A}.
 #' @export
 #'
 #' @examples

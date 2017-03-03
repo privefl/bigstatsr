@@ -25,7 +25,7 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 For this function, use only half of the cores you have.}
 }
 \value{
-\eqn{X^T /cdot A}.
+\eqn{X^T \cdot A}.
 }
 \description{
 Cross-product between a "big.matrix" and a matrix.

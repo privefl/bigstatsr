@@ -19,7 +19,7 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 }
 \value{
-\eqn{X^T /cdot y}.
+\eqn{X^T \cdot y}.
 }
 \description{
 Cross-product between a "big.matrix" and a vector.
