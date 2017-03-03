@@ -121,6 +121,7 @@ big_SVD <- function(X., fun.scaling,
 #'
 #' @inheritParams bigstatsr-package
 #' @param obj.svd A list returned by `big_SVD` or `big_randomSVD`.
+#' @param ... Not used.
 #'
 #' @export
 #' @return A matrix of size \eqn{n \times K} where `n` is the number of samples
@@ -133,7 +134,8 @@ big_SVD <- function(X., fun.scaling,
 predict.big_SVD <- function(obj.svd, X. = NULL,
                             ind.row = rows_along(X.),
                             ind.col = cols_along(X.),
-                            block.size = 1000) {
+                            block.size = 1000,
+                            ...) {
   if (is.null(X.)) {
     obj.svd$u %*% diag(obj.svd$d)
   } else {
