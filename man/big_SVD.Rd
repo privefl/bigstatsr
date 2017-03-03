@@ -26,7 +26,7 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 Default is \code{1e-4}.}
 }
 \value{
-A list of
+A named list (an S3 class "big_SVD") of
 \itemize{
 \item \code{d}, the singular values,
 \item \code{u}, the left singular vectors,
@@ -36,12 +36,25 @@ A list of
 }
 
 Note that to obtain the Principal Components, you must use
-\code{big_predScoresPCA} on the result. See examples.
+\link[=predict.big_SVD]{predict} on the result. See examples.
 }
 \description{
 An algorithm for SVD (or PCA) of a \code{big.matrix} through the eigen
 decomposition of the covariance between variables (primal)
 or observations (dual).
+}
+\details{
+To get \eqn{X = U \cdot D \cdot V^T},
+\itemize{
+\item if the number of observation is small, this function computes
+\eqn{K_(2) = X \cdot X^T = U \cdot D^2 \cdot U^T} and then
+\eqn{V = X^T \cdot U \cdot D^{-1}},
+\item if the number of variable is small, this function computes
+\eqn{K_(1) = X^T \cdot X = V \cdot D^2 \cdot V^T} and then
+\eqn{U = X \cdot V \cdot D^{-1}},
+\item if both dimensions are large and you only want a partial SVD,
+please use \link{big_randomSVD} instead.
+}
 }
 \examples{
 X.desc <- big_attachExtdata()
@@ -64,7 +77,8 @@ all.equal(test$sds, pca$scale)
 # except for last eigenvalue which is equal to 0
 # due to centering of columns
 scores <- test$u \%*\% diag(test$d)
-scores2 <- big_predScoresPCA(test) # use this function to predict scores
+class(test)
+scores2 <- predict(test) # use this function to predict scores
 all.equal(scores, scores2)
 dim(scores)
 dim(pca$x)
@@ -77,7 +91,7 @@ X2 <- sweep(sweep(attach.BM(X.desc)[-ind, ], 2, test$means, '-'),
             2, test$sds, '/')
 scores.test <- X2 \%*\% test$v
 ind2 <- setdiff(rows_along(X.desc), ind)
-scores.test2 <- big_predScoresPCA(test, X.desc, ind.row = ind2) # use this
+scores.test2 <- predict(test, X.desc, ind.row = ind2) # use this
 all.equal(scores.test, scores.test2)
 scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
 plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])

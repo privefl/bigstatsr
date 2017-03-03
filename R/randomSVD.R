@@ -177,7 +177,7 @@ svds4.seq <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' @param verbose Should some progress be printed? Default is `FALSE`.
 #'
 #' @export
-#' @return A list of
+#' @return A named list (an S3 class "big_SVD") of
 #' - `d`, the singular values,
 #' - `u`, the left singular vectors,
 #' - `v`, the right singular vectors,
@@ -187,7 +187,7 @@ svds4.seq <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' - `sds`, the scaling vector.
 #'
 #' Note that to obtain the Principal Components, you must use
-#' `big_predScoresPCA` on the result. See examples.
+#' [predict][predict.big_SVD] on the result. See examples.
 #'
 #' @example examples/example-randomSVD.R
 #' @seealso [svds][RSpectra::svds]
@@ -197,11 +197,13 @@ big_randomSVD <- function(X., fun.scaling,
                           k = 10, tol = 1e-4,
                           verbose = FALSE, ncores = 1) {
   if (ncores > 1) {
-    svds4.par(describe(X.), fun.scaling, ind.row, ind.col,
+    res <- svds4.par(describe(X.), fun.scaling, ind.row, ind.col,
               k, tol, verbose, ncores)
   } else {
-    svds4.seq(X., fun.scaling, ind.row, ind.col, k, tol, verbose)
+    res <- svds4.seq(X., fun.scaling, ind.row, ind.col, k, tol, verbose)
   }
+
+  structure(res, class = "big_SVD")
 }
 
 ################################################################################

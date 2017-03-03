@@ -18,7 +18,8 @@ all.equal(test$sds, pca$scale)
 # except for last eigenvalue which is equal to 0
 # due to centering of columns
 scores <- test$u %*% diag(test$d)
-scores2 <- big_predScoresPCA(test) # use this function to predict scores
+class(test)
+scores2 <- predict(test) # use this function to predict scores
 all.equal(scores, scores2)
 dim(scores)
 dim(pca$x)
@@ -31,7 +32,7 @@ X2 <- sweep(sweep(attach.BM(X.desc)[-ind, ], 2, test$means, '-'),
             2, test$sds, '/')
 scores.test <- X2 %*% test$v
 ind2 <- setdiff(rows_along(X.desc), ind)
-scores.test2 <- big_predScoresPCA(test, X.desc, ind.row = ind2) # use this
+scores.test2 <- predict(test, X.desc, ind.row = ind2) # use this
 all.equal(scores.test, scores.test2)
 scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
 plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])

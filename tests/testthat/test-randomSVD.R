@@ -34,7 +34,7 @@ test_that("equality with prcomp", {
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
     pca <- prcomp(X[,], center = sc$center, scale. = sc$scale)
-    expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(predict(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
   }
 })
@@ -58,10 +58,10 @@ test_that("equality with prcomp with half of the data", {
                                                   scale = sc$scale))
     pca <- prcomp(X[ind, ], center = sc$center, scale. = sc$scale)
 
-    expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(predict(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
 
-    expect_equal(diffPCs(big_predScoresPCA(test, X., ind.row = ind2),
+    expect_equal(diffPCs(predict(test, X., ind.row = ind2),
                          predict(pca, X[ind2, ])), 0, tolerance = TOL)
   }
 })
@@ -85,10 +85,10 @@ test_that("equality with prcomp with half of half of the data", {
                                                   scale = sc$scale))
     pca <- prcomp(X[ind, ind.col], center = sc$center, scale. = sc$scale)
 
-    expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(predict(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
 
-    expect_equal(diffPCs(big_predScoresPCA(test, X., ind.row = ind2,
+    expect_equal(diffPCs(predict(test, X., ind.row = ind2,
                                            ind.col = ind.col),
                          predict(pca, X[ind2, ind.col])), 0, tolerance = TOL)
   }

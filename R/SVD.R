@@ -70,11 +70,21 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' decomposition of the covariance between variables (primal)
 #' or observations (dual).
 #'
+#' To get \eqn{X = U \cdot D \cdot V^T},
+#' - if the number of observation is small, this function computes
+#'   \eqn{K_(2) = X \cdot X^T = U \cdot D^2 \cdot U^T} and then
+#'   \eqn{V = X^T \cdot U \cdot D^{-1}},
+#' - if the number of variable is small, this function computes
+#'   \eqn{K_(1) = X^T \cdot X = V \cdot D^2 \cdot V^T} and then
+#'   \eqn{U = X \cdot V \cdot D^{-1}},
+#' - if both dimensions are large and you only want a partial SVD,
+#'   please use [big_randomSVD] instead.
+#'
 #' @inheritParams bigstatsr-package
 #' @param k Number of singular vectors/values to compute. Default is all.
 #'
 #' @export
-#' @return A list of
+#' @return A named list (an S3 class "big_SVD") of
 #' - `d`, the singular values,
 #' - `u`, the left singular vectors,
 #' - `v`, the right singular vectors,
@@ -82,7 +92,7 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' - `sds`, the scaling vector.
 #'
 #' Note that to obtain the Principal Components, you must use
-#' `big_predScoresPCA` on the result. See examples.
+#' [predict][predict.big_SVD] on the result. See examples.
 #'
 #' @example examples/example-SVD.R
 #' @seealso [prcomp][stats::prcomp]
@@ -94,19 +104,20 @@ big_SVD <- function(X., fun.scaling,
   X <- attach.BM(X.)
   if (ncol(X) > length(ind.row)) {
     printf("(2)")
-    DualBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
+    res <- DualBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
   } else {
     printf("(1)")
-    PrimalBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
+    res <- PrimalBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
   }
+
+  structure(res, class = "big_SVD")
 }
 
 ################################################################################
 
 #' Scores of PCA
 #'
-#' Get the scores of PCA associated with an svd decomposition
-#' using function `big_SVD`.
+#' Get the scores of PCA associated with an svd decomposition (class `big_SVD`).
 #'
 #' @inheritParams bigstatsr-package
 #' @param obj.svd A list returned by `big_SVD` or `big_randomSVD`.
@@ -119,10 +130,10 @@ big_SVD <- function(X., fun.scaling,
 #'
 #' @example examples/example-SVD.R
 #' @seealso [predict][stats::prcomp] [big_SVD] [big_randomSVD]
-big_predScoresPCA <- function(obj.svd, X. = NULL,
-                              ind.row = rows_along(X.),
-                              ind.col = cols_along(X.),
-                              block.size = 1000) {
+predict.big_SVD <- function(obj.svd, X. = NULL,
+                            ind.row = rows_along(X.),
+                            ind.col = cols_along(X.),
+                            block.size = 1000) {
   if (is.null(X.)) {
     obj.svd$u %*% diag(obj.svd$d)
   } else {
