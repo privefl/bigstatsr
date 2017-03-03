@@ -108,7 +108,7 @@ big_CMSA <- function(FUN, feval, X., y.train,
   })
 
   # average these coefficients
-  get_beta(betas, method)
+  get_beta(betas, match.arg(method))
 }
 
 ################################################################################
