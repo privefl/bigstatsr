@@ -43,6 +43,6 @@ Suggests:
     testthat   
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-Remotes: privefl/bigmemory
+Remotes: privefl/bigmemory, privefl/sparseSVM
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
