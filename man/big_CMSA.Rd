@@ -41,7 +41,7 @@ the \href{https://en.wikipedia.org/wiki/Geometric_median}{geometric median}.}
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.}
- 
+
 \item{...}{Extra parameters to be passed to FUN.}
 }
 \value{
