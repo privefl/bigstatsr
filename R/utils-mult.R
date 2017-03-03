@@ -24,7 +24,7 @@
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
 #'
-#' # test2 <- big_prodVec(X.desc, y, ind.row, ind.col)
+#' \dontrun{test2 <- big_prodVec(X.desc, y, ind.row, ind.col)}
 #' # returns an error. You need to use the subset of y:
 #' test2 <- big_prodVec(X.desc, y[ind.col], ind.row, ind.col)
 #' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% y[ind.col]
@@ -62,7 +62,7 @@ big_prodVec <- function(X., y,
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
 #'
-#' # test2 <- big_cprodVec(X.desc, y, ind.row, ind.col)
+#' \dontrun{test2 <- big_cprodVec(X.desc, y, ind.row, ind.col)}
 #' # returns an error. You need to use the subset of y:
 #' test2 <- big_cprodVec(X.desc, y[ind.row], ind.row, ind.col)
 #' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], y[ind.row])
@@ -100,7 +100,7 @@ big_cprodVec <- function(X., y,
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
 #'
-#' # test2 <- big_prodMat(X.desc, A, ind.row, ind.col)
+#' \dontrun{test2 <- big_prodMat(X.desc, A, ind.row, ind.col)}
 #' # returns an error. You need to use the subset of A:
 #' test2 <- big_prodMat(X.desc, A[ind.col, ], ind.row, ind.col)
 #' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% A[ind.col, ]
@@ -145,7 +145,7 @@ big_prodMat <- function(X., A,
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
 #'
-#' # test2 <- big_cprodMat(X.desc, A, ind.row, ind.col)
+#' \dontrun{test2 <- big_cprodMat(X.desc, A, ind.row, ind.col)}
 #' # returns an error. You need to use the subset of A:
 #' test2 <- big_cprodMat(X.desc, A[ind.row, ], ind.row, ind.col)
 #' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], A[ind.row, ])

@@ -100,9 +100,9 @@ Covariates can be added to correct for confounders.
 \details{
 \strong{This is a modified version of one function of
 \href{https://github.com/YaohuiZeng/biglasso}{package biglasso}}.
-It adds the possibility to train to models with covariables and use many
+It adds the possibility to train models with covariables and use many
 types of \code{big.matrix} (not only \code{double} ones).
-Yet, it only corresponds to \code{screen = "SSR"}.
+Yet, it only corresponds to \code{screen = "SSR"} (Sequential Strong Rules).
 }
 \examples{
 # simulating some data
@@ -113,10 +113,9 @@ y <- rnorm(N)
 covar <- matrix(rnorm(N * 3), N)
 
 # error, only handle `double` `big.matrix` objects
-tryCatch({
+\dontrun{
   test <- biglasso::biglasso(X, y, family = "gaussian")
-  print(summary(test$scale))
-}, error = function(e) message("One error has been catched."))
+  print(summary(test$scale))}
 
 # OK here
 test2 <- big_spLinReg(X, y)

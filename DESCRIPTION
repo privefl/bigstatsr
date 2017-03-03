@@ -21,6 +21,7 @@ Depends:
     R (>= 3.3.2), 
     bigmemory
 Imports: 
+    assertthat,
     doParallel,
     foreach, 
     Matrix,

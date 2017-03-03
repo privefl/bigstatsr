@@ -95,8 +95,8 @@ y.factor <- factor(y, levels = c(1, 0))
 covar <- matrix(rnorm(N * 3), N)
 
 # error, only handle standard R matrices
-tryCatch(test <- sparseSVM::sparseSVM(X, y),
-         error = function(e) message("One error has been catched."))
+\dontrun{test <- sparseSVM::sparseSVM(X, y)}
+
 # OK here
 test2 <- big_spSVM(X, y)
 str(test2)

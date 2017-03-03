@@ -38,7 +38,7 @@ all.equal(test, as.numeric(true))
 ind.row <- sample(n, n/2)
 ind.col <- sample(m, m/2)
 
-# test2 <- big_cprodVec(X.desc, y, ind.row, ind.col)
+\dontrun{test2 <- big_cprodVec(X.desc, y, ind.row, ind.col)}
 # returns an error. You need to use the subset of y:
 test2 <- big_cprodVec(X.desc, y[ind.row], ind.row, ind.col)
 true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], y[ind.row])

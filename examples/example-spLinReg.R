@@ -6,10 +6,9 @@ y <- rnorm(N)
 covar <- matrix(rnorm(N * 3), N)
 
 # error, only handle `double` `big.matrix` objects
-tryCatch({
+\dontrun{
   test <- biglasso::biglasso(X, y, family = "gaussian")
-  print(summary(test$scale))
-}, error = function(e) message("One error has been catched."))
+  print(summary(test$scale))}
 
 # OK here
 test2 <- big_spLinReg(X, y)

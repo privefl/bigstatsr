@@ -241,9 +241,9 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
 #'
 #' __This is a modified version of one function of
 #' [package biglasso](https://github.com/YaohuiZeng/biglasso)__.
-#' It adds the possibility to train to models with covariables and use many
+#' It adds the possibility to train models with covariables and use many
 #' types of `big.matrix` (not only `double` ones).
-#' Yet, it only corresponds to `screen = "SSR"`.
+#' Yet, it only corresponds to `screen = "SSR"` (Sequential Strong Rules).
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritDotParams COPY_biglasso -X -y.train -ind.train -covar.train -family

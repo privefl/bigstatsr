@@ -44,7 +44,7 @@ all.equal(test, true)
 ind.row <- sample(n, n/2)
 ind.col <- sample(m, m/2)
 
-# test2 <- big_cprodMat(X.desc, A, ind.row, ind.col)
+\dontrun{test2 <- big_cprodMat(X.desc, A, ind.row, ind.col)}
 # returns an error. You need to use the subset of A:
 test2 <- big_cprodMat(X.desc, A[ind.row, ], ind.row, ind.col)
 true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], A[ind.row, ])
