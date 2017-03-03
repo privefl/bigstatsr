@@ -7,6 +7,7 @@
 #'
 #' @param object Object of class `big_spReg`.
 #' @inheritParams bigstatsr-package
+#' @param ... Not used.
 #'
 #' @return A matrix of scores, with rows corresponding to `ind.row`
 #' and columns corresponding to `lambda`.
@@ -18,7 +19,8 @@
 predict.big_sp <- function(object, X.,
                            ind.row = rows_along(X.),
                            covar.row = NULL,
-                           block.size = 1000) { # FAIL HERE
+                           block.size = 1000,
+                           ...) {
   betas <- object$beta
   if (is.null(covar.row)) {
     scores <- big_prodMat(X., betas,

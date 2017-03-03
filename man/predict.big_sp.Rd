@@ -5,7 +5,7 @@
 \title{Predict method}
 \usage{
 \method{predict}{big_sp}(object, X., ind.row = rows_along(X.),
-  covar.row = NULL, block.size = 1000)
+  covar.row = NULL, block.size = 1000, ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_spReg}.}
@@ -21,6 +21,8 @@ for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+
+\item{...}{Not used.}
 }
 \value{
 A matrix of scores, with rows corresponding to \code{ind.row}
