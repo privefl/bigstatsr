@@ -2,44 +2,45 @@
 % Please edit documentation in R/utils-mult.R
 \name{big_prodVec}
 \alias{big_prodVec}
-\title{Product between a "big.matrix" and a vector}
+\title{Product with a vector}
 \usage{
-big_prodVec(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X)))
+big_prodVec(X., y, ind.row = rows_along(X.), ind.col = cols_along(X.))
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+
+\item{y}{A vector of same size as \code{ind.col}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
-If not specified, all rows are used.}
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used.}
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 }
 \value{
 \eqn{X /cdot y}.
 }
 \description{
-Product between a "big.matrix" and a vector
+Product between a "big.matrix" and a vector.
 }
 \examples{
-N <- 100
-M <- 20
-X <- big.matrix(N, M)
-X[] <- rnorm(length(X))
-y <- rnorm(M)
+X.desc <- big_attachExtdata()
+n <- nrow(X.desc)
+m <- ncol(X.desc)
+y <- rnorm(m)
 
-test <- big_prodVec(X, y) # vector
-true <- X[,] \%*\% y        # one-column matrix
-print(all.equal(test, as.numeric(true)))
+test <- big_prodVec(X.desc, y)      # vector
+true <- attach.BM(X.desc)[,] \%*\% y  # one-column matrix
+all.equal(test, as.numeric(true))
 
 # subsetting
-ind.row <- sample(N, N/2)
-ind.col <- sample(M, M/2)
+ind.row <- sample(n, n/2)
+ind.col <- sample(m, m/2)
 
-# test2 <- big_prodVec(X, y, ind.row, ind.col)
+# test2 <- big_prodVec(X.desc, y, ind.row, ind.col)
 # returns an error. You need to use the subset of y:
-test2 <- big_prodVec(X, y[ind.col], ind.row, ind.col)
-true2 <- X[ind.row, ind.col] \%*\% y[ind.col]
-print(all.equal(test2, as.numeric(true2)))
+test2 <- big_prodVec(X.desc, y[ind.col], ind.row, ind.col)
+true2 <- attach.BM(X.desc)[ind.row, ind.col] \%*\% y[ind.col]
+all.equal(test2, as.numeric(true2))
 }

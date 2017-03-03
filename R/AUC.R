@@ -108,7 +108,7 @@ aucSampleConf <- function(pred, target, nboot = 1e4, nsim = 1e4,
   res <- replicate(nboot, sampleRes())
   q <- stats::quantile(res, c(0.025, 0.975))
 
-  round(c("Mean" = mean(res), q, "Sd" = sd(res)), digits)
+  round(c("Mean" = mean(res), q, "Sd" = stats::sd(res)), digits)
 }
 
 ################################################################################

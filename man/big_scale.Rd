@@ -14,31 +14,34 @@ use scale without using center.}}
 }
 \value{
 A new \strong{function} that returns a data.frame of two vectors
-"mean" and "sd" which are of the length of \strong{\code{ind.col}}.
+"mean" and "sd" which are of the length of \code{ind.col}.
 }
 \description{
 Some scaling functions for a \code{big.matrix} to be used as
 the \strong{\code{fun.scaling}} parameter of some functions of this package.
 }
+\details{
+One could think about less common scalings, such as for example the
+"y-aware" scaling which uses the inverse of betas of column-wise linear
+regression as scaling. See \href{https://goo.gl/8G8WMa}{this post} for details.
+It would be easy to implement it using \code{big_colstats} to get column means
+and \code{big_univLinReg} to get betas (and then inverse them).
+}
 \examples{
-# Simulating some data
-X <- big.matrix(41, 17)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
 
 # No scaling
 big_noscale <- big_scale(center = FALSE, scale = FALSE)
-print(class(big_noscale)) # big_scale returns a new function
-print(big_noscale(X))
+class(big_noscale) # big_scale returns a new function
+str(big_noscale(X.desc))
 big_noscale2 <- big_scale(center = FALSE)
-print(big_noscale2(X)) # you can't scale without centering
+str(big_noscale2(X.desc)) # you can't scale without centering
 
 # Centering
 big_center <- big_scale(scale = FALSE)
-print(big_center(X))
+str(big_center(X.desc))
 # + scaling
-print(test <- big_scale()(X, 1:5)) # note that big_scale() is a function
-print(all.equal(test$mean, colMeans(X[1:5, ])))
-print(all.equal(test$sd, apply(X[1:5, ], 2, sd)))
+str(big_scale()(X.desc))
 }
 \seealso{
 \link{scale}

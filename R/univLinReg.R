@@ -1,7 +1,15 @@
 ################################################################################
 
-#' @title Column-wise linear regression
-#' @description Slopes of column-wise linear regressions of each column
+univLinReg_sub <- function(X., ind, U, y.train, ind.train) {
+  X <- attach.BM(X.)
+  as.data.frame(univLinReg5(X, U, y.train, ind.train, ind))
+}
+
+################################################################################
+
+#' Column-wise linear regression
+#'
+#' Slopes of column-wise linear regressions of each column
 #' of a `big.matrix`, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
 #'
@@ -12,52 +20,40 @@
 #' 2. the standard errors of each slope,
 #' 3. the t-scores associated with each slope,
 #' 4. the p-values associated with each t-score.
+#'
 #' @example examples/example-univLinReg.R
+#'
 #' @seealso [lm][stats::lm]
 #' @export
-#' @import foreach
-big_univLinReg <- function(X, y.train, ind.train = seq(nrow(X)),
-                           covar.train = NULL, ncores2 = 1) {
-  check_X(X, ncores2 = ncores2)
-
+big_univLinReg <- function(X., y.train,
+                           ind.train = rows_along(X.),
+                           ind.col = cols_along(X.),
+                           covar.train = NULL,
+                           ncores2 = 1,
+                           thr.eigval = 1e-4) {
   n <- length(ind.train)
   stopifnot(n == length(y.train))
+  covar.train <- cbind(rep(1, n), covar.train)
   stopifnot(n == nrow(covar.train))
 
-  is.seq <- (ncores2 == 1)
-  if (!is.seq) X.desc <- describe(X)
+  # get SVD of covar
+  SVD <- svd(covar.train, nv = 0)
+  K <- sum(SVD$d / sqrt(n) > thr.eigval)
 
-  SVD <- svd(cbind(rep(1, n), covar.train), nv = 0)
-  K <- sum(SVD$d / sqrt(n) > 1e-3)
+  # main computation
+  res <- big_parallelize(X. = X.,
+                         p.FUN = univLinReg_sub,
+                         p.combine = 'rbind',
+                         ind = ind.col,
+                         ncores = ncores2,
+                         U = SVD$u[, 1:K, drop = FALSE],
+                         y.train = y.train,
+                         ind.train = ind.train)
 
-  range.parts <- CutBySize(ncol(X), nb = ncores2)
-
-  if (is.seq) {
-    registerDoSEQ()
-  } else {
-    cl <- parallel::makeCluster(ncores2)
-    doParallel::registerDoParallel(cl)
-  }
-  res.all <- foreach(ic = seq_len(ncores2), .combine = 'rbind') %dopar% {
-    lims <- range.parts[ic, ]
-
-    X.part <- `if`(is.seq, X, sub.big.matrix(X.desc, firstCol = lims[1],
-                                             lastCol = lims[2]))
-
-    # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
-    multi <- !is.seq && detect_MRO()
-    if (multi) nthreads.save <- RevoUtilsMath::setMKLthreads(1)
-    res <- univLinReg5(X.part@address, SVD$u[, 1:K, drop = FALSE],
-                       y.train, ind.train)
-    if (multi) RevoUtilsMath::setMKLthreads(nthreads.save)
-
-    as.data.frame(res)
-  }
-  if (!is.seq) parallel::stopCluster(cl)
-
-  t.scores <- res.all$estim / res.all$std.err
-  p.values <- 2 * stats::pt(abs(t.scores), df = n - K - 1, lower.tail = FALSE)
-  cbind(res.all, t.score = t.scores, p.value = p.values)
+  res$t.score <- res$estim / res$std.err
+  res$p.value <- 2 * stats::pt(abs(res$t.score), df = n - K - 1,
+                               lower.tail = FALSE)
+  res
 }
 
 ################################################################################

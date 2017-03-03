@@ -3,7 +3,7 @@
 context("CROSSPROD_SELF")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = FALSE)
+                    bigmemory.default.shared = TRUE)
 
 # Simulating some data
 N <- 101
@@ -17,9 +17,9 @@ big_noscale <- big_scale(center = FALSE)
 test_that("equality with crossprod", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
-    test <- big_crossprodSelf(X = X, fun.scaling = big_noscale,
-                              use.Eigen = (runif(1) > 0.5))
+    test <- big_crossprodSelf(X., fun.scaling = big_noscale)
     expect_equal(test$K, crossprod(X[,]))
   }
 })
@@ -31,10 +31,10 @@ test_that("equality with crossprod with half of the data", {
 
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
-    test <- big_crossprodSelf(X = X, fun.scaling = big_noscale,
-                              ind.train = ind,
-                              use.Eigen = (runif(1) > 0.5))
+    test <- big_crossprodSelf(X., fun.scaling = big_noscale,
+                              ind.row = ind)
     expect_equal(test$K, crossprod(X[ind, ]))
   }
 })

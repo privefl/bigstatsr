@@ -15,28 +15,21 @@ ERROR_TYPE <- "unknown type detected for big.matrix object!"
 
 ################################################################################
 
-check_X <- function(X, ncores = 1, ncores2 = 1) {
-  if (class(X) != "big.matrix")
-    stop(ERROR_BIGMATRIX)
-
-  if (ncores > 1 && !is.shared(X))
-    stop(ERROR_SHARED)
-
-  Allcores <- parallel::detectCores()
-
-  if (ncores > Allcores)
-    warning(WARNING_NCORES)
-
-  if (ncores2 > max(1, Allcores / 2))
-    warning(WARNING_NCORES2)
-}
-
-################################################################################
-
-detect_MRO <- function() {
-  # is.element("RevoUtilsMath", rownames(utils::installed.packages()))
-  requireNamespace("RevoUtilsMath", quietly = TRUE)
-}
+# check_X <- function(X, ncores = 1, ncores2 = 1) {
+#   if (class(X) != "big.matrix")
+#     stop(ERROR_BIGMATRIX)
+#
+#   if (ncores > 1 && !is.shared(X))
+#     stop(ERROR_SHARED)
+#
+#   Allcores <- parallel::detectCores()
+#
+#   if (ncores > Allcores)
+#     warning(WARNING_NCORES)
+#
+#   if (ncores2 > max(1, Allcores / 2))
+#     warning(WARNING_NCORES2)
+# }
 
 ################################################################################
 
@@ -80,6 +73,33 @@ transform_levels <- function(y, new.levels = 0:1) {
     stop("You must have exactly two levels in y.")
   levels(y2) <- new.levels
   as.numeric(as.character(y2))
+}
+
+################################################################################
+
+#' Descriptor of temporary filebacked "big.matrix"
+#'
+#' @param n Number of rows.
+#' @param m Number of columns.
+#' @param type The type of the atomic element. Default is `double`.
+#' @param init A scalar value for initializing the matrix. Default is `NULL`,
+#' which avoids unnecessary time spent doing the initializing.
+#'
+#' @return A descriptor of a `big.matrix`, filebacked in directory "/tmp/".
+#' @export
+#' @keywords internal
+#'
+#' @examples
+#' X.desc <- tmpFBM(10, 10)
+#' str(X.desc)
+tmpFBM <- function(n, m, type = "double", init = NULL) {
+  tmpfile <- tempfile()
+  describe(
+    big.matrix(n, m, type = type, init = init,
+               backingfile = basename(tmpfile),
+               backingpath = dirname(tmpfile),
+               descriptorfile = paste0(basename(tmpfile), ".desc"))
+  )
 }
 
 ################################################################################

@@ -1,190 +1,166 @@
 ################################################################################
 
-#' Product between a "big.matrix" and a vector
+#' Product with a vector
+#'
+#' Product between a "big.matrix" and a vector.
 #'
 #' @inheritParams bigstatsr-package
+#' @param y A vector of same size as `ind.col`.
 #'
 #' @return \eqn{X /cdot y}.
 #' @export
 #'
 #' @examples
-#' N <- 100
-#' M <- 20
-#' X <- big.matrix(N, M)
-#' X[] <- rnorm(length(X))
-#' y <- rnorm(M)
+#' X.desc <- big_attachExtdata()
+#' n <- nrow(X.desc)
+#' m <- ncol(X.desc)
+#' y <- rnorm(m)
 #'
-#' test <- big_prodVec(X, y) # vector
-#' true <- X[,] %*% y        # one-column matrix
-#' print(all.equal(test, as.numeric(true)))
+#' test <- big_prodVec(X.desc, y)      # vector
+#' true <- attach.BM(X.desc)[,] %*% y  # one-column matrix
+#' all.equal(test, as.numeric(true))
 #'
 #' # subsetting
-#' ind.row <- sample(N, N/2)
-#' ind.col <- sample(M, M/2)
+#' ind.row <- sample(n, n/2)
+#' ind.col <- sample(m, m/2)
 #'
-#' # test2 <- big_prodVec(X, y, ind.row, ind.col)
+#' # test2 <- big_prodVec(X.desc, y, ind.row, ind.col)
 #' # returns an error. You need to use the subset of y:
-#' test2 <- big_prodVec(X, y[ind.col], ind.row, ind.col)
-#' true2 <- X[ind.row, ind.col] %*% y[ind.col]
-#' print(all.equal(test2, as.numeric(true2)))
-big_prodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
-  pMatVec4(X@address, y, ind.row, ind.col)
+#' test2 <- big_prodVec(X.desc, y[ind.col], ind.row, ind.col)
+#' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% y[ind.col]
+#' all.equal(test2, as.numeric(true2))
+big_prodVec <- function(X., y,
+                        ind.row = rows_along(X.),
+                        ind.col = cols_along(X.)) {
+  X <- attach.BM(X.)
+  pMatVec4(X, y, ind.row, ind.col)
 }
 
 ################################################################################
 
-#' Cross-product between a "big.matrix" and a vector
+#' Cross-product with a vector
+#'
+#' Cross-product between a "big.matrix" and a vector.
 #'
 #' @inheritParams bigstatsr-package
+#' @param y A vector of same size as `ind.row`.
 #'
 #' @return \eqn{X^T /cdot y}.
 #' @export
 #'
 #' @examples
-#' N <- 100
-#' M <- 20
-#' X <- big.matrix(N, M)
-#' X[] <- rnorm(length(X))
-#' y <- rnorm(N)
+#' X.desc <- big_attachExtdata()
+#' n <- nrow(X.desc)
+#' m <- ncol(X.desc)
+#' y <- rnorm(n)
 #'
-#' test <- big_cprodVec(X, y) # vector
-#' true <- crossprod(X[,], y) # one-column matrix
-#' print(all.equal(test, as.numeric(true)))
+#' test <- big_cprodVec(X.desc, y)             # vector
+#' true <- crossprod(attach.BM(X.desc)[,], y)  # one-column matrix
+#' all.equal(test, as.numeric(true))
 #'
 #' # subsetting
-#' ind.row <- sample(N, N/2)
-#' ind.col <- sample(M, M/2)
+#' ind.row <- sample(n, n/2)
+#' ind.col <- sample(m, m/2)
 #'
-#' # test2 <- big_cprodVec(X, y, ind.row, ind.col)
+#' # test2 <- big_cprodVec(X.desc, y, ind.row, ind.col)
 #' # returns an error. You need to use the subset of y:
-#' test2 <- big_cprodVec(X, y[ind.row], ind.row, ind.col)
-#' true2 <- crossprod(X[ind.row, ind.col], y[ind.row])
-#' print(all.equal(test2, as.numeric(true2)))
-big_cprodVec <- function(X, y, ind.row = seq(nrow(X)), ind.col = seq(ncol(X))) {
-  cpMatVec4(X@address, y, ind.row, ind.col)
+#' test2 <- big_cprodVec(X.desc, y[ind.row], ind.row, ind.col)
+#' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], y[ind.row])
+#' all.equal(test2, as.numeric(true2))
+big_cprodVec <- function(X., y,
+                         ind.row = rows_along(X.),
+                         ind.col = cols_along(X.)) {
+  X <- attach.BM(X.)
+  cpMatVec4(X, y, ind.row, ind.col)
 }
 
 ################################################################################
 
-big_prodMat <- function(X, A, ind.row = seq(nrow(X)),
-                        ind.col = seq(ncol(X)),
+#' Product with a matrix
+#'
+#' Product between a "big.matrix" and a matrix.
+#'
+#' @inheritParams bigstatsr-package
+#' @param A A matrix with `length(ind.col)` rows.
+#'
+#' @return \eqn{X /cdot A}.
+#' @export
+#'
+#' @examples
+#' X.desc <- big_attachExtdata()
+#' n <- nrow(X.desc)
+#' m <- ncol(X.desc)
+#' A <- matrix(0, m, 10); A[] <- rnorm(length(A))
+#'
+#' test <- big_prodMat(X.desc, A)
+#' true <- attach.BM(X.desc)[,] %*% A
+#' all.equal(test, true)
+#'
+#' # subsetting
+#' ind.row <- sample(n, n/2)
+#' ind.col <- sample(m, m/2)
+#'
+#' # test2 <- big_prodMat(X.desc, A, ind.row, ind.col)
+#' # returns an error. You need to use the subset of A:
+#' test2 <- big_prodMat(X.desc, A[ind.col, ], ind.row, ind.col)
+#' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% A[ind.col, ]
+#' all.equal(test2, true2)
+big_prodMat <- function(X., A,
+                        ind.row = rows_along(X.),
+                        ind.col = cols_along(X.),
                         block.size = 1000,
                         ncores2 = 1) {
-  m <- length(ind.col)
-  stopifnot(m == nrow(A))
+  stopifnot(length(ind.col) == nrow(A))
 
-  big_apply(X, FUN = function(x, ind, A, ind.row, ind.col) {
+  big_apply(X., a.FUN = function(x, ind, A, ind.row, ind.col) {
     x[ind.row, ind.col[ind]] %*% A[ind, ]
-  }, .combine = '+', block.size = block.size, m = m,
-  ind.arg = TRUE, ncores = ncores2, A = A,
+  }, a.combine = '+', block.size = block.size,
+  ind = seq_along(ind.col), ncores = ncores2, A = A,
   ind.row = ind.row, ind.col = ind.col)
 }
-################################################################################
-
-mult <- function(A, B, use.Eigen) {
-  `if`(use.Eigen, multEigen(A, B), A %*% B)
-}
 
 ################################################################################
 
-cross <- function(A, B, use.Eigen) {
-  `if`(use.Eigen, crossprodEigen5(A, B), crossprod(A, B))
-}
+#' Cross-product with a matrix
+#'
+#' Cross-product between a "big.matrix" and a matrix.
+#'
+#' @inheritParams bigstatsr-package
+#' @param A A matrix with `length(ind.row)` rows.
+#'
+#' @return \eqn{X^T /cdot A}.
+#' @export
+#'
+#' @examples
+#' X.desc <- big_attachExtdata()
+#' n <- nrow(X.desc)
+#' m <- ncol(X.desc)
+#' A <- matrix(0, n, 10); A[] <- rnorm(length(A))
+#'
+#' test <- big_cprodMat(X.desc, A)
+#' true <- crossprod(attach.BM(X.desc)[,], A)
+#' all.equal(test, true)
+#'
+#' # subsetting
+#' ind.row <- sample(n, n/2)
+#' ind.col <- sample(m, m/2)
+#'
+#' # test2 <- big_cprodMat(X.desc, A, ind.row, ind.col)
+#' # returns an error. You need to use the subset of A:
+#' test2 <- big_cprodMat(X.desc, A[ind.row, ], ind.row, ind.col)
+#' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], A[ind.row, ])
+#' all.equal(test2, true2)
+big_cprodMat <- function(X., A,
+                         ind.row = rows_along(X.),
+                         ind.col = cols_along(X.),
+                         block.size = 1000,
+                         ncores2 = 1) {
+  stopifnot(length(ind.row) == nrow(A))
 
-################################################################################
-
-multScaled <- function(X, mat, ind.train, block.size,
-                       vec.center, vec.scale, use.Eigen) {
-  m <- ncol(X)
-  stopifnot(m == nrow(mat))
-  res <- matrix(0, length(ind.train), ncol(mat))
-
-  intervals <- CutBySize(m, block.size)
-  nb.block <- nrow(intervals)
-
-  for (j in 1:nb.block) {
-    ind <- seq2(intervals[j, ])
-    tmp <- scaling(X[ind.train, ind], vec.center[ind], vec.scale[ind])
-
-    res <- incrMat(res, mult(tmp, mat[ind, ], use.Eigen))
-  }
-
-  res
-}
-
-################################################################################
-
-crossprodScaled <- function(X, mat, ind.train, block.size,
-                            vec.center, vec.scale, use.Eigen) {
-  stopifnot(nrow(mat) == length(ind.train))
-  m <- ncol(X)
-  res <- matrix(0, m, ncol(mat))
-
-  intervals <- CutBySize(m, block.size)
-  nb.block <- nrow(intervals)
-
-  for (j in 1:nb.block) {
-    ind <- seq2(intervals[j, ])
-    tmp <- scaling(X[ind.train, ind], vec.center[ind], vec.scale[ind])
-
-    res[ind, ] <- cross(tmp, mat, use.Eigen)
-  }
-
-  res
-}
-
-################################################################################
-
-# #' @export
-# big_mult <- function(X, mat, ind.train, block.size, use.Eigen) {
-#   if (!is.matrix(mat)) mat <- as.matrix(mat)
-#   m <- ncol(X)
-#   stopifnot(m == nrow(mat))
-#   res <- matrix(0, length(ind.train), ncol(mat))
-#
-#   intervals <- CutBySize(m, block.size)
-#   nb.block <- nrow(intervals)
-#
-#   for (j in 1:nb.block) {
-#     ind <- seq2(intervals[j, ])
-#     res <- incrMat(res, mult(X[ind.train, ind], mat[ind, ], use.Eigen))
-#   }
-#
-#   res
-# }
-#
-# #' @export
-# big_multScaled <- function(X, mat, ind.train, block.size,
-#                            vec.center, vec.scale, use.Eigen) {
-#   if (!is.matrix(mat)) mat <- as.matrix(mat)
-#   mat <- scaling2(mat, vec.scale)
-#   tmp <- big_mult(X, mat, ind.train, block.size, use.Eigen)
-#   tmp2 <- crossprod(vec.center, mat)
-#   scaling3(tmp, as.numeric(tmp2))
-# }
-
-multScaled2 <- function(X, mat,
-                        ind.train = seq(nrow(X)),
-                        ind.col = seq(ncol(X)),
-                        block.size = 1000,
-                        vec.center = rep(0, m),
-                        vec.scale = rep(1, m),
-                        use.Eigen = TRUE) {
-  m <- length(ind.col)
-  stopifnot(m == nrow(mat))
-  res <- matrix(0, length(ind.train), ncol(mat))
-
-  intervals <- CutBySize(m, block.size)
-  nb.block <- nrow(intervals)
-
-  for (j in 1:nb.block) {
-    ind <- seq2(intervals[j, ])
-    tmp <- scaling(X[ind.train, ind.col[ind]], vec.center[ind], vec.scale[ind])
-
-    res <- incrMat(res, mult(tmp, mat[ind, ], use.Eigen))
-  }
-
-  res
+  big_apply(X., a.FUN = function(x, ind, A, ind.row) {
+    crossprod(x[ind.row, ind], A)
+  }, a.combine = 'rbind', block.size = block.size,
+  ind = ind.col, ncores = ncores2, A = A, ind.row = ind.row)
 }
 
 ################################################################################

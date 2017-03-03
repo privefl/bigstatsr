@@ -4,9 +4,8 @@
 
 /******************************************************************************/
 
-template <typename T>
-NumericVector pMatVec4(SubMatrixAccessor<T> macc,
-                       const NumericVector &x) {
+template <class C>
+NumericVector pMatVec4(C macc, const NumericVector& x) {
   int n = macc.nrow();
   int m = macc.ncol();
 
@@ -30,33 +29,41 @@ NumericVector pMatVec4(SubMatrixAccessor<T> macc,
 
 // Dispatch function for pMatVec4
 // [[Rcpp::export]]
-NumericVector pMatVec4(XPtr<BigMatrix> xpMat,
-                       const NumericVector &x,
-                       const IntegerVector &rowInd,
-                       const IntegerVector &colInd) {
+NumericVector pMatVec4(const S4& BM,
+                       const NumericVector& x,
+                       const IntegerVector& rowInd,
+                       const IntegerVector& colInd) {
+
   myassert(colInd.size() == x.size(), ERROR_DIM);
 
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return pMatVec4(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),   x);
-  case 2:
-    return pMatVec4(SubMatrixAccessor<short>(*xpMat, rowInd-1, colInd-1),  x);
-  case 4:
-    return pMatVec4(SubMatrixAccessor<int>(*xpMat, rowInd-1, colInd-1),    x);
-  case 6:
-    return pMatVec4(SubMatrixAccessor<float>(*xpMat, rowInd-1, colInd-1),  x);
-  case 8:
-    return pMatVec4(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1), x);
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+  IntegerVector rows = rowInd - 1;
+  IntegerVector cols = colInd - 1;
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return pMatVec4(RawSubMatAcc(*xpMat, rows, cols, BM.slot("code")), x);
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return pMatVec4(SubMatAcc<char>(*xpMat,   rows, cols), x);
+    case 2:
+      return pMatVec4(SubMatAcc<short>(*xpMat,  rows, cols), x);
+    case 4:
+      return pMatVec4(SubMatAcc<int>(*xpMat,    rows, cols), x);
+    case 6:
+      return pMatVec4(SubMatAcc<float>(*xpMat,  rows, cols), x);
+    case 8:
+      return pMatVec4(SubMatAcc<double>(*xpMat, rows, cols), x);
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 
 /******************************************************************************/
 
-template <typename T>
-NumericVector cpMatVec4(SubMatrixAccessor<T> macc,
-                        const NumericVector &x) {
+template <class C>
+NumericVector cpMatVec4(C macc, const NumericVector &x) {
   int n = macc.nrow();
   int m = macc.ncol();
 
@@ -81,25 +88,34 @@ NumericVector cpMatVec4(SubMatrixAccessor<T> macc,
 
 // Dispatch function for cpMatVec4
 // [[Rcpp::export]]
-NumericVector cpMatVec4(XPtr<BigMatrix> xpMat,
-                        const NumericVector &x,
-                        const IntegerVector &rowInd,
-                        const IntegerVector &colInd) {
+NumericVector cpMatVec4(const S4& BM,
+                        const NumericVector& x,
+                        const IntegerVector& rowInd,
+                        const IntegerVector& colInd) {
+
   myassert(rowInd.size() == x.size(), ERROR_DIM);
 
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return cpMatVec4(SubMatrixAccessor<char>(*xpMat, rowInd-1, colInd-1),   x);
-  case 2:
-    return cpMatVec4(SubMatrixAccessor<short>(*xpMat, rowInd-1, colInd-1),  x);
-  case 4:
-    return cpMatVec4(SubMatrixAccessor<int>(*xpMat, rowInd-1, colInd-1),    x);
-  case 6:
-    return cpMatVec4(SubMatrixAccessor<float>(*xpMat, rowInd-1, colInd-1),  x);
-  case 8:
-    return cpMatVec4(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1), x);
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+  IntegerVector rows = rowInd - 1;
+  IntegerVector cols = colInd - 1;
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return cpMatVec4(RawSubMatAcc(*xpMat, rows, cols, BM.slot("code")), x);
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return cpMatVec4(SubMatAcc<char>(*xpMat, rows, cols),   x);
+    case 2:
+      return cpMatVec4(SubMatAcc<short>(*xpMat, rows, cols),  x);
+    case 4:
+      return cpMatVec4(SubMatAcc<int>(*xpMat, rows, cols),    x);
+    case 6:
+      return cpMatVec4(SubMatAcc<float>(*xpMat, rows, cols),  x);
+    case 8:
+      return cpMatVec4(SubMatAcc<double>(*xpMat, rows, cols), x);
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 

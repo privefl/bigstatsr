@@ -1,19 +1,18 @@
-// [[Rcpp::depends(bigmemory, BH, RcppArmadillo)]]
-#include <RcppArmadillo.h> // Sys.setenv("PKG_LIBS" = "-llapack")
-#include <bigmemory/MatrixAccessor.hpp>
+/******************************************************************************/
 
-using namespace Rcpp;
-
+#include "bigstatsr.h"
 
 /******************************************************************************/
 
-arma::mat& getXtW(const arma::mat& covar, const arma::vec& w,
-                  arma::mat& tcovar, int n, int K) {
-  int i, j;
+arma::mat& getXtW(const arma::mat& covar,
+                  const arma::vec& w,
+                  arma::mat& tcovar,
+                  int n, int K) {
+  int i, k;
 
   for (i = 0; i < n; i++) {
-    for (j = 0; j < K; j++) {
-      tcovar(j, i) = covar(i, j) * w(i);
+    for (k = 0; k < K; k++) {
+      tcovar(k, i) = covar(i, k) * w(i);
     }
   }
 
@@ -22,47 +21,45 @@ arma::mat& getXtW(const arma::mat& covar, const arma::vec& w,
 
 /******************************************************************************/
 
-template <typename T>
-List IRLS(MatrixAccessor<T> macc,
+template <class C>
+List IRLS(C macc,
           arma::mat &covar,
           const arma::vec &y,
           const arma::vec &z0,
           const arma::vec &w0,
-          const IntegerVector &rowInd,
           double tol,
           int maxiter) {
-  int n = rowInd.size();
+
+  int n = macc.nrow();
   int m = macc.ncol();
   int K = covar.n_cols;
-  arma::mat tcovar(K, n);
-  arma::mat tmp;
-  arma::vec p, w, z, betas_old, betas_new, Xb;
+  myassert(covar.n_rows == n, ERROR_DIM);
+  myassert(y.n_elem == n, ERROR_DIM);
+
+  arma::mat tcovar(K, n), tmp(K, K);
+  arma::vec Xb(n), p(n), w(n), z(n), betas_old(K), betas_new(K);
   double diff;
   int i, j, c;
 
-  // indices begin at 1 in R and 0 in C++
-  IntegerVector trains = rowInd - 1;
-
-  NumericVector res(m);
-  NumericVector var(m);
-  IntegerVector conv(m);
+  NumericVector beta(m), var(m);
+  IntegerVector niter(m);
 
   for (j = 0; j < m; j++) {
     for (i = 0; i < n; i++) {
-      covar(i, 0) = macc[j][trains[i]];
+      covar(i, 0) = macc(i, j);
     }
+
+    c = 1;
     z = z0;
     w = w0;
     tcovar = getXtW(covar, w, tcovar, n, K);
     betas_new = solve(tcovar * covar, tcovar * z);
-    c = 1;
 
     do {
       c++;
       betas_old = betas_new;
 
       Xb = covar * betas_old;
-      // 6 / 23
       p = 1 / (1 + exp(-Xb));
       w = p % (1 - p);
       z = Xb + (y - p) / w;
@@ -74,48 +71,58 @@ List IRLS(MatrixAccessor<T> macc,
                        / (abs(betas_old) + abs(betas_new)));
     } while (diff > tol && c < maxiter);
 
-    res[j] = betas_new(0);
-    tmp = inv(tcovar * covar); // 1/23 sec
+    beta[j] = betas_new(0);
+    tmp = inv(tcovar * covar);
     var[j] = tmp(0, 0);
-    conv[j] = c;
+    niter[j] = c;
   }
 
-  return(List::create(_["betas"] = res,
-                      _["std"] = sqrt(var),
-                      _["conv"] = conv));
+  return List::create(_["estim"] = beta,
+                      _["std.err"] = sqrt(var),
+                      _["niter"] = niter);
 }
 
 /******************************************************************************/
 
 // Dispatch function for IRLS
 // [[Rcpp::export]]
-List IRLS(XPtr<BigMatrix> xpMat,
+List IRLS(const S4& BM,
           arma::mat& covar,
           const arma::vec& y,
           const arma::vec& z0,
           const arma::vec& w0,
           const IntegerVector& rowInd,
+          const IntegerVector& colInd,
           double tol,
           int maxiter) {
 
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return IRLS(MatrixAccessor<char>(*xpMat),   covar, y,
-                z0, w0, rowInd, tol, maxiter);
-  case 2:
-    return IRLS(MatrixAccessor<short>(*xpMat),  covar, y,
-                z0, w0, rowInd, tol, maxiter);
-  case 4:
-    return IRLS(MatrixAccessor<int>(*xpMat),    covar, y,
-                z0, w0, rowInd, tol, maxiter);
-  case 6:
-    return IRLS(MatrixAccessor<float>(*xpMat),  covar, y,
-                z0, w0, rowInd, tol, maxiter);
-  case 8:
-    return IRLS(MatrixAccessor<double>(*xpMat), covar, y,
-                z0, w0, rowInd, tol, maxiter);
-  default:
-    throw Rcpp::exception("unknown type detected for big.matrix object!");
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+  IntegerVector rows = rowInd - 1;
+  IntegerVector cols = colInd - 1;
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return IRLS(RawSubMatAcc(*xpMat, rows, cols, BM.slot("code")),
+                covar, y, z0, w0, tol, maxiter);
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return IRLS(SubMatAcc<char>(*xpMat,   rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    case 2:
+      return IRLS(SubMatAcc<short>(*xpMat,  rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    case 4:
+      return IRLS(SubMatAcc<int>(*xpMat,    rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    case 6:
+      return IRLS(SubMatAcc<float>(*xpMat,  rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    case 8:
+      return IRLS(SubMatAcc<double>(*xpMat, rows, cols),
+                  covar, y, z0, w0, tol, maxiter);
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 

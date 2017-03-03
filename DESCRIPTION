@@ -18,12 +18,13 @@ Description: Easy-to-use, efficient, flexible and scalable
 License: GPL-3 + file LICENSE
 LazyData: TRUE
 Depends: 
-    R (>= 3.2.3), 
+    R (>= 3.3.2), 
     bigmemory
 Imports: 
     doParallel,
     foreach, 
     Matrix,
+    methods,
     parallel, 
     Rcpp, 
     RSpectra, 
@@ -32,8 +33,7 @@ LinkingTo:
     BH,
     bigmemory, 
     Rcpp,
-    RcppArmadillo, 
-    RcppEigen
+    RcppArmadillo
 Suggests: 
     biglasso, 
     covr, 

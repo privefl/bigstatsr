@@ -4,32 +4,26 @@
 \alias{big_predScoresPCA}
 \title{Scores of PCA}
 \usage{
-big_predScoresPCA(obj.svd, X = NULL, ind.test = seq(nrow(X)),
-  ind.col = seq(ncol(X)), block.size = 1000, use.Eigen = !detect_MRO())
+big_predScoresPCA(obj.svd, X. = NULL, ind.row = rows_along(X.),
+  ind.col = cols_along(X.), block.size = 1000)
 }
 \arguments{
-\item{obj.svd}{A list returned by \code{big_SVD}.}
+\item{obj.svd}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
 
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
-\item{ind.test}{Vector of indices of samples to be projected.
-Don't use negative indices here.}
+\item{ind.row}{An optional vector of the row indices that are used.
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used.}
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.}
-
-\item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default tries to detect MRO. See details.}
+\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 }
 \value{
-A matrix of size \code{n * K} where n is the number of samples
-corresponding to indices of \code{ind.test} and K the number of PCs
+A matrix of size \eqn{n \times K} where \code{n} is the number of samples
+corresponding to indices in \code{ind.row} and K the number of PCs
 computed in \code{obj.svd}. If \code{X} is not specified, this just returns
 the scores of the training set of \code{obj.svd}.
 }
@@ -38,45 +32,44 @@ Get the scores of PCA associated with an svd decomposition
 using function \code{big_SVD}.
 }
 \examples{
-# Simulating some data
-X <- big.matrix(73, 43)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
+n <- nrow(X.desc)
 
-# Using only half of the data for "training"
-ind <- sort(sample(nrow(X), nrow(X)/2))
+# Using only half of the data
+ind <- sort(sample(n, n/2))
 
-test <- big_SVD(X = X,
-                 fun.scaling = big_scale(),
-                 ind.train = ind)
+test <- big_SVD(X. = X.desc, fun.scaling = big_scale(), ind.row = ind)
 str(test)
+plot(test$u)
 
-pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
+pca <- prcomp(attach.BM(X.desc)[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
-print(all.equal(test$means, pca$center))
-print(all.equal(test$sds, pca$scale))
+all.equal(test$means, pca$center)
+all.equal(test$sds, pca$scale)
 
 # scores and loadings are the same or opposite
 # except for last eigenvalue which is equal to 0
 # due to centering of columns
 scores <- test$u \%*\% diag(test$d)
 scores2 <- big_predScoresPCA(test) # use this function to predict scores
-print(all.equal(scores, scores2))
-print(dim(scores))
-print(dim(pca$x))
-print(tail(pca$sdev))
+all.equal(scores, scores2)
+dim(scores)
+dim(pca$x)
+tail(pca$sdev)
 plot(scores2, pca$x[, 1:ncol(scores2)])
-plot(test$v, pca$rotation[, 1:ncol(scores2)])
+plot(test$v[1:100, ], pca$rotation[1:100, 1:ncol(scores2)])
 
 # projecting on new data
-X.test <- sweep(sweep(X[-ind, ], 2, test$means, '-'), 2, test$sds, '/')
-scores.test <- X.test \%*\% test$v
-ind2 <- setdiff(seq(nrow(X)), ind)
-scores.test2 <- big_predScoresPCA(test, X, ind.test = ind2) # use this
-print(all.equal(scores.test, scores.test2))
-scores.test3 <- predict(pca, X[-ind, ])
+X2 <- sweep(sweep(attach.BM(X.desc)[-ind, ], 2, test$means, '-'),
+            2, test$sds, '/')
+scores.test <- X2 \%*\% test$v
+ind2 <- setdiff(rows_along(X.desc), ind)
+scores.test2 <- big_predScoresPCA(test, X.desc, ind.row = ind2) # use this
+all.equal(scores.test, scores.test2)
+scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
 plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])
 }
 \seealso{
-\link[stats:predict.prcomp]{predict} \link{big_SVD}
+\link[stats:prcomp]{predict} \link{big_SVD} \link{big_randomSVD}
 }

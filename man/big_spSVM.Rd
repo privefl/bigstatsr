@@ -4,17 +4,19 @@
 \alias{big_spSVM}
 \title{Sparse SVM}
 \usage{
-big_spSVM(X, y01.train, ind.train = seq(nrow(X)), covar.train = NULL, ...)
+big_spSVM(X., y01.train, ind.train = rows_along(X.), covar.train = NULL,
+  ...)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 Must be 0s and 1s.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+for the training part. If not specified, all rows are used.
+\strong{Don't use negative indices.}}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
@@ -84,7 +86,29 @@ over a grid of values for the regularization parameter lambda.
 \href{https://github.com/CY-dev/sparseSVM}{package sparseSVM}}.
 }
 \examples{
+# simulating some data
+N <- 73
+M <- 430
+X <- as.big.matrix(matrix(rnorm(N*M, sd = 5), N))
+y <- sample(0:1, size = N, replace = TRUE)
+y.factor <- factor(y, levels = c(1, 0))
+covar <- matrix(rnorm(N * 3), N)
 
+# error, only handle standard R matrices
+tryCatch(test <- sparseSVM::sparseSVM(X, y),
+         error = function(e) message("One error has been catched."))
+# OK here
+test2 <- big_spSVM(X, y)
+str(test2)
+
+# how to use covariables?
+X2 <- cbind(X[,], covar)
+test <- sparseSVM::sparseSVM(X2, y.factor, alpha = 0.5)
+test2 <- big_spSVM(X, y, covar.train = covar, alpha = 0.5)
+# verification
+print(all.equal(test2$lambda, test$lambda))
+print(all.equal(test2$beta, test$weights[-1, ], check.attributes = FALSE))
+print(all.equal(test2$intercept, test$weights[1, ]))
 }
 \seealso{
 \link[LiblineaR:LiblineaR]{LiblineaR} \link[sparseSVM:sparseSVM]{sparseSVM}

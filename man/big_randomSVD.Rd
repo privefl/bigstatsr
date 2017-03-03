@@ -4,23 +4,23 @@
 \alias{big_randomSVD}
 \title{Randomized SVD}
 \usage{
-big_randomSVD(X, fun.scaling, ind.train = seq(nrow(X)),
-  ind.col = seq(ncol(X)), k = 10, tol = 1e-04, verbose = FALSE,
+big_randomSVD(X., fun.scaling, ind.row = rows_along(X.),
+  ind.col = cols_along(X.), k = 10, tol = 1e-04, verbose = FALSE,
   ncores = 1)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{fun.scaling}{A function that returns a named list of
-\strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
+\code{mean} and \code{sd} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
-\item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+\item{ind.row}{An optional vector of the row indices that are used.
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
-If not specified, all columns are used.}
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{k}{Number of singular vectors/values to compute. Default is \code{10}.
 \strong{This algorithm should be used to compute only a
@@ -68,44 +68,33 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 \url{http://dx.doi.org/10.1137/080736417}.
 }
 \examples{
-# Simulating some data
-X <- big.matrix(73, 43)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
+K <- 10
 
 # Using only half of the data for "training"
-ind <- sort(sample(nrow(X), nrow(X)/2))
-
-test <- big_randomSVD(X = X,
-                      fun.scaling = big_scale(),
-                      ind.train = ind)
+n <- nrow(X.desc)
+ind <- sort(sample(n, n/2))
+test <- big_randomSVD(X.desc, fun.scaling = big_scale(), ind.row = ind, k = K)
 str(test)
+plot(test$u)
 
-pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
+pca <- prcomp(attach.BM(X.desc)[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
-print(all.equal(test$means, pca$center))
-print(all.equal(test$sds, pca$scale))
+all.equal(test$means, pca$center)
+all.equal(test$sds, pca$scale)
 
+# use this function to predict scores
+scores <- big_predScoresPCA(test)
 # scores and loadings are the same or opposite
-# except for last eigenvalue which is equal to 0
-# due to centering of columns
-scores <- test$u \%*\% diag(test$d)
-scores2 <- big_predScoresPCA(test) # use this function to predict scores
-print(all.equal(scores, scores2))
-print(dim(scores))
-print(dim(pca$x))
-print(tail(pca$sdev))
-plot(scores2, pca$x[, 1:ncol(scores2)])
-plot(test$v, pca$rotation[, 1:ncol(scores2)])
+plot(scores, pca$x[, 1:K])
+plot(test$v, pca$rotation[, 1:K])
 
 # projecting on new data
-X.test <- sweep(sweep(X[-ind, ], 2, test$means, '-'), 2, test$sds, '/')
-scores.test <- X.test \%*\% test$v
-ind2 <- setdiff(seq(nrow(X)), ind)
-scores.test2 <- big_predScoresPCA(test, X, ind.test = ind2) # use this
-print(all.equal(scores.test, scores.test2))
-scores.test3 <- predict(pca, X[-ind, ])
-plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])
+ind2 <- setdiff(rows_along(X.desc), ind)
+scores.test2 <- big_predScoresPCA(test, X.desc, ind.row = ind2)
+scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
+plot(scores.test2, scores.test3[, 1:K])
 
 }
 \seealso{

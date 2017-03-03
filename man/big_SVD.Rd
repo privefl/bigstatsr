@@ -4,44 +4,33 @@
 \alias{big_SVD}
 \title{SVD}
 \usage{
-big_SVD(X, fun.scaling, ind.train = seq(nrow(X)), block.size = 1000,
-  k = NULL, thr.eigval = 0.001, use.Eigen = !detect_MRO(),
-  returnU = TRUE, returnV = TRUE)
+big_SVD(X., fun.scaling, ind.row = rows_along(X.), block.size = 1000,
+  k = NULL, thr.eigval = 1e-04)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{fun.scaling}{A function that returns a named list of
-\strong{\code{mean}} and \strong{\code{sd}} for every column, to scale each of their elements
+\code{mean} and \code{sd} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
 
-\item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+\item{ind.row}{An optional vector of the row indices that are used.
+If not specified, all rows are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once.
-Default is \code{1000}. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.}
+\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
-\item{k}{Number of PCs to compute. Default is all.}
+\item{k}{Number of singular vectors/values to compute. Default is all.}
 
-\item{thr.eigval}{Threshold to remove "unsignificant" PCs.
-Default is \code{1e-3}.}
-
-\item{use.Eigen}{Should the \code{Eigen} library be used
-for matrix computations? Default tries to detect MRO. See details.}
-
-\item{returnU}{Logical whether to return U or not. Default is \code{TRUE}.}
-
-\item{returnV}{Logical whether to return V or not. Default is \code{TRUE}.}
+\item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
+Default is \code{1e-4}.}
 }
 \value{
 A list of
 \itemize{
 \item \code{d}, the singular values,
-\item \code{u}, the left singular vectors if \code{returnU} is \code{TRUE},
-\item \code{v}, the right singular vectors if \code{returnV} is \code{TRUE},
+\item \code{u}, the left singular vectors,
+\item \code{v}, the right singular vectors,
 \item \code{means}, the centering vector,
 \item \code{sds}, the scaling vector.
 }
@@ -54,84 +43,44 @@ An algorithm for SVD (or PCA) of a \code{big.matrix} through the eigen
 decomposition of the covariance between variables (primal)
 or observations (dual).
 }
-\details{
-For matrix computations, using \code{Eigen} library is faster.
-However, if you link \code{R} with an optimized math library,
-using \code{R}'s base operations is even much faster.
-
-For example, you can easily link \code{R} with the
-\href{https://software.intel.com/en-us/intel-mkl}{Intel®
-Math Kernel Library} (Intel® MKL) through
-\href{https://mran.revolutionanalytics.com/open/}{Microsoft
-R Open} (MRO). It really improves performance
-of \code{R} and \code{RcppArmadillo} matrix computations,
-yet not the ones of \code{RcppEigen} (at least not directly).
-
-So, \enumerate{
-\item \code{Eigen} should be prefered if you don't change anything,
-\item base \code{R} should be prefered if you use MRO,
-\item \code{Eigen} may be prefered if you manage to link \code{RcppEigen}
-with the MKL (please \href{mailto:florian.prive.21@gmail.com}{contact me}
-if you do!).}
-}
 \examples{
-# Simulating some data
-X <- big.matrix(73, 43)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
+n <- nrow(X.desc)
 
-# Using only half of the data for "training"
-ind <- sort(sample(nrow(X), nrow(X)/2))
+# Using only half of the data
+ind <- sort(sample(n, n/2))
 
-test <- big_SVD(X = X,
-                 fun.scaling = big_scale(),
-                 ind.train = ind)
+test <- big_SVD(X. = X.desc, fun.scaling = big_scale(), ind.row = ind)
 str(test)
+plot(test$u)
 
-pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
+pca <- prcomp(attach.BM(X.desc)[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
-print(all.equal(test$means, pca$center))
-print(all.equal(test$sds, pca$scale))
+all.equal(test$means, pca$center)
+all.equal(test$sds, pca$scale)
 
 # scores and loadings are the same or opposite
 # except for last eigenvalue which is equal to 0
 # due to centering of columns
 scores <- test$u \%*\% diag(test$d)
 scores2 <- big_predScoresPCA(test) # use this function to predict scores
-print(all.equal(scores, scores2))
-print(dim(scores))
-print(dim(pca$x))
-print(tail(pca$sdev))
+all.equal(scores, scores2)
+dim(scores)
+dim(pca$x)
+tail(pca$sdev)
 plot(scores2, pca$x[, 1:ncol(scores2)])
-plot(test$v, pca$rotation[, 1:ncol(scores2)])
+plot(test$v[1:100, ], pca$rotation[1:100, 1:ncol(scores2)])
 
 # projecting on new data
-X.test <- sweep(sweep(X[-ind, ], 2, test$means, '-'), 2, test$sds, '/')
-scores.test <- X.test \%*\% test$v
-ind2 <- setdiff(seq(nrow(X)), ind)
-scores.test2 <- big_predScoresPCA(test, X, ind.test = ind2) # use this
-print(all.equal(scores.test, scores.test2))
-scores.test3 <- predict(pca, X[-ind, ])
+X2 <- sweep(sweep(attach.BM(X.desc)[-ind, ], 2, test$means, '-'),
+            2, test$sds, '/')
+scores.test <- X2 \%*\% test$v
+ind2 <- setdiff(rows_along(X.desc), ind)
+scores.test2 <- big_predScoresPCA(test, X.desc, ind.row = ind2) # use this
+all.equal(scores.test, scores.test2)
+scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
 plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])
-################################################################################
-
-## new scaling function
-# "y-aware" scaling center columns, then multiply them by betas of
-# univariate linear regression. See https://goo.gl/8G8WMa for details.
-big_scaleYaware <- function(y) {
-  function(X, ind.train = seq(nrow(X))) {
-    means <- big_colstats(X, ind.train)$sum / length(ind.train)
-    betas <- big_univLinReg(X, y, ind.train)$estim
-    list(mean = means, sd = 1 / betas)
-  }
-}
-# Simulating some data
-y <- rnorm(nrow(X), X[, 9], abs(X[, 9]))
-
-X.svd <- big_SVD(X, fun.scaling = big_scaleYaware(y))
-plot(X.svd$v[, 1], type = "h")
-
-################################################################################
 }
 \seealso{
 \link[stats:prcomp]{prcomp}

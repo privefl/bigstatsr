@@ -4,9 +4,9 @@
 
 /******************************************************************************/
 
-template <typename T>
-ListOf<NumericVector> bigcolvars(SubMatrixAccessor<T> macc) {
-  double n = macc.nrow();
+template <class C>
+ListOf<NumericVector> bigcolvars(C macc) {
+  int n = macc.nrow();
   int m = macc.ncol();
 
   NumericVector res(m), res2(m);
@@ -24,28 +24,37 @@ ListOf<NumericVector> bigcolvars(SubMatrixAccessor<T> macc) {
     res2[j] = xSum;
   }
 
-  return(List::create(_["sum"] = res2,
-                      _["var"] = res/(n-1)));
+  return List::create(_["sum"] = res2,
+                      _["var"] = res/(n-1));
 }
 
 // Dispatch function for bigcolvars
 // [[Rcpp::export]]
-ListOf<NumericVector> bigcolvars(XPtr<BigMatrix> xpMat,
+ListOf<NumericVector> bigcolvars(const S4& BM,
                                  const IntegerVector& rowInd,
                                  const IntegerVector& colInd) {
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return bigcolvars(SubMatrixAccessor<char>(*xpMat,   rowInd-1, colInd-1));
-  case 2:
-    return bigcolvars(SubMatrixAccessor<short>(*xpMat,  rowInd-1, colInd-1));
-  case 4:
-    return bigcolvars(SubMatrixAccessor<int>(*xpMat,    rowInd-1, colInd-1));
-  case 6:
-    return bigcolvars(SubMatrixAccessor<float>(*xpMat,  rowInd-1, colInd-1));
-  case 8:
-    return bigcolvars(SubMatrixAccessor<double>(*xpMat, rowInd-1, colInd-1));
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
+
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+  IntegerVector rows = rowInd - 1;
+  IntegerVector cols = colInd - 1;
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return bigcolvars(RawSubMatAcc(*xpMat, rows, cols, BM.slot("code")));
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return bigcolvars(SubMatAcc<char>(*xpMat,   rows, cols));
+    case 2:
+      return bigcolvars(SubMatAcc<short>(*xpMat,  rows, cols));
+    case 4:
+      return bigcolvars(SubMatAcc<int>(*xpMat,    rows, cols));
+    case 6:
+      return bigcolvars(SubMatAcc<float>(*xpMat,  rows, cols));
+    case 8:
+      return bigcolvars(SubMatAcc<double>(*xpMat, rows, cols));
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 

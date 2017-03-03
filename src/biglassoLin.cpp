@@ -27,14 +27,14 @@ void print_time(bool verbose, bool end = false, int l = -1) {
 }
 
 // standardize
-template <typename T>
+template <class C>
 void COPY_standardize_and_get_residual(NumericVector &center,
                                        NumericVector &scale,
                                        int *p_keep_ptr,
                                        vector<int> &col_idx, //columns to keep, removing columns whose scale < 1e-6
                                        vector<double> &z,
                                        double *lambda_max_ptr,
-                                       SubMatrixCovarAccessor<T> xAcc,
+                                       C xAcc,
                                        const NumericVector &y,
                                        double lambda_min,
                                        double alpha,
@@ -82,21 +82,21 @@ double COPY_lasso(double z, double l1, double l2, double v) {
 /******************************************************************************/
 
 // check KKT conditions over features in the strong set
-template <typename T>
+template <class C>
 int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, vector<double> &z,
-                          SubMatrixCovarAccessor<T> xAcc, const NumericVector &beta_old,
+                          C xAcc, const NumericVector &beta_old,
                           const vector<int> &col_idx,
                           const NumericVector &center, const NumericVector &scale,
                           double lambda, double sumResid, double alpha,
                           const NumericVector &r, const NumericVector &m, int n, int p) {
   double sum, l1, l2;
-  int j, jj, violations = 0;
+  int i, j, jj, violations = 0;
 
   for (j = 0; j < p; j++) {
     if (!in_A[j] && in_S[j]) {
       jj = col_idx[j];
       sum = 0.0;
-      for (int i = 0; i < n; i++) {
+      for (i = 0; i < n; i++) {
         sum += xAcc(i, jj) * r[i];
       }
       z[j] = (sum - center[jj] * sumResid) / (scale[jj] * n);
@@ -113,21 +113,21 @@ int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, vector
 }
 
 // check KKT conditions over features in the rest set
-template <typename T>
+template <class C>
 int COPY_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, vector<double> &z,
-                        SubMatrixCovarAccessor<T> xAcc, const NumericVector &beta_old,
+                        C xAcc, const NumericVector &beta_old,
                         const vector<int> &col_idx,
                         const NumericVector &center, const NumericVector &scale,
                         double lambda, double sumResid, double alpha,
                         const NumericVector &r, const NumericVector &m, int n, int p) {
   double sum, l1, l2;
-  int j, jj, violations = 0;
+  int i, j, jj, violations = 0;
 
   for (j = 0; j < p; j++) {
     if (!in_S[j]) {
       jj = col_idx[j];
       sum = 0.0;
-      for (int i = 0; i < n; i++) {
+      for (i = 0; i < n; i++) {
         sum += xAcc(i, jj) * r[i];
       }
       z[j] = (sum - center[jj] * sumResid) / (scale[jj] * n);
@@ -145,31 +145,6 @@ int COPY_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, vector<double>
 
 /******************************************************************************/
 
-//crossprod_resid - given specific rows of X: separate computation
-template <typename T>
-double COPY_crossprod_resid(SubMatrixCovarAccessor<T> xAcc, int jj, const NumericVector &y_,
-                            double sumY_, double center_, double scale_, int n_row) {
-  double sum = 0.0;
-  for (int i = 0; i < n_row; i++) {
-    sum += xAcc(i, jj) * y_[i];
-  }
-  sum = (sum - center_ * sumY_) / scale_;
-  return sum;
-}
-
-// update residul vector
-template <typename T>
-void COPY_update_resid(SubMatrixCovarAccessor<T> xAcc, int jj, NumericVector &r, double shift,
-                       double center_, double scale_, int n_row, double *sumResid) {
-  double shift_scaled = shift / scale_;
-  double update;
-  for (int i = 0; i < n_row; i++) {
-    update = shift_scaled * (xAcc(i, jj) - center_);
-    r[i] -= update;
-    *sumResid -= update;
-  }
-}
-
 // Gaussian loss
 double COPY_gLoss(const NumericVector &r, int n) {
   double l = 0;
@@ -180,8 +155,8 @@ double COPY_gLoss(const NumericVector &r, int n) {
 /******************************************************************************/
 
 // Coordinate descent for gaussian models
-template <typename T>
-List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
+template <class C>
+List COPY_cdfit_gaussian_hsr(C xAcc,
                              const NumericVector &y,
                              NumericVector &lambda,
                              int L,
@@ -209,8 +184,9 @@ List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
   print_time(verbose);
 
   // standardize: get center, scale; get p_keep_ptr, col_idx; get z, lambda_max;
-  COPY_standardize_and_get_residual<T>(center, scale, &p_keep, col_idx, z, &lambda_max, xAcc,
-                                       y, lambda_min, alpha, n, p);
+  COPY_standardize_and_get_residual(center, scale, &p_keep, col_idx, z,
+                                    &lambda_max, xAcc, y, lambda_min,
+                                    alpha, n, p);
 
   p = p_keep;   // set p = p_keep, only loop over columns whose scale > 1e-6
   // printf("p_keep = %d\n", p); //DEBUG
@@ -225,8 +201,8 @@ List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
   IntegerVector n_reject(L);
 
   double l1, l2, cutoff, shift, lam_l;
-  double max_update, update, thresh; // for convergence check
-  int j, jj, l, violations, lstart;
+  double max_update, update, thresh, shift_scaled, cpsum;
+  int i, j, jj, l, ll, violations, lstart;
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
@@ -263,7 +239,7 @@ List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
     if (l != 0) {
       // Check dfmax
       if (Rcpp::sum(beta_old != 0) > dfmax) {
-        for (int ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+        for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
         return List::create(beta, center, scale, lambda, loss, iter, n_reject,
                             as<IntegerVector>(Rcpp::wrap(col_idx)));
       }
@@ -292,7 +268,14 @@ List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
           for (j = 0; j < p; j++) {
             if (in_A[j]) {
               jj = col_idx[j];
-              z[j] = COPY_crossprod_resid<T>(xAcc, jj, r, sumResid, center[jj], scale[jj], n) / n + beta_old[j];
+              //crossprod_resid - given specific rows of X: separate computation
+              cpsum = 0.0;
+              for (i = 0; i < n; i++) {
+                cpsum += xAcc(i, jj) * r[i];
+              }
+              cpsum = (cpsum - center[jj] * sumResid) / scale[jj];
+              z[j] = cpsum / n + beta_old[j];
+
               l1 = lam_l * m[jj] * alpha;
               l2 = lam_l * m[jj] * (1-alpha);
               beta(j, l) = COPY_lasso(z[j], l1, l2, 1);
@@ -305,7 +288,12 @@ List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
                   max_update = update;
                 }
                 // update r and sum of residual
-                COPY_update_resid<T>(xAcc, jj, r, shift, center[jj], scale[jj], n, &sumResid);
+                shift_scaled = shift / scale[jj];
+                for (i = 0; i < n; i++) {
+                  update = shift_scaled * (xAcc(i, jj) - center[jj]);
+                  r[i] -= update;
+                  sumResid -= update;
+                }
                 beta_old[j] = beta(j, l); // update beta_old
               }
             }
@@ -315,14 +303,14 @@ List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
         }
 
         // Scan for violations in strong set
-        violations = COPY_check_strong_set<T>(in_A, in_S, z, xAcc, beta_old, col_idx,
-                                              center, scale, lam_l, sumResid, alpha, r, m, n, p);
+        violations = COPY_check_strong_set(in_A, in_S, z, xAcc, beta_old, col_idx,
+                                           center, scale, lam_l, sumResid, alpha, r, m, n, p);
         if (violations == 0) break;
       }
 
       // Scan for violations in rest set
-      violations = COPY_check_rest_set<T>(in_A, in_S, z, xAcc, beta_old, col_idx,
-                                          center, scale, lam_l, sumResid, alpha, r, m, n, p);
+      violations = COPY_check_rest_set(in_A, in_S, z, xAcc, beta_old, col_idx,
+                                       center, scale, lam_l, sumResid, alpha, r, m, n, p);
       if (violations == 0) {
         loss[l] = COPY_gLoss(r, n);
         break;
@@ -336,11 +324,11 @@ List COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<T> xAcc,
 
 // Dispatch function for COPY_cdfit_gaussian_hsr
 // [[Rcpp::export]]
-List COPY_cdfit_gaussian_hsr(XPtr<BigMatrix> xpMat,
-                             const NumericVector &y,
-                             const IntegerVector &row_idx,
-                             const NumericMatrix &covar,
-                             NumericVector &lambda,
+List COPY_cdfit_gaussian_hsr(const S4& BM,
+                             const NumericVector& y,
+                             const IntegerVector& row_idx,
+                             const NumericMatrix& covar,
+                             NumericVector& lambda,
                              int L,
                              int lam_scale,
                              double lambda_min,
@@ -351,34 +339,44 @@ List COPY_cdfit_gaussian_hsr(XPtr<BigMatrix> xpMat,
                              const NumericVector &m,
                              int dfmax,
                              bool verbose) {
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<char>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, verbose);
-  case 2:
-    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<short>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, verbose);
-  case 4:
-    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<int>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, verbose);
-  case 6:
-    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<float>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, verbose);
-  case 8:
-    return COPY_cdfit_gaussian_hsr(SubMatrixCovarAccessor<double>(*xpMat, row_idx, covar),
-                                   y, lambda, L, lam_scale, lambda_min,
-                                   alpha, user, eps, max_iter, m,
-                                   dfmax, verbose);
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
+
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+
+  if (Rf_inherits(BM, "BM.code")) {
+    return COPY_cdfit_gaussian_hsr(
+      RawSubMatCovAcc(*xpMat, row_idx, covar, BM.slot("code")),
+      y, lambda, L, lam_scale, lambda_min,
+      alpha, user, eps, max_iter, m, dfmax, verbose);
+  } else {
+    switch(xpMat->matrix_type()) {
+    case 1:
+      return COPY_cdfit_gaussian_hsr(
+        SubMatCovAcc<char>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, verbose);
+    case 2:
+      return COPY_cdfit_gaussian_hsr(
+        SubMatCovAcc<short>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, verbose);
+    case 4:
+      return COPY_cdfit_gaussian_hsr(
+        SubMatCovAcc<int>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, verbose);
+    case 6:
+      return COPY_cdfit_gaussian_hsr(
+        SubMatCovAcc<float>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, verbose);
+    case 8:
+      return COPY_cdfit_gaussian_hsr(
+        SubMatCovAcc<double>(*xpMat, row_idx, covar),
+        y, lambda, L, lam_scale, lambda_min,
+        alpha, user, eps, max_iter, m, dfmax, verbose);
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
+    }
   }
 }
 

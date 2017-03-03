@@ -103,8 +103,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
   if (is.null(covar.train)) covar.train <- matrix(0, 0, 0)
 
   p <- ncol(X) + ncol(covar.train)
-  if (is.null(penalty.factor))
-    penalty.factor <- rep(1, p)
+  if (is.null(penalty.factor)) penalty.factor <- rep(1, p)
   if (p != length(penalty.factor))
     stop("'penalty.factor' has an incompatible length.")
 
@@ -118,28 +117,21 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
 
   if (nlambda < 2) stop("nlambda must be at least 2")
 
-  if (any(is.na(y.train))) stop("Missing data (NA's) detected.  Take actions (e.g., removing cases, removing features, imputation) to eliminate missing data before fitting the model.")
+  if (any(is.na(y.train)))
+    stop(paste("Missing data (NA's) detected. Take actions",
+               "(e.g., removing cases, removing features, imputation)",
+               "to eliminate missing data before fitting the model."))
 
-  if (class(y.train) != "numeric") {
-    tmp <- try(y.train <- as.numeric(y.train), silent=TRUE)
-    if (class(tmp)[1] == "try-error") stop("y.train must numeric or able to be coerced to numeric")
-  }
+  if (class(y.train) != "numeric")
+    tryCatch(y.train <- as.numeric(y.train), error = function(e)
+      stop("y.train must numeric or able to be coerced to numeric"))
 
-  if (family == 'binomial') {
-    if (length(table(y.train)) > 2) {
-      stop("Attemping to use family='binomial' with non-binary data")
-    }
-    if (!identical(sort(unique(y.train)), 0:1)) {
-      y.train <- as.numeric(y.train == max(y.train))
-    }
-    n.pos <- sum(y.train) # number of 1's
-    ylab <- ifelse(y.train == 0, -1, 1) # response label vector of {-1, 1}
-  }
-
-  if (family == "gaussian") {
+  if (family == "binomial") {
+    yy <- transform_levels(y.train)
+  } else if (family == "gaussian") {
     yy <- y.train - mean(y.train)
   } else {
-    yy <- y.train
+    stop("Current version only supports Gaussian or Binominal response!")
   }
 
   n <- length(ind.train) ## subset of X. idx: indices of rows.
@@ -152,10 +144,10 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
   }
 
   ## fit model
-  if (verbose) cat("\nStart biglasso: ", format(Sys.time()), '\n')
+  if (verbose) printf("\nStart biglasso: %s\n", format(Sys.time()))
 
   if (family == 'gaussian') {
-    res <- COPY_cdfit_gaussian_hsr(X@address, yy, ind.train-1, covar.train,
+    res <- COPY_cdfit_gaussian_hsr(X, yy, ind.train-1, covar.train,
                                    lambda, nlambda, lambda.log.scale,
                                    lambda.min, alpha,
                                    user.lambda | any(penalty.factor == 0),
@@ -173,7 +165,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
     col.idx <- res[[8]]
 
   } else if (family == 'binomial') {
-    res <- COPY_cdfit_binomial_hsr(X@address, yy, ind.train-1, covar.train,
+    res <- COPY_cdfit_binomial_hsr(X, yy, ind.train-1, covar.train,
                                    lambda, nlambda, lambda.log.scale,
                                    lambda.min, alpha,
                                    user.lambda | any(penalty.factor == 0),
@@ -194,7 +186,7 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
   } else {
     stop("Current version only supports Gaussian or Binominal response!")
   }
-  if (verbose) cat("\nEnd biglasso: ", format(Sys.time()), '\n')
+  if (verbose) printf("\nEnd biglasso: %s\n", format(Sys.time()))
 
   # p.keep <- length(col.idx)
   col.idx <- col.idx + 1 # indices (in R) for which variables have scale > 1e-6
@@ -207,7 +199,8 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
   lambda <- lambda[ind]
   loss <- loss[ind]
 
-  if (warn & any(iter==max.iter)) warning("Algorithm failed to converge for some values of lambda")
+  if (warn & any(iter==max.iter))
+    warning("Algorithm failed to converge for some values of lambda")
 
   ## Unstandardize coefficients:
   beta <- Matrix(0, nrow = p, ncol = length(lambda), sparse = TRUE)
@@ -273,8 +266,9 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
 #' arXiv preprint arXiv:1701.05936. \url{https://arxiv.org/abs/1701.05936}.
 #'
 #' @export
-big_spLinReg <- function(X, y.train, ind.train = seq(nrow(X)),
+big_spLinReg <- function(X., y.train, ind.train = rows_along(X.),
                          covar.train = NULL, ...) {
+  X <- attach.BM(X.)
   COPY_biglasso(X, y.train, ind.train, covar.train, family = "gaussian", ...)
 }
 
@@ -290,8 +284,9 @@ big_spLinReg <- function(X, y.train, ind.train = seq(nrow(X)),
 #' @example examples/example-spLogReg.R
 #'
 #' @export
-big_spLogReg <- function(X, y01.train, ind.train = seq(nrow(X)),
+big_spLogReg <- function(X., y01.train, ind.train = rows_along(X.),
                          covar.train = NULL, ...) {
+  X <- attach.BM(X.)
   COPY_biglasso(X, y01.train, ind.train, covar.train, family = "binomial", ...)
 }
 

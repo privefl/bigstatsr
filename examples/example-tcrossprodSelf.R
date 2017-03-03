@@ -1,16 +1,19 @@
-# Simulating some data
-X <- big.matrix(17, 41)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
 
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)
-test <- big_tcrossprodSelf(X, fun.scaling = big_noscale)
-print(dim(test$K))
-print(all.equal(test$K, tcrossprod(X[,])))
+test <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale)
+dim(test$K)
 
-# Using only half of the data for "training"
-ind <- sort(sample(nrow(X), nrow(X)/2))
-test2 <- big_tcrossprodSelf(X, fun.scaling = big_noscale,
-                            ind.train = ind)
-print(dim(test2$K))
-print(all.equal(test2$K, tcrossprod(X[ind, ])))
+true <- tcrossprod(attach.BM(X.desc)[,])
+all.equal(test$K, true)
+
+# Using only half of the data
+n <- nrow(X.desc)
+ind <- sort(sample(n, n/2))
+test2 <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale,
+                            ind.row = ind)
+dim(test2$K)
+
+true2 <- tcrossprod(attach.BM(X.desc)[ind, ])
+all.equal(test2$K, true2)

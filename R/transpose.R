@@ -4,29 +4,31 @@
 #' @description This function implements a simple cache-oblivious
 #' algorithm for the transposition of a "big.matrix".
 #' @inheritParams bigstatsr-package
+#' @param descriptor Return the descriptor of the transposed `big.matrix` or
+#' directly the `big.matrix` object? Default is `TRUE` (the descriptor).
 #' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init -dimnames
-#' @return The new transposed big.matrix. Its dimension, type and dimnames
-#' are automatically determined from the input `big.matrix`.
+#' @return The new transposed `big.matrix` (or its descriptor). Its dimension,
+#' type and dimnames are automatically determined from the input `big.matrix`.
 #' @export
 #' @examples
-#' X <- big.matrix(11, 23, shared = FALSE)
-#' X[] <- rnorm(length(X))
+#' X.desc <- big_attachExtdata()
 #'
-#' Xt <- big_transpose(X, shared = FALSE)
+#' tmpfile <- tempfile()
+#' Xt.desc <- big_transpose(X.desc, descriptor = TRUE,
+#'                          backingfile = basename(tmpfile),
+#'                          backingpath = dirname(tmpfile),
+#'                          descriptorfile = paste0(basename(tmpfile), ".desc"))
 #'
-#' print(identical(
-#'   t(X[,]),
-#'     Xt[,]
-#' ))
-big_transpose <- function(X, ...) {
-  check_X(X)
+#' identical(t(attach.BM(X.desc)[,]), attach.BM(Xt.desc)[,])
+big_transpose <- function(X., descriptor = TRUE, ...) {
+  X <- attach.BM(X.)
 
   res <- big.matrix(ncol(X), nrow(X), type = typeof(X),
                     dimnames = dimnames(X)[2:1], ...)
 
   transpose3(res@address, X@address)
 
-  res
+  `if`(descriptor, describe(res), res)
 }
 
 ################################################################################

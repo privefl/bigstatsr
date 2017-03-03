@@ -4,18 +4,23 @@
 \alias{big_univLogReg}
 \title{Column-wise logistic regression}
 \usage{
-big_univLogReg(X, y01.train, ind.train = seq(nrow(X)), covar.train = NULL,
-  ncores2 = 1, tol = 1e-08, maxiter = 20)
+big_univLogReg(X., y01.train, ind.train = rows_along(X.),
+  ind.col = cols_along(X.), covar.train = NULL, ncores2 = 1,
+  tol = 1e-08, maxiter = 20)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 Must be 0s and 1s.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+for the training part. If not specified, all rows are used.
+\strong{Don't use negative indices.}}
+
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
@@ -49,36 +54,28 @@ of a \code{big.matrix}, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
 \examples{
-# Simulating some data
-data("trees")
-N <- nrow(trees)
-covar <- matrix(rnorm(N * 3), N)
-X <- as.big.matrix(as.matrix(trees))
-y <- sample(0:1, size = N, replace = TRUE)
+X.desc <- big_attachExtdata()
+n <- nrow(X.desc)
+y01 <- sample(0:1, size = n, replace = TRUE)
+covar <- matrix(rnorm(n * 3), n)
+
+X1 <- attach.BM(X.desc)[, 1] # only first column of the `big.matrix`
 
 # Without covar
-print(big_univLogReg(X, y))
-for (i in 1:3) {
-  print(summary(glm(y ~ trees[, i], family = "binomial"))$coefficients[2, ])
-}
+str(big_univLogReg(X.desc, y01))
+summary(glm(y01 ~ X1, family = "binomial"))$coefficients[2, ]
 
 # With all data
-print(big_univLogReg(X, y, covar.train = covar))
-for (i in 1:3) {
-  print(summary(glm(y ~ trees[, i] + covar,
-                    family = "binomial"))$coefficients[2, ])
-}
+str(big_univLogReg(X.desc, y01, covar.train = covar))
+summary(glm(y01 ~ X1 + covar, family = "binomial"))$coefficients[2, ]
 
 # With only half of the data
-ind.train <- sort(sample(N, N / 2))
-
-print(big_univLogReg(X, y[ind.train], covar.train = covar[ind.train, ],
-                     ind.train = ind.train))
-for (i in 1:3) {
-  print(summary(glm(y ~ trees[, i] + covar, subset = ind.train,
-                    family = "binomial"))$coefficients[2, ])
-}
-
+ind.train <- sort(sample(n, n/2))
+str(big_univLogReg(X.desc, y01[ind.train],
+                   covar.train = covar[ind.train, ],
+                   ind.train = ind.train))
+summary(glm(y01 ~ X1 + covar, family = "binomial",
+            subset = ind.train))$coefficients[2, ]
 }
 \seealso{
 \link[stats:glm]{glm}

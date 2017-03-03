@@ -1,39 +1,28 @@
-# Simulating some data
-X <- big.matrix(73, 43)
-X[] <- rnorm(length(X))
+X.desc <- big_attachExtdata()
+K <- 10
 
 # Using only half of the data for "training"
-ind <- sort(sample(nrow(X), nrow(X)/2))
-
-test <- big_randomSVD(X = X,
-                      fun.scaling = big_scale(),
-                      ind.train = ind)
+n <- nrow(X.desc)
+ind <- sort(sample(n, n/2))
+test <- big_randomSVD(X.desc, fun.scaling = big_scale(), ind.row = ind, k = K)
 str(test)
+plot(test$u)
 
-pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
+pca <- prcomp(attach.BM(X.desc)[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
-print(all.equal(test$means, pca$center))
-print(all.equal(test$sds, pca$scale))
+all.equal(test$means, pca$center)
+all.equal(test$sds, pca$scale)
 
+# use this function to predict scores
+scores <- big_predScoresPCA(test)
 # scores and loadings are the same or opposite
-# except for last eigenvalue which is equal to 0
-# due to centering of columns
-scores <- test$u %*% diag(test$d)
-scores2 <- big_predScoresPCA(test) # use this function to predict scores
-print(all.equal(scores, scores2))
-print(dim(scores))
-print(dim(pca$x))
-print(tail(pca$sdev))
-plot(scores2, pca$x[, 1:ncol(scores2)])
-plot(test$v, pca$rotation[, 1:ncol(scores2)])
+plot(scores, pca$x[, 1:K])
+plot(test$v, pca$rotation[, 1:K])
 
 # projecting on new data
-X.test <- sweep(sweep(X[-ind, ], 2, test$means, '-'), 2, test$sds, '/')
-scores.test <- X.test %*% test$v
-ind2 <- setdiff(seq(nrow(X)), ind)
-scores.test2 <- big_predScoresPCA(test, X, ind.test = ind2) # use this
-print(all.equal(scores.test, scores.test2))
-scores.test3 <- predict(pca, X[-ind, ])
-plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])
+ind2 <- setdiff(rows_along(X.desc), ind)
+scores.test2 <- big_predScoresPCA(test, X.desc, ind.row = ind2)
+scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
+plot(scores.test2, scores.test3[, 1:K])
 

@@ -4,16 +4,18 @@
 \alias{big_spLinReg}
 \title{Sparse linear regression}
 \usage{
-big_spLinReg(X, y.train, ind.train = seq(nrow(X)), covar.train = NULL, ...)
+big_spLinReg(X., y.train, ind.train = rows_along(X.), covar.train = NULL,
+  ...)
 }
 \arguments{
-\item{X}{A \link[bigmemory:big.matrix-class]{big.matrix}.
-You shouldn't have missing values in your data.}
+\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
+a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.}
+for the training part. If not specified, all rows are used.
+\strong{Don't use negative indices.}}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.

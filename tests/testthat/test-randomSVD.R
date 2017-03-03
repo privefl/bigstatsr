@@ -3,7 +3,7 @@
 context("RANDOM_SVD")
 
 opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = FALSE)
+                    bigmemory.default.shared = TRUE)
 
 TOL <- 1e-6
 
@@ -25,11 +25,12 @@ x <- matrix(rnorm(N*M, sd = 5), N)
 test_that("equality with prcomp", {
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
     sc <- sampleScale()
 
-    test <- big_randomSVD(X = X, k = k, tol = 1e-10,
+    test <- big_randomSVD(X., k = k, tol = 1e-10,
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
     pca <- prcomp(X[,], center = sc$center, scale. = sc$scale)
@@ -46,12 +47,13 @@ test_that("equality with prcomp with half of the data", {
 
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
     sc <- sampleScale()
 
-    test <- big_randomSVD(X = X,
-                          ind.train = ind, k = k, tol = 1e-10,
+    test <- big_randomSVD(X.,
+                          ind.row = ind, k = k, tol = 1e-10,
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
     pca <- prcomp(X[ind, ], center = sc$center, scale. = sc$scale)
@@ -59,7 +61,7 @@ test_that("equality with prcomp with half of the data", {
     expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
 
-    expect_equal(diffPCs(big_predScoresPCA(test, X, ind.test = ind2),
+    expect_equal(diffPCs(big_predScoresPCA(test, X., ind.row = ind2),
                          predict(pca, X[ind2, ])), 0, tolerance = TOL)
   }
 })
@@ -72,11 +74,12 @@ test_that("equality with prcomp with half of half of the data", {
   ind.col <- sample(M, M/2)
   for (t in ALL.TYPES) {
     X <- as.big.matrix(x, type = t)
+    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
     sc <- sampleScale()
 
-    test <- big_randomSVD(X = X, ind.train = ind, ind.col = ind.col,
+    test <- big_randomSVD(X., ind.row = ind, ind.col = ind.col,
                           k = k, tol = 1e-10,
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
@@ -85,7 +88,7 @@ test_that("equality with prcomp with half of half of the data", {
     expect_equal(diffPCs(big_predScoresPCA(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
 
-    expect_equal(diffPCs(big_predScoresPCA(test, X, ind.test = ind2,
+    expect_equal(diffPCs(big_predScoresPCA(test, X., ind.row = ind2,
                                            ind.col = ind.col),
                          predict(pca, X[ind2, ind.col])), 0, tolerance = TOL)
   }

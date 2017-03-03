@@ -1,19 +1,15 @@
 ################################################################################
 
 DualBigPCA <- function(X, fun.scaling,
-                       ind.train,
+                       ind.row,
                        block.size,
                        k,
-                       thr.eigval,
-                       use.Eigen,
-                       returnU,
-                       returnV) {
+                       thr.eigval) {
 
-  tmp <- big_tcrossprodSelf(X = X,
+  tmp <- big_tcrossprodSelf(X,
                             fun.scaling = fun.scaling,
-                            ind.train = ind.train,
-                            block.size = block.size,
-                            use.Eigen = use.Eigen)
+                            ind.row = ind.row,
+                            block.size = block.size)
 
   eig <- `if`(is.null(k),
               eigen(tmp$K, symmetric = TRUE),
@@ -26,52 +22,44 @@ DualBigPCA <- function(X, fun.scaling,
   d <- sqrt(eig$values[1:lastEig])
   rm(eig)
 
-  if (returnV) {
-    v <- crossprodScaled(X, u, ind.train, block.size, tmp$mean, tmp$sd, use.Eigen)
-    v <- scaling(v, rep(0, lastEig), d)
-  } else {
-    v <- NULL
-  }
+  # crossprod with clever scaling -> see vignettes
+  v <- (big_cprodMat(X, u, ind.row, block.size = block.size) -
+          tcrossprod(tmp$mean, colSums(u))) / tmp$sd
+  v <- scaling(v, rep(0, lastEig), d)
 
-  list(d = d, u = `if`(returnU, u, NULL), v = v, means = tmp$mean, sds = tmp$sd)
+  list(d = d, u = u, v = v, means = tmp$mean, sds = tmp$sd)
 }
 
 ################################################################################
 
 PrimalBigPCA <- function(X, fun.scaling,
-                         ind.train,
+                         ind.row,
                          block.size,
                          k,
-                         thr.eigval,
-                         use.Eigen,
-                         returnU,
-                         returnV) {
+                         thr.eigval) {
 
-  tmp <- big_crossprodSelf(X = X,
+  tmp <- big_crossprodSelf(X,
                            fun.scaling = fun.scaling,
-                           ind.train = ind.train,
-                           block.size = block.size,
-                           use.Eigen = use.Eigen)
+                           ind.row = ind.row,
+                           block.size = block.size)
 
   eig <- `if`(is.null(k),
               eigen(tmp$K, symmetric = TRUE),
               RSpectra::eigs_sym(tmp$K, k))
   tmp$K <- NULL
 
-  lastEig <- max(which(eig$values > (thr.eigval * length(ind.train))))
+  lastEig <- max(which(eig$values > (thr.eigval * length(ind.row))))
 
   v <- eig$vectors[, 1:lastEig]
   d <- sqrt(eig$values[1:lastEig])
   rm(eig)
 
-  if (returnU) {
-    u <- multScaled(X, v, ind.train, block.size, tmp$mean, tmp$sd, use.Eigen)
-    u <- scaling(u, rep(0, lastEig), d)
-  } else {
-    u <- NULL
-  }
+  # multiplication with clever scaling -> see vignettes
+  v2 <- v / tmp$sd
+  u <- big_prodMat(X, v2, ind.row = ind.row, block.size = block.size)
+  u <- scaling(u, crossprod(tmp$mean, v2), d)
 
-  list(d = d, u = u, v = `if`(returnV, v, NULL), means = tmp$mean, sds = tmp$sd)
+  list(d = d, u = u, v = v, means = tmp$mean, sds = tmp$sd)
 }
 
 ################################################################################
@@ -82,18 +70,14 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' decomposition of the covariance between variables (primal)
 #' or observations (dual).
 #'
-#' @inherit bigstatsr-package params details
-#' @param k Number of PCs to compute. Default is all.
-#' @param thr.eigval Threshold to remove "unsignificant" PCs.
-#' Default is \code{1e-3}.
-#' @param returnU Logical whether to return U or not. Default is `TRUE`.
-#' @param returnV Logical whether to return V or not. Default is `TRUE`.
+#' @inheritParams bigstatsr-package
+#' @param k Number of singular vectors/values to compute. Default is all.
 #'
 #' @export
 #' @return A list of
 #' - `d`, the singular values,
-#' - `u`, the left singular vectors if `returnU` is `TRUE`,
-#' - `v`, the right singular vectors if `returnV` is `TRUE`,
+#' - `u`, the left singular vectors,
+#' - `v`, the right singular vectors,
 #' - `means`, the centering vector,
 #' - `sds`, the scaling vector.
 #'
@@ -101,26 +85,19 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' `big_predScoresPCA` on the result. See examples.
 #'
 #' @example examples/example-SVD.R
-#' @example examples/example-newScale.R
 #' @seealso [prcomp][stats::prcomp]
-big_SVD <- function(X, fun.scaling,
-                    ind.train = seq(nrow(X)),
-                    block.size = 1e3,
+big_SVD <- function(X., fun.scaling,
+                    ind.row = rows_along(X.),
+                    block.size = 1000,
                     k = NULL,
-                    thr.eigval = 1e-3,
-                    use.Eigen = !detect_MRO(),
-                    returnU = TRUE,
-                    returnV = TRUE) {
-  check_X(X)
-
-  if (ncol(X) > length(ind.train)) {
+                    thr.eigval = 1e-4) {
+  X <- attach.BM(X.)
+  if (ncol(X) > length(ind.row)) {
     printf("(2)")
-    DualBigPCA(X, fun.scaling, ind.train, block.size, k,
-               thr.eigval, use.Eigen, returnU, returnV)
+    DualBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
   } else {
     printf("(1)")
-    PrimalBigPCA(X, fun.scaling, ind.train, block.size, k,
-                 thr.eigval, use.Eigen, returnU, returnV)
+    PrimalBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
   }
 }
 
@@ -131,33 +108,29 @@ big_SVD <- function(X, fun.scaling,
 #' Get the scores of PCA associated with an svd decomposition
 #' using function `big_SVD`.
 #'
-#' @inherit bigstatsr-package params
-#' @param obj.svd A list returned by `big_SVD`.
-#' @param ind.test Vector of indices of samples to be projected.
-#' Don't use negative indices here.
+#' @inheritParams bigstatsr-package
+#' @param obj.svd A list returned by `big_SVD` or `big_randomSVD`.
 #'
 #' @export
-#' @return A matrix of size `n * K` where n is the number of samples
-#' corresponding to indices of `ind.test` and K the number of PCs
+#' @return A matrix of size \eqn{n \times K} where `n` is the number of samples
+#' corresponding to indices in `ind.row` and K the number of PCs
 #' computed in `obj.svd`. If `X` is not specified, this just returns
 #' the scores of the training set of `obj.svd`.
 #'
 #' @example examples/example-SVD.R
-#' @seealso [predict][stats::predict.prcomp] [big_SVD]
-big_predScoresPCA <- function(obj.svd, X = NULL,
-                              ind.test = seq(nrow(X)),
-                              ind.col = seq(ncol(X)),
-                              block.size = 1000,
-                              use.Eigen = !detect_MRO()) {
-  if (is.null(X)) {
+#' @seealso [predict][stats::prcomp] [big_SVD] [big_randomSVD]
+big_predScoresPCA <- function(obj.svd, X. = NULL,
+                              ind.row = rows_along(X.),
+                              ind.col = cols_along(X.),
+                              block.size = 1000) {
+  if (is.null(X.)) {
     obj.svd$u %*% diag(obj.svd$d)
   } else {
-    stopifnot(all(ind.test > 0))
-    multScaled2(X, mat = obj.svd$v,
-               ind.test, ind.col, block.size,
-               vec.center = obj.svd$means,
-               vec.scale = obj.svd$sds,
-               use.Eigen)
+    X <- attach.BM(X.)
+    # multiplication with clever scaling -> see vignettes
+    v2 <- obj.svd$v / obj.svd$sds
+    tmp <- big_prodMat(X, v2, ind.row, ind.col, block.size)
+    sweep(tmp, 2, crossprod(obj.svd$means, v2), '-')
   }
 }
 
