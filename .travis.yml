@@ -6,8 +6,9 @@ r:
   - devel
 sudo: false
 cache: packages
-
-#bioc_required: true
+os:
+  - linux
+  - osx
 
 env:
  global:
