@@ -34,7 +34,7 @@ getGLM <- function(X, y, covar, ind = NULL) {
 
 test_that("equality with glm with all data", {
   for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
+    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
     for (covar in lcovar) {
       mod <- big_univLogReg(X., y, covar.train = covar)
@@ -54,7 +54,7 @@ test_that("equality with glm with only half the data", {
   }
 
   for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
+    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
     for (covar in lcovar) {
       mod <- big_univLogReg(X., y[ind],

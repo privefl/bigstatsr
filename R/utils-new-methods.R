@@ -147,16 +147,14 @@ setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
             as.BM.code(attach.big.matrix(x), code)
           })
 
-#' @keywords internal
-setMethod("as.BM.code", signature(x = "matrix", code = "missing"),
-          function(x, code) {
-            x <- round(x + 100)
-            tmp <- unique(as.vector(x))
-            code <- rep(NA_real_, 256)
-            code[tmp + 1] <- tmp - 100
-            storage.mode(x) <- "raw"
-            as.BM.code(as.big.matrix(x), code)
-          })
+asBMcode <- function(x) { # for tests
+  x <- round(x + 100)
+  tmp <- unique(as.vector(x))
+  code <- rep(NA_real_, 256)
+  code[tmp + 1] <- tmp - 100
+  storage.mode(x) <- "raw"
+  as.BM.code(as.big.matrix(x), code)
+}
 
 ################################################################################
 #### Methods for completeness ####

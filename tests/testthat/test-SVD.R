@@ -24,7 +24,7 @@ x <- matrix(rnorm(N*M, sd = 5), N)
 
 test_that("equality with prcomp", {
   for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
+    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
     k <- sample(list(NULL, 2, 20), 1)[[1]] # NULL, 2 or 20
     sc <- sampleScale()
@@ -46,7 +46,7 @@ test_that("equality with prcomp with half of the data", {
   ind2 <- setdiff(1:N, ind)
 
   for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
+    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     k <- sample(list(NULL, 2, 20), 1)[[1]] # NULL, 2 or 20

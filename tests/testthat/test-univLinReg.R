@@ -30,7 +30,7 @@ getLM <- function(X, y, covar, ind = NULL) {
 
 test_that("equality with lm with all data", {
   for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
+    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     for (covar in lcovar) {
@@ -46,7 +46,7 @@ test_that("equality with lm with only half the data", {
   ind <- sample(N, N / 2)
 
   for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
+    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     for (covar in lcovar) {

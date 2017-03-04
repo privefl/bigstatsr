@@ -4,11 +4,11 @@
 \alias{predict.big_SVD}
 \title{Scores of PCA}
 \usage{
-\method{predict}{big_SVD}(obj.svd, X. = NULL, ind.row = rows_along(X.),
+\method{predict}{big_SVD}(object, X. = NULL, ind.row = rows_along(X.),
   ind.col = cols_along(X.), block.size = 1000, ...)
 }
 \arguments{
-\item{obj.svd}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
+\item{object}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
 
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
@@ -26,8 +26,8 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 \value{
 A matrix of size \eqn{n \times K} where \code{n} is the number of samples
 corresponding to indices in \code{ind.row} and K the number of PCs
-computed in \code{obj.svd}. If \code{X} is not specified, this just returns
-the scores of the training set of \code{obj.svd}.
+computed in \code{object}. If \code{X} is not specified, this just returns
+the scores of the training set of \code{object}.
 }
 \description{
 Get the scores of PCA associated with an svd decomposition (class \code{big_SVD}).
