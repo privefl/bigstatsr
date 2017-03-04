@@ -17,8 +17,7 @@ The corresponding \code{<FUN>.predict} function should exists.}
 \item{feval}{Custimized evaluation function. You should always aim at
 maximizing this function. If \code{feval} is like a loss function (which you
 want to minimize), you should use its opposite instead.
-Its only two arguments should be \code{pred} and \code{target}
-(e.g. \code{function(pred, target) aucSample(pred, target, nsim = 1e5)}).}
+Its only two arguments should be \code{pred} and \code{target} (e.g. \link{AUC}).}
 
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}

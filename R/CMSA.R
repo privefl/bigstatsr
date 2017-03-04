@@ -49,8 +49,7 @@ get_beta <- function(betas, method) {
 #' @param feval Custimized evaluation function. You should always aim at
 #' maximizing this function. If `feval` is like a loss function (which you
 #' want to minimize), you should use its opposite instead.
-#' Its only two arguments should be `pred` and `target`
-#' (e.g. `function(pred, target) aucSample(pred, target, nsim = 1e5)`).
+#' Its only two arguments should be `pred` and `target` (e.g. [AUC]).
 #' @param method Method for combining vectors of coefficients. The default uses
 #' the [geometric median](https://en.wikipedia.org/wiki/Geometric_median).
 #'
