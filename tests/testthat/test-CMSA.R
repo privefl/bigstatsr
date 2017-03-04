@@ -20,7 +20,7 @@ lcovar <- list(NULL, covar0)
 
 ################################################################################
 
-test_that("equality with sparseSVM with all data", {
+test_that("correlation between predictors", {
   X <- as.big.matrix(x)
   X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
@@ -32,13 +32,15 @@ test_that("equality with sparseSVM with all data", {
 
       mod.bigstatsr <- f(X., y, covar.train = covar, alpha = alpha,
                          lambda.min = lambda.min)
-      beta.lol <- get_beta(mod.bigstatsr$beta[, -1], meth)
+      beta.lol <- get_beta(mod.bigstatsr$beta[, 20:60], meth)
 
       beta.cmsa <- big_CMSA(big_spSVM, feval = AUC, X. = X.,
                            y.train = y, covar.train = covar,
                            method = meth)
 
-      expect_lt(cor.test(beta.lol, beta.cmsa)$p.value, 1e-10)
+      cor.pval <- cor.test(beta.lol, beta.cmsa)$p.value
+      printf("(1e%d)", round(log10(cor.pval)))
+      expect_lt(cor.pval, 0.01)
     }
   }
 })
