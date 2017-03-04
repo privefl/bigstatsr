@@ -209,7 +209,7 @@ decode <- function(x, code) `if`(is.matrix(x), decodeMat, decodeVec)(x, code)
 
 #' Extract
 #'
-#' Extract replace big.matrix elements
+#' Extract `big.matrix` elements. __Dimnames are not extracted.__
 #'
 #' @param x A [BM.code].
 #' @param i Indices specifying the rows.

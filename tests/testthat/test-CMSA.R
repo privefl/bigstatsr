@@ -39,7 +39,7 @@ test_that("correlation between predictors", {
                            method = meth)
 
       cor.pval <- cor.test(beta.lol, beta.cmsa)$p.value
-      printf("(1e%d)", round(log10(cor.pval)))
+      printf("(%.0e)", cor.pval)
       expect_lt(cor.pval, 0.01)
     }
   }

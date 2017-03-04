@@ -41,6 +41,6 @@
 \item{drop}{Logical indication if reduce to minimum dimensions.}
 }
 \description{
-Extract replace big.matrix elements
+Extract \code{big.matrix} elements. \strong{Dimnames are not extracted.}
 }
 \keyword{internal}
