@@ -1,7 +1,7 @@
 ################################################################################
 
 # Global variables
-ALL.TYPES <- c("char", "short", "integer", "float", "double") # for tests
+ALL.TYPES <- c("raw", "char", "short", "integer", "float", "double") # for tests
 globalVariables("ic") # for foreach
 
 ERROR_BIGMATRIX <- "X must be a big.matrix."

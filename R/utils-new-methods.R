@@ -121,11 +121,41 @@ setMethod("as.BM.code", signature(x = "big.matrix", code = "numeric"),
 
 #' @rdname BM.code
 #' @export
+setMethod("as.BM.code", signature(x = "big.matrix", code = "missing"),
+          function(x, code) {
+            code <- rep(NA_real_, 256)
+            check_BM_code(x, code)
+            methods::new("BM.code", address = x@address, code = code)
+          })
+
+#' @rdname BM.code
+#' @export
 setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
                                   code = "numeric"),
           function(x, code) {
             check_BM_code(x, code)
             as.BM.code(attach.big.matrix(x), code)
+          })
+
+#' @rdname BM.code
+#' @export
+setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
+                                  code = "missing"),
+          function(x, code) {
+            code <- rep(NA_real_, 256)
+            check_BM_code(x, code)
+            as.BM.code(attach.big.matrix(x), code)
+          })
+
+#' @keywords internal
+setMethod("as.BM.code", signature(x = "matrix", code = "missing"),
+          function(x, code) {
+            x <- round(x + 100)
+            tmp <- unique(as.vector(x))
+            code <- rep(NA_real_, 256)
+            code[tmp + 1] <- tmp - 100
+            storage.mode(x) <- "raw"
+            as.BM.code(as.big.matrix(x), code)
           })
 
 ################################################################################
@@ -192,54 +222,81 @@ decode <- function(x, code) `if`(is.matrix(x), decodeMat, decodeVec)(x, code)
 #' @export
 setMethod("[", signature(x = "BM.code", i = "missing",
                          j = "missing", drop = "missing"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 #' @rdname extract-methods
 #' @export
 setMethod("[", signature(x = "BM.code", i = "missing",
                          j = "missing", drop = "logical"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 #' @rdname extract-methods
 #' @export
 setMethod("[", signature(x = "BM.code", i = "missing",
                          j = "numeric", drop = "missing"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 #' @rdname extract-methods
 #' @export
 setMethod("[", signature(x = "BM.code", i = "missing",
                          j = "numeric", drop = "logical"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 #' @rdname extract-methods
 #' @export
 setMethod("[", signature(x = "BM.code", i = "numeric",
                          j = "missing", drop = "missing"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 #' @rdname extract-methods
 #' @export
 setMethod("[", signature(x = "BM.code", i = "numeric",
                          j = "missing", drop = "logical"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 #' @rdname extract-methods
 #' @export
 setMethod("[", signature(x = "BM.code", i = "numeric",
                          j = "numeric", drop = "missing"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 #' @rdname extract-methods
 #' @export
 setMethod("[", signature(x = "BM.code", i = "numeric",
                          j = "numeric", drop = "logical"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 #' @rdname extract-methods
 #' @export
 setMethod("[", signature(x = "BM.code", i = "matrix",
                          j = "missing", drop = "missing"),
-          function(x, i, j, drop) decode(methods::callNextMethod(), x@code))
+          function(x, i, j, ..., drop) {
+            mat <- methods::callNextMethod()
+            decode(mat, x@code)
+          })
 
 ################################################################################

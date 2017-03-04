@@ -7,14 +7,20 @@
 \alias{BM.code.descriptor-class}
 \alias{as.BM.code}
 \alias{as.BM.code,big.matrix,numeric-method}
+\alias{as.BM.code,big.matrix,missing-method}
 \alias{as.BM.code,big.matrix.descriptor,numeric-method}
+\alias{as.BM.code,big.matrix.descriptor,missing-method}
 \title{S4 class BM.code}
 \usage{
 as.BM.code(x, code)
 
 \S4method{as.BM.code}{big.matrix,numeric}(x, code)
 
+\S4method{as.BM.code}{big.matrix,missing}(x, code)
+
 \S4method{as.BM.code}{big.matrix.descriptor,numeric}(x, code)
+
+\S4method{as.BM.code}{big.matrix.descriptor,missing}(x, code)
 }
 \arguments{
 \item{x}{Either a \link[=big.matrix-class]{big.matrix} or

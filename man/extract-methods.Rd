@@ -13,23 +13,23 @@
 \alias{[,BM.code,matrix,missing,missing-method}
 \title{Extract}
 \usage{
-\S4method{[}{BM.code,missing,missing,missing}(x, i, j, drop)
+\S4method{[}{BM.code,missing,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{BM.code,missing,missing,logical}(x, i, j, drop)
+\S4method{[}{BM.code,missing,missing,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{BM.code,missing,numeric,missing}(x, i, j, drop)
+\S4method{[}{BM.code,missing,numeric,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{BM.code,missing,numeric,logical}(x, i, j, drop)
+\S4method{[}{BM.code,missing,numeric,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{BM.code,numeric,missing,missing}(x, i, j, drop)
+\S4method{[}{BM.code,numeric,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{BM.code,numeric,missing,logical}(x, i, j, drop)
+\S4method{[}{BM.code,numeric,missing,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{BM.code,numeric,numeric,missing}(x, i, j, drop)
+\S4method{[}{BM.code,numeric,numeric,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{BM.code,numeric,numeric,logical}(x, i, j, drop)
+\S4method{[}{BM.code,numeric,numeric,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{BM.code,matrix,missing,missing}(x, i, j, drop)
+\S4method{[}{BM.code,matrix,missing,missing}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{A \link{BM.code}.}

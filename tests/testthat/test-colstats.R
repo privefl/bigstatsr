@@ -16,7 +16,7 @@ ALL.FUN <- c("sum", "var")
 
 test_that("Equality with matrix operations", {
   for (t in ALL.TYPES) {
-    X <- as.big.matrix(x, type = t)
+    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     for (f in ALL.FUN) {

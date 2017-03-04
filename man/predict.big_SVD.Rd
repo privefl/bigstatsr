@@ -5,7 +5,7 @@
 \title{Scores of PCA}
 \usage{
 \method{predict}{big_SVD}(obj.svd, X. = NULL, ind.row = rows_along(X.),
-  ind.col = cols_along(X.), block.size = 1000)
+  ind.col = cols_along(X.), block.size = 1000, ...)
 }
 \arguments{
 \item{obj.svd}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
@@ -20,6 +20,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+
+\item{...}{Not used.}
 }
 \value{
 A matrix of size \eqn{n \times K} where \code{n} is the number of samples

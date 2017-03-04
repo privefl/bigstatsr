@@ -15,7 +15,7 @@ x <- matrix(rnorm(N*M, sd = 5), N)
 
 test_that("equality with other functions", {
   for (t in ALL.TYPES) {
-    X <- as.big.matrix(x, type = t)
+    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     # get the means of each column
