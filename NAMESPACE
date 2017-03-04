@@ -2,10 +2,10 @@
 
 S3method(predict,big_SVD)
 S3method(predict,big_sp)
+export(AUC)
+export(AUCBoot)
 export(as.BM.code)
 export(attach.BM)
-export(aucSample)
-export(aucSampleConf)
 export(big_CMSA)
 export(big_SVD)
 export(big_apply)

@@ -7,6 +7,18 @@
 
 using namespace Rcpp;
 
+// auc_cpp
+double auc_cpp(const NumericVector& x_pos, const NumericVector& x_neg);
+RcppExport SEXP bigstatsr_auc_cpp(SEXP x_posSEXP, SEXP x_negSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_pos(x_posSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_neg(x_negSEXP);
+    rcpp_result_gen = Rcpp::wrap(auc_cpp(x_pos, x_neg));
+    return rcpp_result_gen;
+END_RCPP
+}
 // COPY_cdfit_gaussian_hsr
 List COPY_cdfit_gaussian_hsr(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool verbose);
 RcppExport SEXP bigstatsr_COPY_cdfit_gaussian_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP verboseSEXP) {

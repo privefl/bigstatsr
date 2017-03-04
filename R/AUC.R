@@ -7,8 +7,8 @@
 #'
 #' @details Other packages provide ways to compute the AUC.
 #' I chose to compute the AUC through its statistical definition as a
-#' probability: \deqn{P(score(x_{case}) > score(x_{control}))}.
-#' Note that I consider equality between scores as a 50%-probability of
+#' probability: \deqn{P(score(x_{case}) > score(x_{control})).}
+#' Note that I consider equality between scores as a 50\%-probability of
 #' one being greater than the other.
 #'
 #' @return The AUC, a probability, and possibly its 2.5\% and 97.5\% quantiles
@@ -18,11 +18,9 @@
 #' @param target Vector of true labels (must have exactly two levels,
 #' no missing values).
 #' @param nboot Number of bootstrap samples to evaluate the 95\% CI.
-#' @param nsim Number of pairs (case/control) that are compared
-#' in order to approximate the probability.
-#' @param seed See \code{\link{set.seed}}. Use it for reproducibility.
+#' @param seed See [set.seed]. Use it for reproducibility.
 #' Default doesn't set any seed.
-#' @param digits See \code{\link{round}}.
+#' @param digits See [round]. Default doesn't use rounding.
 #' @seealso [pROC::auc] \cr [AUC::auc]
 #' @references Tom Fawcett. 2006. An introduction to ROC analysis.
 #' Pattern Recogn. Lett. 27, 8 (June 2006), 861-874.
@@ -30,58 +28,45 @@
 #' @examples
 #' set.seed(1)
 #'
-#' aucSample(c(0, 0), 0:1) # Equality of scores
-#' aucSample(c(0.2, 0.1, 1), c(-1, -1, 1)) # Perfect AUC
+#' AUC(c(0, 0), 0:1) # Equality of scores
+#' AUC(c(0.2, 0.1, 1), c(-1, -1, 1)) # Perfect AUC
 #' x <- rnorm(100)
 #' z <- rnorm(length(x), x, abs(x))
 #' y <- sign(z)
-#' print(aucSample(x, y))
-#' print(aucSampleConf(x, y, nboot = 1e4, nsim = 1e3))
-#' @name auc
+#' print(AUC(x, y))
+#' print(AUCBoot(x, y))
+#' @name AUC
 NULL
 
 ################################################################################
 
-#' @name aucSample
-#' @rdname auc
+AUC2 <- function(pred, y) auc_cpp(pred[y == 1], pred[y == 0])
+
+round2 <- function(x, digits = NULL) `if`(is.null(digits), x, round(x, digits))
+
+################################################################################
+
+#' @rdname AUC
+#' @name AUC
 #' @export
-aucSample <- function(pred, target, nsim = 1e7, seed = NA, digits = 3) {
+AUC <- function(pred, target, digits = NULL) {
   stopifnot(length(pred) == length(target))
 
   y <- transform_levels(target)
 
-  pred.case    <- pred[y == 1]
-  pred.control <- pred[y == 0]
-
-  if (!is.na(seed)) {
-    # http://stackoverflow.com/a/14324316/6103040
-    old <- .Random.seed
-    on.exit( { .Random.seed <<- old } )
-    set.seed(seed)
-  }
-
-  pred.case.sample    <- sample(pred.case,    nsim, replace = TRUE)
-  pred.control.sample <- sample(pred.control, nsim, replace = TRUE)
-
-  sup <- mean(pred.case.sample > pred.control.sample)
-  equ <- mean(pred.case.sample == pred.control.sample) / 2
-
-  round(sup + equ, digits)
+  round2(AUC2(pred, y), digits)
 }
 
 ################################################################################
 
-#' @name aucSampleConf
-#' @rdname auc
+#' @rdname AUC
+#' @name AUCBoot
 #' @export
-aucSampleConf <- function(pred, target, nboot = 1e4, nsim = 1e4,
-                              seed = NA, digits = 4) {
+AUCBoot <- function(pred, target, nboot = 1e4, seed = NA, digits = NULL) {
   stopifnot(length(pred) == length(target))
 
   y <- transform_levels(target)
-
-  pred.case    <- pred[y == 1]
-  pred.control <- pred[y == 0]
+  n <- length(y)
 
   if (!is.na(seed)) {
     # http://stackoverflow.com/a/14324316/6103040
@@ -90,25 +75,19 @@ aucSampleConf <- function(pred, target, nboot = 1e4, nsim = 1e4,
     set.seed(seed)
   }
 
-  sampleRes <- function() {
-    ind.case <- sample(length(pred.case), replace = TRUE)
-    ind.control <- sample(length(pred.control), replace = TRUE)
+  repl <- replicate(nboot, {
+    ind <- sample(n, replace = TRUE)
+    AUC2(pred[ind], y[ind])
+  })
 
-    pred.case.sample    <- sample(pred.case[ind.case],
-                                  nsim, replace = TRUE)
-    pred.control.sample <- sample(pred.control[ind.control],
-                                  nsim, replace = TRUE)
+  if (nbNA <- sum(is.na(repl)))
+    warning(sprintf("%d/%d bootstrap replicates were mono-class.", nbNA, nboot))
 
-    sup <- mean(pred.case.sample > pred.control.sample)
-    equ <- mean(pred.case.sample == pred.control.sample) / 2
+  res <- c("Mean" = mean(repl, na.rm = TRUE),
+           stats::quantile(repl, c(0.025, 0.975), na.rm = TRUE),
+           "Sd" = stats::sd(repl, na.rm = TRUE))
 
-    sup + equ
-  }
-
-  res <- replicate(nboot, sampleRes())
-  q <- stats::quantile(res, c(0.025, 0.975))
-
-  round(c("Mean" = mean(res), q, "Sd" = stats::sd(res)), digits)
+  round2(res, digits)
 }
 
 ################################################################################
