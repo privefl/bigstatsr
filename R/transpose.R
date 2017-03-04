@@ -28,6 +28,8 @@ big_transpose <- function(X., descriptor = TRUE, ...) {
 
   transpose3(res@address, X@address)
 
+  if (inherits(X, "BM.code")) res <- as.BM.code(res, code = X@code)
+
   `if`(descriptor, describe(res), res)
 }
 

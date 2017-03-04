@@ -20,7 +20,7 @@ lcovar <- list(NULL, covar0)
 
 test_that("equality with sparseSVM with all data", {
   for (t in ALL.TYPES) {
-    X <- as.big.matrix(x, type = t)
+    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     for (covar in lcovar) {
@@ -53,7 +53,7 @@ test_that("equality with sparseSVM with only half the data", {
   }
 
   for (t in ALL.TYPES) {
-    X <- as.big.matrix(x, type = t)
+    X <- `if`(t == "raw", as.BM.code(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     for (covar in lcovar) {
