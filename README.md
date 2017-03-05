@@ -6,13 +6,30 @@
 
 bigstatsr is an R package which provides statistical tools for bigmemory matrices.
 
-## This package is still under dev
+## This package is in beta testing
+
+The publication of this package is scheduled for the end of April.
+
+## Installation
+
+For now, you can install this package using
+
+```
+devtools::install_github("privefl/bigstatsr")
+```
 
 ## Input format
 
-This package now uses `big.matrix.descriptor` objects as input rather than simply `big.matrix` objects (hereinafter referred to as 'bigmatrices') for several reasons:
-- it prevents the user from making common mistakes such as loading all the matrix in memory (e.g. by typing `X[,]`). This package aims at handling matrices that are too large to fit in memory. 
+As inputs, this package can use either `big.matrix.descriptor` objects or simply `big.matrix` objects (hereinafter referred to as 'bigmatrices'). Using filebacked bigmatrices seems a convenient solution as it uses only disk storage. Descriptors may be preferred for several reasons:
+- it prevents the user from making common mistakes such as loading all the matrix in memory (e.g. by typing `X[,]` --- we recall that this package aims at handling matrices that are too large to fit in memory). 
 - it prevents the R session from crashing when re-attaching bigmatrices. Indeed, as a `big.matrix` object is an external pointer to a C++ data structure, R can't re-attach it (e.g. when restarting the R session) without any further information. The `big.matrix.descriptor` object provides this information.
-- in any case, in order to use parallel computing with bigmatrices, you need to use `big.matrix.descriptor` objects and re-attach the bigmatrices in all sessions.
+- in order to use parallel computing with bigmatrices, you need to use `big.matrix.descriptor` objects at a given point in time. 
 
-This means that only shared bigmatrices are handled (you can't describe a non-shared bigmatrix). Using filebacked bigmatrices seems a convenient solution as it uses only disk storage. To convert a shared bigmatrix `X` to a `big.matrix.descriptor` object `X.desc`, you only need to do `X.desc <- describe(X)`. 
+Moreover, a new class is introduced: a `BM.code`. It is a bigmatrix of type `raw` (one byte unsigned integer) with an embedded lookup table (the slot `code`). This enables you to efficiently store a very large matrix with up to 256 different values. For example, this is used in [package bigsnpr](https://privefl.github.io/bigsnpr/reference/bigSNP-class.html) to store genotype matrices (which elements are either `0`, `1`, `2` or `NA`).
+
+To facilitate the manipulation of descriptors and `BM.code` objects, some methods have been added/extended:
+- `nrow`, `ncol`, `dim` and `length` of a descriptor object access the underlying dimensions of the described bigmatrix (use `typeof` to get the storage mode). 
+- `describe` and `attach.BM` are used to switch between descriptors and bigmatrices. Note that, in order to standardize algorithms, describing a descriptor or attaching a bigmatrix simply returns the same object.
+- `as.BM.code` to convert a bigmatrix to a `BM.code` (by specifying its lookup table).
+
+__Note that most of the algorithms here don't handle missing values.__
