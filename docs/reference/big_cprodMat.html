@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>bigstatsr: Statistical Tools for Bigmemory Matrices — bigstatsr-package • bigstatsr</title>
+<title>Cross-product with a matrix — big_cprodMat • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -84,33 +84,23 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>bigstatsr: Statistical Tools for Bigmemory Matrices</h1>
+    <h1>Cross-product with a matrix</h1>
     </div>
 
     
-    <p>Easy-to-use, efficient, flexible and scalable
-statistical tools. Use bigmemory matrices.</p>
+    <p>Cross-product between a &quot;big.matrix&quot; and a matrix.</p>
     
 
+    <pre><span class='fu'>big_cprodMat</span>(<span class='no'>X.</span>, <span class='no'>A</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.</span>),
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>ncores2</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>X</dt>
-      <dd>A big.matrix.</dd>
-      <dt>X.desc</dt>
-      <dd>A big.matrix.descriptor.</dd>
       <dt>X.</dt>
       <dd>Either a big.matrix or
 a big.matrix.descriptor.</dd>
-      <dt>y.train</dt>
-      <dd>Vector of responses, corresponding to <code>ind.train</code>.</dd>
-      <dt>y01.train</dt>
-      <dd>Vector of responses, corresponding to <code>ind.train</code>.
-Must be 0s and 1s.</dd>
-      <dt>ind.train</dt>
-      <dd>An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.
-<strong>Don&#39;t use negative indices.</strong></dd>
+      <dt>A</dt>
+      <dd>A matrix with <code>length(ind.row)</code> rows.</dd>
       <dt>ind.row</dt>
       <dd>An optional vector of the row indices that are used.
 If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
@@ -119,61 +109,44 @@ If not specified, all rows are used. <strong>Don&#39;t use negative indices.</st
 If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
       <dt>block.size</dt>
       <dd>Maximum number of columns read at once. Default is <code>1000</code>.</dd>
-      <dt>ncores</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.</dd>
       <dt>ncores2</dt>
       <dd>Number of cores used. Default doesn&#39;t use parallelism.
 For this function, use only half of the cores you have.</dd>
-      <dt>fun.scaling</dt>
-      <dd>A function that returns a named list of
-<code>mean</code> and <code>sd</code> for every column, to scale each of their elements
-such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
-      <dt>covar.train</dt>
-      <dd>Matrix of covariables to be added in each model to correct
-for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>covar.row</dt>
-      <dd>Matrix of covariables to be added in each model to correct
-for confounders (e.g. the scores of PCA), corresponding to <code>ind.row</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>thr.eigval</dt>
-      <dd>Threshold to remove &quot;unsignificant&quot; singular vectors.
-Default is <code>1e-4</code>.</dd>
     </dl>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Useful links:
-<ul>
-<li> <a href = 'https://privefl.github.io/bigstatsr'>https://privefl.github.io/bigstatsr</a>
-  </li>
-<li> Report bugs at <a href = 'https://github.com/privefl/bigstatsr/issues'>https://github.com/privefl/bigstatsr/issues</a>
-</li>
-</ul></p>
+    <p>\(X^T \cdot A\).</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
+<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>ncol</span>(<span class='no'>X.desc</span>)
+<span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='no'>n</span>, <span class='fl'>10</span>); <span class='no'>A</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>A</span>))
+
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X.desc</span>, <span class='no'>A</span>)
+<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[,], <span class='no'>A</span>)
+<span class='fu'>all.equal</span>(<span class='no'>test</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'># subsetting</span>
+<span class='no'>ind.row</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>)
+<span class='no'>ind.col</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>m</span>, <span class='no'>m</span>/<span class='fl'>2</span>)
+
+<span class='co'>## Not run: test2 &amp;lt;- big_cprodMat(X.desc, A, ind.row, ind.col)</span>
+<span class='co'># returns an error. You need to use the subset of A:</span>
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X.desc</span>, <span class='no'>A</span>[<span class='no'>ind.row</span>, ], <span class='no'>ind.row</span>, <span class='no'>ind.col</span>)
+<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind.row</span>, <span class='no'>ind.col</span>], <span class='no'>A</span>[<span class='no'>ind.row</span>, ])
+<span class='fu'>all.equal</span>(<span class='no'>test2</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    
-<strong>Maintainer</strong>: Florian Privé <a href='mailto:florian.prive.21@gmail.com'>florian.prive.21@gmail.com</a>
-
-Other contributors:
-<ul>
-<li> Michael Blum <a href='mailto:michael.blum@univ-grenoble-alpes.fr'>michael.blum@univ-grenoble-alpes.fr</a> [thesis advisor]
-  </li>
-<li> Hugues Aschard <a href='mailto:hugues.aschard@pasteur.fr'>hugues.aschard@pasteur.fr</a> [thesis advisor]
-</li>
-</ul>
-
-
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

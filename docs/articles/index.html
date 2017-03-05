@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Attach a &quot;big.matrix.descriptor&quot; — big_attach • bigstatsr</title>
+<title>Articles • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -34,7 +34,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-vignette-index">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -81,53 +81,20 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
-    <h1>Attach a &quot;big.matrix.descriptor&quot;</h1>
+      <div class="page-header">
+  <h1>Vignette reference <small>version&nbsp;0.1.0.9000</small></h1>
+</div>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="section ">
+      <h3>All vignettes</h3>
+      <p class="section-desc"></p>
+
+      <ul>
+        <li><a href="operations-with-scaling.html">How to handle operations on a scaled &quot;big.matrix&quot;</a></li>
+      </ul>
     </div>
-
-    
-    <p>Attach a &quot;big.matrix.descriptor&quot;</p>
-    
-
-    <pre><span class='fu'>big_attach</span>(<span class='no'>descriptorfile</span>)
-
-<span class='fu'>big_attachExtdata</span>()</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>descriptorfile</dt>
-      <dd>Path to a &quot;.desc&quot; file.</dd>
-    </dl>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A big.matrix.descriptor object.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>tmpfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big.matrix</span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>basename</span>(<span class='no'>tmpfile</span>),
-             <span class='kw'>backingpath</span> <span class='kw'>=</span> <span class='fu'>dirname</span>(<span class='no'>tmpfile</span>),
-             <span class='kw'>descriptorfile</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='fu'>basename</span>(<span class='no'>tmpfile</span>), <span class='st'>".desc"</span>))
-<span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>describe</span>(<span class='no'>test</span>)
-
-<span class='no'>descriptorfile</span> <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='no'>tmpfile</span>, <span class='st'>".desc"</span>)
-<span class='no'>X.desc2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_attach</span>(<span class='no'>descriptorfile</span>)
-
-<span class='fu'>all.equal</span>(<span class='no'>X.desc</span>, <span class='no'>X.desc2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
   </div>
 </div>
 

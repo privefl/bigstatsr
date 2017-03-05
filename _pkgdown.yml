@@ -24,9 +24,9 @@ reference:
     contents:
       - big_SVD
       - big_randomSVD
-      - big_predScoresPCA
+      - predict.big_SVD
   - title: "Statistical models"
-    desc: "Colum-wise and sparse multivariate linear and logistic models."
+    desc: "Column-wise and sparse multivariate linear and logistic models."
     contents:
       - big_univLinReg
       - big_univLogReg
@@ -35,17 +35,27 @@ reference:
       - big_spSVM
       - predict.big_sp
       - big_CMSA
+      - AUC
   - title: "Utilities"
     contents:
       - big_colstats
       - big_scale
       - big_transpose
+      - big_apply
+      - big_parallelize
+  - title: "Utilities - multiply"
+    contents:
       - big_crossprodSelf
       - big_tcrossprodSelf
       - big_prodVec
+      - big_prodMat
       - big_cprodVec
-      - big_apply
-      - auc
+      - big_cprodMat
+  - title: "New class and methods"
+    contents:
+      - BM.code-class
+      - typeof,big.matrix.descriptor-method
+      - nrow,big.matrix.descriptor-method
   - title: "Package"
     contents:
       - bigstatsr-package

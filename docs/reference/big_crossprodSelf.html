@@ -88,40 +88,34 @@
     </div>
 
     
-    <p>Compute \(X.train^T X.train\) for a <code>big.matrix</code> <code>X</code>
+    <p>Compute \(X.row^T X.row\) for a <code>big.matrix</code> <code>X</code>
 after applying a particular scaling to it.</p>
     
 
-    <pre><span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)),
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>use.Eigen</span> <span class='kw'>=</span> !<span class='fu'>detect_MRO</span>())</pre>
+    <pre><span class='fu'>big_crossprodSelf</span>(<span class='no'>X.</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>),
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>X</dt>
-      <dd>A <a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix-class'>big.matrix</a>.
-You shouldn&#39;t have missing values in your data.</dd>
+      <dt>X.</dt>
+      <dd>Either a big.matrix or
+a big.matrix.descriptor.</dd>
       <dt>fun.scaling</dt>
       <dd>A function that returns a named list of
-<strong><code>mean</code></strong> and <strong><code>sd</code></strong> for every column, to scale each of their elements
+<code>mean</code> and <code>sd</code> for every column, to scale each of their elements
 such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
-      <dt>ind.train</dt>
-      <dd>An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.</dd>
+      <dt>ind.row</dt>
+      <dd>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
       <dt>block.size</dt>
-      <dd>Maximum number of columns read at once.
-Default is <code>1000</code>. This parameter controls the trade-off between
-memory usage and speed. Basically, the more you can load at once,
-the quicker will be the execution time, at the expense of memory usage.</dd>
-      <dt>use.Eigen</dt>
-      <dd>Should the <code>Eigen</code> library be used
-for matrix computations? Default tries to detect MRO. See details.</dd>
+      <dd>Maximum number of columns read at once. Default is <code>1000</code>.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of
 <ul>
-<li> \(K = X.train^T X.train\),
+<li> \(K = X.row^T X.row\),
 </li>
 <li> a numeric vector <code>mean</code> of column scaling,
 </li>
@@ -129,47 +123,30 @@ for matrix computations? Default tries to detect MRO. See details.</dd>
 </li>
 </ul></p>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>For matrix computations, using <code>Eigen</code> library is faster.
-However, if you link <code>R</code> with an optimized math library,
-using <code>R</code>&#39;s base operations is even much faster.</p>
-    <p>For example, you can easily link <code>R</code> with the
-<a href = 'Intel®
-Math Kernel Library'>https://software.intel.com/en-us/intel-mkl</a> (Intel® MKL) through
-<a href = 'Microsoft
-R Open'>https://mran.revolutionanalytics.com/open/</a> (MRO). It really improves performance
-of <code>R</code> and <code>RcppArmadillo</code> matrix computations,
-yet not the ones of <code>RcppEigen</code> (at least not directly).</p>
-    <p>So, <ol>
-<li> <code>Eigen</code> should be prefered if you don&#39;t change anything,
-</li>
-<li> base <code>R</code> should be prefered if you use MRO,
-</li>
-<li> <code>Eigen</code> may be prefered if you manage to link <code>RcppEigen</code>
-with the MKL (please <a href = 'contact me'>mailto:florian.prive.21@gmail.com</a>
-if you do!).</li>
-</ol></p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/base/topics/crossprod'>crossprod</a></p>
+    <p>crossprod</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Simulating some data</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>big.matrix</span>(<span class='fl'>41</span>, <span class='fl'>17</span>)
-<span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
+    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
 
 <span class='co'># Comparing with tcrossprod</span>
 <span class='no'>big_noscale</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
-<span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test</span>$<span class='no'>K</span>))</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>K</span>, <span class='fu'>crossprod</span>(<span class='no'>X</span>[,])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># Using only half of the data for "training"</span>
-<span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='fu'>nrow</span>(<span class='no'>X</span>)/<span class='fl'>2</span>))
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>,
-                           <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind</span>)
-<span class='fu'>print</span>(<span class='fu'>dim</span>(<span class='no'>test2</span>$<span class='no'>K</span>))</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>K</span>, <span class='fu'>crossprod</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
+<span class='fu'>dim</span>(<span class='no'>test</span>$<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 4542 4542</div><div class='input'>
+<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[,])
+<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>K</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'># Using only half of the data</span>
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
+<span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>,
+                           <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)
+<span class='fu'>dim</span>(<span class='no'>test2</span>$<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 4542 4542</div><div class='input'>
+<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind</span>, ])
+<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>K</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -177,8 +154,6 @@ if you do!).</li>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

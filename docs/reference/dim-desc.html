@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>bigstatsr: Statistical Tools for Bigmemory Matrices — bigstatsr-package • bigstatsr</title>
+<title>Dimensions — nrow,big.matrix.descriptor-method • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -84,96 +84,45 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>bigstatsr: Statistical Tools for Bigmemory Matrices</h1>
+    <h1>Dimensions</h1>
     </div>
 
     
-    <p>Easy-to-use, efficient, flexible and scalable
-statistical tools. Use bigmemory matrices.</p>
+    <p>Dimensions of the described <code>big.matrix</code> object. This can be used to know
+the dimensions of the underlying <code>big.matrix</code> without having to attach it.</p>
     
 
+    <pre><span class='co'># S4 method for big.matrix.descriptor</span>
+<span class='fu'>nrow</span>(<span class='no'>x</span>)
+
+<span class='co'># S4 method for big.matrix.descriptor</span>
+<span class='fu'>ncol</span>(<span class='no'>x</span>)
+
+<span class='co'># S4 method for big.matrix.descriptor</span>
+<span class='fu'>dim</span>(<span class='no'>x</span>)
+
+<span class='co'># S4 method for big.matrix.descriptor</span>
+<span class='fu'>length</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>X</dt>
-      <dd>A big.matrix.</dd>
-      <dt>X.desc</dt>
+      <dt>x</dt>
       <dd>A big.matrix.descriptor.</dd>
-      <dt>X.</dt>
-      <dd>Either a big.matrix or
-a big.matrix.descriptor.</dd>
-      <dt>y.train</dt>
-      <dd>Vector of responses, corresponding to <code>ind.train</code>.</dd>
-      <dt>y01.train</dt>
-      <dd>Vector of responses, corresponding to <code>ind.train</code>.
-Must be 0s and 1s.</dd>
-      <dt>ind.train</dt>
-      <dd>An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.
-<strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>ind.row</dt>
-      <dd>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>ind.col</dt>
-      <dd>An optional vector of the column indices that are used.
-If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>block.size</dt>
-      <dd>Maximum number of columns read at once. Default is <code>1000</code>.</dd>
-      <dt>ncores</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.</dd>
-      <dt>ncores2</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.
-For this function, use only half of the cores you have.</dd>
-      <dt>fun.scaling</dt>
-      <dd>A function that returns a named list of
-<code>mean</code> and <code>sd</code> for every column, to scale each of their elements
-such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
-      <dt>covar.train</dt>
-      <dd>Matrix of covariables to be added in each model to correct
-for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>covar.row</dt>
-      <dd>Matrix of covariables to be added in each model to correct
-for confounders (e.g. the scores of PCA), corresponding to <code>ind.row</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>thr.eigval</dt>
-      <dd>Threshold to remove &quot;unsignificant&quot; singular vectors.
-Default is <code>1e-4</code>.</dd>
     </dl>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Useful links:
-<ul>
-<li> <a href = 'https://privefl.github.io/bigstatsr'>https://privefl.github.io/bigstatsr</a>
-  </li>
-<li> Report bugs at <a href = 'https://github.com/privefl/bigstatsr/issues'>https://github.com/privefl/bigstatsr/issues</a>
-</li>
-</ul></p>
-    
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='fu'>dim</span>(<span class='no'>X.desc</span>)</div><div class='output co'>#&gt; [1]  517 4542</div><div class='input'><span class='fu'>dim</span>(<span class='fu'>attach.big.matrix</span>(<span class='no'>X.desc</span>))</div><div class='output co'>#&gt; [1]  517 4542</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    
-<strong>Maintainer</strong>: Florian Privé <a href='mailto:florian.prive.21@gmail.com'>florian.prive.21@gmail.com</a>
-
-Other contributors:
-<ul>
-<li> Michael Blum <a href='mailto:michael.blum@univ-grenoble-alpes.fr'>michael.blum@univ-grenoble-alpes.fr</a> [thesis advisor]
-  </li>
-<li> Hugues Aschard <a href='mailto:hugues.aschard@pasteur.fr'>hugues.aschard@pasteur.fr</a> [thesis advisor]
-</li>
-</ul>
-
-
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -93,19 +93,24 @@ of a <code>big.matrix</code>, with some other associated statistics.
 Covariates can be added to correct for confounders.</p>
     
 
-    <pre><span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ncores2</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre><span class='fu'>big_univLinReg</span>(<span class='no'>X.</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>),
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.</span>), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncores2</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>thr.eigval</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>X</dt>
-      <dd>A <a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix-class'>big.matrix</a>.
-You shouldn&#39;t have missing values in your data.</dd>
+      <dt>X.</dt>
+      <dd>Either a big.matrix or
+a big.matrix.descriptor.</dd>
       <dt>y.train</dt>
       <dd>Vector of responses, corresponding to <code>ind.train</code>.</dd>
       <dt>ind.train</dt>
       <dd>An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.</dd>
+for the training part. If not specified, all rows are used.
+<strong>Don&#39;t use negative indices.</strong></dd>
+      <dt>ind.col</dt>
+      <dd>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
       <dt>covar.train</dt>
       <dd>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
@@ -113,6 +118,9 @@ Default is <code>NULL</code> and corresponds to only adding an intercept to each
       <dt>ncores2</dt>
       <dd>Number of cores used. Default doesn&#39;t use parallelism.
 For this function, use only half of the cores you have.</dd>
+      <dt>thr.eigval</dt>
+      <dd>Threshold to remove &quot;unsignificant&quot; singular vectors.
+Default is <code>1e-4</code>.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -135,46 +143,37 @@ For this function, use only half of the cores you have.</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Simulating some data</span>
-<span class='fu'>data</span>(<span class='st'>"trees"</span>)
-<span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>trees</span>)
-<span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='fl'>3</span>), <span class='no'>N</span>)
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>as.matrix</span>(<span class='no'>trees</span>[, -<span class='fl'>1</span>]))
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>trees</span>[, <span class='fl'>1</span>]
+    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>)
+<span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>n</span> * <span class='fl'>3</span>), <span class='no'>n</span>)
+
+<span class='no'>X1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[, <span class='fl'>1</span>] <span class='co'># only first column of the `big.matrix`</span>
 
 <span class='co'># Without covar</span>
-<span class='no'>lmVol0</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Volume</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>))
-<span class='no'>lmHei0</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Height</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>))
-
-<span class='fu'>print</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>))</div><div class='output co'>#&gt;       estim     std.err   t.score      p.value
-#&gt; 1 0.2557471 0.078158298  3.272169 2.757815e-03
-#&gt; 2 0.1846321 0.009015995 20.478288 8.644334e-19</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei0</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol0</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate  Std. Error   t value     Pr(&gt;|t|)
-#&gt; [1,] 0.2557471 0.078158298  3.272169 2.757815e-03
-#&gt; [2,] 0.1846321 0.009015995 20.478288 8.644334e-19</div><div class='input'>
+<span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  4 variables:
+#&gt;  $ estim  : num  0.05998 0.02767 0.13799 0.04534 -0.00702 ...
+#&gt;  $ std.err: num  0.067 0.08 0.0724 0.0816 0.0633 ...
+#&gt;  $ t.score: num  0.895 0.346 1.907 0.556 -0.111 ...
+#&gt;  $ p.value: num  0.371 0.729 0.057 0.579 0.912 ...</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
+#&gt; 0.05997866 0.06704274 0.89463320 0.37140111 </div><div class='input'>
 <span class='co'># With all data</span>
-<span class='co'># lm</span>
-<span class='no'>lmVol</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Volume</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>))
-<span class='no'>lmHei</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Height</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>))
-
-<span class='fu'>print</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt;       estim     std.err   t.score      p.value
-#&gt; 1 0.2566694 0.091259620  2.812518 9.231032e-03
-#&gt; 2 0.1872975 0.009229242 20.293922 1.820155e-17</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate  Std. Error   t value     Pr(&gt;|t|)
-#&gt; [1,] 0.2566694 0.091259620  2.812518 9.231032e-03
-#&gt; [2,] 0.1872975 0.009229242 20.293922 1.820155e-17</div><div class='input'>
+<span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  4 variables:
+#&gt;  $ estim  : num  0.05095 0.01398 0.14294 0.03454 -0.00999 ...
+#&gt;  $ std.err: num  0.0673 0.0804 0.0725 0.0816 0.0632 ...
+#&gt;  $ t.score: num  0.757 0.174 1.972 0.423 -0.158 ...
+#&gt;  $ p.value: num  0.4496 0.8619 0.0491 0.6723 0.8745 ...</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
+#&gt; 0.05095444 0.06734813 0.75658287 0.44964780 </div><div class='input'>
 <span class='co'># With only half of the data</span>
-<span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>N</span>, <span class='no'>N</span> / <span class='fl'>2</span>))
-
-<span class='co'># lm</span>
-<span class='no'>lmVol2</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Volume</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))
-<span class='no'>lmHei2</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>Girth</span> ~ <span class='no'>Height</span> + <span class='no'>covar</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>trees</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))
-
-<span class='fu'>print</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>],
-                     <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
-                     <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt;       estim    std.err   t.score      p.value
-#&gt; 1 0.2673958 0.11202036  2.387028 3.815176e-02
-#&gt; 2 0.2223982 0.01634808 13.603931 8.905780e-08</div><div class='input'><span class='fu'>print</span>(<span class='fu'>rbind</span>(<span class='no'>lmHei2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ], <span class='no'>lmVol2</span>$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]))</div><div class='output co'>#&gt;       Estimate Std. Error   t value     Pr(&gt;|t|)
-#&gt; [1,] 0.2673958 0.11202036  2.387028 3.815176e-02
-#&gt; [2,] 0.2223982 0.01634808 13.603931 8.905780e-08</div></pre>
+<span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
+<span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>],
+                   <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
+                   <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  4 variables:
+#&gt;  $ estim  : num  0.1534 -0.1626 0.0871 0.0847 0.0131 ...
+#&gt;  $ std.err: num  0.096 0.1123 0.1103 0.1146 0.0918 ...
+#&gt;  $ t.score: num  1.599 -1.448 0.79 0.739 0.143 ...
+#&gt;  $ p.value: num  0.111 0.149 0.43 0.461 0.887 ...</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
+#&gt; 0.15344913 0.09596012 1.59909284 0.11104802 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

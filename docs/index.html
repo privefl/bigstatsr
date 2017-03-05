@@ -80,7 +80,7 @@
 <ul>
 <li>it prevents the user from making common mistakes such as loading all the matrix in memory (e.g. by typing <code>X[,]</code>). This package aims at handling matrices that are too large to fit in memory.</li>
 <li>it prevents the R session from crashing when re-attaching bigmatrices. Indeed, as a <code>big.matrix</code> object is an external pointer to a C++ data structure, R can’t re-attach it (e.g. when restarting the R session) without any further information. The <code>big.matrix.descriptor</code> object provides this information.</li>
-<li>In any case, in order to use parallel computing with bigmatrices, you need to use <code>big.matrix.descriptor</code> objects and re-attach the bigmatrices in all sessions.</li>
+<li>in any case, in order to use parallel computing with bigmatrices, you need to use <code>big.matrix.descriptor</code> objects and re-attach the bigmatrices in all sessions.</li>
 </ul>
 <p>This means that only shared bigmatrices are handled (you can’t describe a non-shared bigmatrix). Using filebacked bigmatrices seems a convenient solution as it uses only disk storage. To convert a shared bigmatrix <code>X</code> to a <code>big.matrix.descriptor</code> object <code>X.desc</code>, you only need to do <code>X.desc &lt;- describe(X)</code>.</p>
 </div>

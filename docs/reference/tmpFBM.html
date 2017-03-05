@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>bigstatsr: Statistical Tools for Bigmemory Matrices — bigstatsr-package • bigstatsr</title>
+<title>Descriptor of temporary filebacked &quot;big.matrix&quot; — tmpFBM • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -84,96 +84,60 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>bigstatsr: Statistical Tools for Bigmemory Matrices</h1>
+    <h1>Descriptor of temporary filebacked &quot;big.matrix&quot;</h1>
     </div>
 
     
-    <p>Easy-to-use, efficient, flexible and scalable
-statistical tools. Use bigmemory matrices.</p>
+    <p>Descriptor of temporary filebacked &quot;big.matrix&quot;</p>
     
 
+    <pre><span class='fu'>tmpFBM</span>(<span class='no'>n</span>, <span class='no'>m</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"double"</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>X</dt>
-      <dd>A big.matrix.</dd>
-      <dt>X.desc</dt>
-      <dd>A big.matrix.descriptor.</dd>
-      <dt>X.</dt>
-      <dd>Either a big.matrix or
-a big.matrix.descriptor.</dd>
-      <dt>y.train</dt>
-      <dd>Vector of responses, corresponding to <code>ind.train</code>.</dd>
-      <dt>y01.train</dt>
-      <dd>Vector of responses, corresponding to <code>ind.train</code>.
-Must be 0s and 1s.</dd>
-      <dt>ind.train</dt>
-      <dd>An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.
-<strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>ind.row</dt>
-      <dd>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>ind.col</dt>
-      <dd>An optional vector of the column indices that are used.
-If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>block.size</dt>
-      <dd>Maximum number of columns read at once. Default is <code>1000</code>.</dd>
-      <dt>ncores</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.</dd>
-      <dt>ncores2</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.
-For this function, use only half of the cores you have.</dd>
-      <dt>fun.scaling</dt>
-      <dd>A function that returns a named list of
-<code>mean</code> and <code>sd</code> for every column, to scale each of their elements
-such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
-      <dt>covar.train</dt>
-      <dd>Matrix of covariables to be added in each model to correct
-for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>covar.row</dt>
-      <dd>Matrix of covariables to be added in each model to correct
-for confounders (e.g. the scores of PCA), corresponding to <code>ind.row</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>thr.eigval</dt>
-      <dd>Threshold to remove &quot;unsignificant&quot; singular vectors.
-Default is <code>1e-4</code>.</dd>
+      <dt>n</dt>
+      <dd>Number of rows.</dd>
+      <dt>m</dt>
+      <dd>Number of columns.</dd>
+      <dt>type</dt>
+      <dd>The type of the atomic element. Default is <code>double</code>.</dd>
+      <dt>init</dt>
+      <dd>A scalar value for initializing the matrix. Default is <code>NULL</code>,
+which avoids unnecessary time spent doing the initializing.</dd>
     </dl>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Useful links:
-<ul>
-<li> <a href = 'https://privefl.github.io/bigstatsr'>https://privefl.github.io/bigstatsr</a>
-  </li>
-<li> Report bugs at <a href = 'https://github.com/privefl/bigstatsr/issues'>https://github.com/privefl/bigstatsr/issues</a>
-</li>
-</ul></p>
+    <p>A descriptor of a <code>big.matrix</code>, filebacked in directory &quot;/tmp/&quot;.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>tmpFBM</span>(<span class='fl'>10</span>, <span class='fl'>10</span>)
+<span class='fu'>str</span>(<span class='no'>X.desc</span>)</div><div class='output co'>#&gt; Formal class &#39;big.matrix.descriptor&#39; [package &quot;bigmemory&quot;] with 1 slot
+#&gt;   ..@ description:List of 13
+#&gt;   .. ..$ sharedType: chr &quot;FileBacked&quot;
+#&gt;   .. ..$ filename  : chr &quot;file11d2538d1a30&quot;
+#&gt;   .. ..$ dirname   : chr &quot;/tmp/Rtmp8k5BoU/&quot;
+#&gt;   .. ..$ totalRows : int 10
+#&gt;   .. ..$ totalCols : int 10
+#&gt;   .. ..$ rowOffset : num [1:2] 0 10
+#&gt;   .. ..$ colOffset : num [1:2] 0 10
+#&gt;   .. ..$ nrow      : num 10
+#&gt;   .. ..$ ncol      : num 10
+#&gt;   .. ..$ rowNames  : NULL
+#&gt;   .. ..$ colNames  : NULL
+#&gt;   .. ..$ type      : chr &quot;double&quot;
+#&gt;   .. ..$ separated : logi FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    
-<strong>Maintainer</strong>: Florian Privé <a href='mailto:florian.prive.21@gmail.com'>florian.prive.21@gmail.com</a>
-
-Other contributors:
-<ul>
-<li> Michael Blum <a href='mailto:michael.blum@univ-grenoble-alpes.fr'>michael.blum@univ-grenoble-alpes.fr</a> [thesis advisor]
-  </li>
-<li> Hugues Aschard <a href='mailto:hugues.aschard@pasteur.fr'>hugues.aschard@pasteur.fr</a> [thesis advisor]
-</li>
-</ul>
-
-
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

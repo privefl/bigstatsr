@@ -91,7 +91,7 @@
     <p>A Split-Apply-Combine strategy to parallelize the evaluation of a function.</p>
     
 
-    <pre><span class='fu'>big_parallelize</span>(<span class='no'>X.</span>, <span class='no'>p.FUN</span>, <span class='no'>p.combine</span>, <span class='no'>ncores</span>, <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'>cols_along</span>(<span class='no'>X.</span>), <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>big_parallelize</span>(<span class='no'>X.</span>, <span class='no'>p.FUN</span>, <span class='no'>p.combine</span>, <span class='no'>ncores</span>, <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -126,6 +126,10 @@ used to process numeric data. By default, the results are returned in a list.</d
     <p>This function splits indices in parts, then apply a given function to each
 part and finally combine the results.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><a href='big_apply.html'>big_apply</a></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
@@ -141,7 +145,7 @@ part and finally combine the results.</p>
 <span class='co'># 3. the results (data.frames) are combined via `rbind`.</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X.desc</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub</span>,
                         <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                        <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'>cols_along</span>(<span class='no'>X.desc</span>))
+                        <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.desc</span>))
 <span class='fu'>all.equal</span>(<span class='no'>test</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'>### Computation on a part of the matrix</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
@@ -156,11 +160,12 @@ part and finally combine the results.</p>
 }
 <span class='co'># This doesn't work because, by default, the computation is spread</span>
 <span class='co'># along all columns. We must explictly specify the `ind` parameter.</span>
-<span class='kw'>testthat</span><span class='kw'>::</span><span class='fu'>expect_error</span>(
-  <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X.desc</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub2</span>,
-                           <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                           <span class='kw'>rows</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='no'>cols</span>)
-)
+<span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># test2 &lt;- big_parallelize(X.desc, p.FUN = big_colstats_sub2,</span>
+<span class='co'>#                                   p.combine = 'rbind', ncores = 2,</span>
+<span class='co'>#                                   rows = rows, cols = cols)</span>
+<span class='co'>## ---------------------------------------------</span>
+
 <span class='co'># This now works, using `ind = seq_along(cols)`.</span>
 <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X.desc</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub2</span>,
                          <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,
@@ -176,6 +181,8 @@ part and finally combine the results.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

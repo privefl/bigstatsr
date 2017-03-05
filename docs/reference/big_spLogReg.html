@@ -91,20 +91,21 @@
     <p>Sparse logistic regression</p>
     
 
-    <pre><span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y01.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'>seq</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre><span class='fu'>big_spLogReg</span>(<span class='no'>X.</span>, <span class='no'>y01.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>X</dt>
-      <dd>A <a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix-class'>big.matrix</a>.
-You shouldn&#39;t have missing values in your data.</dd>
+      <dt>X.</dt>
+      <dd>Either a big.matrix or
+a big.matrix.descriptor.</dd>
       <dt>y01.train</dt>
       <dd>Vector of responses, corresponding to <code>ind.train</code>.
 Must be 0s and 1s.</dd>
       <dt>ind.train</dt>
       <dd>An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.</dd>
+for the training part. If not specified, all rows are used.
+<strong>Don&#39;t use negative indices.</strong></dd>
       <dt>covar.train</dt>
       <dd>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
@@ -157,9 +158,9 @@ iteration and the end. Default is <code>FALSE</code>.</dd>
 
     <p><strong>This is a modified version of one function of
 <a href = 'package biglasso'>https://github.com/YaohuiZeng/biglasso</a></strong>.
-It adds the possibility to train to models with covariables and use many
+It adds the possibility to train models with covariables and use many
 types of <code>big.matrix</code> (not only <code>double</code> ones).
-Yet, it only corresponds to <code>screen = &quot;SSR&quot;</code>.</p>
+Yet, it only corresponds to <code>screen = &quot;SSR&quot;</code> (Sequential Strong Rules).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -182,19 +183,52 @@ arXiv preprint arXiv:1701.05936. <a href = 'https://arxiv.org/abs/1701.05936'>ht
     <pre class="examples"><div class='input'><span class='co'># simulating some data</span>
 <span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fl'>73</span>
 <span class='no'>M</span> <span class='kw'>&lt;-</span> <span class='fl'>430</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span>*<span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='no'>N</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"integer"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in big.matrix(nrow = nrow(x), ncol = ncol(x), type = type, init = NULL,     dimnames = dimnames(x), separated = separated, backingfile = backingfile,     backingpath = backingpath, descriptorfile = descriptorfile,     binarydescriptor = binarydescriptor, shared = shared): Error: memory could not be allocated for instance of type big.matrix</span></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>N</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span>*<span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='no'>N</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"integer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Assignment will down cast from double to integer</span>
+#&gt; <span class='warning'>Hint: To remove this warning type:  options(bigmemory.typecast.warning=FALSE)</span></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>N</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='fl'>3</span>), <span class='no'>N</span>)
 
 <span class='co'># error, only handle `double` `big.matrix` objects</span>
-<span class='fu'>tryCatch</span>({
-  <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>biglasso</span><span class='kw'>::</span><span class='fu'>biglasso</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
-  <span class='fu'>print</span>(<span class='fu'>summary</span>(<span class='no'>test</span>$<span class='no'>scale</span>))
-}, <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'>message</span>(<span class='st'>"One error has been catched."</span>))</div><div class='output co'>#&gt; <span class='message'>One error has been catched.</span></div><div class='input'><span class='co'># OK here</span>
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>)</div><div class='output co'>#&gt; <span class='error'>Error in nrow(X): objet &#39;X&#39; introuvable</span></div><div class='input'><span class='fu'>str</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in str(test2): objet &#39;test2&#39; introuvable</span></div><div class='input'>
+<span class='co'>## Not run: ------------------------------------</span>
+<span class='co'>#   test &lt;- biglasso::biglasso(X, y, family = "binomial")</span>
+<span class='co'>#   print(summary(test$scale))</span>
+<span class='co'>## ---------------------------------------------</span>
+
+<span class='co'># OK here</span>
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>)
+<span class='fu'>str</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; List of 16
+#&gt;  $ intercept     : Named num [1:100] -0.0822 -0.0819 -0.0816 -0.0814 -0.0833 ...
+#&gt;   ..- attr(*, &quot;names&quot;)= chr [1:100] &quot;0.168&quot; &quot;0.1603&quot; &quot;0.153&quot; &quot;0.1461&quot; ...
+#&gt;  $ beta          :Formal class &#39;dgCMatrix&#39; [package &quot;Matrix&quot;] with 6 slots
+#&gt;   .. ..@ i       : int [1:4360] 314 314 314 173 241 314 397 27 97 136 ...
+#&gt;   .. ..@ p       : int [1:101] 0 0 1 2 3 7 15 24 35 47 ...
+#&gt;   .. ..@ Dim     : int [1:2] 430 100
+#&gt;   .. ..@ Dimnames:List of 2
+#&gt;   .. .. ..$ : NULL
+#&gt;   .. .. ..$ : chr [1:100] &quot;0.168&quot; &quot;0.1603&quot; &quot;0.153&quot; &quot;0.1461&quot; ...
+#&gt;   .. ..@ x       : num [1:4360] -6.37e-03 -1.24e-02 -1.83e-02 -3.12e-03 3.76e-05 ...
+#&gt;   .. ..@ factors : list()
+#&gt;  $ iter          : int [1:100] 0 3 2 2 4 6 8 7 6 7 ...
+#&gt;  $ lambda        : num [1:100] 0.168 0.16 0.153 0.146 0.139 ...
+#&gt;  $ penalty       : chr &quot;lasso&quot;
+#&gt;  $ family        : chr &quot;binomial&quot;
+#&gt;  $ alpha         : num 1
+#&gt;  $ loss          : num [1:100] 50.5 50.2 49.8 49.5 49.1 ...
+#&gt;  $ penalty.factor: num [1:430] 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ n             : int 73
+#&gt;  $ p             : num 430
+#&gt;  $ center        : num [1:430] 1.247 0.397 0.219 0.151 -0.233 ...
+#&gt;  $ scale         : num [1:430] 4.84 4.43 4.17 4.76 4.67 ...
+#&gt;  $ y             : num [1:73] 1 1 0 1 0 0 1 1 1 0 ...
+#&gt;  $ col.idx       : num [1:430] 1 2 3 4 5 6 7 8 9 10 ...
+#&gt;  $ rejections    : int [1:100] 430 429 428 423 420 417 413 412 409 407 ...
+#&gt;  - attr(*, &quot;class&quot;)= chr &quot;big_sp&quot;</div><div class='input'>
 <span class='co'># how to use covariables?</span>
-<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>cbind</span>(<span class='no'>X</span>[,], <span class='no'>covar</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"double"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in cbind(X[, ], covar): objet &#39;X&#39; introuvable</span></div><div class='input'><span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>biglasso</span><span class='kw'>::</span><span class='fu'>biglasso</span>(<span class='no'>X2</span>, <span class='no'>y</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>, <span class='kw'>lambda.min</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
-                           <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"enet"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in nrow(X): objet &#39;X2&#39; introuvable</span></div><div class='input'><span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in nrow(X): objet &#39;X&#39; introuvable</span></div><div class='input'><span class='co'># verification</span>
-<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>lambda</span>, <span class='no'>test</span>$<span class='no'>lambda</span>))</div><div class='output co'>#&gt; <span class='error'>Error in all.equal(test2$lambda, test$lambda): objet &#39;test2&#39; introuvable</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>beta</span>@<span class='kw'>x</span>, <span class='no'>test</span>$<span class='no'>beta</span>[-<span class='fl'>1</span>, ]@<span class='kw'>x</span>))</div><div class='output co'>#&gt; <span class='error'>Error in all.equal(test2$beta@x, test$beta[-1, ]@x): objet &#39;test2&#39; introuvable</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>intercept</span>, <span class='no'>test</span>$<span class='no'>beta</span>[<span class='fl'>1</span>, ]))</div><div class='output co'>#&gt; <span class='error'>Error in all.equal(test2$intercept, test$beta[1, ]): objet &#39;test2&#39; introuvable</span></div></pre>
+<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>cbind</span>(<span class='no'>X</span>[,], <span class='no'>covar</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"double"</span>)
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>biglasso</span><span class='kw'>::</span><span class='fu'>biglasso</span>(<span class='no'>X2</span>, <span class='no'>y</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>, <span class='kw'>lambda.min</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
+                           <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"enet"</span>)
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+<span class='co'># verification</span>
+<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>lambda</span>, <span class='no'>test</span>$<span class='no'>lambda</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>beta</span>@<span class='kw'>x</span>, <span class='no'>test</span>$<span class='no'>beta</span>[-<span class='fl'>1</span>, ]@<span class='kw'>x</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>intercept</span>, <span class='no'>test</span>$<span class='no'>beta</span>[<span class='fl'>1</span>, ]))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -106,7 +106,15 @@ use scale without using center.</strong></dd>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A new <strong>function</strong> that returns a data.frame of two vectors
-&quot;mean&quot; and &quot;sd&quot; which are of the length of <strong><code>ind.col</code></strong>.</p>
+&quot;mean&quot; and &quot;sd&quot; which are of the length of <code>ind.col</code>.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>One could think about less common scalings, such as for example the
+&quot;y-aware&quot; scaling which uses the inverse of betas of column-wise linear
+regression as scaling. See <a href = 'this post'>https://goo.gl/8G8WMa</a> for details.
+It would be easy to implement it using <code>big_colstats</code> to get column means
+and <code>big_univLinReg</code> to get betas (and then inverse them).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -114,86 +122,24 @@ use scale without using center.</strong></dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Simulating some data</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>big.matrix</span>(<span class='fl'>41</span>, <span class='fl'>17</span>)
-<span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
+    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
 
 <span class='co'># No scaling</span>
 <span class='no'>big_noscale</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>print</span>(<span class='fu'>class</span>(<span class='no'>big_noscale</span>)) <span class='co'># big_scale returns a new function</span></div><div class='output co'>#&gt; [1] &quot;function&quot;</div><div class='input'><span class='fu'>print</span>(<span class='fu'>big_noscale</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt;    mean sd
-#&gt; 1     0  1
-#&gt; 2     0  1
-#&gt; 3     0  1
-#&gt; 4     0  1
-#&gt; 5     0  1
-#&gt; 6     0  1
-#&gt; 7     0  1
-#&gt; 8     0  1
-#&gt; 9     0  1
-#&gt; 10    0  1
-#&gt; 11    0  1
-#&gt; 12    0  1
-#&gt; 13    0  1
-#&gt; 14    0  1
-#&gt; 15    0  1
-#&gt; 16    0  1
-#&gt; 17    0  1</div><div class='input'><span class='no'>big_noscale2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>print</span>(<span class='fu'>big_noscale2</span>(<span class='no'>X</span>)) <span class='co'># you can't scale without centering</span></div><div class='output co'>#&gt;    mean sd
-#&gt; 1     0  1
-#&gt; 2     0  1
-#&gt; 3     0  1
-#&gt; 4     0  1
-#&gt; 5     0  1
-#&gt; 6     0  1
-#&gt; 7     0  1
-#&gt; 8     0  1
-#&gt; 9     0  1
-#&gt; 10    0  1
-#&gt; 11    0  1
-#&gt; 12    0  1
-#&gt; 13    0  1
-#&gt; 14    0  1
-#&gt; 15    0  1
-#&gt; 16    0  1
-#&gt; 17    0  1</div><div class='input'>
+<span class='fu'>class</span>(<span class='no'>big_noscale</span>) <span class='co'># big_scale returns a new function</span></div><div class='output co'>#&gt; [1] &quot;function&quot;</div><div class='input'><span class='fu'>str</span>(<span class='fu'>big_noscale</span>(<span class='no'>X.desc</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  2 variables:
+#&gt;  $ mean: num  0 0 0 0 0 0 0 0 0 0 ...
+#&gt;  $ sd  : num  1 1 1 1 1 1 1 1 1 1 ...</div><div class='input'><span class='no'>big_noscale2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>str</span>(<span class='fu'>big_noscale2</span>(<span class='no'>X.desc</span>)) <span class='co'># you can't scale without centering</span></div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  2 variables:
+#&gt;  $ mean: num  0 0 0 0 0 0 0 0 0 0 ...
+#&gt;  $ sd  : num  1 1 1 1 1 1 1 1 1 1 ...</div><div class='input'>
 <span class='co'># Centering</span>
 <span class='no'>big_center</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>(<span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>print</span>(<span class='fu'>big_center</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt;           mean sd
-#&gt; 1  -0.12130646  1
-#&gt; 2   0.08057509  1
-#&gt; 3   0.25031895  1
-#&gt; 4   0.04962097  1
-#&gt; 5   0.16588011  1
-#&gt; 6  -0.20311624  1
-#&gt; 7   0.02308477  1
-#&gt; 8   0.10483258  1
-#&gt; 9   0.25243363  1
-#&gt; 10  0.10407156  1
-#&gt; 11 -0.21080064  1
-#&gt; 12 -0.09179595  1
-#&gt; 13 -0.18962043  1
-#&gt; 14 -0.26771153  1
-#&gt; 15 -0.13541854  1
-#&gt; 16 -0.18438363  1
-#&gt; 17  0.02475500  1</div><div class='input'><span class='co'># + scaling</span>
-<span class='fu'>print</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_scale</span>()(<span class='no'>X</span>, <span class='fl'>1</span>:<span class='fl'>5</span>)) <span class='co'># note that big_scale() is a function</span></div><div class='output co'>#&gt;           mean        sd
-#&gt; 1   0.32927363 2.0035572
-#&gt; 2  -0.63308130 1.3739832
-#&gt; 3   0.08361248 0.6761276
-#&gt; 4   0.21610553 0.3952135
-#&gt; 5  -0.22020223 1.3338235
-#&gt; 6  -0.28450872 1.3411167
-#&gt; 7   0.90369802 0.3408159
-#&gt; 8  -0.52676148 1.0641608
-#&gt; 9   0.02645121 0.6350661
-#&gt; 10  0.17337887 0.8341157
-#&gt; 11  0.35134239 1.0361073
-#&gt; 12  0.03866863 0.9887118
-#&gt; 13 -0.77169534 1.2388367
-#&gt; 14  0.06730660 1.3400361
-#&gt; 15 -0.11958758 0.3628541
-#&gt; 16  0.14491197 0.9894558
-#&gt; 17  0.21363698 1.2398542</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>mean</span>, <span class='fu'>colMeans</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ])))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>sd</span>, <span class='fu'>apply</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ], <span class='fl'>2</span>, <span class='no'>sd</span>)))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>str</span>(<span class='fu'>big_center</span>(<span class='no'>X.desc</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  2 variables:
+#&gt;  $ mean: num  1.32 1.59 1.53 1.63 1.09 ...
+#&gt;  $ sd  : num  1 1 1 1 1 1 1 1 1 1 ...</div><div class='input'><span class='co'># + scaling</span>
+<span class='fu'>str</span>(<span class='fu'>big_scale</span>()(<span class='no'>X.desc</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  2 variables:
+#&gt;  $ mean: num  1.32 1.59 1.53 1.63 1.09 ...
+#&gt;  $ sd  : num  0.679 0.569 0.627 0.558 0.719 ...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -201,6 +147,8 @@ use scale without using center.</strong></dd>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

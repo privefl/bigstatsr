@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SVD — big_SVD • bigstatsr</title>
+<title>Scores of PCA — predict.big_SVD • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -84,77 +84,46 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>SVD</h1>
+    <h1>Scores of PCA</h1>
     </div>
 
     
-    <p>An algorithm for SVD (or PCA) of a <code>big.matrix</code> through the eigen
-decomposition of the covariance between variables (primal)
-or observations (dual).</p>
+    <p>Get the scores of PCA associated with an svd decomposition (class <code>big_SVD</code>).</p>
     
 
-    <pre><span class='fu'>big_SVD</span>(<span class='no'>X.</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>thr.eigval</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>)</pre>
+    <pre><span class='co'># S3 method for big_SVD</span>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>X.</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>),
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.</span>), <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
+      <dt>object</dt>
+      <dd>A list returned by <code>big_SVD</code> or <code>big_randomSVD</code>.</dd>
       <dt>X.</dt>
       <dd>Either a big.matrix or
 a big.matrix.descriptor.</dd>
-      <dt>fun.scaling</dt>
-      <dd>A function that returns a named list of
-<code>mean</code> and <code>sd</code> for every column, to scale each of their elements
-such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
       <dt>ind.row</dt>
       <dd>An optional vector of the row indices that are used.
 If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
+      <dt>ind.col</dt>
+      <dd>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
       <dt>block.size</dt>
       <dd>Maximum number of columns read at once. Default is <code>1000</code>.</dd>
-      <dt>k</dt>
-      <dd>Number of singular vectors/values to compute. Default is all.</dd>
-      <dt>thr.eigval</dt>
-      <dd>Threshold to remove &quot;unsignificant&quot; singular vectors.
-Default is <code>1e-4</code>.</dd>
+      <dt>...</dt>
+      <dd>Not used.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named list (an S3 class &quot;big_SVD&quot;) of
-<ul>
-<li> <code>d</code>, the singular values,
-</li>
-<li> <code>u</code>, the left singular vectors,
-</li>
-<li> <code>v</code>, the right singular vectors,
-</li>
-<li> <code>means</code>, the centering vector,
-</li>
-<li> <code>sds</code>, the scaling vector.
-</li>
-</ul></p>
-    <p>Note that to obtain the Principal Components, you must use
-<a href='predict.big_SVD.html'>predict</a> on the result. See examples.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>To get \(X = U \cdot D \cdot V^T\),
-<ul>
-<li> if the number of observation is small, this function computes
-\(K_(2) = X \cdot X^T = U \cdot D^2 \cdot U^T\) and then
-\(V = X^T \cdot U \cdot D^{-1}\),
-</li>
-<li> if the number of variable is small, this function computes
-\(K_(1) = X^T \cdot X = V \cdot D^2 \cdot V^T\) and then
-\(U = X \cdot V \cdot D^{-1}\),
-</li>
-<li> if both dimensions are large and you only want a partial SVD,
-please use <a href='big_randomSVD.html'>big_randomSVD</a> instead.
-</li>
-</ul></p>
+    <p>A matrix of size \(n \times K\) where <code>n</code> is the number of samples
+corresponding to indices in <code>ind.row</code> and K the number of PCs
+computed in <code>object</code>. If <code>X</code> is not specified, this just returns
+the scores of the training set of <code>object</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/stats/topics/prcomp'>prcomp</a></p>
+    <p><a href='http://www.rdocumentation.org/packages/stats/topics/prcomp'>predict</a> <a href='big_SVD.html'>big_SVD</a> <a href='big_randomSVD.html'>big_randomSVD</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -164,13 +133,13 @@ please use <a href='big_randomSVD.html'>big_randomSVD</a> instead.
 <span class='co'># Using only half of the data</span>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
 
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_SVD</span>(<span class='kw'>X.</span> <span class='kw'>=</span> <span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'><span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 5
-#&gt;  $ d    : num [1:257] 173.6 118.8 90.4 87.1 86.6 ...
-#&gt;  $ u    : num [1:258, 1:257] -0.114 -0.1176 -0.0941 -0.1068 -0.0995 ...
-#&gt;  $ v    : num [1:4542, 1:257] 0.00839 -0.0078 0.03231 -0.01528 0.00722 ...
-#&gt;  $ means: num [1:4542] 1.28 1.59 1.53 1.62 1.07 ...
-#&gt;  $ sds  : num [1:4542] 0.71 0.545 0.625 0.594 0.716 ...
-#&gt;  - attr(*, &quot;class&quot;)= chr &quot;big_SVD&quot;</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><img src='big_SVD-6.png' alt='' width='540' height='400' /><div class='input'>
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='kw'>X.</span> <span class='kw'>=</span> <span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'><span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 5
+#&gt;  $ d    : num [1:257] 172 117.7 91.3 87.8 87.4 ...
+#&gt;  $ u    : num [1:258, 1:257] -0.095 -0.1202 -0.1086 -0.102 -0.0987 ...
+#&gt;  $ v    : num [1:4542, 1:257] -0.003082 0.000146 0.033169 -0.014751 0.011325 ...
+#&gt;  $ means: num [1:4542] 1.31 1.58 1.57 1.6 1.09 ...
+#&gt;  $ sds  : num [1:4542] 0.674 0.568 0.602 0.585 0.741 ...
+#&gt;  - attr(*, &quot;class&quot;)= chr &quot;big_SVD&quot;</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><img src='predict.big_SVD-6.png' alt='' width='540' height='400' /><div class='input'>
 <span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'>prcomp</span>(<span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind</span>, ], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># same scaling</span>
@@ -180,8 +149,8 @@ please use <a href='big_randomSVD.html'>big_randomSVD</a> instead.
 <span class='co'># due to centering of columns</span>
 <span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='no'>test</span>$<span class='no'>u</span> <span class='kw'>%*%</span> <span class='fu'>diag</span>(<span class='no'>test</span>$<span class='no'>d</span>)
 <span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] &quot;big_SVD&quot;</div><div class='input'><span class='no'>scores2</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>) <span class='co'># use this function to predict scores</span>
-<span class='fu'>all.equal</span>(<span class='no'>scores</span>, <span class='no'>scores2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>dim</span>(<span class='no'>scores</span>)</div><div class='output co'>#&gt; [1] 258 257</div><div class='input'><span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 258 258</div><div class='input'><span class='fu'>tail</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>)</div><div class='output co'>#&gt; [1] 3.045456e+00 3.026672e+00 3.015760e+00 2.976372e+00 2.946411e+00
-#&gt; [6] 7.547527e-15</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-22.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-24.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>all.equal</span>(<span class='no'>scores</span>, <span class='no'>scores2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>dim</span>(<span class='no'>scores</span>)</div><div class='output co'>#&gt; [1] 258 257</div><div class='input'><span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 258 258</div><div class='input'><span class='fu'>tail</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>)</div><div class='output co'>#&gt; [1] 3.010563e+00 2.994424e+00 2.985801e+00 2.900507e+00 2.890463e+00
+#&gt; [6] 7.303307e-15</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='predict.big_SVD-22.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='predict.big_SVD-24.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># projecting on new data</span>
 <span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>sweep</span>(<span class='fu'>sweep</span>(<span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[-<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>means</span>, <span class='st'>'-'</span>),
             <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>sds</span>, <span class='st'>'/'</span>)
@@ -189,7 +158,7 @@ please use <a href='big_randomSVD.html'>big_randomSVD</a> instead.
 <span class='no'>ind2</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.desc</span>), <span class='no'>ind</span>)
 <span class='no'>scores.test2</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X.desc</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind2</span>) <span class='co'># use this</span>
 <span class='fu'>all.equal</span>(<span class='no'>scores.test</span>, <span class='no'>scores.test2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>scores.test3</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>pca</span>, <span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[-<span class='no'>ind</span>, ])
-<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores.test2</span>)])</div><img src='big_SVD-28.png' alt='' width='540' height='400' /></pre>
+<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores.test2</span>)])</div><img src='predict.big_SVD-28.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -197,8 +166,6 @@ please use <a href='big_randomSVD.html'>big_randomSVD</a> instead.
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
