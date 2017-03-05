@@ -1,10 +1,9 @@
 templates:
   params:
-    bootswatch: cosmo
+    bootswatch: readable
 
 navbar:
   title: "bigstatsr"
-  type: inverse
   left:
     - text: "Home"
       href: index.html
