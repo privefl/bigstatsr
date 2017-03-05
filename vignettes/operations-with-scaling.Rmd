@@ -90,7 +90,8 @@ XM_s <- big_prodMat(X.desc, M_s)
 final <- sweep(XM_s, 2, crossprod(stats_scale$mean, M_s), '-')
 
 # verification
-all.equal(final, scale(attach.BM(X.desc)[,]) %*% M)
+true <- scale(attach.BM(X.desc)[,]) %*% M
+all.equal(final, true)
 
 ### Knowing that mu is the column means of X
 final2 <- sweep(XM_s, 2, colMeans(XM_s), '-')
