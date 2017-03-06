@@ -46,6 +46,10 @@ diffPCs <- function(test, rot) {
 
 printf <- function(...) cat(sprintf(...))
 
+message2 <- function(...) message(sprintf(...))
+
+stop2 <- function(...) stop(sprintf(...), call. = FALSE)
+
 ################################################################################
 
 CutBySize <- function(m, block.size, nb = ceiling(m / block.size)) {

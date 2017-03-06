@@ -83,6 +83,34 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// mycount1
+IntegerMatrix mycount1(XPtr<BigMatrix> xpMat, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
+RcppExport SEXP bigstatsr_mycount1(SEXP xpMatSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type codeInd(codeIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(mycount1(xpMat, rowInd, colInd, codeInd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mycount2
+IntegerMatrix mycount2(XPtr<BigMatrix> xpMat, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
+RcppExport SEXP bigstatsr_mycount2(SEXP xpMatSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type codeInd(codeIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(mycount2(xpMat, rowInd, colInd, codeInd));
+    return rcpp_result_gen;
+END_RCPP
+}
 // decodeMat
 NumericMatrix decodeMat(const RawMatrix& source, const NumericVector& code);
 RcppExport SEXP bigstatsr_decodeMat(SEXP sourceSEXP, SEXP codeSEXP) {

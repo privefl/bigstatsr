@@ -13,6 +13,9 @@
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
+\item{X.code}{Either a \link[=BM.code-class]{BM.code} or
+a \link[=BM.code.descriptor-class]{BM.code.descriptor}.}
+
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.

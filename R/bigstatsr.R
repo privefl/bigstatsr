@@ -8,6 +8,8 @@
 #' @param X.desc A [big.matrix.descriptor][big.matrix.descriptor-class].
 #' @param X. Either a [big.matrix][big.matrix-class] or
 #' a [big.matrix.descriptor][big.matrix.descriptor-class].
+#' @param X.code Either a [BM.code][BM.code-class] or
+#' a [BM.code.descriptor][BM.code.descriptor-class].
 #'
 #' @param y.train Vector of responses, corresponding to `ind.train`.
 #' @param y01.train Vector of responses, corresponding to `ind.train`.

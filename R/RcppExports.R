@@ -17,6 +17,14 @@ bigcolvars <- function(BM, rowInd, colInd) {
     .Call('bigstatsr_bigcolvars', PACKAGE = 'bigstatsr', BM, rowInd, colInd)
 }
 
+mycount1 <- function(xpMat, rowInd, colInd, codeInd) {
+    .Call('bigstatsr_mycount1', PACKAGE = 'bigstatsr', xpMat, rowInd, colInd, codeInd)
+}
+
+mycount2 <- function(xpMat, rowInd, colInd, codeInd) {
+    .Call('bigstatsr_mycount2', PACKAGE = 'bigstatsr', xpMat, rowInd, colInd, codeInd)
+}
+
 decodeMat <- function(source, code) {
     .Call('bigstatsr_decodeMat', PACKAGE = 'bigstatsr', source, code)
 }
