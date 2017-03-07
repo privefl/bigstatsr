@@ -6,7 +6,6 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = TRUE)
 
 # Simulating some data
-# Simulating some data
 N <- 73
 M <- 43
 x <- matrix(rnorm(N*M, sd = 5), N)

@@ -16,6 +16,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
+
+\item{byrow}{Count by rows rather than columns? Default is \code{FALSE}.}
 }
 \value{
 A matrix of counts of K x m (or n) elements, where

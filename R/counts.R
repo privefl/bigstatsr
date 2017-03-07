@@ -5,6 +5,8 @@
 #' Counts by columns (or rows) the number of each unique element of a `BM.code`.
 #'
 #' @inheritParams bigstatsr-package
+#' @param byrow Count by rows rather than columns? Default is `FALSE`.
+#'
 #' @examples
 #' set.seed(11)
 #'
@@ -39,12 +41,20 @@ big_counts <- function(X.code,
                        ind.col = cols_along(X.code),
                        byrow = FALSE) {
 
-  code.uniq <- unique(X.code@code)
+  assert_classOrDesc(X.code, "BM.code")
+
+  code <- X.code@code
+  code.uniq <- unique(code)
   ind.code <- match(code, code.uniq)
 
   X <- attach.BM(X.code)
-  FUN <- `if`(byrow, mycount1, mycount2)
-  res <- FUN(X@address, ind.row, ind.col, ind.code)
+  if (byrow) {
+    res <- mycount1(X@address, ind.row, ind.col, ind.code)
+    assert_all(colSums(res), length(ind.col))
+  } else {
+    res <- mycount2(X@address, ind.row, ind.col, ind.code)
+    assert_all(colSums(res), length(ind.row))
+  }
   rownames(res) <- code.uniq
 
   res
