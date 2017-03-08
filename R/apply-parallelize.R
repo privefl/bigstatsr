@@ -9,7 +9,7 @@
 #'
 #' @inheritParams bigstatsr-package
 #' @param p.FUN The function to be applied. It must take a
-#' big.matrix.descriptor][big.matrix.descriptor-class] as first argument
+#' [big.matrix.descriptor][big.matrix.descriptor-class] as first argument
 #' and provide some arguments for subsetting.
 #' @param p.combine function that is used by [foreach] to process the tasks
 #' results as they generated. This can be specified as either a function or a

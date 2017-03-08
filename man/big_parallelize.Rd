@@ -11,7 +11,7 @@ big_parallelize(X., p.FUN, p.combine, ncores, ind = cols_along(X.), ...)
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{p.FUN}{The function to be applied. It must take a
-big.matrix.descriptor][big.matrix.descriptor-class] as first argument
+\link[=big.matrix.descriptor-class]{big.matrix.descriptor} as first argument
 and provide some arguments for subsetting.}
 
 \item{p.combine}{function that is used by \link{foreach} to process the tasks
