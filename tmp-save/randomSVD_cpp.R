@@ -1,13 +1,11 @@
 ################################################################################
 
 # parallel implementation
-svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
-                      k, tol, verbose, ncores) {
+svds4.par2 <- function(X.desc, fun.scaling, ind.row, ind.col,
+                       k, tol, verbose, ncores, TIME) {
   n <- length(ind.row)
   m <- length(ind.col)
   intervals <- CutBySize(m, nb = ncores)
-
-  TIME <- 0.001
 
   Ax.desc <- tmpFBM(n, ncores)
   Atx.desc <- tmpFBM(m, 1)
@@ -67,28 +65,16 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
       # scaling
       ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col.part)
 
-      repeat {
-        # slaves wait for their master to give them orders
-        while (calc[ic, 1] == 0) Sys.sleep(TIME)
-        c <-  calc[ic, 1]
-        # slaves do the hard work
-        if (c == 1) {
-          # compute A * x
-          x <- Atx.part[,] / ms$sd
-          Ax[, ic] <- pMatVec4(X, x, ind.row, ind.col.part) -
-            crossprod(x, ms$mean)
-        } else if (c == 2) {
-          # compute At * x
-          x <- Ax[, 1]
-          Atx.part[] <- (cpMatVec4(X, x, ind.row, ind.col.part) -
-                           sum(x) * ms$mean) / ms$sd
-        } else if (c == 3) { # end
-          break
-        } else {
-          stop("RandomSVD: unclear order from the master.")
-        }
-        calc[ic, 1] <- 0
-      }
+      slaves_randomSVD(X,
+                       xpAx = Ax@address,
+                       xpAtx_part = Atx.part@address,
+                       xpcalc = calc@address,
+                       rowInd = ind.row,
+                       colInd = ind.col.part,
+                       MEAN = ms$mean,
+                       SD = ms$sd,
+                       ic = ic,
+                       TIME = TIME)
 
       ms
     }
@@ -116,7 +102,7 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
 ################################################################################
 
 # single core implementation
-svds4.seq <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
+svds4.seq2 <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
   n <- length(ind.row)
   m <- length(ind.col)
   X <- attach.BM(X.)
@@ -191,19 +177,123 @@ svds4.seq <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #'
 #' @example examples/example-randomSVD.R
 #' @seealso [svds][RSpectra::svds]
-big_randomSVD <- function(X., fun.scaling,
-                          ind.row = rows_along(X.),
-                          ind.col = cols_along(X.),
-                          k = 10, tol = 1e-4,
-                          verbose = FALSE, ncores = 1) {
+big_randomSVD2 <- function(X., fun.scaling,
+                           ind.row = rows_along(X.),
+                           ind.col = cols_along(X.),
+                           k = 10, tol = 1e-4,
+                           verbose = FALSE, ncores = 1,
+                           TIME = 0.001) {
   if (ncores > 1) {
-    res <- svds4.par(describe(X.), fun.scaling, ind.row, ind.col,
-              k, tol, verbose, ncores)
+    res <- svds4.par2(describe(X.), fun.scaling, ind.row, ind.col,
+                      k, tol, verbose, ncores, TIME)
   } else {
-    res <- svds4.seq(X., fun.scaling, ind.row, ind.col, k, tol, verbose)
+    res <- svds4.seq2(X., fun.scaling, ind.row, ind.col, k, tol, verbose)
   }
 
   structure(res, class = "big_SVD")
 }
 
 ################################################################################
+
+# template <class C>
+#   void slaves_randomSVD(C macc,
+#                         XPtr<BigMatrix> xpAx,
+#                         XPtr<BigMatrix> xpAtx_part,
+#                         XPtr<BigMatrix> xpcalc,
+#                         const NumericVector& MEAN,
+#                         const NumericVector& SD,
+#                         int ic,
+#                         double TIME) {
+#     int n = macc.nrow();
+#     int m = macc.ncol();
+#
+#     MatrixAccessor<double> Ax(*xpAx);              // n * ncores
+#     MatrixAccessor<double> Atx_part(*xpAtx_part);  // m * 1
+#     MatrixAccessor<double> calc(*xpcalc);          // ncores * 1
+#
+#     ic--; // indices begin at 0 in C++
+#
+#       NumericVector x2(m), x1(n);
+#     double c, cross, sum_x;
+#     int i, j;
+#
+#     while (true) {
+#       // slaves wait for their master to give them orders
+#       while (calc[0][ic] == 0) sleep(TIME);
+#       c = calc[0][ic];
+#       // slaves do the hard work
+#       if (c == 1) {
+#         // compute A * x
+#         cross = 0;
+#         for (j = 0; j < m; j++) {
+#           x2[j] = Atx_part[0][j] / SD[j];
+#           cross += x2[j] * MEAN[j];
+#         }
+#         x1 = pMatVec4(macc, x2);
+#         for (i = 0; i < n; i++) {
+#           Ax[ic][i] = x1[i] - cross;
+#         }
+#       } else if (c == 2) {
+#         // compute At * x
+#         sum_x = 0;
+#         for (i = 0; i < n; i++) {
+#           x1[i] = Ax[0][i];
+#           sum_x += x1[i];
+#         }
+#         x2 = cpMatVec4(macc, x1);
+#         for (j = 0; j < m; j++) {
+#           Atx_part[0][j] = (x2[j] - sum_x * MEAN[j]) / SD[j];
+#         }
+#       } else if (c == 3) { // end
+#         return;
+#       } else {
+#         throw Rcpp::exception("RandomSVD: unclear order from the master.");
+#       }
+#       calc[0][ic] = 0;
+#     }
+#   }
+#
+# // Dispatch function for cpMatVec4
+# // [[Rcpp::export]]
+# void slaves_randomSVD(const S4& BM,
+#                       XPtr<BigMatrix> xpAx,
+#                       XPtr<BigMatrix> xpAtx_part,
+#                       XPtr<BigMatrix> xpcalc,
+#                       const IntegerVector& rowInd,
+#                       const IntegerVector& colInd,
+#                       const NumericVector& MEAN,
+#                       const NumericVector& SD,
+#                       int ic,
+#                       double TIME) {
+#
+#   XPtr<BigMatrix> xpMat = BM.slot("address");
+#   IntegerVector rows = rowInd - 1;
+#   IntegerVector cols = colInd - 1;
+#
+#   if (Rf_inherits(BM, "BM.code")) {
+#     return slaves_randomSVD(RawSubMatAcc(*xpMat, rows, cols, BM.slot("code")),
+#                             xpAx, xpAtx_part, xpcalc, MEAN, SD, ic, TIME);
+#   } else {
+#     switch(xpMat->matrix_type()) {
+#       case 1:
+#         return slaves_randomSVD(SubMatAcc<char>(*xpMat, rows, cols),
+#                                 xpAx, xpAtx_part, xpcalc, MEAN, SD, ic, TIME);
+#       case 2:
+#         return slaves_randomSVD(SubMatAcc<short>(*xpMat, rows, cols),
+#                                 xpAx, xpAtx_part, xpcalc, MEAN, SD, ic, TIME);
+#       case 4:
+#         return slaves_randomSVD(SubMatAcc<int>(*xpMat, rows, cols),
+#                                 xpAx, xpAtx_part, xpcalc, MEAN, SD, ic, TIME);
+#       case 6:
+#         return slaves_randomSVD(SubMatAcc<float>(*xpMat, rows, cols),
+#                                 xpAx, xpAtx_part, xpcalc, MEAN, SD, ic, TIME);
+#       case 8:
+#         return slaves_randomSVD(SubMatAcc<double>(*xpMat, rows, cols),
+#                                 xpAx, xpAtx_part, xpcalc, MEAN, SD, ic, TIME);
+#       default:
+#         throw Rcpp::exception(ERROR_TYPE);
+#     }
+#   }
+# }
+#
+# /******************************************************************************/
