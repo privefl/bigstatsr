@@ -18,7 +18,8 @@ no missing values).}
 
 \item{digits}{See \link{round}. Default doesn't use rounding.}
 
-\item{nboot}{Number of bootstrap samples to evaluate the 95\% CI.}
+\item{nboot}{Number of bootstrap samples to evaluate the 95\% CI.
+Default is \code{1e4}.}
 
 \item{seed}{See \link{set.seed}. Use it for reproducibility.
 Default doesn't set any seed.}
@@ -32,7 +33,8 @@ Compute the Area Under the ROC Curve (AUC) of a predictor
 and possibly its 95\% confidence interval.
 }
 \details{
-Other packages provide ways to compute the AUC.
+Other packages provide ways to compute the AUC (see this
+\href{http://stats.stackexchange.com/a/146174/135793}{answer}).
 I chose to compute the AUC through its statistical definition as a
 probability: \deqn{P(score(x_{case}) > score(x_{control})).}
 Note that I consider equality between scores as a 50\%-probability of
@@ -50,10 +52,16 @@ print(AUC(x, y))
 print(AUCBoot(x, y))
 }
 \references{
+Hanley, J. A., & McNeil, B. J. (1982).
+The meaning and use of the area under a
+receiver operating characteristic (ROC) curve.
+Radiology, 143(1), 29-36.
+\url{http://dx.doi.org/10.1148/radiology.143.1.7063747}.
+
 Tom Fawcett. 2006. An introduction to ROC analysis.
 Pattern Recogn. Lett. 27, 8 (June 2006), 861-874.
 \url{http://dx.doi.org/10.1016/j.patrec.2005.10.010}.
 }
 \seealso{
-\link[pROC:auc]{pROC::auc} \cr \link[AUC:auc]{AUC::auc}
+\link{wilcox.test}
 }

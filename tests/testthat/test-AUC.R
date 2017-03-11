@@ -29,3 +29,9 @@ test_that("Same results of AUC in particular cases", {
 })
 
 ################################################################################
+
+test_that("Same as wilcox test", {
+  expect_equivalent(AUC(x, y), wilcox.test(x1, x0)$statistic / N^2)
+})
+
+################################################################################
