@@ -45,7 +45,6 @@ diffPCs <- function(test, rot) {
 ################################################################################
 
 printf <- function(...) cat(sprintf(...))
-
 message2 <- function(...) message(sprintf(...))
 warning2 <- function(...) warning(sprintf(...), call. = FALSE)
 stop2 <- function(...) stop(sprintf(...), call. = FALSE)
