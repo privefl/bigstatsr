@@ -1,0 +1,5 @@
+require(testthat)
+require(bigstatsr)
+source('R/utils.R')
+Rcpp::sourceCpp('src/decode.cpp')
+source('R/utils-new-methods.R')

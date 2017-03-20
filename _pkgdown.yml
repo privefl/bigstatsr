@@ -42,7 +42,7 @@ reference:
       - big_transpose
       - big_apply
       - big_parallelize
-  - title: "Utilities - multiply"
+  - title: "Matrix operations"
     contents:
       - big_crossprodSelf
       - big_tcrossprodSelf
