@@ -2,10 +2,9 @@
 
 #' Predict method
 #'
-#' Predict method which is applicable to
-#' [big_spLinReg], [big_spLogReg] and [big_spSVM].
+#' Predict method for class `big_sp`.
 #'
-#' @param object Object of class `big_spReg`.
+#' @param object Object of class `big_sp`.
 #' @inheritParams bigstatsr-package
 #' @param ... Not used.
 #'
@@ -14,6 +13,7 @@
 #' @export
 #' @import Matrix
 #' @importFrom stats predict
+#' @seealso [big_spLinReg], [big_spLogReg] and [big_spSVM].
 #'
 #' @example examples/example-predict.R
 predict.big_sp <- function(object, X.,

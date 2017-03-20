@@ -8,7 +8,7 @@
   covar.row = NULL, block.size = 1000, ...)
 }
 \arguments{
-\item{object}{Object of class \code{big_spReg}.}
+\item{object}{Object of class \code{big_sp}.}
 
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
@@ -29,8 +29,7 @@ A matrix of scores, with rows corresponding to \code{ind.row}
 and columns corresponding to \code{lambda}.
 }
 \description{
-Predict method which is applicable to
-\link{big_spLinReg}, \link{big_spLogReg} and \link{big_spSVM}.
+Predict method for class \code{big_sp}.
 }
 \examples{
 # simulating some data
@@ -46,4 +45,7 @@ mod <- big_spSVM(X.desc, y[ind.train], ind.train = ind.train,
 ind.test <- setdiff(rows_along(X.desc), ind.train)
 pred <- predict(mod, X. = X.desc, ind.row = ind.test,
                 covar.row = covar[ind.test, ])
+}
+\seealso{
+\link{big_spLinReg}, \link{big_spLogReg} and \link{big_spSVM}.
 }

@@ -53,6 +53,12 @@ Slopes of column-wise logistic regressions of each column
 of a \code{big.matrix}, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
+\details{
+If convergence is not reached by the main algorithm for some columns,
+the corresponding \code{niter} element is set to \code{NA} and a message is given.
+Then, \link[stats:glm]{glm} is used instead for the corresponding column.
+If it can't converge either, all corresponding estimations are set to \code{NA}.
+}
 \examples{
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)

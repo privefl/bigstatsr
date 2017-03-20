@@ -51,9 +51,15 @@ big_univLinReg <- function(X., y.train,
                          ind.train = ind.train)
 
   res$t.score <- res$estim / res$std.err
-  res$p.value <- 2 * stats::pt(abs(res$t.score), df = n - K - 1,
-                               lower.tail = FALSE)
-  res
+  fun.pred <- eval(parse(text = sprintf(
+    "function(xtr) 2 * stats::pt(xtr, df = %d, lower.tail = FALSE)",
+    n - K - 1)))
+  res$p.value <- fun.pred(abs(res$t.score))
+
+  structure(res,
+            class = c("mhtest", "data.frame"),
+            transfo = abs,
+            predict = fun.pred)
 }
 
 ################################################################################

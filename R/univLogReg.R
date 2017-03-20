@@ -30,6 +30,11 @@ univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
 #' of a `big.matrix`, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
 #'
+#' If convergence is not reached by the main algorithm for some columns,
+#' the corresponding `niter` element is set to `NA` and a message is given.
+#' Then, [glm][stats::glm] is used instead for the corresponding column.
+#' If it can't converge either, all corresponding estimations are set to `NA`.
+#'
 #' @inheritParams bigstatsr-package
 #'
 #' @param tol Relative tolerance to assess convergence of the coefficient.
@@ -56,7 +61,8 @@ big_univLogReg <- function(X., y01.train,
                            ind.col = cols_along(X.),
                            covar.train = NULL,
                            ncores2 = 1,
-                           tol = 1e-8, maxiter = 20) {
+                           tol = 1e-8,
+                           maxiter = 20) {
   n <- length(ind.train)
   stopifnot(n == length(y01.train))
   covar.train <- cbind(rep(0, n), rep(1, n), covar.train)
@@ -82,16 +88,21 @@ big_univLogReg <- function(X., y01.train,
 
   # infos on convergence
   if (l.NA <- sum(is.na(res$niter))) {
-    message(sprintf(
-      "For %d columns, IRLS didn't converge; `glm` was used instead.", l.NA))
+    message2(
+      "For %d columns, IRLS didn't converge; `glm` was used instead.", l.NA)
 
     if (nbNA <- sum(is.na(res$estim)))
-      warning(sprintf("For %d columns, glm didn't converge either.", nbNA))
+      warning2("For %d columns, glm didn't converge either.", nbNA)
   }
 
   res$z.score <- res$estim / res$std.err
-  res$p.value <- 2 * stats::pnorm(abs(res$z.score), lower.tail = FALSE)
-  res
+  fun.pred <- function(xtr) 2 * stats::pnorm(xtr, lower.tail = FALSE)
+  res$p.value <- fun.pred(abs(res$z.score))
+
+  structure(res,
+            class = c("mhtest", "data.frame"),
+            transfo = abs,
+            predict = fun.pred)
 }
 
 ################################################################################
