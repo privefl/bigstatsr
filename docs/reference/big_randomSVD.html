@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Randomized SVD — big_randomSVD â€¢ bigstatsr</title>
+<title>Randomized SVD â€” big_randomSVD â€¢ bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -158,7 +158,7 @@ bioRxiv: <a href = 'https://doi.org/10.1101/094714'>https://doi.org/10.1101/0947
     <p>It proved to be faster than our implementation of the &quot;blanczos&quot; algorithm
 in Rokhlin, V., Szlam, A., &amp; Tygert, M. (2010).
 A Randomized Algorithm for Principal Component Analysis.
-SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
+SIAM Journal on Matrix Analysis and Applications, 31(3), 1100â€“1124.
 <a href = 'http://dx.doi.org/10.1137/080736417'>http://dx.doi.org/10.1137/080736417</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -175,13 +175,13 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_randomSVD</span>(<span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='no'>K</span>)
 <span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 7
-#&gt;  $ d    : num [1:10] 177.5 114.6 89.8 87 85.8 ...
-#&gt;  $ u    : num [1:258, 1:10] -0.112 -0.1094 -0.0978 -0.0953 -0.1054 ...
-#&gt;  $ v    : num [1:4542, 1:10] -0.00175 0.00356 0.03673 -0.01692 0.00688 ...
-#&gt;  $ niter: int 8
-#&gt;  $ nops : int 152
-#&gt;  $ means: num [1:4542] 1.32 1.56 1.5 1.62 1.11 ...
-#&gt;  $ sds  : num [1:4542] 0.683 0.597 0.644 0.56 0.73 ...
+#&gt;  $ d    : num [1:10] 179.9 115.7 91.5 88 87.4 ...
+#&gt;  $ u    : num [1:258, 1:10] -0.1044 -0.1068 -0.0843 -0.1115 -0.0874 ...
+#&gt;  $ v    : num [1:4542, 1:10] -0.00278 -0.00265 0.02413 -0.01313 0.01238 ...
+#&gt;  $ niter: int 9
+#&gt;  $ nops : int 160
+#&gt;  $ means: num [1:4542] 1.33 1.59 1.51 1.64 1.1 ...
+#&gt;  $ sds  : num [1:4542] 0.691 0.581 0.638 0.55 0.715 ...
 #&gt;  - attr(*, &quot;class&quot;)= chr &quot;big_SVD&quot;</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><img src='big_randomSVD-4.png' alt='' width='540' height='400' /><div class='input'>
 <span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'>prcomp</span>(<span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind</span>, ], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 

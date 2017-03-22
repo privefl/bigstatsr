@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Column-wise linear regression � big_univLinReg • bigstatsr</title>
+<title>Column-wise linear regression — big_univLinReg • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -151,29 +151,45 @@ Default is <code>1e-4</code>.</dd>
 <span class='no'>X1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='typeof,big.matrix.descriptor-method.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[, <span class='fl'>1</span>] <span class='co'># only first column of the `big.matrix`</span>
 
 <span class='co'># Without covar</span>
-<span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  4 variables:
-#&gt;  $ estim  : num  0.05998 0.02767 0.13799 0.04534 -0.00702 ...
-#&gt;  $ std.err: num  0.067 0.08 0.0724 0.0816 0.0633 ...
-#&gt;  $ t.score: num  0.895 0.346 1.907 0.556 -0.111 ...
-#&gt;  $ p.value: num  0.371 0.729 0.057 0.579 0.912 ...</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
-#&gt; 0.05997866 0.06704274 0.89463320 0.37140111 </div><div class='input'>
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>)
+<span class='co'>## new class `mhtest`</span>
+<span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] &quot;mhtest&quot;     &quot;data.frame&quot;</div><div class='input'><span class='fu'>attr</span>(<span class='no'>test</span>, <span class='st'>"transfo"</span>)</div><div class='output co'>#&gt; function (x)  .Primitive(&quot;abs&quot;)</div><div class='input'><span class='fu'>attr</span>(<span class='no'>test</span>, <span class='st'>"predict"</span>)</div><div class='output co'>#&gt; function(xtr) 2 * stats::pt(xtr, df = 515, lower.tail = FALSE)
+#&gt; &lt;environment: 0x13df76d8&gt;</div><div class='input'><span class='co'>## plot results</span>
+<span class='fu'>plot</span>(<span class='no'>test</span>)</div><img src='big_univLinReg-8.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><img src='big_univLinReg-10.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## To get p-values associated with the test</span>
+<span class='no'>test</span>$<span class='no'>p.value</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>)
+<span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Classes ‘mhtest’ and &#39;data.frame&#39;:	4542 obs. of  4 variables:
+#&gt;  $ estim  : num  -0.15441 0.13276 0.0112 -0.02681 0.00845 ...
+#&gt;  $ std.err: num  0.061 0.073 0.0665 0.0747 0.0579 ...
+#&gt;  $ score  : num  -2.53 1.819 0.169 -0.359 0.146 ...
+#&gt;  $ p.value: num  0.0117 0.0694 0.8662 0.72 0.884 ...
+#&gt;  - attr(*, &quot;transfo&quot;)=function (x)  
+#&gt;  - attr(*, &quot;predict&quot;)=function (xtr)  
+#&gt;   ..- attr(*, &quot;srcref&quot;)=Class &#39;srcref&#39;  atomic [1:8] 1 1 1 62 1 62 1 1
+#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0x1a67db48&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt; -0.15440627  0.06103467 -2.52981266  0.01170941 </div><div class='input'>
 <span class='co'># With all data</span>
-<span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  4 variables:
-#&gt;  $ estim  : num  0.05095 0.01398 0.14294 0.03454 -0.00999 ...
-#&gt;  $ std.err: num  0.0673 0.0804 0.0725 0.0816 0.0632 ...
-#&gt;  $ t.score: num  0.757 0.174 1.972 0.423 -0.158 ...
-#&gt;  $ p.value: num  0.4496 0.8619 0.0491 0.6723 0.8745 ...</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
-#&gt; 0.05095444 0.06734813 0.75658287 0.44964780 </div><div class='input'>
+<span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; Classes ‘mhtest’ and &#39;data.frame&#39;:	4542 obs. of  3 variables:
+#&gt;  $ estim  : num  -0.15837 0.13903 0.00528 -0.02346 0.01106 ...
+#&gt;  $ std.err: num  0.0614 0.0731 0.0667 0.0748 0.058 ...
+#&gt;  $ score  : num  -2.5794 1.9016 0.0793 -0.3135 0.1907 ...
+#&gt;  - attr(*, &quot;transfo&quot;)=function (x)  
+#&gt;  - attr(*, &quot;predict&quot;)=function (xtr)  
+#&gt;   ..- attr(*, &quot;srcref&quot;)=Class &#39;srcref&#39;  atomic [1:8] 1 1 1 62 1 62 1 1
+#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0x14063c90&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt; -0.15836684  0.06139563 -2.57944820  0.01017359 </div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
 <span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>],
                    <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
-                   <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt; &#39;data.frame&#39;:	4542 obs. of  4 variables:
-#&gt;  $ estim  : num  0.1534 -0.1626 0.0871 0.0847 0.0131 ...
-#&gt;  $ std.err: num  0.096 0.1123 0.1103 0.1146 0.0918 ...
-#&gt;  $ t.score: num  1.599 -1.448 0.79 0.739 0.143 ...
-#&gt;  $ p.value: num  0.111 0.149 0.43 0.461 0.887 ...</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
-#&gt; 0.15344913 0.09596012 1.59909284 0.11104802 </div></pre>
+                   <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt; Classes ‘mhtest’ and &#39;data.frame&#39;:	4542 obs. of  3 variables:
+#&gt;  $ estim  : num  -0.17166 0.16618 -0.06582 -0.08267 0.00468 ...
+#&gt;  $ std.err: num  0.086 0.1056 0.0974 0.106 0.0814 ...
+#&gt;  $ score  : num  -1.9968 1.5739 -0.6761 -0.7802 0.0575 ...
+#&gt;  - attr(*, &quot;transfo&quot;)=function (x)  
+#&gt;  - attr(*, &quot;predict&quot;)=function (xtr)  
+#&gt;   ..- attr(*, &quot;srcref&quot;)=Class &#39;srcref&#39;  atomic [1:8] 1 1 1 62 1 62 1 1
+#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0xba4e040&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt; -0.17165550  0.08596534 -1.99679890  0.04691838 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

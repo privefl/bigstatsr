@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>S4 class BM.code � BM.code-class • bigstatsr</title>
+<title>S4 class BM.code — BM.code-class • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -126,31 +126,31 @@ is used as a lookup table of size 256.</p>
     <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>big.matrix</span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"raw"</span>)
 <span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fu'>as.raw</span>(<span class='fl'>0</span>:<span class='fl'>3</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'>length</span>(<span class='no'>X</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>X</span>[,]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#&gt;  [1,]   01   02   01   02   03   01   00   02   02    01
-#&gt;  [2,]   01   00   02   00   03   00   01   03   00    01
-#&gt;  [3,]   01   00   02   02   01   00   01   02   01    01
-#&gt;  [4,]   03   02   01   01   03   00   02   00   02    01
-#&gt;  [5,]   02   01   03   00   03   00   00   02   01    00
-#&gt;  [6,]   00   03   03   02   03   02   02   00   03    01
-#&gt;  [7,]   02   03   00   02   00   03   02   01   00    03
-#&gt;  [8,]   01   02   01   03   02   02   02   02   01    02
-#&gt;  [9,]   02   01   01   03   00   00   01   01   03    01
-#&gt; [10,]   03   00   03   00   00   03   03   01   00    00</div><div class='input'>
+#&gt;  [1,]   00   02   03   02   03   02   02   02   00    01
+#&gt;  [2,]   02   02   02   03   02   03   01   01   03    03
+#&gt;  [3,]   00   03   03   02   01   00   03   02   02    01
+#&gt;  [4,]   02   03   02   03   02   01   02   00   02    00
+#&gt;  [5,]   01   01   00   00   03   00   01   03   00    03
+#&gt;  [6,]   03   01   01   03   03   02   03   01   03    00
+#&gt;  [7,]   00   02   00   00   00   00   02   02   01    02
+#&gt;  [8,]   02   00   00   01   01   01   03   01   00    03
+#&gt;  [9,]   01   02   00   03   01   00   02   00   03    01
+#&gt; [10,]   03   02   00   03   02   00   02   00   00    02</div><div class='input'>
 <span class='no'>code</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fl'>NA_real_</span>, <span class='fl'>256</span>)
 <span class='no'>code</span>[<span class='fl'>1</span>:<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)
 
 <span class='no'>X.code</span> <span class='kw'>&lt;-</span> <span class='fu'>as.BM.code</span>(<span class='no'>X</span>, <span class='no'>code</span>)
 <span class='no'>X.code</span>[,]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#&gt;  [1,]    3    5    3    5   NA    3    1    5    5     3
-#&gt;  [2,]    3    1    5    1   NA    1    3   NA    1     3
-#&gt;  [3,]    3    1    5    5    3    1    3    5    3     3
-#&gt;  [4,]   NA    5    3    3   NA    1    5    1    5     3
-#&gt;  [5,]    5    3   NA    1   NA    1    1    5    3     1
-#&gt;  [6,]    1   NA   NA    5   NA    5    5    1   NA     3
-#&gt;  [7,]    5   NA    1    5    1   NA    5    3    1    NA
-#&gt;  [8,]    3    5    3   NA    5    5    5    5    3     5
-#&gt;  [9,]    5    3    3   NA    1    1    3    3   NA     3
-#&gt; [10,]   NA    1   NA    1    1   NA   NA    3    1     1</div><div class='input'>
+#&gt;  [1,]    1    5   NA    5   NA    5    5    5    1     3
+#&gt;  [2,]    5    5    5   NA    5   NA    3    3   NA    NA
+#&gt;  [3,]    1   NA   NA    5    3    1   NA    5    5     3
+#&gt;  [4,]    5   NA    5   NA    5    3    5    1    5     1
+#&gt;  [5,]    3    3    1    1   NA    1    3   NA    1    NA
+#&gt;  [6,]   NA    3    3   NA   NA    5   NA    3   NA     1
+#&gt;  [7,]    1    5    1    1    1    1    5    5    3     5
+#&gt;  [8,]    5    1    1    3    3    3   NA    3    1    NA
+#&gt;  [9,]    3    5    1   NA    3    1    5    1   NA     3
+#&gt; [10,]   NA    5    1   NA    5    1    5    1    1     5</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

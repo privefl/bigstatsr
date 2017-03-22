@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sparse SVM � big_spSVM • bigstatsr</title>
+<title>Sparse SVM — big_spSVM • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -102,7 +102,7 @@ over a grid of values for the regularization parameter lambda.</p>
 a big.matrix.descriptor.</dd>
       <dt>y01.train</dt>
       <dd>Vector of responses, corresponding to <code>ind.train</code>.
-Must be 0s and 1s.</dd>
+<strong>Must be only 0s and 1s.</strong></dd>
       <dt>ind.train</dt>
       <dd>An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.
@@ -182,20 +182,20 @@ progress. Default is <code>FALSE</code>.</dd>
 <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spSVM</span>(<span class='no'>X</span>, <span class='no'>y</span>)
 <span class='fu'>str</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; List of 10
 #&gt;  $ call          : language COPY_sparseSVM(X = X, y.train = y01.train, ind.train = ind.train, covar.train = covar.train)
-#&gt;  $ intercept     : Named num [1:100] 1 0.925 0.925 0.925 0.924 ...
-#&gt;   ..- attr(*, &quot;names&quot;)= chr [1:100] &quot;0.2708&quot; &quot;0.2627&quot; &quot;0.2549&quot; &quot;0.2473&quot; ...
+#&gt;  $ intercept     : Named num [1:100] -1 -0.917 -0.912 -0.901 -0.868 ...
+#&gt;   ..- attr(*, &quot;names&quot;)= chr [1:100] &quot;0.2732&quot; &quot;0.265&quot; &quot;0.2571&quot; &quot;0.2495&quot; ...
 #&gt;  $ beta          :Formal class &#39;dgCMatrix&#39; [package &quot;Matrix&quot;] with 6 slots
-#&gt;   .. ..@ i       : int [1:8793] 169 351 370 169 351 370 169 276 351 370 ...
-#&gt;   .. ..@ p       : int [1:101] 0 0 3 6 10 14 19 24 31 39 ...
+#&gt;   .. ..@ i       : int [1:10594] 68 193 271 355 414 68 149 172 193 271 ...
+#&gt;   .. ..@ p       : int [1:101] 0 0 5 14 24 38 55 73 95 117 ...
 #&gt;   .. ..@ Dim     : int [1:2] 430 100
 #&gt;   .. ..@ Dimnames:List of 2
 #&gt;   .. .. ..$ : NULL
-#&gt;   .. .. ..$ : chr [1:100] &quot;0.2708&quot; &quot;0.2627&quot; &quot;0.2549&quot; &quot;0.2473&quot; ...
-#&gt;   .. ..@ x       : num [1:8793] 0.000613 -0.000138 -0.000623 0.001344 -0.000512 ...
+#&gt;   .. .. ..$ : chr [1:100] &quot;0.2732&quot; &quot;0.265&quot; &quot;0.2571&quot; &quot;0.2495&quot; ...
+#&gt;   .. ..@ x       : num [1:10594] 0.00585 -0.012478 -0.000858 -0.000889 -0.000529 ...
 #&gt;   .. ..@ factors : list()
-#&gt;  $ iter          : int [1:100] 0 2 2 2 2 2 2 2 2 2 ...
+#&gt;  $ iter          : int [1:100] 0 4 3 4 10 57 5 9 20 5 ...
 #&gt;  $ saturated     : logi FALSE
-#&gt;  $ lambda        : num [1:100] 0.271 0.263 0.255 0.247 0.24 ...
+#&gt;  $ lambda        : num [1:100] 0.273 0.265 0.257 0.249 0.242 ...
 #&gt;  $ alpha         : num 1
 #&gt;  $ gamma         : num 0.1
 #&gt;  $ penalty.factor: num [1:430] 1 1 1 1 1 1 1 1 1 1 ...
@@ -205,7 +205,11 @@ progress. Default is <code>FALSE</code>.</dd>
 <span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>cbind</span>(<span class='no'>X</span>[,], <span class='no'>covar</span>)
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>sparseSVM</span><span class='kw'>::</span><span class='fu'>sparseSVM</span>(<span class='no'>X2</span>, <span class='no'>y.factor</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .C(&quot;sparse_svm&quot;, double(p * nlambda), integer(nlambda), as.double(lambda),     integer(1), as.double(XX), as.double(yy), as.double(penalty.factor),     as.double(gamma), as.double(alpha), as.double(eps), as.double(lambda.min),     as.integer(nlambda), as.integer(n), as.integer(p), as.integer(ppflag),     as.integer(scrflag), as.integer(dfmax), as.integer(max.iter),     as.integer(user), as.integer(message)): &quot;sparse_svm&quot; not resolved from current namespace (sparseSVM)</span></div><div class='input'><span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spSVM</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 <span class='co'># verification</span>
-<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>lambda</span>, <span class='no'>test</span>$<span class='no'>lambda</span>))</div><div class='output co'>#&gt; <span class='error'>Error in mode(current): object &#39;test&#39; not found</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>beta</span>, <span class='no'>test</span>$<span class='no'>weights</span>[-<span class='fl'>1</span>, ], <span class='kw'>check.attributes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; <span class='error'>Error in all.equal.default(test2$beta, test$weights[-1, ], check.attributes = FALSE): object &#39;test&#39; not found</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>intercept</span>, <span class='no'>test</span>$<span class='no'>weights</span>[<span class='fl'>1</span>, ]))</div><div class='output co'>#&gt; <span class='error'>Error in mode(current): object &#39;test&#39; not found</span></div></pre>
+<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>lambda</span>, <span class='no'>test</span>$<span class='no'>lambda</span>))</div><div class='output co'>#&gt; [1] &quot;Modes: numeric, NULL&quot;               &quot;Lengths: 100, 0&quot;                   
+#&gt; [3] &quot;target is numeric, current is NULL&quot;</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>beta</span>, <span class='no'>test</span>$<span class='no'>weights</span>[-<span class='fl'>1</span>, ], <span class='kw'>check.attributes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; [1] &quot;Modes: S4, NULL&quot;   &quot;Lengths: 43300, 0&quot;</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>intercept</span>, <span class='no'>test</span>$<span class='no'>weights</span>[<span class='fl'>1</span>, ]))</div><div class='output co'>#&gt; [1] &quot;Modes: numeric, NULL&quot;                
+#&gt; [2] &quot;Lengths: 100, 0&quot;                     
+#&gt; [3] &quot;names for target but not for current&quot;
+#&gt; [4] &quot;target is numeric, current is NULL&quot;  </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

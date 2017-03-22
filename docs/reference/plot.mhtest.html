@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract — [,BM.code,missing,missing,missing-method • bigstatsr</title>
+<title>Plot method — plot.mhtest • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -84,51 +84,48 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract</h1>
+    <h1>Plot method</h1>
     </div>
 
     
-    <p>Extract <code>big.matrix</code> elements. <strong>Dimnames are not extracted.</strong></p>
+    <p>Plot method for class <code>mhtest</code>.</p>
     
 
-    <pre># S4 method for BM.code,missing,missing,missing
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,missing,missing,logical
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,missing,numeric,missing
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,missing,numeric,logical
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,numeric,missing,missing
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,numeric,missing,logical
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,numeric,numeric,missing
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,numeric,numeric,logical
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,matrix,missing,missing
-[(x, i, j, ..., drop = TRUE)</pre>
+    <pre><span class='co'># S3 method for mhtest</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Manhattan"</span>, <span class='st'>"Volcano"</span>),
+  <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='no'>type</span>, <span class='st'>"plot"</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>A <a href='BM.code-class.html'>BM.code</a>.</dd>
-      <dt>i</dt>
-      <dd>Indices specifying the rows.</dd>
-      <dt>j</dt>
-      <dd>Indices specifying the columns.</dd>
-      <dt>drop</dt>
-      <dd>Logical indication if reduce to minimum dimensions.</dd>
+      <dd>An object of class <code>mhtest</code>.</dd>
+      <dt>type</dt>
+      <dd>Either
+<ul>
+<li> &quot;Manhattan&quot;: plot of the negative logarithm (in base 10) of p-values.
+</li>
+<li> &quot;Volcaco&quot;: plot of the negative logarithm of p-values against the
+estimation of coefficients (e.g. betas in linear regression).
+</li>
+</ul>
+</dd>
+      <dt>main</dt>
+      <dd>The title of the plot. Default use the <code>type</code>.</dd>
+      <dt>cex</dt>
+      <dd>Graphical parameter: relative size of points. Default is <code>0.5</code>.</dd>
+      <dt>pch</dt>
+      <dd>Graphical parameter: type of points. Default uses &quot;filled&quot; points.</dd>
+      <dt>...</dt>
+      <dd>Other arguments to be passed to <code>plot()</code>.</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>NULL</code>. Creates a plot.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><a href='big_univLinReg.html'>big_univLinReg</a> and <a href='big_univLogReg.html'>big_univLogReg</a>.</p>
     
 
   </div>
@@ -136,7 +133,11 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract — [,BM.code,missing,missing,missing-method • bigstatsr</title>
+<title>Predict method — predict.mhtest • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -84,51 +84,35 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract</h1>
+    <h1>Predict method</h1>
     </div>
 
     
-    <p>Extract <code>big.matrix</code> elements. <strong>Dimnames are not extracted.</strong></p>
+    <p>Predict method for class <code>mhtest</code>.</p>
     
 
-    <pre># S4 method for BM.code,missing,missing,missing
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,missing,missing,logical
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,missing,numeric,missing
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,missing,numeric,logical
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,numeric,missing,missing
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,numeric,missing,logical
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,numeric,numeric,missing
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,numeric,numeric,logical
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for BM.code,matrix,missing,missing
-[(x, i, j, ..., drop = TRUE)</pre>
+    <pre><span class='co'># S3 method for mhtest</span>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>scores</span> <span class='kw'>=</span> <span class='no'>object</span>$<span class='no'>score</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>A <a href='BM.code-class.html'>BM.code</a>.</dd>
-      <dt>i</dt>
-      <dd>Indices specifying the rows.</dd>
-      <dt>j</dt>
-      <dd>Indices specifying the columns.</dd>
-      <dt>drop</dt>
-      <dd>Logical indication if reduce to minimum dimensions.</dd>
+      <dt>object</dt>
+      <dd>An object of class <code>mhtest</code> from you get the probability
+function with possibily pre-transformation of scores.</dd>
+      <dt>scores</dt>
+      <dd>Raw scores (before transformation) that you want to transform
+to p-values.</dd>
+      <dt>...</dt>
+      <dd>Not used.</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Vector of p-values associated with <code>scores</code> and <code>object</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><a href='big_univLinReg.html'>big_univLinReg</a> and <a href='big_univLogReg.html'>big_univLogReg</a>.</p>
     
 
   </div>
@@ -136,7 +120,11 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

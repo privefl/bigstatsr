@@ -29,6 +29,8 @@ reference:
     contents:
       - big_univLinReg
       - big_univLogReg
+      - plot.mhtest
+      - predict.mhtest
       - big_spLinReg
       - big_spLogReg
       - big_spSVM
@@ -39,6 +41,7 @@ reference:
     contents:
       - big_colstats
       - big_scale
+      - big_counts
       - big_transpose
       - big_apply
       - big_parallelize

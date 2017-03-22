@@ -58,7 +58,6 @@ round2 <- function(x, digits = NULL) `if`(is.null(digits), x, round(x, digits))
 ################################################################################
 
 #' @rdname AUC
-#' @name AUC
 #' @export
 AUC <- function(pred, target, digits = NULL) {
   stopifnot(length(pred) == length(target))
@@ -71,7 +70,6 @@ AUC <- function(pred, target, digits = NULL) {
 ################################################################################
 
 #' @rdname AUC
-#' @name AUCBoot
 #' @export
 AUCBoot <- function(pred, target, nboot = 1e4, seed = NA, digits = NULL) {
   stopifnot(length(pred) == length(target))
