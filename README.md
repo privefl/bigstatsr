@@ -35,3 +35,7 @@ To facilitate the manipulation of descriptors and `BM.code` objects, some method
 - `as.BM.code` to convert a bigmatrix to a `BM.code` (by specifying its lookup table).
 
 __Note that most of the algorithms of this package don't handle missing values.__
+
+## Code of conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](code_of_conduct.md). By participating in this project you agree to abide by its terms.
