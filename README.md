@@ -34,4 +34,4 @@ To facilitate the manipulation of descriptors and `BM.code` objects, some method
 - `describe` and `attach.BM` are used to switch between descriptors and bigmatrices. Note that, in order to standardize algorithms, describing a descriptor or attaching a bigmatrix simply returns the same object.
 - `as.BM.code` to convert a bigmatrix to a `BM.code` (by specifying its lookup table).
 
-__Note that most of the algorithms here don't handle missing values.__
+__Note that most of the algorithms of this package don't handle missing values.__
