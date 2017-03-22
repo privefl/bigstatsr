@@ -95,9 +95,8 @@ big_univLogReg <- function(X., y01.train,
       warning2("For %d columns, glm didn't converge either.", nbNA)
   }
 
-  res$z.score <- res$estim / res$std.err
+  res$score <- res$estim / res$std.err
   fun.pred <- function(xtr) 2 * stats::pnorm(xtr, lower.tail = FALSE)
-  res$p.value <- fun.pred(abs(res$z.score))
 
   structure(res,
             class = c("mhtest", "data.frame"),

@@ -13,11 +13,11 @@
 #' @return Vector of p-values associated with `scores` and `object`.
 #' @export
 #' @importFrom stats predict
-#' @seealso [big_univLinReg] and [big_univLogReg].
+#' @importFrom magrittr %>%
 #'
-#' @examples
-predict.mhtest <- function(object, scores, ...)
-  attr(object, "predict")(attr(object, "transfo")(scores))
+#' @seealso [big_univLinReg] and [big_univLogReg].
+predict.mhtest <- function(object, scores = object$score, ...)
+  scores %>% attr(object, "transfo")() %>% attr(object, "predict")()
 
 ################################################################################
 
@@ -37,13 +37,14 @@ predict.mhtest <- function(object, scores, ...)
 #'
 #' @return `NULL`. Creates a plot.
 #' @export
+#' @importFrom graphics plot
 #'
-#' @examples
+#' @seealso [big_univLinReg] and [big_univLogReg].
 plot.mhtest <- function(x, type = c("Manhattan", "Volcano"),
                         main = paste(type, "plot"),
                         cex = 0.5, pch = 19, ...) {
 
-  lpval <- -log10(x[["p.value"]])
+  lpval <- -log10(predict(x))
   YLAB <- expression(-log[10](italic("p-value")))
 
   type <- match.arg(type)

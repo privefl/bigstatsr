@@ -19,7 +19,7 @@ a \link[=BM.code.descriptor-class]{BM.code.descriptor}.}
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
-Must be 0s and 1s.}
+\strong{Must be only 0s and 1s.}}
 
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.

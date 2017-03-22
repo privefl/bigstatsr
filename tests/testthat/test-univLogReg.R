@@ -38,6 +38,7 @@ test_that("equality with glm with all data", {
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
     for (covar in lcovar) {
       mod <- big_univLogReg(X., y, covar.train = covar)
+      mod$p.value <- predict(mod)
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
       expect_equal(mat, getGLM(X, y, covar), tolerance = TOL)
@@ -60,6 +61,7 @@ test_that("equality with glm with only half the data", {
       mod <- big_univLogReg(X., y[ind],
                             covar.train = covar[ind, ],
                             ind.train = ind)
+      mod$p.value <- predict(mod)
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
       expect_equal(mat, getGLM(X, y, covar, ind), tolerance = TOL) # FAIL HERE

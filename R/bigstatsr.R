@@ -13,7 +13,7 @@
 #'
 #' @param y.train Vector of responses, corresponding to `ind.train`.
 #' @param y01.train Vector of responses, corresponding to `ind.train`.
-#' Must be 0s and 1s.
+#' __Must be only 0s and 1s.__
 #'
 #' @param ind.train An optional vector of the row indices that are used,
 #' for the training part. If not specified, all rows are used.

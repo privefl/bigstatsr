@@ -23,6 +23,7 @@ Depends:
 Imports: 
     doParallel,
     foreach, 
+    magrittr,
     Matrix,
     methods,
     parallel, 
@@ -42,6 +43,6 @@ Suggests:
     testthat   
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-Remotes: privefl/bigmemory, privefl/sparseSVM
+Remotes: privefl/bigmemory, privefl/sparseSVM, YaohuiZeng/biglasso
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues

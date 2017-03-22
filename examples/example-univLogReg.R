@@ -6,7 +6,17 @@ covar <- matrix(rnorm(n * 3), n)
 X1 <- attach.BM(X.desc)[, 1] # only first column of the `big.matrix`
 
 # Without covar
-str(big_univLogReg(X.desc, y01))
+test <- big_univLogReg(X.desc, y01)
+## new class `mhtest`
+class(test)
+attr(test, "transfo")
+attr(test, "predict")
+## plot results
+plot(test)
+plot(test, type = "Volcano")
+## To get p-values associated with the test
+test$p.value <- predict(test)
+str(test)
 summary(glm(y01 ~ X1, family = "binomial"))$coefficients[2, ]
 
 # With all data

@@ -31,3 +31,6 @@ estimation of coefficients (e.g. betas in linear regression).
 \description{
 Plot method for class \code{mhtest}.
 }
+\seealso{
+\link{big_univLinReg} and \link{big_univLogReg}.
+}

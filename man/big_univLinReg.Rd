@@ -54,7 +54,17 @@ covar <- matrix(rnorm(n * 3), n)
 X1 <- attach.BM(X.desc)[, 1] # only first column of the `big.matrix`
 
 # Without covar
-str(big_univLinReg(X.desc, y))
+test <- big_univLinReg(X.desc, y)
+## new class `mhtest`
+class(test)
+attr(test, "transfo")
+attr(test, "predict")
+## plot results
+plot(test)
+plot(test, type = "Volcano")
+## To get p-values associated with the test
+test$p.value <- predict(test)
+str(test)
 summary(lm(y ~ X1))$coefficients[2, ]
 
 # With all data
