@@ -23,6 +23,7 @@ Depends:
 Imports: 
     doParallel,
     foreach, 
+    ggplot2,
     magrittr,
     Matrix,
     methods,
