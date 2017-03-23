@@ -97,6 +97,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #'
 #' @inherit plot.big_SVD return
 #' @export
+#' @import ggplot2
 #' @importFrom graphics plot
 #'
 #' @examples

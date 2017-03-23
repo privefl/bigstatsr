@@ -169,7 +169,7 @@ If it can&#39;t converge either, all corresponding estimations are set to <code>
 <span class='co'># Without covar</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_univLogReg</span>(<span class='no'>X.desc</span>, <span class='no'>y01</span>)</div><div class='output co'>#&gt; <span class='message'>For 1 columns, IRLS didn&#39;t converge; `glm` was used instead.</span></div><div class='input'><span class='co'>## new class `mhtest`</span>
 <span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] &quot;mhtest&quot;     &quot;data.frame&quot;</div><div class='input'><span class='fu'>attr</span>(<span class='no'>test</span>, <span class='st'>"transfo"</span>)</div><div class='output co'>#&gt; function (x)  .Primitive(&quot;abs&quot;)</div><div class='input'><span class='fu'>attr</span>(<span class='no'>test</span>, <span class='st'>"predict"</span>)</div><div class='output co'>#&gt; function(xtr) 2 * stats::pnorm(xtr, lower.tail = FALSE)
-#&gt; &lt;environment: 0x1006f088&gt;</div><div class='input'><span class='co'>## plot results</span>
+#&gt; &lt;environment: 0x8591aa8&gt;</div><div class='input'><span class='co'>## plot results</span>
 <span class='fu'>plot</span>(<span class='no'>test</span>)</div><img src='big_univLogReg-10.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><img src='big_univLogReg-12.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## To get p-values associated with the test</span>
 <span class='no'>test</span>$<span class='no'>p.value</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>)
 <span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Classes ‘mhtest’ and &#39;data.frame&#39;:	4542 obs. of  5 variables:
@@ -181,7 +181,7 @@ If it can&#39;t converge either, all corresponding estimations are set to <code>
 #&gt;  - attr(*, &quot;transfo&quot;)=function (x)  
 #&gt;  - attr(*, &quot;predict&quot;)=function (xtr)  
 #&gt;   ..- attr(*, &quot;srcref&quot;)=Class &#39;srcref&#39;  atomic [1:8] 99 15 99 69 15 69 99 99
-#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0x85aade8&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
+#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0xab4bae8&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
 #&gt; -0.07498407  0.12984051 -0.57750905  0.56359562 </div><div class='input'>
 <span class='co'># With all data</span>
 <span class='fu'>str</span>(<span class='fu'>big_univLogReg</span>(<span class='no'>X.desc</span>, <span class='no'>y01</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; Classes ‘mhtest’ and &#39;data.frame&#39;:	4542 obs. of  4 variables:
@@ -192,7 +192,7 @@ If it can&#39;t converge either, all corresponding estimations are set to <code>
 #&gt;  - attr(*, &quot;transfo&quot;)=function (x)  
 #&gt;  - attr(*, &quot;predict&quot;)=function (xtr)  
 #&gt;   ..- attr(*, &quot;srcref&quot;)=Class &#39;srcref&#39;  atomic [1:8] 99 15 99 69 15 69 99 99
-#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0x85aade8&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
+#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0xab4bae8&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
 #&gt; -0.0838521  0.1307256 -0.6414360  0.5212394 </div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
@@ -206,7 +206,7 @@ If it can&#39;t converge either, all corresponding estimations are set to <code>
 #&gt;  - attr(*, &quot;transfo&quot;)=function (x)  
 #&gt;  - attr(*, &quot;predict&quot;)=function (xtr)  
 #&gt;   ..- attr(*, &quot;srcref&quot;)=Class &#39;srcref&#39;  atomic [1:8] 99 15 99 69 15 69 99 99
-#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0x85aade8&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>,
+#&gt;   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes &#39;srcfilecopy&#39;, &#39;srcfile&#39; &lt;environment: 0xab4bae8&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>,
             <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
 #&gt; 0.05997767 0.19092367 0.31414477 0.75341109 </div></pre>
   </div>

@@ -19,24 +19,27 @@ navbar:
       href: https://github.com/privefl/bigstatsr
 
 reference:
-  - title: "SVD and PCA"
-    contents:
-      - big_SVD
-      - big_randomSVD
-      - predict.big_SVD
   - title: "Statistical models"
     desc: "Column-wise and sparse multivariate linear and logistic models."
     contents:
       - big_univLinReg
       - big_univLogReg
-      - plot.mhtest
-      - predict.mhtest
       - big_spLinReg
       - big_spLogReg
       - big_spSVM
-      - predict.big_sp
       - big_CMSA
       - AUC
+  - title: "SVD (and PCA)"
+    contents:
+      - big_SVD
+      - big_randomSVD
+  - title: "Plot and predict methods"
+    contents:
+      - plot.mhtest
+      - predict.mhtest
+      - predict.big_sp
+      - plot.big_SVD
+      - predict.big_SVD
   - title: "Utilities"
     contents:
       - big_colstats
