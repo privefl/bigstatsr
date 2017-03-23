@@ -114,37 +114,3 @@ big_SVD <- function(X., fun.scaling,
 }
 
 ################################################################################
-
-#' Scores of PCA
-#'
-#' Get the scores of PCA associated with an svd decomposition (class `big_SVD`).
-#'
-#' @inheritParams bigstatsr-package
-#' @param object A list returned by `big_SVD` or `big_randomSVD`.
-#' @param ... Not used.
-#'
-#' @export
-#' @return A matrix of size \eqn{n \times K} where `n` is the number of samples
-#' corresponding to indices in `ind.row` and K the number of PCs
-#' computed in `object`. If `X` is not specified, this just returns
-#' the scores of the training set of `object`.
-#'
-#' @example examples/example-SVD.R
-#' @seealso [predict][stats::prcomp] [big_SVD] [big_randomSVD]
-predict.big_SVD <- function(object, X. = NULL,
-                            ind.row = rows_along(X.),
-                            ind.col = cols_along(X.),
-                            block.size = 1000,
-                            ...) {
-  if (is.null(X.)) {
-    object$u %*% diag(object$d)
-  } else {
-    X <- attach.BM(X.)
-    # multiplication with clever scaling -> see vignettes
-    v2 <- object$v / object$sds
-    tmp <- big_prodMat(X, v2, ind.row, ind.col, block.size)
-    sweep(tmp, 2, crossprod(object$means, v2), '-')
-  }
-}
-
-################################################################################
