@@ -5,7 +5,8 @@
 \title{Plot method}
 \usage{
 \method{plot}{big_SVD}(x, type = c("screeplot", "scores", "loadings"),
-  nval = length(x$d), scores = c(1, 2), loading = 1, coeff = 1, ...)
+  nval = length(x$d), scores = c(1, 2), loadings = 1, cols = 2,
+  coeff = 1, ...)
 }
 \arguments{
 \item{x}{An object of class \code{big_SVD}.}
@@ -22,8 +23,11 @@
 \item{scores}{Vector of indices of the two PCs to plot. Default plots the
 first 2 PCs.}
 
-\item{loading}{Index of the unique PCA loading to plot. Default plots the
+\item{loadings}{Indices of PC loadings to plot. Default plots the
 first vector of loadings.}
+
+\item{cols}{If multiple vector of loadings are to be plotted, this defines
+the number of columns of the resulting multiplot.}
 
 \item{coeff}{Relative size of text. Default is \code{1}.}
 
@@ -52,19 +56,24 @@ plot(svd, type = "scores") # first 2 PCs
 plot(svd, type = "scores", scores = c(1, 3))
 ## add color (recall that this return a `ggplot2` object)
 class(obj <- plot(svd, type = "scores"))
-population <- rep(c("POP1", "POP2", "POP3"), c(143, 167, 207))
+\dontrun{
+pop <- rep(c("POP1", "POP2", "POP3"), c(143, 167, 207))
 library(ggplot2)
-print(obj2 <- obj + geom_point(aes(color = population)))
+obj$layers[[1]] <- NULL # remove first layer of points
+obj
+print(obj2 <- obj + geom_point(aes(color = pop)) + labs(color = "Population"))
 ## change the place of the legend
 print(obj3 <- obj2 + theme(legend.position = c(0.85, 0.17)))
 ## change the title and the labels of the axes
 obj3 + ggtitle("Yet another title") + xlab("with an other 'x' label")
 
 # loadings
-plot(svd, type = "loadings", loading = 2)
+plot(svd, type = "loadings", loadings = 2)
+## all loadings
+plot(svd, type = "loadings", loadings = 1:10, coeff = 0.5)
 
 # dynamic plots, require the package **plotly**
-\dontrun{plotly::ggplotly(obj3)}
+plotly::ggplotly(obj3)}
 }
 \seealso{
 \link{big_SVD} and \link{big_randomSVD}.

@@ -23,8 +23,10 @@ MY_THEME <- function(p, title = NULL, coeff = 1) {
 #' @param nval Number of singular values to plot. Default plots all computed.
 #' @param scores Vector of indices of the two PCs to plot. Default plots the
 #' first 2 PCs.
-#' @param loading Index of the unique PCA loading to plot. Default plots the
+#' @param loadings Indices of PC loadings to plot. Default plots the
 #' first vector of loadings.
+#' @param cols If multiple vector of loadings are to be plotted, this defines
+#' the number of columns of the resulting multiplot.
 #' @param coeff Relative size of text. Default is `1`.
 #' @param ... Not used.
 #'
@@ -42,13 +44,13 @@ MY_THEME <- function(p, title = NULL, coeff = 1) {
 plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
                          nval = length(x$d),
                          scores = c(1, 2),
-                         loading = 1,
+                         loadings = 1,
+                         cols = 2,
                          coeff = 1,
                          ...) {
 
   stopifnot(length(nval) == 1)
   stopifnot(length(scores) == 2)
-  stopifnot(length(loading) == 1)
 
   type <- match.arg(type)
   if (type == "screeplot") {
@@ -69,13 +71,23 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
       xlab(paste0("PC", nx)) +
       ylab(paste0("PC", ny))
   } else if (type == "loadings") {
-    p <- MY_THEME(qplot(y = x$v[, loading]),
-             title = paste0("Loadings of PC", loading),
-             coeff = coeff) +
-      xlab("Column index") +
-      ylab(NULL)
-    nval <- nrow(x$v)
-    `if`(nval > 12, p, p + scale_x_discrete(limits = seq_len(nval)))
+    if (length(loadings) > 1) {
+      all.p <- lapply(1:10, function(i) {
+        p <- plot(x, type = "loadings", loading = i, coeff = coeff)
+        p$layers[[1]] <- NULL
+        p + geom_hex() + viridis::scale_fill_viridis()
+      })
+      multiplot(plotlist = all.p, cols = cols)
+    } else {
+      loading <- loadings[1]
+      p <- MY_THEME(qplot(y = x$v[, loading]),
+                    title = paste0("Loadings of PC", loading),
+                    coeff = coeff) +
+        xlab("Column index") +
+        ylab(NULL)
+      nval <- nrow(x$v)
+      `if`(nval > 12, p, p + scale_x_discrete(limits = seq_len(nval)))
+    }
   }
 }
 
