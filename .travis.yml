@@ -3,7 +3,7 @@
 language: r
 r:
   - release
-  - devel
+
 sudo: false
 cache: packages
 
@@ -17,8 +17,6 @@ notifications:
     on_success: change
     on_failure: change
 
-r_github_packages:
-  - gagolews/stringi
 
 # https://github.com/travis-ci/travis-ci/issues/6587
 # Set CXX1X for R-devel, as R-devel does not detect CXX1X support for gcc 4.6.3,
