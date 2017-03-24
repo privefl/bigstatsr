@@ -11,8 +11,6 @@ plot(svd, type = "scores", scores = c(1, 3))
 ## add color (recall that this return a `ggplot2` object)
 class(obj <- plot(svd, type = "scores"))
 
-\dontrun{
-
 pop <- rep(c("POP1", "POP2", "POP3"), c(143, 167, 207))
 library(ggplot2)
 obj$layers[[1]] <- NULL # remove first layer of points
@@ -29,5 +27,4 @@ plot(svd, type = "loadings", loadings = 2)
 plot(svd, type = "loadings", loadings = 1:10, coeff = 0.5)
 
 # dynamic plots, require the package **plotly**
-plotly::ggplotly(obj3)
-}
+\dontrun{plotly::ggplotly(obj3)}

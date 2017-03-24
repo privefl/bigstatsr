@@ -40,7 +40,7 @@ MY_THEME <- function(p, title = NULL, coeff = 1) {
 #' @importFrom graphics plot
 #'
 #' @example examples/example-plot-bigSVD.R
-#' @seealso [big_SVD] and [big_randomSVD].
+#' @seealso [big_SVD], [big_randomSVD] and [asPlotlyText].
 plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
                          nval = length(x$d),
                          scores = c(1, 2),
@@ -121,7 +121,8 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #' plot(test)
 #' plot(test, type = "Volcano")
 #'
-#' @seealso [big_univLinReg], [big_univLogReg] and [plot.big_SVD].
+#' @seealso [big_univLinReg], [big_univLogReg],
+#' [plot.big_SVD] and [asPlotlyText].
 plot.mhtest <- function(x, type = c("Manhattan", "Volcano"),
                         main = paste(type, "plot"),
                         coeff = 1,
@@ -143,3 +144,34 @@ plot.mhtest <- function(x, type = c("Manhattan", "Volcano"),
 }
 
 ################################################################################
+
+#' Plotly text
+#'
+#' Convert a data.frame to plotly text
+#'
+#' @param df A data.frame
+#'
+#' @return A character vector of the length of `df`'s number of rows.
+#' @export
+#' @import foreach
+#'
+#' @examples
+#' test <- big_attachExtdata()
+#' svd <- big_SVD(test, big_scale(), k = 10)
+#'
+#' p <- plot(svd, type = "scores")
+#' p$layers[[1]] <- NULL # remove layer of points
+#' p
+#'
+#' pop <- rep(c("POP1", "POP2", "POP3"), c(143, 167, 207))
+#' df <- data.frame(Population = pop, Index = 1:517)
+#'
+#' require(ggplot2)
+#' print(p2 <- p + geom_point(aes(text = asPlotlyText(df))))
+#' \dontrun{plotly::ggplotly(p2, tooltip = "text")}
+asPlotlyText <- function(df) {
+  paste.br <- function(lhs, rhs) paste(lhs, rhs, sep = "<br>")
+  foreach(ic = seq_along(df), .combine = "paste.br") %do% {
+    paste(names(df)[ic], df[[ic]], sep = ": ")
+  }
+}

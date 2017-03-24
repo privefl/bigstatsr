@@ -4,12 +4,25 @@
 \alias{multiplot}
 \title{Multiple plot function}
 \usage{
-multiplot(..., plotlist = NULL, file, cols = 1, layout = NULL)
+multiplot(..., plotlist = NULL, cols = 1, byrow = TRUE, layout = NULL)
 }
 \arguments{
-\item{layout}{}
+\item{...}{Possibly pass ggplot objects here.}
+
+\item{plotlist}{A list of ggplot objects.}
+
+\item{cols}{The number of columns of the resulting multiplot.}
+
+\item{byrow}{If \code{layout} is \code{NULL}, plot by rows (the default).}
+
+\item{layout}{Define a special layout as a matrix.}
 }
 \description{
-Multiple ggplot2 function taken from the \link{Cookbook for R}
-(http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_%28ggplot2%29/)
+Multiple ggplot function \strong{taken from the
+\href{https://goo.gl/ZV0qEW}{Cookbook for R}}.
+}
+\examples{
+test <- big_attachExtdata()
+svd <- big_SVD(test, big_scale(), k = 10)
+multiplot(plot(svd), plot(svd, coeff = 1.2), cols = 2)
 }

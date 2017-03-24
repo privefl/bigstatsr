@@ -45,5 +45,6 @@ plot(test, type = "Volcano")
 
 }
 \seealso{
-\link{big_univLinReg}, \link{big_univLogReg} and \link{plot.big_SVD}.
+\link{big_univLinReg}, \link{big_univLogReg},
+\link{plot.big_SVD} and \link{asPlotlyText}.
 }
