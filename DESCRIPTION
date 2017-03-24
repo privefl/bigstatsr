@@ -44,6 +44,7 @@ Suggests:
     RevoUtilsMath,
     sparseSVM,
     testthat   
+SystemRequirements: C++11
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 Remotes: privefl/bigmemory, privefl/sparseSVM
