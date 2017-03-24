@@ -16,13 +16,33 @@
 # then plot 1 will go in the upper left, 2 will go in the upper right, and
 # 3 will go all the way across the bottom.
 #
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-  library(grid)
+#' Multiple plot function
+#'
+#' Multiple ggplot function **taken from the
+#' [Cookbook for R](https://goo.gl/ZV0qEW)**.
+#'
+#' @param ... Possibly pass ggplot objects here.
+#' @param plotlist A list of ggplot objects.
+#' @param cols The number of columns of the resulting multiplot.
+#' @param layout Define a special layout as a matrix.
+#' @param byrow If `layout` is `NULL`, plot by rows (the default).
+#'
+#' @export
+#' @import grid
+#'
+#' @examples
+#' test <- big_attachExtdata()
+#' svd <- big_SVD(test, big_scale(), k = 10)
+#' multiplot(plot(svd), plot(svd, coeff = 1.2), cols = 2)
+multiplot <- function(..., plotlist = NULL,
+                      cols = 1,
+                      byrow = TRUE,
+                      layout = NULL) {
 
   # Make a list from the ... arguments and plotlist
   plots <- c(list(...), plotlist)
 
-  numPlots = length(plots)
+  numPlots <- length(plots)
 
   # If layout is NULL, then use 'cols' to determine layout
   if (is.null(layout)) {
@@ -30,12 +50,12 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
     # ncol: Number of columns of plots
     # nrow: Number of rows needed, calculated from # of cols
     layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                     ncol = cols, nrow = ceiling(numPlots/cols))
+                     ncol = cols, nrow = ceiling(numPlots/cols),
+                     byrow = byrow)
   }
 
   if (numPlots==1) {
     print(plots[[1]])
-
   } else {
     # Set up the page
     grid.newpage()

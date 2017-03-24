@@ -36,7 +36,7 @@ MY_THEME <- function(p, title = NULL, coeff = 1) {
 #' to get more familiar with the package **ggplot2**. \cr
 #' Do you want dynamic plots? Go check \url{https://plot.ly/ggplot2}.
 #' @export
-#' @import ggplot2
+#' @import ggplot2 grid
 #' @importFrom graphics plot
 #'
 #' @example examples/example-plot-bigSVD.R
