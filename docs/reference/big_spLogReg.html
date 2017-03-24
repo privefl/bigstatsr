@@ -183,8 +183,7 @@ arXiv preprint arXiv:1701.05936. <a href = 'https://arxiv.org/abs/1701.05936'>ht
     <pre class="examples"><div class='input'><span class='co'># simulating some data</span>
 <span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fl'>73</span>
 <span class='no'>M</span> <span class='kw'>&lt;-</span> <span class='fl'>430</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span>*<span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='no'>N</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"integer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Assignment will down cast from double to integer</span>
-#&gt; <span class='warning'>Hint: To remove this warning type:  options(bigmemory.typecast.warning=FALSE)</span></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>N</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span>*<span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='no'>N</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"integer"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in big.matrix(nrow = nrow(x), ncol = ncol(x), type = type, init = NULL,     dimnames = dimnames(x), separated = separated, backingfile = backingfile,     backingpath = backingpath, descriptorfile = descriptorfile,     binarydescriptor = binarydescriptor, shared = shared): Error: memory could not be allocated for instance of type big.matrix</span></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>N</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='fl'>3</span>), <span class='no'>N</span>)
 
 <span class='co'># error, only handle `double` `big.matrix` objects</span>
@@ -194,41 +193,11 @@ arXiv preprint arXiv:1701.05936. <a href = 'https://arxiv.org/abs/1701.05936'>ht
 <span class='co'>## ---------------------------------------------</span>
 
 <span class='co'># OK here</span>
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>)
-<span class='fu'>str</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; List of 16
-#&gt;  $ intercept     : Named num [1:100] 0.0274 0.01981 0.0118 0.00411 -0.00329 ...
-#&gt;   ..- attr(*, &quot;names&quot;)= chr [1:100] &quot;0.2038&quot; &quot;0.1946&quot; &quot;0.1857&quot; &quot;0.1773&quot; ...
-#&gt;  $ beta          :Formal class &#39;dgCMatrix&#39; [package &quot;Matrix&quot;] with 6 slots
-#&gt;   .. ..@ i       : int [1:3685] 113 193 113 193 113 193 113 193 113 193 ...
-#&gt;   .. ..@ p       : int [1:101] 0 0 2 4 6 8 11 16 21 26 ...
-#&gt;   .. ..@ Dim     : int [1:2] 430 100
-#&gt;   .. ..@ Dimnames:List of 2
-#&gt;   .. .. ..$ : NULL
-#&gt;   .. .. ..$ : chr [1:100] &quot;0.2038&quot; &quot;0.1946&quot; &quot;0.1857&quot; &quot;0.1773&quot; ...
-#&gt;   .. ..@ x       : num [1:3685] -0.000928 -0.007468 -0.006843 -0.013571 -0.012513 ...
-#&gt;   .. ..@ factors : list()
-#&gt;  $ iter          : int [1:100] 0 4 3 3 3 5 6 4 4 4 ...
-#&gt;  $ lambda        : num [1:100] 0.204 0.195 0.186 0.177 0.169 ...
-#&gt;  $ penalty       : chr &quot;lasso&quot;
-#&gt;  $ family        : chr &quot;binomial&quot;
-#&gt;  $ alpha         : num 1
-#&gt;  $ loss          : num [1:100] 50.6 50 49.2 48.4 47.7 ...
-#&gt;  $ penalty.factor: num [1:430] 1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ n             : int 73
-#&gt;  $ p             : num 430
-#&gt;  $ center        : num [1:430] -0.3288 0.0137 0.1233 0.9315 0.3014 ...
-#&gt;  $ scale         : num [1:430] 4.63 3.65 4.46 4.8 4.66 ...
-#&gt;  $ y             : num [1:73] 0 0 1 1 0 0 0 0 0 1 ...
-#&gt;  $ col.idx       : num [1:430] 1 2 3 4 5 6 7 8 9 10 ...
-#&gt;  $ rejections    : int [1:100] 430 428 428 428 425 425 425 424 424 424 ...
-#&gt;  - attr(*, &quot;class&quot;)= chr &quot;big_sp&quot;</div><div class='input'>
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>)</div><div class='output co'>#&gt; <span class='error'>Error in attach.BM(X.): objet &#39;X&#39; introuvable</span></div><div class='input'><span class='fu'>str</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in str(test2): objet &#39;test2&#39; introuvable</span></div><div class='input'>
 <span class='co'># how to use covariables?</span>
-<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>cbind</span>(<span class='no'>X</span>[,], <span class='no'>covar</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"double"</span>)
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>biglasso</span><span class='kw'>::</span><span class='fu'>biglasso</span>(<span class='no'>X2</span>, <span class='no'>y</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>, <span class='kw'>lambda.min</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
-                           <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"enet"</span>)
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-<span class='co'># verification</span>
-<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>lambda</span>, <span class='no'>test</span>$<span class='no'>lambda</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>beta</span>@<span class='kw'>x</span>, <span class='no'>test</span>$<span class='no'>beta</span>[-<span class='fl'>1</span>, ]@<span class='kw'>x</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>intercept</span>, <span class='no'>test</span>$<span class='no'>beta</span>[<span class='fl'>1</span>, ]))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>as.big.matrix</span>(<span class='fu'>cbind</span>(<span class='no'>X</span>[,], <span class='no'>covar</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"double"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in cbind(X[, ], covar): objet &#39;X&#39; introuvable</span></div><div class='input'><span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>biglasso</span><span class='kw'>::</span><span class='fu'>biglasso</span>(<span class='no'>X2</span>, <span class='no'>y</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>, <span class='kw'>lambda.min</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
+                           <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"enet"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in nrow(X): objet &#39;X2&#39; introuvable</span></div><div class='input'><span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in attach.BM(X.): objet &#39;X&#39; introuvable</span></div><div class='input'><span class='co'># verification</span>
+<span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>lambda</span>, <span class='no'>test</span>$<span class='no'>lambda</span>))</div><div class='output co'>#&gt; <span class='error'>Error in all.equal(test2$lambda, test$lambda): objet &#39;test2&#39; introuvable</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>beta</span>@<span class='kw'>x</span>, <span class='no'>test</span>$<span class='no'>beta</span>[-<span class='fl'>1</span>, ]@<span class='kw'>x</span>))</div><div class='output co'>#&gt; <span class='error'>Error in all.equal(test2$beta@x, test$beta[-1, ]@x): objet &#39;test2&#39; introuvable</span></div><div class='input'><span class='fu'>print</span>(<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>intercept</span>, <span class='no'>test</span>$<span class='no'>beta</span>[<span class='fl'>1</span>, ]))</div><div class='output co'>#&gt; <span class='error'>Error in all.equal(test2$intercept, test$beta[1, ]): objet &#39;test2&#39; introuvable</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
