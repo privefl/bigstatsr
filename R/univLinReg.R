@@ -52,8 +52,10 @@ big_univLinReg <- function(X., y.train,
 
   res$score <- res$estim / res$std.err
   fun.pred <- eval(parse(text = sprintf(
-    "function(xtr) 2 * stats::pt(xtr, df = %d, lower.tail = FALSE)",
-    n - K - 1)))
+    "function(xtr) {
+       lpval <- stats::pt(xtr, df = %d, lower.tail = FALSE, log.p = TRUE)
+       (log(2) + lpval) / log(10)
+     }", n - K - 1)))
 
   structure(res,
             class = c("mhtest", "data.frame"),

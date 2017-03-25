@@ -50,16 +50,22 @@ predict.big_sp <- function(object, X.,
 #' function with possibily pre-transformation of scores.
 #' @param scores Raw scores (before transformation) that you want to transform
 #' to p-values.
+#' @param log10 Are p-values returned on the `log10` scale? Default is `TRUE`.
 #' @param ... Not used.
 #'
-#' @return Vector of p-values associated with `scores` and `object`.
+#' @return Vector of **`log10(p-values)`** associated with `scores` and `object`.
 #' @export
 #' @importFrom stats predict
 #' @importFrom magrittr %>%
 #'
 #' @seealso [big_univLinReg] and [big_univLogReg].
-predict.mhtest <- function(object, scores = object$score, ...)
-  scores %>% attr(object, "transfo")() %>% attr(object, "predict")()
+predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
+
+  lpval <- scores %>% attr(object, "transfo")() %>% attr(object, "predict")()
+
+  `if`(log10, lpval, 10^lpval)
+}
+
 
 ################################################################################
 

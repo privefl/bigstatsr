@@ -4,7 +4,7 @@
 \alias{predict.mhtest}
 \title{Predict method}
 \usage{
-\method{predict}{mhtest}(object, scores = object$score, ...)
+\method{predict}{mhtest}(object, scores = object$score, log10 = TRUE, ...)
 }
 \arguments{
 \item{object}{An object of class \code{mhtest} from you get the probability
@@ -13,10 +13,12 @@ function with possibily pre-transformation of scores.}
 \item{scores}{Raw scores (before transformation) that you want to transform
 to p-values.}
 
+\item{log10}{Are p-values returned on the \code{log10} scale? Default is \code{TRUE}.}
+
 \item{...}{Not used.}
 }
 \value{
-Vector of p-values associated with \code{scores} and \code{object}.
+Vector of \strong{\code{log10(p-values)}} associated with \code{scores} and \code{object}.
 }
 \description{
 Predict method for class \code{mhtest}.

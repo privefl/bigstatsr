@@ -96,7 +96,10 @@ big_univLogReg <- function(X., y01.train,
   }
 
   res$score <- res$estim / res$std.err
-  fun.pred <- function(xtr) 2 * stats::pnorm(xtr, lower.tail = FALSE)
+  fun.pred <- function(xtr) {
+    lpval <- stats::pnorm(xtr, lower.tail = FALSE, log.p = TRUE)
+    (log(2) + lpval) / log(10)
+  }
 
   structure(res,
             class = c("mhtest", "data.frame"),

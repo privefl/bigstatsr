@@ -15,7 +15,7 @@ attr(test, "predict")
 plot(test)
 plot(test, type = "Volcano")
 ## To get p-values associated with the test
-test$p.value <- predict(test)
+test$p.value <- predict(test, log10 = FALSE)
 str(test)
 summary(lm(y ~ X1))$coefficients[2, ]
 

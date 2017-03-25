@@ -5,7 +5,7 @@
 \title{Plot method}
 \usage{
 \method{plot}{mhtest}(x, type = c("Manhattan", "Volcano"),
-  main = paste(type, "plot"), coeff = 1, ...)
+  main = paste(type, "Plot"), coeff = 1, ...)
 }
 \arguments{
 \item{x}{An object of class \code{mhtest}.}

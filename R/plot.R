@@ -1,12 +1,13 @@
 ################################################################################
 
-MY_THEME <- function(p, title = NULL, coeff = 1) {
-  p + theme_bw() + ggtitle(title) +
-    theme(plot.title   = element_text(size = rel(2.0 * coeff), hjust = 0.5),
-          legend.title = element_text(size = rel(1.5 * coeff)),
-          legend.text  = element_text(size = rel(1.2 * coeff)),
-          axis.title   = element_text(size = rel(1.5 * coeff)),
-          axis.text    = element_text(size = rel(1.2 * coeff)))
+MY_THEME <- function(p, coeff = 1) {
+  p + theme_bw() +
+    theme(plot.title    = element_text(size = rel(2.0 * coeff), hjust = 0.5),
+          plot.subtitle = element_text(size = rel(1.5 * coeff), hjust = 0.5),
+          legend.title  = element_text(size = rel(1.5 * coeff)),
+          legend.text   = element_text(size = rel(1.2 * coeff)),
+          axis.title    = element_text(size = rel(1.5 * coeff)),
+          axis.text     = element_text(size = rel(1.2 * coeff)))
 }
 
 ################################################################################
@@ -53,41 +54,47 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
   stopifnot(length(scores) == 2)
 
   type <- match.arg(type)
+
   if (type == "screeplot") {
-    p <- MY_THEME(qplot(y = x$d[seq_len(nval)]),
-             title = "Screeplot",
-             coeff = coeff) +
+
+    p <- MY_THEME(qplot(y = x$d[seq_len(nval)]), coeff = coeff) +
       geom_line() +
-      xlab("PC index") +
-      ylab("Singular Values")
+      labs(title = "Scree Plot", x = "PC Index", y = "Singular Values")
+
     `if`(nval > 12, p, p + scale_x_discrete(limits = seq_len(nval)))
+
   } else if (type == "scores") {
+
     sc <- predict(x)
     nx <- scores[1]
     ny <- scores[2]
-    MY_THEME(qplot(x = sc[, nx], y = sc[, ny]),
-             title = "Scores of PCA",
-             coeff = coeff) +
-      xlab(paste0("PC", nx)) +
-      ylab(paste0("PC", ny))
+
+    MY_THEME(qplot(x = sc[, nx], y = sc[, ny]), coeff = coeff) +
+      labs(title = "Scores of PCA", x = paste0("PC", nx), y = paste0("PC", ny))
+
   } else if (type == "loadings") {
+
     if (length(loadings) > 1) {
+
       all.p <- lapply(1:10, function(i) {
         p <- plot(x, type = "loadings", loading = i, coeff = coeff)
         p$layers[[1]] <- NULL
         p + geom_hex() + viridis::scale_fill_viridis()
       })
+
       multiplot(plotlist = all.p, cols = cols)
+
     } else {
-      loading <- loadings[1]
-      p <- MY_THEME(qplot(y = x$v[, loading]),
-                    title = paste0("Loadings of PC", loading),
-                    coeff = coeff) +
-        xlab("Column index") +
-        ylab(NULL)
+
+      p <- MY_THEME(qplot(y = x$v[, loadings]), coeff = coeff) +
+        labs(title = paste0("Loadings of PC", loadings),
+             x = "Column index", y = NULL)
+
       nval <- nrow(x$v)
       `if`(nval > 12, p, p + scale_x_discrete(limits = seq_len(nval)))
+
     }
+
   }
 }
 
@@ -124,22 +131,20 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #' @seealso [big_univLinReg], [big_univLogReg],
 #' [plot.big_SVD] and [asPlotlyText].
 plot.mhtest <- function(x, type = c("Manhattan", "Volcano"),
-                        main = paste(type, "plot"),
+                        main = paste(type, "Plot"),
                         coeff = 1,
                         ...) {
 
-  lpval <- -log10(predict(x))
+  lpval <- -predict(x) # -log10(p)
   YLAB <- expression(-log[10](italic("p-value")))
 
   type <- match.arg(type)
   if (type == "Manhattan") {
-    MY_THEME(qplot(y = lpval), title = main, coeff = coeff) +
-      xlab("Column index") +
-      ylab(YLAB)
+    MY_THEME(qplot(y = lpval), coeff = coeff) +
+      labs(title = main, x = "Column Index", y = YLAB)
   } else if (type == "Volcano") {
-    MY_THEME(qplot(x = x[["estim"]], y = lpval), title = main, coeff = coeff) +
-      xlab("Estimate") +
-      ylab(YLAB)
+    MY_THEME(qplot(x = x[["estim"]], y = lpval), coeff = coeff) +
+      labs(title = main, x = "Estimate", y = YLAB)
   }
 }
 
@@ -175,3 +180,5 @@ asPlotlyText <- function(df) {
     paste(names(df)[ic], df[[ic]], sep = ": ")
   }
 }
+
+################################################################################

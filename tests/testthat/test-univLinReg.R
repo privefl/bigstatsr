@@ -34,7 +34,7 @@ test_that("equality with lm with all data", {
 
     for (covar in lcovar) {
       mod <- big_univLinReg(X., y, covar.train = covar)
-      mod$p.value <- predict(mod)
+      mod$p.value <- predict(mod, log10 = FALSE)
       expect_equivalent(as.matrix(mod), getLM(X, y, covar))
     }
   }
@@ -53,7 +53,7 @@ test_that("equality with lm with only half the data", {
       mod <- big_univLinReg(X., y[ind],
                             covar.train = covar[ind, ],
                             ind.train = ind)
-      mod$p.value <- predict(mod)
+      mod$p.value <- predict(mod, log10 = FALSE)
       expect_equivalent(as.matrix(mod), getLM(X, y, covar, ind))
     }
   }
