@@ -92,7 +92,7 @@
     
 
     <pre><span class='co'># S3 method for mhtest</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>scores</span> <span class='kw'>=</span> <span class='no'>object</span>$<span class='no'>score</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>scores</span> <span class='kw'>=</span> <span class='no'>object</span>$<span class='no'>score</span>, <span class='kw'>log10</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -102,13 +102,15 @@ function with possibily pre-transformation of scores.</dd>
       <dt>scores</dt>
       <dd>Raw scores (before transformation) that you want to transform
 to p-values.</dd>
+      <dt>log10</dt>
+      <dd>Are p-values returned on the <code>log10</code> scale? Default is <code>TRUE</code>.</dd>
       <dt>...</dt>
       <dd>Not used.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Vector of p-values associated with <code>scores</code> and <code>object</code>.</p>
+    <p>Vector of <strong><code>log10(p-values)</code></strong> associated with <code>scores</code> and <code>object</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
