@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method — plot.mhtest • bigstatsr</title>
+<title>Plotly text — asPlotlyText • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -84,62 +84,37 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot method</h1>
+    <h1>Plotly text</h1>
     </div>
 
     
-    <p>Plot method for class <code>mhtest</code>.</p>
+    <p>Convert a data.frame to plotly text</p>
     
 
-    <pre><span class='co'># S3 method for mhtest</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Manhattan"</span>, <span class='st'>"Volcano"</span>),
-  <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='no'>type</span>, <span class='st'>"Plot"</span>), <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>An object of class <code>mhtest</code>.</dd>
-      <dt>type</dt>
-      <dd>Either
-<ul>
-<li> &quot;Manhattan&quot;: plot of the negative logarithm (in base 10) of p-values
-(the default).
-</li>
-<li> &quot;Volcaco&quot;: plot of the negative logarithm of p-values against the
-estimation of coefficients (e.g. betas in linear regression).
-</li>
-</ul>
-</dd>
-      <dt>main</dt>
-      <dd>The title of the plot. Default use the <code>type</code>.</dd>
-      <dt>coeff</dt>
-      <dd>Relative size of text. Default is <code>1</code>.</dd>
-      <dt>...</dt>
-      <dd>Not used.</dd>
+      <dt>df</dt>
+      <dd>A data.frame</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
-You can modify it as you wish by adding layers. You might want to read
-<a href = 'this chapter'>http://r4ds.had.co.nz/data-visualisation.html</a>
-to get more familiar with the package <strong>ggplot2</strong>. 
-Do you want dynamic plots? Go check <a href = 'https://plot.ly/ggplot2'>https://plot.ly/ggplot2</a>.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><a href='big_univLinReg.html'>big_univLinReg</a>, <a href='big_univLogReg.html'>big_univLogReg</a>,
-<a href='plot.big_SVD.html'>plot.big_SVD</a> and <a href='asPlotlyText.html'>asPlotlyText</a>.</p>
+    <p>A character vector of the length of <code>df</code>&#39;s number of rows.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>)
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_univLinReg.html'>big_univLinReg</a></span>(<span class='no'>X.desc</span>, <span class='no'>y</span>)
+    <pre class="examples"><div class='input'><span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>svd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>test</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>)
+<span class='no'>p</span>$<span class='no'>layers</span><span class='kw'>[[</span><span class='fl'>1</span>]] <span class='kw'>&lt;-</span> <span class='kw'>NULL</span> <span class='co'># remove layer of points</span>
+<span class='no'>p</span></div><img src='asPlotlyText-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"POP1"</span>, <span class='st'>"POP2"</span>, <span class='st'>"POP3"</span>), <span class='fu'>c</span>(<span class='fl'>143</span>, <span class='fl'>167</span>, <span class='fl'>207</span>))
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Population</span> <span class='kw'>=</span> <span class='no'>pop</span>, <span class='kw'>Index</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>517</span>)
 
-<span class='fu'>plot</span>(<span class='no'>test</span>)</div><img src='plot.mhtest-2.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><img src='plot.mhtest-4.png' alt='' width='540' height='400' /><div class='input'>
-</div></pre>
+<span class='fu'>require</span>(<span class='no'>ggplot2</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: ggplot2</span></div><div class='output co'>#&gt; <span class='message'>Want to understand how all the pieces fit together? Buy the ggplot2</span>
+#&gt; <span class='message'>book: http://ggplot2.org/book/</span></div><div class='input'><span class='fu'>print</span>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>p</span> + <span class='fu'>geom_point</span>(<span class='fu'>aes</span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='fu'>asPlotlyText</span>(<span class='no'>df</span>))))</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: text</span></div><div class='output co'>#&gt; <span class='error'>Error in {    paste(names(df)[ic], df[[ic]], sep = &quot;: &quot;)}: task 1 failed - &quot;objet de type &#39;closure&#39; non indiçable&quot;</span></div><img src='asPlotlyText-11.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## Not run: plotly::ggplotly(p2, tooltip = &amp;quot;text&amp;quot;)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -147,8 +122,6 @@ Do you want dynamic plots? Go check <a href = 'https://plot.ly/ggplot2'>https://
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
