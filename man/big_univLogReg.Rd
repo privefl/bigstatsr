@@ -60,6 +60,8 @@ Then, \link[stats:glm]{glm} is used instead for the corresponding column.
 If it can't converge either, all corresponding estimations are set to \code{NA}.
 }
 \examples{
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)
 y01 <- sample(0:1, size = n, replace = TRUE)

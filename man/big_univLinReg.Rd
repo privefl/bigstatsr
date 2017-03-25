@@ -46,6 +46,8 @@ of a \code{big.matrix}, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
 \examples{
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)
 y <- rnorm(n)

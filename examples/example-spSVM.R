@@ -1,3 +1,5 @@
+set.seed(1)
+
 # simulating some data
 N <- 73
 M <- 430

@@ -35,6 +35,8 @@ Do you want dynamic plots? Go check \url{https://plot.ly/ggplot2}.
 Plot method for class \code{mhtest}.
 }
 \examples{
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)
 y <- rnorm(n)

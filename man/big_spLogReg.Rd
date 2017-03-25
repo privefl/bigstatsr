@@ -105,6 +105,8 @@ types of \code{big.matrix} (not only \code{double} ones).
 Yet, it only corresponds to \code{screen = "SSR"} (Sequential Strong Rules).
 }
 \examples{
+set.seed(1)
+
 # simulating some data
 N <- 73
 M <- 430

@@ -33,6 +33,8 @@ the scores of the training set of \code{object}.
 Get the scores of PCA associated with an svd decomposition (class \code{big_SVD}).
 }
 \examples{
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)
 

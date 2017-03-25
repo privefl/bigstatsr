@@ -31,6 +31,8 @@
 #' @import grid
 #'
 #' @examples
+#' set.seed(1)
+#'
 #' test <- big_attachExtdata()
 #' svd <- big_SVD(test, big_scale(), k = 10)
 #' multiplot(plot(svd), plot(svd, coeff = 1.2), cols = 2)

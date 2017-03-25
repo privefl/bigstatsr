@@ -22,6 +22,8 @@ Multiple ggplot function \strong{taken from the
 \href{https://goo.gl/ZV0qEW}{Cookbook for R}}.
 }
 \examples{
+set.seed(1)
+
 test <- big_attachExtdata()
 svd <- big_SVD(test, big_scale(), k = 10)
 multiplot(plot(svd), plot(svd, coeff = 1.2), cols = 2)

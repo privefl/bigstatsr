@@ -57,6 +57,8 @@ please use \link{big_randomSVD} instead.
 }
 }
 \examples{
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)
 

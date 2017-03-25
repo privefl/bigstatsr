@@ -1,3 +1,5 @@
+set.seed(1)
+
 test <- big_attachExtdata()
 svd <- big_SVD(test, big_scale(), k = 10)
 

@@ -16,6 +16,8 @@ A character vector of the length of \code{df}'s number of rows.
 Convert a data.frame to plotly text
 }
 \examples{
+set.seed(1)
+
 test <- big_attachExtdata()
 svd <- big_SVD(test, big_scale(), k = 10)
 

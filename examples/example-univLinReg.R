@@ -1,3 +1,5 @@
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)
 y <- rnorm(n)

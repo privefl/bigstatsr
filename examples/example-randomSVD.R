@@ -1,3 +1,5 @@
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 K <- 10
 

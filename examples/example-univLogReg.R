@@ -1,3 +1,5 @@
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 n <- nrow(X.desc)
 y01 <- sample(0:1, size = n, replace = TRUE)

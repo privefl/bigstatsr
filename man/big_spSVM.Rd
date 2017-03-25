@@ -86,6 +86,8 @@ over a grid of values for the regularization parameter lambda.
 \href{https://github.com/CY-dev/sparseSVM}{package sparseSVM}}.
 }
 \examples{
+set.seed(1)
+
 # simulating some data
 N <- 73
 M <- 430

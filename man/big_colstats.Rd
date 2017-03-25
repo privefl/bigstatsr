@@ -26,6 +26,8 @@ For now, the \code{sum} and \code{var} are implemented
 (the \code{mean} and \code{sd} can easily be deduced, see examples).
 }
 \examples{
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 
 # Check the results

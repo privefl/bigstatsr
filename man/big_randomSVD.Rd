@@ -68,6 +68,8 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 \url{http://dx.doi.org/10.1137/080736417}.
 }
 \examples{
+set.seed(1)
+
 X.desc <- big_attachExtdata()
 K <- 10
 
