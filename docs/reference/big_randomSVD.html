@@ -31,6 +31,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -88,11 +90,11 @@
     </div>
 
     
-    <p>An algorithm for SVD (or PCA) of a <code>big.matrix</code> based on the algorithm
-in RSpectra (by Yixuan Qiu and Jiali Mei).</p>
+    An algorithm for SVD (or PCA) of a <code>big.matrix</code> based on the algorithm
+in RSpectra (by Yixuan Qiu and Jiali Mei).
 
-    <p>This algorithm is linear in time in all dimensions and is very
-memory-efficient. Thus, it can be used on very large big.matrices.</p>
+    This algorithm is linear in time in all dimensions and is very
+memory-efficient. Thus, it can be used on very large big.matrices.
     
 
     <pre><span class='fu'>big_randomSVD</span>(<span class='no'>X.</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>),
@@ -100,36 +102,53 @@ memory-efficient. Thus, it can be used on very large big.matrices.</p>
   <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>X.</dt>
-      <dd>Either a big.matrix or
-a big.matrix.descriptor.</dd>
-      <dt>fun.scaling</dt>
-      <dd>A function that returns a named list of
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>X.</th>
+      <td>Either a big.matrix or
+a big.matrix.descriptor.</td>
+    </tr>
+    <tr>
+      <th>fun.scaling</th>
+      <td>A function that returns a named list of
 <code>mean</code> and <code>sd</code> for every column, to scale each of their elements
-such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</dd>
-      <dt>ind.row</dt>
-      <dd>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>ind.col</dt>
-      <dd>An optional vector of the column indices that are used.
-If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>k</dt>
-      <dd>Number of singular vectors/values to compute. Default is <code>10</code>.
+such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}$$.</td>
+    </tr>
+    <tr>
+      <th>ind.row</th>
+      <td>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></td>
+    </tr>
+    <tr>
+      <th>ind.col</th>
+      <td>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></td>
+    </tr>
+    <tr>
+      <th>k</th>
+      <td>Number of singular vectors/values to compute. Default is <code>10</code>.
 <strong>This algorithm should be used to compute only a
-few singular vectors/values.</strong></dd>
-      <dt>tol</dt>
-      <dd>Precision parameter of <a href='http://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a>.
-Default is <code>1e-4</code>.</dd>
-      <dt>verbose</dt>
-      <dd>Should some progress be printed? Default is <code>FALSE</code>.</dd>
-      <dt>ncores</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.</dd>
-    </dl>
+few singular vectors/values.</strong></td>
+    </tr>
+    <tr>
+      <th>tol</th>
+      <td>Precision parameter of <a href='http://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a>.
+Default is <code>1e-4</code>.</td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td>Should some progress be printed? Default is <code>FALSE</code>.</td>
+    </tr>
+    <tr>
+      <th>ncores</th>
+      <td>Number of cores used. Default doesn&#39;t use parallelism.</td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named list (an S3 class &quot;big_SVD&quot;) of
+    A named list (an S3 class &quot;big_SVD&quot;) of
 <ul>
 <li> <code>d</code>, the singular values,
 </li>
@@ -145,25 +164,25 @@ Default is <code>1e-4</code>.</dd>
 </li>
 <li> <code>sds</code>, the scaling vector.
 </li>
-</ul></p>
-    <p>Note that to obtain the Principal Components, you must use
-<a href='predict.big_SVD.html'>predict</a> on the result. See examples.</p>
+</ul>
+    Note that to obtain the Principal Components, you must use
+<a href='predict.big_SVD.html'>predict</a> on the result. See examples.
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>The idea of using this Implicitly Restarted Arnoldi Method algorithm
+    The idea of using this Implicitly Restarted Arnoldi Method algorithm
 comes from G. Abraham, Y. Qiu, and M. Inouye,
 FlashPCA2: principal component analysis of biobank-scale genotype datasets,
-bioRxiv: <a href = 'https://doi.org/10.1101/094714'>https://doi.org/10.1101/094714</a>.</p>
-    <p>It proved to be faster than our implementation of the &quot;blanczos&quot; algorithm
+bioRxiv: <a href = 'https://doi.org/10.1101/094714'>https://doi.org/10.1101/094714</a>.
+    It proved to be faster than our implementation of the &quot;blanczos&quot; algorithm
 in Rokhlin, V., Szlam, A., &amp; Tygert, M. (2010).
 A Randomized Algorithm for Principal Component Analysis.
 SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
-<a href = 'http://dx.doi.org/10.1137/080736417'>http://dx.doi.org/10.1137/080736417</a>.</p>
+<a href = 'http://dx.doi.org/10.1137/080736417'>http://dx.doi.org/10.1137/080736417</a>.
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a></p>
+    <a href='http://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

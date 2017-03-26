@@ -31,6 +31,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -88,29 +90,38 @@
     </div>
 
     
-    <p>Product between a &quot;big.matrix&quot; and a vector.</p>
+    Product between a &quot;big.matrix&quot; and a vector.
     
 
     <pre><span class='fu'>big_prodVec</span>(<span class='no'>X.</span>, <span class='no'>y</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>X.</dt>
-      <dd>Either a big.matrix or
-a big.matrix.descriptor.</dd>
-      <dt>y</dt>
-      <dd>A vector of same size as <code>ind.col</code>.</dd>
-      <dt>ind.row</dt>
-      <dd>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>ind.col</dt>
-      <dd>An optional vector of the column indices that are used.
-If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>X.</th>
+      <td>Either a big.matrix or
+a big.matrix.descriptor.</td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td>A vector of same size as <code>ind.col</code>.</td>
+    </tr>
+    <tr>
+      <th>ind.row</th>
+      <td>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></td>
+    </tr>
+    <tr>
+      <th>ind.col</th>
+      <td>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>\(X \cdot y\).</p>
+    \(X \cdot y\).
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

@@ -31,6 +31,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -88,8 +90,8 @@
     </div>
 
     
-    <p>Fit solution paths for sparse linear SVM regularized by lasso or elastic-net
-over a grid of values for the regularization parameter lambda.</p>
+    Fit solution paths for sparse linear SVM regularized by lasso or elastic-net
+over a grid of values for the regularization parameter lambda.
     
 
     <pre><span class='fu'>COPY_sparseSVM</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='no'>ind.train</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -98,65 +100,88 @@ over a grid of values for the regularization parameter lambda.</p>
   <span class='kw'>eps</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>dfmax</span> <span class='kw'>=</span> <span class='no'>p</span> + <span class='fl'>1</span>, <span class='kw'>penalty.factor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>alpha</dt>
-      <dd>The elastic-net mixing parameter that controls the relative
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>alpha</th>
+      <td>The elastic-net mixing parameter that controls the relative
 contribution from the lasso and the ridge penalty. It must be a number
 between <code>0</code> and <code>1</code>. <code>alpha=1</code> is the lasso penalty and <code>alpha=0</code>
-the ridge penalty.</dd>
-      <dt>gamma</dt>
-      <dd>The tuning parameter for huberization smoothing of hinge loss.
-Default is <code>0.1</code>.</dd>
-      <dt>nlambda</dt>
-      <dd>The number of lambda values. Default is <code>100</code>.</dd>
-      <dt>lambda.min</dt>
-      <dd>The smallest value for lambda, as a fraction of
+the ridge penalty.</td>
+    </tr>
+    <tr>
+      <th>gamma</th>
+      <td>The tuning parameter for huberization smoothing of hinge loss.
+Default is <code>0.1</code>.</td>
+    </tr>
+    <tr>
+      <th>nlambda</th>
+      <td>The number of lambda values. Default is <code>100</code>.</td>
+    </tr>
+    <tr>
+      <th>lambda.min</th>
+      <td>The smallest value for lambda, as a fraction of
 <code>lambda.max</code>, the data derived entry value. Default is <code>0.01</code> if the number
-of observations is larger than the number of variables and <code>0.05</code> otherwise.</dd>
-      <dt>lambda</dt>
-      <dd>A user-specified sequence of lambda values. Typical usage is
+of observations is larger than the number of variables and <code>0.05</code> otherwise.</td>
+    </tr>
+    <tr>
+      <th>lambda</th>
+      <td>A user-specified sequence of lambda values. Typical usage is
 to leave blank and have the program automatically compute a <code>lambda</code>
 sequence based on <code>nlambda</code> and <code>lambda.min</code>. Specifying
 <code>lambda</code> overrides this. This argument should be used with care and
-supplied with a decreasing sequence instead of a single value.</dd>
-      <dt>screen</dt>
-      <dd>Screening rule to be applied at each <code>lambda</code> that
+supplied with a decreasing sequence instead of a single value.</td>
+    </tr>
+    <tr>
+      <th>screen</th>
+      <td>Screening rule to be applied at each <code>lambda</code> that
 discards variables for speed. Either &quot;ASR&quot; (default), &quot;SR&quot; or &quot;none&quot;. &quot;SR&quot;
 stands for the strong rule, and &quot;ASR&quot; for the adaptive strong rule. Using
 &quot;ASR&quot; typically requires fewer iterations to converge than &quot;SR&quot;, but the
 computing time are generally close. Note that the option &quot;none&quot; is used
-mainly for debugging, which may lead to much longer computing time.</dd>
-      <dt>max.iter</dt>
-      <dd>Maximum number of iterations. Default is 1000.</dd>
-      <dt>eps</dt>
-      <dd>Convergence threshold. The algorithms continue until the maximum
+mainly for debugging, which may lead to much longer computing time.</td>
+    </tr>
+    <tr>
+      <th>max.iter</th>
+      <td>Maximum number of iterations. Default is 1000.</td>
+    </tr>
+    <tr>
+      <th>eps</th>
+      <td>Convergence threshold. The algorithms continue until the maximum
 change in the objective after any coefficient update is less than <code>eps</code>
-times the null deviance.  Default is <code>1E-7</code>.</dd>
-      <dt>dfmax</dt>
-      <dd>Upper bound for the number of nonzero coefficients. The
+times the null deviance.  Default is <code>1E-7</code>.</td>
+    </tr>
+    <tr>
+      <th>dfmax</th>
+      <td>Upper bound for the number of nonzero coefficients. The
 algorithm exits and returns a partial path if <code>dfmax</code> is reached.
-Useful for very large dimensions.</dd>
-      <dt>penalty.factor</dt>
-      <dd>A numeric vector of length equal to the number of
+Useful for very large dimensions.</td>
+    </tr>
+    <tr>
+      <th>penalty.factor</th>
+      <td>A numeric vector of length equal to the number of
 variables. Each component multiplies <code>lambda</code> to allow differential
 penalization. Can be 0 for some variables, in which case the variable is
-always in the model without penalization. Default is <code>1</code> for all variables.</dd>
-      <dt>message</dt>
-      <dd>If set to <code>TRUE</code>, <code>sparseSVM</code> will inform the user of its
-progress. Default is <code>FALSE</code>.</dd>
-    </dl>
+always in the model without penalization. Default is <code>1</code> for all variables.</td>
+    </tr>
+    <tr>
+      <th>message</th>
+      <td>If set to <code>TRUE</code>, <code>sparseSVM</code> will inform the user of its
+progress. Default is <code>FALSE</code>.</td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named list containing:</p>
+    A named list containing:
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The sequence of models indexed by the regularization parameter <code>lambda</code>
+    The sequence of models indexed by the regularization parameter <code>lambda</code>
 is fitted using a semismooth Newton coordinate descent algorithm. The
 objective function is defined to be $$\frac{1}{n} \sum hingeLoss(y_i
 (x_i&#39; w + b)) + \lambda\textrm{penalty}(w).$$ where $$hingeLoss(t) = max(0, 1-t)$$ and the
-intercept <code>b</code> is unpenalized.</p>
+intercept <code>b</code> is unpenalized.
     
 
   </div>

@@ -31,6 +31,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -88,7 +90,7 @@
     </div>
 
     
-    <p>Plot method for class <code>mhtest</code>.</p>
+    Plot method for class <code>mhtest</code>.
     
 
     <pre><span class='co'># S3 method for mhtest</span>
@@ -96,11 +98,15 @@
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='no'>type</span>, <span class='st'>"Plot"</span>), <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>An object of class <code>mhtest</code>.</dd>
-      <dt>type</dt>
-      <dd>Either
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td>An object of class <code>mhtest</code>.</td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td>Either
 <ul>
 <li> &quot;Manhattan&quot;: plot of the negative logarithm (in base 10) of p-values
 (the default).
@@ -109,27 +115,34 @@
 estimation of coefficients (e.g. betas in linear regression).
 </li>
 </ul>
-</dd>
-      <dt>main</dt>
-      <dd>The title of the plot. Default use the <code>type</code>.</dd>
-      <dt>coeff</dt>
-      <dd>Relative size of text. Default is <code>1</code>.</dd>
-      <dt>...</dt>
-      <dd>Not used.</dd>
-    </dl>
+</td>
+    </tr>
+    <tr>
+      <th>main</th>
+      <td>The title of the plot. Default use the <code>type</code>.</td>
+    </tr>
+    <tr>
+      <th>coeff</th>
+      <td>Relative size of text. Default is <code>1</code>.</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>Not used.</td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
+    A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
 You can modify it as you wish by adding layers. You might want to read
 <a href = 'this chapter'>http://r4ds.had.co.nz/data-visualisation.html</a>
 to get more familiar with the package <strong>ggplot2</strong>. 
-Do you want dynamic plots? Go check <a href = 'https://plot.ly/ggplot2'>https://plot.ly/ggplot2</a>.</p>
+Do you want dynamic plots? Go check <a href = 'https://plot.ly/ggplot2'>https://plot.ly/ggplot2</a>.
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='big_univLinReg.html'>big_univLinReg</a>, <a href='big_univLogReg.html'>big_univLogReg</a>,
-<a href='plot.big_SVD.html'>plot.big_SVD</a> and <a href='asPlotlyText.html'>asPlotlyText</a>.</p>
+    <a href='big_univLinReg.html'>big_univLinReg</a>, <a href='big_univLogReg.html'>big_univLogReg</a>,
+<a href='plot.big_SVD.html'>plot.big_SVD</a> and <a href='asPlotlyText.html'>asPlotlyText</a>.
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

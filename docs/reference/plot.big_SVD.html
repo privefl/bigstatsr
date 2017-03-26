@@ -31,6 +31,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -88,7 +90,7 @@
     </div>
 
     
-    <p>Plot method for class <code>big_SVD</code>.</p>
+    Plot method for class <code>big_SVD</code>.
     
 
     <pre><span class='co'># S3 method for big_SVD</span>
@@ -97,11 +99,15 @@
   <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>An object of class <code>big_SVD</code>.</dd>
-      <dt>type</dt>
-      <dd>Either
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td>An object of class <code>big_SVD</code>.</td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td>Either
 <ul>
 <li> &quot;screeplot&quot;: plot of decresing singular values (the default).
 </li>
@@ -110,35 +116,48 @@
 <li> &quot;loadings&quot;: plot of loadings associated with 1 Principal Component.
 </li>
 </ul>
-</dd>
-      <dt>nval</dt>
-      <dd>Number of singular values to plot. Default plots all computed.</dd>
-      <dt>scores</dt>
-      <dd>Vector of indices of the two PCs to plot. Default plots the
-first 2 PCs.</dd>
-      <dt>loadings</dt>
-      <dd>Indices of PC loadings to plot. Default plots the
-first vector of loadings.</dd>
-      <dt>cols</dt>
-      <dd>If multiple vector of loadings are to be plotted, this defines
-the number of columns of the resulting multiplot.</dd>
-      <dt>coeff</dt>
-      <dd>Relative size of text. Default is <code>1</code>.</dd>
-      <dt>...</dt>
-      <dd>Not used.</dd>
-    </dl>
+</td>
+    </tr>
+    <tr>
+      <th>nval</th>
+      <td>Number of singular values to plot. Default plots all computed.</td>
+    </tr>
+    <tr>
+      <th>scores</th>
+      <td>Vector of indices of the two PCs to plot. Default plots the
+first 2 PCs.</td>
+    </tr>
+    <tr>
+      <th>loadings</th>
+      <td>Indices of PC loadings to plot. Default plots the
+first vector of loadings.</td>
+    </tr>
+    <tr>
+      <th>cols</th>
+      <td>If multiple vector of loadings are to be plotted, this defines
+the number of columns of the resulting multiplot.</td>
+    </tr>
+    <tr>
+      <th>coeff</th>
+      <td>Relative size of text. Default is <code>1</code>.</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>Not used.</td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
+    A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
 You can modify it as you wish by adding layers. You might want to read
 <a href = 'this chapter'>http://r4ds.had.co.nz/data-visualisation.html</a>
 to get more familiar with the package <strong>ggplot2</strong>. 
-Do you want dynamic plots? Go check <a href = 'https://plot.ly/ggplot2'>https://plot.ly/ggplot2</a>.</p>
+Do you want dynamic plots? Go check <a href = 'https://plot.ly/ggplot2'>https://plot.ly/ggplot2</a>.
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='big_SVD.html'>big_SVD</a>, <a href='big_randomSVD.html'>big_randomSVD</a> and <a href='asPlotlyText.html'>asPlotlyText</a>.</p>
+    <a href='big_SVD.html'>big_SVD</a>, <a href='big_randomSVD.html'>big_randomSVD</a> and <a href='asPlotlyText.html'>asPlotlyText</a>.
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

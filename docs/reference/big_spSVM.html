@@ -31,6 +31,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -88,31 +90,41 @@
     </div>
 
     
-    <p>Fit solution paths for sparse linear SVM regularized by lasso or elastic-net
-over a grid of values for the regularization parameter lambda.</p>
+    Fit solution paths for sparse linear SVM regularized by lasso or elastic-net
+over a grid of values for the regularization parameter lambda.
     
 
     <pre><span class='fu'>big_spSVM</span>(<span class='no'>X.</span>, <span class='no'>y01.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>X.</dt>
-      <dd>Either a big.matrix or
-a big.matrix.descriptor.</dd>
-      <dt>y01.train</dt>
-      <dd>Vector of responses, corresponding to <code>ind.train</code>.
-<strong>Must be only 0s and 1s.</strong></dd>
-      <dt>ind.train</dt>
-      <dd>An optional vector of the row indices that are used,
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>X.</th>
+      <td>Either a big.matrix or
+a big.matrix.descriptor.</td>
+    </tr>
+    <tr>
+      <th>y01.train</th>
+      <td>Vector of responses, corresponding to <code>ind.train</code>.
+<strong>Must be only 0s and 1s.</strong></td>
+    </tr>
+    <tr>
+      <th>ind.train</th>
+      <td>An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.
-<strong>Don&#39;t use negative indices.</strong></dd>
-      <dt>covar.train</dt>
-      <dd>Matrix of covariables to be added in each model to correct
+<strong>Don&#39;t use negative indices.</strong></td>
+    </tr>
+    <tr>
+      <th>covar.train</th>
+      <td>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
-      <dt>...</dt>
-      <dd>Arguments passed on to <code>COPY_sparseSVM</code>
+Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>Arguments passed on to <code>COPY_sparseSVM</code>
 <dl class='dl-horizontal'>
   <dt>alpha</dt><dd>The elastic-net mixing parameter that controls the relative
 contribution from the lasso and the ridge penalty. It must be a number
@@ -149,21 +161,22 @@ always in the model without penalization. Default is <code>1</code> for all vari
   <dt>message</dt><dd>If set to <code>TRUE</code>, <code>sparseSVM</code> will inform the user of its
 progress. Default is <code>FALSE</code>.</dd>
 </dl>
-</dd>
-    </dl>
+</td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named list containing:</p>
+    A named list containing:
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><strong>This is a modified version of one function of
-<a href = 'package sparseSVM'>https://github.com/CY-dev/sparseSVM</a></strong>.</p>
+    <strong>This is a modified version of one function of
+<a href = 'package sparseSVM'>https://github.com/CY-dev/sparseSVM</a></strong>.
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/LiblineaR/topics/LiblineaR'>LiblineaR</a> <a href='http://www.rdocumentation.org/packages/sparseSVM/topics/sparseSVM'>sparseSVM</a></p>
+    <a href='http://www.rdocumentation.org/packages/LiblineaR/topics/LiblineaR'>LiblineaR</a> <a href='http://www.rdocumentation.org/packages/sparseSVM/topics/sparseSVM'>sparseSVM</a>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
