@@ -4,7 +4,7 @@
 \alias{plot.mhtest}
 \title{Plot method}
 \usage{
-\method{plot}{mhtest}(x, type = c("Manhattan", "Volcano"),
+\method{plot}{mhtest}(x, type = c("Manhattan", "Q-Q", "Volcano"),
   main = paste(type, "Plot"), coeff = 1, ...)
 }
 \arguments{
@@ -14,6 +14,7 @@
 \itemize{
 \item "Manhattan": plot of the negative logarithm (in base 10) of p-values
 (the default).
+\item "Q-Q": Q-Q plot.
 \item "Volcaco": plot of the negative logarithm of p-values against the
 estimation of coefficients (e.g. betas in linear regression).
 }}
@@ -28,8 +29,7 @@ estimation of coefficients (e.g. betas in linear regression).
 A \code{ggplot2} object. You can plot it using the \code{print} method.
 You can modify it as you wish by adding layers. You might want to read
 \href{http://r4ds.had.co.nz/data-visualisation.html}{this chapter}
-to get more familiar with the package \strong{ggplot2}. \cr
-Do you want dynamic plots? Go check \url{https://plot.ly/ggplot2}.
+to get more familiar with the package \strong{ggplot2}.
 }
 \description{
 Plot method for class \code{mhtest}.
@@ -38,12 +38,12 @@ Plot method for class \code{mhtest}.
 set.seed(1)
 
 X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
-y <- rnorm(n)
+y <- rnorm(nrow(X.desc))
 test <- big_univLinReg(X.desc, y)
 
 plot(test)
 plot(test, type = "Volcano")
+plot(test, type = "Q-Q")
 
 }
 \seealso{

@@ -37,8 +37,7 @@ the number of columns of the resulting multiplot.}
 A \code{ggplot2} object. You can plot it using the \code{print} method.
 You can modify it as you wish by adding layers. You might want to read
 \href{http://r4ds.had.co.nz/data-visualisation.html}{this chapter}
-to get more familiar with the package \strong{ggplot2}. \cr
-Do you want dynamic plots? Go check \url{https://plot.ly/ggplot2}.
+to get more familiar with the package \strong{ggplot2}.
 }
 \description{
 Plot method for class \code{big_SVD}.

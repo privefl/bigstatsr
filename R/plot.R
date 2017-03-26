@@ -34,8 +34,7 @@ MY_THEME <- function(p, coeff = 1) {
 #' @return A `ggplot2` object. You can plot it using the `print` method.
 #' You can modify it as you wish by adding layers. You might want to read
 #' [this chapter](http://r4ds.had.co.nz/data-visualisation.html)
-#' to get more familiar with the package **ggplot2**. \cr
-#' Do you want dynamic plots? Go check \url{https://plot.ly/ggplot2}.
+#' to get more familiar with the package **ggplot2**.
 #' @export
 #' @import ggplot2 grid
 #' @importFrom graphics plot
@@ -108,6 +107,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #' @param type Either
 #' - "Manhattan": plot of the negative logarithm (in base 10) of p-values
 #'   (the default).
+#' - "Q-Q": Q-Q plot.
 #' - "Volcaco": plot of the negative logarithm of p-values against the
 #'   estimation of coefficients (e.g. betas in linear regression).
 #' @param main The title of the plot. Default use the `type`.
@@ -123,30 +123,40 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #' set.seed(1)
 #'
 #' X.desc <- big_attachExtdata()
-#' n <- nrow(X.desc)
-#' y <- rnorm(n)
+#' y <- rnorm(nrow(X.desc))
 #' test <- big_univLinReg(X.desc, y)
 #'
 #' plot(test)
 #' plot(test, type = "Volcano")
+#' plot(test, type = "Q-Q")
 #'
 #' @seealso [big_univLinReg], [big_univLogReg],
 #' [plot.big_SVD] and [asPlotlyText].
-plot.mhtest <- function(x, type = c("Manhattan", "Volcano"),
+plot.mhtest <- function(x, type = c("Manhattan", "Q-Q", "Volcano"),
                         main = paste(type, "Plot"),
                         coeff = 1,
                         ...) {
 
-  lpval <- -predict(x) # -log10(p)
-  YLAB <- expression(-log[10](italic("p-value")))
+  lpval <- predict(x) # log10(p)
 
   type <- match.arg(type)
+
   if (type == "Manhattan") {
-    MY_THEME(qplot(y = lpval), coeff = coeff) +
-      labs(title = main, x = "Column Index", y = YLAB)
+    MY_THEME(qplot(y = -lpval), coeff = coeff) +
+      labs(title = main, x = "Column Index",
+           y = expression(-log[10](italic("p-value"))))
   } else if (type == "Volcano") {
-    MY_THEME(qplot(x = x[["estim"]], y = lpval), coeff = coeff) +
-      labs(title = main, x = "Estimate", y = YLAB)
+    MY_THEME(qplot(x = x[["estim"]], y = -lpval), coeff = coeff) +
+      labs(title = main, x = "Estimate",
+           y = expression(-log[10](italic("p-value"))))
+  } else if (type == "Q-Q") {
+    unif.ranked <- ppoints(length(lpval))[rank(lpval)]
+    MY_THEME(qplot(x = -log10(unif.ranked), y = -lpval),
+             coeff = coeff) +
+      labs(title = main,
+           x = expression(Expected~~-log[10](italic("p-value"))),
+           y = expression(Observed~~-log[10](italic("p-value")))) +
+      geom_abline(slope = 1, intercept = 0, color = "red")
   }
 }
 
