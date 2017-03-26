@@ -31,8 +31,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
   </head>
 
   <body>
@@ -90,70 +88,55 @@
     </div>
 
     
-    A Split-Apply-Combine strategy to apply common R functions to a <code>big.matrix</code>.
+    <p>A Split-Apply-Combine strategy to apply common R functions to a <code>big.matrix</code>.</p>
     
 
     <pre><span class='fu'>big_apply</span>(<span class='no'>X.</span>, <span class='no'>a.FUN</span>, <span class='no'>a.combine</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
   <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>X.</th>
-      <td>Either a big.matrix or
-a big.matrix.descriptor.</td>
-    </tr>
-    <tr>
-      <th>a.FUN</th>
-      <td>The function to be applied to each subset matrix.
+    <dl class="dl-horizontal">
+      <dt>X.</dt>
+      <dd>Either a big.matrix or
+a big.matrix.descriptor.</dd>
+      <dt>a.FUN</dt>
+      <dd>The function to be applied to each subset matrix.
 It must take a <code>big.matrix</code> as first argument and <code>ind</code>, a vector of
 indices, which are used to split the data. Example: if you want to apply
 a function to <code>X[ind.row, ind.col]</code>, you may use
-<code>X[ind.row, ind.col[ind]]</code> in <code>a.FUN</code>.</td>
-    </tr>
-    <tr>
-      <th>a.combine</th>
-      <td>function that is used by foreach to process the tasks
+<code>X[ind.row, ind.col[ind]]</code> in <code>a.FUN</code>.</dd>
+      <dt>a.combine</dt>
+      <dd>function that is used by foreach to process the tasks
 results as they generated. This can be specified as either a function or a
 non-empty character string naming the function. Specifying &#39;c&#39; is useful
 for concatenating the results into a vector, for example. The values &#39;cbind&#39;
 and &#39;rbind&#39; can combine vectors into a matrix. The values &#39;+&#39; and &#39;*&#39; can be
-used to process numeric data. By default, the results are returned in a list.</td>
-    </tr>
-    <tr>
-      <th>ncores</th>
-      <td>Number of cores used. Default doesn&#39;t use parallelism.</td>
-    </tr>
-    <tr>
-      <th>block.size</th>
-      <td>Maximum number of columns read at once. Default is <code>1000</code>.</td>
-    </tr>
-    <tr>
-      <th>ind</th>
-      <td>Initial vector of subsetting indices.</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>Extra arguments to be passed to <code>a.FUN</code>.</td>
-    </tr>
-    </table>
+used to process numeric data. By default, the results are returned in a list.</dd>
+      <dt>ncores</dt>
+      <dd>Number of cores used. Default doesn&#39;t use parallelism.</dd>
+      <dt>block.size</dt>
+      <dd>Maximum number of columns read at once. Default is <code>1000</code>.</dd>
+      <dt>ind</dt>
+      <dd>Initial vector of subsetting indices.</dd>
+      <dt>...</dt>
+      <dd>Extra arguments to be passed to <code>a.FUN</code>.</dd>
+    </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    The result of foreach.
+    <p>The result of foreach.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    This function splits indices in parts, then apply a given function to each
+    <p>This function splits indices in parts, then apply a given function to each
 subset matrix and finally combine the results. If parallelization is used,
 this function splits indices in parts for parallelization, then split again
 them on each core, apply a given function to each part and finally combine
-the results (on each cluster and then from each cluster).
+the results (on each cluster and then from each cluster).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <a href='big_parallelize.html'>big_parallelize</a>
+    <p><a href='big_parallelize.html'>big_parallelize</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

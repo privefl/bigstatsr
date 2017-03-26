@@ -31,8 +31,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
   </head>
 
   <body>
@@ -90,7 +88,7 @@
     </div>
 
     
-    A class for storing and accessing up to 256 values using a RAW &quot;big.matrix&quot;.
+    <p>A class for storing and accessing up to 256 values using a RAW &quot;big.matrix&quot;.</p>
     
 
     <pre><span class='fu'>as.BM.code</span>(<span class='no'>x</span>, <span class='no'>code</span>)
@@ -108,25 +106,20 @@
 <span class='fu'>as.BM.code</span>(<span class='no'>x</span>, <span class='no'>code</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td>Either a big.matrix or
-a big.matrix.descriptor.</td>
-    </tr>
-    <tr>
-      <th>code</th>
-      <td>A numeric vector of length 256. You should contruct it with
+    <dl class="dl-horizontal">
+      <dt>x</dt>
+      <dd>Either a big.matrix or
+a big.matrix.descriptor.</dd>
+      <dt>code</dt>
+      <dd>A numeric vector of length 256. You should contruct it with
 <code>rep(NA_real_, 256)</code> and then replace the values
-which are of interest for you.</td>
-    </tr>
-    </table>
+which are of interest for you.</dd>
+    </dl>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    Compared to a big.matrix, it adds a slot <code>code</code> which
-is used as a lookup table of size 256.
+    <p>Compared to a big.matrix, it adds a slot <code>code</code> which
+is used as a lookup table of size 256.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

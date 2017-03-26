@@ -31,8 +31,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
   </head>
 
   <body>
@@ -90,7 +88,7 @@
     </div>
 
     
-    Predict method for class <code>big_sp</code>.
+    <p>Predict method for class <code>big_sp</code>.</p>
     
 
     <pre><span class='co'># S3 method for big_sp</span>
@@ -98,46 +96,33 @@
   <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>object</th>
-      <td>Object of class <code>big_sp</code>.</td>
-    </tr>
-    <tr>
-      <th>X.</th>
-      <td>Either a big.matrix or
-a big.matrix.descriptor.</td>
-    </tr>
-    <tr>
-      <th>ind.row</th>
-      <td>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></td>
-    </tr>
-    <tr>
-      <th>covar.row</th>
-      <td>Matrix of covariables to be added in each model to correct
+    <dl class="dl-horizontal">
+      <dt>object</dt>
+      <dd>Object of class <code>big_sp</code>.</dd>
+      <dt>X.</dt>
+      <dd>Either a big.matrix or
+a big.matrix.descriptor.</dd>
+      <dt>ind.row</dt>
+      <dd>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
+      <dt>covar.row</dt>
+      <dd>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.row</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</td>
-    </tr>
-    <tr>
-      <th>block.size</th>
-      <td>Maximum number of columns read at once. Default is <code>1000</code>.</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>Not used.</td>
-    </tr>
-    </table>
+Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
+      <dt>block.size</dt>
+      <dd>Maximum number of columns read at once. Default is <code>1000</code>.</dd>
+      <dt>...</dt>
+      <dd>Not used.</dd>
+    </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    A matrix of scores, with rows corresponding to <code>ind.row</code>
-and columns corresponding to <code>lambda</code>.
+    <p>A matrix of scores, with rows corresponding to <code>ind.row</code>
+and columns corresponding to <code>lambda</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <a href='big_spLinReg.html'>big_spLinReg</a>, <a href='big_spLogReg.html'>big_spLogReg</a> and <a href='big_spSVM.html'>big_spSVM</a>.
+    <p><a href='big_spLinReg.html'>big_spLinReg</a>, <a href='big_spLogReg.html'>big_spLogReg</a> and <a href='big_spSVM.html'>big_spSVM</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

@@ -31,8 +31,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
   </head>
 
   <body>
@@ -90,41 +88,34 @@
     </div>
 
     
-    Standard <strong>univariate statistics</strong> for columns of a big.matrix.
+    <p>Standard <strong>univariate statistics</strong> for columns of a big.matrix.
 For now, the <code>sum</code> and <code>var</code> are implemented
-(the <code>mean</code> and <code>sd</code> can easily be deduced, see examples).
+(the <code>mean</code> and <code>sd</code> can easily be deduced, see examples).</p>
     
 
     <pre><span class='fu'>big_colstats</span>(<span class='no'>X.</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>X.</th>
-      <td>Either a big.matrix or
-a big.matrix.descriptor.</td>
-    </tr>
-    <tr>
-      <th>ind.row</th>
-      <td>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></td>
-    </tr>
-    <tr>
-      <th>ind.col</th>
-      <td>An optional vector of the column indices that are used.
-If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></td>
-    </tr>
-    </table>
+    <dl class="dl-horizontal">
+      <dt>X.</dt>
+      <dd>Either a big.matrix or
+a big.matrix.descriptor.</dd>
+      <dt>ind.row</dt>
+      <dd>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
+      <dt>ind.col</dt>
+      <dd>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
+    </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    Data.frame of two numeric vectors <code>sum</code> and <code>var</code> with the
-corresponding column statistics.
+    <p>Data.frame of two numeric vectors <code>sum</code> and <code>var</code> with the
+corresponding column statistics.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    colSums apply
+    <p>colSums apply</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

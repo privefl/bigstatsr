@@ -31,8 +31,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
   </head>
 
   <body>
@@ -90,40 +88,30 @@
     </div>
 
     
-    Sparse logistic regression
+    <p>Sparse logistic regression</p>
     
 
     <pre><span class='fu'>big_spLogReg</span>(<span class='no'>X.</span>, <span class='no'>y01.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>X.</th>
-      <td>Either a big.matrix or
-a big.matrix.descriptor.</td>
-    </tr>
-    <tr>
-      <th>y01.train</th>
-      <td>Vector of responses, corresponding to <code>ind.train</code>.
-<strong>Must be only 0s and 1s.</strong></td>
-    </tr>
-    <tr>
-      <th>ind.train</th>
-      <td>An optional vector of the row indices that are used,
+    <dl class="dl-horizontal">
+      <dt>X.</dt>
+      <dd>Either a big.matrix or
+a big.matrix.descriptor.</dd>
+      <dt>y01.train</dt>
+      <dd>Vector of responses, corresponding to <code>ind.train</code>.
+<strong>Must be only 0s and 1s.</strong></dd>
+      <dt>ind.train</dt>
+      <dd>An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.
-<strong>Don&#39;t use negative indices.</strong></td>
-    </tr>
-    <tr>
-      <th>covar.train</th>
-      <td>Matrix of covariables to be added in each model to correct
+<strong>Don&#39;t use negative indices.</strong></dd>
+      <dt>covar.train</dt>
+      <dd>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>Arguments passed on to <code>COPY_biglasso</code>
+Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</dd>
+      <dt>...</dt>
+      <dd>Arguments passed on to <code>COPY_biglasso</code>
 <dl class='dl-horizontal'>
   <dt>alpha</dt><dd>The elastic-net mixing parameter that controls the relative
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
@@ -159,37 +147,36 @@ saturation? Default is <code>TRUE</code>.</dd>
   <dt>verbose</dt><dd>Whether to print out the start, the timing of each lambda
 iteration and the end. Default is <code>FALSE</code>.</dd>
 </dl>
-</td>
-    </tr>
-    </table>
+</dd>
+    </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    A named list with following variables:
+    <p>A named list with following variables:</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <strong>This is a modified version of one function of
+    <p><strong>This is a modified version of one function of
 <a href = 'package biglasso'>https://github.com/YaohuiZeng/biglasso</a></strong>.
 It adds the possibility to train models with covariables and use many
 types of <code>big.matrix</code> (not only <code>double</code> ones).
-Yet, it only corresponds to <code>screen = &quot;SSR&quot;</code> (Sequential Strong Rules).
+Yet, it only corresponds to <code>screen = &quot;SSR&quot;</code> (Sequential Strong Rules).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,
+    <p>Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,
 Simon, N., Taylor, J. and Tibshirani, R. J. (2012),
 Strong rules for discarding predictors in lasso-type problems.
 Journal of the Royal Statistical Society:
 Series B (Statistical Methodology), 74: 245–266.
-<a href = 'http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x'>http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x</a>.
-    Zeng, Y., and Breheny, P. (2016). The biglasso Package: A Memory- and
+<a href = 'http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x'>http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x</a>.</p>
+    <p>Zeng, Y., and Breheny, P. (2016). The biglasso Package: A Memory- and
 Computation-Efficient Solver for Lasso Model Fitting with Big Data in R.
-arXiv preprint arXiv:1701.05936. <a href = 'https://arxiv.org/abs/1701.05936'>https://arxiv.org/abs/1701.05936</a>.
+arXiv preprint arXiv:1701.05936. <a href = 'https://arxiv.org/abs/1701.05936'>https://arxiv.org/abs/1701.05936</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <a href='http://www.rdocumentation.org/packages/glmnet/topics/glmnet'>glmnet</a> <a href='http://www.rdocumentation.org/packages/biglasso/topics/biglasso'>biglasso</a>
+    <p><a href='http://www.rdocumentation.org/packages/glmnet/topics/glmnet'>glmnet</a> <a href='http://www.rdocumentation.org/packages/biglasso/topics/biglasso'>biglasso</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

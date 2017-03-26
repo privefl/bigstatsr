@@ -31,8 +31,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
   </head>
 
   <body>
@@ -90,42 +88,37 @@
     </div>
 
     
-    Some scaling functions for a <code>big.matrix</code> to be used as
-the <strong><code>fun.scaling</code></strong> parameter of some functions of this package.
+    <p>Some scaling functions for a <code>big.matrix</code> to be used as
+the <strong><code>fun.scaling</code></strong> parameter of some functions of this package.</p>
     
 
     <pre><span class='fu'>big_scale</span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>center</th>
-      <td>A logical value: whether to return means or 0s.</td>
-    </tr>
-    <tr>
-      <th>scale</th>
-      <td>A logical value: whether to return sds or 1s. <strong>You can&#39;t
-use scale without using center.</strong></td>
-    </tr>
-    </table>
+    <dl class="dl-horizontal">
+      <dt>center</dt>
+      <dd>A logical value: whether to return means or 0s.</dd>
+      <dt>scale</dt>
+      <dd>A logical value: whether to return sds or 1s. <strong>You can&#39;t
+use scale without using center.</strong></dd>
+    </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    A new <strong>function</strong> that returns a data.frame of two vectors
-&quot;mean&quot; and &quot;sd&quot; which are of the length of <code>ind.col</code>.
+    <p>A new <strong>function</strong> that returns a data.frame of two vectors
+&quot;mean&quot; and &quot;sd&quot; which are of the length of <code>ind.col</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    One could think about less common scalings, such as for example the
+    <p>One could think about less common scalings, such as for example the
 &quot;y-aware&quot; scaling which uses the inverse of betas of column-wise linear
 regression as scaling. See <a href = 'this post'>https://goo.gl/8G8WMa</a> for details.
 It would be easy to implement it using <code>big_colstats</code> to get column means
-and <code>big_univLinReg</code> to get betas (and then inverse them).
+and <code>big_univLinReg</code> to get betas (and then inverse them).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    scale
+    <p>scale</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

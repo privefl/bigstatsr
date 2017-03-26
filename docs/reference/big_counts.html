@@ -31,8 +31,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
   </head>
 
   <body>
@@ -90,39 +88,30 @@
     </div>
 
     
-    Counts by columns (or rows) the number of each unique element of a <code>BM.code</code>.
+    <p>Counts by columns (or rows) the number of each unique element of a <code>BM.code</code>.</p>
     
 
     <pre><span class='fu'>big_counts</span>(<span class='no'>X.code</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>rows_along</a></span>(<span class='no'>X.code</span>),
   <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.code</span>), <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>X.code</th>
-      <td>Either a <a href='BM.code-class.html'>BM.code</a> or
-a <a href='BM.code-class.html'>BM.code.descriptor</a>.</td>
-    </tr>
-    <tr>
-      <th>ind.row</th>
-      <td>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></td>
-    </tr>
-    <tr>
-      <th>ind.col</th>
-      <td>An optional vector of the column indices that are used.
-If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></td>
-    </tr>
-    <tr>
-      <th>byrow</th>
-      <td>Count by rows rather than columns? Default is <code>FALSE</code>.</td>
-    </tr>
-    </table>
+    <dl class="dl-horizontal">
+      <dt>X.code</dt>
+      <dd>Either a <a href='BM.code-class.html'>BM.code</a> or
+a <a href='BM.code-class.html'>BM.code.descriptor</a>.</dd>
+      <dt>ind.row</dt>
+      <dd>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don&#39;t use negative indices.</strong></dd>
+      <dt>ind.col</dt>
+      <dd>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don&#39;t use negative indices.</strong></dd>
+      <dt>byrow</dt>
+      <dd>Count by rows rather than columns? Default is <code>FALSE</code>.</dd>
+    </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    A matrix of counts of K x m (or n) elements, where
+    <p>A matrix of counts of K x m (or n) elements, where
 <ul>
 <li> K is the number of unique elements of the <code>BM.code</code>,
 </li>
@@ -130,9 +119,9 @@ If not specified, all columns are used. <strong>Don&#39;t use negative indices.<
 </li>
 <li> m is its number of columns.
 </li>
-</ul>
-    <strong>Beware that K is up to 256. So, if you apply this on a <code>big.matrix</code> of
-one million columns, you will create a matrix of nearly 1Gb!</strong>.
+</ul></p>
+    <p><strong>Beware that K is up to 256. So, if you apply this on a <code>big.matrix</code> of
+one million columns, you will create a matrix of nearly 1Gb!</strong>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
