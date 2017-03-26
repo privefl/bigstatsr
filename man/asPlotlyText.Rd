@@ -22,13 +22,10 @@ test <- big_attachExtdata()
 svd <- big_SVD(test, big_scale(), k = 10)
 
 p <- plot(svd, type = "scores")
-p$layers[[1]] <- NULL # remove layer of points
-p
 
 pop <- rep(c("POP1", "POP2", "POP3"), c(143, 167, 207))
 df <- data.frame(Population = pop, Index = 1:517)
 
-require(ggplot2)
-print(p2 <- p + geom_point(aes(text = asPlotlyText(df))))
+plot(p2 <- p + ggplot2::aes(text = asPlotlyText(df)))
 \dontrun{plotly::ggplotly(p2, tooltip = "text")}
 }
