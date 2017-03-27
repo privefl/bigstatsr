@@ -75,7 +75,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 
     if (length(loadings) > 1) {
 
-      all.p <- lapply(1:10, function(i) {
+      all.p <- lapply(loadings, function(i) {
         p <- plot(x, type = "loadings", loading = i, coeff = coeff)
         p$layers[[1]] <- NULL
         p + geom_hex() + viridis::scale_fill_viridis()
