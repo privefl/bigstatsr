@@ -193,3 +193,31 @@ asPlotlyText <- function(df) {
 }
 
 ################################################################################
+
+#' Get coordinates
+#'
+#' Get coordinates on a plot by mouse-clicking.
+#'
+#' @param nb Number of positions.
+#' @param digits 2 integer indicating the number of decimal places
+#' (respectively for x and y coordinates).
+#'
+#' @return A list of coordinates. Note that if you don't put the result in a
+#' variable, it returns as the command text for generating the list. This can
+#' be useful to get coordinates by mouse-clicking once, but then using the code
+#' for convenience and reproducibility.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' plot(runif(20, max = 5000))
+#' # note the negative number for the rounding of $y
+#' pasteLoc(3, digits = c(2, -1))}
+pasteLoc <- function(nb, digits = c(3, 3)) {
+  loc <- locator(nb)
+  loc$x <- round(loc$x, digits[1])
+  loc$y <- round(loc$y, digits[2])
+  dput(loc, control = NULL)
+}
+
+################################################################################

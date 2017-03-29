@@ -42,6 +42,7 @@ reference:
       - predict.big_SVD
       - multiplot
       - asPlotlyText
+      - pasteLoc
   - title: "Utilities"
     contents:
       - big_colstats
