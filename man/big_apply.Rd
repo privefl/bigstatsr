@@ -28,7 +28,8 @@ used to process numeric data. By default, the results are returned in a list.}
 
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
-\item{ind}{Initial vector of subsetting indices.}
+\item{ind}{Initial vector of subsetting indices.
+Default is the vector of all column indices.}
 
 \item{...}{Extra arguments to be passed to \code{a.FUN}.}
 }

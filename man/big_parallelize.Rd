@@ -23,7 +23,8 @@ used to process numeric data. By default, the results are returned in a list.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.}
 
-\item{ind}{Initial vector of subsetting indices.}
+\item{ind}{Initial vector of subsetting indices.
+Default is the vector of all column indices.}
 
 \item{...}{Extra arguments to be passed to \code{p.FUN}.}
 }

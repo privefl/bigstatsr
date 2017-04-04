@@ -18,6 +18,7 @@
 #' and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
 #' used to process numeric data. By default, the results are returned in a list.
 #' @param ind Initial vector of subsetting indices.
+#' Default is the vector of all column indices.
 #' @param ... Extra arguments to be passed to `p.FUN`.
 #'
 #' @return The result of [foreach].
@@ -90,6 +91,7 @@ big_applySeq <- function(X., a.FUN, a.combine, block.size, ind, ...) {
 #' and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
 #' used to process numeric data. By default, the results are returned in a list.
 #' @param ind Initial vector of subsetting indices.
+#' Default is the vector of all column indices.
 #' @param ... Extra arguments to be passed to `a.FUN`.
 #'
 #' @return The result of [foreach].

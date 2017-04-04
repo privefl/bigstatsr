@@ -58,7 +58,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 
     p <- MY_THEME(qplot(y = x$d[seq_len(nval)]), coeff = coeff) +
       geom_line() +
-      labs(title = "Scree Plot", x = "PC Index", y = "Singular Values")
+      labs(title = "Scree Plot", x = "PC Index", y = "Singular Value")
 
     `if`(nval > 12, p, p + scale_x_discrete(limits = seq_len(nval)))
 
