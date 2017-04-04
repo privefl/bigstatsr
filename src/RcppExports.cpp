@@ -70,6 +70,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// linRegPcadapt
+NumericMatrix linRegPcadapt(const S4& BM, arma::mat& U, const IntegerVector& rowInd);
+RcppExport SEXP bigstatsr_linRegPcadapt(SEXP BMSEXP, SEXP USEXP, SEXP rowIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(linRegPcadapt(BM, U, rowInd));
+    return rcpp_result_gen;
+END_RCPP
+}
 // bigcolvars
 ListOf<NumericVector> bigcolvars(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP bigstatsr_bigcolvars(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
