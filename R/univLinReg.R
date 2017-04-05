@@ -15,11 +15,11 @@ univLinReg_sub <- function(X., ind, U, y.train, ind.train) {
 #'
 #' @inheritParams bigstatsr-package
 #'
-#' @return A data.frame with 4 elements:
+#' @return A data.frame with 3 elements:
 #' 1. the slopes of each regression,
 #' 2. the standard errors of each slope,
-#' 3. the t-scores associated with each slope,
-#' 4. the p-values associated with each t-score.
+#' 3. the t-scores associated with each slope.
+#' This is also an object of class `mhtest`. See `methods(class = "mhtest")`.
 #'
 #' @example examples/example-univLinReg.R
 #'

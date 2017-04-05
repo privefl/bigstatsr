@@ -32,12 +32,12 @@ For this function, use only half of the cores you have.}
 Default is \code{1e-4}.}
 }
 \value{
-A data.frame with 4 elements:
+A data.frame with 3 elements:
 \enumerate{
 \item the slopes of each regression,
 \item the standard errors of each slope,
-\item the t-scores associated with each slope,
-\item the p-values associated with each t-score.
+\item the t-scores associated with each slope.
+This is also an object of class \code{mhtest}. See \code{methods(class = "mhtest")}.
 }
 }
 \description{

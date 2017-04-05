@@ -38,14 +38,14 @@ If there is not convergence,
 \link[stats:glm]{glm} is used instead for the corresponding column.}
 }
 \value{
-A data.frame with as elements:
+A data.frame with 4 elements:
 \enumerate{
 \item the slopes of each regression,
 \item the standard errors of each slope,
 \item the number of iteration for each slope. If is \code{NA}, this means that the
 algorithm didn't converge, and \link[stats:glm]{glm} was used instead.
-\item the z-scores associated with each slope,
-\item the p-values associated with each z-score.
+\item the z-scores associated with each slope.
+This is also an object of class \code{mhtest}. See \code{methods(class = "mhtest")}.
 }
 }
 \description{

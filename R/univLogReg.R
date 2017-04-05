@@ -44,13 +44,13 @@ univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
 #' If there is not convergence,
 #' [glm][stats::glm] is used instead for the corresponding column.
 #'
-#' @return A data.frame with as elements:
+#' @return A data.frame with 4 elements:
 #' 1. the slopes of each regression,
 #' 2. the standard errors of each slope,
 #' 3. the number of iteration for each slope. If is `NA`, this means that the
 #' algorithm didn't converge, and [glm][stats::glm] was used instead.
-#' 4. the z-scores associated with each slope,
-#' 5. the p-values associated with each z-score.
+#' 4. the z-scores associated with each slope.
+#' This is also an object of class `mhtest`. See `methods(class = "mhtest")`.
 #'
 #' @example examples/example-univLogReg.R
 #'
