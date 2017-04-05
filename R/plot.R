@@ -29,6 +29,8 @@ MY_THEME <- function(p, coeff = 1) {
 #' @param cols If multiple vector of loadings are to be plotted, this defines
 #' the number of columns of the resulting multiplot.
 #' @param coeff Relative size of text. Default is `1`.
+#' @param viridis Whether to use colors of package viridis when plotting
+#' multiple loadings. Default is `TRUE` if the package is installed.
 #' @param ... Not used.
 #'
 #' @return A `ggplot2` object. You can plot it using the `print` method.
@@ -47,6 +49,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
                          loadings = 1,
                          cols = 2,
                          coeff = 1,
+                         viridis = requireNamespace("viridis", quietly = TRUE),
                          ...) {
 
   stopifnot(length(nval) == 1)
@@ -78,7 +81,11 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
       all.p <- lapply(loadings, function(i) {
         p <- plot(x, type = "loadings", loading = i, coeff = coeff)
         p$layers[[1]] <- NULL
-        p + geom_hex() + viridis::scale_fill_viridis()
+        if (viridis) {
+          p + geom_hex() + viridis::scale_fill_viridis()
+        } else {
+          p + geom_hex()
+        }
       })
 
       multiplot(plotlist = all.p, cols = cols)
@@ -150,7 +157,7 @@ plot.mhtest <- function(x, type = c("Manhattan", "Q-Q", "Volcano"),
       labs(title = main, x = "Estimate",
            y = expression(-log[10](italic("p-value"))))
   } else if (type == "Q-Q") {
-    unif.ranked <- ppoints(length(lpval))[rank(lpval)]
+    unif.ranked <- stats::ppoints(length(lpval))[rank(lpval)]
     MY_THEME(qplot(x = -log10(unif.ranked), y = -lpval),
              coeff = coeff) +
       labs(title = main,
@@ -214,7 +221,7 @@ asPlotlyText <- function(df) {
 #' # note the negative number for the rounding of $y
 #' pasteLoc(3, digits = c(2, -1))}
 pasteLoc <- function(nb, digits = c(3, 3)) {
-  loc <- locator(nb)
+  loc <- graphics::locator(nb)
   loc$x <- round(loc$x, digits[1])
   loc$y <- round(loc$y, digits[2])
   dput(loc, control = NULL)
