@@ -13,27 +13,8 @@ COPY_cdfit_binomial_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale,
     .Call('bigstatsr_COPY_cdfit_binomial_hsr', PACKAGE = 'bigstatsr', BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose)
 }
 
-#' T-scores used in pcadapt
-#'
-#' Compute matrix of t-scores (SNPs x scores) used in pcadapt.
-#'
-#' This function is used by package bigsnpr.
-#'
-#' @param BM A `BM.code` object.
-#' @param U Matrix of left singular vectors (from partial SVD).
-#' @param rowInd Vector of row indices of the `big.matrix` that are used.
-#'
-#' @return A matrix of t-scores where rows correspond to each SNP and
-#' columns correspond to each left singular vector.
-#'
-#' @references Keurcien Luu and Michael Blum (2017).
-#' pcadapt: Fast Principal Component Analysis for Outlier Detection.
-#' R package version 3.0.4. https://CRAN.R-project.org/package=pcadapt.
-#'
-#' @export
-#' @keywords internal
-linRegPcadapt <- function(BM, U, rowInd) {
-    .Call('bigstatsr_linRegPcadapt', PACKAGE = 'bigstatsr', BM, U, rowInd)
+linRegPcadapt_cpp <- function(BM, U, rowInd) {
+    .Call('bigstatsr_linRegPcadapt_cpp', PACKAGE = 'bigstatsr', BM, U, rowInd)
 }
 
 bigcolvars <- function(BM, rowInd, colInd) {
