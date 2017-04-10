@@ -40,7 +40,7 @@ For this function, use only half of the cores you have.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
-such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
+such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.

@@ -14,7 +14,7 @@ a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
-such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}}.}
+such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
