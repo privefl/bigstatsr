@@ -38,7 +38,8 @@ big_univLinReg <- function(X., y.train,
 
   # get SVD of covar
   SVD <- svd(covar.train, nv = 0)
-  K <- sum(SVD$d / sqrt(n) > thr.eigval)
+  eigval.scaled <- SVD$d / (sqrt(n) + sqrt(ncol(covar.train)) - 1)
+  K <- sum(eigval.scaled > thr.eigval)
 
   # main computation
   res <- big_parallelize(X. = X.,

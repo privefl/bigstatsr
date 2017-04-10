@@ -16,7 +16,10 @@ DualBigPCA <- function(X, fun.scaling,
               RSpectra::eigs_sym(tmp$K, k))
   tmp$K <- NULL
 
-  lastEig <- max(which(eig$values > (thr.eigval * ncol(X))))
+  n <- length(ind.row)
+  m <- ncol(X)
+  eigval.scaled <- eig$values / (sqrt(n) + sqrt(m) - 1)
+  lastEig <- sum(eigval.scaled > thr.eigval)
 
   u <- eig$vectors[, 1:lastEig]
   d <- sqrt(eig$values[1:lastEig])
@@ -48,7 +51,10 @@ PrimalBigPCA <- function(X, fun.scaling,
               RSpectra::eigs_sym(tmp$K, k))
   tmp$K <- NULL
 
-  lastEig <- max(which(eig$values > (thr.eigval * length(ind.row))))
+  n <- length(ind.row)
+  m <- ncol(X)
+  eigval.scaled <- eig$values / (sqrt(n) + sqrt(m) - 1)
+  lastEig <- sum(eigval.scaled > thr.eigval)
 
   v <- eig$vectors[, 1:lastEig]
   d <- sqrt(eig$values[1:lastEig])

@@ -19,3 +19,8 @@ res[, 5] <- sqrt(res[, 2])
 mylm <- lm(Var3 ~ V4 + V5, data = res)
 summary(mylm)
 
+outer(m, n, function(m, n) sqrt(m) + sqrt(n) - 1)
+res
+
+svd(scale(a[1:n[i], 1:m[j]]), nu = 0, nv = 0)$d / (sqrt(m[j]) + sqrt(n[i]) - 1)
+
