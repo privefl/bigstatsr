@@ -19,7 +19,7 @@
 #' @param target Vector of true labels (must have exactly two levels,
 #' no missing values).
 #' @param nboot Number of bootstrap samples to evaluate the 95\% CI.
-#' Default is `1e4`.
+#' Default is `1e3`.
 #' @param seed See [set.seed]. Use it for reproducibility.
 #' Default doesn't set any seed.
 #' @param digits See [round]. Default doesn't use rounding.
@@ -73,7 +73,7 @@ AUC <- function(pred, target, digits = NULL) {
 #' @rdname AUC
 #' @name AUCBoot
 #' @export
-AUCBoot <- function(pred, target, nboot = 1e4, seed = NA, digits = NULL) {
+AUCBoot <- function(pred, target, nboot = 1e3, seed = NA, digits = NULL) {
   stopifnot(length(pred) == length(target))
 
   y <- transform_levels(target)
