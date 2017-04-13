@@ -8,7 +8,7 @@
 \usage{
 AUC(pred, target, digits = NULL)
 
-AUCBoot(pred, target, nboot = 10000, seed = NA, digits = NULL)
+AUCBoot(pred, target, nboot = 1000, seed = NA, digits = NULL)
 }
 \arguments{
 \item{pred}{Vector of predictions.}
@@ -19,7 +19,7 @@ no missing values).}
 \item{digits}{See \link{round}. Default doesn't use rounding.}
 
 \item{nboot}{Number of bootstrap samples to evaluate the 95\% CI.
-Default is \code{1e4}.}
+Default is \code{1e3}.}
 
 \item{seed}{See \link{set.seed}. Use it for reproducibility.
 Default doesn't set any seed.}
