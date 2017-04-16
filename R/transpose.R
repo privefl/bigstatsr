@@ -23,7 +23,7 @@
 big_transpose <- function(X., descriptor = TRUE, ...) {
   X <- attach.BM(X.)
 
-  res <- big.matrix(ncol(X), nrow(X), type = typeof(X),
+  res <- big.matrix(ncol(X), nrow(X), type = typeof(X), init = NULL,
                     dimnames = dimnames(X)[2:1], ...)
 
   transpose3(res@address, X@address)

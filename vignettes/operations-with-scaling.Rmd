@@ -14,7 +14,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-require(bigstatsr)
+library(bigstatsr)
 ```
 
 ## Main problem
