@@ -8,9 +8,12 @@ The R package **bigstatsr** provides functions for fast statistical analysis of 
 
 The package **bigstatsr** enables users with laptop to perform statistical analysis of several dozens of gigabytes of data. The package is fast and efficient because of four different reasons. First, **bigstatsr** is memory-efficient because it uses only small chunks of data at a time. Second, special care has been taken to implement effective algorithms. Third, `big.matrix` objects use memory-mapping, which provides efficient accesses to matrices. Finally, as matrices are stored on-disk, many processes can easily access them in parallel. 
 
+[**LIST OF FEATURES**](https://privefl.github.io/bigstatsr/reference/index.html)
+
 ## This package is in beta testing
 
-The publication of this package is scheduled for the end of April.
+The publication of this package is scheduled for the end of April. 
+Any bug report is welcomed.
 
 ## Installation
 

@@ -159,6 +159,8 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
 #'
 #' __This is a modified version of one function of
 #' [package sparseSVM](https://github.com/CY-dev/sparseSVM)__.
+#' This algorithm uses semi-newton coordinate descent. There may exist some
+#' faster algorithm.
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritDotParams COPY_sparseSVM -X -y.train -ind.train -covar.train

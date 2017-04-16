@@ -84,6 +84,8 @@ over a grid of values for the regularization parameter lambda.
 \details{
 \strong{This is a modified version of one function of
 \href{https://github.com/CY-dev/sparseSVM}{package sparseSVM}}.
+This algorithm uses semi-newton coordinate descent. There may exist some
+faster algorithm.
 }
 \examples{
 set.seed(1)

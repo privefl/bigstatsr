@@ -32,6 +32,9 @@ A list of
 Compute \eqn{X.row X.row^T} for a \code{big.matrix} \code{X}
 after applying a particular scaling to it.
 }
+\details{
+This algorithm is not really memory efficient. I'm planning on fixing this.
+}
 \examples{
 X.desc <- big_attachExtdata()
 

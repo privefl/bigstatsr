@@ -3,6 +3,8 @@
 #' Compute \eqn{X.row X.row^T} for a `big.matrix` `X`
 #' after applying a particular scaling to it.
 #'
+#' This algorithm is not really memory efficient. I'm planning on fixing this.
+#'
 #' @inheritParams bigstatsr-package
 #'
 #' @return A list of
