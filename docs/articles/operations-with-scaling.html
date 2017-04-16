@@ -6,10 +6,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to handle operations on a scaled “big.matrix” • bigstatsr</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -29,13 +29,22 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">Home</a>
-</li>
-<li>
   <a href="../reference/index.html">Manual</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Vignettes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="../articles/index.html">Vignettes</a>
+      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a BM from a text file</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -73,12 +82,12 @@
 <div class="contents">
 <div id="main-problem" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#main-problem" class="anchor"> </a></body></html>Main problem</h2>
+<a href="#main-problem" class="anchor"></a>Main problem</h2>
 <p>The main of problem that we will try to solve in this document is computing the problem between a very large matrix <span class="math inline">\({{\boldsymbol{X}}}\)</span> (of size <span class="math inline">\(n \times m\)</span>) and a smaller one <span class="math inline">\({{\boldsymbol{M}}}\)</span>. <span class="math inline">\({\boldsymbol{\widetilde{X}}}\)</span> is a scaled version of <span class="math inline">\({{\boldsymbol{X}}}\)</span>, i.e. defined such that <span class="math inline">\(\widetilde{X}_{i,j} = \frac{X_{i,j}-\mu_j}{s_j}\)</span>. Usually, <span class="math inline">\({\boldsymbol{\mu}}\)</span> is the vector of column means (that you can get using the <span class="math inline">\({\texttt{R}}\)</span> command <code>colMeans(X)</code>) and <span class="math inline">\({\boldsymbol{s}}\)</span> is the vector of column standard deviations (that you can get using the <span class="math inline">\({\texttt{R}}\)</span> command <code>apply(X, 2, sd)</code>). For now, we will make no such assumptions on <span class="math inline">\({\boldsymbol{\mu}}\)</span> and <span class="math inline">\({\boldsymbol{s}}\)</span>.</p>
 </div>
 <div id="rewriting-the-main-problem" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#rewriting-the-main-problem" class="anchor"> </a></body></html>Rewriting the main problem</h2>
+<a href="#rewriting-the-main-problem" class="anchor"></a>Rewriting the main problem</h2>
 <p>Let us denote <span class="math inline">\({{\boldsymbol{A}}}= \begin{bmatrix}  a_{11} &amp; a_{12} \\  a_{21} &amp; a_{22} \\  a_{31} &amp; a_{32} \end{bmatrix}\)</span> and <span class="math inline">\({{\boldsymbol{B}}}= \begin{bmatrix}  b_{11} &amp; b_{12} \\  b_{21} &amp; b_{22} \\  b_{31} &amp; b_{32} \end{bmatrix}\)</span>. Then <span class="math inline">\(\begin{bmatrix}  a_{11} - \mu_1 &amp; a_{12} - \mu_2 \\  a_{21} - \mu_1 &amp; a_{22} - \mu_2 \\  a_{31} - \mu_1 &amp; a_{32} - \mu_2 \end{bmatrix} = {{\boldsymbol{A}}}- \begin{bmatrix}  1 \\  1 \\  1 \end{bmatrix} \cdot \begin{bmatrix}  \mu_1 &amp; \mu_2 \end{bmatrix} = {{\boldsymbol{A}}}- {\boldsymbol{1}}_3 \cdot {\boldsymbol{\mu}}^T\)</span> and <span class="math inline">\(\begin{bmatrix}  b_{11} d_1 &amp; b_{12} d_2 \\  b_{21} d_1 &amp; b_{22} d_2 \\  b_{31} d_1 &amp; b_{32} d_2 \end{bmatrix} = {{\boldsymbol{B}}}\cdot \begin{bmatrix}  d_1 &amp; 0 \\  0 &amp; d_2 \end{bmatrix} = {{\boldsymbol{B}}}\cdot {\boldsymbol{\Delta}}\)</span>.</p>
 <p>Let us generalize: <span class="math inline">\({\boldsymbol{\widetilde{X}}} = ({{\boldsymbol{X}}}- {\boldsymbol{1}}_n \cdot {\boldsymbol{\mu}}^T) \cdot {\boldsymbol{\Delta_s}}\)</span> where <span class="math inline">\({\boldsymbol{\Delta_s}} = \begin{bmatrix}  1/s_1 &amp; 0 &amp; \cdots &amp; 0 \\  0 &amp; \ddots &amp; \ddots &amp; \vdots \\  \vdots &amp; \ddots &amp; \ddots &amp; 0 \\  0 &amp; \cdots &amp; 0 &amp; 1/s_{m} \end{bmatrix}\)</span>.</p>
 <p>So, <span class="math inline">\({\boldsymbol{\widetilde{X}}} \cdot {{\boldsymbol{M}}}= ({{\boldsymbol{X}}}- {\boldsymbol{1}}_n \cdot {\boldsymbol{\mu}}^T) \cdot {\boldsymbol{\Delta_s}} \cdot {{\boldsymbol{M}}}\)</span>. If we denote <span class="math inline">\({\boldsymbol{M_s}} = {\boldsymbol{\Delta_s}} \cdot {{\boldsymbol{M}}}\)</span>, then <span class="math inline">\({\boldsymbol{\widetilde{X}}} \cdot {{\boldsymbol{M}}}= {{\boldsymbol{X}}}\cdot {\boldsymbol{M_s}} - {\boldsymbol{1}}_n \cdot {\boldsymbol{\mu}}^T \cdot {\boldsymbol{M_s}}\)</span>, which doesn’t involve any explicit scaling of <span class="math inline">\({{\boldsymbol{X}}}\)</span>.</p>
@@ -86,12 +95,12 @@
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#conclusion" class="anchor"> </a></body></html>Conclusion</h2>
+<a href="#conclusion" class="anchor"></a>Conclusion</h2>
 <p>So, we have shown that we can compute a product between a scaled version of a large matrix and another matrix without having to explicitly scale this large matrix. This trick could be applied to other problems and you can find other tricks in the <a href="https://arxiv.org/abs/1701.05936">biglasso paper</a>.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#example" class="anchor"> </a></body></html>Example</h2>
+<a href="#example" class="anchor"></a>Example</h2>
 <p>Let use the <code>big_apply</code> function to implement the main problem we have treated in this document.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X.desc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_attach.html">big_attachExtdata</a></span>()
 <span class="co"># simulate some data</span>
@@ -109,7 +118,7 @@ XM_s &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_pr
 final &lt;-<span class="st"> </span><span class="kw">sweep</span>(XM_s, <span class="dv">2</span>, <span class="kw">crossprod</span>(stats_scale$mean, M_s), <span class="st">'-'</span>)
 
 <span class="co"># verification</span>
-true &lt;-<span class="st"> </span><span class="kw">scale</span>(<span class="kw"><a href="../reference/typeof,big.matrix.descriptor-method.html">attach.BM</a></span>(X.desc)[,]) %*%<span class="st"> </span>M
+true &lt;-<span class="st"> </span><span class="kw">scale</span>(<span class="kw"><a href="../reference/completeness-methods.html">attach.BM</a></span>(X.desc)[,]) %*%<span class="st"> </span>M
 <span class="kw">all.equal</span>(final, true)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Knowing that mu is the column means of X

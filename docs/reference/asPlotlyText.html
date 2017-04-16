@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -49,13 +51,22 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Home</a>
-</li>
-<li>
   <a href="../reference/index.html">Manual</a>
 </li>
-<li>
-  <a href="../articles/index.html">Vignettes</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Vignettes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a BM from a text file</a>
+    </li>
+  </ul>
 </li>
       </ul>
       
@@ -91,17 +102,20 @@
     <p>Convert a data.frame to plotly text</p>
     
 
-    <pre><span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)</pre>
+    <pre class="usage"><span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>df</dt>
-      <dd>A data.frame</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>df</th>
+      <td><p>A data.frame</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character vector of the length of <code>df</code>&#39;s number of rows.</p>
+    <p>A character vector of the length of <code>df</code>'s number of rows.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -114,7 +128,7 @@
 <span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"POP1"</span>, <span class='st'>"POP2"</span>, <span class='st'>"POP3"</span>), <span class='fu'>c</span>(<span class='fl'>143</span>, <span class='fl'>167</span>, <span class='fl'>207</span>))
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Population</span> <span class='kw'>=</span> <span class='no'>pop</span>, <span class='kw'>Index</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>517</span>)
 
-<span class='fu'>plot</span>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>p</span> + <span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>aes</span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in {    paste(names(df)[ic], df[[ic]], sep = &quot;: &quot;)}: task 1 failed - &quot;objet de type &#39;closure&#39; non indiçable&quot;</span></div><img src='asPlotlyText-5.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## Not run: plotly::ggplotly(p2, tooltip = &amp;quot;text&amp;quot;)</span></div></pre>
+<span class='fu'>plot</span>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>p</span> + <span class='kw'>ggplot2</span><span class='kw'>::</span><span class='fu'>aes</span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in {    paste(names(df)[ic], df[[ic]], sep = ": ")}: task 1 failed - "objet de type 'closure' non indiçable"</span></div><img src='asPlotlyText-5.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## Not run: plotly::ggplotly(p2, tooltip = "text")</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

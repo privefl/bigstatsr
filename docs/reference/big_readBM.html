@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transposition — big_transpose • bigstatsr</title>
+<title>Read a file — big_readBM • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,28 +95,64 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transposition</h1>
+    <h1>Read a file</h1>
     </div>
 
     
-    <p>This function implements a simple cache-oblivious
-algorithm for the transposition of a "big.matrix".</p>
+    <p>Read a file as a <code>big.matrix</code>. For a mini-tutorial, please see the
+<a href = 'https://privefl.github.io/bigstatsr/articles/read-BM-from-file.html'>vignette</a>.</p>
     
 
-    <pre class="usage"><span class='fu'>big_transpose</span>(<span class='no'>X.</span>, <span class='kw'>descriptor</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_readBM</span>(<span class='no'>file</span>, <span class='kw'>file.nheader</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>info.nelem</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>split</span> <span class='kw'>=</span> <span class='st'>" "</span>,
+  <span class='kw'>read.what</span> <span class='kw'>=</span> <span class='fu'>double</span>(), <span class='kw'>read.transfo</span> <span class='kw'>=</span> <span class='no'>identity</span>,
+  <span class='kw'>BM.type</span> <span class='kw'>=</span> <span class='fu'>typeof</span>(<span class='no'>read.what</span>), <span class='kw'>descriptor</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>transpose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>file</th>
+      <td><p>The path to the file to be read.</p></td>
+    </tr>
+    <tr>
+      <th>file.nheader</th>
+      <td><p>Number of lines to read at the beginning of the file,
+as a separate header information. Default is <code>0</code>. Each line is read as one
+string. You may need to postprocess it with strsplit. See examples.</p></td>
+    </tr>
+    <tr>
+      <th>info.nelem</th>
+      <td><p>Number of elements of extra information to read at the
+beginning of each line. Default is <code>0</code>.</p></td>
+    </tr>
+    <tr>
+      <th>split</th>
+      <td><p>The separator used in the file. Default is a space.</p></td>
+    </tr>
+    <tr>
+      <th>read.what</th>
+      <td><p>What type of elements to scan? Default is <code>double()</code>.
+You can also use <code>character()</code> or <code>integer()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>read.transfo</th>
+      <td><p>Function that transforms each line you read.</p></td>
+    </tr>
+    <tr>
+      <th>BM.type</th>
+      <td><p>Type of the resulting <code>big.matrix</code>. Default uses the type
+of <code>read.what</code>. This can be useful if you have only small integers or
+that the <code>read.transfo</code> function transforms the type of what is read.</p></td>
     </tr>
     <tr>
       <th>descriptor</th>
-      <td><p>Return the descriptor of the transposed <code>big.matrix</code> or
+      <td><p>Return the descriptor of the new <code>big.matrix</code> or
 directly the <code>big.matrix</code> object? Default is <code>TRUE</code> (the descriptor).</p></td>
+    </tr>
+    <tr>
+      <th>transpose</th>
+      <td><p>Should the resulting <code>big.matrix</code> be transposed?
+Default is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -146,20 +182,10 @@ fail in such cases due to exhausted shared-memory resources in the system.</p></
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The new transposed <code>big.matrix</code> (or its descriptor). Its dimension,
-type and dimnames are automatically determined from the input <code>big.matrix</code>.</p>
+    <p>A <code>big.matrix</code> (or its descriptor) with two attributes <code>header</code> and
+<code>info</code>.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-
-<span class='no'>tmpfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
-<span class='no'>Xt.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X.desc</span>, <span class='kw'>descriptor</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                         <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>basename</span>(<span class='no'>tmpfile</span>),
-                         <span class='kw'>backingpath</span> <span class='kw'>=</span> <span class='fu'>dirname</span>(<span class='no'>tmpfile</span>),
-                         <span class='kw'>descriptorfile</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='fu'>basename</span>(<span class='no'>tmpfile</span>), <span class='st'>".desc"</span>))
-
-<span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[,]), <span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>Xt.desc</span>)[,])</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -167,9 +193,7 @@ type and dimnames are automatically determined from the input <code>big.matrix</
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

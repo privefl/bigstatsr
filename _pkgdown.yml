@@ -4,13 +4,16 @@ templates:
 
 navbar:
   title: "bigstatsr"
+  icon: fa_home
   left:
-    - text: "Home"
-      href: index.html
     - text: "Manual"
       href: reference/index.html
     - text: "Vignettes"
-      href: articles/index.html
+      menu:
+      - text: "Operations with scaling"
+        href: articles/operations-with-scaling.html
+      - text: "Read a BM from a text file"
+        href: articles/read-BM-from-file.html
   right:
     - text: "About"
       icon: fa-user
@@ -51,6 +54,7 @@ reference:
       - big_transpose
       - big_apply
       - big_parallelize
+      - big_readBM
   - title: "Matrix operations"
     contents:
       - big_crossprodSelf
@@ -59,11 +63,3 @@ reference:
       - big_prodMat
       - big_cprodVec
       - big_cprodMat
-  - title: "New class and methods"
-    contents:
-      - BM.code-class
-      - typeof,big.matrix.descriptor-method
-      - nrow,big.matrix.descriptor-method
-  - title: "Package"
-    contents:
-      - bigstatsr-package

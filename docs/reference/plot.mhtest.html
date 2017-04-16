@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -49,13 +51,22 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Home</a>
-</li>
-<li>
   <a href="../reference/index.html">Manual</a>
 </li>
-<li>
-  <a href="../articles/index.html">Vignettes</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Vignettes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a BM from a text file</a>
+    </li>
+  </ul>
 </li>
       </ul>
       
@@ -91,40 +102,46 @@
     <p>Plot method for class <code>mhtest</code>.</p>
     
 
-    <pre><span class='co'># S3 method for mhtest</span>
+    <pre class="usage"><span class='co'># S3 method for mhtest</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Manhattan"</span>, <span class='st'>"Q-Q"</span>, <span class='st'>"Volcano"</span>),
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='no'>type</span>, <span class='st'>"Plot"</span>), <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>An object of class <code>mhtest</code>.</dd>
-      <dt>type</dt>
-      <dd>Either
-<ul>
-<li> &quot;Manhattan&quot;: plot of the negative logarithm (in base 10) of p-values
-(the default).
-</li>
-<li> &quot;Q-Q&quot;: Q-Q plot.
-</li>
-<li> &quot;Volcaco&quot;: plot of the negative logarithm of p-values against the
-estimation of coefficients (e.g. betas in linear regression).
-</li>
-</ul>
-</dd>
-      <dt>main</dt>
-      <dd>The title of the plot. Default use the <code>type</code>.</dd>
-      <dt>coeff</dt>
-      <dd>Relative size of text. Default is <code>1</code>.</dd>
-      <dt>...</dt>
-      <dd>Not used.</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>An object of class <code>mhtest</code>.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Either</p><ul>
+<li><p>"Manhattan": plot of the negative logarithm (in base 10) of p-values
+(the default).</p></li>
+<li><p>"Q-Q": Q-Q plot.</p></li>
+<li><p>"Volcaco": plot of the negative logarithm of p-values against the
+estimation of coefficients (e.g. betas in linear regression).</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>main</th>
+      <td><p>The title of the plot. Default use the <code>type</code>.</p></td>
+    </tr>
+    <tr>
+      <th>coeff</th>
+      <td><p>Relative size of text. Default is <code>1</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Not used.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
 You can modify it as you wish by adding layers. You might want to read
-<a href = 'this chapter'>http://r4ds.had.co.nz/data-visualisation.html</a>
+<a href = 'http://r4ds.had.co.nz/data-visualisation.html'>this chapter</a>
 to get more familiar with the package <strong>ggplot2</strong>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

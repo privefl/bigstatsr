@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Product with a vector — big_prodVec • bigstatsr</title>
+<title>T-scores used in pcadapt — linRegPcadapt • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,62 +95,48 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Product with a vector</h1>
+    <h1>T-scores used in pcadapt</h1>
     </div>
 
     
-    <p>Product between a "big.matrix" and a vector.</p>
+    <p>Compute matrix of t-scores (SNPs x scores) used in pcadapt.</p>
     
 
-    <pre class="usage"><span class='fu'>big_prodVec</span>(<span class='no'>X.</span>, <span class='no'>y</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>))</pre>
+    <pre class="usage"><span class='fu'>linRegPcadapt</span>(<span class='no'>BM</span>, <span class='no'>U</span>, <span class='no'>rowInd</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>BM</th>
+      <td><p>A <code>BM.code</code> object.</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>A vector of same size as <code>ind.col</code>.</p></td>
+      <th>U</th>
+      <td><p>Matrix of left singular vectors (from partial SVD).</p></td>
     </tr>
     <tr>
-      <th>ind.row</th>
-      <td><p>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don't use negative indices.</strong></p></td>
-    </tr>
-    <tr>
-      <th>ind.col</th>
-      <td><p>An optional vector of the column indices that are used.
-If not specified, all columns are used. <strong>Don't use negative indices.</strong></p></td>
+      <th>rowInd</th>
+      <td><p>Vector of row indices of the <code>big.matrix</code> that are used.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>\(X \cdot y\).</p>
+    <p>A matrix of t-scores where rows correspond to each SNP and
+columns correspond to each left singular vector.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function is used by package bigsnpr.</p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Keurcien Luu and Michael Blum (2017).
+pcadapt: Fast Principal Component Analysis for Outlier Detection.
+R package version 3.0.4. https://CRAN.R-project.org/package=pcadapt.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
-<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>ncol</span>(<span class='no'>X.desc</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>m</span>)
-
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_prodVec</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>)      <span class='co'># vector</span>
-<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[,] <span class='kw'>%*%</span> <span class='no'>y</span>  <span class='co'># one-column matrix</span>
-<span class='fu'>all.equal</span>(<span class='no'>test</span>, <span class='fu'>as.numeric</span>(<span class='no'>true</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># subsetting</span>
-<span class='no'>ind.row</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>)
-<span class='no'>ind.col</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>m</span>, <span class='no'>m</span>/<span class='fl'>2</span>)
-
-<span class='co'>## Not run: test2 &amp;lt;- big_prodVec(X.desc, y, ind.row, ind.col)</span>
-<span class='co'># returns an error. You need to use the subset of y:</span>
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_prodVec</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>[<span class='no'>ind.col</span>], <span class='no'>ind.row</span>, <span class='no'>ind.col</span>)
-<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind.row</span>, <span class='no'>ind.col</span>] <span class='kw'>%*%</span> <span class='no'>y</span>[<span class='no'>ind.col</span>]
-<span class='fu'>all.equal</span>(<span class='no'>test2</span>, <span class='fu'>as.numeric</span>(<span class='no'>true2</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -158,9 +144,11 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#references">References</a></li>
+          </ul>
 
   </div>
 </div>

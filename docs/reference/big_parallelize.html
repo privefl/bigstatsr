@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -49,13 +51,22 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Home</a>
-</li>
-<li>
   <a href="../reference/index.html">Manual</a>
 </li>
-<li>
-  <a href="../articles/index.html">Vignettes</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Vignettes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a BM from a text file</a>
+    </li>
+  </ul>
 </li>
       </ul>
       
@@ -91,31 +102,45 @@
     <p>A Split-Apply-Combine strategy to parallelize the evaluation of a function.</p>
     
 
-    <pre><span class='fu'>big_parallelize</span>(<span class='no'>X.</span>, <span class='no'>p.FUN</span>, <span class='no'>p.combine</span>, <span class='no'>ncores</span>, <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_parallelize</span>(<span class='no'>X.</span>, <span class='no'>p.FUN</span>, <span class='no'>p.combine</span>, <span class='no'>ncores</span>, <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>X.</dt>
-      <dd>Either a big.matrix or
-a big.matrix.descriptor.</dd>
-      <dt>p.FUN</dt>
-      <dd>The function to be applied. It must take a
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>X.</th>
+      <td><p>Either a big.matrix or
+a big.matrix.descriptor.</p></td>
+    </tr>
+    <tr>
+      <th>p.FUN</th>
+      <td><p>The function to be applied. It must take a
 big.matrix.descriptor as first argument
-and provide some arguments for subsetting.</dd>
-      <dt>p.combine</dt>
-      <dd>function that is used by foreach to process the tasks
+and provide some arguments for subsetting.</p></td>
+    </tr>
+    <tr>
+      <th>p.combine</th>
+      <td><p>function that is used by foreach to process the tasks
 results as they generated. This can be specified as either a function or a
-non-empty character string naming the function. Specifying &#39;c&#39; is useful
-for concatenating the results into a vector, for example. The values &#39;cbind&#39;
-and &#39;rbind&#39; can combine vectors into a matrix. The values &#39;+&#39; and &#39;*&#39; can be
-used to process numeric data. By default, the results are returned in a list.</dd>
-      <dt>ncores</dt>
-      <dd>Number of cores used. Default doesn&#39;t use parallelism.</dd>
-      <dt>ind</dt>
-      <dd>Initial vector of subsetting indices.</dd>
-      <dt>...</dt>
-      <dd>Extra arguments to be passed to <code>p.FUN</code>.</dd>
-    </dl>
+non-empty character string naming the function. Specifying 'c' is useful
+for concatenating the results into a vector, for example. The values 'cbind'
+and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
+used to process numeric data. By default, the results are returned in a list.</p></td>
+    </tr>
+    <tr>
+      <th>ncores</th>
+      <td><p>Number of cores used. Default doesn't use parallelism.</p></td>
+    </tr>
+    <tr>
+      <th>ind</th>
+      <td><p>Initial vector of subsetting indices.
+Default is the vector of all column indices.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra arguments to be passed to <code>p.FUN</code>.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -145,7 +170,7 @@ part and finally combine the results.</p>
 <span class='co'># 3. the results (data.frames) are combined via `rbind`.</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X.desc</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub</span>,
                         <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                        <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='rows_along.html'>cols_along</a></span>(<span class='no'>X.desc</span>))
+                        <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.desc</span>))
 <span class='fu'>all.equal</span>(<span class='no'>test</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'>### Computation on a part of the matrix</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
@@ -160,11 +185,9 @@ part and finally combine the results.</p>
 }
 <span class='co'># This doesn't work because, by default, the computation is spread</span>
 <span class='co'># along all columns. We must explictly specify the `ind` parameter.</span>
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># test2 &lt;- big_parallelize(X.desc, p.FUN = big_colstats_sub2,</span>
-<span class='co'>#                                   p.combine = 'rbind', ncores = 2,</span>
-<span class='co'>#                                   rows = rows, cols = cols)</span>
-<span class='co'>## ---------------------------------------------</span>
+<span class='fu'>not_run</span>({
+  <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X.desc</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub2</span>,                                    <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,                                    <span class='kw'>rows</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='no'>cols</span>)
+})
 
 <span class='co'># This now works, using `ind = seq_along(cols)`.</span>
 <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X.desc</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub2</span>,
