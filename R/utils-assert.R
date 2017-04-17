@@ -1,5 +1,13 @@
 ################################################################################
 
+# TYPEOF
+assert_type <- function(x, type)  {
+  if (typeof(x) != type)
+    stop2("'%s' is not of type '%s'.", deparse(substitute(x)), type)
+}
+
+################################################################################
+
 # CLASS
 assert_classOrDesc <- function(x, class)  {
   if (class(x) != class)

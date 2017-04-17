@@ -75,8 +75,7 @@ big_readBM <- function(file,
   # prepare the resulting big.matrix
   if (transpose) {
     res <- tmpFBM()(nrow = transfo.nelem, ncol = read.nline, type = BM.type)
-    res.path <- paste0(res@description[3:2], collapse = "")
-    on.exit(unlink(res.path), add = TRUE)
+    on.exit(tmpFBM.rm(res), add = TRUE)
   } else {
     res <- fun.createBM(nrow = transfo.nelem, ncol = read.nline, type = BM.type)
   }

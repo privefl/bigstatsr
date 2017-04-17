@@ -5,6 +5,10 @@ auc_cpp <- function(x_pos, x_neg) {
     .Call('bigstatsr_auc_cpp', PACKAGE = 'bigstatsr', x_pos, x_neg)
 }
 
+addInter <- function(xpMat2, xpMat, arr_ind) {
+    invisible(.Call('bigstatsr_addInter', PACKAGE = 'bigstatsr', xpMat2, xpMat, arr_ind))
+}
+
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose) {
     .Call('bigstatsr_COPY_cdfit_gaussian_hsr', PACKAGE = 'bigstatsr', BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
 }
@@ -47,6 +51,10 @@ cpMatVec4 <- function(BM, x, rowInd, colInd) {
 
 COPY_sparse_svm <- function(BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message) {
     .Call('bigstatsr_COPY_sparse_svm', PACKAGE = 'bigstatsr', BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message)
+}
+
+standardize <- function(xpMat, sd_thr) {
+    .Call('bigstatsr_standardize', PACKAGE = 'bigstatsr', xpMat, sd_thr)
 }
 
 transpose3 <- function(xpMat, xpMat2) {

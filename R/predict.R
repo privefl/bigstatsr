@@ -37,7 +37,7 @@ predict.big_sp <- function(object, X.,
   }
 
   rownames(scores) <- ind.row
-  sweep(scores, 2, object$intercept, '+')
+  as.matrix(sweep(scores, 2, object$intercept, '+'))
 }
 
 ################################################################################

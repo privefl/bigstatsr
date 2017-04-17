@@ -114,3 +114,31 @@ tmpFBM <- function(init = NULL, descriptor = TRUE) {
 }
 
 ################################################################################
+
+#' Remove temporary backing files
+#'
+#' @inheritParams bigstatsr-package
+#'
+#' @inherit base::unlink return
+#' @export
+#'
+#' @examples
+#' list.files(path = tempdir())
+#' X.desc <- tmpFBM()(10, 10)
+#' list.files(path = tempdir())
+#'
+#' tmpFBM.rm(X.desc)
+#' list.files(path = tempdir())
+#'
+tmpFBM.rm <- function(X.) {
+
+  desc <- describe(X.)
+  path <- paste0(desc@description[3:2], collapse = "")
+  if (startsWith(path, tempdir())) {
+    unlink(c(path, sub("\\.bk$", ".desc", path)))
+  } else {
+    stop2("Is '%s' really a temporary FBM?", path)
+  }
+}
+
+################################################################################
