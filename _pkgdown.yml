@@ -55,6 +55,7 @@ reference:
       - big_apply
       - big_parallelize
       - big_readBM
+      - BM
   - title: "Matrix operations"
     contents:
       - big_crossprodSelf

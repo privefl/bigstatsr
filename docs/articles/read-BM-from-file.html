@@ -90,27 +90,27 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">10</span> 
 M &lt;-<span class="st"> </span><span class="dv">5</span>
 (x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N *<span class="st"> </span>M), <span class="dt">nrow =</span> N, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span>:N], LETTERS[<span class="dv">1</span>:M])))</code></pre></div>
-<pre><code>##              A          B           C           D          E
-## a  0.480773283  0.3194436  2.00900714  1.70697198  0.6510636
-## b -0.635688407 -0.4326232  1.03333503 -0.04177553 -0.8448921
-## c  0.336118968  1.0974853 -0.53307573  0.64984902 -2.2253539
-## d  0.021083371 -1.4323869 -0.02273993  0.91328317  0.1293648
-## e -1.496406019  1.0953946 -0.03378554  0.20817250 -2.5608080
-## f -0.779129375 -0.3203482  0.82989117  0.53806063  0.6279607
-## g  0.004032119  0.5660182  0.41743324 -0.05644409 -0.5793863
-## h -1.988654492 -1.5292643 -1.06994087  0.53769841  0.1841397
-## i  0.100599500  1.2776525 -1.15540254 -1.63412051  0.6692427
-## j -0.441196614  1.0223739  0.38013018  0.23609479 -0.7071703</code></pre>
+<pre><code>##             A          B          C            D          E
+## a  0.33949550 -0.2953730  1.0436187  0.017063260 -0.2619765
+## b -0.90418510  0.4840220 -0.5761645 -0.354480172  1.3847979
+## c  0.13124464 -1.9395859  0.4428021 -0.001731004 -0.8687588
+## d  0.13286923 -1.2141907 -0.4224390  0.448641731 -1.0393376
+## e -0.55251368 -0.5198797 -0.4183749 -1.314014928 -0.4075840
+## f  1.24064243  0.2558882  0.2722189 -0.799052687  2.4637859
+## g  0.21699360  0.6776125 -0.1993830 -0.131243237  1.0743452
+## h -1.50803586 -0.4735153 -0.1524417 -0.149337145 -0.8222621
+## i  0.52284322  0.7569266  0.7665541 -0.229686668  0.6806960
+## j  0.09000268 -0.5315884 -0.1872748  0.181860682  0.4053574</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(x, tmp &lt;-<span class="st"> </span><span class="kw">tempfile</span>(), <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </div>
 <div id="get-some-intuition-on-the-file-format" class="section level3">
 <h3 class="hasAnchor">
 <a href="#get-some-intuition-on-the-file-format" class="anchor"></a>Get some intuition on the file format</h3>
 <p>I think it is always a good idea to print the first lines of the file you are interested in reading.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">readLines</span>(tmp, <span class="dv">3</span>)</code></pre></div>
-<pre><code>## [1] "A B C D E"                                                                                      
-## [2] "a 0.480773283084835 0.319443624869082 2.00900714266786 1.70697198414905 0.651063643868558"      
-## [3] "b -0.635688407029033 -0.432623167032119 1.03333503205492 -0.0417755287660264 -0.844892093534832"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">readLines</span>(tmp, <span class="dv">3</span>), <span class="dv">0</span>, <span class="dv">60</span>)</code></pre></div>
+<pre><code>## [1] "A B C D E"                                                   
+## [2] "a 0.339495500325309 -0.295372967883961 1.04361871346614 0.01"
+## [3] "b -0.904185097968084 0.484021958011023 -0.576164476923942 -0"</code></pre>
 <p>What you can see with these first 3 lines:</p>
 <ul>
 <li>the first line of the file stores some names,</li>
@@ -129,21 +129,21 @@ test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_re
                    <span class="dt">info.nelem =</span> <span class="dv">1</span>,        <span class="co"># default is 0</span>
                    <span class="dt">split =</span> <span class="st">" "</span>,           <span class="co"># the default</span>
                    <span class="dt">read.what =</span> <span class="kw">double</span>(),  <span class="co"># the default</span>
-                   <span class="dt">descriptor =</span> <span class="ot">FALSE</span>)    <span class="co"># default is TRUE</span></code></pre></div>
+                   <span class="dt">fun.createBM =</span> <span class="kw"><a href="../reference/createBM.html">BM</a></span>(<span class="dt">descriptor =</span> <span class="ot">FALSE</span>))  <span class="co"># default returns a descriptor</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the `big.matrix` elements</span>
 test[,]</code></pre></div>
-<pre><code>##           [,1]        [,2]       [,3]        [,4]        [,5]       [,6]
-## [1,] 0.4807733 -0.63568841  0.3361190  0.02108337 -1.49640602 -0.7791294
-## [2,] 0.3194436 -0.43262317  1.0974853 -1.43238692  1.09539465 -0.3203482
-## [3,] 2.0090071  1.03333503 -0.5330757 -0.02273993 -0.03378554  0.8298912
-## [4,] 1.7069720 -0.04177553  0.6498490  0.91328317  0.20817250  0.5380606
-## [5,] 0.6510636 -0.84489209 -2.2253539  0.12936481 -2.56080797  0.6279607
-##              [,7]       [,8]       [,9]      [,10]
-## [1,]  0.004032119 -1.9886545  0.1005995 -0.4411966
-## [2,]  0.566018221 -1.5292643  1.2776525  1.0223739
-## [3,]  0.417433239 -1.0699409 -1.1554025  0.3801302
-## [4,] -0.056444090  0.5376984 -1.6341205  0.2360948
-## [5,] -0.579386319  0.1841397  0.6692427 -0.7071703</code></pre>
+<pre><code>##             [,1]       [,2]         [,3]       [,4]       [,5]       [,6]
+## [1,]  0.33949550 -0.9041851  0.131244636  0.1328692 -0.5525137  1.2406424
+## [2,] -0.29537297  0.4840220 -1.939585935 -1.2141907 -0.5198797  0.2558882
+## [3,]  1.04361871 -0.5761645  0.442802051 -0.4224390 -0.4183749  0.2722189
+## [4,]  0.01706326 -0.3544802 -0.001731004  0.4486417 -1.3140149 -0.7990527
+## [5,] -0.26197645  1.3847979 -0.868758848 -1.0393376 -0.4075840  2.4637859
+##            [,7]       [,8]       [,9]       [,10]
+## [1,]  0.2169936 -1.5080359  0.5228432  0.09000268
+## [2,]  0.6776125 -0.4735153  0.7569266 -0.53158837
+## [3,] -0.1993830 -0.1524417  0.7665541 -0.18727482
+## [4,] -0.1312432 -0.1493371 -0.2296867  0.18186068
+## [5,]  1.0743452 -0.8222621  0.6806960  0.40535740</code></pre>
 </div>
 <div id="understand-the-resulting-object" class="section level3">
 <h3 class="hasAnchor">
@@ -171,21 +171,21 @@ test[,]</code></pre></div>
                        <span class="dt">file.nheader =</span> <span class="dv">1</span>,     
                        <span class="dt">info.nelem =</span> <span class="dv">1</span>,     
                        <span class="dt">transpose =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">descriptor =</span> <span class="ot">FALSE</span>))</code></pre></div>
+                       <span class="dt">fun.createBM =</span> <span class="kw"><a href="../reference/createBM.html">BM</a></span>(<span class="dt">descriptor =</span> <span class="ot">FALSE</span>)))</code></pre></div>
 <pre><code>## Formal class 'big.matrix' [package "bigmemory"] with 1 slot
 ##   ..@ address:&lt;externalptr&gt;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test[,] -<span class="st"> </span>x</code></pre></div>
 <pre><code>##               A             B             C             D             E
-## a  3.330669e-16 -4.440892e-16 -1.776357e-15 -3.774758e-15 -3.330669e-16
-## b -2.220446e-16  1.665335e-16  6.661338e-16 -4.857226e-17  4.440892e-16
-## c  1.665335e-16 -3.330669e-15 -4.440892e-16  2.220446e-16 -1.332268e-15
-## d  4.163336e-17  4.440892e-15  3.122502e-17  4.440892e-16 -1.942890e-16
-## e -3.108624e-15 -3.330669e-15 -3.469447e-17  2.498002e-16 -4.440892e-16
-## f  3.330669e-16 -3.885781e-16 -4.440892e-16 -1.110223e-16  3.330669e-16
-## g  4.336809e-18 -4.440892e-16  5.551115e-17  0.000000e+00 -1.110223e-16
-## h -4.884981e-15  3.996803e-15 -4.440892e-16  1.110223e-16  4.163336e-16
-## i -3.747003e-16 -4.440892e-15  1.110223e-15  4.884981e-15  1.110223e-16
-## j  3.330669e-16 -2.220446e-15  2.220446e-16  1.942890e-16 -1.110223e-16</code></pre>
+## a -5.551115e-17 -5.551115e-17  1.110223e-15  3.469447e-17  1.110223e-16
+## b  1.110223e-16  2.220446e-16  1.110223e-16 -1.665335e-16  0.000000e+00
+## c  8.326673e-17  4.884981e-15  3.330669e-16  4.553649e-18 -1.110223e-16
+## d -3.330669e-16 -3.996803e-15 -4.440892e-16  1.665335e-16 -4.440892e-16
+## e  4.440892e-16  0.000000e+00  3.885781e-16  4.218847e-15 -4.996004e-16
+## f  4.662937e-15 -4.440892e-16  2.775558e-16  0.000000e+00  3.552714e-15
+## g  4.996004e-16  3.330669e-16 -3.330669e-16  4.996004e-16  4.884981e-15
+## h -1.110223e-15  1.110223e-16  2.498002e-16 -2.498002e-16 -3.330669e-16
+## i  0.000000e+00  2.220446e-16  1.110223e-16  2.220446e-16  1.110223e-16
+## j -4.163336e-17  0.000000e+00  2.775558e-17  3.608225e-16 -1.110223e-16</code></pre>
 </li>
 </ol>
 </div>
@@ -251,7 +251,7 @@ transfo &lt;-<span class="st"> </span>function(read) {
 <pre><code>## Formal class 'big.matrix.descriptor' [package "bigmemory"] with 1 slot
 ##   ..@ description:List of 12
 ##   .. ..$ sharedType: chr "SharedMemory"
-##   .. ..$ sharedName: chr "MkkllMAYXLRmiIOKyPBNtGvg"
+##   .. ..$ sharedName: chr "gVxcQScjuORAmHOXhmMoroIv"
 ##   .. ..$ totalRows : num 10
 ##   .. ..$ totalCols : num 8
 ##   .. ..$ rowOffset : num 0
@@ -291,7 +291,8 @@ transfo &lt;-<span class="st"> </span>function(read) {
 <div id="final-note" class="section level2">
 <h2 class="hasAnchor">
 <a href="#final-note" class="anchor"></a>Final note</h2>
-<p>You should see the <code>...</code> parameter. I think it is usually a good idea to use filebacked <code>big.matrix</code> objects (not the case here) because you can write them once and attach them later on. Moreover, you have usually a very large amount of available disk space, but a limited amount of RAM or shared memory.</p>
+<p>I think it is usually a good idea to use filebacked <code>big.matrix</code> objects (not the case here) because you can write them once and attach them later on. Moreover, you have usually a very large amount of available disk space, but a limited amount of RAM or shared memory.<br> To do just that, change the parameter <code>fun.createBM</code>.</p>
+<p>Moreover, using descriptors rather than directly <code>big.matrix</code> objects is a good idea.</p>
 </div>
 </div>
   </div>

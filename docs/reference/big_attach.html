@@ -121,11 +121,10 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>tmpfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big.matrix</span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>basename</span>(<span class='no'>tmpfile</span>),
-             <span class='kw'>backingpath</span> <span class='kw'>=</span> <span class='fu'>dirname</span>(<span class='no'>tmpfile</span>),
-             <span class='kw'>descriptorfile</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='fu'>basename</span>(<span class='no'>tmpfile</span>), <span class='st'>".desc"</span>))
-<span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>describe</span>(<span class='no'>test</span>)
+    <pre class="examples"><div class='input'><span class='co'># tmpFBM</span>
+<span class='no'>tmpfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
+<span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='createBM.html'>FBM</a></span>(<span class='kw'>backingroot</span> <span class='kw'>=</span> <span class='fu'>basename</span>(<span class='no'>tmpfile</span>),
+              <span class='kw'>backingpath</span> <span class='kw'>=</span> <span class='fu'>dirname</span>(<span class='no'>tmpfile</span>))(<span class='fl'>10</span>, <span class='fl'>10</span>)
 
 <span class='no'>descriptorfile</span> <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='no'>tmpfile</span>, <span class='st'>".desc"</span>)
 <span class='no'>X.desc2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_attach</span>(<span class='no'>descriptorfile</span>)

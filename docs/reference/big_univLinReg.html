@@ -181,7 +181,7 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 #&gt;        lpval &lt;- stats::pt(xtr, df = 515, lower.tail = FALSE, log.p = TRUE)
 #&gt;        (log(2) + lpval) / log(10)
 #&gt;      }
-#&gt; &lt;environment: 0x8d301b8&gt;</div><div class='input'><span class='co'>## plot results</span>
+#&gt; &lt;environment: 0x103e34e8&gt;</div><div class='input'><span class='co'>## plot results</span>
 <span class='fu'>plot</span>(<span class='no'>test</span>)</div><img src='big_univLinReg-8.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><img src='big_univLinReg-10.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## To get p-values associated with the test</span>
 <span class='no'>test</span>$<span class='no'>p.value</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='kw'>log10</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  4 variables:
@@ -192,7 +192,7 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 #&gt;  - attr(*, "transfo")=function (x)  
 #&gt;  - attr(*, "predict")=function (xtr)  
 #&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 1 1 4 6 1 6 1 4
-#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x8cbdc80&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x106c0648&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
 #&gt; -0.03111113  0.06575485 -0.47313823  0.63631503 </div><div class='input'>
 <span class='co'># With all data</span>
 <span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X.desc</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  3 variables:
@@ -202,7 +202,7 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 #&gt;  - attr(*, "transfo")=function (x)  
 #&gt;  - attr(*, "predict")=function (xtr)  
 #&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 1 1 4 6 1 6 1 4
-#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x16f53710&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x1d7f10e8&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
 #&gt; -0.02947921  0.06597253 -0.44684070  0.65517903 </div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
@@ -215,7 +215,7 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 #&gt;  - attr(*, "transfo")=function (x)  
 #&gt;  - attr(*, "predict")=function (xtr)  
 #&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 1 1 4 6 1 6 1 4
-#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0xdb4ec00&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0xdc288b8&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
 #&gt; -0.08612891  0.09019549 -0.95491370  0.34053284 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

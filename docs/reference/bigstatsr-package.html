@@ -170,6 +170,11 @@ For this function, use only half of the cores you have.</p></td>
 such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}.$$</p></td>
     </tr>
     <tr>
+      <th>fun.createBM</th>
+      <td><p>A function that creates a <code>big.matrix</code>. It should have
+exactly 3 parameters <code>nrow</code>, <code>ncol</code> and <code>type</code>. See <a href='createBM.html'>FBM</a>.</p></td>
+    </tr>
+    <tr>
       <th>covar.train</th>
       <td><p>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.

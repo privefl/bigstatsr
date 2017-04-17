@@ -105,7 +105,7 @@
 
     <pre class="usage"><span class='fu'>big_readBM</span>(<span class='no'>file</span>, <span class='kw'>file.nheader</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>info.nelem</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>split</span> <span class='kw'>=</span> <span class='st'>" "</span>,
   <span class='kw'>read.what</span> <span class='kw'>=</span> <span class='fu'>double</span>(), <span class='kw'>read.transfo</span> <span class='kw'>=</span> <span class='no'>identity</span>,
-  <span class='kw'>BM.type</span> <span class='kw'>=</span> <span class='fu'>typeof</span>(<span class='no'>read.what</span>), <span class='kw'>descriptor</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>transpose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>BM.type</span> <span class='kw'>=</span> <span class='fu'>typeof</span>(<span class='no'>read.what</span>), <span class='kw'>transpose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>fun.createBM</span> <span class='kw'>=</span> <span class='fu'><a href='createBM.html'>BM</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -145,38 +145,14 @@ of <code>read.what</code>. This can be useful if you have only small integers or
 that the <code>read.transfo</code> function transforms the type of what is read.</p></td>
     </tr>
     <tr>
-      <th>descriptor</th>
-      <td><p>Return the descriptor of the new <code>big.matrix</code> or
-directly the <code>big.matrix</code> object? Default is <code>TRUE</code> (the descriptor).</p></td>
-    </tr>
-    <tr>
       <th>transpose</th>
       <td><p>Should the resulting <code>big.matrix</code> be transposed?
 Default is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to <code>bigmemory::big.matrix</code></p><dl class='dl-horizontal'>
-  <dt>separated</dt><dd><p>use separated column organization of the data; 
-see details.</p></dd>
-  <dt>backingfile</dt><dd><p>the root name for the file(s) for the cache of <code>x</code>.</p></dd>
-  <dt>backingpath</dt><dd><p>the path to the directory containing the file 
-backing cache.</p></dd>
-  <dt>descriptorfile</dt><dd><p>the name of the file to hold the backingfile 
-description, for subsequent use with <code>attach.big.matrix</code>; 
-if <code>NULL</code>, the <code>backingfile</code> is used as the root part of the 
-descriptor file name.  The descriptor file is placed in the same directory 
-as the backing files.</p></dd>
-  <dt>binarydescriptor</dt><dd><p>the flag to specify if the binary RDS format 
-should be used for the backingfile description, for subsequent use with 
-<code>attach.big.matrix</code>; if <code>NULL</code> of <code>FALSE</code>, the 
-<code>dput()</code> file format is used.</p></dd>
-  <dt>shared</dt><dd><p><code>TRUE</code> by default, and always <code>TRUE</code> if the 
-<code>big.matrix</code> is file-backed.  For a non-filebacked <code>big.matrix</code>, 
-<code>shared=FALSE</code> uses non-shared memory, which can be more stable for 
-large (say, &gt;50% of RAM) objects.  Shared memory allocation can sometimes 
-fail in such cases due to exhausted shared-memory resources in the system.</p></dd>
-</dl></td>
+      <th>fun.createBM</th>
+      <td><p>A function that creates a <code>big.matrix</code>. It should have
+exactly 3 parameters <code>nrow</code>, <code>ncol</code> and <code>type</code>. See <a href='createBM.html'>FBM</a>.</p></td>
     </tr>
     </table>
     

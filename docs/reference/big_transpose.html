@@ -99,11 +99,11 @@
     </div>
 
     
-    <p>This function implements a simple cache-oblivious
-algorithm for the transposition of a "big.matrix".</p>
+    <p>This function implements a simple cache-oblivious algorithm for
+the transposition of a "big.matrix".</p>
     
 
-    <pre class="usage"><span class='fu'>big_transpose</span>(<span class='no'>X.</span>, <span class='kw'>descriptor</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_transpose</span>(<span class='no'>X.</span>, <span class='kw'>fun.createBM</span> <span class='kw'>=</span> <span class='fu'><a href='createBM.html'>BM</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -114,52 +114,23 @@ algorithm for the transposition of a "big.matrix".</p>
 a big.matrix.descriptor.</p></td>
     </tr>
     <tr>
-      <th>descriptor</th>
-      <td><p>Return the descriptor of the transposed <code>big.matrix</code> or
-directly the <code>big.matrix</code> object? Default is <code>TRUE</code> (the descriptor).</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to <code>bigmemory::big.matrix</code></p><dl class='dl-horizontal'>
-  <dt>separated</dt><dd><p>use separated column organization of the data; 
-see details.</p></dd>
-  <dt>backingfile</dt><dd><p>the root name for the file(s) for the cache of <code>x</code>.</p></dd>
-  <dt>backingpath</dt><dd><p>the path to the directory containing the file 
-backing cache.</p></dd>
-  <dt>descriptorfile</dt><dd><p>the name of the file to hold the backingfile 
-description, for subsequent use with <code>attach.big.matrix</code>; 
-if <code>NULL</code>, the <code>backingfile</code> is used as the root part of the 
-descriptor file name.  The descriptor file is placed in the same directory 
-as the backing files.</p></dd>
-  <dt>binarydescriptor</dt><dd><p>the flag to specify if the binary RDS format 
-should be used for the backingfile description, for subsequent use with 
-<code>attach.big.matrix</code>; if <code>NULL</code> of <code>FALSE</code>, the 
-<code>dput()</code> file format is used.</p></dd>
-  <dt>shared</dt><dd><p><code>TRUE</code> by default, and always <code>TRUE</code> if the 
-<code>big.matrix</code> is file-backed.  For a non-filebacked <code>big.matrix</code>, 
-<code>shared=FALSE</code> uses non-shared memory, which can be more stable for 
-large (say, &gt;50% of RAM) objects.  Shared memory allocation can sometimes 
-fail in such cases due to exhausted shared-memory resources in the system.</p></dd>
-</dl></td>
+      <th>fun.createBM</th>
+      <td><p>A function that creates a <code>big.matrix</code>. It should have
+exactly 3 parameters <code>nrow</code>, <code>ncol</code> and <code>type</code>. See <a href='createBM.html'>FBM</a>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The new transposed <code>big.matrix</code> (or its descriptor). Its dimension,
-type and dimnames are automatically determined from the input <code>big.matrix</code>.</p>
+    <p>The new transposed <code>big.matrix</code> (or its descriptor). Its dimensions
+and type are automatically determined from the input <code>big.matrix</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-
-<span class='no'>tmpfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
-<span class='no'>Xt.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X.desc</span>, <span class='kw'>descriptor</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                         <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>basename</span>(<span class='no'>tmpfile</span>),
-                         <span class='kw'>backingpath</span> <span class='kw'>=</span> <span class='fu'>dirname</span>(<span class='no'>tmpfile</span>),
-                         <span class='kw'>descriptorfile</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='fu'>basename</span>(<span class='no'>tmpfile</span>), <span class='st'>".desc"</span>))
-
-<span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[,]), <span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>Xt.desc</span>)[,])</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='no'>Xt.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X.desc</span>, <span class='kw'>fun.createBM</span> <span class='kw'>=</span> <span class='fu'><a href='createBM.html'>tmpFBM</a></span>())
+<span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[,]), <span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>Xt.desc</span>)[,])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
