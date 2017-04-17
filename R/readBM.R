@@ -68,7 +68,7 @@ big_readBM <- function(file,
   ## get read transfo part
   firstline.transfo <- firstline %>%
     tail(read.nelem) %>%
-    as(typeof(read.what)) %>%
+    methods::as(typeof(read.what)) %>%
     read.transfo()
   transfo.nelem <- length(firstline.transfo)
 

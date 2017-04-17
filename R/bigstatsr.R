@@ -1,7 +1,7 @@
 ################################################################################
 
 #' @import bigmemory
-#' @useDynLib bigstatsr
+#' @useDynLib bigstatsr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #'
 #' @param X A [big.matrix][big.matrix-class].
