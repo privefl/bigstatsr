@@ -49,6 +49,9 @@ Suggests:
     viridis
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-Remotes: privefl/bigmemory, privefl/sparseSVM
+Remotes: 
+    privefl/bigmemory, 
+    YaohuiZeng/biglasso, 
+    CY-dev/sparseSVM
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
