@@ -9,11 +9,10 @@
 #' @rdname big_attach
 #'
 #' @examples
+#' # tmpFBM
 #' tmpfile <- tempfile()
-#' test <- big.matrix(10, 10, backingfile = basename(tmpfile),
-#'              backingpath = dirname(tmpfile),
-#'              descriptorfile = paste0(basename(tmpfile), ".desc"))
-#' X.desc <- describe(test)
+#' X.desc <- FBM(backingroot = basename(tmpfile),
+#'               backingpath = dirname(tmpfile))(10, 10)
 #'
 #' descriptorfile <- paste0(tmpfile, ".desc")
 #' X.desc2 <- big_attach(descriptorfile)

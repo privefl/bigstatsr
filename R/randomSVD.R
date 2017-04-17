@@ -9,9 +9,9 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
 
   TIME <- 0.001
 
-  Ax.desc <- tmpFBM(n, ncores)
-  Atx.desc <- tmpFBM(m, 1)
-  calc.desc <- tmpFBM(ncores, 1, init = 0)
+  Ax.desc <- tmpFBM()(n, ncores)
+  Atx.desc <- tmpFBM()(m, 1)
+  calc.desc <- tmpFBM(init = 0)(ncores, 1)
 
   if (verbose) {
     cl <- parallel::makeCluster(1 + ncores, outfile = "")

@@ -6,7 +6,7 @@
 \usage{
 big_readBM(file, file.nheader = 0, info.nelem = 0, split = " ",
   read.what = double(), read.transfo = identity,
-  BM.type = typeof(read.what), descriptor = TRUE, transpose = FALSE, ...)
+  BM.type = typeof(read.what), transpose = FALSE, fun.createBM = BM())
 }
 \arguments{
 \item{file}{The path to the file to be read.}
@@ -29,34 +29,11 @@ You can also use \code{character()} or \code{integer()}.}
 of \code{read.what}. This can be useful if you have only small integers or
 that the \code{read.transfo} function transforms the type of what is read.}
 
-\item{descriptor}{Return the descriptor of the new \code{big.matrix} or
-directly the \code{big.matrix} object? Default is \code{TRUE} (the descriptor).}
-
 \item{transpose}{Should the resulting \code{big.matrix} be transposed?
 Default is \code{FALSE}.}
 
-\item{...}{Arguments passed on to \code{bigmemory::big.matrix}
-\describe{
-  \item{separated}{use separated column organization of the data; 
-see details.}
-  \item{backingfile}{the root name for the file(s) for the cache of \code{x}.}
-  \item{backingpath}{the path to the directory containing the file 
-backing cache.}
-  \item{descriptorfile}{the name of the file to hold the backingfile 
-description, for subsequent use with \code{\link{attach.big.matrix}}; 
-if \code{NULL}, the \code{backingfile} is used as the root part of the 
-descriptor file name.  The descriptor file is placed in the same directory 
-as the backing files.}
-  \item{binarydescriptor}{the flag to specify if the binary RDS format 
-should be used for the backingfile description, for subsequent use with 
-\code{\link{attach.big.matrix}}; if \code{NULL} of \code{FALSE}, the 
-\code{dput()} file format is used.}
-  \item{shared}{\code{TRUE} by default, and always \code{TRUE} if the 
-\code{big.matrix} is file-backed.  For a non-filebacked \code{big.matrix}, 
-\code{shared=FALSE} uses non-shared memory, which can be more stable for 
-large (say, >50\% of RAM) objects.  Shared memory allocation can sometimes 
-fail in such cases due to exhausted shared-memory resources in the system.}
-}}
+\item{fun.createBM}{A function that creates a \code{big.matrix}. It should have
+exactly 3 parameters \code{nrow}, \code{ncol} and \code{type}. See \link{FBM}.}
 }
 \value{
 A \code{big.matrix} (or its descriptor) with two attributes \code{header} and

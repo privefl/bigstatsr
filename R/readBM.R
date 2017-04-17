@@ -12,6 +12,7 @@ get_nline <- function(file) {
 #' Read a file as a `big.matrix`. For a mini-tutorial, please see the
 #' [vignette](https://privefl.github.io/bigstatsr/articles/read-BM-from-file.html).
 #'
+#' @inheritParams bigstatsr-package
 #' @param file The path to the file to be read.
 #' @param file.nheader Number of lines to read at the beginning of the file,
 #' as a separate header information. Default is `0`. Each line is read as one
@@ -25,11 +26,8 @@ get_nline <- function(file) {
 #' @param BM.type Type of the resulting `big.matrix`. Default uses the type
 #' of `read.what`. This can be useful if you have only small integers or
 #' that the `read.transfo` function transforms the type of what is read.
-#' @param descriptor Return the descriptor of the new `big.matrix` or
-#' directly the `big.matrix` object? Default is `TRUE` (the descriptor).
 #' @param transpose Should the resulting `big.matrix` be transposed?
 #' Default is `FALSE`.
-#' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init -dimnames
 #'
 #' @return A `big.matrix` (or its descriptor) with two attributes `header` and
 #' `info`.
@@ -43,9 +41,8 @@ big_readBM <- function(file,
                        read.what = double(),
                        read.transfo = identity,
                        BM.type = typeof(read.what),
-                       descriptor = TRUE,
                        transpose = FALSE,
-                       ...) {
+                       fun.createBM = BM()) {
 
   # get #lines of the file
   file.nline <- get_nline(file)
@@ -77,12 +74,11 @@ big_readBM <- function(file,
 
   # prepare the resulting big.matrix
   if (transpose) {
-    res <- tmpFBM(n = transfo.nelem, m = read.nline, type = BM.type)
+    res <- tmpFBM()(nrow = transfo.nelem, ncol = read.nline, type = BM.type)
     res.path <- paste0(res@description[3:2], collapse = "")
     on.exit(unlink(res.path), add = TRUE)
-    res <- attach.BM(res)
   } else {
-    res <- big.matrix(nrow = transfo.nelem, ncol = read.nline, init = NULL, ...)
+    res <- fun.createBM(nrow = transfo.nelem, ncol = read.nline, type = BM.type)
   }
 
   # functions for scanning
@@ -94,21 +90,19 @@ big_readBM <- function(file,
   }
 
   # main read
-  res[, 1] <- firstline.transfo
+  X <- attach.BM(res)
+  X[, 1] <- firstline.transfo
   for (k in 2:read.nline) {
     if (info.nelem) info[, k] <- info.scan(con)
-    res[, k] <- read.transfo(read.scan(con))
+    X[, k] <- read.transfo(read.scan(con))
   }
 
   # check EOF (if can't read another character)
   if (length(scan(con, what = "", n = 1, sep = split, quiet = TRUE)))
     warning2("Didn't reach EOF.")
 
-  # transpose?
-  if (transpose) res <- big_transpose(res, descriptor = FALSE, ...)
-
   # returns
-  structure(`if`(descriptor, describe(res), res),
+  structure(`if`(transpose, big_transpose(res, fun.createBM), res),
             header = header,
             info = info)
 }

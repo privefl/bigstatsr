@@ -27,10 +27,11 @@ test_that("read from write.table", {
                        info.nelem = 1,
                        read.what = X[1, 1],
                        BM.type = t,
-                       descriptor = FALSE,
                        transpose = TRUE)
 
-    expect_equal(test[,], X[,])
+    expect_true(typeof(test) == t)
+
+    expect_equal(attach.BM(test)[,], X[,])
   }
 })
 
@@ -46,13 +47,16 @@ test_that("read from write.table with dimnames", {
 
     write.table(X[,], tmp, quote = FALSE)
 
+    # with transpose
     test <- big_readBM(tmp,
                        file.nheader = 1,
                        info.nelem = 1,
                        read.what = X[1, 1],
                        BM.type = t,
-                       descriptor = FALSE,
-                       transpose = TRUE)
+                       transpose = TRUE,
+                       fun.createBM = BM(descriptor = FALSE))
+
+    expect_true(typeof(test) == t)
 
     colnames <- attr(test, "info")[1, ]
     rownames <- strsplit(attr(test, "header"),
@@ -60,6 +64,24 @@ test_that("read from write.table with dimnames", {
                          fixed = TRUE)[[1]]
 
     expect_equal(structure(test[,], .Dimnames = list(colnames, rownames)), X[,])
+
+    # without transpose
+    test2 <- big_readBM(tmp,
+                        file.nheader = 1,
+                        info.nelem = 1,
+                        read.what = X[1, 1],
+                        BM.type = t,
+                        fun.createBM = BM(descriptor = FALSE))
+
+    expect_true(typeof(test2) == t)
+
+    colnames2 <- attr(test2, "info")[1, ]
+    rownames2 <- strsplit(attr(test2, "header"),
+                          split = " ",
+                          fixed = TRUE)[[1]]
+
+    expect_equal(structure(t(test2[,]), .Dimnames = list(colnames2, rownames2)),
+                 X[,])
   }
 })
 

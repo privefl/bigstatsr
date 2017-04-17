@@ -18,3 +18,16 @@ assert_all <- function(x, value) {
 }
 
 ################################################################################
+
+# DIRECTORY
+assert_dir <- function(dir.path) {
+  if (!dir.exists(dir.path)) {
+    if (dir.create(dir.path)) {
+      message2("Creating directory \"%s\" which didn't exist..", dir.path)
+    } else {
+      stop2("Problem creating directory \"%s\". Recursive path?", dir.path)
+    }
+  }
+}
+
+################################################################################

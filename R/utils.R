@@ -79,30 +79,3 @@ transform_levels <- function(y, new.levels = 0:1) {
 }
 
 ################################################################################
-
-#' Descriptor of temporary filebacked "big.matrix"
-#'
-#' @param n Number of rows.
-#' @param m Number of columns.
-#' @param type The type of the atomic element. Default is `double`.
-#' @param init A scalar value for initializing the matrix. Default is `NULL`,
-#' which avoids unnecessary time spent doing the initializing.
-#'
-#' @return A descriptor of a `big.matrix`, filebacked in directory "/tmp/".
-#' @export
-#' @keywords internal
-#'
-#' @examples
-#' X.desc <- tmpFBM(10, 10)
-#' str(X.desc)
-tmpFBM <- function(n, m, type = "double", init = NULL) {
-  tmpfile <- tempfile()
-  describe(
-    big.matrix(n, m, type = type, init = init,
-               backingfile = basename(tmpfile),
-               backingpath = dirname(tmpfile),
-               descriptorfile = paste0(basename(tmpfile), ".desc"))
-  )
-}
-
-################################################################################

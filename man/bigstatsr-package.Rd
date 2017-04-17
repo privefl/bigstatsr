@@ -42,6 +42,9 @@ For this function, use only half of the cores you have.}
 \code{mean} and \code{sd} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}}
 
+\item{fun.createBM}{A function that creates a \code{big.matrix}. It should have
+exactly 3 parameters \code{nrow}, \code{ncol} and \code{type}. See \link{FBM}.}
+
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}

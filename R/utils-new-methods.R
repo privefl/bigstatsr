@@ -134,7 +134,8 @@ setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
                                   code = "numeric"),
           function(x, code) {
             check_BM_code(x, code)
-            as.BM.code(attach.big.matrix(x), code)
+            methods::new("BM.code.descriptor",
+                         description = x@description, code = code)
           })
 
 #' @rdname BM.code
@@ -144,7 +145,8 @@ setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
           function(x, code) {
             code <- rep(NA_real_, 256)
             check_BM_code(x, code)
-            as.BM.code(attach.big.matrix(x), code)
+            methods::new("BM.code.descriptor",
+                         description = x@description, code = code)
           })
 
 asBMcode <- function(x) { # for tests
@@ -200,7 +202,7 @@ setMethod("attach.BM", signature(x = "big.matrix.descriptor"),
 #' @rdname completeness-methods
 #' @export
 setMethod("attach.BM", signature(x = "BM.code.descriptor"),
-          function(x) as.BM.code(x, x@code))
+          function(x) as.BM.code(attach.big.matrix(x), x@code))
 
 ################################################################################
 #### Accessors for a `BM.code` ####

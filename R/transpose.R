@@ -1,36 +1,30 @@
 ################################################################################
 
-#' @title Transposition
-#' @description This function implements a simple cache-oblivious
-#' algorithm for the transposition of a "big.matrix".
+#' Transposition
+#'
+#' This function implements a simple cache-oblivious algorithm for
+#' the transposition of a "big.matrix".
+#'
 #' @inheritParams bigstatsr-package
-#' @param descriptor Return the descriptor of the transposed `big.matrix` or
-#' directly the `big.matrix` object? Default is `TRUE` (the descriptor).
-#' @inheritDotParams bigmemory::big.matrix -nrow -ncol -type -init -dimnames
-#' @return The new transposed `big.matrix` (or its descriptor). Its dimension,
-#' type and dimnames are automatically determined from the input `big.matrix`.
+#'
+#' @return The new transposed `big.matrix` (or its descriptor). Its dimensions
+#' and type are automatically determined from the input `big.matrix`.
+#'
 #' @export
+#'
 #' @examples
 #' X.desc <- big_attachExtdata()
-#'
-#' tmpfile <- tempfile()
-#' Xt.desc <- big_transpose(X.desc, descriptor = TRUE,
-#'                          backingfile = basename(tmpfile),
-#'                          backingpath = dirname(tmpfile),
-#'                          descriptorfile = paste0(basename(tmpfile), ".desc"))
-#'
+#' Xt.desc <- big_transpose(X.desc, fun.createBM = tmpFBM())
 #' identical(t(attach.BM(X.desc)[,]), attach.BM(Xt.desc)[,])
-big_transpose <- function(X., descriptor = TRUE, ...) {
+#'
+big_transpose <- function(X., fun.createBM = BM()) {
+
+  res <- fun.createBM(ncol(X.), nrow(X.), typeof(X.))
+
   X <- attach.BM(X.)
+  transpose3(attach.BM(res)@address, X@address)
 
-  res <- big.matrix(ncol(X), nrow(X), type = typeof(X), init = NULL,
-                    dimnames = dimnames(X)[2:1], ...)
-
-  transpose3(res@address, X@address)
-
-  if (inherits(X, "BM.code")) res <- as.BM.code(res, code = X@code)
-
-  `if`(descriptor, describe(res), res)
+  `if`(inherits(X, "BM.code"), as.BM.code(res, code = X@code), res)
 }
 
 ################################################################################

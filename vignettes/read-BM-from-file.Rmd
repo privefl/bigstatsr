@@ -27,7 +27,7 @@ write.table(x, tmp <- tempfile(), quote = FALSE)
 
 I think it is always a good idea to print the first lines of the file you are interested in reading.
 ```{r}
-readLines(tmp, 3)
+substr(readLines(tmp, 3), 0, 60)
 ```
 
 What you can see with these first 3 lines:
@@ -47,7 +47,7 @@ test <- big_readBM(tmp,
                    info.nelem = 1,        # default is 0
                    split = " ",           # the default
                    read.what = double(),  # the default
-                   descriptor = FALSE)    # default is TRUE
+                   fun.createBM = BM(descriptor = FALSE))  # default returns a descriptor
 ```
 
 ```{r}
@@ -86,7 +86,7 @@ There are at least 2 things to note:
                            file.nheader = 1,     
                            info.nelem = 1,     
                            transpose = TRUE,
-                           descriptor = FALSE))
+                           fun.createBM = BM(descriptor = FALSE)))
     test[,] - x
     ```
 
@@ -151,4 +151,7 @@ t(attr(test, "info"))
 
 ## Final note
 
-You should see the `...` parameter. I think it is usually a good idea to use filebacked `big.matrix` objects (not the case here) because you can write them once and attach them later on. Moreover, you have usually a very large amount of available disk space, but a limited amount of RAM or shared memory.
+I think it is usually a good idea to use filebacked `big.matrix` objects (not the case here) because you can write them once and attach them later on. Moreover, you have usually a very large amount of available disk space, but a limited amount of RAM or shared memory.<br/>
+To do just that, change the parameter `fun.createBM`.
+
+Moreover, using descriptors rather than directly `big.matrix` objects is a good idea.
