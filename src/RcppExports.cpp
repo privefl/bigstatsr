@@ -19,18 +19,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// addInter
-void addInter(XPtr<BigMatrix> xpMat2, XPtr<BigMatrix> xpMat, const IntegerMatrix& arr_ind);
-RcppExport SEXP bigstatsr_addInter(SEXP xpMat2SEXP, SEXP xpMatSEXP, SEXP arr_indSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat2(xpMat2SEXP);
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
-    Rcpp::traits::input_parameter< const IntegerMatrix& >::type arr_ind(arr_indSEXP);
-    addInter(xpMat2, xpMat, arr_ind);
-    return R_NilValue;
-END_RCPP
-}
 // COPY_cdfit_gaussian_hsr
 List COPY_cdfit_gaussian_hsr(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool verbose);
 RcppExport SEXP bigstatsr_COPY_cdfit_gaussian_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP verboseSEXP) {
@@ -210,18 +198,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type user(userSEXP);
     Rcpp::traits::input_parameter< bool >::type message(messageSEXP);
     rcpp_result_gen = Rcpp::wrap(COPY_sparse_svm(BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message));
-    return rcpp_result_gen;
-END_RCPP
-}
-// standardize
-IntegerVector standardize(XPtr<BigMatrix> xpMat, double sd_thr);
-RcppExport SEXP bigstatsr_standardize(SEXP xpMatSEXP, SEXP sd_thrSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< XPtr<BigMatrix> >::type xpMat(xpMatSEXP);
-    Rcpp::traits::input_parameter< double >::type sd_thr(sd_thrSEXP);
-    rcpp_result_gen = Rcpp::wrap(standardize(xpMat, sd_thr));
     return rcpp_result_gen;
 END_RCPP
 }

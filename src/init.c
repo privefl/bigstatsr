@@ -8,7 +8,6 @@ Check these declarations against the C/Fortran source code.
 */
 
 /* .Call calls */
-extern SEXP bigstatsr_addInter(SEXP, SEXP, SEXP);
 extern SEXP bigstatsr_auc_cpp(SEXP, SEXP);
 extern SEXP bigstatsr_bigcolvars(SEXP, SEXP, SEXP);
 extern SEXP bigstatsr_complete2(SEXP);
@@ -26,12 +25,10 @@ extern SEXP bigstatsr_mycount1(SEXP, SEXP, SEXP, SEXP);
 extern SEXP bigstatsr_mycount2(SEXP, SEXP, SEXP, SEXP);
 extern SEXP bigstatsr_pMatVec4(SEXP, SEXP, SEXP, SEXP);
 extern SEXP bigstatsr_scaling(SEXP, SEXP, SEXP);
-extern SEXP bigstatsr_standardize(SEXP, SEXP);
 extern SEXP bigstatsr_transpose3(SEXP, SEXP);
 extern SEXP bigstatsr_univLinReg5(SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-  {"bigstatsr_addInter",                (DL_FUNC) &bigstatsr_addInter,                 3},
   {"bigstatsr_auc_cpp",                 (DL_FUNC) &bigstatsr_auc_cpp,                  2},
   {"bigstatsr_bigcolvars",              (DL_FUNC) &bigstatsr_bigcolvars,               3},
   {"bigstatsr_complete2",               (DL_FUNC) &bigstatsr_complete2,                1},
@@ -49,7 +46,6 @@ static const R_CallMethodDef CallEntries[] = {
   {"bigstatsr_mycount2",                (DL_FUNC) &bigstatsr_mycount2,                 4},
   {"bigstatsr_pMatVec4",                (DL_FUNC) &bigstatsr_pMatVec4,                 4},
   {"bigstatsr_scaling",                 (DL_FUNC) &bigstatsr_scaling,                  3},
-  {"bigstatsr_standardize",             (DL_FUNC) &bigstatsr_standardize,              2},
   {"bigstatsr_transpose3",              (DL_FUNC) &bigstatsr_transpose3,               2},
   {"bigstatsr_univLinReg5",             (DL_FUNC) &bigstatsr_univLinReg5,              5},
   {NULL, NULL, 0}

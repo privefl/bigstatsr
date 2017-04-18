@@ -22,25 +22,3 @@ big_colstats <- function(X.,
 }
 
 ################################################################################
-
-#' Standardize a double "big.matrix"
-#'
-#' @inheritParams bigstatsr-package
-#' @param thr.sd Threshold on standard deviation under which to ignore a column.
-#'
-#' @return A vector of column indices that have a low standard deviation.
-#' @export
-#'
-#' @examples
-#' tmp <- tmpFBM(descriptor = FALSE)(10, 5, type = "double")
-#' tmp[] <- rnorm(length(tmp))
-#' apply(tmp[,], 2, function(x) c(mean(x), sd(x)))
-#'
-#' big_standardize(tmp)
-#' apply(tmp[,], 2, function(x) c(mean(x), sd(x)))
-big_standardize <- function(X., thr.sd = 1e-4) {
-  assert_type(X., "double")
-  standardize(attach.BM(X.)@address, thr.sd)
-}
-
-################################################################################
