@@ -25,5 +25,7 @@ Get coordinates on a plot by mouse-clicking.
 \dontrun{
 plot(runif(20, max = 5000))
 # note the negative number for the rounding of $y
-pasteLoc(3, digits = c(2, -1))}
+coord <- pasteLoc(3, digits = c(2, -1))
+text(coord, c("a", "b", "c"))
+}
 }

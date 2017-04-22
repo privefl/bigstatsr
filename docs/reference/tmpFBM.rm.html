@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get coordinates — pasteLoc • bigstatsr</title>
+<title>Remove temporary backing files — tmpFBM.rm • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,41 +95,65 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get coordinates</h1>
+    <h1>Remove temporary backing files</h1>
     </div>
 
     
-    <p>Get coordinates on a plot by mouse-clicking.</p>
+    <p>Remove temporary backing files</p>
     
 
-    <pre class="usage"><span class='fu'>pasteLoc</span>(<span class='no'>nb</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>))</pre>
+    <pre class="usage"><span class='fu'>tmpFBM.rm</span>(<span class='no'>X.</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>nb</th>
-      <td><p>Number of positions.</p></td>
-    </tr>
-    <tr>
-      <th>digits</th>
-      <td><p>2 integer indicating the number of decimal places
-(respectively for x and y coordinates).</p></td>
+      <th>X.</th>
+      <td><p>Either a big.matrix or
+a big.matrix.descriptor.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of coordinates. Note that if you don't put the result in a
-variable, it returns as the command text for generating the list. This can
-be useful to get coordinates by mouse-clicking once, but then using the code
-for convenience and reproducibility.</p>
+    <p><code>0</code> for success, <code>1</code> for failure, invisibly.
+  Not deleting a non-existent file is not a failure, nor is being unable
+  to delete a directory if <code>recursive = FALSE</code>.  However, missing
+  values in <code>x</code> are regarded as failures.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='fu'>plot</span>(<span class='fu'>runif</span>(<span class='fl'>20</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))  <span class='co'># note the negative number for the rounding of $y  coord &lt;- pasteLoc(3, digits = c(2, -1))  text(coord, c("a", "b", "c"))</span>
-})</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>list.files</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'>tempdir</span>())</div><div class='output co'>#&gt; [1] "36d0262954bb4cc0994c4a0a26ad07aa.png"                       
+#&gt; [2] "file4d512893c6a6.bk"                                        
+#&gt; [3] "file4d512893c6a6.desc"                                      
+#&gt; [4] "file4d5147a666a4.bk"                                        
+#&gt; [5] "file4d5147a666a4.desc"                                      
+#&gt; [6] "file4d515785c3a9.bk"                                        
+#&gt; [7] "file4d515785c3a9.desc"                                      
+#&gt; [8] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"
+#&gt; [9] "rs-graphics-b0800297-4574-42ae-8ab4-6c819f1c8dce"           </div><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='createBM.html'>tmpFBM</a></span>()(<span class='fl'>10</span>, <span class='fl'>10</span>)
+<span class='fu'>list.files</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'>tempdir</span>())</div><div class='output co'>#&gt;  [1] "36d0262954bb4cc0994c4a0a26ad07aa.png"                       
+#&gt;  [2] "file4d512893c6a6.bk"                                        
+#&gt;  [3] "file4d512893c6a6.desc"                                      
+#&gt;  [4] "file4d5147a666a4.bk"                                        
+#&gt;  [5] "file4d5147a666a4.desc"                                      
+#&gt;  [6] "file4d514e12d126.bk"                                        
+#&gt;  [7] "file4d514e12d126.desc"                                      
+#&gt;  [8] "file4d515785c3a9.bk"                                        
+#&gt;  [9] "file4d515785c3a9.desc"                                      
+#&gt; [10] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"
+#&gt; [11] "rs-graphics-b0800297-4574-42ae-8ab4-6c819f1c8dce"           </div><div class='input'>
+<span class='fu'>tmpFBM.rm</span>(<span class='no'>X.desc</span>)
+<span class='fu'>list.files</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'>tempdir</span>())</div><div class='output co'>#&gt; [1] "36d0262954bb4cc0994c4a0a26ad07aa.png"                       
+#&gt; [2] "file4d512893c6a6.bk"                                        
+#&gt; [3] "file4d512893c6a6.desc"                                      
+#&gt; [4] "file4d5147a666a4.bk"                                        
+#&gt; [5] "file4d5147a666a4.desc"                                      
+#&gt; [6] "file4d515785c3a9.bk"                                        
+#&gt; [7] "file4d515785c3a9.desc"                                      
+#&gt; [8] "repos_https%3A%2F%2Fcran.rstudio.com%2F%2Fsrc%2Fcontrib.rds"
+#&gt; [9] "rs-graphics-b0800297-4574-42ae-8ab4-6c819f1c8dce"           </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

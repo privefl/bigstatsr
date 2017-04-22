@@ -195,13 +195,14 @@ This is particularly useful as the <code>fun.createBM</code> parameter.</p>
 #&gt;     res &lt;- big.matrix(nrow, ncol, type, ...)
 #&gt;     `if`(descriptor, describe(res), res)
 #&gt;   }
-#&gt; &lt;environment: 0xe254ed0&gt;</div><div class='input'><span class='co'># with 3 parameters</span>
+#&gt; &lt;environment: 0xccf3280&gt;</div><div class='input'><span class='co'># with 3 parameters</span>
 (<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>f</span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"integer"</span>))</div><div class='output co'>#&gt; An object of class "big.matrix"
 #&gt; Slot "address":
-#&gt; &lt;pointer: 0x10b00500&gt;
+#&gt; &lt;pointer: 0xdddac90&gt;
 #&gt; </div><div class='input'><span class='fu'>is.shared</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># a shortcut for a filebacked `big.matrix`</span>
-<span class='no'>X2.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>FBM</span>(<span class='kw'>backingroot</span> <span class='kw'>=</span> <span class='st'>"test"</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fl'>2</span>)(<span class='fl'>10</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='message'>Creating directory "backingfiles" which didn't exist..</span></div><div class='input'><span class='fu'>str</span>(<span class='no'>X2.desc</span>)</div><div class='output co'>#&gt; Formal class 'big.matrix.descriptor' [package "bigmemory"] with 1 slot
+<span class='no'>X2.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>FBM</span>(<span class='kw'>backingroot</span> <span class='kw'>=</span> <span class='st'>"test"</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fl'>2</span>)(<span class='fl'>10</span>, <span class='fl'>10</span>)
+<span class='fu'>str</span>(<span class='no'>X2.desc</span>)</div><div class='output co'>#&gt; Formal class 'big.matrix.descriptor' [package "bigmemory"] with 1 slot
 #&gt;   ..@ description:List of 13
 #&gt;   .. ..$ sharedType: chr "FileBacked"
 #&gt;   .. ..$ filename  : chr "test.bk"
@@ -232,8 +233,8 @@ This is particularly useful as the <code>fun.createBM</code> parameter.</p>
 <span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Formal class 'big.matrix.descriptor' [package "bigmemory"] with 1 slot
 #&gt;   ..@ description:List of 13
 #&gt;   .. ..$ sharedType: chr "FileBacked"
-#&gt;   .. ..$ filename  : chr "file58a16d7d1374.bk"
-#&gt;   .. ..$ dirname   : chr "/tmp/RtmpLDba5L/"
+#&gt;   .. ..$ filename  : chr "file4d512893c6a6.bk"
+#&gt;   .. ..$ dirname   : chr "/tmp/RtmpTLT3SZ/"
 #&gt;   .. ..$ totalRows : num 10
 #&gt;   .. ..$ totalCols : num 10
 #&gt;   .. ..$ rowOffset : num 0
