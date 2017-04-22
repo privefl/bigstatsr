@@ -1,7 +1,7 @@
 ---
 title: "How to handle operations on a scaled \"big.matrix\""
-# author: "Florian Privé"
-# date: "9 février 2017"
+author: "Florian Privé"
+date: "February 9, 2017"
 output: html_document
 ---
 
