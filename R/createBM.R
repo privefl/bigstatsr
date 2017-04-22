@@ -115,6 +115,13 @@ tmpFBM <- function(init = NULL, descriptor = TRUE) {
 
 ################################################################################
 
+BM.path <- function(X.) {
+  X <- attach.BM(X)
+  file.path(dir.name(X), file.name(X))
+}
+
+################################################################################
+
 #' Remove temporary backing files
 #'
 #' @inheritParams bigstatsr-package
@@ -132,8 +139,8 @@ tmpFBM <- function(init = NULL, descriptor = TRUE) {
 #'
 tmpFBM.rm <- function(X.) {
 
-  desc <- describe(X.)
-  path <- paste0(desc@description[3:2], collapse = "")
+  path <- BM.path(X.)
+
   if (startsWith(path, tempdir())) {
     unlink(c(path, sub("\\.bk$", ".desc", path)))
   } else {
