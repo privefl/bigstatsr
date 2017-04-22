@@ -116,7 +116,7 @@ tmpFBM <- function(init = NULL, descriptor = TRUE) {
 ################################################################################
 
 BM.path <- function(X.) {
-  X <- attach.BM(X)
+  X <- attach.BM(X.)
   file.path(dir.name(X), file.name(X))
 }
 
