@@ -54,7 +54,7 @@ public:
   }
 
   inline T operator() (int i, int j) {
-    return *(_pMat + _totalRows * _col_ind[j] +_row_ind[i]);
+    return *(_pMat + _totalRows * _col_ind[j] + _row_ind[i]);
   }
 
   int nrow() const {
@@ -87,7 +87,7 @@ public:
     }
 
   inline double operator() (int i, int j) {
-    return _lookup[*(_pMat + _totalRows * _col_ind[j] +_row_ind[i])];
+    return _lookup[*(_pMat + _totalRows * _col_ind[j] + _row_ind[i])];
   }
 
 protected:
