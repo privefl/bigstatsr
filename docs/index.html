@@ -100,7 +100,7 @@
 <li>it prevents the R session from crashing when re-attaching bigmatrices. Indeed, as a <code>big.matrix</code> object is an external pointer to a C++ data structure, R can’t re-attach it (e.g. when restarting the R session) without any further information. The <code>big.matrix.descriptor</code> object provides this information.</li>
 <li>in order to use parallel computing with bigmatrices, you need to use <code>big.matrix.descriptor</code> objects at a given point in time.</li>
 </ul>
-<p>Moreover, a new class is introduced: a <code>BM.code</code>. It is a bigmatrix of type <code>raw</code> (one byte unsigned integer) with an embedded lookup table (the slot <code>code</code>). This enables you to efficiently store a very large matrix with up to 256 different values. For example, this is used in <a href="https://privefl.github.io/bigsnpr/reference/bigSNP-class.html">package <strong>bigsnpr</strong></a> to store genotype matrices (which elements are either <code>0</code>, <code>1</code>, <code>2</code> or <code>NA</code>).</p>
+<p>Moreover, a new class is introduced: a <code>BM.code</code>. It is a bigmatrix of type <code>raw</code> (one byte unsigned integer) with an embedded lookup table (the slot <code>code</code>). This enables you to efficiently store a very large matrix with up to 256 different values. For example, this is used in <a href="https://privefl.github.io/bigsnpr/reference/bigSNP-class.html">package <strong>bigsnpr</strong></a> to store genotype matrices.</p>
 <p>To facilitate the manipulation of descriptors and <code>BM.code</code> objects, some methods have been added/extended:</p>
 <ul>
 <li>

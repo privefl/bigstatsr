@@ -33,7 +33,7 @@ As inputs, the package **bigstatsr** can use either `big.matrix.descriptor` obje
 - it prevents the R session from crashing when re-attaching bigmatrices. Indeed, as a `big.matrix` object is an external pointer to a C++ data structure, R can't re-attach it (e.g. when restarting the R session) without any further information. The `big.matrix.descriptor` object provides this information.
 - in order to use parallel computing with bigmatrices, you need to use `big.matrix.descriptor` objects at a given point in time. 
 
-Moreover, a new class is introduced: a `BM.code`. It is a bigmatrix of type `raw` (one byte unsigned integer) with an embedded lookup table (the slot `code`). This enables you to efficiently store a very large matrix with up to 256 different values. For example, this is used in [package **bigsnpr**](https://privefl.github.io/bigsnpr/reference/bigSNP-class.html) to store genotype matrices (which elements are either `0`, `1`, `2` or `NA`).
+Moreover, a new class is introduced: a `BM.code`. It is a bigmatrix of type `raw` (one byte unsigned integer) with an embedded lookup table (the slot `code`). This enables you to efficiently store a very large matrix with up to 256 different values. For example, this is used in [package **bigsnpr**](https://privefl.github.io/bigsnpr/reference/bigSNP-class.html) to store genotype matrices.
 
 To facilitate the manipulation of descriptors and `BM.code` objects, some methods have been added/extended:
 - `nrow`, `ncol`, `dim` and `length` of a descriptor object access the underlying dimensions of the described bigmatrix (use `typeof` to get the storage mode). 
