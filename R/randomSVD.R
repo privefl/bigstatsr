@@ -102,12 +102,7 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
   res$sds <- unlist(l[!s], use.names = FALSE)
 
   # remove temporary files
-  unlink2 <- function(desc) {
-    desc <- desc@description
-    file.root <- file.path(desc$dirname, desc$filename)
-    unlink(paste0(file.root, c("", ".desc")))
-  }
-  sapply(c(Ax.desc, Atx.desc, calc.desc), unlink2)
+  sapply(c(Ax.desc, Atx.desc, calc.desc), tmpFBM.rm)
 
   # return
   res

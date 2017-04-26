@@ -11,10 +11,12 @@ tmpFBM.rm(X.)
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 }
 \value{
-\code{0} for success, \code{1} for failure, invisibly.
-  Not deleting a non-existent file is not a failure, nor is being unable
-  to delete a directory if \code{recursive = FALSE}.  However, missing
-  values in \code{x} are regarded as failures.
+These functions return a logical vector indicating which
+  operation succeeded for each of the files attempted.  Using a missing
+  value for a file or path name will always be regarded as a failure.
+
+  If \code{showWarnings = TRUE}, \code{file.create} will give a warning
+  for an unexpected failure.
 }
 \description{
 Remove temporary backing files

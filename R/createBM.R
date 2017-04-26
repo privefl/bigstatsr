@@ -26,7 +26,7 @@
 #' X2.desc <- FBM(backingroot = "test", init = 2)(10, 10)
 #' str(X2.desc)
 #' attach.BM(X2.desc)[,]
-#' unlink(paste0("backingfiles/test", c(".bk", ".desc")))
+#' file.remove(paste0("backingfiles/test", c(".bk", ".desc")))
 #'
 #' # a temporary filebacked `big.matrix`
 #' test <- tmpFBM()(10, 10)
@@ -126,7 +126,7 @@ BM.path <- function(X.) {
 #'
 #' @inheritParams bigstatsr-package
 #'
-#' @inherit base::unlink return
+#' @inherit base::file.remove return
 #' @export
 #'
 #' @examples
@@ -142,7 +142,7 @@ tmpFBM.rm <- function(X.) {
   path <- BM.path(X.)
 
   if (startsWith(path, tempdir())) {
-    unlink(c(path, sub("\\.bk$", ".desc", path)))
+    file.remove(path, sub("\\.bk$", ".desc", path))
   } else {
     stop2("Is '%s' really a temporary FBM?", path)
   }

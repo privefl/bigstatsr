@@ -94,7 +94,7 @@ is.shared(X)
 X2.desc <- FBM(backingroot = "test", init = 2)(10, 10)
 str(X2.desc)
 attach.BM(X2.desc)[,]
-unlink(paste0("backingfiles/test", c(".bk", ".desc")))
+file.remove(paste0("backingfiles/test", c(".bk", ".desc")))
 
 # a temporary filebacked `big.matrix`
 test <- tmpFBM()(10, 10)
