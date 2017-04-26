@@ -4,7 +4,6 @@ templates:
 
 navbar:
   title: "bigstatsr"
-  icon: fa_home
   left:
     - text: "Manual"
       href: reference/index.html

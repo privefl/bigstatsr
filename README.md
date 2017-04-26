@@ -2,6 +2,7 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/privefl/bigstatsr/master.svg)](https://codecov.io/github/privefl/bigstatsr?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bigstatsr)](https://cran.r-project.org/package=bigstatsr)
 
+
 # bigstatsr
 
 The R package **bigstatsr** provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory. The package relies on the format `big.matrix` provided by the R package [**bigmemory**](https://github.com/kaneplusplus/bigmemory) .
@@ -10,10 +11,11 @@ The package **bigstatsr** enables users with laptop to perform statistical analy
 
 [**LIST OF FEATURES**](https://privefl.github.io/bigstatsr/reference/index.html)
 
+
 ## This package is in beta testing
 
-The publication of this package is scheduled for the end of April. 
 Any bug report is welcomed.
+
 
 ## Installation
 
@@ -22,6 +24,7 @@ For now, you can install this package using
 ```r
 devtools::install_github("privefl/bigstatsr")
 ```
+
 
 ## Input format
 
@@ -38,6 +41,7 @@ To facilitate the manipulation of descriptors and `BM.code` objects, some method
 - `as.BM.code` to convert a bigmatrix to a `BM.code` (by specifying its lookup table).
 
 __Note that most of the algorithms of this package don't handle missing values.__
+
 
 ## Code of conduct
 
