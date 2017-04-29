@@ -61,7 +61,8 @@ round2 <- function(x, digits = NULL) `if`(is.null(digits), x, round(x, digits))
 #' @name AUC
 #' @export
 AUC <- function(pred, target, digits = NULL) {
-  stopifnot(length(pred) == length(target))
+
+  assert_lengths(pred, target)
 
   y <- transform_levels(target)
 
@@ -74,7 +75,8 @@ AUC <- function(pred, target, digits = NULL) {
 #' @name AUCBoot
 #' @export
 AUCBoot <- function(pred, target, nboot = 1e3, seed = NA, digits = NULL) {
-  stopifnot(length(pred) == length(target))
+
+  assert_lengths(pred, target)
 
   y <- transform_levels(target)
   n <- length(y)

@@ -27,8 +27,7 @@
 #' @param block.size Maximum number of columns read at once. Default is `1000`.
 #'
 #' @param ncores Number of cores used. Default doesn't use parallelism.
-#' @param ncores2 Number of cores used. Default doesn't use parallelism.
-#' For this function, use only half of the cores you have.
+#' We advise you to use only half of the cores you have.
 #'
 #' @param fun.scaling A function that returns a named list of
 #' `mean` and `sd` for every column, to scale each of their elements

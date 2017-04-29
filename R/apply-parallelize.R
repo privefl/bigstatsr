@@ -30,6 +30,11 @@
 big_parallelize <- function(X., p.FUN, p.combine, ncores,
                             ind = cols_along(X.),
                             ...) {
+
+  check_args()
+  assert_class(p.FUN, 'function'); assert_args(p.FUN, 'ind')
+  assert_int(ind); assert_pos(ind)
+
   if (ncores > 1) {
     X.desc <- describe(X.)
     range.parts <- CutBySize(length(ind), nb = ncores)
@@ -58,6 +63,7 @@ big_parallelize <- function(X., p.FUN, p.combine, ncores,
 ################################################################################
 
 big_applySeq <- function(X., a.FUN, a.combine, block.size, ind, ...) {
+
   X <- attach.BM(X.)
   intervals <- CutBySize(length(ind), block.size)
 
@@ -92,6 +98,8 @@ big_applySeq <- function(X., a.FUN, a.combine, block.size, ind, ...) {
 #' used to process numeric data. By default, the results are returned in a list.
 #' @param ind Initial vector of subsetting indices.
 #' Default is the vector of all column indices.
+#' @param block.size Maximum number of columns (or rows, depending on how you
+#' use `ind` for subsetting) read at once. Default is `1000`.
 #' @param ... Extra arguments to be passed to `a.FUN`.
 #'
 #' @return The result of [foreach].
@@ -105,6 +113,11 @@ big_apply <- function(X., a.FUN, a.combine,
                       block.size = 1000,
                       ind = cols_along(X.),
                       ...) {
+
+  check_args()
+  assert_class(a.FUN, 'function'); assert_args(a.FUN, 'ind')
+  assert_int(ind); assert_pos(ind)
+
   big_parallelize(X. = X.,
                   p.FUN = big_applySeq,
                   p.combine = a.combine,

@@ -87,7 +87,7 @@
 #'
 #' @import Matrix
 #' @keywords internal
-COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
+COPY_biglasso <- function(X, y.train, ind.train, covar.train,
                           family = c("gaussian", "binomial"),
                           alpha = 1,
                           lambda.min = `if`(nrow(X) > ncol(X), .001, .01),
@@ -100,7 +100,10 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
 
   family <- match.arg(family)
   lambda.min <- max(lambda.min, 1e-6)
-  if (is.null(covar.train)) covar.train <- matrix(0, 0, 0)
+
+  n <- length(ind.train) ## subset of X. idx: indices of rows.
+  if (is.null(covar.train)) covar.train <- matrix(0, n, 0)
+  assert_lengths(y.train, ind.train, rows_along(covar.train))
 
   p <- ncol(X) + ncol(covar.train)
   if (is.null(penalty.factor)) penalty.factor <- rep(1, p)
@@ -134,7 +137,6 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
     stop("Current version only supports Gaussian or Binominal response!")
   }
 
-  n <- length(ind.train) ## subset of X. idx: indices of rows.
   if (missing(lambda)) {
     user.lambda <- FALSE
     lambda <- rep(0, nlambda);
@@ -268,6 +270,9 @@ COPY_biglasso <- function(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
 #' @export
 big_spLinReg <- function(X., y.train, ind.train = rows_along(X.),
                          covar.train = NULL, ...) {
+
+  check_args()
+
   X <- attach.BM(X.)
   COPY_biglasso(X, y.train, ind.train, covar.train, family = "gaussian", ...)
 }
@@ -286,6 +291,9 @@ big_spLinReg <- function(X., y.train, ind.train = rows_along(X.),
 #' @export
 big_spLogReg <- function(X., y01.train, ind.train = rows_along(X.),
                          covar.train = NULL, ...) {
+
+  check_args()
+
   X <- attach.BM(X.)
   COPY_biglasso(X, y01.train, ind.train, covar.train, family = "binomial", ...)
 }

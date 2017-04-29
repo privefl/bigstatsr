@@ -1,5 +1,100 @@
 ################################################################################
 
+check_args <- function(...) {
+
+  if (getOption("bigstatsr.check.args")) {
+    args <- as.list(parent.frame())
+
+    check <- c(
+      list(...),  # possible to overwrite following defaults
+      list(
+        X            = "assert_class(X, 'big.matrix')",
+        X.desc       = "assert_class(X.desc, 'big.matrix.descriptor')",
+        X.           = "assert_classOrDesc(X., 'big.matrix')",
+        X.code       = "assert_classOrDesc(X.code, 'BM.code')",
+        y01.train    = "assert_01(y01.train)",
+        ind.train    = "assert_int(ind.train); assert_pos(ind.train)",
+        ind.row      = "assert_int(ind.row);   assert_pos(ind.row)",
+        ind.col      = "assert_int(ind.col);   assert_pos(ind.col)",
+        ncores       = "assert_cores(ncores)",
+        fun.scaling  = paste(
+          "assert_class(fun.scaling, 'function');",
+          "assert_args(fun.scaling, c('ind.row', 'ind.col'))"),
+        fun.createBM = paste(
+          "assert_class(fun.createBM, 'function');",
+          "assert_args(fun.createBM, c('nrow', 'ncol', 'type'))"),
+        covar.train  =
+          "if(!is.null(covar.train)) assert_class(covar.train, 'matrix')",
+        covar.row    =
+          "if(!is.null(covar.row)) assert_class(covar.row, 'matrix')"
+      )
+    )
+
+    for (i in match(names(args), names(check)))
+      if (!is.na(i)) with(args, eval(parse(text = check[i])))
+  }
+}
+
+################################################################################
+
+# ARGS
+assert_args <- function(f, args.name) {
+  if (!all(args.name %in% names(formals(f))))
+    stop2("'%s' should have argument%s named %s.",
+          deparse(substitute(f)),
+          `if`(length(args.name) > 1, "s", ""),
+          toString(args.name))
+}
+
+################################################################################
+
+assert_cores <- function(ncores) {
+  if (ncores > getOption("bigstatsr.ncores.max")) {
+    stop2(paste0("You are trying to use more cores than allowed.\n",
+                 "We advise you to use only half of the cores you have.\n",
+                 "You can change this default value with ",
+                 "`options(bigstatsr.ncores.max = Inf)`."))
+  }
+}
+
+################################################################################
+
+assert_lengths <- function(...) {
+  lengths <- lengths(list(...))
+  if (length(lengths) > 1) {
+    if (any(diff(lengths) != 0))
+      stop2("Incompatibility between dimensions.")
+  } else {
+    stop2("You should check the lengths of at least two elements.")
+  }
+}
+
+################################################################################
+
+# INTEGERS
+assert_int <- function(x) {
+  if (any(x != as.integer(x)))
+    stop2("'%s' should contain only integers.", deparse(substitute(x)))
+}
+
+################################################################################
+
+# POSITIVE INDICES
+assert_pos <- function(x)  {
+  if (!all(x > 0))
+    stop2("'%s' should have only positive values.", deparse(substitute(x)))
+}
+
+################################################################################
+
+# 0s AND 1s
+assert_01 <- function(x, type)  {
+  if (!all(x %in% 0:1))
+    stop2("'%s' should be composed only of 0s and 1s.", deparse(substitute(x)))
+}
+
+################################################################################
+
 # TYPEOF
 assert_type <- function(x, type)  {
   if (typeof(x) != type)
@@ -9,9 +104,14 @@ assert_type <- function(x, type)  {
 ################################################################################
 
 # CLASS
+assert_class <- function(x, class)  {
+  if (!inherits(x, class))
+    stop2("'%s' is not of class '%s'.", deparse(substitute(x)), class)
+}
+
 assert_classOrDesc <- function(x, class)  {
-  if (class(x) != class)
-    if (class(x) != paste0(class, ".descriptor"))
+  if (!inherits(x, class))
+    if (!inherits(x, paste0(class, ".descriptor")))
       stop2("'%s' is not of class '%s' (or associated descriptor).",
             deparse(substitute(x)), class)
 }
