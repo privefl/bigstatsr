@@ -1,3 +1,5 @@
+################################################################################
+
 #' Tcrossprod
 #'
 #' Compute \eqn{X.row X.row^T} for a `big.matrix` `X`
@@ -18,24 +20,28 @@
 big_tcrossprodSelf <- function(X., fun.scaling,
                                ind.row = rows_along(X.),
                                block.size = 1000) {
+
+  check_args()
+
   X <- attach.BM(X.)
   n <- length(ind.row)
   K <- matrix(0, n, n)
 
-  means_sds <- fun.scaling(X, ind.row = ind.row)
+  # means and sds of each column
+  ms <- fun.scaling(X, ind.row = ind.row)
 
   intervals <- CutBySize(ncol(X), block.size)
   nb.block <- nrow(intervals)
 
   for (j in 1:nb.block) {
     ind <- seq2(intervals[j, ])
-    tmp <- scaling(X[ind.row, ind],
-                   means_sds$mean[ind],
-                   means_sds$sd[ind])
+    tmp <- scaling(X[ind.row, ind], ms$mean[ind], ms$sd[ind])
 
     K <- incrSup2(K, tcrossprod(tmp))
   }
 
   # Complete the lower part of the symmetric matrix
-  list(K = complete2(K), mean = means_sds$mean, sd = means_sds$sd)
+  list(K = complete2(K), mean = ms$mean, sd = ms$sd)
 }
+
+################################################################################

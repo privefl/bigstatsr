@@ -107,6 +107,9 @@ big_SVD <- function(X., fun.scaling,
                     block.size = 1000,
                     k = NULL,
                     thr.eigval = 1e-4) {
+
+  check_args()
+
   X <- attach.BM(X.)
   if (ncol(X) > length(ind.row)) {
     printf("(2)")

@@ -19,6 +19,8 @@
 #'
 big_transpose <- function(X., fun.createBM = BM()) {
 
+  check_args()
+
   res <- fun.createBM(ncol(X.), nrow(X.), typeof(X.))
 
   X <- attach.BM(X.)

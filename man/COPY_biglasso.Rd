@@ -4,11 +4,11 @@
 \alias{COPY_biglasso}
 \title{Sparse regression path}
 \usage{
-COPY_biglasso(X, y.train, ind.train = 1:nrow(X), covar.train = NULL,
-  family = c("gaussian", "binomial"), alpha = 1, lambda.min = if (nrow(X)
-  > ncol(X)) 0.001 else 0.01, nlambda = 100, lambda.log.scale = TRUE,
-  lambda, eps = 1e-07, max.iter = 1000, dfmax = p + 1,
-  penalty.factor = NULL, warn = TRUE, verbose = FALSE)
+COPY_biglasso(X, y.train, ind.train, covar.train, family = c("gaussian",
+  "binomial"), alpha = 1, lambda.min = if (nrow(X) > ncol(X)) 0.001 else
+  0.01, nlambda = 100, lambda.log.scale = TRUE, lambda, eps = 1e-07,
+  max.iter = 1000, dfmax = p + 1, penalty.factor = NULL, warn = TRUE,
+  verbose = FALSE)
 }
 \arguments{
 \item{family}{Either "gaussian" or "binomial", depending on the response.}

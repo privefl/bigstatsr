@@ -189,8 +189,13 @@ svds4.seq <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
 big_randomSVD <- function(X., fun.scaling,
                           ind.row = rows_along(X.),
                           ind.col = cols_along(X.),
-                          k = 10, tol = 1e-4,
-                          verbose = FALSE, ncores = 1) {
+                          k = 10,
+                          tol = 1e-4,
+                          verbose = FALSE,
+                          ncores = 1) {
+
+  check_args()
+
   if (ncores > 1) {
     res <- svds4.par(describe(X.), fun.scaling, ind.row, ind.col,
               k, tol, verbose, ncores)

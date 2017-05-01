@@ -52,3 +52,17 @@ transform_levels <- function(y, new.levels = 0:1) {
 }
 
 ################################################################################
+
+getAvailMem <- function(format = TRUE) {
+
+  gc()
+
+  # http://stackoverflow.com/a/6457769/6103040
+  memfree <- 1024 * as.numeric(
+    system("awk '/MemFree/ {print $2}' /proc/meminfo", intern = TRUE))
+
+  `if`(format, format(structure(memfree, class = "object_size"),
+                      units = "auto"), memfree)
+}
+
+################################################################################

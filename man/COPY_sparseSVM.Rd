@@ -4,10 +4,10 @@
 \alias{COPY_sparseSVM}
 \title{Fit sparse linear SVM with lasso or elasti-net regularization}
 \usage{
-COPY_sparseSVM(X, y.train, ind.train, covar.train = NULL, alpha = 1,
-  gamma = 0.1, nlambda = 100, lambda.min = if (nrow(X) > ncol(X)) 0.01
-  else 0.05, lambda, screen = c("ASR", "SR", "none"), max.iter = 1000,
-  eps = 1e-05, dfmax = p + 1, penalty.factor = NULL, message = FALSE)
+COPY_sparseSVM(X, y.train, ind.train, covar.train, alpha = 1, gamma = 0.1,
+  nlambda = 100, lambda.min = if (nrow(X) > ncol(X)) 0.01 else 0.05, lambda,
+  screen = c("ASR", "SR", "none"), max.iter = 1000, eps = 1e-05,
+  dfmax = p + 1, penalty.factor = NULL, message = FALSE)
 }
 \arguments{
 \item{alpha}{The elastic-net mixing parameter that controls the relative

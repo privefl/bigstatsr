@@ -6,7 +6,7 @@ check_args <- function(...) {
     args <- as.list(parent.frame())
 
     check <- c(
-      list(...),  # possible to overwrite following defaults
+      list(...),  # possible to "overwrite" following defaults
       list(
         X            = "assert_class(X, 'big.matrix')",
         X.desc       = "assert_class(X.desc, 'big.matrix.descriptor')",
@@ -17,16 +17,12 @@ check_args <- function(...) {
         ind.row      = "assert_int(ind.row);   assert_pos(ind.row)",
         ind.col      = "assert_int(ind.col);   assert_pos(ind.col)",
         ncores       = "assert_cores(ncores)",
-        fun.scaling  = paste(
-          "assert_class(fun.scaling, 'function');",
-          "assert_args(fun.scaling, c('ind.row', 'ind.col'))"),
-        fun.createBM = paste(
-          "assert_class(fun.createBM, 'function');",
-          "assert_args(fun.createBM, c('nrow', 'ncol', 'type'))"),
+        fun.scaling  = "assert_args(fun.scaling, c('ind.row', 'ind.col'))",
+        fun.createBM = "assert_args(fun.createBM, c('nrow', 'ncol', 'type'))",
         covar.train  =
-          "if(!is.null(covar.train)) assert_class(covar.train, 'matrix')",
+          "if (!is.null(covar.train)) assert_class(covar.train, 'matrix')",
         covar.row    =
-          "if(!is.null(covar.row)) assert_class(covar.row, 'matrix')"
+          "if (!is.null(covar.row)) assert_class(covar.row, 'matrix')"
       )
     )
 
@@ -39,6 +35,10 @@ check_args <- function(...) {
 
 # ARGS
 assert_args <- function(f, args.name) {
+
+  if (!inherits(f, 'function'))
+    stop2("'%s' is not a function.", deparse(substitute(x)))
+
   if (!all(args.name %in% names(formals(f))))
     stop2("'%s' should have argument%s named %s.",
           deparse(substitute(f)),

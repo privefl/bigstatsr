@@ -10,7 +10,7 @@ x <- matrix(rnorm(256, sd = 10), 16)
 X <- big.matrix(nrow(x), ncol(x), type = "raw")
 X[] <- as.raw(0:255)
 X2 <- as.BM.code(X, code = as.vector(x))
-stopifnot(inherits(X2, "BM.code"))
+expect_s4_class(X2, "BM.code")
 
 ################################################################################
 

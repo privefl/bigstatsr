@@ -70,7 +70,7 @@
 #'
 #' @import Matrix
 #' @keywords internal
-COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
+COPY_sparseSVM <- function(X, y.train, ind.train, covar.train,
                            alpha = 1, gamma = 0.1, nlambda = 100,
                            lambda.min = `if`(nrow(X) > ncol(X), 0.01, 0.05),
                            lambda, screen = c("ASR", "SR", "none"),
@@ -78,7 +78,9 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
                            dfmax = p + 1, penalty.factor = NULL,
                            message = FALSE) {
 
-  if (is.null(covar.train)) covar.train <- matrix(0, 0, 0)
+  n <- length(y.train)
+  if (is.null(covar.train)) covar.train <- matrix(0, n, 0)
+  assert_lengths(y.train, ind.train, rows_along(covar.train))
 
   # Error checking
   screen <- match.arg(screen)
@@ -102,7 +104,6 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
 
   call <- match.call()
   # convert response to +1/-1 coding
-  n <- length(y.train)
   yy <- double(n)
   yy[y.train == levels[1]] <- -1
   yy[y.train == levels[2]] <- 1
@@ -174,6 +175,9 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train = NULL,
 #' @export
 big_spSVM <- function(X., y01.train, ind.train = rows_along(X.),
                       covar.train = NULL, ...) {
+
+  check_args()
+
   X <- attach.BM(X.)
   COPY_sparseSVM(X, y01.train, ind.train, covar.train, ...)
 }

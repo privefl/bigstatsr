@@ -5,7 +5,7 @@
 \title{Column-wise linear regression}
 \usage{
 big_univLinReg(X., y.train, ind.train = rows_along(X.),
-  ind.col = cols_along(X.), covar.train = NULL, ncores2 = 1,
+  ind.col = cols_along(X.), covar.train = NULL, ncores = 1,
   thr.eigval = 1e-04)
 }
 \arguments{
@@ -25,8 +25,8 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{ncores2}{Number of cores used. Default doesn't use parallelism.
-For this function, use only half of the cores you have.}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+We advise you to use only half of the cores you have.}
 
 \item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
 Default is \code{1e-4}.}

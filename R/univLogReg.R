@@ -63,10 +63,11 @@ big_univLogReg <- function(X., y01.train,
                            ncores = 1,
                            tol = 1e-8,
                            maxiter = 20) {
+  check_args()
+
   n <- length(ind.train)
-  stopifnot(n == length(y01.train))
   covar.train <- cbind(rep(0, n), rep(1, n), covar.train)
-  stopifnot(n == nrow(covar.train))
+  assert_lengths(ind.train, y01.train, rows_along(covar.train))
 
   # precompute some estimation with only the covariables (and the intercept)
   mod0 <- stats::glm(y01.train ~ covar.train[, -1] - 1, family = "binomial")

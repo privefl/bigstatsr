@@ -32,7 +32,7 @@ big_parallelize <- function(X., p.FUN, p.combine, ncores,
                             ...) {
 
   check_args()
-  assert_class(p.FUN, 'function'); assert_args(p.FUN, 'ind')
+  assert_args(p.FUN, 'ind')
   assert_int(ind); assert_pos(ind)
 
   if (ncores > 1) {
@@ -115,7 +115,7 @@ big_apply <- function(X., a.FUN, a.combine,
                       ...) {
 
   check_args()
-  assert_class(a.FUN, 'function'); assert_args(a.FUN, 'ind')
+  assert_args(a.FUN, 'ind')
   assert_int(ind); assert_pos(ind)
 
   big_parallelize(X. = X.,

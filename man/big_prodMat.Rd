@@ -4,14 +4,14 @@
 \alias{big_prodMat}
 \title{Product with a matrix}
 \usage{
-big_prodMat(X., A, ind.row = rows_along(X.), ind.col = cols_along(X.),
-  block.size = 1000, ncores2 = 1)
+big_prodMat(X., A.col, ind.row = rows_along(X.), ind.col = cols_along(X.),
+  block.size = 1000, ncores = 1)
 }
 \arguments{
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
-\item{A}{A matrix with \code{length(ind.col)} rows.}
+\item{A.col}{A matrix with \code{length(ind.col)} rows.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
@@ -21,8 +21,8 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
-\item{ncores2}{Number of cores used. Default doesn't use parallelism.
-For this function, use only half of the cores you have.}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+We advise you to use only half of the cores you have.}
 }
 \value{
 \eqn{X \cdot A}.

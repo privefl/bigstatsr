@@ -4,13 +4,13 @@
 \alias{big_cprodVec}
 \title{Cross-product with a vector}
 \usage{
-big_cprodVec(X., y, ind.row = rows_along(X.), ind.col = cols_along(X.))
+big_cprodVec(X., y.row, ind.row = rows_along(X.), ind.col = cols_along(X.))
 }
 \arguments{
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
 a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
 
-\item{y}{A vector of same size as \code{ind.row}.}
+\item{y.row}{A vector of same size as \code{ind.row}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}

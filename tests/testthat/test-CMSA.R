@@ -5,7 +5,7 @@ context("CMSA")
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = TRUE)
 
-ALL.METHODS <- c("geometric-median", "mean-wise", "median-wise")
+ALL.METHODS <- eval(formals("big_CMSA")$method)
 ALL.SP_FUN <- sapply(paste0("big_sp", c("LinReg", "LogReg", "SVM")), get)
 
 # Simulating some data

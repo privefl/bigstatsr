@@ -5,8 +5,8 @@
 \title{Column-wise logistic regression}
 \usage{
 big_univLogReg(X., y01.train, ind.train = rows_along(X.),
-  ind.col = cols_along(X.), covar.train = NULL, ncores2 = 1,
-  tol = 1e-08, maxiter = 20)
+  ind.col = cols_along(X.), covar.train = NULL, ncores = 1, tol = 1e-08,
+  maxiter = 20)
 }
 \arguments{
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
@@ -26,8 +26,8 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{ncores2}{Number of cores used. Default doesn't use parallelism.
-For this function, use only half of the cores you have.}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+We advise you to use only half of the cores you have.}
 
 \item{tol}{Relative tolerance to assess convergence of the coefficient.
 Default is \code{1e-8}.}

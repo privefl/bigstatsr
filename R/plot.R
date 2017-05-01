@@ -52,8 +52,8 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
                          viridis = requireNamespace("viridis", quietly = TRUE),
                          ...) {
 
-  stopifnot(length(nval) == 1)
-  stopifnot(length(scores) == 2)
+  assert_lengths(nval, 1)
+  assert_lengths(scores, 1:2)
 
   type <- match.arg(type)
 

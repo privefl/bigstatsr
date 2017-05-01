@@ -24,9 +24,11 @@ for concatenating the results into a vector, for example. The values 'cbind'
 and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
 used to process numeric data. By default, the results are returned in a list.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+We advise you to use only half of the cores you have.}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+\item{block.size}{Maximum number of columns (or rows, depending on how you
+use \code{ind} for subsetting) read at once. Default is \code{1000}.}
 
 \item{ind}{Initial vector of subsetting indices.
 Default is the vector of all column indices.}

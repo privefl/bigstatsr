@@ -38,7 +38,11 @@
 #' # + scaling
 #' str(big_scale()(X.desc))
 big_scale <- function(center = TRUE, scale = TRUE) {
+
   function(X., ind.row = rows_along(X.), ind.col = cols_along(X.)) {
+
+    check_args()
+
     m <- length(ind.col)
     if (center) {
       tmp <- big_colstats(X., ind.row, ind.col)
@@ -48,6 +52,7 @@ big_scale <- function(center = TRUE, scale = TRUE) {
       means <- rep(0, m)
       sds <- rep(1, m)
     }
+
     data.frame(mean = means, sd = sds)
   }
 }

@@ -33,10 +33,8 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.}
-
-\item{ncores2}{Number of cores used. Default doesn't use parallelism.
-For this function, use only half of the cores you have.}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+We advise you to use only half of the cores you have.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements

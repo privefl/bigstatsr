@@ -31,7 +31,8 @@ Default is \code{1e-4}.}
 
 \item{verbose}{Should some progress be printed? Default is \code{FALSE}.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+We advise you to use only half of the cores you have.}
 }
 \value{
 A named list (an S3 class "big_SVD") of

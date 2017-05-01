@@ -41,7 +41,7 @@ big_counts <- function(X.code,
                        ind.col = cols_along(X.code),
                        byrow = FALSE) {
 
-  assert_classOrDesc(X.code, "BM.code")
+  check_args()
 
   code <- X.code@code
   code.uniq <- unique(code)

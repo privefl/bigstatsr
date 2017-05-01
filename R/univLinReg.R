@@ -31,10 +31,12 @@ big_univLinReg <- function(X., y.train,
                            covar.train = NULL,
                            ncores = 1,
                            thr.eigval = 1e-4) {
+
+  check_args()
+
   n <- length(ind.train)
-  stopifnot(n == length(y.train))
   covar.train <- cbind(rep(1, n), covar.train)
-  stopifnot(n == nrow(covar.train))
+  assert_lengths(ind.train, y.train, rows_along(covar.train))
 
   # get SVD of covar
   SVD <- svd(covar.train, nv = 0)

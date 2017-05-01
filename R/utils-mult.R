@@ -5,7 +5,7 @@
 #' Product between a "big.matrix" and a vector.
 #'
 #' @inheritParams bigstatsr-package
-#' @param y A vector of same size as `ind.col`.
+#' @param y.col A vector of same size as `ind.col`.
 #'
 #' @return \eqn{X \cdot y}.
 #' @export
@@ -29,11 +29,11 @@
 #' test2 <- big_prodVec(X.desc, y[ind.col], ind.row, ind.col)
 #' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% y[ind.col]
 #' all.equal(test2, as.numeric(true2))
-big_prodVec <- function(X., y,
+big_prodVec <- function(X., y.col,
                         ind.row = rows_along(X.),
                         ind.col = cols_along(X.)) {
   X <- attach.BM(X.)
-  pMatVec4(X, y, ind.row, ind.col)
+  pMatVec4(X, y.col, ind.row, ind.col)
 }
 
 ################################################################################
@@ -43,7 +43,7 @@ big_prodVec <- function(X., y,
 #' Cross-product between a "big.matrix" and a vector.
 #'
 #' @inheritParams bigstatsr-package
-#' @param y A vector of same size as `ind.row`.
+#' @param y.row A vector of same size as `ind.row`.
 #'
 #' @return \eqn{X^T \cdot y}.
 #' @export
@@ -67,11 +67,11 @@ big_prodVec <- function(X., y,
 #' test2 <- big_cprodVec(X.desc, y[ind.row], ind.row, ind.col)
 #' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], y[ind.row])
 #' all.equal(test2, as.numeric(true2))
-big_cprodVec <- function(X., y,
+big_cprodVec <- function(X., y.row,
                          ind.row = rows_along(X.),
                          ind.col = cols_along(X.)) {
   X <- attach.BM(X.)
-  cpMatVec4(X, y, ind.row, ind.col)
+  cpMatVec4(X, y.row, ind.row, ind.col)
 }
 
 ################################################################################
@@ -81,7 +81,7 @@ big_cprodVec <- function(X., y,
 #' Product between a "big.matrix" and a matrix.
 #'
 #' @inheritParams bigstatsr-package
-#' @param A A matrix with `length(ind.col)` rows.
+#' @param A.col A matrix with `length(ind.col)` rows.
 #'
 #' @return \eqn{X \cdot A}.
 #' @export
@@ -105,17 +105,20 @@ big_cprodVec <- function(X., y,
 #' test2 <- big_prodMat(X.desc, A[ind.col, ], ind.row, ind.col)
 #' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% A[ind.col, ]
 #' all.equal(test2, true2)
-big_prodMat <- function(X., A,
+big_prodMat <- function(X., A.col,
                         ind.row = rows_along(X.),
                         ind.col = cols_along(X.),
                         block.size = 1000,
                         ncores = 1) {
-  stopifnot(length(ind.col) == nrow(A))
 
-  big_apply(X., a.FUN = function(x, ind, A, ind.row, ind.col) {
-    x[ind.row, ind.col[ind]] %*% A[ind, ]
+  check_args()
+  # assert_class(A.col, 'matrix')  # not only (e.g. sparses matrices)
+  assert_lengths(ind.col, rows_along(A.col))
+
+  big_apply(X., a.FUN = function(x, ind, M, ind.row, ind.col) {
+    x[ind.row, ind.col[ind]] %*% M[ind, ]
   }, a.combine = '+', block.size = block.size,
-  ind = seq_along(ind.col), ncores = ncores, A = A,
+  ind = seq_along(ind.col), ncores = ncores, M = A.col,
   ind.row = ind.row, ind.col = ind.col)
 }
 
@@ -126,7 +129,7 @@ big_prodMat <- function(X., A,
 #' Cross-product between a "big.matrix" and a matrix.
 #'
 #' @inheritParams bigstatsr-package
-#' @param A A matrix with `length(ind.row)` rows.
+#' @param A.row A matrix with `length(ind.row)` rows.
 #'
 #' @return \eqn{X^T \cdot A}.
 #' @export
@@ -150,17 +153,20 @@ big_prodMat <- function(X., A,
 #' test2 <- big_cprodMat(X.desc, A[ind.row, ], ind.row, ind.col)
 #' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], A[ind.row, ])
 #' all.equal(test2, true2)
-big_cprodMat <- function(X., A,
+big_cprodMat <- function(X., A.row,
                          ind.row = rows_along(X.),
                          ind.col = cols_along(X.),
                          block.size = 1000,
                          ncores = 1) {
-  stopifnot(length(ind.row) == nrow(A))
 
-  big_apply(X., a.FUN = function(x, ind, A, ind.row) {
-    crossprod(x[ind.row, ind], A)
+  check_args()
+  # assert_class(A.row, 'matrix')  # not only (e.g. sparses matrices)
+  assert_lengths(ind.row, rows_along(A.row))
+
+  big_apply(X., a.FUN = function(x, ind, M, ind.row) {
+    crossprod(x[ind.row, ind], M)
   }, a.combine = 'rbind', block.size = block.size,
-  ind = ind.col, ncores = ncores, A = A, ind.row = ind.row)
+  ind = ind.col, ncores = ncores, M = A.row, ind.row = ind.row)
 }
 
 ################################################################################

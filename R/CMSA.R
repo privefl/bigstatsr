@@ -67,7 +67,12 @@ big_CMSA <- function(FUN, feval, X., y.train,
                      block.size = 1000,
                      ncores = 1,
                      ...) {
-  stopifnot(length(ind.train) == length(y.train))
+
+  check_args()
+  assert_lengths(ind.train, y.train)
+  assert_class(FUN, 'function')
+  assert_args(feval, 'target')
+
   method <- match.arg(method)
 
   n <- length(ind.train)

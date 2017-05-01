@@ -22,18 +22,26 @@ predict.big_sp <- function(object, X.,
                            block.size = 1000,
                            ...) {
 
+  check_args()
+
   betas <- object$beta
+
   if (is.null(covar.row)) {
+
     scores <- big_prodMat(X., betas,
                           ind.row = ind.row,
                           block.size = block.size)
+
   } else {
-    stopifnot(nrow(covar.row) == length(ind.row))
+
+    assert_lengths(ind.row, rows_along(covar.row))
+
     ind.X <- cols_along(X.)
     scores <- big_prodMat(X., betas[ind.X, ],
                           ind.row = ind.row,
-                          block.size = block.size)
-    scores <- scores + covar.row %*% betas[-ind.X, ]
+                          block.size = block.size) +
+      covar.row %*% betas[-ind.X, ]
+
   }
 
   rownames(scores) <- ind.row
@@ -94,6 +102,8 @@ predict.big_SVD <- function(object, X. = NULL,
   if (is.null(X.)) {
     object$u %*% diag(object$d)
   } else {
+    check_args()
+
     X <- attach.BM(X.)
     # multiplication with clever scaling -> see vignettes
     v2 <- object$v / object$sds
