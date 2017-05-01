@@ -132,11 +132,13 @@ used to process numeric data. By default, the results are returned in a list.</p
     </tr>
     <tr>
       <th>ncores</th>
-      <td><p>Number of cores used. Default doesn't use parallelism.</p></td>
+      <td><p>Number of cores used. Default doesn't use parallelism.
+We advise you to use only half of the cores you have.</p></td>
     </tr>
     <tr>
       <th>block.size</th>
-      <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
+      <td><p>Maximum number of columns (or rows, depending on how you
+use <code>ind</code> for subsetting) read at once. Default is <code>1000</code>.</p></td>
     </tr>
     <tr>
       <th>ind</th>
@@ -191,21 +193,23 @@ the results (on each cluster and then from each cluster).</p>
 <span class='co'># get the crossproduct between X and a matrix A</span>
 <span class='co'># note that we don't explicitly pass `ind.col` to `a.FUN`</span>
 <span class='fu'>body</span>(<span class='no'>big_cprodMat</span>)</div><div class='output co'>#&gt; {
-#&gt;     stopifnot(length(ind.row) == nrow(A))
-#&gt;     big_apply(X., a.FUN = function(x, ind, A, ind.row) {
-#&gt;         crossprod(x[ind.row, ind], A)
+#&gt;     check_args()
+#&gt;     assert_lengths(ind.row, rows_along(A.row))
+#&gt;     big_apply(X., a.FUN = function(x, ind, M, ind.row) {
+#&gt;         crossprod(x[ind.row, ind], M)
 #&gt;     }, a.combine = "rbind", block.size = block.size, ind = ind.col, 
-#&gt;         ncores = ncores2, A = A, ind.row = ind.row)
+#&gt;         ncores = ncores, M = A.row, ind.row = ind.row)
 #&gt; }</div><div class='input'>
 <span class='co'># get the product between X and a matrix B</span>
 <span class='co'># here, we must explicitly pass `ind.col` to `a.FUN`</span>
 <span class='co'># because the right matrix also needs to be subsetted.</span>
 <span class='fu'>body</span>(<span class='no'>big_prodMat</span>)</div><div class='output co'>#&gt; {
-#&gt;     stopifnot(length(ind.col) == nrow(A))
-#&gt;     big_apply(X., a.FUN = function(x, ind, A, ind.row, ind.col) {
-#&gt;         x[ind.row, ind.col[ind]] %*% A[ind, ]
+#&gt;     check_args()
+#&gt;     assert_lengths(ind.col, rows_along(A.col))
+#&gt;     big_apply(X., a.FUN = function(x, ind, M, ind.row, ind.col) {
+#&gt;         x[ind.row, ind.col[ind]] %*% M[ind, ]
 #&gt;     }, a.combine = "+", block.size = block.size, ind = seq_along(ind.col), 
-#&gt;         ncores = ncores2, A = A, ind.row = ind.row, ind.col = ind.col)
+#&gt;         ncores = ncores, M = A.col, ind.row = ind.row, ind.col = ind.col)
 #&gt; }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

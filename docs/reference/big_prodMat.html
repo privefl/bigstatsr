@@ -102,8 +102,8 @@
     <p>Product between a "big.matrix" and a matrix.</p>
     
 
-    <pre class="usage"><span class='fu'>big_prodMat</span>(<span class='no'>X.</span>, <span class='no'>A</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>),
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>ncores2</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>big_prodMat</span>(<span class='no'>X.</span>, <span class='no'>A.col</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>),
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -114,7 +114,7 @@
 a big.matrix.descriptor.</p></td>
     </tr>
     <tr>
-      <th>A</th>
+      <th>A.col</th>
       <td><p>A matrix with <code>length(ind.col)</code> rows.</p></td>
     </tr>
     <tr>
@@ -132,9 +132,9 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
       <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
     </tr>
     <tr>
-      <th>ncores2</th>
+      <th>ncores</th>
       <td><p>Number of cores used. Default doesn't use parallelism.
-For this function, use only half of the cores you have.</p></td>
+We advise you to use only half of the cores you have.</p></td>
     </tr>
     </table>
     

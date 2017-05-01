@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Randomized SVD — big_randomSVD • bigstatsr</title>
+<title>Randomized partial SVD — big_randomSVD • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,14 +95,13 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Randomized SVD</h1>
+    <h1>Randomized partial SVD</h1>
     </div>
 
     
-    <p>An algorithm for SVD (or PCA) of a <code>big.matrix</code> based on the algorithm
-in RSpectra (by Yixuan Qiu and Jiali Mei).
-
-    This algorithm is linear in time in all dimensions and is very
+    <p>An algorithm for partial SVD (or PCA) of a <code>big.matrix</code> based on the
+algorithm in RSpectra (by Yixuan Qiu and Jiali Mei).
+This algorithm is linear in time in all dimensions and is very
 memory-efficient. Thus, it can be used on very large big.matrices.</p>
     
 
@@ -151,7 +150,8 @@ Default is <code>1e-4</code>.</p></td>
     </tr>
     <tr>
       <th>ncores</th>
-      <td><p>Number of cores used. Default doesn't use parallelism.</p></td>
+      <td><p>Number of cores used. Default doesn't use parallelism.
+We advise you to use only half of the cores you have.</p></td>
     </tr>
     </table>
     

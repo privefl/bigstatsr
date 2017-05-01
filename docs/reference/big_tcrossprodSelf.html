@@ -104,7 +104,7 @@ after applying a particular scaling to it.</p>
     
 
     <pre class="usage"><span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X.</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>),
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</pre>
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>), <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -126,6 +126,11 @@ such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}.$$</p></td>
 If not specified, all rows are used. <strong>Don't use negative indices.</strong></p></td>
     </tr>
     <tr>
+      <th>ind.col</th>
+      <td><p>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don't use negative indices.</strong></p></td>
+    </tr>
+    <tr>
       <th>block.size</th>
       <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
     </tr>
@@ -133,8 +138,7 @@ If not specified, all rows are used. <strong>Don't use negative indices.</strong
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of</p><ul>
-<li><p>\(K = X.row X.row^T\),</p></li>
+    <p>A matrix, \(X.row X.row^T\), with the following two attributes:</p><ul>
 <li><p>a numeric vector <code>mean</code> of column scaling,</p></li>
 <li><p>a numeric vector <code>sd</code> of column scaling.</p></li>
 </ul>
@@ -142,7 +146,8 @@ If not specified, all rows are used. <strong>Don't use negative indices.</strong
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This algorithm is not really memory efficient. I'm planning on fixing this.</p>
+    <p>This algorithm is not really memory efficient. I'm planning on fixing this,
+if it is really needed.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -154,18 +159,18 @@ If not specified, all rows are used. <strong>Don't use negative indices.</strong
 
 <span class='co'># Comparing with tcrossprod</span>
 <span class='no'>big_noscale</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
-<span class='fu'>dim</span>(<span class='no'>test</span>$<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 517 517</div><div class='input'>
+<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
+<span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 517 517</div><div class='input'>
 <span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>tcrossprod</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[,])
-<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>K</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>all.equal</span>(<span class='no'>K</span>, <span class='no'>true</span>, <span class='kw'>check.attributes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>,
+<span class='no'>K2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>,
                             <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)
-<span class='fu'>dim</span>(<span class='no'>test2</span>$<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 258 258</div><div class='input'>
+<span class='fu'>dim</span>(<span class='no'>K2</span>)</div><div class='output co'>#&gt; [1] 258 258</div><div class='input'>
 <span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>tcrossprod</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind</span>, ])
-<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>K</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>all.equal</span>(<span class='no'>K2</span>, <span class='no'>true2</span>, <span class='kw'>check.attributes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
