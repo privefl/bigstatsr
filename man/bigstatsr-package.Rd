@@ -50,9 +50,6 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 \item{covar.row}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
-
-\item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
-Default is \code{1e-4}.}
 }
 \description{
 Easy-to-use, efficient, flexible and scalable

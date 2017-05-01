@@ -19,26 +19,27 @@
 big_crossprodSelf <- function(X.,
                               fun.scaling,
                               ind.row = rows_along(X.),
+                              ind.col = cols_along(X.),
                               block.size = 1000) {
 
   check_args()
 
   X <- attach.BM(X.)
-  m <- ncol(X)
+  m <- length(ind.col)
   K <- matrix(NA_real_, m, m)
 
   # means and sds of each column
-  ms <- fun.scaling(X, ind.row)
+  ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col)
 
   intervals <- CutBySize(m, block.size)
   nb.block <- nrow(intervals)
 
   for (j in 1:nb.block) {
     ind1 <- seq2(intervals[j, ])
-    tmp1 <- scaling(X[ind.row, ind1], ms$mean[ind1], ms$sd[ind1])
+    tmp1 <- scaling(X[ind.row, ind.col[ind1]], ms$mean[ind1], ms$sd[ind1])
     for (i in 1:j) {
       ind2 <- seq2(intervals[i, ])
-      tmp2 <- scaling(X[ind.row, ind2], ms$mean[ind2], ms$sd[ind2])
+      tmp2 <- scaling(X[ind.row, ind.col[ind2]], ms$mean[ind2], ms$sd[ind2])
 
       K[ind2, ind1] <- crossprod(tmp2, tmp1)
     }

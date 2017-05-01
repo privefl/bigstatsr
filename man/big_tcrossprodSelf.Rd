@@ -5,7 +5,7 @@
 \title{Tcrossprod}
 \usage{
 big_tcrossprodSelf(X., fun.scaling, ind.row = rows_along(X.),
-  block.size = 1000)
+  ind.col = cols_along(X.), block.size = 1000)
 }
 \arguments{
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
@@ -17,6 +17,9 @@ such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
+
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 }

@@ -19,6 +19,7 @@
 #' @example examples/example-tcrossprodSelf.R
 big_tcrossprodSelf <- function(X., fun.scaling,
                                ind.row = rows_along(X.),
+                               ind.col = cols_along(X.),
                                block.size = 1000) {
 
   check_args()
@@ -28,14 +29,14 @@ big_tcrossprodSelf <- function(X., fun.scaling,
   K <- matrix(0, n, n)
 
   # means and sds of each column
-  ms <- fun.scaling(X, ind.row = ind.row)
+  ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col)
 
-  intervals <- CutBySize(ncol(X), block.size)
+  intervals <- CutBySize(length(ind.col), block.size)
   nb.block <- nrow(intervals)
 
   for (j in 1:nb.block) {
     ind <- seq2(intervals[j, ])
-    tmp <- scaling(X[ind.row, ind], ms$mean[ind], ms$sd[ind])
+    tmp <- scaling(X[ind.row, ind.col[ind]], ms$mean[ind], ms$sd[ind])
 
     K <- incrSup2(K, tcrossprod(tmp))
   }

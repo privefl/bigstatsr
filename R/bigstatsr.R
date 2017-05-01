@@ -43,9 +43,6 @@
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.row`.
 #' Default is `NULL` and corresponds to only adding an intercept to each model.
 #'
-#' @param thr.eigval Threshold to remove "unsignificant" singular vectors.
-#' Default is \code{1e-4}.
-#'
 "_PACKAGE"
 
 ################################################################################

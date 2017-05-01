@@ -2,7 +2,7 @@
 % Please edit documentation in R/randomSVD.R
 \name{big_randomSVD}
 \alias{big_randomSVD}
-\title{Randomized SVD}
+\title{Randomized partial SVD}
 \usage{
 big_randomSVD(X., fun.scaling, ind.row = rows_along(X.),
   ind.col = cols_along(X.), k = 10, tol = 1e-04, verbose = FALSE,
@@ -50,9 +50,8 @@ Note that to obtain the Principal Components, you must use
 \link[=predict.big_SVD]{predict} on the result. See examples.
 }
 \description{
-An algorithm for SVD (or PCA) of a \code{big.matrix} based on the algorithm
-in RSpectra (by Yixuan Qiu and Jiali Mei).
-\cr
+An algorithm for partial SVD (or PCA) of a \code{big.matrix} based on the
+algorithm in RSpectra (by Yixuan Qiu and Jiali Mei).\cr
 This algorithm is linear in time in all dimensions and is very
 memory-efficient. Thus, it can be used on very large big.matrices.
 }

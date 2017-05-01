@@ -2,10 +2,10 @@
 % Please edit documentation in R/SVD.R
 \name{big_SVD}
 \alias{big_SVD}
-\title{SVD}
+\title{Partial SVD}
 \usage{
-big_SVD(X., fun.scaling, ind.row = rows_along(X.), block.size = 1000,
-  k = NULL, thr.eigval = 1e-04)
+big_SVD(X., fun.scaling, ind.row = rows_along(X.), ind.col = cols_along(X.),
+  k = 10, block.size = 1000)
 }
 \arguments{
 \item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
@@ -18,12 +18,12 @@ such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}}
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
 
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used. \strong{Don't use negative indices.}}
+
+\item{k}{Number of singular vectors/values to compute. Default is \code{10}.}
+
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
-
-\item{k}{Number of singular vectors/values to compute. Default is all.}
-
-\item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
-Default is \code{1e-4}.}
 }
 \value{
 A named list (an S3 class "big_SVD") of
@@ -39,21 +39,21 @@ Note that to obtain the Principal Components, you must use
 \link[=predict.big_SVD]{predict} on the result. See examples.
 }
 \description{
-An algorithm for SVD (or PCA) of a \code{big.matrix} through the eigen
+An algorithm for partial SVD (or PCA) of a \code{big.matrix} through the eigen
 decomposition of the covariance between variables (primal)
-or observations (dual).
+or observations (dual). \strong{Use this algorithm only if there is one dimension
+that is much smaller than the other. Otherwise use \link{big_randomSVD}.}
 }
 \details{
 To get \eqn{X = U \cdot D \cdot V^T},
 \itemize{
-\item if the number of observation is small, this function computes
-\eqn{K_(2) = X \cdot X^T = U \cdot D^2 \cdot U^T} and then
+\item if the number of observations is small, this function computes
+\eqn{K_(2) = X \cdot X^T \approx U \cdot D^2 \cdot U^T} and then
 \eqn{V = X^T \cdot U \cdot D^{-1}},
 \item if the number of variable is small, this function computes
-\eqn{K_(1) = X^T \cdot X = V \cdot D^2 \cdot V^T} and then
+\eqn{K_(1) = X^T \cdot X \approx V \cdot D^2 \cdot V^T} and then
 \eqn{U = X \cdot V \cdot D^{-1}},
-\item if both dimensions are large and you only want a partial SVD,
-please use \link{big_randomSVD} instead.
+\item if both dimensions are large, use \link{big_randomSVD} instead.
 }
 }
 \examples{

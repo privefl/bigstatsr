@@ -100,7 +100,7 @@ predict.big_SVD <- function(object, X. = NULL,
                             ...) {
 
   if (is.null(X.)) {
-    object$u %*% diag(object$d)
+    object$u %*% diag(object$d, length(object$d))
   } else {
     check_args()
 

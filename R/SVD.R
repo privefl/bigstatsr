@@ -2,35 +2,28 @@
 
 DualBigPCA <- function(X, fun.scaling,
                        ind.row,
+                       ind.col,
                        block.size,
-                       k,
-                       thr.eigval) {
+                       k) {
 
-  K <- big_tcrossprodSelf(X,
-                            fun.scaling = fun.scaling,
-                            ind.row = ind.row,
-                            block.size = block.size)
+  K <- big_tcrossprodSelf(X, fun.scaling = fun.scaling,
+                          ind.row = ind.row,
+                          ind.col = ind.col,
+                          block.size = block.size)
   means <- attr(K, "mean")
   sds <- attr(K, "sd")
 
   # compute eigen values/vectors
-  eig <- `if`(is.null(k), eigen(K, symmetric = TRUE), RSpectra::eigs_sym(K, k))
-  # no longer need K
-  rm(K)
-
-  n <- length(ind.row)
-  m <- ncol(X)
-  eigval.scaled <- eig$values / (sqrt(n) + sqrt(m) - 1)
-  lastEig <- sum(eigval.scaled > thr.eigval)
-
-  u <- eig$vectors[, 1:lastEig]
-  d <- sqrt(eig$values[1:lastEig])
-  rm(eig)
+  eig <- RSpectra::eigs_sym(K, k)
+  u <- eig$vectors
+  d <- sqrt(eig$values)
+  # no longer need K (and eig)
+  rm(K, eig)
 
   # crossprod with clever scaling -> see vignettes
-  v <- (big_cprodMat(X, u, ind.row, block.size = block.size) -
+  v <- (big_cprodMat(X, u, ind.row, ind.col, block.size = block.size) -
           tcrossprod(means, colSums(u))) / sds
-  v <- scaling(v, rep(0, lastEig), d)
+  v <- sweep(v, 2, d, '/')
 
   list(d = d, u = u, v = v, means = means, sds = sds)
 }
@@ -39,34 +32,27 @@ DualBigPCA <- function(X, fun.scaling,
 
 PrimalBigPCA <- function(X, fun.scaling,
                          ind.row,
+                         ind.col,
                          block.size,
-                         k,
-                         thr.eigval) {
+                         k) {
 
-  K <- big_crossprodSelf(X,
-                           fun.scaling = fun.scaling,
-                           ind.row = ind.row,
-                           block.size = block.size)
+  K <- big_crossprodSelf(X, fun.scaling = fun.scaling,
+                         ind.row = ind.row,
+                         ind.col = ind.col,
+                         block.size = block.size)
   means <- attr(K, "mean")
   sds <- attr(K, "sd")
 
   # compute eigen values/vectors
-  eig <- `if`(is.null(k), eigen(K, symmetric = TRUE), RSpectra::eigs_sym(K, k))
-  # no longer need K
-  rm(K)
-
-  n <- length(ind.row)
-  m <- ncol(X)
-  eigval.scaled <- eig$values / (sqrt(n) + sqrt(m) - 1)
-  lastEig <- sum(eigval.scaled > thr.eigval)
-
-  v <- eig$vectors[, 1:lastEig]
-  d <- sqrt(eig$values[1:lastEig])
-  rm(eig)
+  eig <- RSpectra::eigs_sym(K, k)
+  v <- eig$vectors
+  d <- sqrt(eig$values)
+  # no longer need K (and eig)
+  rm(K, eig)
 
   # multiplication with clever scaling -> see vignettes
   v2 <- v / sds
-  u <- big_prodMat(X, v2, ind.row = ind.row, block.size = block.size)
+  u <- big_prodMat(X, v2, ind.row, ind.col, block.size = block.size)
   u <- scaling(u, crossprod(means, v2), d)
 
   list(d = d, u = u, v = v, means = means, sds = sds)
@@ -74,24 +60,24 @@ PrimalBigPCA <- function(X, fun.scaling,
 
 ################################################################################
 
-#' SVD
+#' Partial SVD
 #'
-#' An algorithm for SVD (or PCA) of a `big.matrix` through the eigen
+#' An algorithm for partial SVD (or PCA) of a `big.matrix` through the eigen
 #' decomposition of the covariance between variables (primal)
-#' or observations (dual).
+#' or observations (dual). **Use this algorithm only if there is one dimension
+#' that is much smaller than the other. Otherwise use [big_randomSVD].**
 #'
 #' To get \eqn{X = U \cdot D \cdot V^T},
-#' - if the number of observation is small, this function computes
-#'   \eqn{K_(2) = X \cdot X^T = U \cdot D^2 \cdot U^T} and then
+#' - if the number of observations is small, this function computes
+#'   \eqn{K_(2) = X \cdot X^T \approx U \cdot D^2 \cdot U^T} and then
 #'   \eqn{V = X^T \cdot U \cdot D^{-1}},
 #' - if the number of variable is small, this function computes
-#'   \eqn{K_(1) = X^T \cdot X = V \cdot D^2 \cdot V^T} and then
+#'   \eqn{K_(1) = X^T \cdot X \approx V \cdot D^2 \cdot V^T} and then
 #'   \eqn{U = X \cdot V \cdot D^{-1}},
-#' - if both dimensions are large and you only want a partial SVD,
-#'   please use [big_randomSVD] instead.
+#' - if both dimensions are large, use [big_randomSVD] instead.
 #'
 #' @inheritParams bigstatsr-package
-#' @param k Number of singular vectors/values to compute. Default is all.
+#' @param k Number of singular vectors/values to compute. Default is `10`.
 #'
 #' @export
 #' @return A named list (an S3 class "big_SVD") of
@@ -108,19 +94,19 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' @seealso [prcomp][stats::prcomp]
 big_SVD <- function(X., fun.scaling,
                     ind.row = rows_along(X.),
-                    block.size = 1000,
-                    k = NULL,
-                    thr.eigval = 1e-4) {
+                    ind.col = cols_along(X.),
+                    k = 10,
+                    block.size = 1000) {
 
   check_args()
 
   X <- attach.BM(X.)
   if (ncol(X) > length(ind.row)) {
     printf("(2)")
-    res <- DualBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
+    res <- DualBigPCA(X, fun.scaling, ind.row, ind.col, block.size, k)
   } else {
     printf("(1)")
-    res <- PrimalBigPCA(X, fun.scaling, ind.row, block.size, k, thr.eigval)
+    res <- PrimalBigPCA(X, fun.scaling, ind.row,ind.col, block.size, k)
   }
 
   structure(res, class = "big_SVD")
