@@ -21,9 +21,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 }
 \value{
-A list of
+A matrix, \eqn{X.row X.row^T}, with the following two attributes:
 \itemize{
-\item \eqn{K = X.row X.row^T},
 \item a numeric vector \code{mean} of column scaling,
 \item a numeric vector \code{sd} of column scaling.
 }
@@ -33,28 +32,29 @@ Compute \eqn{X.row X.row^T} for a \code{big.matrix} \code{X}
 after applying a particular scaling to it.
 }
 \details{
-This algorithm is not really memory efficient. I'm planning on fixing this.
+This algorithm is not really memory efficient. I'm planning on fixing this,
+if it is really needed.
 }
 \examples{
 X.desc <- big_attachExtdata()
 
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)
-test <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale)
-dim(test$K)
+K <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale)
+dim(K)
 
 true <- tcrossprod(attach.BM(X.desc)[,])
-all.equal(test$K, true)
+all.equal(K, true, check.attributes = FALSE)
 
 # Using only half of the data
 n <- nrow(X.desc)
 ind <- sort(sample(n, n/2))
-test2 <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale,
+K2 <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale,
                             ind.row = ind)
-dim(test2$K)
+dim(K2)
 
 true2 <- tcrossprod(attach.BM(X.desc)[ind, ])
-all.equal(test2$K, true2)
+all.equal(K2, true2, check.attributes = FALSE)
 }
 \seealso{
 \link{tcrossprod}

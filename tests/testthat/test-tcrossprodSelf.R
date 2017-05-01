@@ -19,8 +19,8 @@ test_that("equality with tcrossprod", {
     X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
-    test <- big_tcrossprodSelf(X., fun.scaling = big_noscale)
-    expect_equal(test$K, tcrossprod(X[,]))
+    K <- big_tcrossprodSelf(X., fun.scaling = big_noscale)
+    expect_equivalent(K, tcrossprod(X[,]))
   }
 })
 
@@ -33,9 +33,9 @@ test_that("equality with tcrossprod with half of the data", {
     X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
-    test <- big_tcrossprodSelf(X., fun.scaling = big_noscale,
+    K <- big_tcrossprodSelf(X., fun.scaling = big_noscale,
                                ind.row = ind)
-    expect_equal(test$K, tcrossprod(X[ind, ]))
+    expect_equivalent(K, tcrossprod(X[ind, ]))
   }
 })
 

@@ -6,15 +6,17 @@ DualBigPCA <- function(X, fun.scaling,
                        k,
                        thr.eigval) {
 
-  tmp <- big_tcrossprodSelf(X,
+  K <- big_tcrossprodSelf(X,
                             fun.scaling = fun.scaling,
                             ind.row = ind.row,
                             block.size = block.size)
+  means <- attr(K, "mean")
+  sds <- attr(K, "sd")
 
-  eig <- `if`(is.null(k),
-              eigen(tmp$K, symmetric = TRUE),
-              RSpectra::eigs_sym(tmp$K, k))
-  tmp$K <- NULL
+  # compute eigen values/vectors
+  eig <- `if`(is.null(k), eigen(K, symmetric = TRUE), RSpectra::eigs_sym(K, k))
+  # no longer need K
+  rm(K)
 
   n <- length(ind.row)
   m <- ncol(X)
@@ -27,10 +29,10 @@ DualBigPCA <- function(X, fun.scaling,
 
   # crossprod with clever scaling -> see vignettes
   v <- (big_cprodMat(X, u, ind.row, block.size = block.size) -
-          tcrossprod(tmp$mean, colSums(u))) / tmp$sd
+          tcrossprod(means, colSums(u))) / sds
   v <- scaling(v, rep(0, lastEig), d)
 
-  list(d = d, u = u, v = v, means = tmp$mean, sds = tmp$sd)
+  list(d = d, u = u, v = v, means = means, sds = sds)
 }
 
 ################################################################################
@@ -41,15 +43,17 @@ PrimalBigPCA <- function(X, fun.scaling,
                          k,
                          thr.eigval) {
 
-  tmp <- big_crossprodSelf(X,
+  K <- big_crossprodSelf(X,
                            fun.scaling = fun.scaling,
                            ind.row = ind.row,
                            block.size = block.size)
+  means <- attr(K, "mean")
+  sds <- attr(K, "sd")
 
-  eig <- `if`(is.null(k),
-              eigen(tmp$K, symmetric = TRUE),
-              RSpectra::eigs_sym(tmp$K, k))
-  tmp$K <- NULL
+  # compute eigen values/vectors
+  eig <- `if`(is.null(k), eigen(K, symmetric = TRUE), RSpectra::eigs_sym(K, k))
+  # no longer need K
+  rm(K)
 
   n <- length(ind.row)
   m <- ncol(X)
@@ -61,11 +65,11 @@ PrimalBigPCA <- function(X, fun.scaling,
   rm(eig)
 
   # multiplication with clever scaling -> see vignettes
-  v2 <- v / tmp$sd
+  v2 <- v / sds
   u <- big_prodMat(X, v2, ind.row = ind.row, block.size = block.size)
-  u <- scaling(u, crossprod(tmp$mean, v2), d)
+  u <- scaling(u, crossprod(means, v2), d)
 
-  list(d = d, u = u, v = v, means = tmp$mean, sds = tmp$sd)
+  list(d = d, u = u, v = v, means = means, sds = sds)
 }
 
 ################################################################################

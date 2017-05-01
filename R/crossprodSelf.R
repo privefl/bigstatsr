@@ -9,8 +9,7 @@
 #'
 #' @inheritParams bigstatsr-package
 #'
-#' @return A list of
-#' - \eqn{K = X.row^T X.row},
+#' @return A matrix, \eqn{X.row^T X.row}, with the following two attributes:
 #' - a numeric vector `mean` of column scaling,
 #' - a numeric vector `sd` of column scaling.
 #' @export
@@ -46,7 +45,7 @@ big_crossprodSelf <- function(X.,
   }
 
   # Complete the lower part of the symmetric matrix
-  list(K =  complete2(K), mean = ms$mean, sd = ms$sd)
+  structure(complete2(K), mean = ms$mean, sd = ms$sd)
 }
 
 ################################################################################

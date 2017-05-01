@@ -5,12 +5,12 @@
 #' Compute \eqn{X.row X.row^T} for a `big.matrix` `X`
 #' after applying a particular scaling to it.
 #'
-#' This algorithm is not really memory efficient. I'm planning on fixing this.
+#' This algorithm is not really memory efficient. I'm planning on fixing this,
+#' if it is really needed.
 #'
 #' @inheritParams bigstatsr-package
 #'
-#' @return A list of
-#' - \eqn{K = X.row X.row^T},
+#' @return A matrix, \eqn{X.row X.row^T}, with the following two attributes:
 #' - a numeric vector `mean` of column scaling,
 #' - a numeric vector `sd` of column scaling.
 #' @export
@@ -41,7 +41,7 @@ big_tcrossprodSelf <- function(X., fun.scaling,
   }
 
   # Complete the lower part of the symmetric matrix
-  list(K = complete2(K), mean = ms$mean, sd = ms$sd)
+  structure(complete2(K), mean = ms$mean, sd = ms$sd)
 }
 
 ################################################################################
