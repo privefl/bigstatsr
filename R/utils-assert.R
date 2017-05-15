@@ -58,6 +58,7 @@ assert_args <- function(f, args.name) {
 
 ################################################################################
 
+# NUMBER OF CORES
 assert_cores <- function(ncores) {
   if (ncores > getOption("bigstatsr.ncores.max")) {
     stop2(paste0("You are trying to use more cores than allowed.\n",
