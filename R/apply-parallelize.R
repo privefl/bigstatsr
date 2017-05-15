@@ -31,7 +31,7 @@ big_parallelize <- function(X., p.FUN, p.combine, ncores,
                             ind = cols_along(X.),
                             ...) {
 
-  check_args()
+  check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
   assert_args(p.FUN, 'ind')
   assert_int(ind); assert_pos(ind)
 
@@ -114,7 +114,7 @@ big_apply <- function(X., a.FUN, a.combine,
                       ind = cols_along(X.),
                       ...) {
 
-  check_args()
+  check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
   assert_args(a.FUN, 'ind')
   assert_int(ind); assert_pos(ind)
 

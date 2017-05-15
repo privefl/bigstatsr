@@ -19,7 +19,7 @@
 #'
 big_transpose <- function(X., fun.createBM = BM()) {
 
-  check_args()
+  check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
 
   res <- fun.createBM(ncol(X.), nrow(X.), typeof(X.))
 

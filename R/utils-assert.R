@@ -8,10 +8,12 @@ check_args <- function(...) {
     check <- c(
       list(...),  # possible to "overwrite" following defaults
       list(
-        X            = "assert_class(X, 'big.matrix')",
-        X.desc       = "assert_class(X.desc, 'big.matrix.descriptor')",
-        X.           = "assert_classOrDesc(X., 'big.matrix')",
-        X.code       = "assert_classOrDesc(X.code, 'BM.code')",
+        X            = "assert_class(X, 'big.matrix'); assert_noNA(X)",
+        X.desc       =
+          "assert_class(X.desc, 'big.matrix.descriptor'); assert_noNA(X.desc)",
+        X.           = "assert_classOrDesc(X., 'big.matrix'); assert_noNA(X.)",
+        X.code       =
+          "assert_classOrDesc(X.code, 'BM.code'); assert_noNA(X.code)",
         y01.train    = "assert_01(y01.train)",
         ind.train    = "assert_int(ind.train); assert_pos(ind.train)",
         ind.row      = "assert_int(ind.row);   assert_pos(ind.row)",
@@ -29,6 +31,14 @@ check_args <- function(...) {
     for (i in match(names(args), names(check)))
       if (!is.na(i)) with(args, eval(parse(text = check[i])))
   }
+}
+
+################################################################################
+
+# MISSING VALUES
+assert_noNA <- function(x) {
+  if (sum(is.na(attach.BM(x)[, sample(ncol(x), min(10, ncol(x)))])))
+    stop2("You can't have missing values in '%s'.", deparse(substitute(x)))
 }
 
 ################################################################################
