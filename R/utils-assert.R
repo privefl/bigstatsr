@@ -37,7 +37,7 @@ check_args <- function(...) {
 assert_args <- function(f, args.name) {
 
   if (!inherits(f, 'function'))
-    stop2("'%s' is not a function.", deparse(substitute(x)))
+    stop2("'%s' is not a function.", deparse(substitute(f)))
 
   if (!all(args.name %in% names(formals(f))))
     stop2("'%s' should have argument%s named %s.",
