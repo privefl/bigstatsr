@@ -58,7 +58,7 @@ getAvailMem <- function(format = TRUE) {
   gc()
 
   if (Sys.info()["sysname"] == "Windows") {
-    memfree <- 1024^2 * (memory.limit() - memory.size())
+    memfree <- 1024^2 * (utils::memory.limit() - utils::memory.size())
   } else {
     # http://stackoverflow.com/a/6457769/6103040
     memfree <- 1024 * as.numeric(
