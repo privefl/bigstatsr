@@ -7,6 +7,7 @@
 #' @param BM A `BM.code` object.
 #' @param U Matrix of left singular vectors (from partial SVD).
 #' @param rowInd Vector of row indices of the `big.matrix` that are used.
+#' @param colInd Vector of column indices of the `big.matrix` that are used.
 #'
 #' @return A matrix of t-scores where rows correspond to each SNP and
 #' columns correspond to each left singular vector.
@@ -17,4 +18,5 @@
 #'
 #' @export
 #' @keywords internal
-linRegPcadapt <- function(BM, U, rowInd) linRegPcadapt_cpp(BM, U, rowInd)
+linRegPcadapt <- function(BM, U, rowInd, colInd)
+  linRegPcadapt_cpp(BM, U, rowInd, colInd)

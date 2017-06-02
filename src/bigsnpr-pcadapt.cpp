@@ -7,14 +7,15 @@
 // [[Rcpp::export]]
 NumericMatrix linRegPcadapt_cpp(const S4& BM,
                                 arma::mat& U,
-                                const IntegerVector& rowInd) {
+                                const IntegerVector& rowInd,
+                                const IntegerVector& colInd) {
 
 
 
   XPtr<BigMatrix> xpMat = BM.slot("address");
-  int m = xpMat->ncol();
-  RawSubMatAcc macc(*xpMat, rowInd-1, seq_len(m)-1, BM.slot("code"));
+  RawSubMatAcc macc(*xpMat, rowInd-1, colInd-1, BM.slot("code"));
   int n = macc.nrow();
+  int m = macc.ncol();
   int K = U.n_cols;
   myassert((int)U.n_rows == n, ERROR_DIM);
 
