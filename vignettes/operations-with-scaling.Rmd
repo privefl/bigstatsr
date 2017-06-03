@@ -60,7 +60,7 @@ Let us generalize: $\vect{\widetilde{X}} = (\X - \vect{1}_n \cdot \vect{\mu}^T) 
 
 So, $\vect{\widetilde{X}} \cdot \M = (\X - \vect{1}_n \cdot \vect{\mu}^T) \cdot \vect{\Delta_s} \cdot \M$. If we denote $\vect{M_s} = \vect{\Delta_s} \cdot \M$, then $\vect{\widetilde{X}} \cdot \M = \X \cdot \vect{M_s} - \vect{1}_n \cdot \vect{\mu}^T \cdot \vect{M_s}$, which doesn't involve any explicit scaling of $\X$. 
 
-Moreover, in the particular case where $\vect{\mu}^T = \vect{1}_n^T \cdot \X$ is the vector of column means of $\X$, then $\vect{\widetilde{X}} \cdot \M = \vect{C_n} \cdot (\X \cdot \vect{M_s})$ where $\vect{C_n} = \vect{I_n} - \vect{1}_n \cdot \vect{1}_n^T$ is the [centering matrix](https://en.wikipedia.org/wiki/Centering_matrix). 
+Moreover, in the particular case where $\vect{\mu}^T = \vect{1}_n^T \cdot \X$ is the vector of column means of $\X$, then $\vect{\widetilde{X}} \cdot \M = \vect{C_n} \cdot (\X \cdot \vect{M_s})$ where $\vect{C_n} = \vect{I_n} - \frac{1}{n} \vect{1}_n \cdot \vect{1}_n^T$ is the [centering matrix](https://en.wikipedia.org/wiki/Centering_matrix). 
 
 ## Conclusion
 
