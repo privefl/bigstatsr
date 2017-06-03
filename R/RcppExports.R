@@ -13,8 +13,8 @@ COPY_cdfit_binomial_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale,
     .Call('bigstatsr_COPY_cdfit_binomial_hsr', PACKAGE = 'bigstatsr', BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose)
 }
 
-linRegPcadapt_cpp <- function(BM, U, rowInd) {
-    .Call('bigstatsr_linRegPcadapt_cpp', PACKAGE = 'bigstatsr', BM, U, rowInd)
+linRegPcadapt_cpp <- function(BM, U, rowInd, colInd) {
+    .Call('bigstatsr_linRegPcadapt_cpp', PACKAGE = 'bigstatsr', BM, U, rowInd, colInd)
 }
 
 bigcolvars <- function(BM, rowInd, colInd) {

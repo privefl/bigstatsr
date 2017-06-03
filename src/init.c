@@ -20,7 +20,7 @@ extern SEXP bigstatsr_decodeVec(SEXP, SEXP);
 extern SEXP bigstatsr_incrMat(SEXP, SEXP);
 extern SEXP bigstatsr_incrSup2(SEXP, SEXP);
 extern SEXP bigstatsr_IRLS(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP bigstatsr_linRegPcadapt_cpp(SEXP, SEXP, SEXP);
+extern SEXP bigstatsr_linRegPcadapt_cpp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP bigstatsr_mycount1(SEXP, SEXP, SEXP, SEXP);
 extern SEXP bigstatsr_mycount2(SEXP, SEXP, SEXP, SEXP);
 extern SEXP bigstatsr_pMatVec4(SEXP, SEXP, SEXP, SEXP);
@@ -41,7 +41,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"bigstatsr_incrMat",                 (DL_FUNC) &bigstatsr_incrMat,                  2},
   {"bigstatsr_incrSup2",                (DL_FUNC) &bigstatsr_incrSup2,                 2},
   {"bigstatsr_IRLS",                    (DL_FUNC) &bigstatsr_IRLS,                     9},
-  {"bigstatsr_linRegPcadapt_cpp",       (DL_FUNC) &bigstatsr_linRegPcadapt_cpp,        3},
+  {"bigstatsr_linRegPcadapt_cpp",       (DL_FUNC) &bigstatsr_linRegPcadapt_cpp,        4},
   {"bigstatsr_mycount1",                (DL_FUNC) &bigstatsr_mycount1,                 4},
   {"bigstatsr_mycount2",                (DL_FUNC) &bigstatsr_mycount2,                 4},
   {"bigstatsr_pMatVec4",                (DL_FUNC) &bigstatsr_pMatVec4,                 4},
