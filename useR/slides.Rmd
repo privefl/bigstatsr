@@ -1,0 +1,36 @@
+---
+title: "The R package **bigstatsr**:<br/>Memory- and Computation-Efficient Tools<br/>for Big Matrices"
+subtitle: "useR!2017 lightning talk"
+author: "Florian Privé"
+date: "July 6, 2017"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+background-image: url(https://media.giphy.com/media/3o7bueyxGydy48Lwgo/giphy.gif)
+background-size: 80%
+
+---
+
+class: inverse, center, middle
+
+# Thanks!
+
+<br/><br/>
+
+Package's website: https://privefl.github.io/bigstatsr/
+
+Twitter and GitHub: @privefl
+
+Presentation available [online]
+
+.footnote[Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).]
