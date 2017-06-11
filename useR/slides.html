@@ -20,8 +20,89 @@ class: center, middle, inverse, title-slide
 
 
 
-background-image: url(https://media.giphy.com/media/3o7bueyxGydy48Lwgo/giphy.gif)
-background-size: 80%
+## About
+
+I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
+
+`$$\boxed{\Large{\text{Disease} \sim \text{DNA mutations}}}$$`
+
+&lt;img src="http://www.blacksheep-van.com/wp-content/uploads/2016/03/Blacksheep-location-de-van-ame%CC%81nage-a%CC%80-Grenoble-1.jpg" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Very large genotype matrices
+
+- currently: 15K x 300K, [celiac disease](http://www.nature.com/ng/journal/v42/n4/abs/ng.543.html)
+
+- soon: 500K x 800K, [UK Biobank](https://doi.org/10.1371/journal.pmed.1001779)
+ 
+&lt;img src="https://media.giphy.com/media/3o7bueyxGydy48Lwgo/giphy.gif" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Problem I had
+
+&lt;img src="memory-problem.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Solution I found: R package **bigmemory**
+
+&lt;img src="http://www.brokenthorn.com/Resources/images/virtual-memory%5B1%5D.png" style="display: block; margin: auto;" /&gt;
+
+.footnote[Michael J. Kane, John Emerson, Stephen Weston (2013).]
+
+---
+
+## Dependencies on **bigmemory**
+
+&lt;img src="bigmemory-depends.png" width="883" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Sparse linear models: **biglasso**
+
+&lt;img src="https://raw.githubusercontent.com/YaohuiZeng/biglasso/master/vignettes/2016-11-20_vary_p_pkgs.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+.footnote[Zeng, Y., and Breheny, P. (2017).]
+
+---
+
+## Partial Singular Value Decomposition
+
+&lt;img src="svd.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+.footnote[based on R package **RSpectra**]
+
+---
+
+## Split-(par)Apply-Combine Strategy
+
+A [StackOverflow question](https://stackoverflow.com/q/42111876/6103040): compute the norm of each column.
+
+
+```r
+x &lt;- bigmemory::big.matrix(200, 10000)
+x[] &lt;- rnorm(length(x))
+
+microbenchmark::microbenchmark(
+  "1" = biganalytics::apply(x, 2, function(x) {
+    sqrt(sum(x^2))
+  }),
+  "2" = bigstatsr::big_apply(x, a.FUN = function(X, ind) {
+    sqrt(colSums(X[, ind]^2))
+  }, a.combine = 'c'),
+  times = 20
+)
+```
+
+```
+## Unit: milliseconds
+##  expr       min        lq      mean    median        uq       max neval
+##     1 274.32628 287.90817 311.33038 294.75805 306.79393  420.3728    20
+##     2  22.69741  26.15628  95.07253  27.16395  32.08921 1041.1301    20
+```
+
 
 ---
 
@@ -33,7 +114,9 @@ class: inverse, center, middle
 
 Package's website: https://privefl.github.io/bigstatsr/
 
-Twitter and GitHub: @privefl
+Twitter and GitHub: [@privefl](https://twitter.com/privefl)
+
+Presentation available online: https://goo.gl/nNg0hw
 
 .footnote[Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).]
     </textarea>
@@ -41,7 +124,7 @@ Twitter and GitHub: @privefl
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
-"countIncrementalSlides": false
+"countIncrementalSlides": true
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});</script>
 
