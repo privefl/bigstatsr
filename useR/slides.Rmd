@@ -90,23 +90,48 @@ knitr::include_graphics("svd.png")
 
 ## Split-(par)Apply-Combine Strategy
 
-A [StackOverflow question](https://stackoverflow.com/q/42111876/6103040): compute the norm of each column.
+### Apply standard R functions to big matrices (in parallel)
 
-```{r, echo = TRUE}
-x <- bigmemory::big.matrix(200, 10000)
-x[] <- rnorm(length(x))
-
-microbenchmark::microbenchmark(
-  "1" = biganalytics::apply(x, 2, function(x) {
-    sqrt(sum(x^2))
-  }),
-  "2" = bigstatsr::big_apply(x, a.FUN = function(X, ind) {
-    sqrt(colSums(X[, ind]^2))
-  }, a.combine = 'c'),
-  times = 20
-)
+```{r, out.width='100%'}
+knitr::include_graphics("split-apply-combine.svg")
 ```
 
+.footnote[strategy coined by Hadley Wickham (2011)]
+
+---
+
+## Test association of each column with an outcome
+
+### In genetics, this is called a Genome-Wide Association Study (GWAS)
+
+```{r, out.width='100%', fig.cap="Manhattan plot"}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/1/12/Manhattan_Plot.png")
+```
+
+---
+
+## R Packages
+
+```{r, out.width='100%'}
+knitr::include_graphics("recap-packages.svg")
+```
+
+---
+
+class: inverse, center, middle
+
+# I'm now able 
+# to run algorithms
+# on hundreds of 
+# Gigabytes of data
+
+---
+
+## Any contributor is welcomed!
+
+```{r, out.width='80%'}
+knitr::include_graphics("https://applicationsandroidfrance.com/wp-content/uploads/2012/06/cat1200.jpg")
+```
 
 ---
 

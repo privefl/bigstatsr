@@ -78,31 +78,43 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 ## Split-(par)Apply-Combine Strategy
 
-A [StackOverflow question](https://stackoverflow.com/q/42111876/6103040): compute the norm of each column.
+### Apply standard R functions to big matrices (in parallel)
 
+&lt;img src="split-apply-combine.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
-```r
-x &lt;- bigmemory::big.matrix(200, 10000)
-x[] &lt;- rnorm(length(x))
+.footnote[strategy coined by Hadley Wickham (2011)]
 
-microbenchmark::microbenchmark(
-  "1" = biganalytics::apply(x, 2, function(x) {
-    sqrt(sum(x^2))
-  }),
-  "2" = bigstatsr::big_apply(x, a.FUN = function(X, ind) {
-    sqrt(colSums(X[, ind]^2))
-  }, a.combine = 'c'),
-  times = 20
-)
-```
+---
 
-```
-## Unit: milliseconds
-##  expr       min        lq      mean    median        uq       max neval
-##     1 274.32628 287.90817 311.33038 294.75805 306.79393  420.3728    20
-##     2  22.69741  26.15628  95.07253  27.16395  32.08921 1041.1301    20
-```
+## Test association of each column with an outcome
 
+### In genetics, this is called a Genome-Wide Association Study (GWAS)
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Manhattan_Plot.png" alt="Manhattan plot" width="100%" /&gt;
+&lt;p class="caption"&gt;Manhattan plot&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+## R Packages
+
+&lt;img src="recap-packages.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, center, middle
+
+# I'm now able 
+# to run algorithms
+# on hundreds of 
+# Gigabytes of data
+
+---
+
+## Any contributor is welcomed!
+
+&lt;img src="https://applicationsandroidfrance.com/wp-content/uploads/2012/06/cat1200.jpg" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
