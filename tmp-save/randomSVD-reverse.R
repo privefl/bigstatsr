@@ -102,7 +102,7 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
   res$sds <- unlist(l[!s], use.names = FALSE)
 
   # remove temporary files
-  # sapply(c(Ax.desc, Atx.desc, calc.desc), tmpFBM.rm)
+  sapply(c(Ax.desc, Atx.desc, calc.desc), tmpFBM.rm)
 
   # return
   res
@@ -119,18 +119,25 @@ svds4.seq <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
   # scaling
   ms <- fun.scaling(X, ind.row, ind.col)
 
+  # reverse order at each iteration
+  maybe_rev <- function(it) `if`(it %% 2, rev, identity)
+
   printf <- function(...) if (verbose) cat(sprintf(...))
   it <- 0
   # A
   A <- function(x, args) {
-    printf("%d - computing A * x\n", it <<- it + 1)
+    it <<- it + 1
+    printf("%d - computing A * x\n", it)
     x <- x / ms$sd
-    pMatVec4(X, x, ind.row, ind.col) - crossprod(x, ms$mean)
+    pMatVec4(X, maybe_rev(it)(x), ind.row, maybe_rev(it)(ind.col)) -
+      crossprod(x, ms$mean)
   }
   # Atrans
   Atrans <- function(x, args) {
-    printf("%d - computing At * x\n", it <<- it + 1)
-    (cpMatVec4(X, x, ind.row, ind.col) - sum(x) * ms$mean) / ms$sd
+    it <<- it + 1
+    printf("%d - computing At * x\n", it)
+    (maybe_rev(it)(cpMatVec4(X, x, ind.row, maybe_rev(it)(ind.col))) -
+        sum(x) * ms$mean) / ms$sd
   }
 
   res <- RSpectra::svds(A, k, nu = k, nv = k, opts = list(tol = tol),
@@ -197,7 +204,7 @@ big_randomSVD <- function(X., fun.scaling,
 
   if (ncores > 1) {
     res <- svds4.par(describe(X.), fun.scaling, ind.row, ind.col,
-              k, tol, verbose, ncores)
+                     k, tol, verbose, ncores)
   } else {
     res <- svds4.seq(X., fun.scaling, ind.row, ind.col, k, tol, verbose)
   }

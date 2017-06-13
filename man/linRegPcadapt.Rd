@@ -4,7 +4,7 @@
 \alias{linRegPcadapt}
 \title{T-scores used in pcadapt}
 \usage{
-linRegPcadapt(BM, U, rowInd)
+linRegPcadapt(BM, U, rowInd, colInd)
 }
 \arguments{
 \item{BM}{A \code{BM.code} object.}
@@ -12,6 +12,8 @@ linRegPcadapt(BM, U, rowInd)
 \item{U}{Matrix of left singular vectors (from partial SVD).}
 
 \item{rowInd}{Vector of row indices of the \code{big.matrix} that are used.}
+
+\item{colInd}{Vector of column indices of the \code{big.matrix} that are used.}
 }
 \value{
 A matrix of t-scores where rows correspond to each SNP and

@@ -10,6 +10,7 @@ X.desc <- tmpFBM()(10, 10, type = "raw")
 X.code <- as.BM.code(X, code = rep(0, 256))
 X.code.desc <- as.BM.code(X.desc, code = rep(0, 256))
 
+
 test_that("checking of BM (desc) arguments", {
   # X
   expect_null( (function(X) check_args())(X))
@@ -138,3 +139,14 @@ test_that("checking lengths", {
 })
 
 ################################################################################
+
+X.code@code <- rep(NA_real_, 256)
+
+test_that("checking missing values", {
+  expect_error((function(X.code) check_args())(X.code))
+  expect_null((function(X.code) check_args(
+    X.code = "assert_classOrDesc(X.code, 'BM.code')"))(X.code))
+})
+
+################################################################################
+
