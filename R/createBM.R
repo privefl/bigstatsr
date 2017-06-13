@@ -144,7 +144,7 @@ tmpFBM.rm <- function(X.) {
   if (startsWith(normalizePath(path), tempdir())) {
     file.remove(path, sub("\\.bk$", ".desc", path))
   } else {
-    stop2("Is '%s' really a temporary FBM?", path)
+    warning2("Is '%s' really a temporary FBM? Aborting..", path)
   }
 }
 
