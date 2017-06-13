@@ -42,7 +42,8 @@ big_readBM <- function(file,
                        read.transfo = identity,
                        BM.type = typeof(read.what),
                        transpose = FALSE,
-                       fun.createBM = BM()) {
+                       fun.createBM = BM(),
+                       open.con = file()) {
 
   # get #lines of the file
   file.nline <- get_nline(file)
@@ -52,7 +53,7 @@ big_readBM <- function(file,
   info <- matrix(NA_character_, nrow = info.nelem, ncol = read.nline)
 
   # open connexion
-  con <- file(file, open = "rt")
+  con <- open.con(file)
   on.exit(close(con), add = TRUE)
 
   # get header
