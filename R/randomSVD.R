@@ -102,7 +102,7 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
   res$sds <- unlist(l[!s], use.names = FALSE)
 
   # remove temporary files
-  sapply(c(Ax.desc, Atx.desc, calc.desc), tmpFBM.rm)
+  # sapply(c(Ax.desc, Atx.desc, calc.desc), tmpFBM.rm)
 
   # return
   res
