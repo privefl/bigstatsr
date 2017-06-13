@@ -17,6 +17,9 @@ get_nline <- function(file) {
 #' @param file.nheader Number of lines to read at the beginning of the file,
 #' as a separate header information. Default is `0`. Each line is read as one
 #' string. You may need to postprocess it with [strsplit]. See examples.
+#' @param file.nline Number of total lines of the file. Default is `NULL` and a
+#' function computes it. This function doesn't work for compressed files so that
+#' you will have to explicitly specify the number of lines of the file.
 #' @param info.nelem Number of elements of extra information to read at the
 #' beginning of each line. Default is `0`.
 #' @param split The separator used in the file. Default is a space.
@@ -36,24 +39,24 @@ get_nline <- function(file) {
 #'
 big_readBM <- function(file,
                        file.nheader = 0,
+                       file.nline = NULL,
                        info.nelem = 0,
                        split = " ",
                        read.what = double(),
                        read.transfo = identity,
                        BM.type = typeof(read.what),
                        transpose = FALSE,
-                       fun.createBM = BM(),
-                       open.con = file()) {
+                       fun.createBM = BM()) {
 
   # get #lines of the file
-  file.nline <- get_nline(file)
+  if (is.null(file.nline)) file.nline <- get_nline(file)
   read.nline <- file.nline - file.nheader
 
   # prepare the matrix of info
   info <- matrix(NA_character_, nrow = info.nelem, ncol = read.nline)
 
   # open connexion
-  con <- open.con(file)
+  con <- file(file, open = "rt")
   on.exit(close(con), add = TRUE)
 
   # get header

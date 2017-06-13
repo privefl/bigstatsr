@@ -103,8 +103,8 @@
 <a href = 'https://privefl.github.io/bigstatsr/articles/read-BM-from-file.html'>vignette</a>.</p>
     
 
-    <pre class="usage"><span class='fu'>big_readBM</span>(<span class='no'>file</span>, <span class='kw'>file.nheader</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>info.nelem</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>split</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>read.what</span> <span class='kw'>=</span> <span class='fu'>double</span>(), <span class='kw'>read.transfo</span> <span class='kw'>=</span> <span class='no'>identity</span>,
+    <pre class="usage"><span class='fu'>big_readBM</span>(<span class='no'>file</span>, <span class='kw'>file.nheader</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>file.nline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>info.nelem</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>split</span> <span class='kw'>=</span> <span class='st'>" "</span>, <span class='kw'>read.what</span> <span class='kw'>=</span> <span class='fu'>double</span>(), <span class='kw'>read.transfo</span> <span class='kw'>=</span> <span class='no'>identity</span>,
   <span class='kw'>BM.type</span> <span class='kw'>=</span> <span class='fu'>typeof</span>(<span class='no'>read.what</span>), <span class='kw'>transpose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>fun.createBM</span> <span class='kw'>=</span> <span class='fu'><a href='createBM.html'>BM</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -119,6 +119,12 @@
       <td><p>Number of lines to read at the beginning of the file,
 as a separate header information. Default is <code>0</code>. Each line is read as one
 string. You may need to postprocess it with strsplit. See examples.</p></td>
+    </tr>
+    <tr>
+      <th>file.nline</th>
+      <td><p>Number of total lines of the file. Default is <code>NULL</code> and a
+function computes it. This function doesn't work for compressed files so that
+you will have to explicitly specify the number of lines of the file.</p></td>
     </tr>
     <tr>
       <th>info.nelem</th>
