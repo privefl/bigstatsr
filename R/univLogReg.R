@@ -8,7 +8,7 @@ univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
               ind.train, ind, tol, maxiter)
 
   # using `glm` if not converged
-  indNoConv <- which(res$niter >= maxiter)
+  indNoConv <- which(res$niter >= maxiter | is.nan(res$estim))
   res$niter[indNoConv] <- NA
   for (j in indNoConv) {
     mod <- stats::glm(y01.train ~ X[ind.train, ind[j]] + covar.train[, -1] - 1,
