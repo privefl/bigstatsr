@@ -11,7 +11,7 @@ ALL.SP_FUN <- sapply(paste0("big_sp", c("LinReg", "LogReg", "SVM")), get)
 # Simulating some data
 N <- 511 # Some issues for small sample sizes
 M <- 230
-x <- matrix(rnorm(N*M, sd = 5), N)
+x <- matrix(rnorm(N * M, sd = 5), N)
 y <- sample(0:1, size = N, replace = TRUE)
 y.factor <- factor(y, levels = c(1, 0))
 

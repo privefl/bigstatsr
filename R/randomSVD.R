@@ -35,8 +35,8 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
         Atx[] <- x
         calc[] <- 1 # make them work
         # master wait for its slaves to finish working
-        while (sum(calc[,]) > 0) Sys.sleep(TIME)
-        rowSums(Ax[,])
+        while (sum(calc[]) > 0) Sys.sleep(TIME)
+        rowSums(Ax[])
       }
       # Atrans
       Atrans <- function(x, args) {
@@ -44,8 +44,8 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
         Ax[, 1] <- x
         calc[] <- 2 # make them work
         # master wait for its slaves to finish working
-        while (sum(calc[,]) > 0) Sys.sleep(TIME)
-        Atx[,]
+        while (sum(calc[]) > 0) Sys.sleep(TIME)
+        Atx[]
       }
 
       res <- RSpectra::svds(A, k, nu = k, nv = k, opts = list(tol = tol),
@@ -74,7 +74,7 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
         # slaves do the hard work
         if (c == 1) {
           # compute A * x
-          x <- Atx.part[,] / ms$sd
+          x <- Atx.part[] / ms$sd
           Ax[, ic] <- pMatVec4(X, x, ind.row, ind.col.part) -
             crossprod(x, ms$mean)
         } else if (c == 2) {
@@ -95,7 +95,7 @@ svds4.par <- function(X.desc, fun.scaling, ind.row, ind.col,
   }
 
   # separate the results and combine the scaling vectors
-  l <- do.call('c', res[-1])
+  l <- do.call("c", res[-1])
   res <- res[[1]]
   s <- c(TRUE, FALSE)
   res$means <- unlist(l[s], use.names = FALSE)

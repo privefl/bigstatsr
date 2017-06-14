@@ -9,7 +9,7 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
 # Simulating some data
 N <- 511 # Some issues for small sample sizes
 M <- 230
-x <- matrix(rnorm(N*M, sd = 5), N)
+x <- matrix(rnorm(N * M, sd = 5), N)
 y <- sample(0:1, size = N, replace = TRUE)
 y.factor <- factor(y, levels = c(1, 0))
 
@@ -24,7 +24,7 @@ test_that("equality with sparseSVM with all data", {
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     for (covar in lcovar) {
-      X2 <- cbind(X[,], covar)
+      X2 <- cbind(X[], covar)
       m <- pmax(0, runif(ncol(X2), min = -0.5, max = 2))
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
@@ -57,7 +57,7 @@ test_that("equality with sparseSVM with only half the data", {
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     for (covar in lcovar) {
-      X2 <- cbind(X[,], covar)
+      X2 <- cbind(X[], covar)
       m <- pmax(0, runif(ncol(X2), min = -0.5, max = 2))
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)

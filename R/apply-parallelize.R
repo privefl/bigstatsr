@@ -32,10 +32,10 @@ big_parallelize <- function(X., p.FUN, p.combine, ncores,
                             ...) {
 
   check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
-  assert_args(p.FUN, 'ind')
+  assert_args(p.FUN, "ind")
   assert_int(ind); assert_pos(ind)
 
-  if (ncores > 1) {
+  if (ncores > 1) { # parallel
     X.desc <- describe(X.)
     range.parts <- CutBySize(length(ind), nb = ncores)
 
@@ -115,7 +115,7 @@ big_apply <- function(X., a.FUN, a.combine,
                       ...) {
 
   check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
-  assert_args(a.FUN, 'ind')
+  assert_args(a.FUN, "ind")
   assert_int(ind); assert_pos(ind)
 
   big_parallelize(X. = X.,

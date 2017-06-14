@@ -16,7 +16,7 @@ test_that("Equality with t()", {
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     test <- big_transpose(X., BM(descriptor = FALSE))
-    expect_identical(test[,], t(X[,]))
+    expect_identical(test[], t(X[]))
   }
 })
 

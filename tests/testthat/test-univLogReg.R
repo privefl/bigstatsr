@@ -10,7 +10,7 @@ TOL <- 1e-5
 # Simulating some data
 N <- 73
 M <- 43
-x <- matrix(rnorm(N*M, sd = 5), N)
+x <- matrix(rnorm(N * M, sd = 5), N)
 y <- sample(0:1, size = N, replace = TRUE)
 
 covar0 <- matrix(rnorm(N * 3), N)

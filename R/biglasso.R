@@ -148,8 +148,8 @@ COPY_biglasso <- function(X, y.train, ind.train, covar.train,
   ## fit model
   if (verbose) printf("\nStart biglasso: %s\n", format(Sys.time()))
 
-  if (family == 'gaussian') {
-    res <- COPY_cdfit_gaussian_hsr(X, yy, ind.train-1, covar.train,
+  if (family == "gaussian") {
+    res <- COPY_cdfit_gaussian_hsr(X, yy, ind.train - 1, covar.train,
                                    lambda, nlambda, lambda.log.scale,
                                    lambda.min, alpha,
                                    user.lambda | any(penalty.factor == 0),
@@ -166,8 +166,8 @@ COPY_biglasso <- function(X, y.train, ind.train, covar.train,
     rejections <- res[[7]]
     col.idx <- res[[8]]
 
-  } else if (family == 'binomial') {
-    res <- COPY_cdfit_binomial_hsr(X, yy, ind.train-1, covar.train,
+  } else if (family == "binomial") {
+    res <- COPY_cdfit_binomial_hsr(X, yy, ind.train - 1, covar.train,
                                    lambda, nlambda, lambda.log.scale,
                                    lambda.min, alpha,
                                    user.lambda | any(penalty.factor == 0),
@@ -201,7 +201,7 @@ COPY_biglasso <- function(X, y.train, ind.train, covar.train,
   lambda <- lambda[ind]
   loss <- loss[ind]
 
-  if (warn & any(iter==max.iter))
+  if (warn & any(iter == max.iter))
     warning("Algorithm failed to converge for some values of lambda")
 
   ## Unstandardize coefficients:

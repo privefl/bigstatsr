@@ -8,7 +8,7 @@ get_beta <- function(betas, method) {
 
     repeat {
       norm <- sqrt(colSums((betas - b.old)^2))
-      b.new <- rowSums(sweep(betas, 2, norm, '/')) / sum(1 / norm)
+      b.new <- rowSums(sweep(betas, 2, norm, "/")) / sum(1 / norm)
       dif <- max(abs(b.new - b.old))
       if (dif < 1e-10) break
       b.old <- b.new
@@ -70,8 +70,8 @@ big_CMSA <- function(FUN, feval, X., y.train,
 
   check_args()
   assert_lengths(ind.train, y.train)
-  assert_class(FUN, 'function')
-  assert_args(feval, 'target')
+  assert_class(FUN, "function")
+  assert_args(feval, "target")
 
   method <- match.arg(method)
 

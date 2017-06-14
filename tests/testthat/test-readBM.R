@@ -8,7 +8,7 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
 # Simulating some data
 N <- 73
 M <- 43
-x <- matrix(rnorm(N*M, sd = 5), N)
+x <- matrix(rnorm(N * M, sd = 5), N)
 
 tmp <- tempfile()
 
@@ -20,7 +20,7 @@ test_that("read from write.table", {
 
     X <- as.big.matrix(x, type = t)
 
-    write.table(X[,], tmp, quote = FALSE)
+    write.table(X[], tmp, quote = FALSE)
 
     test <- big_readBM(tmp,
                        file.nheader = 1,
@@ -31,13 +31,13 @@ test_that("read from write.table", {
 
     expect_true(typeof(test) == t)
 
-    expect_equal(attach.BM(test)[,], X[,])
+    expect_equal(attach.BM(test)[], X[])
   }
 })
 
 ################################################################################
 
-dimnames(x) <- list(sample(letters, N, TRUE), sample(LETTERS, M , TRUE))
+dimnames(x) <- list(sample(letters, N, TRUE), sample(LETTERS, M, TRUE))
 
 test_that("read from write.table with dimnames", {
 
@@ -45,7 +45,7 @@ test_that("read from write.table with dimnames", {
 
     X <- as.big.matrix(x, type = t)
 
-    write.table(X[,], tmp, quote = FALSE)
+    write.table(X[], tmp, quote = FALSE)
 
     # with transpose
     test <- big_readBM(tmp,
@@ -63,7 +63,7 @@ test_that("read from write.table with dimnames", {
                          split = " ",
                          fixed = TRUE)[[1]]
 
-    expect_equal(structure(test[,], .Dimnames = list(colnames, rownames)), X[,])
+    expect_equal(structure(test[], .Dimnames = list(colnames, rownames)), X[])
 
     # without transpose
     test2 <- big_readBM(tmp,
@@ -80,8 +80,8 @@ test_that("read from write.table with dimnames", {
                           split = " ",
                           fixed = TRUE)[[1]]
 
-    expect_equal(structure(t(test2[,]), .Dimnames = list(colnames2, rownames2)),
-                 X[,])
+    expect_equal(structure(t(test2[]), .Dimnames = list(colnames2, rownames2)),
+                 X[])
   }
 })
 

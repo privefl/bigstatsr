@@ -117,7 +117,7 @@ big_prodMat <- function(X., A.col,
 
   big_apply(X., a.FUN = function(x, ind, M, ind.row, ind.col) {
     x[ind.row, ind.col[ind]] %*% M[ind, ]
-  }, a.combine = '+', block.size = block.size,
+  }, a.combine = "+", block.size = block.size,
   ind = seq_along(ind.col), ncores = ncores, M = A.col,
   ind.row = ind.row, ind.col = ind.col)
 }
@@ -165,7 +165,7 @@ big_cprodMat <- function(X., A.row,
 
   big_apply(X., a.FUN = function(x, ind, M, ind.row) {
     crossprod(x[ind.row, ind], M)
-  }, a.combine = 'rbind', block.size = block.size,
+  }, a.combine = "rbind", block.size = block.size,
   ind = ind.col, ncores = ncores, M = A.row, ind.row = ind.row)
 }
 

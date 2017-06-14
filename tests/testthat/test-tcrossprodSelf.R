@@ -8,7 +8,7 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
 # Simulating some data
 N <- 43
 M <- 101
-x <- matrix(rnorm(N*M), N)
+x <- matrix(rnorm(N * M), N)
 
 big_noscale <- big_scale(center = FALSE)
 
@@ -20,14 +20,14 @@ test_that("equality with tcrossprod", {
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     K <- big_tcrossprodSelf(X., fun.scaling = big_noscale)
-    expect_equivalent(K, tcrossprod(X[,]))
+    expect_equivalent(K, tcrossprod(X[]))
   }
 })
 
 ################################################################################
 
 test_that("equality with tcrossprod with half of the data", {
-  ind <- sample(M, M/2)
+  ind <- sample(M, M / 2)
 
   for (t in ALL.TYPES) {
     X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
@@ -46,7 +46,7 @@ test_that("equality with tcrossprod with half of the data", {
 ################################################################################
 
 test_that("equality with tcrossprod with half of the data", {
-  ind <- sample(N, N/2)
+  ind <- sample(N, N / 2)
 
   for (t in ALL.TYPES) {
     X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))

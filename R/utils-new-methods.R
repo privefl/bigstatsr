@@ -149,7 +149,8 @@ setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
                          description = x@description, code = code)
           })
 
-asBMcode <- function(x) { # for tests
+# function for tests
+asBMcode <- function(x) {
   x <- round(x + 100)
   tmp <- unique(as.vector(x))
   code <- rep(NA_real_, 256)

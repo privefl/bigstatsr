@@ -194,7 +194,7 @@ plot.mhtest <- function(x, type = c("Manhattan", "Q-Q", "Volcano"),
 #' \dontrun{plotly::ggplotly(p2, tooltip = "text")}
 asPlotlyText <- function(df) {
   paste.br <- function(lhs, rhs) paste(lhs, rhs, sep = "<br>")
-  foreach(ic = seq_along(df), .combine = "paste.br") %do% {
+  foreach(ic = seq_along(df), .combine = paste.br) %do% {
     paste(names(df)[ic], df[[ic]], sep = ": ")
   }
 }

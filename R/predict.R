@@ -45,7 +45,7 @@ predict.big_sp <- function(object, X.,
   }
 
   rownames(scores) <- ind.row
-  as.matrix(sweep(scores, 2, object$intercept, '+'))
+  as.matrix(sweep(scores, 2, object$intercept, "+"))
 }
 
 ################################################################################
@@ -69,7 +69,9 @@ predict.big_sp <- function(object, X.,
 #' @seealso [big_univLinReg] and [big_univLogReg].
 predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 
-  lpval <- scores %>% attr(object, "transfo")() %>% attr(object, "predict")()
+  lpval <- scores %>%
+    attr(object, "transfo")() %>%
+    attr(object, "predict")()
 
   `if`(log10, lpval, 10^lpval)
 }
@@ -108,7 +110,7 @@ predict.big_SVD <- function(object, X. = NULL,
     # multiplication with clever scaling -> see vignettes
     v2 <- object$v / object$sds
     tmp <- big_prodMat(X, v2, ind.row, ind.col, block.size)
-    sweep(tmp, 2, crossprod(object$means, v2), '-')
+    sweep(tmp, 2, crossprod(object$means, v2), "-")
   }
 }
 

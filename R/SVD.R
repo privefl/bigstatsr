@@ -23,7 +23,7 @@ DualBigPCA <- function(X, fun.scaling,
   # crossprod with clever scaling -> see vignettes
   v <- (big_cprodMat(X, u, ind.row, ind.col, block.size = block.size) -
           tcrossprod(means, colSums(u))) / sds
-  v <- sweep(v, 2, d, '/')
+  v <- sweep(v, 2, d, "/")
 
   list(d = d, u = u, v = v, means = means, sds = sds)
 }
@@ -106,7 +106,7 @@ big_SVD <- function(X., fun.scaling,
     res <- DualBigPCA(X, fun.scaling, ind.row, ind.col, block.size, k)
   } else {
     printf("(1)")
-    res <- PrimalBigPCA(X, fun.scaling, ind.row,ind.col, block.size, k)
+    res <- PrimalBigPCA(X, fun.scaling, ind.row, ind.col, block.size, k)
   }
 
   structure(res, class = "big_SVD")

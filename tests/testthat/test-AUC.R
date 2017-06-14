@@ -4,7 +4,7 @@ context("AUC")
 
 N <- 100
 x0 <- rnorm(N, mean = runif(1))
-x1 <- rnorm(N, mean = 2*runif(1))
+x1 <- rnorm(N, mean = 2 * runif(1))
 x <- c(x0, x1)
 y <- c(rep(-1, N), rep(1, N))
 

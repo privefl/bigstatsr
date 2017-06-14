@@ -48,7 +48,7 @@ big_univLinReg <- function(X., y.train,
   # main computation
   res <- big_parallelize(X. = X.,
                          p.FUN = univLinReg_sub,
-                         p.combine = 'rbind',
+                         p.combine = "rbind",
                          ind = ind.col,
                          ncores = ncores,
                          U = SVD$u[, 1:K, drop = FALSE],

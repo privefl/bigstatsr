@@ -18,7 +18,7 @@ sampleScale <- function() {
 # Simulating some data
 N <- 73
 M <- 43
-x <- matrix(rnorm(N*M, sd = 5), N)
+x <- matrix(rnorm(N * M, sd = 5), N)
 
 ###############################################################################
 
@@ -34,7 +34,7 @@ test_that("equality with prcomp", {
                     fun.scaling = big_scale(center = sc$center,
                                             scale = sc$scale),
                     k = k)
-    pca <- prcomp(X[,], center = sc$center, scale. = sc$scale)
+    pca <- prcomp(X[], center = sc$center, scale. = sc$scale)
     expect_equal(diffPCs(predict(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
   }
@@ -42,7 +42,7 @@ test_that("equality with prcomp", {
 
 ###############################################################################
 test_that("equality with prcomp with half of the data", {
-  ind <- sample(N, N/2)
+  ind <- sample(N, N / 2)
   ind2 <- setdiff(1:N, ind)
 
   for (t in ALL.TYPES) {
@@ -70,9 +70,9 @@ test_that("equality with prcomp with half of the data", {
 ################################################################################
 
 test_that("equality with prcomp with half of half of the data", {
-  ind <- sample(N, N/2)
+  ind <- sample(N, N / 2)
   ind2 <- setdiff(1:N, ind)
-  ind.col <- sample(M, M/2)
+  ind.col <- sample(M, M / 2)
 
   for (t in ALL.TYPES) {
     X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))

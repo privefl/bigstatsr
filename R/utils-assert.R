@@ -46,7 +46,7 @@ assert_noNA <- function(x) {
 # ARGS
 assert_args <- function(f, args.name) {
 
-  if (!inherits(f, 'function'))
+  if (!inherits(f, "function"))
     stop2("'%s' is not a function.", deparse(substitute(f)))
 
   if (!all(args.name %in% names(formals(f))))

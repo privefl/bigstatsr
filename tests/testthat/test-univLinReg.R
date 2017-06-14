@@ -8,7 +8,7 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
 # Simulating some data
 N <- 73
 M <- 43
-x <- matrix(rnorm(N*M, sd = 5), N)
+x <- matrix(rnorm(N * M, sd = 5), N)
 y <- rnorm(N)
 
 covar0 <- matrix(rnorm(N * 3), N)

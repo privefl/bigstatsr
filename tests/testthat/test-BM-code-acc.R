@@ -25,7 +25,7 @@ test_that("same dimensions", {
 
 test_that("same accessing", {
   expect_equal(X2[], x[])
-  expect_equal(X2[,], x[,])
+  expect_equal(X2[], x[])
   expect_equal(X2[, , drop = FALSE], x[, , drop = FALSE])
   expect_equal(X2[, , drop = TRUE], x[, , drop = TRUE])
   expect_equal(X2[1, ], x[1, ])

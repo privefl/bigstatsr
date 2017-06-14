@@ -78,7 +78,7 @@ big_univLogReg <- function(X., y01.train,
   # main computation
   res <- big_parallelize(X. = X.,
                          p.FUN = univLogReg_sub,
-                         p.combine = 'rbind',
+                         p.combine = "rbind",
                          ind = ind.col,
                          ncores = ncores,
                          covar.train = covar.train,
