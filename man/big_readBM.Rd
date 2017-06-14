@@ -4,8 +4,8 @@
 \alias{big_readBM}
 \title{Read a file}
 \usage{
-big_readBM(file, file.nheader = 0, info.nelem = 0, split = " ",
-  read.what = double(), read.transfo = identity,
+big_readBM(file, file.nheader = 0, file.nline = NULL, info.nelem = 0,
+  split = " ", read.what = double(), read.transfo = identity,
   BM.type = typeof(read.what), transpose = FALSE, fun.createBM = BM())
 }
 \arguments{
@@ -14,6 +14,10 @@ big_readBM(file, file.nheader = 0, info.nelem = 0, split = " ",
 \item{file.nheader}{Number of lines to read at the beginning of the file,
 as a separate header information. Default is \code{0}. Each line is read as one
 string. You may need to postprocess it with \link{strsplit}. See examples.}
+
+\item{file.nline}{Number of total lines of the file. Default is \code{NULL} and a
+function computes it. This function doesn't work for compressed files so that
+you will have to explicitly specify the number of lines of the file.}
 
 \item{info.nelem}{Number of elements of extra information to read at the
 beginning of each line. Default is \code{0}.}
