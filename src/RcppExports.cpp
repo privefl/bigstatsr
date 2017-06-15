@@ -97,6 +97,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// correlize
+NumericMatrix& correlize(NumericMatrix& mat, const NumericVector& shift, const NumericVector& scale);
+RcppExport SEXP bigstatsr_correlize(SEXP matSEXP, SEXP shiftSEXP, SEXP scaleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type shift(shiftSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
+    rcpp_result_gen = Rcpp::wrap(correlize(mat, shift, scale));
+    return rcpp_result_gen;
+END_RCPP
+}
 // mycount1
 IntegerMatrix mycount1(XPtr<BigMatrix> xpMat, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
 RcppExport SEXP bigstatsr_mycount1(SEXP xpMatSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
@@ -294,4 +307,33 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(incrMat(dest, source));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"bigstatsr_auc_cpp", (DL_FUNC) &bigstatsr_auc_cpp, 2},
+    {"bigstatsr_COPY_cdfit_gaussian_hsr", (DL_FUNC) &bigstatsr_COPY_cdfit_gaussian_hsr, 15},
+    {"bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &bigstatsr_COPY_cdfit_binomial_hsr, 16},
+    {"bigstatsr_linRegPcadapt_cpp", (DL_FUNC) &bigstatsr_linRegPcadapt_cpp, 4},
+    {"bigstatsr_bigcolvars", (DL_FUNC) &bigstatsr_bigcolvars, 3},
+    {"bigstatsr_correlize", (DL_FUNC) &bigstatsr_correlize, 3},
+    {"bigstatsr_mycount1", (DL_FUNC) &bigstatsr_mycount1, 4},
+    {"bigstatsr_mycount2", (DL_FUNC) &bigstatsr_mycount2, 4},
+    {"bigstatsr_decodeMat", (DL_FUNC) &bigstatsr_decodeMat, 2},
+    {"bigstatsr_decodeVec", (DL_FUNC) &bigstatsr_decodeVec, 2},
+    {"bigstatsr_pMatVec4", (DL_FUNC) &bigstatsr_pMatVec4, 4},
+    {"bigstatsr_cpMatVec4", (DL_FUNC) &bigstatsr_cpMatVec4, 4},
+    {"bigstatsr_COPY_sparse_svm", (DL_FUNC) &bigstatsr_COPY_sparse_svm, 15},
+    {"bigstatsr_transpose3", (DL_FUNC) &bigstatsr_transpose3, 2},
+    {"bigstatsr_univLinReg5", (DL_FUNC) &bigstatsr_univLinReg5, 5},
+    {"bigstatsr_IRLS", (DL_FUNC) &bigstatsr_IRLS, 9},
+    {"bigstatsr_scaling", (DL_FUNC) &bigstatsr_scaling, 3},
+    {"bigstatsr_complete2", (DL_FUNC) &bigstatsr_complete2, 1},
+    {"bigstatsr_incrSup2", (DL_FUNC) &bigstatsr_incrSup2, 2},
+    {"bigstatsr_incrMat", (DL_FUNC) &bigstatsr_incrMat, 2},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_bigstatsr(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

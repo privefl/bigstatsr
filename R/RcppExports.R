@@ -21,6 +21,10 @@ bigcolvars <- function(BM, rowInd, colInd) {
     .Call(bigstatsr_bigcolvars, BM, rowInd, colInd)
 }
 
+correlize <- function(mat, shift, scale) {
+    .Call(bigstatsr_correlize, mat, shift, scale)
+}
+
 mycount1 <- function(xpMat, rowInd, colInd, codeInd) {
     .Call(bigstatsr_mycount1, xpMat, rowInd, colInd, codeInd)
 }
