@@ -52,7 +52,9 @@ knitr::include_graphics("memory-problem.svg")
 
 ## Solution I found: R package **bigmemory**
 
-```{r}
+### Store matrices on disk and access them from there
+
+```{r, out.width='45%'}
 knitr::include_graphics("http://www.brokenthorn.com/Resources/images/virtual-memory%5B1%5D.png")
 ```
 
@@ -60,11 +62,39 @@ knitr::include_graphics("http://www.brokenthorn.com/Resources/images/virtual-mem
 
 ---
 
-## Dependencies on **bigmemory**
+## Accesses almost as if the matrix were in memory
 
-```{r}
-knitr::include_graphics("bigmemory-depends.png")
+- in **R**: accesses with `[`, as standard R matrices,
+
+- in **Rcpp**: accesses single elements with `X(i, j)`, as standard Rcpp matrices.
+
+<br/>
+
+```{r, out.width='60%'}
+knitr::include_graphics("https://media.giphy.com/media/Rl9Yqavfj2Ula/giphy.gif")
 ```
+
+---
+
+## Split-(par)Apply-Combine Strategy
+
+### Apply standard R functions to big matrices (in parallel)
+
+```{r, out.width='100%'}
+knitr::include_graphics("split-apply-combine.svg")
+```
+
+.footnote[strategy coined by Hadley Wickham (2011)]
+
+<!-- --- -->
+
+<!-- ## Dependencies on **bigmemory** -->
+
+<!-- <br/> -->
+
+<!-- ```{r} -->
+<!-- knitr::include_graphics("bigmemory-depends.png") -->
+<!-- ``` -->
 
 ---
 
@@ -85,18 +115,6 @@ knitr::include_graphics("svd.png")
 ```
 
 .footnote[based on R package **RSpectra**]
-
----
-
-## Split-(par)Apply-Combine Strategy
-
-### Apply standard R functions to big matrices (in parallel)
-
-```{r, out.width='100%'}
-knitr::include_graphics("split-apply-combine.svg")
-```
-
-.footnote[strategy coined by Hadley Wickham (2011)]
 
 ---
 
