@@ -86,6 +86,23 @@ knitr::include_graphics("split-apply-combine.svg")
 
 .footnote[strategy coined by Hadley Wickham (2011)]
 
+---
+
+## Matrix operations
+
+- (cross-)products with matrices/vectors
+
+- special tricks for handling scaling ([vignette](https://privefl.github.io/bigstatsr/articles/operations-with-scaling.html) and [blog post](https://goo.gl/L8cNbo))
+
+<br/>
+
+### Example: computation of correlation of a 100,000 x 5000 matrix
+
+- `cor`: 22 minutes 
+
+- `big_cor`: 1 minute 
+
+
 <!-- --- -->
 
 <!-- ## Dependencies on **bigmemory** -->
@@ -110,21 +127,30 @@ knitr::include_graphics("https://raw.githubusercontent.com/YaohuiZeng/biglasso/m
 
 ## Partial Singular Value Decomposition
 
-```{r, out.width='65%'}
-knitr::include_graphics("svd.png")
+```{r, out.width='75%'}
+knitr::include_graphics("benchmark.svg")
 ```
 
 .footnote[based on R package **RSpectra**]
 
 ---
 
-## Test association of each column with an outcome
+## Test association of each variable with an outcome
 
 ### In genetics, this is called a Genome-Wide Association Study (GWAS)
+
+<br/>
 
 ```{r, out.width='100%', fig.cap="Manhattan plot"}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/1/12/Manhattan_Plot.png")
 ```
+---
+
+class: inverse, center, middle
+
+# I'm now able 
+# to run algorithms
+# on 100GB of data
 
 ---
 
@@ -134,14 +160,9 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/1/12/Man
 knitr::include_graphics("recap-packages.svg")
 ```
 
----
+<br/>
 
-class: inverse, center, middle
-
-# I'm now able 
-# to run algorithms
-# on hundreds of 
-# Gigabytes of data
+### Paper in preparation: "Efficient management and analysis of large-scale genome-wide data with two R packages: bigstatsr and bigsnpr".
 
 ---
 

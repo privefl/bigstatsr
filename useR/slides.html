@@ -76,6 +76,23 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 .footnote[strategy coined by Hadley Wickham (2011)]
 
+---
+
+## Matrix operations
+
+- (cross-)products with matrices/vectors
+
+- special tricks for handling scaling ([vignette](https://privefl.github.io/bigstatsr/articles/operations-with-scaling.html) and [blog post](https://goo.gl/L8cNbo))
+
+&lt;br/&gt;
+
+### Example: computation of correlation of a 100,000 x 5000 matrix
+
+- `cor`: 22 minutes 
+
+- `big_cor`: 1 minute 
+
+
 &lt;!-- --- --&gt;
 
 &lt;!-- ## Dependencies on **bigmemory** --&gt;
@@ -98,20 +115,29 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 ## Partial Singular Value Decomposition
 
-&lt;img src="svd.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="benchmark.svg" width="75%" style="display: block; margin: auto;" /&gt;
 
 .footnote[based on R package **RSpectra**]
 
 ---
 
-## Test association of each column with an outcome
+## Test association of each variable with an outcome
 
 ### In genetics, this is called a Genome-Wide Association Study (GWAS)
+
+&lt;br/&gt;
 
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Manhattan_Plot.png" alt="Manhattan plot" width="100%" /&gt;
 &lt;p class="caption"&gt;Manhattan plot&lt;/p&gt;
 &lt;/div&gt;
+---
+
+class: inverse, center, middle
+
+# I'm now able 
+# to run algorithms
+# on 100GB of data
 
 ---
 
@@ -119,14 +145,9 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 &lt;img src="recap-packages.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
----
+&lt;br/&gt;
 
-class: inverse, center, middle
-
-# I'm now able 
-# to run algorithms
-# on hundreds of 
-# Gigabytes of data
+### Paper in preparation: "Efficient management and analysis of large-scale genome-wide data with two R packages: bigstatsr and bigsnpr".
 
 ---
 
