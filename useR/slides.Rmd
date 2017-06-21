@@ -10,6 +10,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: true
+      autoplay: 20000
 ---
 
 ```{r setup, include=FALSE}
@@ -166,7 +167,7 @@ knitr::include_graphics("recap-packages.svg")
 
 ---
 
-## Any contributor is welcomed!
+## Contributors are welcomed!
 
 ```{r, out.width='80%'}
 knitr::include_graphics("https://applicationsandroidfrance.com/wp-content/uploads/2012/06/cat1200.jpg")
