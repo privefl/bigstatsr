@@ -54,15 +54,11 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 ---
 
-## Accesses almost as if the matrix were in memory
+## Similar accessor as R matrices
 
-- in **R**: accesses with `[`, as standard R matrices,
+&lt;/br&gt;
 
-- in **Rcpp**: accesses single elements with `X(i, j)`, as standard Rcpp matrices.
-
-&lt;br/&gt;
-
-&lt;img src="https://media.giphy.com/media/Rl9Yqavfj2Ula/giphy.gif" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="http://i.ebayimg.com/images/i/200955927319-0-1/s-l1000.jpg" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -76,19 +72,37 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 ---
 
-## Matrix operations
+&lt;!-- ## Matrix operations --&gt;
 
-- (cross-)products with matrices/vectors
+&lt;!-- - (cross-)products with matrices/vectors --&gt;
 
-- special tricks for handling scaling ([vignette](https://privefl.github.io/bigstatsr/articles/operations-with-scaling.html) and [blog post](https://goo.gl/L8cNbo))
+&lt;!-- - special tricks for handling scaling ([vignette](https://privefl.github.io/bigstatsr/articles/operations-with-scaling.html) and [blog post](https://goo.gl/L8cNbo)) --&gt;
 
-&lt;br/&gt;
+&lt;!-- &lt;br/&gt; --&gt;
 
-### Example: computation of correlation of a 100,000 x 5000 matrix
+&lt;!-- ### Example: computation of correlation of a 100,000 x 5000 matrix --&gt;
 
-- `cor`: 22 minutes 
+&lt;!-- - `cor`: 22 minutes  --&gt;
 
-- `big_cor`: 1 minute 
+&lt;!-- - `big_cor`: 1 minute  --&gt;
+
+&lt;!-- --- --&gt;
+
+## Similar accessor as Rcpp matrices
+
+&lt;img src="rcpp-trust.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Partial Singular Value Decomposition
+
+15K x 100K `big.matrix`, 6 cores, K = 10, **1 min** (vs 2h in base R)
+
+&lt;/br&gt;
+
+&lt;img src="https://cdn.meme.am/cache/instances/folder897/500x/75201897/speedy-gonzalez-you-are-lightning-fast.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+
+.footnote[based on R package **RSpectra**]
 
 ---
 
@@ -100,48 +114,19 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 ---
 
-## Partial Singular Value Decomposition
-
-### Guess: 
-
-If X is 15K x **300K** `big.matrix`, how much time takes 
+## Other functions
 
 
-```r
-big_randomSVD(X, big_scale(), k = 10, ncores = 6)
-```
+- matrix operations (Split-Apply-Combine strategy)
 
-### Hint: 
+- association of each variable with an output (RcppArmadillo)
 
-If X is 15K x **30K**
+- plotting functions (ggplot2)
 
+- read from text files
 
-```r
-svd(scale(X), nu = 10, nv = 10)
-```
+- others..
 
-takes 50 minutes and 18GB of RAM.
-
----
-
-## Partial SVD took only **1 minute**
-
-&lt;img src="celiac-pca.png" width="70%" style="display: block; margin: auto;" /&gt;
-
-.footnote[based on R package **RSpectra**]
-
----
-
-## Test association of each variable with an outcome
-
-### In genetics, this is called a Genome-Wide Association Study (GWAS)
-
-&lt;br/&gt;
-
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Manhattan_Plot.png" alt="Manhattan plot" width="100%" /&gt;
-&lt;p class="caption"&gt;Manhattan plot&lt;/p&gt;
-&lt;/div&gt;
 ---
 
 class: inverse, center, middle

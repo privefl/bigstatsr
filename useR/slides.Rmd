@@ -60,16 +60,12 @@ knitr::include_graphics("memory-solution.svg")
 
 ---
 
-## Accesses almost as if the matrix were in memory
+## Similar accessor as R matrices
 
-- in **R**: accesses with `[`, as standard R matrices,
+</br>
 
-- in **Rcpp**: accesses single elements with `X(i, j)`, as standard Rcpp matrices.
-
-<br/>
-
-```{r, out.width='60%'}
-knitr::include_graphics("https://media.giphy.com/media/Rl9Yqavfj2Ula/giphy.gif")
+```{r, out.width='80%'}
+knitr::include_graphics("http://i.ebayimg.com/images/i/200955927319-0-1/s-l1000.jpg")
 ```
 
 ---
@@ -86,19 +82,41 @@ knitr::include_graphics("split-apply-combine.svg")
 
 ---
 
-## Matrix operations
+<!-- ## Matrix operations -->
 
-- (cross-)products with matrices/vectors
+<!-- - (cross-)products with matrices/vectors -->
 
-- special tricks for handling scaling ([vignette](https://privefl.github.io/bigstatsr/articles/operations-with-scaling.html) and [blog post](https://goo.gl/L8cNbo))
+<!-- - special tricks for handling scaling ([vignette](https://privefl.github.io/bigstatsr/articles/operations-with-scaling.html) and [blog post](https://goo.gl/L8cNbo)) -->
 
-<br/>
+<!-- <br/> -->
 
-### Example: computation of correlation of a 100,000 x 5000 matrix
+<!-- ### Example: computation of correlation of a 100,000 x 5000 matrix -->
 
-- `cor`: 22 minutes 
+<!-- - `cor`: 22 minutes  -->
 
-- `big_cor`: 1 minute 
+<!-- - `big_cor`: 1 minute  -->
+
+<!-- --- -->
+
+## Similar accessor as Rcpp matrices
+
+```{r, out.width='100%'}
+knitr::include_graphics("rcpp-trust.svg")
+```
+
+---
+
+## Partial Singular Value Decomposition
+
+15K x 100K `big.matrix`, 6 cores, K = 10, **1 min** (vs 2h in base R)
+
+</br>
+
+```{r, out.width='60%'}
+knitr::include_graphics("https://cdn.meme.am/cache/instances/folder897/500x/75201897/speedy-gonzalez-you-are-lightning-fast.jpg")
+```
+
+.footnote[based on R package **RSpectra**]
 
 ---
 
@@ -112,47 +130,19 @@ knitr::include_graphics("https://raw.githubusercontent.com/YaohuiZeng/biglasso/m
 
 ---
 
-## Partial Singular Value Decomposition
+## Other functions
 
-### Guess: 
 
-If X is 15K x **300K** `big.matrix`, how much time takes 
+- matrix operations (Split-Apply-Combine strategy)
 
-```{r, eval=FALSE, echo=TRUE}
-big_randomSVD(X, big_scale(), k = 10, ncores = 6)
-```
+- association of each variable with an output (RcppArmadillo)
 
-### Hint: 
+- plotting functions (ggplot2)
 
-If X is 15K x **30K**
+- read from text files
 
-```{r, eval = FALSE, echo=TRUE}
-svd(scale(X), nu = 10, nv = 10)
-```
+- others..
 
-takes 50 minutes and 18GB of RAM.
-
----
-
-## Partial SVD took only **1 minute**
-
-```{r, out.width='70%'}
-knitr::include_graphics("celiac-pca.png")
-```
-
-.footnote[based on R package **RSpectra**]
-
----
-
-## Test association of each variable with an outcome
-
-### In genetics, this is called a Genome-Wide Association Study (GWAS)
-
-<br/>
-
-```{r, out.width='100%', fig.cap="Manhattan plot"}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/1/12/Manhattan_Plot.png")
-```
 ---
 
 class: inverse, center, middle
