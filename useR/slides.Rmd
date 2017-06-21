@@ -1,5 +1,5 @@
 ---
-title: "The R package **bigstatsr**:<br/>Memory- and Computation-Efficient Tools<br/>for Big Matrices"
+title: "The R package **bigstatsr**:<br/>Memory- and Computation-Efficient Tools for Big Matrices"
 subtitle: "useR!2017 lightning talk"
 author: "Florian Privé (@privefl)"
 date: "July 6, 2017"
@@ -10,7 +10,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: true
-      autoplay: 20000
+      # autoplay: 20000
 ---
 
 ```{r setup, include=FALSE}
@@ -45,18 +45,15 @@ knitr::include_graphics("https://media.giphy.com/media/3o7bueyxGydy48Lwgo/giphy.
 ## Problem I had
 
 ```{r, out.width='100%'}
-# https://docs.google.com/drawings/d/1Z--fI35S0B3pUSEmUVw1H6KgJMGhtneUX5koqtebdiY/edit
 knitr::include_graphics("memory-problem.svg")
 ```
 
 ---
 
-## Solution I found: R package **bigmemory**
+## Solution I found
 
-### Store matrices on disk and access them from there
-
-```{r, out.width='45%'}
-knitr::include_graphics("http://www.brokenthorn.com/Resources/images/virtual-memory%5B1%5D.png")
+```{r, out.width='100%'}
+knitr::include_graphics("memory-solution.svg")
 ```
 
 .footnote[Michael J. Kane, John Emerson, Stephen Weston (2013).]
@@ -103,17 +100,6 @@ knitr::include_graphics("split-apply-combine.svg")
 
 - `big_cor`: 1 minute 
 
-
-<!-- --- -->
-
-<!-- ## Dependencies on **bigmemory** -->
-
-<!-- <br/> -->
-
-<!-- ```{r} -->
-<!-- knitr::include_graphics("bigmemory-depends.png") -->
-<!-- ``` -->
-
 ---
 
 ## Sparse linear models: **biglasso**
@@ -128,8 +114,30 @@ knitr::include_graphics("https://raw.githubusercontent.com/YaohuiZeng/biglasso/m
 
 ## Partial Singular Value Decomposition
 
-```{r, out.width='75%'}
-knitr::include_graphics("benchmark.svg")
+### Guess: 
+
+If X is 15K x **300K** `big.matrix`, how much time takes 
+
+```{r, eval=FALSE, echo=TRUE}
+big_randomSVD(X, big_scale(), k = 10, ncores = 6)
+```
+
+### Hint: 
+
+If X is 15K x **30K**
+
+```{r, eval = FALSE, echo=TRUE}
+svd(scale(X), nu = 10, nv = 10)
+```
+
+takes 50 minutes and 18GB of RAM.
+
+---
+
+## Partial SVD took only **1 minute**
+
+```{r, out.width='70%'}
+knitr::include_graphics("celiac-pca.png")
 ```
 
 .footnote[based on R package **RSpectra**]

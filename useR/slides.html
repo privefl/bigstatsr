@@ -10,7 +10,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# The R package <strong>bigstatsr</strong>:<br/>Memory- and Computation-Efficient Tools<br/>for Big Matrices
+# The R package <strong>bigstatsr</strong>:<br/>Memory- and Computation-Efficient Tools for Big Matrices
 ## useR!2017 lightning talk
 ### Florian Privé (<span class="citation">@privefl</span>)
 ### July 6, 2017
@@ -46,11 +46,9 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 ---
 
-## Solution I found: R package **bigmemory**
+## Solution I found
 
-### Store matrices on disk and access them from there
-
-&lt;img src="http://www.brokenthorn.com/Resources/images/virtual-memory%5B1%5D.png" width="45%" style="display: block; margin: auto;" /&gt;
+&lt;img src="memory-solution.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 .footnote[Michael J. Kane, John Emerson, Stephen Weston (2013).]
 
@@ -92,17 +90,6 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 - `big_cor`: 1 minute 
 
-
-&lt;!-- --- --&gt;
-
-&lt;!-- ## Dependencies on **bigmemory** --&gt;
-
-&lt;!-- &lt;br/&gt; --&gt;
-
-&lt;!-- ```{r} --&gt;
-&lt;!-- knitr::include_graphics("bigmemory-depends.png") --&gt;
-&lt;!-- ``` --&gt;
-
 ---
 
 ## Sparse linear models: **biglasso**
@@ -115,7 +102,31 @@ I'm a PhD Student (2016-2019) in **Predictive Human Genetics** in Grenoble.
 
 ## Partial Singular Value Decomposition
 
-&lt;img src="benchmark.svg" width="75%" style="display: block; margin: auto;" /&gt;
+### Guess: 
+
+If X is 15K x **300K** `big.matrix`, how much time takes 
+
+
+```r
+big_randomSVD(X, big_scale(), k = 10, ncores = 6)
+```
+
+### Hint: 
+
+If X is 15K x **30K**
+
+
+```r
+svd(scale(X), nu = 10, nv = 10)
+```
+
+takes 50 minutes and 18GB of RAM.
+
+---
+
+## Partial SVD took only **1 minute**
+
+&lt;img src="celiac-pca.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 .footnote[based on R package **RSpectra**]
 
@@ -177,8 +188,7 @@ Presentation available online: https://goo.gl/nNg0hw
 "highlightLines": true,
 "countIncrementalSlides": true
 });
-if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
-setInterval(function() {slideshow.gotoNextSlide();}, 20000);</script>
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});</script>
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
