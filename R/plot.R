@@ -7,7 +7,9 @@ MY_THEME <- function(p, coeff = 1) {
           legend.title  = element_text(size = rel(1.5 * coeff)),
           legend.text   = element_text(size = rel(1.2 * coeff)),
           axis.title    = element_text(size = rel(1.5 * coeff)),
-          axis.text     = element_text(size = rel(1.2 * coeff)))
+          axis.text     = element_text(size = rel(1.2 * coeff)),
+          legend.key.height = unit(1.2 * coeff, "line"),
+          legend.key.width = unit(1.2 * coeff, "line"))
 }
 
 ################################################################################

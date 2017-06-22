@@ -35,28 +35,16 @@ X.desc <- big_attachExtdata()
 # Comparing with cor
 K <- big_cor(X.desc)
 dim(K)
-
-
-K <- crossprod(attach.BM(X.desc)[,])
-sums
-K2 <- K
-K2 <- bigstatsr:::correlize(K2)
-K2[1:5, 1:5]
-
-true <- cor(attach.BM(X.desc)[,])
-all.equal(K, true, check.attributes = FALSE)
+all.equal(K, true)
 
 # Using only half of the data
 n <- nrow(X.desc)
 ind <- sort(sample(n, n/2))
-K2 <- big_crossprodSelf(X.desc, fun.scaling = big_noscale,
-                        ind.row = ind)
+K2 <- big_cor(X.desc, ind.row = ind)
 dim(K2)
 
-true2 <- crossprod(attach.BM(X.desc)[ind, ])
-all.equal(K2, true2, check.attributes = FALSE)
-
-
+true2 <- cor(attach.BM(X.desc)[ind, ])
+all.equal(K2, true2)
 }
 \seealso{
 \link{cor}
