@@ -4,12 +4,12 @@ MY_THEME <- function(p, coeff = 1) {
   p + theme_bw() +
     theme(plot.title    = element_text(size = rel(2.0 * coeff), hjust = 0.5),
           plot.subtitle = element_text(size = rel(1.5 * coeff), hjust = 0.5),
-          legend.title  = element_text(size = rel(2.0 * coeff)),
-          legend.text   = element_text(size = rel(1.5 * coeff)),
+          legend.title  = element_text(size = rel(1.8 * coeff)),
+          legend.text   = element_text(size = rel(1.3 * coeff)),
           axis.title    = element_text(size = rel(1.5 * coeff)),
           axis.text     = element_text(size = rel(1.2 * coeff)),
-          legend.key.height = unit(1.5 * coeff, "line"),
-          legend.key.width = unit(1.5 * coeff, "line"))
+          legend.key.height = unit(1.3 * coeff, "line"),
+          legend.key.width = unit(1.3 * coeff, "line"))
 }
 
 ################################################################################
