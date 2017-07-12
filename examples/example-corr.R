@@ -3,6 +3,8 @@ X.desc <- big_attachExtdata()
 # Comparing with cor
 K <- big_cor(X.desc)
 dim(K)
+
+true <- cor(attach.BM(X.desc)[])
 all.equal(K, true)
 
 # Using only half of the data

@@ -1,16 +1,17 @@
 /******************************************************************************/
 
-#include "bigstatsr.h"
+#include "../inst/include/bigstatsr/SubMatAcc.h"
 
 /******************************************************************************/
 
 // counts by rows
 // [[Rcpp::export]]
-IntegerMatrix mycount1(XPtr<BigMatrix> xpMat,
+IntegerMatrix mycount1(SEXP pBigMat,
                        const IntegerVector& rowInd,
                        const IntegerVector& colInd,
                        const IntegerVector& codeInd) {
 
+  XPtr<BigMatrix> xpMat(pBigMat);
   SubMatAcc<unsigned char> macc(*xpMat, rowInd-1, colInd-1);
 
   int n = macc.nrow();
@@ -35,11 +36,12 @@ IntegerMatrix mycount1(XPtr<BigMatrix> xpMat,
 
 // counts by columns
 // [[Rcpp::export]]
-IntegerMatrix mycount2(XPtr<BigMatrix> xpMat,
-                      const IntegerVector& rowInd,
-                      const IntegerVector& colInd,
-                      const IntegerVector& codeInd) {
+IntegerMatrix mycount2(SEXP pBigMat,
+                       const IntegerVector& rowInd,
+                       const IntegerVector& colInd,
+                       const IntegerVector& codeInd) {
 
+  XPtr<BigMatrix> xpMat(pBigMat);
   SubMatAcc<unsigned char> macc(*xpMat, rowInd-1, colInd-1);
 
   int n = macc.nrow();

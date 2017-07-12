@@ -1,9 +1,10 @@
-/********************************************************/
-/*** This is a modified version from package biglasso ***/
-/***      https://github.com/YaohuiZeng/biglasso      ***/
-/********************************************************/
+/******************************************************************************/
+/******         This is a modified version from package biglasso         ******/
+/******              https://github.com/YaohuiZeng/biglasso              ******/
+/******************************************************************************/
 
-#include "bigstatsr.h"
+#include <RcppArmadillo.h>
+#include "../inst/include/bigstatsr/SubMatCovAcc.h"
 #include <time.h>
 
 /******************************************************************************/

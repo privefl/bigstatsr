@@ -2,82 +2,82 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 auc_cpp <- function(x_pos, x_neg) {
-    .Call(bigstatsr_auc_cpp, x_pos, x_neg)
+    .Call(`_bigstatsr_auc_cpp`, x_pos, x_neg)
 }
 
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose) {
-    .Call(bigstatsr_COPY_cdfit_gaussian_hsr, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
+    .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
 }
 
 COPY_cdfit_binomial_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose) {
-    .Call(bigstatsr_COPY_cdfit_binomial_hsr, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose)
+    .Call(`_bigstatsr_COPY_cdfit_binomial_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose)
 }
 
 linRegPcadapt_cpp <- function(BM, U, rowInd, colInd) {
-    .Call(bigstatsr_linRegPcadapt_cpp, BM, U, rowInd, colInd)
+    .Call(`_bigstatsr_linRegPcadapt_cpp`, BM, U, rowInd, colInd)
 }
 
 bigcolvars <- function(BM, rowInd, colInd) {
-    .Call(bigstatsr_bigcolvars, BM, rowInd, colInd)
+    .Call(`_bigstatsr_bigcolvars`, BM, rowInd, colInd)
 }
 
 correlize <- function(mat, shift, scale) {
-    .Call(bigstatsr_correlize, mat, shift, scale)
+    .Call(`_bigstatsr_correlize`, mat, shift, scale)
 }
 
-mycount1 <- function(xpMat, rowInd, colInd, codeInd) {
-    .Call(bigstatsr_mycount1, xpMat, rowInd, colInd, codeInd)
+mycount1 <- function(pBigMat, rowInd, colInd, codeInd) {
+    .Call(`_bigstatsr_mycount1`, pBigMat, rowInd, colInd, codeInd)
 }
 
-mycount2 <- function(xpMat, rowInd, colInd, codeInd) {
-    .Call(bigstatsr_mycount2, xpMat, rowInd, colInd, codeInd)
+mycount2 <- function(pBigMat, rowInd, colInd, codeInd) {
+    .Call(`_bigstatsr_mycount2`, pBigMat, rowInd, colInd, codeInd)
 }
 
 decodeMat <- function(source, code) {
-    .Call(bigstatsr_decodeMat, source, code)
+    .Call(`_bigstatsr_decodeMat`, source, code)
 }
 
 decodeVec <- function(source, code) {
-    .Call(bigstatsr_decodeVec, source, code)
+    .Call(`_bigstatsr_decodeVec`, source, code)
 }
 
 pMatVec4 <- function(BM, x, rowInd, colInd) {
-    .Call(bigstatsr_pMatVec4, BM, x, rowInd, colInd)
+    .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
 }
 
 cpMatVec4 <- function(BM, x, rowInd, colInd) {
-    .Call(bigstatsr_cpMatVec4, BM, x, rowInd, colInd)
+    .Call(`_bigstatsr_cpMatVec4`, BM, x, rowInd, colInd)
 }
 
 COPY_sparse_svm <- function(BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message) {
-    .Call(bigstatsr_COPY_sparse_svm, BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message)
+    .Call(`_bigstatsr_COPY_sparse_svm`, BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message)
 }
 
-transpose3 <- function(xpMat, xpMat2) {
-    invisible(.Call(bigstatsr_transpose3, xpMat, xpMat2))
+transpose3 <- function(pBigMat, pBigMat2) {
+    invisible(.Call(`_bigstatsr_transpose3`, pBigMat, pBigMat2))
 }
 
 univLinReg5 <- function(BM, covar_U, y, rowInd, colInd) {
-    .Call(bigstatsr_univLinReg5, BM, covar_U, y, rowInd, colInd)
+    .Call(`_bigstatsr_univLinReg5`, BM, covar_U, y, rowInd, colInd)
 }
 
 IRLS <- function(BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter) {
-    .Call(bigstatsr_IRLS, BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter)
+    .Call(`_bigstatsr_IRLS`, BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter)
 }
 
 scaling <- function(source, mean, sd) {
-    .Call(bigstatsr_scaling, source, mean, sd)
+    .Call(`_bigstatsr_scaling`, source, mean, sd)
 }
 
 complete2 <- function(mat) {
-    .Call(bigstatsr_complete2, mat)
+    .Call(`_bigstatsr_complete2`, mat)
 }
 
 incrSup2 <- function(mat, source) {
-    .Call(bigstatsr_incrSup2, mat, source)
+    .Call(`_bigstatsr_incrSup2`, mat, source)
 }
 
 incrMat <- function(dest, source) {
-    .Call(bigstatsr_incrMat, dest, source)
+    .Call(`_bigstatsr_incrMat`, dest, source)
 }
 

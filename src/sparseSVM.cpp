@@ -1,12 +1,14 @@
-/*********************************************************/
-/*** This is a modified version from package sparseSVM ***/
-/***        https://github.com/CY-dev/sparseSVM        ***/
-/*********************************************************/
+/******************************************************************************/
+/******        This is a modified version from package sparseSVM         ******/
+/******                https://github.com/CY-dev/sparseSVM               ******/
+/******************************************************************************/
 
-#include "bigstatsr.h"
+#include <RcppArmadillo.h>
+#include "../inst/include/bigstatsr/SubIntMatCovAcc.h"
 #include <math.h>
 #include <time.h>
 
+/******************************************************************************/
 
 inline double sign(double x) {
   if (x > 0) return 1.0;
@@ -93,6 +95,8 @@ arma::sp_mat& postprocess(arma::sp_mat &w,
 
   return w;
 }
+
+/******************************************************************************/
 
 // Semismooth Newton Coordinate Descent (SNCD) for lasso/elastic-net regularized SVM
 template <class C>

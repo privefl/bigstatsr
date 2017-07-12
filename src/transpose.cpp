@@ -1,6 +1,7 @@
 /******************************************************************************/
 
-#include "bigstatsr.h"
+#include <bigmemory/MatrixAccessor.hpp>
+#include "../inst/include/bigstatsr/utils.h"
 
 /******************************************************************************/
 
@@ -38,7 +39,10 @@ void transpose3(MatrixAccessor<T> macc, MatrixAccessor<T> macc2) {
 
 // Dispatch function for transpose3
 // [[Rcpp::export]]
-void transpose3(XPtr<BigMatrix> xpMat, XPtr<BigMatrix> xpMat2) {
+void transpose3(SEXP pBigMat, SEXP pBigMat2) {
+
+  XPtr<BigMatrix> xpMat(pBigMat);
+  XPtr<BigMatrix> xpMat2(pBigMat2);
 
   switch(xpMat->matrix_type()) {
   case 1:
