@@ -2,6 +2,46 @@
 
 #' Predict method
 #'
+#' Predict method for class `big_CMSA`.
+#'
+#' @param object Object of class `big_CMSA`.
+#' @inheritParams bigstatsr-package
+#' @param ... Not used.
+#'
+#' @return A vector of prediction scores, corresponding to `ind.row`.
+#' @export
+#' @importFrom stats predict
+#' @seealso [big_CMSA]
+#'
+predict.big_CMSA <- function(object, X.,
+                             ind.row = rows_along(X.),
+                             covar.row = NULL,
+                             block.size = 1000,
+                             ...) {
+
+  check_args()
+
+  ind.col <- which(object[cols_along(X.)] != 0)
+
+  scores <- big_prodVec(X., object[ind.col], ind.row = ind.row, ind.col = ind.col)
+
+  if (!is.null(covar.row)) {
+
+    assert_lengths(ind.row, rows_along(covar.row))
+
+    ncov <- ncol(covar.row)
+
+    scores <- scores + as.numeric(covar.row %*% tail(object, ncov))
+  }
+
+  names(scores) <- ind.row
+  scores
+}
+
+################################################################################
+
+#' Predict method
+#'
 #' Predict method for class `big_sp`.
 #'
 #' @param object Object of class `big_sp`.

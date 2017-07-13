@@ -28,7 +28,7 @@ get_beta <- function(betas, method) {
 
 #' Cross-Model Selection and Averaging.
 #'
-#' 1. This function separates the training set in `K` folds.
+#' 1. This function separates the training set in `K` folds (e.g. 10).
 #' 2. __In turn__,
 #'     - each fold is considered as an inner validation set and the others
 #'       (K - 1) folds form an inner training set,
@@ -112,7 +112,7 @@ big_CMSA <- function(FUN, feval, X., y.train,
   })
 
   # average these coefficients
-  get_beta(betas, match.arg(method))
+  structure(get_beta(betas, match.arg(method)), class = "big_CMSA")
 }
 
 ################################################################################

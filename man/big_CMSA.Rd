@@ -51,7 +51,7 @@ intercept if needed.
 }
 \description{
 \enumerate{
-\item This function separates the training set in \code{K} folds.
+\item This function separates the training set in \code{K} folds (e.g. 10).
 \item \strong{In turn},
 \itemize{
 \item each fold is considered as an inner validation set and the others

@@ -2,6 +2,7 @@
 
 S3method(plot,big_SVD)
 S3method(plot,mhtest)
+S3method(predict,big_CMSA)
 S3method(predict,big_SVD)
 S3method(predict,big_sp)
 S3method(predict,mhtest)
