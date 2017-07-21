@@ -58,8 +58,9 @@ intercept if needed.
 (K - 1) folds form an inner training set,
 \item the model is trained on the inner training set and the corresponding
 predictions (scores) for the inner validation set are computed,
-\item the vector of coefficients corresponding to the vector of scores which
-maximizes \code{feval} is chosen.
+\item the vector of scores which maximizes \code{feval} is determined,
+\item the vector of coefficients corresponding to the previous vector of
+scores is chosen.
 }
 \item The \code{K} resulting vectors of coefficients are then combined into one
 vector (see the \code{method} parameter).

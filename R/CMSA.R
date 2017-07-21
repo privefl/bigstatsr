@@ -34,8 +34,9 @@ get_beta <- function(betas, method) {
 #'       (K - 1) folds form an inner training set,
 #'     - the model is trained on the inner training set and the corresponding
 #'       predictions (scores) for the inner validation set are computed,
-#'     - the vector of coefficients corresponding to the vector of scores which
-#'       maximizes `feval` is chosen.
+#'     - the vector of scores which maximizes `feval` is determined,
+#'     - the vector of coefficients corresponding to the previous vector of
+#'       scores is chosen.
 #' 3. The `K` resulting vectors of coefficients are then combined into one
 #' vector (see the `method` parameter).
 #'
