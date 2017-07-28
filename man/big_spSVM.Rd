@@ -86,9 +86,17 @@ over a grid of values for the regularization parameter lambda.
 \href{https://github.com/CY-dev/sparseSVM}{package sparseSVM}}.
 This algorithm uses semi-newton coordinate descent. There may exist some
 faster algorithm.
+
+\strong{For now, this function is not exported anymore.} This is because it
+doesn't match the results from package sparseSVM anymore, due to
+\href{https://github.com/CY-dev/sparseSVM/pull/6}{a change} the author made.
+I've contacted him multiple times, without success.
+If you really want to use this function, use \code{bigstatsr:::big_spSVM}.
 }
 \examples{
 set.seed(1)
+
+big_spSVM <- bigstatsr:::big_spSVM
 
 # simulating some data
 N <- 73

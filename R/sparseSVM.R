@@ -163,6 +163,12 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train,
 #' This algorithm uses semi-newton coordinate descent. There may exist some
 #' faster algorithm.
 #'
+#' **For now, this function is not exported anymore.** This is because it
+#' doesn't match the results from package sparseSVM anymore, due to
+#' [a change](https://github.com/CY-dev/sparseSVM/pull/6) the author made.
+#' I've contacted him multiple times, without success.
+#' If you really want to use this function, use `bigstatsr:::big_spSVM`.
+#'
 #' @inheritParams bigstatsr-package
 #' @inheritDotParams COPY_sparseSVM -X -y.train -ind.train -covar.train
 #'
@@ -172,7 +178,6 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train,
 #'
 #' @seealso [LiblineaR][LiblineaR::LiblineaR] [sparseSVM][sparseSVM::sparseSVM]
 #'
-#' @export
 big_spSVM <- function(X., y01.train, ind.train = rows_along(X.),
                       covar.train = NULL, ...) {
 

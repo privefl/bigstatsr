@@ -2,6 +2,8 @@
 
 context("CMSA")
 
+big_spSVM <- bigstatsr:::big_spSVM
+
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = TRUE)
 

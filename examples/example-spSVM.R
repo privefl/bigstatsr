@@ -1,5 +1,7 @@
 set.seed(1)
 
+big_spSVM <- bigstatsr:::big_spSVM
+
 # simulating some data
 N <- 73
 M <- 430
