@@ -9,14 +9,11 @@ The R package **bigstatsr** provides functions for fast statistical analysis of 
 
 The package **bigstatsr** enables users with laptop to perform statistical analysis of several dozens of gigabytes of data. The package is fast and efficient because of four different reasons. First, **bigstatsr** is memory-efficient because it uses only small chunks of data at a time. Second, special care has been taken to implement effective algorithms. Third, `big.matrix` objects use memory-mapping, which provides efficient accesses to matrices. Finally, as matrices are stored on-disk, many processes can easily access them in parallel. 
 
+[Lightning talk at UseR!2017](https://t.co/aYt0q8MeXJ)
+
 [**LIST OF FEATURES**](https://privefl.github.io/bigstatsr/reference/index.html)
 
 __Note that most of the algorithms of this package don't handle missing values.__
-
-
-## This package is in beta testing
-
-Any bug report is welcomed.
 
 
 ## Installation
@@ -41,6 +38,12 @@ To facilitate the manipulation of descriptors and `BM.code` objects, some method
 - `nrow`, `ncol`, `dim` and `length` of a descriptor object access the underlying dimensions of the described bigmatrix (use `typeof` to get the storage mode). 
 - `describe` and `attach.BM` are used to switch between descriptors and bigmatrices. Note that, in order to standardize algorithms, describing a descriptor or attaching a bigmatrix simply returns the same object.
 - `as.BM.code` to convert a bigmatrix to a `BM.code` (by specifying its lookup table).
+
+
+## Bug report
+
+Any bug report is welcomed.
+If you want help using **bigmemory** or **bigstatsr**, please post on Stack Overflow with the tag *r-bigmemory*.
 
 
 ## Code of conduct
