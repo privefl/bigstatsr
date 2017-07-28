@@ -43,7 +43,7 @@ To facilitate the manipulation of descriptors and `BM.code` objects, some method
 ## Bug report
 
 Any bug report is welcomed.
-If you want help using **bigmemory** or **bigstatsr**, please post on Stack Overflow with the tag *r-bigmemory*.
+If you want help using **bigmemory** or **bigstatsr**, please post on Stack Overflow with the tag *r-bigmemory*. [How to make a great R reproducible example?](https://stackoverflow.com/q/5963269/6103040)
 
 
 ## Code of conduct
