@@ -2,13 +2,11 @@
 
 context("CMSA")
 
-big_spSVM <- bigstatsr:::big_spSVM
-
 opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = TRUE)
 
 ALL.METHODS <- eval(formals("big_CMSA")$method)
-ALL.SP_FUN <- sapply(paste0("big_sp", c("LinReg", "LogReg", "SVM")), get)
+ALL.SP_FUN <- sapply(paste0("big_sp", c("LinReg", "LogReg")), get)  # , "SVM"
 
 # Simulating some data
 N <- 511 # Some issues for small sample sizes

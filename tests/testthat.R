@@ -1,5 +1,5 @@
 library(testthat)
 library(bigstatsr)
-require(Matrix)
+library(Matrix)
 
 test_check("bigstatsr")
