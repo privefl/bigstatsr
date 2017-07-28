@@ -1,3 +1,6 @@
+#ifndef UNIV_LIN_REG_HPP
+#define UNIV_LIN_REG_HPP
+
 /******************************************************************************/
 
 #include <RcppArmadillo.h>
@@ -57,3 +60,5 @@ ListOf<NumericVector> univLinReg5(C macc,
 }
 
 /******************************************************************************/
+
+#endif // UNIV_LIN_REG_HPP
