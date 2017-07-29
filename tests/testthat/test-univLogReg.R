@@ -42,6 +42,9 @@ test_that("equality with glm with all data", {
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
       expect_equal(mat, getGLM(X, y, covar), tolerance = TOL)
+
+      p <- plot(mod, type = sample(c("Manhattan", "Q-Q", "Volcano"), 1))
+      expect_s3_class(p, "ggplot")
     }
   }
 })
@@ -65,6 +68,9 @@ test_that("equality with glm with only half the data", {
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
       expect_equal(mat, getGLM(X, y, covar, ind), tolerance = TOL) # FAIL HERE
+
+      p <- plot(mod, type = sample(c("Manhattan", "Q-Q", "Volcano"), 1))
+      expect_s3_class(p, "ggplot")
     }
   }
 })

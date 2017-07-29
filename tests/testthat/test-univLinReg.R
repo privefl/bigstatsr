@@ -41,10 +41,6 @@ test_that("equality with lm with all data", {
       expect_s3_class(p, "ggplot")
     }
   }
-
-  plot(mod, type = "Manhattan")
-  plot(mod, type = "Q-Q")
-  plot(mod, type = "Volcano")
 })
 
 ################################################################################

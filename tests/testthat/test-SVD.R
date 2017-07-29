@@ -37,6 +37,9 @@ test_that("equality with prcomp", {
     pca <- prcomp(X[], center = sc$center, scale. = sc$scale)
     expect_equal(diffPCs(predict(test), pca$x), 0, tolerance = TOL)
     expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
+
+    p <- plot(test, type = sample(c("screeplot", "scores", "loadings"), 1))
+    expect_s3_class(p, "ggplot")
   }
 })
 
@@ -64,6 +67,9 @@ test_that("equality with prcomp with half of the data", {
 
     expect_equal(diffPCs(predict(test, X., ind.row = ind2),
                          predict(pca, X[ind2, ])), 0, tolerance = TOL)
+
+    p <- plot(test, type = sample(c("screeplot", "scores", "loadings"), 1))
+    expect_s3_class(p, "ggplot")
   }
 })
 
@@ -93,6 +99,9 @@ test_that("equality with prcomp with half of half of the data", {
 
     expect_equal(diffPCs(predict(test, X., ind.row = ind2, ind.col = ind.col),
                          predict(pca, X[ind2, ind.col])), 0, tolerance = TOL)
+
+    p <- plot(test, type = sample(c("screeplot", "scores", "loadings"), 1))
+    expect_s3_class(p, "ggplot")
   }
 })
 
