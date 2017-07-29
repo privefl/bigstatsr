@@ -72,7 +72,7 @@ void COPY2_standardize_and_get_residual(NumericVector &center,
   *lambda_max_ptr = zmax / alpha;
 }
 
-double COPY2_lasso(double z, double l1, double l2, double v) {
+inline double COPY2_lasso(double z, double l1, double l2, double v) {
   double s=0;
   if (z > 0) s = 1;
   else if (z < 0) s = -1;
