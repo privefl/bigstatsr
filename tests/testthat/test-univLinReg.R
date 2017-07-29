@@ -36,6 +36,9 @@ test_that("equality with lm with all data", {
       mod <- big_univLinReg(X., y, covar.train = covar, ncores = sample(1:2, 1))
       mod$p.value <- predict(mod, log10 = FALSE)
       expect_equivalent(as.matrix(mod), getLM(X, y, covar))
+
+      p <- plot(mod, type = sample(c("Manhattan", "Q-Q", "Volcano"), 1))
+      expect_s3_class(p, "ggplot")
     }
   }
 
@@ -60,12 +63,11 @@ test_that("equality with lm with only half the data", {
                             ncores = sample(1:2, 1))
       mod$p.value <- predict(mod, log10 = FALSE)
       expect_equivalent(as.matrix(mod), getLM(X, y, covar, ind))
+
+      p <- plot(mod, type = sample(c("Manhattan", "Q-Q", "Volcano"), 1))
+      expect_s3_class(p, "ggplot")
     }
   }
-
-  plot(mod, type = "Manhattan")
-  plot(mod, type = "Q-Q")
-  plot(mod, type = "Volcano")
 })
 
 ################################################################################
