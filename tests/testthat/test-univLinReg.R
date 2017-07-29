@@ -33,7 +33,7 @@ test_that("equality with lm with all data", {
     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
 
     for (covar in lcovar) {
-      mod <- big_univLinReg(X., y, covar.train = covar, ncores = sample(1:2, 1))
+      mod <- big_univLinReg(X., y, covar.train = covar)
       mod$p.value <- predict(mod, log10 = FALSE)
       expect_equivalent(as.matrix(mod), getLM(X, y, covar))
 
@@ -59,8 +59,7 @@ test_that("equality with lm with only half the data", {
     for (covar in lcovar) {
       mod <- big_univLinReg(X., y.train = y[ind],
                             covar.train = covar[ind, ],
-                            ind.train = ind,
-                            ncores = sample(1:2, 1))
+                            ind.train = ind)
       mod$p.value <- predict(mod, log10 = FALSE)
       expect_equivalent(as.matrix(mod), getLM(X, y, covar, ind))
 
