@@ -38,6 +38,10 @@ test_that("equality with lm with all data", {
       expect_equivalent(as.matrix(mod), getLM(X, y, covar))
     }
   }
+
+  plot(mod, type = "Manhattan")
+  plot(mod, type = "Q-Q")
+  plot(mod, type = "Volcano")
 })
 
 ################################################################################
@@ -58,13 +62,11 @@ test_that("equality with lm with only half the data", {
       expect_equivalent(as.matrix(mod), getLM(X, y, covar, ind))
     }
   }
+
+  plot(mod, type = "Manhattan")
+  plot(mod, type = "Q-Q")
+  plot(mod, type = "Volcano")
 })
-
-################################################################################
-
-plot(mod, type = "Manhattan")
-plot(mod, type = "Q-Q")
-plot(mod, type = "Volcano")
 
 ################################################################################
 
