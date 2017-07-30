@@ -6,10 +6,10 @@ opt.save <- options(bigmemory.typecast.warning = FALSE,
                     bigmemory.default.shared = TRUE)
 
 ALL.METHODS <- eval(formals("big_CMSA")$method)
-ALL.SP_FUN <- sapply(paste0("big_sp", c("LinReg", "LogReg")), get)  # , "SVM"
+ALL.SP_FUN <- sapply(paste0("big_sp", c("LinReg", "LogReg", "SVM")), get)
 
 # Simulating some data
-N <- 511 # Some issues for small sample sizes
+N <- 911 # Some issues for small sample sizes
 M <- 230
 x <- matrix(rnorm(N * M, sd = 5), N)
 y <- sample(0:1, size = N, replace = TRUE)
@@ -33,14 +33,21 @@ test_that("correlation between predictors", {
       mod.bigstatsr <- f(X., y, covar.train = covar, alpha = alpha,
                          lambda.min = lambda.min)
       beta.lol <- get_beta(mod.bigstatsr$beta[, 20:60], meth)
+      pred.lol <- predict(mod.bigstatsr, X. = X., covar.row = covar)
 
       beta.cmsa <- big_CMSA(big_spSVM, feval = AUC, X. = X.,
-                           y.train = y, covar.train = covar,
-                           method = meth)
+                            y.train = y, covar.train = covar,
+                            method = meth)
+      pred.cmsa <- predict(beta.cmsa, X. = X., covar.row = covar)
 
       cor.pval <- cor.test(beta.lol, beta.cmsa)$p.value
       printf("(%.0e)", cor.pval)
       expect_lt(cor.pval, 0.01)
+
+      cor.pval2 <- cor.test(get_beta(pred.lol[, 20:60], meth),
+                            pred.cmsa)$p.value
+      printf("(%.0e)", cor.pval2)
+      expect_lt(cor.pval2, 0.01)
     }
   }
 })
