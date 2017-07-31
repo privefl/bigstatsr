@@ -69,20 +69,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// linRegPcadapt_cpp
-NumericMatrix linRegPcadapt_cpp(const S4& BM, arma::mat& U, const IntegerVector& rowInd, const IntegerVector& colInd);
-RcppExport SEXP _bigstatsr_linRegPcadapt_cpp(SEXP BMSEXP, SEXP USEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
-    Rcpp::traits::input_parameter< arma::mat& >::type U(USEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(linRegPcadapt_cpp(BM, U, rowInd, colInd));
-    return rcpp_result_gen;
-END_RCPP
-}
 // bigcolvars
 ListOf<NumericVector> bigcolvars(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP _bigstatsr_bigcolvars(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
@@ -312,7 +298,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_auc_cpp", (DL_FUNC) &_bigstatsr_auc_cpp, 2},
     {"_bigstatsr_COPY_cdfit_gaussian_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_gaussian_hsr, 15},
     {"_bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_binomial_hsr, 16},
-    {"_bigstatsr_linRegPcadapt_cpp", (DL_FUNC) &_bigstatsr_linRegPcadapt_cpp, 4},
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},
     {"_bigstatsr_correlize", (DL_FUNC) &_bigstatsr_correlize, 3},
     {"_bigstatsr_mycount1", (DL_FUNC) &_bigstatsr_mycount1, 4},
