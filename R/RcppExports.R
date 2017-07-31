@@ -73,7 +73,3 @@ incrSup2 <- function(mat, source) {
     .Call(`_bigstatsr_incrSup2`, mat, source)
 }
 
-incrMat <- function(dest, source) {
-    .Call(`_bigstatsr_incrMat`, dest, source)
-}
-

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cross-Model Selection and Averaging. — big_CMSA • bigstatsr</title>
+<title>Correlation — big_cor • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,99 +95,69 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Cross-Model Selection and Averaging.</h1>
+    <h1>Correlation</h1>
     </div>
 
     
-    <ol>
-<li><p>This function separates the training set in <code>K</code> folds (e.g. 10).</p></li>
-<li><p><strong>In turn</strong>,</p><ul>
-<li><p>each fold is considered as an inner validation set and the others
-(K - 1) folds form an inner training set,</p></li>
-<li><p>the model is trained on the inner training set and the corresponding
-predictions (scores) for the inner validation set are computed,</p></li>
-<li><p>the vector of scores which maximizes <code>feval</code> is determined,</p></li>
-<li><p>the vector of coefficients corresponding to the previous vector of
-scores is chosen.</p></li>
-</ul></li>
-<li><p>The <code>K</code> resulting vectors of coefficients are then combined into one
-vector (see the <code>method</code> parameter).</p></li>
-</ol>
+    <p>Compute the correlation matrix of a <code>big.matrix</code>.</p>
     
 
-    <pre class="usage"><span class='fu'>big_CMSA</span>(<span class='no'>FUN</span>, <span class='no'>feval</span>, <span class='no'>X.</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>),
-  <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"geometric-median"</span>, <span class='st'>"mean-wise"</span>,
-  <span class='st'>"median-wise"</span>), <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_cor</span>(<span class='no'>X.</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>),
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>FUN</th>
-      <td><p>Function that computes a linear scores for different
-values along a regularization path. For now, this is relevant to
-<a href='big_spLinReg.html'>big_spLinReg</a>, <a href='big_spLogReg.html'>big_spLogReg</a> and <a href='big_spSVM.html'>big_spSVM</a>.
-The corresponding <code>&lt;FUN&gt;.predict</code> function should exists.</p></td>
-    </tr>
-    <tr>
-      <th>feval</th>
-      <td><p>Custimized evaluation function. You should always aim at
-maximizing this function. If <code>feval</code> is like a loss function (which you
-want to minimize), you should use its opposite instead.
-Its only two arguments should be <code>pred</code> and <code>target</code> (e.g. <a href='AUC.html'>AUC</a>).</p></td>
-    </tr>
     <tr>
       <th>X.</th>
       <td><p>Either a big.matrix or
 a big.matrix.descriptor.</p></td>
     </tr>
     <tr>
-      <th>y.train</th>
-      <td><p>Vector of responses, corresponding to <code>ind.train</code>.</p></td>
+      <th>ind.row</th>
+      <td><p>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don't use negative indices.</strong></p></td>
     </tr>
     <tr>
-      <th>ind.train</th>
-      <td><p>An optional vector of the row indices that are used,
-for the training part. If not specified, all rows are used.
-<strong>Don't use negative indices.</strong></p></td>
-    </tr>
-    <tr>
-      <th>covar.train</th>
-      <td><p>Matrix of covariables to be added in each model to correct
-for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</p></td>
-    </tr>
-    <tr>
-      <th>K</th>
-      <td><p>Number of folds that are used.</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>Method for combining vectors of coefficients. The default uses
-the <a href = 'https://en.wikipedia.org/wiki/Geometric_median'>geometric median</a>.</p></td>
+      <th>ind.col</th>
+      <td><p>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don't use negative indices.</strong></p></td>
     </tr>
     <tr>
       <th>block.size</th>
       <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
     </tr>
-    <tr>
-      <th>ncores</th>
-      <td><p>Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Extra parameters to be passed to FUN.</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of resulting coefficients (intercept excluded), which
-corresponds to the training set. You might want to recompute an optimal
-intercept if needed.</p>
+    <p>The correlation matrix</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This algorithm is not really memory efficient. I'm planning on fixing this,
+if it is really needed.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>cor</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+
+<span class='co'># Comparing with cor</span>
+<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cor</span>(<span class='no'>X.desc</span>)
+<span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 4542 4542</div><div class='input'>
+<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>cor</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[])
+<span class='fu'>all.equal</span>(<span class='no'>K</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'># Using only half of the data</span>
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
+<span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
+<span class='no'>K2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cor</span>(<span class='no'>X.desc</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)
+<span class='fu'>dim</span>(<span class='no'>K2</span>)</div><div class='output co'>#&gt; [1] 4542 4542</div><div class='input'>
+<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>cor</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind</span>, ])
+<span class='fu'>all.equal</span>(<span class='no'>K2</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -195,7 +165,13 @@ intercept if needed.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

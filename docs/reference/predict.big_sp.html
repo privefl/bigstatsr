@@ -158,8 +158,8 @@ and columns corresponding to <code>lambda</code>.</p>
 <span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='fl'>3</span>), <span class='no'>N</span>)
 
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>N</span>, <span class='no'>N</span>/<span class='fl'>2</span>))
-<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_spSVM.html'>big_spSVM</a></span>(<span class='no'>X.desc</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>], <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
-                  <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ])
+<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_spLogReg.html'>big_spLogReg</a></span>(<span class='no'>X.desc</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>], <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
+                    <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ])
 <span class='no'>ind.test</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.desc</span>), <span class='no'>ind.train</span>)
 <span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>mod</span>, <span class='kw'>X.</span> <span class='kw'>=</span> <span class='no'>X.desc</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>,
                 <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ])</div></pre>

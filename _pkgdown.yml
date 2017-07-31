@@ -42,7 +42,6 @@ reference:
       - predict.big_sp
       - plot.big_SVD
       - predict.big_SVD
-      - multiplot
       - asPlotlyText
       - pasteLoc
   - title: "Utilities"

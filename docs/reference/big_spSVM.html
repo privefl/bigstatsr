@@ -196,7 +196,12 @@ coefficients has reached <code>dfmax</code>.</p></dd>
     <p><strong>This is a modified version of one function of
 <a href = 'https://github.com/CY-dev/sparseSVM'>package sparseSVM</a></strong>.
 This algorithm uses semi-newton coordinate descent. There may exist some
-faster algorithm.</p>
+faster algorithm.
+    <strong>For now, this function is not exported anymore.</strong> This is because it
+doesn't match the results from package sparseSVM anymore, due to
+<a href = 'https://github.com/CY-dev/sparseSVM/pull/6'>a change</a> the author made.
+I've contacted him multiple times, without success.
+If you really want to use this function, use <code>bigstatsr:::big_spSVM</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -205,6 +210,8 @@ faster algorithm.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
+
+<span class='no'>big_spSVM</span> <span class='kw'>&lt;-</span> <span class='kw'>bigstatsr</span><span class='kw'>:::</span><span class='no'>big_spSVM</span>
 
 <span class='co'># simulating some data</span>
 <span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fl'>73</span>

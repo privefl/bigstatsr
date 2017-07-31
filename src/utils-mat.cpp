@@ -40,7 +40,7 @@ NumericMatrix& complete2(NumericMatrix& mat) {
 
 /******************************************************************************/
 
-// For a squared matrix
+// For a square matrix
 // [[Rcpp::export]]
 NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
   int m = mat.ncol();
@@ -51,15 +51,6 @@ NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
       mat(i, j) += source(i,j);
 
   return mat;
-}
-
-/******************************************************************************/
-
-// [[Rcpp::export]]
-NumericMatrix& incrMat(NumericMatrix& dest, const NumericMatrix& source) {
-  dest += source;
-
-  return dest;
 }
 
 /******************************************************************************/

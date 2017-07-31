@@ -281,18 +281,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// incrMat
-NumericMatrix& incrMat(NumericMatrix& dest, const NumericMatrix& source);
-RcppExport SEXP _bigstatsr_incrMat(SEXP destSEXP, SEXP sourceSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix& >::type dest(destSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
-    rcpp_result_gen = Rcpp::wrap(incrMat(dest, source));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_auc_cpp", (DL_FUNC) &_bigstatsr_auc_cpp, 2},
@@ -313,7 +301,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_scaling", (DL_FUNC) &_bigstatsr_scaling, 3},
     {"_bigstatsr_complete2", (DL_FUNC) &_bigstatsr_complete2, 1},
     {"_bigstatsr_incrSup2", (DL_FUNC) &_bigstatsr_incrSup2, 2},
-    {"_bigstatsr_incrMat", (DL_FUNC) &_bigstatsr_incrMat, 2},
     {NULL, NULL, 0}
 };
 
