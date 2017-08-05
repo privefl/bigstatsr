@@ -1,5 +1,5 @@
-// [[Rcpp::depends(bigstatsr, bigmemory, BH)]]
-#include <bigstatsr.h>
+// [[Rcpp::depends(bigstatsr)]]
+#include <bigstatsr/colstats.hpp>
 #include <Rcpp.h>
 using namespace Rcpp;
 
