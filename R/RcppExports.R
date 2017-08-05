@@ -17,16 +17,12 @@ bigcolvars <- function(BM, rowInd, colInd) {
     .Call(`_bigstatsr_bigcolvars`, BM, rowInd, colInd)
 }
 
-correlize <- function(mat, shift, scale) {
-    .Call(`_bigstatsr_correlize`, mat, shift, scale)
+mycount1 <- function(BM, rowInd, colInd, codeInd) {
+    .Call(`_bigstatsr_mycount1`, BM, rowInd, colInd, codeInd)
 }
 
-mycount1 <- function(pBigMat, rowInd, colInd, codeInd) {
-    .Call(`_bigstatsr_mycount1`, pBigMat, rowInd, colInd, codeInd)
-}
-
-mycount2 <- function(pBigMat, rowInd, colInd, codeInd) {
-    .Call(`_bigstatsr_mycount2`, pBigMat, rowInd, colInd, codeInd)
+mycount2 <- function(BM, rowInd, colInd, codeInd) {
+    .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
 }
 
 decodeMat <- function(source, code) {
@@ -49,8 +45,8 @@ COPY_sparse_svm <- function(BM, y, row_idx, covar, lambda, pf, gamma, alpha, thr
     .Call(`_bigstatsr_COPY_sparse_svm`, BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message)
 }
 
-transpose3 <- function(pBigMat, pBigMat2) {
-    invisible(.Call(`_bigstatsr_transpose3`, pBigMat, pBigMat2))
+transpose3 <- function(BM, BM2) {
+    invisible(.Call(`_bigstatsr_transpose3`, BM, BM2))
 }
 
 univLinReg5 <- function(BM, covar_U, y, rowInd, colInd) {
@@ -71,5 +67,9 @@ complete2 <- function(mat) {
 
 incrSup2 <- function(mat, source) {
     .Call(`_bigstatsr_incrSup2`, mat, source)
+}
+
+correlize <- function(mat, shift, scale) {
+    .Call(`_bigstatsr_correlize`, mat, shift, scale)
 }
 

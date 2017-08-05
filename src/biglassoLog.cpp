@@ -22,7 +22,7 @@ List COPY_cdfit_binomial_hsr(const S4& BM,
                              bool user,
                              double eps,
                              int max_iter,
-                             const NumericVector &m,
+                             const NumericVector& m,
                              int dfmax,
                              bool warn,
                              bool verbose) {

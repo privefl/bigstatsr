@@ -49,10 +49,10 @@ big_counts <- function(X.code,
 
   X <- attach.BM(X.code)
   if (byrow) {
-    res <- mycount1(X@address, ind.row, ind.col, ind.code)
+    res <- mycount1(X, ind.row, ind.col, ind.code)
     assert_all(colSums(res), length(ind.col))
   } else {
-    res <- mycount2(X@address, ind.row, ind.col, ind.code)
+    res <- mycount2(X, ind.row, ind.col, ind.code)
     assert_all(colSums(res), length(ind.row))
   }
   rownames(res) <- code.uniq

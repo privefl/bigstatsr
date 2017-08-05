@@ -24,7 +24,7 @@ big_transpose <- function(X., fun.createBM = BM()) {
   res <- fun.createBM(ncol(X.), nrow(X.), typeof(X.))
 
   X <- attach.BM(X.)
-  transpose3(attach.BM(res)@address, X@address)
+  transpose3(attach.BM(res), X)
 
   `if`(inherits(X, "BM.code"), as.BM.code(res, code = X@code), res)
 }

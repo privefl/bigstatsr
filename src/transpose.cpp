@@ -39,10 +39,10 @@ void transpose3(MatrixAccessor<T> macc, MatrixAccessor<T> macc2) {
 
 // Dispatch function for transpose3
 // [[Rcpp::export]]
-void transpose3(SEXP pBigMat, SEXP pBigMat2) {
+void transpose3(const S4& BM, const S4& BM2) {
 
-  XPtr<BigMatrix> xpMat(pBigMat);
-  XPtr<BigMatrix> xpMat2(pBigMat2);
+  XPtr<BigMatrix> xpMat = BM.slot("address");
+  XPtr<BigMatrix> xpMat2 = BM2.slot("address");
 
   switch(xpMat->matrix_type()) {
   case 1:

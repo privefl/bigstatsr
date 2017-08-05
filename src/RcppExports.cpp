@@ -82,44 +82,31 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// correlize
-NumericMatrix& correlize(NumericMatrix& mat, const NumericVector& shift, const NumericVector& scale);
-RcppExport SEXP _bigstatsr_correlize(SEXP matSEXP, SEXP shiftSEXP, SEXP scaleSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type shift(shiftSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
-    rcpp_result_gen = Rcpp::wrap(correlize(mat, shift, scale));
-    return rcpp_result_gen;
-END_RCPP
-}
 // mycount1
-IntegerMatrix mycount1(SEXP pBigMat, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
-RcppExport SEXP _bigstatsr_mycount1(SEXP pBigMatSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
+IntegerMatrix mycount1(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
+RcppExport SEXP _bigstatsr_mycount1(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type codeInd(codeIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(mycount1(pBigMat, rowInd, colInd, codeInd));
+    rcpp_result_gen = Rcpp::wrap(mycount1(BM, rowInd, colInd, codeInd));
     return rcpp_result_gen;
 END_RCPP
 }
 // mycount2
-IntegerMatrix mycount2(SEXP pBigMat, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
-RcppExport SEXP _bigstatsr_mycount2(SEXP pBigMatSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
+IntegerMatrix mycount2(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
+RcppExport SEXP _bigstatsr_mycount2(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type codeInd(codeIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(mycount2(pBigMat, rowInd, colInd, codeInd));
+    rcpp_result_gen = Rcpp::wrap(mycount2(BM, rowInd, colInd, codeInd));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -201,13 +188,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // transpose3
-void transpose3(SEXP pBigMat, SEXP pBigMat2);
-RcppExport SEXP _bigstatsr_transpose3(SEXP pBigMatSEXP, SEXP pBigMat2SEXP) {
+void transpose3(const S4& BM, const S4& BM2);
+RcppExport SEXP _bigstatsr_transpose3(SEXP BMSEXP, SEXP BM2SEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat(pBigMatSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type pBigMat2(pBigMat2SEXP);
-    transpose3(pBigMat, pBigMat2);
+    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const S4& >::type BM2(BM2SEXP);
+    transpose3(BM, BM2);
     return R_NilValue;
 END_RCPP
 }
@@ -281,13 +268,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// correlize
+NumericMatrix& correlize(NumericMatrix& mat, const NumericVector& shift, const NumericVector& scale);
+RcppExport SEXP _bigstatsr_correlize(SEXP matSEXP, SEXP shiftSEXP, SEXP scaleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type shift(shiftSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
+    rcpp_result_gen = Rcpp::wrap(correlize(mat, shift, scale));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_auc_cpp", (DL_FUNC) &_bigstatsr_auc_cpp, 2},
     {"_bigstatsr_COPY_cdfit_gaussian_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_gaussian_hsr, 15},
     {"_bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_binomial_hsr, 16},
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},
-    {"_bigstatsr_correlize", (DL_FUNC) &_bigstatsr_correlize, 3},
     {"_bigstatsr_mycount1", (DL_FUNC) &_bigstatsr_mycount1, 4},
     {"_bigstatsr_mycount2", (DL_FUNC) &_bigstatsr_mycount2, 4},
     {"_bigstatsr_decodeMat", (DL_FUNC) &_bigstatsr_decodeMat, 2},
@@ -301,6 +300,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_scaling", (DL_FUNC) &_bigstatsr_scaling, 3},
     {"_bigstatsr_complete2", (DL_FUNC) &_bigstatsr_complete2, 1},
     {"_bigstatsr_incrSup2", (DL_FUNC) &_bigstatsr_incrSup2, 2},
+    {"_bigstatsr_correlize", (DL_FUNC) &_bigstatsr_correlize, 3},
     {NULL, NULL, 0}
 };
 
