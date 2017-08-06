@@ -35,8 +35,8 @@ template <class C>
 void COPY_standardize_and_get_residual(NumericVector &center,
                                        NumericVector &scale,
                                        int *p_keep_ptr,
-                                       vector<int> &col_idx, //columns to keep, removing columns whose scale < 1e-6
-                                       vector<double> &z,
+                                       std::vector<int> &col_idx, //columns to keep, removing columns whose scale < 1e-6
+                                       std::vector<double> &z,
                                        double *lambda_max_ptr,
                                        C xAcc,
                                        const NumericVector &y,
@@ -87,9 +87,9 @@ inline double COPY_lasso(double z, double l1, double l2, double v) {
 
 // check KKT conditions over features in the strong set
 template <class C>
-int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, vector<double> &z,
+int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, std::vector<double> &z,
                           C xAcc, const NumericVector &beta_old,
-                          const vector<int> &col_idx,
+                          const std::vector<int> &col_idx,
                           const NumericVector &center, const NumericVector &scale,
                           double lambda, double sumResid, double alpha,
                           const NumericVector &r, const NumericVector &m, int n, int p) {
@@ -118,9 +118,9 @@ int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, vector
 
 // check KKT conditions over features in the rest set
 template <class C>
-int COPY_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, vector<double> &z,
+int COPY_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, std::vector<double> &z,
                         C xAcc, const NumericVector &beta_old,
-                        const vector<int> &col_idx,
+                        const std::vector<int> &col_idx,
                         const NumericVector &center, const NumericVector &scale,
                         double lambda, double sumResid, double alpha,
                         const NumericVector &r, const NumericVector &m, int n, int p) {

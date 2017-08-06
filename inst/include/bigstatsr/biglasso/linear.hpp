@@ -47,8 +47,8 @@ List COPY_cdfit_gaussian_hsr(C xAcc,
 
   NumericVector center(p);
   NumericVector scale(p);
-  vector<int> col_idx;
-  vector<double> z;
+  std::vector<int> col_idx;
+  std::vector<double> z;
 
   int p_keep = 0; // keep columns whose scale > 1e-6
   double lambda_max = 0.0;

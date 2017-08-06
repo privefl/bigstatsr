@@ -57,8 +57,8 @@ double COPY_wsum(const NumericVector &r, const NumericVector &w, int n) {
 // Coordinate descent for logistic models
 template <class C>
 List COPY_cdfit_binomial_hsr(C xAcc,
-                             const NumericVector &y,
-                             NumericVector &lambda,
+                             const NumericVector& y,
+                             NumericVector& lambda,
                              int L,
                              int lam_scale,
                              double lambda_min,
@@ -66,7 +66,7 @@ List COPY_cdfit_binomial_hsr(C xAcc,
                              bool user,
                              double eps,
                              int max_iter,
-                             const NumericVector &m,
+                             const NumericVector& m,
                              int dfmax,
                              bool warn,
                              bool verbose) {
@@ -79,8 +79,8 @@ List COPY_cdfit_binomial_hsr(C xAcc,
   NumericVector beta0(L);
   NumericVector center(p);
   NumericVector scale(p);
-  vector<int> col_idx;
-  vector<double> z;
+  std::vector<int> col_idx;
+  std::vector<double> z;
 
   int p_keep = 0; // keep columns whose scale > 1e-6
   double lambda_max = 0.0;

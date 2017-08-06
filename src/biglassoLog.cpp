@@ -30,7 +30,7 @@ List COPY_cdfit_binomial_hsr(const S4& BM,
   XPtr<BigMatrix> xpMat = BM.slot("address");
 
   if (Rf_inherits(BM, "BM.code")) {
-    return  bigstatsr::biglassoLog:: COPY_cdfit_binomial_hsr(
+    return  bigstatsr::biglassoLog::COPY_cdfit_binomial_hsr(
       RawSubMatCovAcc(*xpMat, row_idx, covar, BM.slot("code")),
       y, lambda, L, lam_scale, lambda_min,
       alpha, user, eps, max_iter, m,
@@ -38,27 +38,27 @@ List COPY_cdfit_binomial_hsr(const S4& BM,
   } else {
     switch(xpMat->matrix_type()) {
     case 1:
-      return  bigstatsr::biglassoLog:: COPY_cdfit_binomial_hsr(
+      return  bigstatsr::biglassoLog::COPY_cdfit_binomial_hsr(
         SubMatCovAcc<char>(*xpMat, row_idx, covar),
         y, lambda, L, lam_scale, lambda_min,
         alpha, user, eps, max_iter, m, dfmax, warn, verbose);
     case 2:
-      return  bigstatsr::biglassoLog:: COPY_cdfit_binomial_hsr(
+      return  bigstatsr::biglassoLog::COPY_cdfit_binomial_hsr(
         SubMatCovAcc<short>(*xpMat, row_idx, covar),
         y, lambda, L, lam_scale, lambda_min,
         alpha, user, eps, max_iter, m, dfmax, warn, verbose);
     case 4:
-      return  bigstatsr::biglassoLog:: COPY_cdfit_binomial_hsr(
+      return  bigstatsr::biglassoLog::COPY_cdfit_binomial_hsr(
         SubMatCovAcc<int>(*xpMat, row_idx, covar),
         y, lambda, L, lam_scale, lambda_min,
         alpha, user, eps, max_iter, m, dfmax, warn, verbose);
     case 6:
-      return  bigstatsr::biglassoLog:: COPY_cdfit_binomial_hsr(
+      return  bigstatsr::biglassoLog::COPY_cdfit_binomial_hsr(
         SubMatCovAcc<float>(*xpMat, row_idx, covar),
         y, lambda, L, lam_scale, lambda_min,
         alpha, user, eps, max_iter, m, dfmax, warn, verbose);
     case 8:
-      return  bigstatsr::biglassoLog:: COPY_cdfit_binomial_hsr(
+      return  bigstatsr::biglassoLog::COPY_cdfit_binomial_hsr(
         SubMatCovAcc<double>(*xpMat, row_idx, covar),
         y, lambda, L, lam_scale, lambda_min,
         alpha, user, eps, max_iter, m, dfmax, warn, verbose);
