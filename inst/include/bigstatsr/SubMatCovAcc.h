@@ -7,6 +7,36 @@
 
 /******************************************************************************/
 
+#define SUBMATCOVACC(T) SubMatCovAcc<T>(*xpMat, rows, covar)
+#define RAWSUBMATCOVACC RawSubMatCovAcc(*xpMat, rows, covar, BM.slot("code"))
+
+#define DISPATCH_SUBMATCOVACC(CALL) {                                             \
+                                                                               \
+  XPtr<BigMatrix> xpMat = BM.slot("address");                                  \
+  IntegerVector rows = row_idx - 1;                                            \
+                                                                               \
+  if (Rf_inherits(BM, "BM.code")) {                                            \
+    CALL(RAWSUBMATCOVACC);                                                     \
+  } else {                                                                     \
+    switch(xpMat->matrix_type()) {                                             \
+    case 1:                                                                    \
+      CALL(SUBMATCOVACC(char))                                                 \
+    case 2:                                                                    \
+      CALL(SUBMATCOVACC(short))                                                \
+    case 4:                                                                    \
+      CALL(SUBMATCOVACC(int))                                                  \
+    case 6:                                                                    \
+      CALL(SUBMATCOVACC(float))                                                \
+    case 8:                                                                    \
+      CALL(SUBMATCOVACC(double))                                               \
+    default:                                                                   \
+      throw Rcpp::exception(ERROR_TYPE);                                       \
+    }                                                                          \
+  }                                                                            \
+}
+
+/******************************************************************************/
+
 // For biglasso
 template<typename T>
 class SubMatCovAcc {

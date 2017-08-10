@@ -8,6 +8,37 @@
 
 /******************************************************************************/
 
+#define SUBMATACC(T) SubMatAcc<T>(*xpMat, rows, cols)
+#define RAWSUBMATACC RawSubMatAcc(*xpMat, rows, cols, BM.slot("code"))
+
+#define DISPATCH_SUBMATACC(CALL) {                                             \
+                                                                               \
+  XPtr<BigMatrix> xpMat = BM.slot("address");                                  \
+  IntegerVector rows = rowInd - 1;                                             \
+  IntegerVector cols = colInd - 1;                                             \
+                                                                               \
+  if (Rf_inherits(BM, "BM.code")) {                                            \
+    CALL(RAWSUBMATACC);                                                        \
+  } else {                                                                     \
+    switch(xpMat->matrix_type()) {                                             \
+    case 1:                                                                    \
+      CALL(SUBMATACC(char))                                                    \
+    case 2:                                                                    \
+      CALL(SUBMATACC(short))                                                   \
+    case 4:                                                                    \
+      CALL(SUBMATACC(int))                                                     \
+    case 6:                                                                    \
+      CALL(SUBMATACC(float))                                                   \
+    case 8:                                                                    \
+      CALL(SUBMATACC(double))                                                  \
+    default:                                                                   \
+      throw Rcpp::exception(ERROR_TYPE);                                       \
+    }                                                                          \
+  }                                                                            \
+}
+
+/******************************************************************************/
+
 template<typename T>
 class SubMatAcc {
 public:
