@@ -33,6 +33,10 @@ decodeVec <- function(source, code) {
     .Call(`_bigstatsr_decodeVec`, source, code)
 }
 
+GET_ERROR_TYPE <- function() {
+    .Call(`_bigstatsr_GET_ERROR_TYPE`)
+}
+
 pMatVec4 <- function(BM, x, rowInd, colInd) {
     .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
 }

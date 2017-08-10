@@ -134,6 +134,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// GET_ERROR_TYPE
+const char* const GET_ERROR_TYPE();
+RcppExport SEXP _bigstatsr_GET_ERROR_TYPE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(GET_ERROR_TYPE());
+    return rcpp_result_gen;
+END_RCPP
+}
 // pMatVec4
 NumericVector pMatVec4(const S4& BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP _bigstatsr_pMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
@@ -291,6 +301,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_mycount2", (DL_FUNC) &_bigstatsr_mycount2, 4},
     {"_bigstatsr_decodeMat", (DL_FUNC) &_bigstatsr_decodeMat, 2},
     {"_bigstatsr_decodeVec", (DL_FUNC) &_bigstatsr_decodeVec, 2},
+    {"_bigstatsr_GET_ERROR_TYPE", (DL_FUNC) &_bigstatsr_GET_ERROR_TYPE, 0},
     {"_bigstatsr_pMatVec4", (DL_FUNC) &_bigstatsr_pMatVec4, 4},
     {"_bigstatsr_cpMatVec4", (DL_FUNC) &_bigstatsr_cpMatVec4, 4},
     {"_bigstatsr_COPY_sparse_svm", (DL_FUNC) &_bigstatsr_COPY_sparse_svm, 15},
