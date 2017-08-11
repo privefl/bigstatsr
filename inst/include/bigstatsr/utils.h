@@ -3,7 +3,6 @@
 
 #include <Rcpp.h>
 
-// also defined in R/utils.R
 const char* const ERROR_TYPE = "unknown type detected for big.matrix object!";
 const char* const ERROR_DIM = "incompatibility between dimensions";
 const char* const ERROR_SUB =
