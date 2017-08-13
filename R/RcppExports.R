@@ -5,6 +5,10 @@ auc_cpp <- function(x_pos, x_neg) {
     .Call(`_bigstatsr_auc_cpp`, x_pos, x_neg)
 }
 
+getXPtrFBM <- function(desc) {
+    .Call(`_bigstatsr_getXPtrFBM`, desc)
+}
+
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose) {
     .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
 }
@@ -43,6 +47,22 @@ pMatVec4 <- function(BM, x, rowInd, colInd) {
 
 cpMatVec4 <- function(BM, x, rowInd, colInd) {
     .Call(`_bigstatsr_cpMatVec4`, BM, x, rowInd, colInd)
+}
+
+replaceVecOne <- function(xpbm, elemInd, val) {
+    invisible(.Call(`_bigstatsr_replaceVecOne`, xpbm, elemInd, val))
+}
+
+replaceVec <- function(xpbm, elemInd, vec) {
+    invisible(.Call(`_bigstatsr_replaceVec`, xpbm, elemInd, vec))
+}
+
+replaceMatOne <- function(xpbm, rowInd, colInd, val) {
+    invisible(.Call(`_bigstatsr_replaceMatOne`, xpbm, rowInd, colInd, val))
+}
+
+replaceMat <- function(xpbm, rowInd, colInd, mat) {
+    invisible(.Call(`_bigstatsr_replaceMat`, xpbm, rowInd, colInd, mat))
 }
 
 COPY_sparse_svm <- function(BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message) {
