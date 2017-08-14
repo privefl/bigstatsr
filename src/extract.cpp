@@ -1,6 +1,7 @@
 /******************************************************************************/
 
 #include <bigstatsr/BMAcc.h>
+#include <bigstatsr/utils.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -21,12 +22,28 @@ Vector<RTYPE> extractVec(VecBMAcc<T> macc) {
   return res;
 }
 
+#define EXTRACT_VEC(BM_TYPE, RTYPE) {                                          \
+  return extractVec<BM_TYPE, RTYPE>(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1));     \
+}
+
 // [[Rcpp::export]]
 RObject extractVec(RObject xpbm,
                    const NumericVector& elemInd) {
 
   XPtr<FBM> xpBM(xpbm);
-  return extractVec<double, REALSXP>(VecBMAcc<double>(xpBM, elemInd - 1));
+
+  switch(xpBM->matrix_type()) {
+  case 1:
+    EXTRACT_VEC(unsigned char,  RAWSXP)
+  case 2:
+    EXTRACT_VEC(unsigned short, INTSXP)
+  case 4:
+    EXTRACT_VEC(int,            INTSXP)
+  case 8:
+    EXTRACT_VEC(double,         REALSXP)
+  default:
+    throw Rcpp::exception(ERROR_TYPE);
+  }
 }
 
 /******************************************************************************/
@@ -46,14 +63,30 @@ Vector<RTYPE> extractMat(SubBMAcc<T> macc) {
   return res;
 }
 
+#define EXTRACT_MAT(BM_TYPE, RTYPE) {                                          \
+  return extractMat<BM_TYPE, RTYPE>(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1,        \
+                                                      colInd - 1));            \
+}
+
 // [[Rcpp::export]]
 RObject extractMat(RObject xpbm,
                    const IntegerVector& rowInd,
                    const IntegerVector& colInd) {
 
   XPtr<FBM> xpBM(xpbm);
-  return extractMat<double, REALSXP>(SubBMAcc<double>(xpBM, rowInd - 1,
-                                                      colInd - 1));
+
+  switch(xpBM->matrix_type()) {
+  case 1:
+    EXTRACT_MAT(unsigned char,  RAWSXP)
+  case 2:
+    EXTRACT_MAT(unsigned short, INTSXP)
+  case 4:
+    EXTRACT_MAT(int,            INTSXP)
+  case 8:
+    EXTRACT_MAT(double,         REALSXP)
+  default:
+    throw Rcpp::exception(ERROR_TYPE);
+  }
 }
 
 /******************************************************************************/

@@ -24,6 +24,14 @@ stop2 <- function(...) stop(sprintf(...), call. = FALSE)
 
 ################################################################################
 
+# 8 * n * m < opt * 1024^3
+# m < opt * 1024^3 / (8 * n)
+block_size <- function(n) {
+  max(1, floor(getOption("bigstatsr.block.sizeGB") * 1024^3 / (8 * n)))
+}
+
+################################################################################
+
 CutBySize <- function(m, block.size, nb = ceiling(m / block.size)) {
   int <- m / nb
 

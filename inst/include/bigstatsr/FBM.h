@@ -6,16 +6,14 @@
 #include <boost/noncopyable.hpp>
 #include <Rcpp.h>
 
-
 class FBM : private boost::noncopyable {
 public:
-  FBM(std::string path, std::size_t n, std::size_t m);
-  // Rcpp::IntegerVector extract_vector(Rcpp::IntegerVector i);
-  // Rcpp::IntegerMatrix extract_matrix(Rcpp::IntegerVector i, Rcpp::IntegerVector j);
+  FBM(const Rcpp::List& desc);
 
+  void* matrix() const { return file_data; }
   std::size_t nrow() const { return n; }
   std::size_t ncol() const { return m; }
-  void* matrix() const { return file_data; }
+  int matrix_type() const { return type; }
 
 private:
   boost::interprocess::file_mapping file;
@@ -23,6 +21,7 @@ private:
   void* file_data;
   std::size_t n;
   std::size_t m;
+  int type;
 };
 
 #endif // FBM_H

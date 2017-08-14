@@ -1,10 +1,14 @@
 #ifndef BM_ACC_H
 #define BM_ACC_H
 
+/******************************************************************************/
+
 #include <bigstatsr/FBM.h>
 
 using namespace Rcpp;
 using std::size_t;
+
+/******************************************************************************/
 
 template <typename T>
 class BMAcc {
@@ -27,6 +31,8 @@ protected:
   size_t _nrow;
   size_t _ncol;
 };
+
+/******************************************************************************/
 
 template <typename T>
 class SubBMAcc : public BMAcc<T> {
@@ -62,6 +68,8 @@ protected:
   std::vector<size_t> _col_ind;
 };
 
+/******************************************************************************/
+
 template <typename T>
 class VecBMAcc : public BMAcc<T> {
 public:
@@ -86,5 +94,7 @@ public:
 protected:
   std::vector<size_t> _elem_ind;
 };
+
+/******************************************************************************/
 
 #endif // BM_ACC_H

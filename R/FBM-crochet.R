@@ -132,6 +132,8 @@ replace <- function(replace_vector, replace_matrix) {
 
   function(x, i, j, value) {
 
+    warn_downcast(from = value, to = x)
+
     n <- nrow(x)
     m <- ncol(x)
 
@@ -158,6 +160,7 @@ replace <- function(replace_vector, replace_matrix) {
   }
 
 }
+
 
 #' @export
 `[<-.FBM` <- replace(

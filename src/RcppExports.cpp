@@ -122,14 +122,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // createFile
-void createFile(std::string fileName, std::size_t nrow, std::size_t ncol, std::string type);
+void createFile(std::string fileName, std::size_t nrow, std::size_t ncol, int type);
 RcppExport SEXP _bigstatsr_createFile(SEXP fileNameSEXP, SEXP nrowSEXP, SEXP ncolSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type fileName(fileNameSEXP);
     Rcpp::traits::input_parameter< std::size_t >::type nrow(nrowSEXP);
     Rcpp::traits::input_parameter< std::size_t >::type ncol(ncolSEXP);
-    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
     createFile(fileName, nrow, ncol, type);
     return R_NilValue;
 END_RCPP

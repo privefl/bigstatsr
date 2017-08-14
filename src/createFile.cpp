@@ -1,5 +1,6 @@
 #include <fstream>
 #include <stdexcept>
+#include <bigstatsr/types.h>
 
 template <typename T>
 void createFile(std::string fileName,
@@ -25,12 +26,13 @@ void createFile(std::string fileName,
 
 }
 
+#define CREATE_FILE(TYPE) return createFile<TYPE>(fileName, nrow, ncol);
+
 // [[Rcpp::export]]
 void createFile(std::string fileName,
                 std::size_t nrow,
                 std::size_t ncol,
-                std::string type) {
+                int type) {
 
-  if (type == "double")
-    createFile<double>(fileName, nrow, ncol);
+  DISPATCH_TYPE(CREATE_FILE)
 }

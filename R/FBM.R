@@ -1,5 +1,7 @@
-#'
-#'
+TYPES <- structure(c(1, 1, 2, 4, 8),
+                   names = c("raw", "unsigned char", "unsigned short",
+                             "integer", "double"))
+
 #' @export
 #'
 FBM_R6Class <- R6::R6Class(
@@ -11,7 +13,7 @@ FBM_R6Class <- R6::R6Class(
       private$backingfile <- normalizePath(backingfile)
       private$nrow        <- nrow
       private$ncol        <- ncol
-      private$type        <- type
+      private$type        <- TYPES[type]
     },
 
     set_backingfile = function(backingfile) {
@@ -54,11 +56,19 @@ FBM_R6Class <- R6::R6Class(
   lock_class = TRUE
 )
 
+methods::setOldClass(c("FBM", "R6"))
+
+#' @export
+setMethod('typeof', signature(x = "FBM"),
+          function(x) names(x$description$type))
+
+
 #' @export
 print.FBM <- function(x) {
   desc <- x$description
-  cat("A Filebacked Big Matrix of type", desc$type,
-      "with", desc$nrow, "rows and", desc$ncol, "columns.\n")
+  print(glue::glue("A Filebacked Big Matrix of type '{names(desc$type)}'",
+                   " with {desc$nrow} rows and {desc$ncol} columns."))
+  invisible(x)
 }
 
 #' @export
@@ -75,13 +85,15 @@ length.FBM <- function(x) {
 # TODO: change this to FBM afterwards and use dots
 #' @export
 new_FBM <- function(nrow, ncol,
-                    type = "double",
+                    type = c("double", "integer", "unsigned short",
+                             "unsigned char", "raw"),
                     init = NULL,
                     backingfile = tempfile(),
                     save = TRUE) {
 
   bkfile <- path.expand(paste0(backingfile, ".bk"))
-  createFile(bkfile, nrow, ncol, type)
+  type <- match.arg(type)
+  createFile(bkfile, nrow, ncol, TYPES[[type]])
 
   fbm <- FBM_R6Class$new(bkfile, nrow, ncol, type)
   fbm$address
@@ -106,28 +118,3 @@ attach_FBM <- function(rdsfile) {
   fbm$set_backingfile(bkfile)
   fbm
 }
-
-#' @export # TODO: use dots
-setGeneric("as.FBM", function(x, type = "double",
-                              backingfile = tempfile(),
-                              save = TRUE) {
-  standardGeneric("as.FBM")
-})
-
-
-#' @export
-setMethod("as.FBM", signature(x = "matrix"),
-          function(x, type = "double",
-                   backingfile = tempfile(),
-                   save = TRUE) {
-            new_FBM(
-              nrow = nrow(x),
-              ncol = ncol(x),
-              type = type,
-              init = x,
-              backingfile = backingfile,
-              save = save
-            )
-          })
-
-

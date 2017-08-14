@@ -1,5 +1,21 @@
 ################################################################################
 
+warn_downcast <- function(from, to) {
+
+  if (getOption("bigstatsr.typecast.warning")) {
+
+    from.type <- typeof(from)
+    to.type   <- typeof(to)
+    if (TYPES[[from.type]] > TYPES[[to.type]])
+      warning(glue::glue(
+        "Assignment will down cast from {from.type} to {to.type}.\n",
+        "Hint: To remove this warning, use ",
+        "options(bigstatsr.typecast.warning = FALSE)."), call. = FALSE)
+  }
+}
+
+################################################################################
+
 check_args <- function(...) {
 
   if (getOption("bigstatsr.check.args")) {

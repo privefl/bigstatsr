@@ -25,6 +25,7 @@ Imports:
     doParallel,
     foreach, 
     ggplot2,
+    glue,
     graphics,
     magrittr,
     Matrix,

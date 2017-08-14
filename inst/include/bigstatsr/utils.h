@@ -7,6 +7,8 @@ const char* const ERROR_TYPE = "unknown type detected for big.matrix object!";
 const char* const ERROR_DIM = "incompatibility between dimensions";
 const char* const ERROR_SUB =
   "you can't use this function on a sub.big.matrix!";
+const char* const ERROR_SHORT =
+  "Try to fill a short with a value outside [0:65535]";
 
 inline void myassert(bool cond, const char *msg) {
   if (!cond) throw Rcpp::exception(msg);
