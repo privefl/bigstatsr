@@ -13,7 +13,7 @@ FBM_R6Class <- R6::R6Class(
       private$backingfile <- normalizePath(backingfile)
       private$nrow        <- nrow
       private$ncol        <- ncol
-      private$type        <- TYPES[type]
+      private$type        <- TYPES[type]  # keep int and string
     },
 
     set_backingfile = function(backingfile) {
