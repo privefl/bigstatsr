@@ -121,6 +121,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// createFile
+void createFile(std::string fileName, std::size_t nrow, std::size_t ncol, std::string type);
+RcppExport SEXP _bigstatsr_createFile(SEXP fileNameSEXP, SEXP nrowSEXP, SEXP ncolSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type fileName(fileNameSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nrow(nrowSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type ncol(ncolSEXP);
+    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    createFile(fileName, nrow, ncol, type);
+    return R_NilValue;
+END_RCPP
+}
 // decodeMat
 NumericMatrix decodeMat(const RawMatrix& source, const NumericVector& code);
 RcppExport SEXP _bigstatsr_decodeMat(SEXP sourceSEXP, SEXP codeSEXP) {
@@ -152,6 +165,31 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(GET_ERROR_TYPE());
+    return rcpp_result_gen;
+END_RCPP
+}
+// extractVec
+RObject extractVec(RObject xpbm, const NumericVector& elemInd);
+RcppExport SEXP _bigstatsr_extractVec(SEXP xpbmSEXP, SEXP elemIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type elemInd(elemIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(extractVec(xpbm, elemInd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// extractMat
+RObject extractMat(RObject xpbm, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP _bigstatsr_extractMat(SEXP xpbmSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(extractMat(xpbm, rowInd, colInd));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -361,9 +399,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},
     {"_bigstatsr_mycount1", (DL_FUNC) &_bigstatsr_mycount1, 4},
     {"_bigstatsr_mycount2", (DL_FUNC) &_bigstatsr_mycount2, 4},
+    {"_bigstatsr_createFile", (DL_FUNC) &_bigstatsr_createFile, 4},
     {"_bigstatsr_decodeMat", (DL_FUNC) &_bigstatsr_decodeMat, 2},
     {"_bigstatsr_decodeVec", (DL_FUNC) &_bigstatsr_decodeVec, 2},
     {"_bigstatsr_GET_ERROR_TYPE", (DL_FUNC) &_bigstatsr_GET_ERROR_TYPE, 0},
+    {"_bigstatsr_extractVec", (DL_FUNC) &_bigstatsr_extractVec, 2},
+    {"_bigstatsr_extractMat", (DL_FUNC) &_bigstatsr_extractMat, 3},
     {"_bigstatsr_pMatVec4", (DL_FUNC) &_bigstatsr_pMatVec4, 4},
     {"_bigstatsr_cpMatVec4", (DL_FUNC) &_bigstatsr_cpMatVec4, 4},
     {"_bigstatsr_replaceVecOne", (DL_FUNC) &_bigstatsr_replaceVecOne, 3},

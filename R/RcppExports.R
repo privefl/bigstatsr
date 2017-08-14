@@ -29,6 +29,10 @@ mycount2 <- function(BM, rowInd, colInd, codeInd) {
     .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
 }
 
+createFile <- function(fileName, nrow, ncol, type) {
+    invisible(.Call(`_bigstatsr_createFile`, fileName, nrow, ncol, type))
+}
+
 decodeMat <- function(source, code) {
     .Call(`_bigstatsr_decodeMat`, source, code)
 }
@@ -39,6 +43,14 @@ decodeVec <- function(source, code) {
 
 GET_ERROR_TYPE <- function() {
     .Call(`_bigstatsr_GET_ERROR_TYPE`)
+}
+
+extractVec <- function(xpbm, elemInd) {
+    .Call(`_bigstatsr_extractVec`, xpbm, elemInd)
+}
+
+extractMat <- function(xpbm, rowInd, colInd) {
+    .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
 }
 
 pMatVec4 <- function(BM, x, rowInd, colInd) {

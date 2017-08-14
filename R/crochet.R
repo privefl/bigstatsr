@@ -92,6 +92,13 @@ extract <- function(extract_vector, extract_matrix) {
 
 }
 
+
+#' @export
+`[.FBM` <- extract(
+  extract_vector = function(x, i) extractVec(x$address, i),
+  extract_matrix = function(x, i, j) extractMat(x$address, i, j)
+)
+
 ################################################################################
 
 #' Create an Implementation of [<- For Custom Matrix-Like Types
