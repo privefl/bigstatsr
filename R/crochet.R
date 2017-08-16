@@ -61,7 +61,7 @@ transform_i_only <- function(i, n, m) {
 #' @return A function in the form of `function(x, i, j, drop = TRUE)` that
 #' is meant to be used as a method for \code{\link[base]{[}} for a custom type.
 #'
-extract <- function(extract_vector, extract_matrix) {
+Extract <- function(extract_vector, extract_matrix) {
 
   function(x, i, j, drop = TRUE) {
 
@@ -70,7 +70,7 @@ extract <- function(extract_vector, extract_matrix) {
 
     nargs <- nargs() - !missing(drop)
 
-    if (nargs == 2) {
+    if (nargs == 2) {  # only i
 
       if (missing(i)) {
         nargs <- 3  # x[] is the same as x[,]
@@ -91,13 +91,6 @@ extract <- function(extract_vector, extract_matrix) {
   }
 
 }
-
-
-#' @export
-`[.FBM` <- extract(
-  extract_vector = function(x, i) extractVec(x$address, i),
-  extract_matrix = function(x, i, j) extractMat(x$address, i, j)
-)
 
 ################################################################################
 
@@ -128,7 +121,7 @@ extract <- function(extract_vector, extract_matrix) {
 #' @return A function in the form of `function(x, i, j, value)` that is
 #' meant to be used as a method for \code{\link[base]{[<-}} for a custom type.
 #'
-replace <- function(replace_vector, replace_matrix) {
+Replace <- function(replace_vector, replace_matrix) {
 
   function(x, i, j, value) {
 
@@ -139,7 +132,7 @@ replace <- function(replace_vector, replace_matrix) {
 
     nargs <- nargs()
 
-    if (nargs == 3) {
+    if (nargs == 3) {  # only i
 
       if (missing(i)) {
         nargs <- 4  # x[] is the same as x[,]
@@ -160,35 +153,5 @@ replace <- function(replace_vector, replace_matrix) {
   }
 
 }
-
-
-#' @export
-`[<-.FBM` <- replace(
-
-  replace_vector = function(x, i, value) {
-    if (length(value) == 1) {
-      replaceVecOne(x$address, i, value)
-    } else if (length(value) == length(i)) {
-      replaceVec(x$address, i, value)
-    } else {
-      stop2("'value' must be unique or of the length of 'x[i]'.")
-    }
-  },
-
-  replace_matrix = function(x, i, j, value) {
-    if (length(value) == 1) {
-      replaceMatOne(x$address, i, j, value)
-    } else {
-      .dim <- c(length(i), length(j))
-      if (length(value) == prod(.dim)) {
-        dim(value) <- .dim
-        replaceMat(x$address, i, j, value)
-      } else {
-        stop2("'value' must be unique or of the dimension of 'x[i, j]'.")
-      }
-    }
-  }
-
-)
 
 ################################################################################

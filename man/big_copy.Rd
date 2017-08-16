@@ -5,7 +5,7 @@
 \title{Title}
 \usage{
 big_copy(X, ind.row = rows_along(X), ind.col = cols_along(X),
-  type = X$description$type, ..., block.size = block_size(length(ind.row)),
+  type = X$type, ..., block.size = block_size(length(ind.row)),
   ncores = 1)
 }
 \arguments{

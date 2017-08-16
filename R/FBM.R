@@ -4,7 +4,7 @@ TYPES <- structure(c(1L, 1L, 2L, 4L, 8L),
 
 
 #' @exportClass FBM
-FBM_RC <- setRefClass(
+FBM_RC <- methods::setRefClass(
 
   "FBM",
 
@@ -41,15 +41,15 @@ FBM_RC <- setRefClass(
                           save = TRUE) {
 
       c(nrow, ncol)  # check they are not missing
-      type <- match.arg(type)
+      typeBM <- match.arg(type)
       bkfile <- path.expand(paste0(backingfile, ".bk"))
 
-      createFile(bkfile, nrow, ncol, TYPES[[type]])
+      createFile(bkfile, nrow, ncol, TYPES[[typeBM]])
 
       .self$backingfile <- normalizePath(bkfile)
       .self$nrow        <- as.integer(nrow)
       .self$ncol        <- as.integer(ncol)
-      .self$type        <- TYPES[type]  # keep int and string
+      .self$type        <- TYPES[typeBM]  # keep int and string
 
       .self$address  # connect once
 
@@ -60,11 +60,11 @@ FBM_RC <- setRefClass(
 
     save = function() {
       saveRDS(.self, sub("\\.bk$", ".rds", .self$backingfile))
-    }
+    },
 
-    show = function(type) {
-      if (missing(type)) type <- names(.self$type)
-      print(glue::glue("A Filebacked Big Matrix of type '{type}'",
+    show = function(typeBM) {
+      if (missing(typeBM)) typeBM <- names(.self$type)
+      print(glue::glue("A Filebacked Big Matrix of type '{typeBM}'",
                        " with {.self$nrow} rows and {.self$ncol} columns."))
       invisible(.self)
     }
@@ -99,6 +99,7 @@ attach_FBM <- function(rdsfile) {
 }
 
 #' @exportMethod '['
+#' @include crochet.R
 setMethod(
   '[', signature(x = "FBM"),
   Extract(
@@ -108,6 +109,7 @@ setMethod(
 )
 
 #' @exportMethod '[<-'
+#' @include crochet.R
 setMethod(
   '[<-', signature(x = "FBM"),
   Replace(
