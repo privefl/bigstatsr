@@ -1,86 +1,77 @@
-TYPES <- structure(c(1, 1, 2, 4, 8),
+TYPES <- structure(c(1L, 1L, 2L, 4L, 8L),
                    names = c("raw", "unsigned char", "unsigned short",
                              "integer", "double"))
 
-#' @export
-#'
-FBM_R6Class <- R6::R6Class(
+
+#' @exportClass FBM
+FBM_RC <- setRefClass(
 
   "FBM",
 
-  public = list(
-    initialize = function(backingfile, nrow, ncol, type) {
-      private$backingfile <- normalizePath(backingfile)
-      private$nrow        <- nrow
-      private$ncol        <- ncol
-      private$type        <- TYPES[type]  # keep int and string
-    },
+  fields = list(
+    extptr = "externalptr",
+    nrow = "integer",
+    ncol = "integer",
+    type = "integer",
+    backingfile = "character",
 
-    set_backingfile = function(backingfile) {
-      private$backingfile <- normalizePath(backingfile)
-      invisible(self)
-    }
-
-    # finalize = function() {
-    #   cat("Free some memory!\n")
-    #   freeFBM(self$address)
-    # }
-  ),
-
-  active = list(
     address = function() {
-      if (identical(private$extptr, new("externalptr"))) { # nil
-        private$extptr <- getXPtrFBM(self$description)
+      if (identical(.self$extptr, new("externalptr"))) { # nil
+        .self$extptr <- getXPtrFBM(.self$description)
       }
-      private$extptr
+      .self$extptr
     },
 
     description = function() {
       list(
-        backingfile = private$backingfile,
-        nrow        = private$nrow,
-        ncol        = private$ncol,
-        type        = private$type
+        backingfile = .self$backingfile,
+        nrow        = .self$nrow,
+        ncol        = .self$ncol,
+        type        = .self$type
       )
     }
-  ),
+    ),
 
-  private = list(
-    extptr = new("externalptr"),
-    nrow = NULL,
-    ncol = NULL,
-    type = NULL,
-    backingfile = NULL
-  ),
+  methods = list(
+    initialize = function(nrow, ncol,
+                          type = c("double", "integer", "unsigned short",
+                                   "unsigned char", "raw"),
+                          init = NULL,
+                          backingfile = tempfile(),
+                          save = TRUE) {
 
-  lock_class = TRUE
+      c(nrow, ncol)  # check they are not missing
+      type <- match.arg(type)
+      bkfile <- path.expand(paste0(backingfile, ".bk"))
+
+      createFile(bkfile, nrow, ncol, TYPES[[type]])
+
+      .self$backingfile <- normalizePath(bkfile)
+      .self$nrow        <- as.integer(nrow)
+      .self$ncol        <- as.integer(ncol)
+      .self$type        <- TYPES[type]  # keep int and string
+
+      .self$address  # connect once
+
+      if (!is.null(init)) .self[] <- init
+
+      if (save) .self$save()
+    },
+
+    save = function() {
+      saveRDS(.self, sub("\\.bk$", ".rds", .self$backingfile))
+    }
+
+    show = function(type) {
+      if (missing(type)) type <- names(.self$type)
+      print(glue::glue("A Filebacked Big Matrix of type '{type}'",
+                       " with {.self$nrow} rows and {.self$ncol} columns."))
+      invisible(.self)
+    }
+  )
 )
+FBM_RC$lock("nrow", "ncol", "type")
 
-methods::setOldClass(c("FBM", "R6"))
-
-#' @export
-setMethod('typeof', signature(x = "FBM"),
-          function(x) names(x$description$type))
-
-
-#' @export
-print.FBM <- function(x) {
-  desc <- x$description
-  print(glue::glue("A Filebacked Big Matrix of type '{names(desc$type)}'",
-                   " with {desc$nrow} rows and {desc$ncol} columns."))
-  invisible(x)
-}
-
-#' @export
-dim.FBM <- function(x) {
-  desc <- x$description
-  c(desc$nrow, desc$ncol)
-}
-
-#' @export
-length.FBM <- function(x) {
-  prod(dim(x))
-}
 
 # TODO: change this to FBM afterwards and use dots
 #' @export
@@ -91,18 +82,7 @@ new_FBM <- function(nrow, ncol,
                     backingfile = tempfile(),
                     save = TRUE) {
 
-  bkfile <- path.expand(paste0(backingfile, ".bk"))
-  type <- match.arg(type)
-  createFile(bkfile, nrow, ncol, TYPES[[type]])
-
-  fbm <- FBM_R6Class$new(bkfile, nrow, ncol, type)
-  fbm$address
-
-  if (!is.null(init)) fbm[] <- init
-
-  if (save) saveRDS(fbm, sub("\\.bk$", ".rds", bkfile))
-
-  fbm
+  do.call(FBM_RC$new, args = as.list(environment()))
 }
 
 # TODO: change this to big_attach afterwards
@@ -112,9 +92,79 @@ attach_FBM <- function(rdsfile) {
   rdsfile <- normalizePath(rdsfile)
   fbm <- readRDS(rdsfile)
 
-  if (!file.exists(bkfile <- sub("\\.rds$", ".bk", rdsfile)))
+  if (!file.exists(fbm$backingfile <- sub("\\.rds$", ".bk", rdsfile)))
     stop2("Can't find the backingfile associated with this FBM.")
 
-  fbm$set_backingfile(bkfile)
   fbm
 }
+
+#' @exportMethod '['
+setMethod(
+  '[', signature(x = "FBM"),
+  Extract(
+    extract_vector = function(x, i) extractVec(x$address, i),
+    extract_matrix = function(x, i, j) extractMat(x$address, i, j)
+  )
+)
+
+#' @exportMethod '[<-'
+setMethod(
+  '[<-', signature(x = "FBM"),
+  Replace(
+    replace_vector = function(x, i, value) {
+      if (length(value) == 1) {
+        replaceVecOne(x$address, i, value)
+      } else if (length(value) == length(i)) {
+        replaceVec(x$address, i, value)
+      } else {
+        stop2("'value' must be unique or of the length of 'x[i]'.")
+      }
+    },
+
+    replace_matrix = function(x, i, j, value) {
+      if (length(value) == 1) {
+        replaceMatOne(x$address, i, j, value)
+      } else {
+        .dim <- c(length(i), length(j))
+        if (length(value) == prod(.dim)) {
+          dim(value) <- .dim
+          replaceMat(x$address, i, j, value)
+        } else {
+          stop2("'value' must be unique or of the dimension of 'x[i, j]'.")
+        }
+      }
+    }
+  )
+)
+
+
+#' @exportMethod dim
+setMethod(
+  "dim", signature(x = "FBM"),
+          function(x) {
+            c(x$nrow, x$ncol)
+          }
+  )
+
+#' @exportMethod length
+setMethod(
+  "length", signature(x="FBM"),
+          function(x) {
+            prod(dim(x))
+          }
+  )
+
+#' @export
+setMethod(
+  "typeof", signature(x = "FBM"),
+          function(x) {
+            names(x$type)
+          }
+  )
+
+#' @exportMethod as.matrix
+setMethod(
+  "as.matrix", signature(x = "FBM"),
+  function(x) as(x, "matrix")
+  )
+setAs("FBM", "matrix", function(from) from[])
