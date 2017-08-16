@@ -1,6 +1,6 @@
 /******************************************************************************/
 
-#include <bigstatsr/SubMatAcc.h>
+#include <bigstatsr/BMAcc.h>
 
 using namespace Rcpp;
 
@@ -8,13 +8,13 @@ using namespace Rcpp;
 
 // counts by rows
 // [[Rcpp::export]]
-IntegerMatrix mycount1(const S4& BM,
+IntegerMatrix mycount1(Environment FBM,
                        const IntegerVector& rowInd,
                        const IntegerVector& colInd,
                        const IntegerVector& codeInd) {
 
-  XPtr<BigMatrix> xpMat = BM.slot("address");
-  SubMatAcc<unsigned char> macc(*xpMat, rowInd-1, colInd-1);
+  XPtr<BigMatrix> xpBM = FBM["address"];
+  SubBMAcc<unsigned char> macc(xpBM, rowInd-1, colInd-1);
 
   int n = macc.nrow();
   int m = macc.ncol();
@@ -38,13 +38,13 @@ IntegerMatrix mycount1(const S4& BM,
 
 // counts by columns
 // [[Rcpp::export]]
-IntegerMatrix mycount2(const S4& BM,
+IntegerMatrix mycount2(Environment FBM,
                        const IntegerVector& rowInd,
                        const IntegerVector& colInd,
                        const IntegerVector& codeInd) {
 
-  XPtr<BigMatrix> xpMat = BM.slot("address");
-  SubMatAcc<unsigned char> macc(*xpMat, rowInd-1, colInd-1);
+  XPtr<BigMatrix> xpBM = FBM["address"];
+  SubBMAcc<unsigned char> macc(xpBM, rowInd-1, colInd-1);
 
   int n = macc.nrow();
   int m = macc.ncol();

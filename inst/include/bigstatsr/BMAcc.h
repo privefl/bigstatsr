@@ -35,6 +35,33 @@ protected:
 /******************************************************************************/
 
 template <typename T>
+class VecBMAcc : public BMAcc<T> {
+public:
+  VecBMAcc(const FBM * xpBM,
+           const NumericVector& elem_ind)
+    : BMAcc<T>(xpBM) {
+
+      size_t n = elem_ind.size();
+      std::vector<size_t> elem_ind2(n);
+      for (size_t k = 0; k < n; k++)
+        elem_ind2[k] = static_cast<size_t>(elem_ind[k]);
+      _elem_ind = elem_ind2;
+    }
+
+  inline T& operator[](size_t k) {
+    // https://stackoverflow.com/a/7076312/6103040
+    return this->_pMat[_elem_ind[k]];
+  }
+
+  size_t nelem() const { return _elem_ind.size(); }
+
+protected:
+  std::vector<size_t> _elem_ind;
+};
+
+/******************************************************************************/
+
+template <typename T>
 class SubBMAcc : public BMAcc<T> {
 public:
   SubBMAcc(const FBM * xpBM,
@@ -66,33 +93,6 @@ public:
 protected:
   std::vector<size_t> _row_ind;
   std::vector<size_t> _col_ind;
-};
-
-/******************************************************************************/
-
-template <typename T>
-class VecBMAcc : public BMAcc<T> {
-public:
-  VecBMAcc(const FBM * xpBM,
-           const NumericVector& elem_ind)
-    : BMAcc<T>(xpBM) {
-
-      size_t n = elem_ind.size();
-      std::vector<size_t> elem_ind2(n);
-      for (size_t k = 0; k < n; k++)
-        elem_ind2[k] = static_cast<size_t>(elem_ind[k]);
-      _elem_ind = elem_ind2;
-    }
-
-  inline T& operator[](size_t k) {
-    // https://stackoverflow.com/a/7076312/6103040
-    return this->_pMat[_elem_ind[k]];
-  }
-
-  size_t nelem() const { return _elem_ind.size(); }
-
-protected:
-  std::vector<size_t> _elem_ind;
 };
 
 /******************************************************************************/

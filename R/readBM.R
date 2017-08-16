@@ -78,10 +78,11 @@ big_readBM <- function(file,
 
   # prepare the resulting big.matrix
   if (transpose) {
-    res <- tmpFBM()(nrow = transfo.nelem, ncol = read.nline, type = BM.type)
-    on.exit(tmpFBM.rm(res), add = TRUE)
+    res <- FBM(nrow = transfo.nelem, ncol = read.nline,
+               type = BM.type, init = NULL)
   } else {
-    res <- fun.createBM(nrow = transfo.nelem, ncol = read.nline, type = BM.type)
+    res <- FBM(nrow = transfo.nelem, ncol = read.nline,
+               type = BM.type, init = NULL, ...)
   }
 
   # functions for scanning
@@ -93,11 +94,10 @@ big_readBM <- function(file,
   }
 
   # main read
-  X <- attach.BM(res)
-  X[, 1] <- firstline.transfo
+  res[, 1] <- firstline.transfo
   for (k in 2:read.nline) {
     if (info.nelem) info[, k] <- info.scan(con)
-    X[, k] <- read.transfo(read.scan(con))
+    res[, k] <- read.transfo(read.scan(con))
   }
 
   # check EOF (if can't read another character)
@@ -105,9 +105,9 @@ big_readBM <- function(file,
     warning2("Didn't reach EOF.")
 
   # returns
-  structure(`if`(transpose, big_transpose(res, fun.createBM), res),
+  structure(`if`(transpose, big_transpose(res, ...), res),
             header = header,
             info = info)
-}
+} # TODO: see if can read by blocks
 
 ################################################################################

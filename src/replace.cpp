@@ -18,7 +18,7 @@ const IntegerVector& checkShort(const IntegerVector& vec) {
   size_t K = vec.size();
 
   for (size_t k = 0; k < K; k++)
-    myassert(vec[k] >= USHORT_MIN && vec[k] <= USHORT_MAX, ERROR_SHORT);
+    myassert(vec[k] >= USHORT_MIN && vec[k] <= USHORT_MAX, ERROR_USHORT);
 
   return vec;
 }
@@ -28,7 +28,7 @@ const IntegerMatrix& checkShort(const IntegerMatrix& mat) {
   size_t K = mat.size();
 
   for (size_t k = 0; k < K; k++)
-    myassert(mat[k] >= USHORT_MIN && mat[k] <= USHORT_MAX, ERROR_SHORT);
+    myassert(mat[k] >= USHORT_MIN && mat[k] <= USHORT_MAX, ERROR_USHORT);
 
   return mat;
 }

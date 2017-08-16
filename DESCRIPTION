@@ -18,8 +18,7 @@ Description: Easy-to-use, efficient, flexible and scalable
 License: GPL-3 + file LICENSE
 LazyData: TRUE
 Depends: 
-    R (>= 3.3.2), 
-    bigmemory
+    R (>= 3.3.2)
 Imports: 
     cowplot,
     doParallel,
@@ -41,6 +40,7 @@ LinkingTo:
     RcppArmadillo
 Suggests: 
     biglasso, 
+    bigmemory,
     covr, 
     glmnet,
     grid,
@@ -52,7 +52,6 @@ Suggests:
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 Remotes: 
-    privefl/bigmemory, 
     YaohuiZeng/biglasso, 
     CY-dev/sparseSVM
 URL: https://privefl.github.io/bigstatsr

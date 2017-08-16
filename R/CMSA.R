@@ -60,12 +60,11 @@ get_beta <- function(betas, method) {
 #' @export
 #' @import foreach
 #'
-big_CMSA <- function(FUN, feval, X., y.train,
-                     ind.train = rows_along(X.),
+big_CMSA <- function(FUN, feval, X, y.train,
+                     ind.train = rows_along(X),
                      covar.train = NULL,
                      K = 10,
                      method = c("geometric-median", "mean-wise", "median-wise"),
-                     block.size = 1000,
                      ncores = 1,
                      ...) {
 
@@ -79,30 +78,27 @@ big_CMSA <- function(FUN, feval, X., y.train,
   n <- length(ind.train)
   indCV <- sample(rep_len(1:K, n))
 
-  if (is.seq <- (ncores == 1)) {
+  if (ncores == 1) {
     registerDoSEQ()
   } else {
-    X.desc <- describe(X.)
     cl <- parallel::makeCluster(ncores)
     doParallel::registerDoParallel(cl)
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
   cross.res <- foreach(ic = 1:K) %dopar% {
-    X2 <- attach.BM(`if`(is.seq, X., X.desc))
 
     in.val <- (indCV == ic)
 
-    mod <- FUN(X2, y.train[!in.val], ind.train[!in.val],
+    mod <- FUN(X, y.train[!in.val], ind.train[!in.val],
                covar.train[!in.val, ], ...)
 
-    scores <- predict(mod, X2, ind.row = ind.train[in.val],
-                      covar.row = covar.train[in.val, ],
-                      block.size = block.size)
+    scores <- predict(mod, X, ind.row = ind.train[in.val],
+                      covar.row = covar.train[in.val, ])
 
     list(betas = mod$beta, scores = scores)
-  }
+  } # TODO: see if can use parallelize
 
-  # select best coefficients for each fold
+  # Select best coefficients for each fold
   betas <- sapply(cross.res, function(x) {
     tmp <- x$scores
     ind <- as.numeric(rownames(tmp))
@@ -112,7 +108,7 @@ big_CMSA <- function(FUN, feval, X., y.train,
     x$betas[, which.max(seval)]
   })
 
-  # average these coefficients
+  # "Average" these coefficients
   structure(get_beta(betas, match.arg(method)), class = "big_CMSA")
 }
 

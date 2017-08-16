@@ -13,17 +13,18 @@
 #' @importFrom stats predict
 #' @seealso [big_CMSA]
 #'
-predict.big_CMSA <- function(object, X.,
-                             ind.row = rows_along(X.),
+predict.big_CMSA <- function(object, X,
+                             ind.row = rows_along(X),
                              covar.row = NULL,
-                             block.size = 1000,
                              ...) {
 
   check_args()
 
-  ind.col <- which(object[cols_along(X.)] != 0)
+  ind.col <- which(object[cols_along(X)] != 0)
 
-  scores <- big_prodVec(X., object[ind.col], ind.row = ind.row, ind.col = ind.col)
+  scores <- big_prodVec(X, object[ind.col],
+                        ind.row = ind.row,
+                        ind.col = ind.col)
 
   if (!is.null(covar.row)) {
 
@@ -56,8 +57,8 @@ predict.big_CMSA <- function(object, X.,
 #' @seealso [big_spLinReg], [big_spLogReg] and [big_spSVM].
 #'
 #' @example examples/example-predict.R
-predict.big_sp <- function(object, X.,
-                           ind.row = rows_along(X.),
+predict.big_sp <- function(object, X,
+                           ind.row = rows_along(X),
                            covar.row = NULL,
                            block.size = 1000,
                            ...) {
@@ -68,7 +69,7 @@ predict.big_sp <- function(object, X.,
 
   if (is.null(covar.row)) {
 
-    scores <- big_prodMat(X., betas,
+    scores <- big_prodMat(X, betas,
                           ind.row = ind.row,
                           block.size = block.size)
 
@@ -76,7 +77,7 @@ predict.big_sp <- function(object, X.,
 
     assert_lengths(ind.row, rows_along(covar.row))
 
-    ind.X <- cols_along(X.)
+    ind.X <- cols_along(X)
     scores <- big_prodMat(X., betas[ind.X, ],
                           ind.row = ind.row,
                           block.size = block.size) +
@@ -135,18 +136,17 @@ predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 #'
 #' @example examples/example-SVD.R
 #' @seealso [predict][stats::prcomp] [big_SVD] [big_randomSVD]
-predict.big_SVD <- function(object, X. = NULL,
-                            ind.row = rows_along(X.),
-                            ind.col = cols_along(X.),
+predict.big_SVD <- function(object, X = NULL,
+                            ind.row = rows_along(X),
+                            ind.col = cols_along(X),
                             block.size = 1000,
                             ...) {
 
-  if (is.null(X.)) {
+  if (is.null(X)) {
     object$u %*% diag(object$d, length(object$d))
   } else {
     check_args()
 
-    X <- attach.BM(X.)
     # multiplication with clever scaling -> see vignettes
     v2 <- object$v / object$sds
     tmp <- big_prodMat(X, v2, ind.row, ind.col, block.size)

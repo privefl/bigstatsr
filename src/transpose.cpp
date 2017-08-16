@@ -1,23 +1,24 @@
 /******************************************************************************/
 
-#include <bigmemory/MatrixAccessor.hpp>
-#include "../inst/include/bigstatsr/utils.h"
+#include <bigstatsr/BMAcc.h>
 
 /******************************************************************************/
 
+#define TRANSPOSE_STOP_SIZE 64
+
 // recursive divide and conquer function
 template <typename T>
-void transpose3_rec(MatrixAccessor<T> macc,
-                    MatrixAccessor<T> macc2,
+void transpose3_rec(BMAcc<T> macc,
+                    BMAcc<T> macc2,
                     int i_min, int i_max,
                     int j_min, int j_max) {
 
-  if ((j_max - j_min) > 64) {
+  if ((j_max - j_min) > TRANSPOSE_STOP_SIZE) {
     int j_mid = (j_min + j_max) / 2;
     transpose3_rec(macc, macc2, i_min, i_max, j_min, j_mid);
     transpose3_rec(macc, macc2, i_min, i_max, j_mid, j_max);
   } else {
-    if ((i_max - i_min) > 64) {
+    if ((i_max - i_min) > TRANSPOSE_STOP_SIZE) {
       int i_mid = (i_min + i_max) / 2;
       transpose3_rec(macc, macc2, i_min, i_mid, j_min, j_max);
       transpose3_rec(macc, macc2, i_mid, i_max, j_min, j_max);
@@ -25,7 +26,7 @@ void transpose3_rec(MatrixAccessor<T> macc,
       int i, j;
       for (j = j_min; j < j_max; j++) {
         for (i = i_min; i < i_max; i++) {
-          macc[j][i] = macc2[i][j];
+          macc(i, j) = macc2(j, i);
         }
       }
     }
@@ -33,39 +34,23 @@ void transpose3_rec(MatrixAccessor<T> macc,
 }
 
 template <typename T>
-void transpose3(MatrixAccessor<T> macc, MatrixAccessor<T> macc2) {
+void transpose3(BMAcc<T> macc, BMAcc<T> macc2) {
   transpose3_rec(macc, macc2, 0, macc.nrow(), 0, macc.ncol());
 }
 
+/******************************************************************************/
+
+#define TRANSPOSE(T) return transpose3(BMAcc<T>(xpBM), BMAcc<T>(xpBM2));
+
 // Dispatch function for transpose3
 // [[Rcpp::export]]
-void transpose3(const S4& BM, const S4& BM2) {
+void transpose3(Environment FBM, Environment FBM2) {
 
-  XPtr<BigMatrix> xpMat = BM.slot("address");
-  XPtr<BigMatrix> xpMat2 = BM2.slot("address");
+  XPtr<BigMatrix> xpBM  = FBM["address"];
+  XPtr<BigMatrix> xpBM2 = FBM2["address"];
 
-  switch(xpMat->matrix_type()) {
-  case 1:
-    return transpose3(MatrixAccessor<char>(*xpMat),
-                      MatrixAccessor<char>(*xpMat2));
-  case 2:
-    return transpose3(MatrixAccessor<short>(*xpMat),
-                      MatrixAccessor<short>(*xpMat2));
-  case 3:
-    return transpose3(MatrixAccessor<unsigned char>(*xpMat),
-                      MatrixAccessor<unsigned char>(*xpMat2));
-  case 4:
-    return transpose3(MatrixAccessor<int>(*xpMat),
-                      MatrixAccessor<int>(*xpMat2));
-  case 6:
-    return transpose3(MatrixAccessor<float>(*xpMat),
-                      MatrixAccessor<float>(*xpMat2));
-  case 8:
-    return transpose3(MatrixAccessor<double>(*xpMat),
-                      MatrixAccessor<double>(*xpMat2));
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
-  }
+  int type = xpBM->matrix_type();
+  DISPATCH_TYPE(TRANSPOSE)
 }
 
 /******************************************************************************/

@@ -17,7 +17,7 @@ using namespace Rcpp;
 
 // Dispatch function for COPY_cdfit_binomial_hsr
 // [[Rcpp::export]]
-List COPY_cdfit_binomial_hsr(const S4& BM,
+List COPY_cdfit_binomial_hsr(Environment FBM,
                              const NumericVector& y,
                              const IntegerVector& row_idx,
                              const NumericMatrix& covar,

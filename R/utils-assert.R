@@ -6,11 +6,21 @@ warn_downcast <- function(from, to) {
 
     from.type <- typeof(from)
     to.type   <- typeof(to)
-    if (TYPES[[from.type]] > TYPES[[to.type]])
+
+    from.type.int <- try(ALL.TYPES[[from.type]], silent = TRUE)
+    if (class(from.type.int) == "try-error") {
       warning(glue::glue(
-        "Assignment will down cast from {from.type} to {to.type}.\n",
+        "The type of the input is unknown.\n",
+        "Assignment could possibly down cast from {from.type} to {to.type}.\n",
         "Hint: To remove this warning, use ",
         "options(bigstatsr.typecast.warning = FALSE)."), call. = FALSE)
+    } else {
+      if (from.type.int > ALL.TYPES[[to.type]])
+        warning(glue::glue(
+          "Assignment will down cast from {from.type} to {to.type}.\n",
+          "Hint: To remove this warning, use ",
+          "options(bigstatsr.typecast.warning = FALSE)."), call. = FALSE)
+    }
   }
 }
 
@@ -24,12 +34,9 @@ check_args <- function(...) {
     check <- c(
       list(...),  # possible to "overwrite" following defaults
       list(
-        X            = "assert_class(X, 'big.matrix'); assert_noNA(X)",
-        X.desc       =
-          "assert_class(X.desc, 'big.matrix.descriptor'); assert_noNA(X.desc)",
-        X.           = "assert_classOrDesc(X., 'big.matrix'); assert_noNA(X.)",
+        X            = "assert_class(X, 'FBM'); assert_noNA(X)",
         X.code       =
-          "assert_classOrDesc(X.code, 'BM.code'); assert_noNA(X.code)",
+          "assert_class(X.code, 'FBM.code256'); assert_noNA(X.code)",
         y01.train    = "assert_01(y01.train)",
         ind.train    = "assert_int(ind.train); assert_pos(ind.train)",
         ind.row      = "assert_int(ind.row);   assert_pos(ind.row)",
@@ -77,10 +84,10 @@ assert_args <- function(f, args.name) {
 # NUMBER OF CORES
 assert_cores <- function(ncores) {
   if (ncores > getOption("bigstatsr.ncores.max")) {
-    stop2(paste0("You are trying to use more cores than allowed.\n",
-                 "We advise you to use only half of the cores you have.\n",
-                 "You can change this default value with ",
-                 "`options(bigstatsr.ncores.max = Inf)`."))
+    stop2(paste0("You are trying to use more cores than allowed.",
+                 " We advise you to use `ncores()`.\n",
+                 "You can change this default value with",
+                 " `options(bigstatsr.ncores.max = Inf)`."))
   }
 }
 
@@ -134,13 +141,6 @@ assert_type <- function(x, type)  {
 assert_class <- function(x, class)  {
   if (!inherits(x, class))
     stop2("'%s' is not of class '%s'.", deparse(substitute(x)), class)
-}
-
-assert_classOrDesc <- function(x, class)  {
-  if (!inherits(x, class))
-    if (!inherits(x, paste0(class, ".descriptor")))
-      stop2("'%s' is not of class '%s' (or associated descriptor).",
-            deparse(substitute(x)), class)
 }
 
 ################################################################################

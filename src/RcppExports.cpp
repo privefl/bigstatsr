@@ -18,17 +18,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// getXPtrFBM
-SEXP getXPtrFBM(const List& desc);
-RcppExport SEXP _bigstatsr_getXPtrFBM(SEXP descSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type desc(descSEXP);
-    rcpp_result_gen = Rcpp::wrap(getXPtrFBM(desc));
-    return rcpp_result_gen;
-END_RCPP
-}
 // COPY_cdfit_gaussian_hsr
 List COPY_cdfit_gaussian_hsr(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool verbose);
 RcppExport SEXP _bigstatsr_COPY_cdfit_gaussian_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP verboseSEXP) {
@@ -81,15 +70,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // bigcolvars
-ListOf<NumericVector> bigcolvars(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd);
-RcppExport SEXP _bigstatsr_bigcolvars(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
+ListOf<NumericVector> bigcolvars(Environment x, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP _bigstatsr_bigcolvars(SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type x(xSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(bigcolvars(BM, rowInd, colInd));
+    rcpp_result_gen = Rcpp::wrap(bigcolvars(x, rowInd, colInd));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -190,6 +179,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
     rcpp_result_gen = Rcpp::wrap(extractMat(xpbm, rowInd, colInd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getXPtrFBM
+SEXP getXPtrFBM(const List& desc);
+RcppExport SEXP _bigstatsr_getXPtrFBM(SEXP descSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type desc(descSEXP);
+    rcpp_result_gen = Rcpp::wrap(getXPtrFBM(desc));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -393,7 +393,6 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_auc_cpp", (DL_FUNC) &_bigstatsr_auc_cpp, 2},
-    {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 1},
     {"_bigstatsr_COPY_cdfit_gaussian_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_gaussian_hsr, 15},
     {"_bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_binomial_hsr, 16},
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},
@@ -405,6 +404,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_GET_ERROR_TYPE", (DL_FUNC) &_bigstatsr_GET_ERROR_TYPE, 0},
     {"_bigstatsr_extractVec", (DL_FUNC) &_bigstatsr_extractVec, 2},
     {"_bigstatsr_extractMat", (DL_FUNC) &_bigstatsr_extractMat, 3},
+    {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 1},
     {"_bigstatsr_pMatVec4", (DL_FUNC) &_bigstatsr_pMatVec4, 4},
     {"_bigstatsr_cpMatVec4", (DL_FUNC) &_bigstatsr_cpMatVec4, 4},
     {"_bigstatsr_replaceVecOne", (DL_FUNC) &_bigstatsr_replaceVecOne, 3},

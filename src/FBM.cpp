@@ -1,8 +1,14 @@
+/******************************************************************************/
+/* Inspired from
+ * https://github.com/QuantGen/BEDMatrix/blob/master/src/BEDMatrix.cpp ********/
+
 #include <bigstatsr/FBM.h>
 #include <bigstatsr/utils.h>
 
 using namespace Rcpp;
 using namespace boost::interprocess;
+
+/******************************************************************************/
 
 FBM::FBM(const List& desc)
   : n(desc["nrow"]), m(desc["ncol"]), type(desc["type"]) {
@@ -18,13 +24,15 @@ FBM::FBM(const List& desc)
   this->file_data = reinterpret_cast<void*>(this->file_region.get_address());
 
   // const size_t num_bytes = this->file_region.get_size();
-  Rcout << "FBM: " << (int)this->n << " " << (int)this->m << std::endl; //DEBUG
+  // Rcout << "FBM: " << (int)this->n << " " << (int)this->m << std::endl; //DEBUG
 }
 
+/******************************************************************************/
 
 // [[Rcpp::export]]
 SEXP getXPtrFBM(const List& desc) {
 
+  // http://gallery.rcpp.org/articles/intro-to-exceptions/
   try {
     // Create a pointer to an FBM object and wrap it as an external pointer
     XPtr<FBM> ptr(new FBM(desc), true);
@@ -39,8 +47,12 @@ SEXP getXPtrFBM(const List& desc) {
   return R_NilValue;
 }
 
+/******************************************************************************/
+
 // // [[Rcpp::export]]
 // void freeFBM(SEXP sexp) {
-//   XPtr<FBM> xpMat(sexp);
-//   delete(xpMat);
+//   XPtr<FBM> xpBM(sexp);
+//   delete(xpBM);
 // }
+
+/******************************************************************************/

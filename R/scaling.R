@@ -39,13 +39,13 @@
 #' str(big_scale()(X.desc))
 big_scale <- function(center = TRUE, scale = TRUE) {
 
-  function(X., ind.row = rows_along(X.), ind.col = cols_along(X.)) {
+  function(X, ind.row = rows_along(X), ind.col = cols_along(X)) {
 
     check_args()
 
     m <- length(ind.col)
     if (center) {
-      tmp <- big_colstats(X., ind.row, ind.col)
+      tmp <- big_colstats(X, ind.row, ind.col)
       means <- tmp$sum / length(ind.row)
       sds <- `if`(scale, sqrt(tmp$var), rep(1, m))
     } else {

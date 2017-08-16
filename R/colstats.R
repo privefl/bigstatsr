@@ -14,13 +14,12 @@
 #'
 #' @seealso [colSums] [apply]
 #' @example examples/example-colstats.R
-big_colstats <- function(X.,
-                         ind.row = rows_along(X.),
-                         ind.col = cols_along(X.)) {
+big_colstats <- function(X,
+                         ind.row = rows_along(X),
+                         ind.col = cols_along(X)) {
 
-  check_args()
+  # check_args()
 
-  X <- attach.BM(X.)
   data.frame(bigcolvars(X, ind.row, ind.col))
 }
 

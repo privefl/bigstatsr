@@ -4,9 +4,9 @@
 /******************************************************************************/
 
 #include <bigstatsr/BMAcc.h>
+#include <bigstatsr/utils.h>
 
 using namespace Rcpp;
-using std::size_t;
 
 /******************************************************************************/
 
@@ -20,7 +20,7 @@ public:
       _code256 = code256;
     }
 
-  inline double operator()(size_t i, size_t j) {
+  inline double operator()(std::size_t i, std::size_t j) {
     // https://stackoverflow.com/a/32087373/6103040
     return _code256[SubBMAcc<unsigned char>::operator()(i, j)];
   }
@@ -31,30 +31,32 @@ protected:
 
 /******************************************************************************/
 
-// template <typename T>
-// class VecBMAcc : public BMAcc<T> {
-// public:
-//   VecBMAcc(const FBM * xpBM,
-//            const NumericVector& elem_ind)
-//     : BMAcc<T>(xpBM) {
-//
-//       size_t n = elem_ind.size();
-//       std::vector<size_t> elem_ind2(n);
-//       for (size_t k = 0; k < n; k++)
-//         elem_ind2[k] = static_cast<size_t>(elem_ind[k]);
-//       _elem_ind = elem_ind2;
-//     }
-//
-//   inline T& operator[](size_t k) {
-//     // https://stackoverflow.com/a/7076312/6103040
-//     return this->_pMat[_elem_ind[k]];
-//   }
-//
-//   size_t nelem() const { return _elem_ind.size(); }
-//
-// protected:
-//   std::vector<size_t> _elem_ind;
-// };
+#define SUBMATACC(T) SubBMAcc<T>(xpBM, rows, cols)
+#define RAWSUBMATACC SubBMCode256Acc(xpBM, rows, cols, FBM["code256"])
+
+#define DISPATCH_SUBMATACC(CALL) {                                             \
+                                                                               \
+  XPtr<FBM> xpBM = FBM["address"];                                               \
+  IntegerVector rows = rowInd - 1;                                             \
+  IntegerVector cols = colInd - 1;                                             \
+                                                                               \
+  if (FBM.exists("code256")) {                                                   \
+    CALL(RAWSUBMATACC);                                                        \
+  } else {                                                                     \
+    switch(xpBM->matrix_type()) {                                              \
+    case 8:                                                                    \
+      CALL(SUBMATACC(double))                                                  \
+    case 4:                                                                    \
+      CALL(SUBMATACC(int))                                                     \
+    case 1:                                                                    \
+      CALL(SUBMATACC(unsigned char))                                           \
+    case 2:                                                                    \
+      CALL(SUBMATACC(unsigned short))                                          \
+    default:                                                                   \
+      throw Rcpp::exception(ERROR_TYPE);                                       \
+    }                                                                          \
+  }                                                                            \
+}
 
 /******************************************************************************/
 

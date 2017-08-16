@@ -1,8 +1,7 @@
 ################################################################################
 
-univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
+univLogReg_sub <- function(X, ind, covar.train, y01.train, z0, w0,
                            ind.train, tol, maxiter) {
-  X <- attach.BM(X.)
 
   res <- IRLS(X, covar.train, y01.train, z0, w0,
               ind.train, ind, tol, maxiter)
@@ -56,9 +55,9 @@ univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
 #'
 #' @seealso [glm][stats::glm]
 #' @export
-big_univLogReg <- function(X., y01.train,
-                           ind.train = rows_along(X.),
-                           ind.col = cols_along(X.),
+big_univLogReg <- function(X, y01.train,
+                           ind.train = rows_along(X),
+                           ind.col = cols_along(X),
                            covar.train = NULL,
                            ncores = 1,
                            tol = 1e-8,
@@ -76,7 +75,7 @@ big_univLogReg <- function(X., y01.train,
   z0 <- log(p0 / (1 - p0)) + (y01.train - p0) / w0
 
   # main computation
-  res <- big_parallelize(X. = X.,
+  res <- big_parallelize(X = X,
                          p.FUN = univLogReg_sub,
                          p.combine = "rbind",
                          ind = ind.col,

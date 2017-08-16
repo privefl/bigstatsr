@@ -17,16 +17,16 @@
 #' Xt.desc <- big_transpose(X.desc, fun.createBM = tmpFBM())
 #' identical(t(attach.BM(X.desc)[,]), attach.BM(Xt.desc)[,])
 #'
-big_transpose <- function(X., fun.createBM = BM()) {
+big_transpose <- function(X, ...) {
 
-  check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
+  check_args()
 
-  res <- fun.createBM(ncol(X.), nrow(X.), typeof(X.))
+  res <- FBM(ncol(X), nrow(X), typeof(X), init = NULL, ...)
 
-  X <- attach.BM(X.)
-  transpose3(attach.BM(res), X)
+  transpose3(res, X)
 
-  `if`(inherits(X, "BM.code"), as.BM.code(res, code = X@code), res)
-}
+  # `if`(inherits(X, "BM.code"), as.BM.code(res, code = X@code), res)
+  res
+} # TODO: see how put a code on a FBM
 
 ################################################################################

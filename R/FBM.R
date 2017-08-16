@@ -1,7 +1,3 @@
-TYPES <- structure(c(1L, 1L, 2L, 4L, 8L),
-                   names = c("raw", "unsigned char", "unsigned short",
-                             "integer", "double"))
-
 
 #' @exportClass FBM
 FBM_RC <- methods::setRefClass(
@@ -38,18 +34,18 @@ FBM_RC <- methods::setRefClass(
                                    "unsigned char", "raw"),
                           init = NULL,
                           backingfile = tempfile(),
-                          save = TRUE) {
+                          save = FALSE) {
 
       c(nrow, ncol)  # check they are not missing
       typeBM <- match.arg(type)
       bkfile <- path.expand(paste0(backingfile, ".bk"))
 
-      createFile(bkfile, nrow, ncol, TYPES[[typeBM]])
+      createFile(bkfile, nrow, ncol, ALL.TYPES[[typeBM]])
 
       .self$backingfile <- normalizePath(bkfile)
       .self$nrow        <- as.integer(nrow)
       .self$ncol        <- as.integer(ncol)
-      .self$type        <- TYPES[typeBM]  # keep int and string
+      .self$type        <- ALL.TYPES[typeBM]  # keep int and string
 
       .self$address  # connect once
 
@@ -80,22 +76,9 @@ new_FBM <- function(nrow, ncol,
                              "unsigned char", "raw"),
                     init = NULL,
                     backingfile = tempfile(),
-                    save = TRUE) {
+                    save = FALSE) {
 
   do.call(FBM_RC$new, args = as.list(environment()))
-}
-
-# TODO: change this to big_attach afterwards
-#' @export
-attach_FBM <- function(rdsfile) {
-
-  rdsfile <- normalizePath(rdsfile)
-  fbm <- readRDS(rdsfile)
-
-  if (!file.exists(fbm$backingfile <- sub("\\.rds$", ".bk", rdsfile)))
-    stop2("Can't find the backingfile associated with this FBM.")
-
-  fbm
 }
 
 #' @exportMethod '['

@@ -14,14 +14,13 @@
 #' @seealso [cor]
 #'
 #' @example examples/example-corr.R
-big_cor <- function(X.,
-                    ind.row = rows_along(X.),
-                    ind.col = cols_along(X.),
+big_cor <- function(X,
+                    ind.row = rows_along(X),
+                    ind.col = cols_along(X),
                     block.size = 1000) {
 
   check_args()
 
-  X <- attach.BM(X.)
   m <- length(ind.col)
   K <- matrix(NA_real_, m, m)
 
@@ -37,7 +36,7 @@ big_cor <- function(X.,
 
       K[ind2, ind1] <- crossprod(tmp2, tmp1)
     }
-  }
+  } # TODO: transform K in TFBM? Parallelize?
 
   # Complete the lower part of the symmetric matrix
   K <- complete2(K)

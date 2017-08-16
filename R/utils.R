@@ -1,7 +1,9 @@
 ################################################################################
 
 # Global variables
-ALL.TYPES <- c("raw", "char", "short", "integer", "float", "double") # for tests
+ALL.TYPES <- structure(c(1L, 1L, 2L, 4L, 8L),
+                       names = c("raw", "unsigned char", "unsigned short",
+                                 "integer", "double"))
 globalVariables("ic") # for foreach
 
 ################################################################################
@@ -32,6 +34,7 @@ block_size <- function(n) {
 
 ################################################################################
 
+# TODO: case when nb > m
 CutBySize <- function(m, block.size, nb = ceiling(m / block.size)) {
   int <- m / nb
 
@@ -76,5 +79,29 @@ getAvailMem <- function(format = TRUE) {
   `if`(format, format(structure(memfree, class = "object_size"),
                       units = "auto"), memfree)
 }
+
+################################################################################
+#### Sequence generation ####
+
+#' Sequence generation
+#'
+#' Similar to [seq_along], it creates sequences of size `nrow(x)` or `ncol(x)`.
+#'
+#' @param x Any object on which you can call `nrow` and `ncol`.
+#'
+#' @examples
+#' X.desc <- big_attachExtdata()
+#' dim(X.desc)
+#' str(rows_along(X.desc))
+#' str(cols_along(X.desc))
+#'
+#' @rdname seq-dim
+#' @keywords internal
+#' @export
+rows_along <- function(x) seq_len(nrow(x))
+
+#' @rdname seq-dim
+#' @export
+cols_along <- function(x) seq_len(ncol(x))
 
 ################################################################################

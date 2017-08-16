@@ -17,7 +17,7 @@
 #' @seealso [crossprod]
 #'
 #' @example examples/example-crossprodSelf.R
-big_crossprodSelf <- function(X.,
+big_crossprodSelf <- function(X,
                               fun.scaling,
                               ind.row = rows_along(X.),
                               ind.col = cols_along(X.),
@@ -25,7 +25,6 @@ big_crossprodSelf <- function(X.,
 
   check_args()
 
-  X <- attach.BM(X.)
   m <- length(ind.col)
   K <- matrix(NA_real_, m, m)
 

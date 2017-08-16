@@ -17,14 +17,13 @@
 #' @seealso [tcrossprod]
 #'
 #' @example examples/example-tcrossprodSelf.R
-big_tcrossprodSelf <- function(X., fun.scaling,
-                               ind.row = rows_along(X.),
-                               ind.col = cols_along(X.),
+big_tcrossprodSelf <- function(X, fun.scaling,
+                               ind.row = rows_along(X),
+                               ind.col = cols_along(X),
                                block.size = 1000) {
 
   check_args()
 
-  X <- attach.BM(X.)
   n <- length(ind.row)
   K <- matrix(0, n, n)
 

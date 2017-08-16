@@ -55,45 +55,9 @@ ncores <- function(all.tests = FALSE) {
 #'
 #' @example examples/example-parallelize.R
 #' @seealso [big_apply]
-big_parallelize <- function(X., p.FUN, p.combine, ncores,
-                            ind = cols_along(X.),
+big_parallelize <- function(ind, p.FUN, p.combine,
+                            ncores = ncores(),
                             ...) {
-
-  check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
-  assert_args(p.FUN, "ind")
-  assert_int(ind); assert_pos(ind)
-
-  if (ncores > 1) { # parallel
-    X.desc <- describe(X.)
-    range.parts <- CutBySize(length(ind), nb = ncores)
-
-    cl <- parallel::makeCluster(ncores)
-    doParallel::registerDoParallel(cl)
-    on.exit(parallel::stopCluster(cl), add = TRUE)
-
-    # Microsoft R Open?
-    multi <- requireNamespace("RevoUtilsMath", quietly = TRUE)
-
-    foreach(ic = 1:ncores, .combine = p.combine) %dopar% {
-      # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
-      if (multi) {
-        nthreads.save <- RevoUtilsMath::setMKLthreads(1)
-        on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)
-      }
-
-      p.FUN(X.desc, ind = ind[seq2(range.parts[ic, ])], ...)
-    }
-  } else { # sequential
-    p.FUN(X., ind = ind, ...)
-  }
-}
-
-#' export
-big_parallelize2 <- function(ind, p.FUN, p.combine,
-                             ncores = ncores(),
-                             ...) {
-
-  # str(list(...)) #DEBUG
 
   # check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
   assert_args(p.FUN, "ind")
@@ -126,20 +90,7 @@ big_parallelize2 <- function(ind, p.FUN, p.combine,
 
 ################################################################################
 
-big_applySeq <- function(X., a.FUN, a.combine, block.size, ind, ...) {
-
-  X <- attach.BM(X.)
-  intervals <- CutBySize(length(ind), block.size)
-
-  foreach(ic = 1:nrow(intervals), .combine = a.combine) %do% {
-    a.FUN(X, ind = ind[seq2(intervals[ic, ])], ...)
-  }
-}
-
-#' export
-big_applySeq2 <- function(ind, a.FUN, a.combine, block.size, ...) {
-
-  # str(list(...)) #DEBUG
+big_applySeq <- function(ind, a.FUN, a.combine, block.size, ...) {
 
   intervals <- CutBySize(length(ind), block.size)
 
@@ -184,47 +135,23 @@ big_applySeq2 <- function(ind, a.FUN, a.combine, block.size, ...) {
 #'
 #' @example examples/example-apply.R
 #' @seealso [big_parallelize]
-big_apply <- function(X., a.FUN, a.combine,
+big_apply <- function(ind, a.FUN, a.combine,
                       ncores = 1,
                       block.size = 1000,
-                      ind = cols_along(X.),
                       ...) {
-
-  check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
-  assert_args(a.FUN, "ind")
-  assert_int(ind); assert_pos(ind)
-
-  big_parallelize(X. = X.,
-                  p.FUN = big_applySeq,
-                  p.combine = a.combine,
-                  ncores = ncores,
-                  ind = ind,
-                  a.FUN = a.FUN,
-                  a.combine = a.combine,
-                  block.size = block.size,
-                  ...)
-}
-
-#' @export
-big_apply2 <- function(ind, a.FUN, a.combine,
-                       ncores = 1,
-                       block.size = 1000,
-                       ...) {
-
-  # str(list(...)) #DEBUG
 
   # check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
   assert_args(a.FUN, "ind")
   assert_int(ind); assert_pos(ind)
 
-  big_parallelize2(ind = ind,
-                   p.FUN = big_applySeq2,
-                   p.combine = a.combine,
-                   ncores = ncores,
-                   a.FUN = a.FUN,
-                   a.combine = a.combine,
-                   block.size = block.size,
-                   ...)
+  big_parallelize(ind = ind,
+                  p.FUN = big_applySeq,
+                  p.combine = a.combine,
+                  ncores = ncores,
+                  a.FUN = a.FUN,
+                  a.combine = a.combine,
+                  block.size = block.size,
+                  ...)
 }
 
 ################################################################################

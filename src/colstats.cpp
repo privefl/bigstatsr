@@ -1,6 +1,6 @@
 /******************************************************************************/
 
-#include <bigstatsr/SubMatAcc.h>
+#include <bigstatsr/BMCodeAcc.h>
 #include <bigstatsr/colstats.hpp>
 
 /******************************************************************************/
@@ -9,7 +9,7 @@
 
 // Dispatch function for bigcolvars
 // [[Rcpp::export]]
-ListOf<NumericVector> bigcolvars(const S4& BM,
+ListOf<NumericVector> bigcolvars(Environment FBM,
                                  const IntegerVector& rowInd,
                                  const IntegerVector& colInd) {
 

@@ -1,7 +1,7 @@
 ################################################################################
 
-univLinReg_sub <- function(X., ind, U, y.train, ind.train) {
-  X <- attach.BM(X.)
+univLinReg_sub <- function(X, ind, U, y.train, ind.train) {
+
   as.data.frame(univLinReg5(X, U, y.train, ind.train, ind))
 }
 
@@ -46,7 +46,7 @@ big_univLinReg <- function(X., y.train,
   K <- sum(eigval.scaled > thr.eigval)
 
   # main computation
-  res <- big_parallelize(X. = X.,
+  res <- big_parallelize(X = X,
                          p.FUN = univLinReg_sub,
                          p.combine = "rbind",
                          ind = ind.col,

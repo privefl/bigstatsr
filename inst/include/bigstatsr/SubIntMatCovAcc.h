@@ -3,7 +3,7 @@
 
 /******************************************************************************/
 
-#include "SubMatCovAcc.h"
+#include <bigstatsr/SubMatCovAcc.h>
 
 /******************************************************************************/
 
@@ -11,13 +11,13 @@
 template<typename T>
 class SubIntMatCovAcc : public SubMatCovAcc<T> {
 public:
-  SubIntMatCovAcc(BigMatrix& bm,
+  SubIntMatCovAcc(const FBM * xpBM,
                   const IntegerVector& row_ind,
                   const NumericMatrix& covar)
-    : SubMatCovAcc<T>(bm, row_ind, covar) {}
+    : SubMatCovAcc<T>(xpBM, row_ind, covar) {}
 
   inline double operator() (int i, int j) {
-    return j == 0 ? 1.0 : SubMatCovAcc<T>::operator()(i, j-1);
+    return j == 0 ? 1.0 : SubMatCovAcc<T>::operator()(i, j - 1);
   }
 
   int ncol() const {
@@ -29,14 +29,14 @@ public:
 
 class RawSubIntMatCovAcc : public RawSubMatCovAcc {
 public:
-  RawSubIntMatCovAcc(BigMatrix& bm,
+  RawSubIntMatCovAcc(const FBM * xpBM,
                      const IntegerVector& row_ind,
                      const NumericMatrix& covar,
-                     const NumericVector& lookup)
-    : RawSubMatCovAcc(bm, row_ind, covar, lookup) {}
+                     const NumericVector& code256)
+    : RawSubMatCovAcc(xpBM, row_ind, covar, code256) {}
 
   inline double operator() (int i, int j) {
-    return j == 0 ? 1.0 : RawSubMatCovAcc::operator()(i, j-1);
+    return j == 0 ? 1.0 : RawSubMatCovAcc::operator()(i, j - 1);
   }
 
   int ncol() const {

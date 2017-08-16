@@ -41,18 +41,17 @@ big_counts <- function(X.code,
                        ind.col = cols_along(X.code),
                        byrow = FALSE) {
 
-  check_args(X.code = "assert_classOrDesc(X.code, 'BM.code')")
+  check_args(X.code = "assert_classOrDesc(X.code, 'FBM.code256')")
 
   code <- X.code@code
   code.uniq <- unique(code)
   ind.code <- match(code, code.uniq)
 
-  X <- attach.BM(X.code)
   if (byrow) {
-    res <- mycount1(X, ind.row, ind.col, ind.code)
+    res <- mycount1(X.code, ind.row, ind.col, ind.code)
     assert_all(colSums(res), length(ind.col))
   } else {
-    res <- mycount2(X, ind.row, ind.col, ind.code)
+    res <- mycount2(X.code, ind.row, ind.col, ind.code)
     assert_all(colSums(res), length(ind.row))
   }
   rownames(res) <- code.uniq

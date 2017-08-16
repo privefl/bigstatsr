@@ -4,9 +4,10 @@
 /******************************************************************************/
 
 #include <RcppArmadillo.h>
-#include "../inst/include/bigstatsr/SubIntMatCovAcc.h"
+#include <bigstatsr/SubIntMatCovAcc.h>
+#include <bigstatsr/types.h>
 #include <math.h>
-#include <time.h>
+// #include <time.h>
 
 /******************************************************************************/
 
@@ -297,7 +298,6 @@ List COPY_sparse_svm(C macc,
                 if (fabs(s[j]) > 1 || (w(j, l) != 0 && s[j] != sign(w(j, l)))) mismatch = 1;
               }
               // Update r, d1, d2 and compute candidate of max_update
-              //Rprintf("l=%d, v1=%lf, v2=%lf, pct=%lf, change = %lf, mismatch = %d\n",l+1,v1,v2,pct,change,mismatch);
               change = w(j, l)-w_old[j];
               if (change>1e-6) {
                 for (i=0; i<n; i++) {
@@ -368,52 +368,34 @@ List COPY_sparse_svm(C macc,
   return List::create(w, iter, lambda, saturated);
 }
 
+/******************************************************************************/
+
+#define SPARSE_SVM(T) {                                                        \
+  return COPY_sparse_svm(                                                      \
+    SubIntMatCovAcc<T>(xpBM, row_idx, covar),                                  \
+    lambda, y, pf, gamma, alpha, thresh, lambda_min,                           \
+    scrflag, dfmax, max_iter, user, message);                                  \
+}
+
 // Dispatch function for COPY_sparse_svm
 // [[Rcpp::export]]
-List COPY_sparse_svm(const S4& BM, const NumericVector& y,
+List COPY_sparse_svm(Environment FBM, const NumericVector& y,
                      const IntegerVector& row_idx,
                      const NumericMatrix& covar, NumericVector& lambda,
                      const NumericVector& pf, double gamma, double alpha,
                      double thresh, double lambda_min,
                      int scrflag, int dfmax, int max_iter, bool user, bool message) {
 
-  XPtr<BigMatrix> xpMat = BM.slot("address");
+  XPtr<BigMatrix> xpBM = FBM["address"];
 
-  if (Rf_inherits(BM, "BM.code")) {
+  if (FBM.exists("code256")) {
     return COPY_sparse_svm(
-      RawSubIntMatCovAcc(*xpMat, row_idx, covar, BM.slot("code")),
+      RawSubIntMatCovAcc(xpBM, row_idx, covar, FBM["code256"]),
       lambda, y, pf, gamma, alpha, thresh, lambda_min,
       scrflag, dfmax, max_iter, user, message);
   } else {
-    switch(xpMat->matrix_type()) {
-    case 1:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<char>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    case 2:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<short>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    case 4:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<int>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    case 6:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<float>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    case 8:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<double>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    default:
-      throw Rcpp::exception(ERROR_TYPE);
-    }
+    int type = xpBM->matrix_type();
+    DISPATCH_TYPE(SPARSE_SVM)
   }
 }
 

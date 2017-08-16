@@ -5,10 +5,6 @@ auc_cpp <- function(x_pos, x_neg) {
     .Call(`_bigstatsr_auc_cpp`, x_pos, x_neg)
 }
 
-getXPtrFBM <- function(desc) {
-    .Call(`_bigstatsr_getXPtrFBM`, desc)
-}
-
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose) {
     .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
 }
@@ -17,8 +13,8 @@ COPY_cdfit_binomial_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale,
     .Call(`_bigstatsr_COPY_cdfit_binomial_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose)
 }
 
-bigcolvars <- function(BM, rowInd, colInd) {
-    .Call(`_bigstatsr_bigcolvars`, BM, rowInd, colInd)
+bigcolvars <- function(x, rowInd, colInd) {
+    .Call(`_bigstatsr_bigcolvars`, x, rowInd, colInd)
 }
 
 mycount1 <- function(BM, rowInd, colInd, codeInd) {
@@ -51,6 +47,10 @@ extractVec <- function(xpbm, elemInd) {
 
 extractMat <- function(xpbm, rowInd, colInd) {
     .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
+}
+
+getXPtrFBM <- function(desc) {
+    .Call(`_bigstatsr_getXPtrFBM`, desc)
 }
 
 pMatVec4 <- function(BM, x, rowInd, colInd) {
