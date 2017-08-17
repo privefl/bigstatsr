@@ -25,12 +25,12 @@ big_copy0 <- function(X, ind.row = rows_along(X),
   opt.save <- options(bigstatsr.typecast.warning = FALSE)
   on.exit(options(opt.save), add = TRUE)
 
-  big_apply2(ind = seq_along(ind.col),
-             a.FUN = function(X, X2, ind, ind.row, ind.col) {
-               X2[, ind] <- X[ind.row, ind.col[ind]]
-               NULL
-             }, a.combine = 'c', block.size = block.size, ncores = ncores,
-             X = X, X2 = res, ind.row = ind.row, ind.col = ind.col)
+  big_apply(ind = seq_along(ind.col),
+            a.FUN = function(X, X2, ind, ind.row, ind.col) {
+              X2[, ind] <- X[ind.row, ind.col[ind]]
+              NULL
+            }, a.combine = 'c', block.size = block.size, ncores = ncores,
+            X = X, X2 = res, ind.row = ind.row, ind.col = ind.col)
 
   res
 }

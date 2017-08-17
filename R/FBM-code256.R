@@ -1,31 +1,35 @@
-#' S4 class BM.code
+################################################################################
+
+#' Class FBM.code256
 #'
-#' A class for storing and accessing up to 256 values using a RAW "big.matrix".
+#' A reference class for storing and accessing up to 256 arbitrary different
+#' values using a Filebacked Big Matrix of type `unsigned char`. Compared to a
+#' [Filebacked Big Matrix][FBM-class], it adds a slot `code` which is used as
+#' a lookup table of size 256.
 #'
-#' Compared to a [big.matrix][big.matrix-class], it adds a slot `code` which
-#' is used as a lookup table of size 256.
-#'
-#' @param x Either a [big.matrix][big.matrix-class] or
-#' a [big.matrix.descriptor][big.matrix.descriptor-class].
-#' @param code A numeric vector of length 256. You should contruct it with
-#' `rep(NA_real_, 256)` and then replace the values
+#' @param x A [FBM.code256][FBM.code256-class].
+#' @param code A numeric vector (of length 256).
+#' You should contruct it with `rep(NA_real_, 256)` and then replace the values
 #' which are of interest for you.
 #'
 #' @examples
-#' X <- big.matrix(10, 10, type = "raw")
+#' X <- FBM(10, 10, type = "raw")
 #' X[] <- sample(as.raw(0:3), size = length(X), replace = TRUE)
-#' X[,]
+#' X[]
 #'
 #' code <- rep(NA_real_, 256)
 #' code[1:3] <- c(1, 3, 5)
 #'
-#' X.code <- as.BM.code(X, code)
-#' X.code[,]
+#' X.code <- add_code256(X, code)
+#' X.code[]
 #'
-#' @aliases BM.code BM.code-class
-#' @rdname BM.code
-#' @exportClass FBM.code256
+#' # Or directly
+#' X.code2 <- FBM.code256(10, 10, code, init = sample(as.raw(0:3), 100, TRUE))
+#' X.code2[]
+#'
 #' @include FBM.R
+#'
+#' @exportClass FBM.code256
 #'
 FBM.code256_RC <- methods::setRefClass(
 
@@ -55,6 +59,12 @@ FBM.code256_RC <- methods::setRefClass(
   )
 )
 
+################################################################################
+
+#' Wrapper constructor for class `FBM.code256`.
+#'
+#' @rdname FBM.code256-class
+#'
 #' @export
 #'
 FBM.code256 <- function(nrow, ncol, code, ...) {
@@ -62,7 +72,12 @@ FBM.code256 <- function(nrow, ncol, code, ...) {
   do.call(FBM.code256_RC$new, args = c(as.list(environment()), list(...)))
 }
 
-#' @exportMethod '['
+#' Accessor method for class `FBM.code256`.
+#'
+#' @rdname FBM.code256-class
+#'
+#' @export
+#'
 setMethod(
   '[', signature(x = "FBM.code256"),
   Extract(
@@ -76,64 +91,39 @@ setMethod(
 )
 
 ################################################################################
-#### Convert to new type ####
 
-# TODO: find a way to keep this
-#' @rdname BM.code
+#' Converter from class `FBM` to `FBM.code256`.
+#'
+#' @rdname FBM.code256-class
+#'
 #' @export
-setGeneric("as.BM.code", function(x, code) standardGeneric("as.BM.code"))
+#'
+add_code256 <- function(x, code, save = FALSE) {
 
-check_BM_code <- function(x, code) {
-  if (typeof(x) != "raw") stop("Your `big.matrix` must be of type 'raw'.")
-  if (length(code) != 256) stop("'code' must be of length 256.")
+  if (x$type != 1)
+    stop2("'x' must be of type 'unsigned char'")
+  # if (length(code) != 256) stop("'code' must be of length 256.")
+
+  FBM.code256_RC$new(
+    nrow = x$nrow,
+    ncol = x$ncol,
+    init = NULL,
+    backingfile = sub("\\.bk$", "", x$backingfile),
+    create_bk = FALSE,
+    save = save,
+    code = code
+  )
 }
 
-#' @rdname BM.code
-#' @export
-setMethod("as.BM.code", signature(x = "big.matrix", code = "numeric"),
-          function(x, code) {
-            check_BM_code(x, code)
-            methods::new("BM.code", address = x@address, code = code)
-          })
-
-#' @rdname BM.code
-#' @export
-setMethod("as.BM.code", signature(x = "big.matrix", code = "missing"),
-          function(x, code) {
-            code <- rep(NA_real_, 256)
-            check_BM_code(x, code)
-            methods::new("BM.code", address = x@address, code = code)
-          })
-
-#' @rdname BM.code
-#' @export
-setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
-                                  code = "numeric"),
-          function(x, code) {
-            check_BM_code(x, code)
-            methods::new("BM.code.descriptor",
-                         description = x@description, code = code)
-          })
-
-#' @rdname BM.code
-#' @export
-setMethod("as.BM.code", signature(x = "big.matrix.descriptor",
-                                  code = "missing"),
-          function(x, code) {
-            code <- rep(NA_real_, 256)
-            check_BM_code(x, code)
-            methods::new("BM.code.descriptor",
-                         description = x@description, code = code)
-          })
 
 # function for tests
-asBMcode <- function(x) {
+asFBMcode <- function(x) {
   x <- round(x + 100)
   tmp <- unique(as.vector(x))
   code <- rep(NA_real_, 256)
   code[tmp + 1] <- tmp - 100
   storage.mode(x) <- "raw"
-  as.BM.code(as.big.matrix(x), code)
+  add_code256(big_copy(x, type = "raw"), code)
 }
 
 ################################################################################

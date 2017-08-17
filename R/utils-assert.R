@@ -43,7 +43,6 @@ check_args <- function(...) {
         ind.col      = "assert_int(ind.col);   assert_pos(ind.col)",
         ncores       = "assert_cores(ncores)",
         fun.scaling  = "assert_args(fun.scaling, c('ind.row', 'ind.col'))",
-        fun.createBM = "assert_args(fun.createBM, c('nrow', 'ncol', 'type'))",
         covar.train  =
           "if (!is.null(covar.train)) assert_class(covar.train, 'matrix')",
         covar.row    =

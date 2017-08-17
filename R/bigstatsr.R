@@ -28,9 +28,6 @@
 #' `mean` and `sd` for every column, to scale each of their elements
 #' such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}
 #'
-#' @param fun.createBM A function that creates a `big.matrix`. It should have
-#' exactly 3 parameters `nrow`, `ncol` and `type`. See [FBM].
-#'
 #' @param covar.train Matrix of covariables to be added in each model to correct
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.train`.
 #' Default is `NULL` and corresponds to only adding an intercept to each model.

@@ -1,5 +1,32 @@
+################################################################################
 
+#' Class FBM
+#'
+#' A reference class for storing and accessing matrix-like data stored in files
+#' on disk. This is very similar to Filebacked Big Matrices provided by the
+#' **bigmemory** package. Yet, the implementation is much more lighter.
+#'
+#' @param x A [FBM.code256][FBM.code256-class].
+#' @param code A numeric vector (of length 256).
+#' You should contruct it with `rep(NA_real_, 256)` and then replace the values
+#' which are of interest for you.
+#'
+#' @examples
+#' X <- FBM(10, 10)
+#' typeof(X)
+#' X[]
+#' X[] <- rnorm(length(X))
+#' X[, 1:6]
+#' X[] <- 1:100
+#' X[, 1]
+#' X[1, ]  # not recommended for large matrices
+#' X[, -1]
+#' X[, c(TRUE, FALSE)]
+#' X[cbind(1:10, 1:10)] <- NA_real_
+#' X[]
+#'
 #' @exportClass FBM
+#'
 FBM_RC <- methods::setRefClass(
 
   "FBM",
@@ -74,9 +101,34 @@ FBM_RC <- methods::setRefClass(
 )
 FBM_RC$lock("nrow", "ncol", "type")
 
+################################################################################
 
-# TODO: change this to FBM afterwards and use dots
+#' Wrapper constructor for class `FBM`.
+#'
+#' @param nrow Number of rows.
+#' @param ncol Number of columns.
+#' @param type Type of the big.matrix (default is `double`). Either
+#' - `"double"`
+#' - `"integer"`
+#' - `"unsigned short"`: can store integer values from 0 to 65535.
+#'   It has vocation to become the basis for a `FBM.code65536` class for
+#'   accessing strings.
+#' - `"raw"` or `"unsigned char"`: can store integer values from 0 to 255.
+#'   It is the basis for the [FBM.code256][FBM.code256-class] class for
+#'   accessing 256 arbitrary different numeric values.
+#'   It is used in [package **bigsnpr**](https://goo.gl/pHCCmo).
+#' @param init Either a single value (e.g. `0`) or as many value as the number
+#'   of elements of the FBM. **Default doesn't initialize the matrix.**
+#' @param backingfile Path to the file storing the Big Matrix on disk.
+#'   An extension ".bk" will be automatically added. Default stores in the
+#'   temporary directory.
+#' @param save Whether to save the result object in an ".rds" file alongside
+#'   the backingfile. Default is `FALSE`.
+#'
+#' @rdname FBM-class
+#'
 #' @export
+#'
 FBM <- function(nrow, ncol,
                 type = c("double", "integer", "unsigned short",
                          "unsigned char", "raw"),
@@ -87,8 +139,18 @@ FBM <- function(nrow, ncol,
   do.call(FBM_RC$new, args = as.list(environment()))
 }
 
-#' @exportMethod '['
+################################################################################
+
+#' Accessor methods for class `FBM`. You can use positive and negative indices,
+#' logical indices (that are recycled) and also a matrix of indices (but only
+#' positive ones).
+#'
+#' @rdname FBM-class
+#'
 #' @include crochet.R
+#'
+#' @export
+#'
 setMethod(
   '[', signature(x = "FBM"),
   Extract(
@@ -97,8 +159,8 @@ setMethod(
   )
 )
 
-#' @exportMethod '[<-'
-#' @include crochet.R
+#' @rdname FBM-class
+#' @export
 setMethod(
   '[<-', signature(x = "FBM"),
   Replace(
@@ -128,27 +190,20 @@ setMethod(
   )
 )
 
+################################################################################
 
-#' @exportMethod dim
-setMethod(
-  "dim", signature(x = "FBM"),
-  function(x) {
-    c(x$nrow, x$ncol)
-  }
-)
-
-#' @exportMethod length
-setMethod(
-  "length", signature(x="FBM"),
-  function(x) {
-    prod(dim(x))
-  }
-)
-
+#' Dimension and type methods for class `FBM`.
+#'
+#' @rdname FBM-class
 #' @export
-setMethod(
-  "typeof", signature(x = "FBM"),
-  function(x) {
-    names(x$type)
-  }
-)
+setMethod("dim",    signature(x = "FBM"), function(x) c(x$nrow, x$ncol))
+
+#' @rdname FBM-class
+#' @export
+setMethod("length", signature(x = "FBM"), function(x) prod(dim(x)))
+
+#' @rdname FBM-class
+#' @export
+setMethod("typeof", signature(x = "FBM"), function(x) names(x$type))
+
+################################################################################

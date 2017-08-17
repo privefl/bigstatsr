@@ -46,7 +46,7 @@ big_readBM <- function(file,
                        read.transfo = identity,
                        BM.type = typeof(read.what),
                        transpose = FALSE,
-                       fun.createBM = BM()) {
+                       ...) {
 
   # get #lines of the file
   if (is.null(file.nline)) file.nline <- get_nline(file)
