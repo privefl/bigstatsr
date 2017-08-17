@@ -9,6 +9,9 @@
 #include <math.h>
 // #include <time.h>
 
+using namespace Rcpp;
+using std::size_t;
+
 /******************************************************************************/
 
 inline double sign(double x) {
@@ -27,10 +30,11 @@ void standardize(C macc,
                  NumericVector &shift,
                  NumericVector &scale,
                  LogicalVector &nonconst) {
-  int n = macc.nrow();
-  int p = macc.ncol();
 
-  int i, j;
+  size_t n = macc.nrow();
+  size_t p = macc.ncol();
+
+  size_t i, j;
   double tmp, xSum, xxSum, csum_pos, csum_neg, mj, sj;
 
   // j == 0 -> intercept
@@ -80,8 +84,8 @@ arma::sp_mat& postprocess(arma::sp_mat &w,
                           const NumericVector &shift,
                           const NumericVector &scale,
                           const LogicalVector &nonconst,
-                          int nlam, int p) {
-  int l, j;
+                          size_t nlam, size_t p) {
+  size_t l, j;
   double prod;
   for (l = 0; l<nlam; l++) {
     prod = 0.0;
@@ -106,21 +110,21 @@ List COPY_sparse_svm(C macc,
                      const NumericVector &y, const NumericVector &pf,
                      double gamma, double alpha,
                      double thresh, double lambda_min,
-                     int scrflag, int dfmax, int max_iter,
+                     int scrflag, size_t dfmax, size_t max_iter,
                      bool user, bool message) {
-  int n = macc.nrow();
-  int p = macc.ncol();
+  size_t n = macc.nrow();
+  size_t p = macc.ncol();
 
   // printf("n = %d ; p = %d\n", n, p); //DEBUG
 
   // returns
-  int nlam = lambda.size();
+  size_t nlam = lambda.size();
   arma::sp_mat w = arma::sp_mat(p, nlam);
   IntegerVector iter(nlam);
   bool saturated = false;
 
   // Declarations
-  int i, j, k, l, lstart, mismatch, nnzero = 0, violations = 0, nv = 0;
+  size_t i, j, k, l, lstart, mismatch, nnzero = 0, violations = 0, nv = 0;
   double gi = 1.0/gamma, pct, lstep, ldiff = 0, lmax, l1, l2, v1, v2, v3,
     tmp, mj, sj, change, max_update, update, scrfactor = 1.0;
   NumericVector sx_pos(p); // column sum of x where y = 1
@@ -250,7 +254,7 @@ List COPY_sparse_svm(C macc,
     while(iter[l] < max_iter) {
       // Check dfmax
       if (nnzero > dfmax) {
-        for (int ll = l; ll<nlam; ll++) iter[ll] = NA_INTEGER;
+        for (size_t ll = l; ll<nlam; ll++) iter[ll] = NA_INTEGER;
         saturated = true;
         break;
       }
@@ -329,7 +333,7 @@ List COPY_sparse_svm(C macc,
             mj = shift[j];
             sj = scale[j];
             // crossprod
-            v1 = 0; for (int i=0;i<n;i++) v1 += (macc(i, j) - mj) / sj * y[i] * d1[i];
+            v1 = 0; for (size_t i=0;i<n;i++) v1 += (macc(i, j) - mj) / sj * y[i] * d1[i];
             v1 = (v1 + syx[j]) / (2.0*n);
             // Check for KKT conditions
             if (fabs(v1)>l1*pf[j]) {
@@ -384,7 +388,7 @@ List COPY_sparse_svm(Environment FBM, const NumericVector& y,
                      const NumericMatrix& covar, NumericVector& lambda,
                      const NumericVector& pf, double gamma, double alpha,
                      double thresh, double lambda_min,
-                     int scrflag, int dfmax, int max_iter, bool user, bool message) {
+                     int scrflag, size_t dfmax, size_t max_iter, bool user, bool message) {
 
   XPtr<BigMatrix> xpBM = FBM["address"];
 

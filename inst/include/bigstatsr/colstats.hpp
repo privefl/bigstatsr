@@ -6,6 +6,7 @@
 #include <Rcpp.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -13,12 +14,12 @@ namespace bigstatsr {
 
 template <class C>
 ListOf<NumericVector> bigcolvars(C macc) {
-  int n = macc.nrow();
-  int m = macc.ncol();
+  size_t n = macc.nrow();
+  size_t m = macc.ncol();
 
   NumericVector res(m), res2(m);
   double x, xSum, xxSum;
-  int i, j;
+  size_t i, j;
 
   for (j = 0; j < m; j++) {
     xSum = xxSum = 0;

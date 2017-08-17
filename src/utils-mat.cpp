@@ -3,6 +3,7 @@
 #include <Rcpp.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -10,17 +11,19 @@ using namespace Rcpp;
 NumericMatrix& scaling(NumericMatrix& source,
                        const NumericVector& mean,
                        const NumericVector& sd) {
-  int n = source.rows();
-  int m = source.cols();
 
-  for (int j = 0; j < m; j++) {
-    for (int i = 0; i < n; i++) {
-      source(i,j) -= mean[j];
-      source(i,j) /= sd[j];
+  size_t n = source.rows();
+  size_t m = source.cols();
+  size_t i, j;
+
+  for (j = 0; j < m; j++) {
+    for (i = 0; i < n; i++) {
+      source(i, j) -= mean[j];
+      source(i, j) /= sd[j];
     }
   }
 
-  return(source);
+  return source;
 }
 
 /******************************************************************************/
@@ -28,8 +31,9 @@ NumericMatrix& scaling(NumericMatrix& source,
 // For a squared matrix
 // [[Rcpp::export]]
 NumericMatrix& complete2(NumericMatrix& mat) {
-  int m = mat.ncol();
-  int i, j;
+
+  size_t m = mat.ncol();
+  size_t i, j;
 
   for (j = 0; j < m; j++)
     for (i = j+1; i < m; i++)
@@ -43,8 +47,9 @@ NumericMatrix& complete2(NumericMatrix& mat) {
 // For a square matrix
 // [[Rcpp::export]]
 NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
-  int m = mat.ncol();
-  int i, j;
+
+  size_t m = mat.ncol();
+  size_t i, j;
 
   for (j = 0; j < m; j++)
     for (i = 0; i <= j; i++)
@@ -60,8 +65,8 @@ NumericMatrix& correlize(NumericMatrix& mat,
                          const NumericVector& shift,
                          const NumericVector& scale) {
 
-  int n = mat.nrow();
-  int i, j;
+  size_t n = mat.nrow();
+  size_t i, j;
 
   for (j = 0; j < n; j++) {
     for (i = 0; i < n; i++) {

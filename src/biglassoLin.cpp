@@ -5,6 +5,7 @@
 #include <bigstatsr/biglasso/linear.hpp>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -22,15 +23,15 @@ List COPY_cdfit_gaussian_hsr(Environment FBM,
                              const IntegerVector& row_idx,
                              const NumericMatrix& covar,
                              NumericVector& lambda,
-                             int L,
-                             int lam_scale,
+                             size_t L,
+                             bool lam_scale,
                              double lambda_min,
                              double alpha,
                              bool user,
                              double eps,
-                             int max_iter,
+                             size_t max_iter,
                              const NumericVector& m,
-                             int dfmax,
+                             size_t dfmax,
                              bool verbose) {
 
   DISPATCH_SUBMATCOVACC(CALL_COPY_CDFIT_GAUSSIAN_HSR)

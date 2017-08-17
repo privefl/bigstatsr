@@ -9,6 +9,7 @@
 #include <RcppArmadillo.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -20,9 +21,9 @@ using namespace bigstatsr::biglassoUtils;
 
 
 // Gaussian loss
-double COPY_gLoss(const NumericVector &r, int n) {
+double COPY_gLoss(const NumericVector& r, size_t n) {
   double l = 0;
-  for (int i = 0; i < n; i++) l += pow(r[i], 2);
+  for (size_t i = 0; i < n; i++) l += pow(r[i], 2);
   return l;
 }
 
@@ -31,26 +32,26 @@ template <class C>
 List COPY_cdfit_gaussian_hsr(C xAcc,
                              const NumericVector &y,
                              NumericVector &lambda,
-                             int L,
-                             int lam_scale,
+                             size_t L,
+                             bool lam_scale,
                              double lambda_min,
                              double alpha,
                              bool user,
                              double eps,
-                             int max_iter,
+                             size_t max_iter,
                              const NumericVector &m,
-                             int dfmax,
+                             size_t dfmax,
                              bool verbose) {
-  int n = xAcc.nrow(); // number of observations used for fitting model
-  int p = xAcc.ncol();
+  size_t n = xAcc.nrow(); // number of observations used for fitting model
+  size_t p = xAcc.ncol();
   // printf("p = %d\n", p); //DEBUG
 
   NumericVector center(p);
   NumericVector scale(p);
-  std::vector<int> col_idx;
+  std::vector<size_t> col_idx;
   std::vector<double> z;
 
-  int p_keep = 0; // keep columns whose scale > 1e-6
+  size_t p_keep = 0; // keep columns whose scale > 1e-6
   double lambda_max = 0.0;
 
   print_time(verbose);
@@ -74,7 +75,7 @@ List COPY_cdfit_gaussian_hsr(C xAcc,
 
   double l1, l2, cutoff, shift, lam_l;
   double max_update, update, thresh, shift_scaled, cpsum;
-  int i, j, jj, l, ll, violations, lstart;
+  size_t i, j, jj, l, ll, violations, lstart;
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);

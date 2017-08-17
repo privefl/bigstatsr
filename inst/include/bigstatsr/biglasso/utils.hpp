@@ -32,20 +32,20 @@ void print_time(bool verbose, bool end = false, int l = -1) {
 
 // standardize
 template <class C>
-void COPY_standardize_and_get_residual(NumericVector &center,
-                                       NumericVector &scale,
-                                       int *p_keep_ptr,
-                                       std::vector<int> &col_idx, //columns to keep, removing columns whose scale < 1e-6
-                                       std::vector<double> &z,
-                                       double *lambda_max_ptr,
+void COPY_standardize_and_get_residual(NumericVector& center,
+                                       NumericVector& scale,
+                                       size_t * p_keep_ptr,
+                                       std::vector<size_t>& col_idx, //columns to keep, removing columns whose scale < 1e-6
+                                       std::vector<double>& z,
+                                       double * lambda_max_ptr,
                                        C xAcc,
-                                       const NumericVector &y,
+                                       const NumericVector& y,
                                        double lambda_min,
                                        double alpha,
-                                       int n, int p) {
+                                       size_t n, size_t p) {
   double tmp, sum_xy;
   double zmax = 0.0, zj = 0.0;
-  int i, j;
+  size_t i, j;
 
   double sum_y = Rcpp::sum(y);
 
@@ -87,14 +87,20 @@ inline double COPY_lasso(double z, double l1, double l2, double v) {
 
 // check KKT conditions over features in the strong set
 template <class C>
-int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, std::vector<double> &z,
-                          C xAcc, const NumericVector &beta_old,
-                          const std::vector<int> &col_idx,
-                          const NumericVector &center, const NumericVector &scale,
-                          double lambda, double sumResid, double alpha,
-                          const NumericVector &r, const NumericVector &m, int n, int p) {
+size_t COPY_check_strong_set(LogicalVector& in_A,
+                             const LogicalVector& in_S,
+                             std::vector<double>& z,
+                             C xAcc,
+                             const NumericVector& beta_old,
+                             const std::vector<size_t>& col_idx,
+                             const NumericVector& center,
+                             const NumericVector& scale,
+                             double lambda, double sumResid, double alpha,
+                             const NumericVector& r,
+                             const NumericVector& m,
+                             size_t n, size_t p) {
   double sum, l1, l2;
-  int i, j, jj, violations = 0;
+  size_t i, j, jj, violations = 0;
 
   for (j = 0; j < p; j++) {
     if (!in_A[j] && in_S[j]) {
@@ -118,14 +124,20 @@ int COPY_check_strong_set(LogicalVector &in_A, const LogicalVector &in_S, std::v
 
 // check KKT conditions over features in the rest set
 template <class C>
-int COPY_check_rest_set(LogicalVector &in_A, LogicalVector &in_S, std::vector<double> &z,
-                        C xAcc, const NumericVector &beta_old,
-                        const std::vector<int> &col_idx,
-                        const NumericVector &center, const NumericVector &scale,
-                        double lambda, double sumResid, double alpha,
-                        const NumericVector &r, const NumericVector &m, int n, int p) {
+size_t COPY_check_rest_set(LogicalVector& in_A,
+                           LogicalVector& in_S,
+                           std::vector<double>& z,
+                           C xAcc,
+                           const NumericVector& beta_old,
+                           const std::vector<size_t>& col_idx,
+                           const NumericVector& center,
+                           const NumericVector& scale,
+                           double lambda, double sumResid, double alpha,
+                           const NumericVector& r,
+                           const NumericVector& m,
+                           size_t n, size_t p) {
   double sum, l1, l2;
-  int i, j, jj, violations = 0;
+  size_t i, j, jj, violations = 0;
 
   for (j = 0; j < p; j++) {
     if (!in_S[j]) {

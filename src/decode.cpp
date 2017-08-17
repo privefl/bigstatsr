@@ -3,14 +3,16 @@
 #include <Rcpp.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
 // [[Rcpp::export]]
 NumericMatrix decodeMat(const RawMatrix& source, const NumericVector& code) {
-  int n = source.nrow();
-  int m = source.ncol();
-  int i, j;
+
+  size_t n = source.nrow();
+  size_t m = source.ncol();
+  size_t i, j;
 
   NumericMatrix res(n, m);
 
@@ -25,11 +27,12 @@ NumericMatrix decodeMat(const RawMatrix& source, const NumericVector& code) {
 
 // [[Rcpp::export]]
 NumericVector decodeVec(const RawVector& source, const NumericVector& code) {
-  int n = source.size();
+
+  size_t n = source.size();
 
   NumericVector res(n);
 
-  for (int i = 0; i < n; i++)
+  for (size_t i = 0; i < n; i++)
     res[i] = code[source[i]];
 
   return res;

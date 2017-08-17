@@ -22,7 +22,7 @@ List IRLS(Environment FBM,
           const IntegerVector& rowInd,
           const IntegerVector& colInd,
           double tol,
-          int maxiter) {
+          std::size_t maxiter) {
 
   DISPATCH_SUBMATACC(CALL_IRLS)
 }

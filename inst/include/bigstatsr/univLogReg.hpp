@@ -6,6 +6,7 @@
 #include <RcppArmadillo.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -14,8 +15,8 @@ namespace bigstatsr {
 arma::mat& getXtW(const arma::mat& covar,
                   const arma::vec& w,
                   arma::mat& tcovar,
-                  int n, int K) {
-  int i, k;
+                  size_t n, size_t K) {
+  size_t i, k;
 
   for (i = 0; i < n; i++) {
     for (k = 0; k < K; k++) {
@@ -35,18 +36,18 @@ List IRLS(C macc,
           const arma::vec &z0,
           const arma::vec &w0,
           double tol,
-          int maxiter) {
+          size_t maxiter) {
 
-  int n = macc.nrow();
-  int m = macc.ncol();
-  int K = covar.n_cols;
-  myassert((int)covar.n_rows == n, ERROR_DIM);
-  myassert((int)y.n_elem == n, ERROR_DIM);
+  size_t n = macc.nrow();
+  size_t m = macc.ncol();
+  size_t K = covar.n_cols;
+  myassert(covar.n_rows == n, ERROR_DIM);
+  myassert(y.n_elem == n, ERROR_DIM);
 
   arma::mat tcovar(K, n), tmp(K, K);
   arma::vec Xb(n), p(n), w(n), z(n), betas_old(K), betas_new(K);
   double diff;
-  int i, j, c;
+  size_t i, j, c;
 
   NumericVector beta(m), var(m);
   IntegerVector niter(m);

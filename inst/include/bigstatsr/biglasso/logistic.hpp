@@ -9,6 +9,7 @@
 #include <RcppArmadillo.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -22,12 +23,12 @@ using namespace bigstatsr::biglassoUtils;
 /******************************************************************************/
 
 template <class C>
-void COPY_update_resid_eta(NumericVector &r, NumericVector &eta,
-                           C xAcc, int jj, double shift,
-                           double center_, double scale_, int n) {
+void COPY_update_resid_eta(NumericVector& r, NumericVector& eta,
+                           C xAcc, size_t jj, double shift,
+                           double center_, double scale_, size_t n) {
   double shift_scaled = shift / scale_;
   double si;
-  for (int i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++) {
     si = shift_scaled * (xAcc(i, jj) - center_);
     r[i] -= si;
     eta[i] += si;
@@ -35,9 +36,9 @@ void COPY_update_resid_eta(NumericVector &r, NumericVector &eta,
 }
 
 // Weighted mean
-double COPY_wmean(const NumericVector &r, const NumericVector &w, int n) {
+double COPY_wmean(const NumericVector &r, const NumericVector &w, size_t n) {
   double rw_sum = 0, w_sum = 0;
-  for (int i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++) {
     w_sum += w[i];
     rw_sum += r[i] * w[i];
   }
@@ -45,9 +46,9 @@ double COPY_wmean(const NumericVector &r, const NumericVector &w, int n) {
 }
 
 // Weighted sum
-double COPY_wsum(const NumericVector &r, const NumericVector &w, int n) {
+double COPY_wsum(const NumericVector &r, const NumericVector &w, size_t n) {
   double rw_sum = 0;
-  for (int i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++) {
     rw_sum += r[i] * w[i];
   }
   return rw_sum;
@@ -59,19 +60,19 @@ template <class C>
 List COPY_cdfit_binomial_hsr(C xAcc,
                              const NumericVector& y,
                              NumericVector& lambda,
-                             int L,
-                             int lam_scale,
+                             size_t L,
+                             bool lam_scale,
                              double lambda_min,
                              double alpha,
                              bool user,
                              double eps,
-                             int max_iter,
+                             size_t max_iter,
                              const NumericVector& m,
-                             int dfmax,
+                             size_t dfmax,
                              bool warn,
                              bool verbose) {
-  int n = xAcc.nrow(); // number of observations used for fitting model
-  int p = xAcc.ncol();
+  size_t n = xAcc.nrow(); // number of observations used for fitting model
+  size_t p = xAcc.ncol();
 
   NumericVector Dev(L);
   IntegerVector iter(L);
@@ -79,10 +80,10 @@ List COPY_cdfit_binomial_hsr(C xAcc,
   NumericVector beta0(L);
   NumericVector center(p);
   NumericVector scale(p);
-  std::vector<int> col_idx;
+  std::vector<size_t> col_idx;
   std::vector<double> z;
 
-  int p_keep = 0; // keep columns whose scale > 1e-6
+  size_t p_keep = 0; // keep columns whose scale > 1e-6
   double lambda_max = 0.0;
 
   print_time(verbose);
@@ -106,7 +107,7 @@ List COPY_cdfit_binomial_hsr(C xAcc,
   double xwr, pi, u, v, cutoff, l1, l2, shift, si, lam_l;
   double sum_wx_sq, sum_wx, sum_w, tmp, tmp2;
   double max_update, update, thresh; // for convergence check
-  int i, j, jj, l, ll, violations, lstart;
+  size_t i, j, jj, l, ll, violations, lstart;
 
   double ybar = Rcpp::sum(y) / n;
   beta_old0 = beta0[0] = log(ybar / (1-ybar));
