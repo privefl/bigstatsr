@@ -14,7 +14,7 @@ using namespace Rcpp;
 
 // Dispatch function for IRLS
 // [[Rcpp::export]]
-List IRLS(Environment FBM,
+List IRLS(Environment BM,
           arma::mat& covar,
           const arma::vec& y,
           const arma::vec& z0,

@@ -9,12 +9,12 @@ using std::size_t;
 
 // counts by rows
 // [[Rcpp::export]]
-IntegerMatrix mycount1(Environment FBM,
+IntegerMatrix mycount1(Environment BM,
                        const IntegerVector& rowInd,
                        const IntegerVector& colInd,
                        const IntegerVector& codeInd) {
 
-  XPtr<BigMatrix> xpBM = FBM["address"];
+  XPtr<BigMatrix> xpBM = BM["address"];
   SubBMAcc<unsigned char> macc(xpBM, rowInd-1, colInd-1);
 
   size_t n = macc.nrow();
@@ -39,12 +39,12 @@ IntegerMatrix mycount1(Environment FBM,
 
 // counts by columns
 // [[Rcpp::export]]
-IntegerMatrix mycount2(Environment FBM,
+IntegerMatrix mycount2(Environment BM,
                        const IntegerVector& rowInd,
                        const IntegerVector& colInd,
                        const IntegerVector& codeInd) {
 
-  XPtr<BigMatrix> xpBM = FBM["address"];
+  XPtr<BigMatrix> xpBM = BM["address"];
   SubBMAcc<unsigned char> macc(xpBM, rowInd-1, colInd-1);
 
   size_t n = macc.nrow();

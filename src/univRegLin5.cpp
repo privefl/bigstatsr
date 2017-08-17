@@ -12,7 +12,7 @@ using namespace Rcpp;
 
 // Dispatch function for univLinReg5
 // [[Rcpp::export]]
-List univLinReg5(Environment FBM,
+List univLinReg5(Environment BM,
                  const arma::mat& covar_U,
                  const arma::vec& y,
                  const IntegerVector& rowInd,

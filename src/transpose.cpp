@@ -46,10 +46,10 @@ void transpose3(BMAcc<T> macc, BMAcc<T> macc2) {
 
 // Dispatch function for transpose3
 // [[Rcpp::export]]
-void transpose3(Environment FBM, Environment FBM2) {
+void transpose3(Environment BM, Environment BM2) {
 
-  XPtr<BigMatrix> xpBM  = FBM["address"];
-  XPtr<BigMatrix> xpBM2 = FBM2["address"];
+  XPtr<BigMatrix> xpBM  = BM["address"];
+  XPtr<BigMatrix> xpBM2 = BM2["address"];
 
   int type = xpBM->matrix_type();
   DISPATCH_TYPE(TRANSPOSE)

@@ -11,7 +11,7 @@ using namespace Rcpp;
 
 // Dispatch function for pMatVec4
 // [[Rcpp::export]]
-NumericVector pMatVec4(Environment FBM,
+NumericVector pMatVec4(Environment BM,
                        const NumericVector& x,
                        const IntegerVector& rowInd,
                        const IntegerVector& colInd) {
@@ -27,7 +27,7 @@ NumericVector pMatVec4(Environment FBM,
 
 // Dispatch function for cpMatVec4
 // [[Rcpp::export]]
-NumericVector cpMatVec4(Environment FBM,
+NumericVector cpMatVec4(Environment BM,
                         const NumericVector& x,
                         const IntegerVector& rowInd,
                         const IntegerVector& colInd) {

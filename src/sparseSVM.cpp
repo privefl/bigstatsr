@@ -383,18 +383,18 @@ List COPY_sparse_svm(C macc,
 
 // Dispatch function for COPY_sparse_svm
 // [[Rcpp::export]]
-List COPY_sparse_svm(Environment FBM, const NumericVector& y,
+List COPY_sparse_svm(Environment BM, const NumericVector& y,
                      const IntegerVector& row_idx,
                      const NumericMatrix& covar, NumericVector& lambda,
                      const NumericVector& pf, double gamma, double alpha,
                      double thresh, double lambda_min,
                      int scrflag, size_t dfmax, size_t max_iter, bool user, bool message) {
 
-  XPtr<BigMatrix> xpBM = FBM["address"];
+  XPtr<BigMatrix> xpBM = BM["address"];
 
-  if (FBM.exists("code256")) {
+  if (BM.exists("code256")) {
     return COPY_sparse_svm(
-      RawSubIntMatCovAcc(xpBM, row_idx, covar, FBM["code256"]),
+      RawSubIntMatCovAcc(xpBM, row_idx, covar, BM["code256"]),
       lambda, y, pf, gamma, alpha, thresh, lambda_min,
       scrflag, dfmax, max_iter, user, message);
   } else {

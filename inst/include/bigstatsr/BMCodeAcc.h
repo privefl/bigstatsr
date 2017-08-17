@@ -32,15 +32,15 @@ protected:
 /******************************************************************************/
 
 #define SUBMATACC(T) SubBMAcc<T>(xpBM, rows, cols)
-#define RAWSUBMATACC SubBMCode256Acc(xpBM, rows, cols, FBM["code256"])
+#define RAWSUBMATACC SubBMCode256Acc(xpBM, rows, cols, BM["code256"])
 
 #define DISPATCH_SUBMATACC(CALL) {                                             \
                                                                                \
-  XPtr<FBM> xpBM = FBM["address"];                                               \
+  XPtr<FBM> xpBM = BM["address"];                                               \
   IntegerVector rows = rowInd - 1;                                             \
   IntegerVector cols = colInd - 1;                                             \
                                                                                \
-  if (FBM.exists("code256")) {                                                   \
+  if (BM.exists("code256")) {                                                   \
     CALL(RAWSUBMATACC);                                                        \
   } else {                                                                     \
     switch(xpBM->matrix_type()) {                                              \

@@ -18,7 +18,7 @@ using std::size_t;
 
 // Dispatch function for COPY_cdfit_gaussian_hsr
 // [[Rcpp::export]]
-List COPY_cdfit_gaussian_hsr(Environment FBM,
+List COPY_cdfit_gaussian_hsr(Environment BM,
                              const NumericVector& y,
                              const IntegerVector& row_idx,
                              const NumericMatrix& covar,

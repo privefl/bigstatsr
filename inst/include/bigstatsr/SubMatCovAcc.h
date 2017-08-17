@@ -12,14 +12,14 @@ using std::size_t;
 /******************************************************************************/
 
 #define SUBMATCOVACC(T) SubMatCovAcc<T>(xpBM, rows, covar)
-#define RAWSUBMATCOVACC RawSubMatCovAcc(xpBM, rows, covar, FBM["code256"])
+#define RAWSUBMATCOVACC RawSubMatCovAcc(xpBM, rows, covar, BM["code256"])
 
 #define DISPATCH_SUBMATCOVACC(CALL) {                                          \
                                                                                \
-  XPtr<FBM> xpBM = FBM["address"];                                             \
+  XPtr<FBM> xpBM = BM["address"];                                             \
   IntegerVector rows = row_idx - 1;                                            \
                                                                                \
-  if (FBM.exists("code256")) {                                                 \
+  if (BM.exists("code256")) {                                                 \
     CALL(RAWSUBMATCOVACC);                                                     \
   } else {                                                                     \
     switch(xpBM->matrix_type()) {                                              \

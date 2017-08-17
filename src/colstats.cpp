@@ -9,7 +9,7 @@
 
 // Dispatch function for bigcolvars
 // [[Rcpp::export]]
-ListOf<NumericVector> bigcolvars(Environment FBM,
+ListOf<NumericVector> bigcolvars(Environment BM,
                                  const IntegerVector& rowInd,
                                  const IntegerVector& colInd) {
 
