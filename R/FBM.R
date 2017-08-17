@@ -26,7 +26,7 @@ FBM_RC <- methods::setRefClass(
         type        = .self$type
       )
     }
-    ),
+  ),
 
   methods = list(
     initialize = function(nrow, ncol,
@@ -34,13 +34,19 @@ FBM_RC <- methods::setRefClass(
                                    "unsigned char", "raw"),
                           init = NULL,
                           backingfile = tempfile(),
+                          create_bk = TRUE,
                           save = FALSE) {
 
       c(nrow, ncol)  # check they are not missing
       typeBM <- match.arg(type)
       bkfile <- path.expand(paste0(backingfile, ".bk"))
 
-      createFile(bkfile, nrow, ncol, ALL.TYPES[[typeBM]])
+      if (create_bk) {
+        assert_noexist(bkfile)
+        createFile(bkfile, nrow, ncol, ALL.TYPES[[typeBM]])
+      } else {  # already exists
+        assert_exist(bkfile)
+      }
 
       .self$backingfile <- normalizePath(bkfile)
       .self$nrow        <- as.integer(nrow)
@@ -71,12 +77,12 @@ FBM_RC$lock("nrow", "ncol", "type")
 
 # TODO: change this to FBM afterwards and use dots
 #' @export
-new_FBM <- function(nrow, ncol,
-                    type = c("double", "integer", "unsigned short",
-                             "unsigned char", "raw"),
-                    init = NULL,
-                    backingfile = tempfile(),
-                    save = FALSE) {
+FBM <- function(nrow, ncol,
+                type = c("double", "integer", "unsigned short",
+                         "unsigned char", "raw"),
+                init = NULL,
+                backingfile = tempfile(),
+                save = FALSE) {
 
   do.call(FBM_RC$new, args = as.list(environment()))
 }
@@ -126,30 +132,23 @@ setMethod(
 #' @exportMethod dim
 setMethod(
   "dim", signature(x = "FBM"),
-          function(x) {
-            c(x$nrow, x$ncol)
-          }
-  )
+  function(x) {
+    c(x$nrow, x$ncol)
+  }
+)
 
 #' @exportMethod length
 setMethod(
   "length", signature(x="FBM"),
-          function(x) {
-            prod(dim(x))
-          }
-  )
+  function(x) {
+    prod(dim(x))
+  }
+)
 
 #' @export
 setMethod(
   "typeof", signature(x = "FBM"),
-          function(x) {
-            names(x$type)
-          }
-  )
-
-#' @exportMethod as.matrix
-setMethod(
-  "as.matrix", signature(x = "FBM"),
-  function(x) as(x, "matrix")
-  )
-setAs("FBM", "matrix", function(from) from[])
+  function(x) {
+    names(x$type)
+  }
+)

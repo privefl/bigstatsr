@@ -4,12 +4,11 @@
 \alias{big_cor}
 \title{Correlation}
 \usage{
-big_cor(X., ind.row = rows_along(X.), ind.col = cols_along(X.),
+big_cor(X, ind.row = rows_along(X), ind.col = cols_along(X),
   block.size = 1000)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}

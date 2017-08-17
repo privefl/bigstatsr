@@ -4,13 +4,12 @@
 \alias{big_randomSVD}
 \title{Randomized partial SVD}
 \usage{
-big_randomSVD(X., fun.scaling, ind.row = rows_along(X.),
-  ind.col = cols_along(X.), k = 10, tol = 1e-04, verbose = FALSE,
+big_randomSVD(X, fun.scaling, ind.row = rows_along(X),
+  ind.col = cols_along(X), k = 10, tol = 1e-04, verbose = FALSE,
   ncores = 1)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements

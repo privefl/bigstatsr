@@ -4,12 +4,11 @@
 \alias{big_spLogReg}
 \title{Sparse logistic regression}
 \usage{
-big_spLogReg(X., y01.train, ind.train = rows_along(X.), covar.train = NULL,
+big_spLogReg(X, y01.train, ind.train = rows_along(X), covar.train = NULL,
   ...)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 \strong{Must be only 0s and 1s.}}

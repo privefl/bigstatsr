@@ -1,6 +1,7 @@
 /******************************************************************************/
 
 #include <bigstatsr/BMAcc.h>
+#include <bigstatsr/types.h>
 
 using std::size_t;
 
@@ -48,8 +49,8 @@ void transpose3(BMAcc<T> macc, BMAcc<T> macc2) {
 // [[Rcpp::export]]
 void transpose3(Environment BM, Environment BM2) {
 
-  XPtr<BigMatrix> xpBM  = BM["address"];
-  XPtr<BigMatrix> xpBM2 = BM2["address"];
+  XPtr<FBM> xpBM  = BM["address"];
+  XPtr<FBM> xpBM2 = BM2["address"];
 
   int type = xpBM->matrix_type();
   DISPATCH_TYPE(TRANSPOSE)

@@ -6,15 +6,9 @@
 \alias{bigstatsr-package}
 \title{bigstatsr: Statistical Tools for Bigmemory Matrices}
 \arguments{
-\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+\item{X}{A \link{FBM}.}
 
-\item{X.desc}{A \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
-
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
-
-\item{X.code}{Either a \link[=BM.code-class]{BM.code} or
-a \link[=BM.code.descriptor-class]{BM.code.descriptor}.}
+\item{X.code}{A \link{FBM.code256}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 

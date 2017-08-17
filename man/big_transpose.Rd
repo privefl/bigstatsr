@@ -4,14 +4,10 @@
 \alias{big_transpose}
 \title{Transposition}
 \usage{
-big_transpose(X., fun.createBM = BM())
+big_transpose(X, ...)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
-
-\item{fun.createBM}{A function that creates a \code{big.matrix}. It should have
-exactly 3 parameters \code{nrow}, \code{ncol} and \code{type}. See \link{FBM}.}
+\item{X}{A \link{FBM}.}
 }
 \value{
 The new transposed \code{big.matrix} (or its descriptor). Its dimensions

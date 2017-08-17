@@ -4,12 +4,11 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X., a.FUN, a.combine, ncores = 1, block.size = 1000,
-  ind = cols_along(X.), ...)
+big_apply(ind, a.FUN, a.combine, ncores = 1, block.size = 1000, ...)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{ind}{Initial vector of subsetting indices.
+Default is the vector of all column indices.}
 
 \item{a.FUN}{The function to be applied to each subset matrix.
 It must take a \code{big.matrix} as first argument and \code{ind}, a vector of
@@ -29,9 +28,6 @@ We advise you to use only half of the cores you have.}
 
 \item{block.size}{Maximum number of columns (or rows, depending on how you
 use \code{ind} for subsetting) read at once. Default is \code{1000}.}
-
-\item{ind}{Initial vector of subsetting indices.
-Default is the vector of all column indices.}
 
 \item{...}{Extra arguments to be passed to \code{a.FUN}.}
 }

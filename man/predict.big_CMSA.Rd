@@ -4,14 +4,13 @@
 \alias{predict.big_CMSA}
 \title{Predict method}
 \usage{
-\method{predict}{big_CMSA}(object, X., ind.row = rows_along(X.),
-  covar.row = NULL, block.size = 1000, ...)
+\method{predict}{big_CMSA}(object, X, ind.row = rows_along(X),
+  covar.row = NULL, ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_CMSA}.}
 
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
@@ -19,8 +18,6 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{covar.row}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
-
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
 
 \item{...}{Not used.}
 }

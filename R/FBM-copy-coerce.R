@@ -13,7 +13,7 @@ big_copy0 <- function(X, ind.row = rows_along(X),
                       ncores = 1,
                       warn = TRUE) {
 
-  res <- new_FBM(
+  res <- FBM(
     nrow = length(ind.row),
     ncol = length(ind.col),
     init = NULL,
@@ -68,3 +68,9 @@ setMethod(
   }
 )
 
+#' @exportMethod as.matrix
+setMethod(
+  "as.matrix", signature(x = "FBM"),
+  function(x) as(x, "matrix")
+)
+setAs("FBM", "matrix", function(from) from[])

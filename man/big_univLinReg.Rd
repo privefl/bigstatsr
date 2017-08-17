@@ -9,9 +9,6 @@ big_univLinReg(X., y.train, ind.train = rows_along(X.),
   thr.eigval = 1e-04)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
-
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,

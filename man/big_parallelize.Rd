@@ -4,11 +4,11 @@
 \alias{big_parallelize}
 \title{Split-parApply-Combine}
 \usage{
-big_parallelize(X., p.FUN, p.combine, ncores, ind = cols_along(X.), ...)
+big_parallelize(ind, p.FUN, p.combine, ncores = ncores(), ...)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{ind}{Initial vector of subsetting indices.
+Default is the vector of all column indices.}
 
 \item{p.FUN}{The function to be applied. It must take a
 \link[=big.matrix.descriptor-class]{big.matrix.descriptor} as first argument
@@ -23,9 +23,6 @@ used to process numeric data. By default, the results are returned in a list.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.
 We advise you to use only half of the cores you have.}
-
-\item{ind}{Initial vector of subsetting indices.
-Default is the vector of all column indices.}
 
 \item{...}{Extra arguments to be passed to \code{p.FUN}.}
 }

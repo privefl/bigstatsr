@@ -4,14 +4,13 @@
 \alias{predict.big_SVD}
 \title{Scores of PCA}
 \usage{
-\method{predict}{big_SVD}(object, X. = NULL, ind.row = rows_along(X.),
-  ind.col = cols_along(X.), block.size = 1000, ...)
+\method{predict}{big_SVD}(object, X = NULL, ind.row = rows_along(X),
+  ind.col = cols_along(X), block.size = 1000, ...)
 }
 \arguments{
 \item{object}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
 
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}

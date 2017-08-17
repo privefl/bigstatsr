@@ -4,11 +4,10 @@
 \alias{big_prodVec}
 \title{Product with a vector}
 \usage{
-big_prodVec(X., y.col, ind.row = rows_along(X.), ind.col = cols_along(X.))
+big_prodVec(X, y.col, ind.row = rows_along(X), ind.col = cols_along(X))
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{y.col}{A vector of same size as \code{ind.col}.}
 

@@ -7,7 +7,7 @@
 big_colstats(X, ind.row = rows_along(X), ind.col = cols_along(X))
 }
 \arguments{
-\item{X}{A \link[=big.matrix-class]{big.matrix}.}
+\item{X}{A \link{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}

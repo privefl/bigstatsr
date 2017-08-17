@@ -3,20 +3,20 @@
 \name{big_attach}
 \alias{big_attach}
 \alias{big_attachExtdata}
-\title{Attach a "big.matrix.descriptor"}
+\title{Attach a Filebacked Big Matrix}
 \usage{
-big_attach(descriptorfile)
+big_attach(rdsfile)
 
 big_attachExtdata()
 }
 \arguments{
-\item{descriptorfile}{Path to a ".desc" file.}
+\item{rdsfile}{Path to a ".rds" file.}
 }
 \value{
-A \link[=big.matrix.descriptor-class]{big.matrix.descriptor} object.
+The \link{FBM} object stored in the rdsfile.
 }
 \description{
-Attach a "big.matrix.descriptor"
+Attach a Filebacked Big Matrix
 }
 \examples{
 # tmpFBM

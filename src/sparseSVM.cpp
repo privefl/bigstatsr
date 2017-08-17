@@ -390,7 +390,7 @@ List COPY_sparse_svm(Environment BM, const NumericVector& y,
                      double thresh, double lambda_min,
                      int scrflag, size_t dfmax, size_t max_iter, bool user, bool message) {
 
-  XPtr<BigMatrix> xpBM = BM["address"];
+  XPtr<FBM> xpBM = BM["address"];
 
   if (BM.exists("code256")) {
     return COPY_sparse_svm(

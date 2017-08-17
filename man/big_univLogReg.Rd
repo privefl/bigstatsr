@@ -4,13 +4,12 @@
 \alias{big_univLogReg}
 \title{Column-wise logistic regression}
 \usage{
-big_univLogReg(X., y01.train, ind.train = rows_along(X.),
-  ind.col = cols_along(X.), covar.train = NULL, ncores = 1, tol = 1e-08,
+big_univLogReg(X, y01.train, ind.train = rows_along(X),
+  ind.col = cols_along(X), covar.train = NULL, ncores = 1, tol = 1e-08,
   maxiter = 20)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 \strong{Must be only 0s and 1s.}}

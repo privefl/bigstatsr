@@ -4,14 +4,13 @@
 \alias{predict.big_sp}
 \title{Predict method}
 \usage{
-\method{predict}{big_sp}(object, X., ind.row = rows_along(X.),
+\method{predict}{big_sp}(object, X, ind.row = rows_along(X),
   covar.row = NULL, block.size = 1000, ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp}.}
 
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}

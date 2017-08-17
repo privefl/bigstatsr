@@ -4,12 +4,11 @@
 \alias{big_SVD}
 \title{Partial SVD}
 \usage{
-big_SVD(X., fun.scaling, ind.row = rows_along(X.), ind.col = cols_along(X.),
+big_SVD(X, fun.scaling, ind.row = rows_along(X), ind.col = cols_along(X),
   k = 10, block.size = 1000)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements

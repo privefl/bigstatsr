@@ -4,12 +4,11 @@
 \alias{big_prodMat}
 \title{Product with a matrix}
 \usage{
-big_prodMat(X., A.col, ind.row = rows_along(X.), ind.col = cols_along(X.),
+big_prodMat(X, A.col, ind.row = rows_along(X), ind.col = cols_along(X),
   block.size = 1000, ncores = 1)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link{FBM}.}
 
 \item{A.col}{A matrix with \code{length(ind.col)} rows.}
 
