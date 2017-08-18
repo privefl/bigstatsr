@@ -4,8 +4,8 @@
 \alias{big_crossprodSelf}
 \title{Crossprod}
 \usage{
-big_crossprodSelf(X, fun.scaling, ind.row = rows_along(X.),
-  ind.col = cols_along(X.), block.size = 1000)
+big_crossprodSelf(X, fun.scaling, ind.row = rows_along(X),
+  ind.col = cols_along(X), block.size = 1000)
 }
 \arguments{
 \item{X}{A \link{FBM}.}
@@ -30,7 +30,7 @@ A matrix, \eqn{X.row^T X.row}, with the following two attributes:
 }
 }
 \description{
-Compute \eqn{X.row^T X.row} for a \code{big.matrix} \code{X}
+Compute \eqn{X.row^T X.row} for a Filebacked Big Matrix \code{X}
 after applying a particular scaling to it.
 }
 \details{
@@ -38,24 +38,23 @@ This algorithm is not really memory efficient. I'm planning on fixing this,
 if it is really needed.
 }
 \examples{
-X.desc <- big_attachExtdata()
+X <- big_attachExtdata()
 
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)
-K <- big_crossprodSelf(X.desc, fun.scaling = big_noscale)
+K <- big_crossprodSelf(X, fun.scaling = big_noscale)
 dim(K)
 
-true <- crossprod(attach.BM(X.desc)[,])
+true <- crossprod(X[])
 all.equal(K, true, check.attributes = FALSE)
 
 # Using only half of the data
-n <- nrow(X.desc)
+n <- nrow(X)
 ind <- sort(sample(n, n/2))
-K2 <- big_crossprodSelf(X.desc, fun.scaling = big_noscale,
-                           ind.row = ind)
+K2 <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.row = ind)
 dim(K2)
 
-true2 <- crossprod(attach.BM(X.desc)[ind, ])
+true2 <- crossprod(X[ind, ])
 all.equal(K2, true2, check.attributes = FALSE)
 
 

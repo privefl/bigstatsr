@@ -16,9 +16,9 @@ FBM(nrow, ncol, type = c("double", "integer", "unsigned short",
   "unsigned char", "raw"), init = NULL, backingfile = tempfile(),
   save = FALSE)
 
-\S4method{[}{FBM,ANY,ANY,ANY}(x, i, j, drop = TRUE)
+\S4method{[}{FBM,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{FBM,ANY,ANY,ANY}(x, i, j) <- value
+\S4method{[}{FBM,ANY,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{dim}{FBM}(x)
 
@@ -31,7 +31,7 @@ FBM(nrow, ncol, type = c("double", "integer", "unsigned short",
 
 \item{ncol}{Number of columns.}
 
-\item{type}{Type of the big.matrix (default is \code{double}). Either
+\item{type}{Type of the Filebacked Big Matrix (default is \code{double}). Either
 \itemize{
 \item \code{"double"}
 \item \code{"integer"}
@@ -53,12 +53,6 @@ temporary directory.}
 
 \item{save}{Whether to save the result object in an ".rds" file alongside
 the backingfile. Default is \code{FALSE}.}
-
-\item{x}{A \link[=FBM.code256-class]{FBM.code256}.}
-
-\item{code}{A numeric vector (of length 256).
-You should contruct it with \code{rep(NA_real_, 256)} and then replace the values
-which are of interest for you.}
 }
 \description{
 A reference class for storing and accessing matrix-like data stored in files
@@ -77,18 +71,14 @@ Dimension and type methods for class \code{FBM}.
 \examples{
 X <- FBM(10, 10)
 typeof(X)
-X[]
 X[] <- rnorm(length(X))
+X[, 1:6]
+X[] <- 1:100
+X[, 1]
+X[1, ]  # not recommended for large matrices
+X[, -1]
+X[, c(TRUE, FALSE)]
+X[cbind(1:10, 1:10)] <- NA_real_
 X[]
-
-code <- rep(NA_real_, 256)
-code[1:3] <- c(1, 3, 5)
-
-X.code <- add_code256(X, code)
-X.code[]
-
-# Or directly
-X.code2 <- FBM.code256(10, 10, code, init = sample(as.raw(0:3), 100, TRUE))
-X.code2[]
 
 }

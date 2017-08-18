@@ -62,8 +62,8 @@ PrimalBigPCA <- function(X, fun.scaling,
 
 #' Partial SVD
 #'
-#' An algorithm for partial SVD (or PCA) of a `big.matrix` through the eigen
-#' decomposition of the covariance between variables (primal)
+#' An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix through the
+#' eigen decomposition of the covariance between variables (primal)
 #' or observations (dual). **Use this algorithm only if there is one dimension
 #' that is much smaller than the other. Otherwise use [big_randomSVD].**
 #'

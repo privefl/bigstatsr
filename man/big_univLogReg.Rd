@@ -49,7 +49,7 @@ This is also an object of class \code{mhtest}. See \code{methods(class = "mhtest
 }
 \description{
 Slopes of column-wise logistic regressions of each column
-of a \code{big.matrix}, with some other associated statistics.
+of a Filebacked Big Matrix, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
 \details{

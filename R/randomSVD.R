@@ -139,7 +139,7 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
 
 #' Randomized partial SVD
 #'
-#' An algorithm for partial SVD (or PCA) of a `big.matrix` based on the
+#' An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix based on the
 #' algorithm in RSpectra (by Yixuan Qiu and Jiali Mei).\cr
 #' This algorithm is linear in time in all dimensions and is very
 #' memory-efficient. Thus, it can be used on very large big.matrices.

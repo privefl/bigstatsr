@@ -27,7 +27,7 @@ We advise you to use only half of the cores you have.}
 \eqn{X \cdot A}.
 }
 \description{
-Product between a "big.matrix" and a matrix.
+Product between a Filebacked Big Matrix and a matrix.
 }
 \examples{
 X.desc <- big_attachExtdata()

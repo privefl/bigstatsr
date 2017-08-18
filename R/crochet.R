@@ -58,12 +58,12 @@ transform_i_only <- function(i, n, m) {
 #' takes a subset of `x` based on two vectors of indices `i` and `j` and returns
 #' a matrix.
 #'
-#' @return A function in the form of `function(x, i, j, drop = TRUE)` that
+#' @return A function in the form of `function(x, i, j, ..., drop = TRUE)` that
 #' is meant to be used as a method for \code{\link[base]{[}} for a custom type.
 #'
 Extract <- function(extract_vector, extract_matrix) {
 
-  function(x, i, j, drop = TRUE) {
+  function(x, i, j, ..., drop = TRUE) {
 
     n <- nrow(x)
     m <- ncol(x)
@@ -118,12 +118,12 @@ Extract <- function(extract_vector, extract_matrix) {
 #' that replaces a matrix subset of `x` based on two vectors of indices `i` and
 #' `j` with the values in `value` and returns `x`, invisibly.
 #'
-#' @return A function in the form of `function(x, i, j, value)` that is
+#' @return A function in the form of `function(x, i, j, ..., value)` that is
 #' meant to be used as a method for \code{\link[base]{[<-}} for a custom type.
 #'
 Replace <- function(replace_vector, replace_matrix) {
 
-  function(x, i, j, value) {
+  function(x, i, j, ..., value) {
 
     warn_downcast(from = value, to = x)
 

@@ -11,7 +11,7 @@
 \usage{
 FBM.code256(nrow, ncol, code, ...)
 
-\S4method{[}{FBM.code256,ANY,ANY,ANY}(x, i, j, drop = TRUE)
+\S4method{[}{FBM.code256,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
 add_code256(x, code, save = FALSE)
 }

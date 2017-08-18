@@ -2,7 +2,7 @@
 
 #' Some scaling functions
 #'
-#' Some scaling functions for a `big.matrix` to be used as
+#' Some scaling functions for a Filebacked Big Matrix to be used as
 #' the __`fun.scaling`__ parameter of some functions of this package.
 #'
 #' One could think about less common scalings, such as for example the

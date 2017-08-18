@@ -36,17 +36,20 @@ ncores <- function(all.tests = FALSE) {
 #' part and finally combine the results.
 #'
 #' @inheritParams bigstatsr-package
-#' @param p.FUN The function to be applied. It must take a
-#' [big.matrix.descriptor][big.matrix.descriptor-class] as first argument
-#' and provide some arguments for subsetting.
+#' @param p.FUN The function to be applied to each subset matrix.
+#'   It must take a [Filebacked Big Matrix][FBM-class] as first argument and
+#'   `ind`, a vector of indices, which are used to split the data.
+#'   For example, if you want to apply a function to `X[ind.row, ind.col]`,
+#'   you may use `X[ind.row, ind.col[ind]]` in `a.FUN`.
 #' @param p.combine function that is used by [foreach] to process the tasks
-#' results as they generated. This can be specified as either a function or a
-#' non-empty character string naming the function. Specifying 'c' is useful
-#' for concatenating the results into a vector, for example. The values 'cbind'
-#' and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
-#' used to process numeric data. By default, the results are returned in a list.
+#'   results as they generated. This can be specified as either a function or a
+#'   non-empty character string naming the function. Specifying 'c' is useful
+#'   for concatenating the results into a vector, for example.
+#'   The values 'cbind' and 'rbind' can combine vectors into a matrix.
+#'   The values '+' and '*' can be used to process numeric data.
+#'   By default, the results are returned in a list.
 #' @param ind Initial vector of subsetting indices.
-#' Default is the vector of all column indices.
+#'   Default is the vector of all column indices.
 #' @param ... Extra arguments to be passed to `p.FUN`.
 #'
 #' @return The result of [foreach].
@@ -55,11 +58,12 @@ ncores <- function(all.tests = FALSE) {
 #'
 #' @example examples/example-parallelize.R
 #' @seealso [big_apply]
-big_parallelize <- function(ind, p.FUN, p.combine,
+big_parallelize <- function(X, p.FUN, p.combine,
+                            ind = cols_along(X),
                             ncores = ncores(),
                             ...) {
 
-  # check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
+  check_args()
   assert_args(p.FUN, "ind")
   assert_int(ind); assert_pos(ind)
 
@@ -81,21 +85,21 @@ big_parallelize <- function(ind, p.FUN, p.combine,
         on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)
       }
 
-      p.FUN(ind = ind[seq2(range.parts[ic, ])], ...)
+      p.FUN(X, ind = ind[seq2(range.parts[ic, ])], ...)
     }
   } else { # sequential
-    p.FUN(ind = ind, ...)
+    p.FUN(X, ind = ind, ...)
   }
 }
 
 ################################################################################
 
-big_applySeq <- function(ind, a.FUN, a.combine, block.size, ...) {
+big_applySeq <- function(X, a.FUN, a.combine, block.size, ind, ...) {
 
   intervals <- CutBySize(length(ind), block.size)
 
-  foreach(ic = 1:nrow(intervals), .combine = a.combine) %do% {
-    a.FUN(ind = ind[seq2(intervals[ic, ])], ...)
+  foreach(ic = rows_along(intervals), .combine = a.combine) %do% {
+    a.FUN(X, ind = ind[seq2(intervals[ic, ])], ...)
   }
 }
 
@@ -103,7 +107,8 @@ big_applySeq <- function(ind, a.FUN, a.combine, block.size, ...) {
 
 #' Split-Apply-Combine
 #'
-#' A Split-Apply-Combine strategy to apply common R functions to a `big.matrix`.
+#' A Split-Apply-Combine strategy to apply common R functions to a
+#' Filebacked Big Matrix.
 #'
 #' This function splits indices in parts, then apply a given function to each
 #' subset matrix and finally combine the results. If parallelization is used,
@@ -113,20 +118,21 @@ big_applySeq <- function(ind, a.FUN, a.combine, block.size, ...) {
 #'
 #' @inheritParams bigstatsr-package
 #' @param a.FUN The function to be applied to each subset matrix.
-#' It must take a `big.matrix` as first argument and `ind`, a vector of
-#' indices, which are used to split the data. Example: if you want to apply
-#' a function to `X[ind.row, ind.col]`, you may use
-#' \code{X[ind.row, ind.col[ind]]} in `a.FUN`.
+#'   It must take a [Filebacked Big Matrix][FBM-class] as first argument and
+#'   `ind`, a vector of indices, which are used to split the data.
+#'   For example, if you want to apply a function to `X[ind.row, ind.col]`,
+#'   you may use `X[ind.row, ind.col[ind]]` in `a.FUN`.
 #' @param a.combine function that is used by [foreach] to process the tasks
-#' results as they generated. This can be specified as either a function or a
-#' non-empty character string naming the function. Specifying 'c' is useful
-#' for concatenating the results into a vector, for example. The values 'cbind'
-#' and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
-#' used to process numeric data. By default, the results are returned in a list.
+#'   results as they generated. This can be specified as either a function or a
+#'   non-empty character string naming the function. Specifying 'c' is useful
+#'   for concatenating the results into a vector, for example.
+#'   The values 'cbind' and 'rbind' can combine vectors into a matrix.
+#'   The values '+' and '*' can be used to process numeric data.
+#'   By default, the results are returned in a list.
 #' @param ind Initial vector of subsetting indices.
-#' Default is the vector of all column indices.
+#'   Default is the vector of all column indices.
 #' @param block.size Maximum number of columns (or rows, depending on how you
-#' use `ind` for subsetting) read at once. Default is `1000`.
+#'   use `ind` for subsetting) read at once. Default uses [block_size].
 #' @param ... Extra arguments to be passed to `a.FUN`.
 #'
 #' @return The result of [foreach].
@@ -135,19 +141,21 @@ big_applySeq <- function(ind, a.FUN, a.combine, block.size, ...) {
 #'
 #' @example examples/example-apply.R
 #' @seealso [big_parallelize]
-big_apply <- function(ind, a.FUN, a.combine,
+big_apply <- function(X, a.FUN, a.combine,
                       ncores = 1,
-                      block.size = 1000,
+                      block.size = block_size(nrow(X), ncores),
+                      ind = cols_along(X),
                       ...) {
 
-  # check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
+  check_args()
   assert_args(a.FUN, "ind")
   assert_int(ind); assert_pos(ind)
 
-  big_parallelize(ind = ind,
+  big_parallelize(X = X,
                   p.FUN = big_applySeq,
                   p.combine = a.combine,
                   ncores = ncores,
+                  ind = ind,
                   a.FUN = a.FUN,
                   a.combine = a.combine,
                   block.size = block.size,

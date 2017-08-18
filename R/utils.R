@@ -26,10 +26,26 @@ stop2 <- function(...) stop(sprintf(...), call. = FALSE)
 
 ################################################################################
 
-# 8 * n * m < opt * 1024^3
-# m < opt * 1024^3 / (8 * n)
-block_size <- function(n) {
-  max(1, floor(getOption("bigstatsr.block.sizeGB") * 1024^3 / (8 * n)))
+#' Determine a correct value for the block.size parameter
+#'
+#' It determines the value of `block.size` such that a matrix of doubles of
+#' size `n` x `block.size` takes less memory than
+#' `getOption("bigstatsr.block.sizeGB")` GigaBytes (default is 1GB).
+#'
+#' @param n The number of rows.
+#' @param ncores The number of cores.
+#'
+#' @return An integer >= 1.
+#'
+#' @examples
+#' block_size(1e3)
+#' block_size(1e6)
+#' block_size(1e6, 6)
+block_size <- function(n, ncores = 1) {
+  block.max <- getOption("bigstatsr.block.sizeGB") / ncores
+  # 8 * n * m < opt * 1024^3
+  # m < opt * 1024^3 / (8 * n)
+  max(1, floor(block.max * 1024^3 / (8 * n)))
 }
 
 ################################################################################

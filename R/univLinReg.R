@@ -10,7 +10,7 @@ univLinReg_sub <- function(X, ind, U, y.train, ind.train) {
 #' Column-wise linear regression
 #'
 #' Slopes of column-wise linear regressions of each column
-#' of a `big.matrix`, with some other associated statistics.
+#' of a Filebacked Big Matrix, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
 #'
 #' @inheritParams bigstatsr-package
@@ -27,9 +27,9 @@ univLinReg_sub <- function(X, ind, U, y.train, ind.train) {
 #'
 #' @seealso [lm][stats::lm]
 #' @export
-big_univLinReg <- function(X., y.train,
-                           ind.train = rows_along(X.),
-                           ind.col = cols_along(X.),
+big_univLinReg <- function(X, y.train,
+                           ind.train = rows_along(X),
+                           ind.col = cols_along(X),
                            covar.train = NULL,
                            ncores = 1,
                            thr.eigval = 1e-4) {

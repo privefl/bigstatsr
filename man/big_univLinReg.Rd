@@ -4,11 +4,13 @@
 \alias{big_univLinReg}
 \title{Column-wise linear regression}
 \usage{
-big_univLinReg(X., y.train, ind.train = rows_along(X.),
-  ind.col = cols_along(X.), covar.train = NULL, ncores = 1,
+big_univLinReg(X, y.train, ind.train = rows_along(X),
+  ind.col = cols_along(X), covar.train = NULL, ncores = 1,
   thr.eigval = 1e-04)
 }
 \arguments{
+\item{X}{A \link{FBM}.}
+
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
 \item{ind.train}{An optional vector of the row indices that are used,
@@ -39,7 +41,7 @@ This is also an object of class \code{mhtest}. See \code{methods(class = "mhtest
 }
 \description{
 Slopes of column-wise linear regressions of each column
-of a \code{big.matrix}, with some other associated statistics.
+of a Filebacked Big Matrix, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
 \examples{

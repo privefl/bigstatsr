@@ -96,7 +96,7 @@ big_CMSA <- function(FUN, feval, X, y.train,
                       covar.row = covar.train[in.val, ])
 
     list(betas = mod$beta, scores = scores)
-  } # TODO: see if can use parallelize
+  } # TODO: see if can use parallelize. Would really be useful?
 
   # Select best coefficients for each fold
   betas <- sapply(cross.res, function(x) {

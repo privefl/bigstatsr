@@ -2,7 +2,7 @@
 
 #' Correlation
 #'
-#' Compute the correlation matrix of a `big.matrix`.
+#' Compute the correlation matrix of a Filebacked Big Matrix.
 #'
 #' This algorithm is not really memory efficient. I'm planning on fixing this,
 #' if it is really needed.
@@ -14,6 +14,7 @@
 #' @seealso [cor]
 #'
 #' @example examples/example-corr.R
+#'
 big_cor <- function(X,
                     ind.row = rows_along(X),
                     ind.col = cols_along(X),
@@ -41,7 +42,7 @@ big_cor <- function(X,
   # Complete the lower part of the symmetric matrix
   K <- complete2(K)
 
-  # 'correlize' the cross-product (see https://goo.gl/HK2Bqb)
+  # 'Correlize' the cross-product (see https://goo.gl/HK2Bqb)
   sums <- big_colstats(X, ind.row, ind.col)$sum / sqrt(length(ind.row))
   diags <- sqrt(diag(K) - sums^2)
   correlize(K, shift = sums, scale = diags)

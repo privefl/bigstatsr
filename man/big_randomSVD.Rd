@@ -49,7 +49,7 @@ Note that to obtain the Principal Components, you must use
 \link[=predict.big_SVD]{predict} on the result. See examples.
 }
 \description{
-An algorithm for partial SVD (or PCA) of a \code{big.matrix} based on the
+An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix based on the
 algorithm in RSpectra (by Yixuan Qiu and Jiali Mei).\cr
 This algorithm is linear in time in all dimensions and is very
 memory-efficient. Thus, it can be used on very large big.matrices.

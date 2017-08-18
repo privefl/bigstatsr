@@ -17,7 +17,7 @@ A new \strong{function} that returns a data.frame of two vectors
 "mean" and "sd" which are of the length of \code{ind.col}.
 }
 \description{
-Some scaling functions for a \code{big.matrix} to be used as
+Some scaling functions for a Filebacked Big Matrix to be used as
 the \strong{\code{fun.scaling}} parameter of some functions of this package.
 }
 \details{

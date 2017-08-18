@@ -4,22 +4,30 @@
 \alias{big_parallelize}
 \title{Split-parApply-Combine}
 \usage{
-big_parallelize(ind, p.FUN, p.combine, ncores = ncores(), ...)
+big_parallelize(X, p.FUN, p.combine, ind = cols_along(X), ncores = ncores(),
+  ...)
 }
 \arguments{
-\item{ind}{Initial vector of subsetting indices.
-Default is the vector of all column indices.}
+\item{X}{A \link{FBM}.}
 
-\item{p.FUN}{The function to be applied. It must take a
-\link[=big.matrix.descriptor-class]{big.matrix.descriptor} as first argument
-and provide some arguments for subsetting.}
+\item{p.FUN}{The function to be applied to each subset matrix.
+It must take a \link[=FBM-class]{Filebacked Big Matrix} as first argument and
+\code{ind}, a vector of indices, which are used to split the data.
+For example, if you want to apply a function to \code{X[ind.row, ind.col]},
+you may use \code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.
+
+[ind.row, ind.col[ind]: R:ind.row,%20ind.col[ind}
 
 \item{p.combine}{function that is used by \link{foreach} to process the tasks
 results as they generated. This can be specified as either a function or a
 non-empty character string naming the function. Specifying 'c' is useful
-for concatenating the results into a vector, for example. The values 'cbind'
-and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
-used to process numeric data. By default, the results are returned in a list.}
+for concatenating the results into a vector, for example.
+The values 'cbind' and 'rbind' can combine vectors into a matrix.
+The values '+' and '*' can be used to process numeric data.
+By default, the results are returned in a list.}
+
+\item{ind}{Initial vector of subsetting indices.
+Default is the vector of all column indices.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.
 We advise you to use only half of the cores you have.}
@@ -37,41 +45,42 @@ This function splits indices in parts, then apply a given function to each
 part and finally combine the results.
 }
 \examples{
-X.desc <- big_attachExtdata()
+X <- big_attachExtdata()
 
 ### Computation on all the matrix
-true <- big_colstats(X.desc)
+true <- big_colstats(X)
 
-big_colstats_sub <- function(X.desc, ind, cols) {
-  big_colstats(X.desc, ind.col = cols[ind])
+big_colstats_sub <- function(X, ind, cols) {
+  big_colstats(X, ind.col = cols[ind])
 }
 # 1. the computation is split along all the columns
 # 2. for each part the computation is done, using `big_colstats`
 # 3. the results (data.frames) are combined via `rbind`.
-test <- big_parallelize(X.desc, p.FUN = big_colstats_sub,
+test <- big_parallelize(X, p.FUN = big_colstats_sub,
                         p.combine = 'rbind', ncores = 2,
-                        cols = cols_along(X.desc))
+                        cols = cols_along(X))
 all.equal(test, true)
 
 ### Computation on a part of the matrix
-n <- nrow(X.desc)
-m <- ncol(X.desc)
+n <- nrow(X)
+m <- ncol(X)
 rows <- sort(sample(n, n/2)) # sort to provide some locality in accesses
 cols <- sort(sample(m, m/2)) # idem
 
-true2 <- big_colstats(X.desc, ind.row = rows, ind.col = cols)
+true2 <- big_colstats(X, ind.row = rows, ind.col = cols)
 
-big_colstats_sub2 <- function(X.desc, ind, rows, cols) {
-  big_colstats(X.desc, ind.row = rows, ind.col = cols[ind])
+big_colstats_sub2 <- function(X, ind, rows, cols) {
+  big_colstats(X, ind.row = rows, ind.col = cols[ind])
 }
 # This doesn't work because, by default, the computation is spread
 # along all columns. We must explictly specify the `ind` parameter.
-\dontrun{test2 <- big_parallelize(X.desc, p.FUN = big_colstats_sub2,
-                                  p.combine = 'rbind', ncores = 2,
-                                  rows = rows, cols = cols)}
+tryCatch(big_parallelize(X, p.FUN = big_colstats_sub2,
+                         p.combine = 'rbind', ncores = 2,
+                         rows = rows, cols = cols),
+         error = function(e) print(e))
 
 # This now works, using `ind = seq_along(cols)`.
-test2 <- big_parallelize(X.desc, p.FUN = big_colstats_sub2,
+test2 <- big_parallelize(X, p.FUN = big_colstats_sub2,
                          p.combine = 'rbind', ncores = 2,
                          ind = seq_along(cols),
                          rows = rows, cols = cols)

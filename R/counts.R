@@ -2,48 +2,31 @@
 
 #' Counts
 #'
-#' Counts by columns (or rows) the number of each unique element of a `BM.code`.
+#' Counts by columns (or rows) the number of each unique element of a
+#' `FBM.code256`.
 #'
 #' @inheritParams bigstatsr-package
-#' @param byrow Count by rows rather than columns? Default is `FALSE`.
+#' @param byrow Count by rows rather than columns?
+#'   Default is `FALSE` (columns).
 #'
-#' @examples
-#' set.seed(11)
-#'
-#' a <- matrix(as.raw(0), 14, 11)
-#' a[] <- sample(as.raw(0:3), size = length(a), replace = TRUE)
-#' X <- as.big.matrix(a)
-#' X[,]
-#'
-#' code <- rep(NA_real_, 256)
-#' code[1:4] <- c(2, 5, 9, NA)
-#' X2 <- as.BM.code(X, code)
-#' X2[,]
-#'
-#' # by columns
-#' big_counts(X2)
-#' apply(X2[,], 2, table, exclude = NULL)
-#'
-#' # by rows
-#' big_counts(X2, byrow = TRUE)
-#' apply(X2[,], 1, table, exclude = NULL)
+#' @example examples/example-counts.R
 #'
 #' @return A matrix of counts of K x m (or n) elements, where
 #' - K is the number of unique elements of the `BM.code`,
 #' - n is its number of rows,
 #' - m is its number of columns.
 #'
-#' __Beware that K is up to 256. So, if you apply this on a `big.matrix` of
-#' one million columns, you will create a matrix of nearly 1Gb!__.
+#' **Beware that K is up to 256. So, if you apply this on a Filebacked Big
+#' Matrix of one million columns, you will create a matrix of nearly 1GB!**.
 #' @export
 big_counts <- function(X.code,
                        ind.row = rows_along(X.code),
                        ind.col = cols_along(X.code),
                        byrow = FALSE) {
 
-  check_args(X.code = "assert_classOrDesc(X.code, 'FBM.code256')")
+  check_args(X.code = "assert_class(X.code, 'FBM.code256')")
 
-  code <- X.code@code
+  code <- X.code$code256
   code.uniq <- unique(code)
   ind.code <- match(code, code.uniq)
 

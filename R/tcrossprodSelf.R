@@ -2,7 +2,7 @@
 
 #' Tcrossprod
 #'
-#' Compute \eqn{X.row X.row^T} for a `big.matrix` `X`
+#' Compute \eqn{X.row X.row^T} for a Filebacked Big Matrix `X`
 #' after applying a particular scaling to it.
 #'
 #' This algorithm is not really memory efficient. I'm planning on fixing this,

@@ -238,13 +238,13 @@ COPY_biglasso <- function(X, y.train, ind.train, covar.train,
 
 #' Sparse linear regression
 #'
-#' Fit lasso penalized linear regression path for a `big.matrix`.
+#' Fit lasso penalized linear regression path for a Filebacked Big Matrix.
 #' Covariates can be added to correct for confounders.
 #'
 #' __This is a modified version of one function of
 #' [package biglasso](https://github.com/YaohuiZeng/biglasso)__.
 #' It adds the possibility to train models with covariables and use many
-#' types of `big.matrix` (not only `double` ones).
+#' types of `FBM` (not only `double` ones).
 #' Yet, it only corresponds to `screen = "SSR"` (Sequential Strong Rules).
 #'
 #' @inheritParams bigstatsr-package

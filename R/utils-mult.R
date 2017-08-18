@@ -2,7 +2,7 @@
 
 #' Product with a vector
 #'
-#' Product between a "big.matrix" and a vector.
+#' Product between a Filebacked Big Matrix and a vector.
 #'
 #' @inheritParams bigstatsr-package
 #' @param y.col A vector of same size as `ind.col`.
@@ -40,7 +40,7 @@ big_prodVec <- function(X, y.col,
 
 #' Cross-product with a vector
 #'
-#' Cross-product between a "big.matrix" and a vector.
+#' Cross-product between a Filebacked Big Matrix and a vector.
 #'
 #' @inheritParams bigstatsr-package
 #' @param y.row A vector of same size as `ind.row`.
@@ -78,7 +78,7 @@ big_cprodVec <- function(X, y.row,
 
 #' Product with a matrix
 #'
-#' Product between a "big.matrix" and a matrix.
+#' Product between a Filebacked Big Matrix and a matrix.
 #'
 #' @inheritParams bigstatsr-package
 #' @param A.col A matrix with `length(ind.col)` rows.
@@ -126,7 +126,7 @@ big_prodMat <- function(X, A.col,
 
 #' Cross-product with a matrix
 #'
-#' Cross-product between a "big.matrix" and a matrix.
+#' Cross-product between a Filebacked Big Matrix and a matrix.
 #'
 #' @inheritParams bigstatsr-package
 #' @param A.row A matrix with `length(ind.row)` rows.

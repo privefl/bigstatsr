@@ -37,9 +37,9 @@ Plot method for class \code{mhtest}.
 \examples{
 set.seed(1)
 
-X.desc <- big_attachExtdata()
-y <- rnorm(nrow(X.desc))
-test <- big_univLinReg(X.desc, y)
+X <- big_attachExtdata()
+y <- rnorm(nrow(X))
+test <- big_univLinReg(X, y)
 
 plot(test)
 plot(test, type = "Volcano")

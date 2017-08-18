@@ -16,7 +16,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{byrow}{Count by rows rather than columns? Default is \code{FALSE}.}
+\item{byrow}{Count by rows rather than columns?
+Default is \code{FALSE} (columns).}
 }
 \value{
 A matrix of counts of K x m (or n) elements, where
@@ -26,31 +27,35 @@ A matrix of counts of K x m (or n) elements, where
 \item m is its number of columns.
 }
 
-\strong{Beware that K is up to 256. So, if you apply this on a \code{big.matrix} of
-one million columns, you will create a matrix of nearly 1Gb!}.
+\strong{Beware that K is up to 256. So, if you apply this on a Filebacked Big
+Matrix of one million columns, you will create a matrix of nearly 1GB!}.
 }
 \description{
-Counts by columns (or rows) the number of each unique element of a \code{BM.code}.
+Counts by columns (or rows) the number of each unique element of a
+\code{FBM.code256}.
 }
 \examples{
-set.seed(11)
+X <- big_attachExtdata()
+class(X)
+X[1:5, 1:10]
 
-a <- matrix(as.raw(0), 14, 11)
-a[] <- sample(as.raw(0:3), size = length(a), replace = TRUE)
-X <- as.big.matrix(a)
-X[,]
+# Without the "decoding"
+X2 <- big_copy(X)
+class(X2)
+X2[1:5, 1:10]
 
+# Change the code
 code <- rep(NA_real_, 256)
-code[1:4] <- c(2, 5, 9, NA)
-X2 <- as.BM.code(X, code)
-X2[,]
+code[1:3] <- c(2, 5, 9)
+X$code256 <- code
+X[1:5, 1:10]
 
 # by columns
-big_counts(X2)
-apply(X2[,], 2, table, exclude = NULL)
+big_counts(X, ind.col = 1:10)
+
+apply(X[, 1:10], 2, table, exclude = NULL)
 
 # by rows
-big_counts(X2, byrow = TRUE)
-apply(X2[,], 1, table, exclude = NULL)
-
+big_counts(X, ind.row = 1:10, byrow = TRUE)
+apply(X[1:10, ], 1, table, exclude = NULL)
 }

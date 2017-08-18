@@ -3,12 +3,12 @@
 #' Transposition
 #'
 #' This function implements a simple cache-oblivious algorithm for
-#' the transposition of a "big.matrix".
+#' the transposition of a Filebacked Big Matrix.
 #'
 #' @inheritParams bigstatsr-package
 #'
-#' @return The new transposed `big.matrix` (or its descriptor). Its dimensions
-#' and type are automatically determined from the input `big.matrix`.
+#' @return The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
+#' and type are automatically determined from the input Filebacked Big Matrix.
 #'
 #' @export
 #'

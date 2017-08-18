@@ -26,7 +26,7 @@ univLogReg_sub <- function(X, ind, covar.train, y01.train, z0, w0,
 #' Column-wise logistic regression
 #'
 #' Slopes of column-wise logistic regressions of each column
-#' of a `big.matrix`, with some other associated statistics.
+#' of a Filebacked Big Matrix, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
 #'
 #' If convergence is not reached by the main algorithm for some columns,

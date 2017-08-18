@@ -9,7 +9,7 @@ get_nline <- function(file) {
 
 #' Read a file
 #'
-#' Read a file as a `big.matrix`. For a mini-tutorial, please see the
+#' Read a file as a Filebacked Big Matrix. For a mini-tutorial, please see the
 #' [vignette](https://privefl.github.io/bigstatsr/articles/read-BM-from-file.html).
 #'
 #' @inheritParams bigstatsr-package
@@ -26,14 +26,13 @@ get_nline <- function(file) {
 #' @param read.what What type of elements to scan? Default is `double()`.
 #' You can also use `character()` or `integer()`.
 #' @param read.transfo Function that transforms each line you read.
-#' @param BM.type Type of the resulting `big.matrix`. Default uses the type
-#' of `read.what`. This can be useful if you have only small integers or
+#' @param BM.type Type of the resulting Filebacked Big Matrix. Default uses the
+#' type of `read.what`. This can be useful if you have only small integers or
 #' that the `read.transfo` function transforms the type of what is read.
-#' @param transpose Should the resulting `big.matrix` be transposed?
+#' @param transpose Should the resulting Filebacked Big Matrix be transposed?
 #' Default is `FALSE`.
 #'
-#' @return A `big.matrix` (or its descriptor) with two attributes `header` and
-#' `info`.
+#' @return A Filebacked Big Matrix with two attributes `header` and `info`.
 #' @export
 #' @importFrom magrittr %>%
 #'
@@ -76,7 +75,7 @@ big_readBM <- function(file,
     read.transfo()
   transfo.nelem <- length(firstline.transfo)
 
-  # prepare the resulting big.matrix
+  # prepare the resulting Filebacked Big Matrix
   if (transpose) {
     res <- FBM(nrow = transfo.nelem, ncol = read.nline,
                type = BM.type, init = NULL)

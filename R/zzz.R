@@ -3,7 +3,7 @@
 .onLoad <- function(libname, pkgname) {
   options(bigstatsr.ncores.max = parallel::detectCores())
   options(bigstatsr.check.args = TRUE)
-  options(bigstatsr.block.sizeGB = 0.5)
+  options(bigstatsr.block.sizeGB = 1)
   options(bigstatsr.typecast.warning = TRUE)
 }
 

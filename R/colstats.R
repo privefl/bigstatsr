@@ -2,7 +2,7 @@
 
 #' Standard univariate statistics
 #'
-#' Standard __univariate statistics__ for columns of a big.matrix.
+#' Standard __univariate statistics__ for columns of a Filebacked Big Matrix.
 #' For now, the `sum` and `var` are implemented
 #' (the `mean` and `sd` can easily be deduced, see examples).
 #'

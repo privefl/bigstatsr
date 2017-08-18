@@ -15,7 +15,7 @@ takes a subset of \code{x} based on two vectors of indices \code{i} and \code{j}
 a matrix.}
 }
 \value{
-A function in the form of \code{function(x, i, j, drop = TRUE)} that
+A function in the form of \code{function(x, i, j, ..., drop = TRUE)} that
 is meant to be used as a method for \code{\link[base]{[}} for a custom type.
 }
 \description{

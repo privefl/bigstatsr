@@ -10,12 +10,12 @@ big_transpose(X, ...)
 \item{X}{A \link{FBM}.}
 }
 \value{
-The new transposed \code{big.matrix} (or its descriptor). Its dimensions
-and type are automatically determined from the input \code{big.matrix}.
+The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
+and type are automatically determined from the input Filebacked Big Matrix.
 }
 \description{
 This function implements a simple cache-oblivious algorithm for
-the transposition of a "big.matrix".
+the transposition of a Filebacked Big Matrix.
 }
 \examples{
 X.desc <- big_attachExtdata()

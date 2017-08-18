@@ -4,30 +4,36 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(ind, a.FUN, a.combine, ncores = 1, block.size = 1000, ...)
+big_apply(X, a.FUN, a.combine, ncores = 1, block.size = block_size(nrow(X),
+  ncores), ind = cols_along(X), ...)
 }
 \arguments{
-\item{ind}{Initial vector of subsetting indices.
-Default is the vector of all column indices.}
+\item{X}{A \link{FBM}.}
 
 \item{a.FUN}{The function to be applied to each subset matrix.
-It must take a \code{big.matrix} as first argument and \code{ind}, a vector of
-indices, which are used to split the data. Example: if you want to apply
-a function to \code{X[ind.row, ind.col]}, you may use
-\code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.}
+It must take a \link[=FBM-class]{Filebacked Big Matrix} as first argument and
+\code{ind}, a vector of indices, which are used to split the data.
+For example, if you want to apply a function to \code{X[ind.row, ind.col]},
+you may use \code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.
+
+[ind.row, ind.col[ind]: R:ind.row,%20ind.col[ind}
 
 \item{a.combine}{function that is used by \link{foreach} to process the tasks
 results as they generated. This can be specified as either a function or a
 non-empty character string naming the function. Specifying 'c' is useful
-for concatenating the results into a vector, for example. The values 'cbind'
-and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
-used to process numeric data. By default, the results are returned in a list.}
+for concatenating the results into a vector, for example.
+The values 'cbind' and 'rbind' can combine vectors into a matrix.
+The values '+' and '*' can be used to process numeric data.
+By default, the results are returned in a list.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.
 We advise you to use only half of the cores you have.}
 
 \item{block.size}{Maximum number of columns (or rows, depending on how you
-use \code{ind} for subsetting) read at once. Default is \code{1000}.}
+use \code{ind} for subsetting) read at once. Default uses \link{block_size}.}
+
+\item{ind}{Initial vector of subsetting indices.
+Default is the vector of all column indices.}
 
 \item{...}{Extra arguments to be passed to \code{a.FUN}.}
 }
@@ -35,7 +41,8 @@ use \code{ind} for subsetting) read at once. Default is \code{1000}.}
 The result of \link{foreach}.
 }
 \description{
-A Split-Apply-Combine strategy to apply common R functions to a \code{big.matrix}.
+A Split-Apply-Combine strategy to apply common R functions to a
+Filebacked Big Matrix.
 }
 \details{
 This function splits indices in parts, then apply a given function to each
@@ -45,25 +52,25 @@ them on each core, apply a given function to each part and finally combine
 the results (on each cluster and then from each cluster).
 }
 \examples{
-X.desc <- big_attachExtdata()
+X <- big_attachExtdata()
 
 # get the means of each column
 colMeans_sub <- function(X, ind) colMeans(X[, ind])
-colmeans <- big_apply(X.desc, a.FUN = colMeans_sub, a.combine = 'c')
+str(colmeans <- big_apply(X, a.FUN = colMeans_sub, a.combine = 'c'))
 
 # get the norms of each column
 colNorms_sub <- function(X, ind) sqrt(colSums(X[, ind]^2))
-colnorms <- big_apply(X.desc, colNorms_sub, a.combine = 'c')
+str(colnorms <- big_apply(X, colNorms_sub, a.combine = 'c'))
 
 # get the sums of each row
 # split along rows: need to change the "complete" `ind` parameter
-rowsums <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[ind, ]),
-                     ind = rows_along(X.desc), a.combine = 'c',
-                     block.size = 100)
+str(rowsums <- big_apply(X, a.FUN = function(X, ind) rowSums(X[ind, ]),
+                         ind = rows_along(X), a.combine = 'c',
+                         block.size = 100))
 # it is usually preferred to split along columns
 # because `big.matrix` are stored by column.
-rowsums2 <- big_apply(X.desc, a.FUN = function(X, ind) rowSums(X[, ind]),
-                      a.combine = '+')
+str(rowsums2 <- big_apply(X, a.FUN = function(X, ind) rowSums(X[, ind]),
+                          a.combine = '+'))
 
 ## Every extra parameter to `a.FUN` should be passed to `big_apply`
 # get the crossproduct between X and a matrix A

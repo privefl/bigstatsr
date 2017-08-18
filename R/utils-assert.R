@@ -59,7 +59,7 @@ check_args <- function(...) {
 
 # MISSING VALUES
 assert_noNA <- function(x) {
-  if (sum(is.na(attach.BM(x)[, sample(ncol(x), min(10, ncol(x)))])))
+  if (sum(is.na(x[min(1000, length(x))])))
     stop2("You can't have missing values in '%s'.", deparse(substitute(x)))
 }
 

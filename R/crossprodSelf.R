@@ -2,7 +2,7 @@
 
 #' Crossprod
 #'
-#' Compute \eqn{X.row^T X.row} for a `big.matrix` `X`
+#' Compute \eqn{X.row^T X.row} for a Filebacked Big Matrix `X`
 #' after applying a particular scaling to it.
 #'
 #' This algorithm is not really memory efficient. I'm planning on fixing this,
@@ -17,10 +17,11 @@
 #' @seealso [crossprod]
 #'
 #' @example examples/example-crossprodSelf.R
+#'
 big_crossprodSelf <- function(X,
                               fun.scaling,
-                              ind.row = rows_along(X.),
-                              ind.col = cols_along(X.),
+                              ind.row = rows_along(X),
+                              ind.col = cols_along(X),
                               block.size = 1000) {
 
   check_args()

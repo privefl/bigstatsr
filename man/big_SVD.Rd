@@ -38,8 +38,8 @@ Note that to obtain the Principal Components, you must use
 \link[=predict.big_SVD]{predict} on the result. See examples.
 }
 \description{
-An algorithm for partial SVD (or PCA) of a \code{big.matrix} through the eigen
-decomposition of the covariance between variables (primal)
+An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix through the
+eigen decomposition of the covariance between variables (primal)
 or observations (dual). \strong{Use this algorithm only if there is one dimension
 that is much smaller than the other. Otherwise use \link{big_randomSVD}.}
 }

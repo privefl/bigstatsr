@@ -6,7 +6,7 @@
 \usage{
 big_readBM(file, file.nheader = 0, file.nline = NULL, info.nelem = 0,
   split = " ", read.what = double(), read.transfo = identity,
-  BM.type = typeof(read.what), transpose = FALSE, fun.createBM = BM())
+  BM.type = typeof(read.what), transpose = FALSE, ...)
 }
 \arguments{
 \item{file}{The path to the file to be read.}
@@ -29,21 +29,17 @@ You can also use \code{character()} or \code{integer()}.}
 
 \item{read.transfo}{Function that transforms each line you read.}
 
-\item{BM.type}{Type of the resulting \code{big.matrix}. Default uses the type
-of \code{read.what}. This can be useful if you have only small integers or
+\item{BM.type}{Type of the resulting Filebacked Big Matrix. Default uses the
+type of \code{read.what}. This can be useful if you have only small integers or
 that the \code{read.transfo} function transforms the type of what is read.}
 
-\item{transpose}{Should the resulting \code{big.matrix} be transposed?
+\item{transpose}{Should the resulting Filebacked Big Matrix be transposed?
 Default is \code{FALSE}.}
-
-\item{fun.createBM}{A function that creates a \code{big.matrix}. It should have
-exactly 3 parameters \code{nrow}, \code{ncol} and \code{type}. See \link{FBM}.}
 }
 \value{
-A \code{big.matrix} (or its descriptor) with two attributes \code{header} and
-\code{info}.
+A Filebacked Big Matrix with two attributes \code{header} and \code{info}.
 }
 \description{
-Read a file as a \code{big.matrix}. For a mini-tutorial, please see the
+Read a file as a Filebacked Big Matrix. For a mini-tutorial, please see the
 \href{https://privefl.github.io/bigstatsr/articles/read-BM-from-file.html}{vignette}.
 }

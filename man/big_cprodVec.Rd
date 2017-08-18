@@ -21,7 +21,7 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 \eqn{X^T \cdot y}.
 }
 \description{
-Cross-product between a "big.matrix" and a vector.
+Cross-product between a Filebacked Big Matrix and a vector.
 }
 \examples{
 X.desc <- big_attachExtdata()

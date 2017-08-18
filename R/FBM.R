@@ -6,15 +6,9 @@
 #' on disk. This is very similar to Filebacked Big Matrices provided by the
 #' **bigmemory** package. Yet, the implementation is much more lighter.
 #'
-#' @param x A [FBM.code256][FBM.code256-class].
-#' @param code A numeric vector (of length 256).
-#' You should contruct it with `rep(NA_real_, 256)` and then replace the values
-#' which are of interest for you.
-#'
 #' @examples
 #' X <- FBM(10, 10)
 #' typeof(X)
-#' X[]
 #' X[] <- rnorm(length(X))
 #' X[, 1:6]
 #' X[] <- 1:100
@@ -107,7 +101,7 @@ FBM_RC$lock("nrow", "ncol", "type")
 #'
 #' @param nrow Number of rows.
 #' @param ncol Number of columns.
-#' @param type Type of the big.matrix (default is `double`). Either
+#' @param type Type of the Filebacked Big Matrix (default is `double`). Either
 #' - `"double"`
 #' - `"integer"`
 #' - `"unsigned short"`: can store integer values from 0 to 65535.

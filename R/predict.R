@@ -78,7 +78,7 @@ predict.big_sp <- function(object, X,
     assert_lengths(ind.row, rows_along(covar.row))
 
     ind.X <- cols_along(X)
-    scores <- big_prodMat(X., betas[ind.X, ],
+    scores <- big_prodMat(X, betas[ind.X, ],
                           ind.row = ind.row,
                           block.size = block.size) +
       covar.row %*% betas[-ind.X, ]

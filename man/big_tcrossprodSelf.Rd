@@ -30,7 +30,7 @@ A matrix, \eqn{X.row X.row^T}, with the following two attributes:
 }
 }
 \description{
-Compute \eqn{X.row X.row^T} for a \code{big.matrix} \code{X}
+Compute \eqn{X.row X.row^T} for a Filebacked Big Matrix \code{X}
 after applying a particular scaling to it.
 }
 \details{
