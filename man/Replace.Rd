@@ -17,25 +17,21 @@ that replaces a matrix subset of \code{x} based on two vectors of indices \code{
 }
 \value{
 A function in the form of \code{function(x, i, j, ..., value)} that is
-meant to be used as a method for \code{\link[base]{[<-}} for a custom type.
+meant to be used as a method for \code{[&lt;-} for a custom type.
 }
 \description{
 \code{replace} is a function that converts different index types such as negative
-integer vectors or logical vectors passed to the \code{[<-}
-function as \code{i} (e.g. \code{X[i]}) or \code{i} and \code{j} (e.g. \code{X[i, j]}) into positive
+integer vectors or logical vectors passed to the \code{[&lt;-} function as \code{i}
+(e.g. \code{X[i]}) or \code{i} and \code{j} (e.g. \code{X[i, j]}) into positive
 integer vectors. The converted indices are provided as the \code{i} parameter of
 \code{replace_vector} or \code{i} and \code{j} parameters of \code{replace_matrix} to facilitate
 implementing the replacement mechanism for custom matrix-like types. Values
 are recycled to match the replacement length.
-
-[<-\code{function as}i\code{(e.g.}X[i]: R:%3C-%60%0Afunction%20as%20%60i%60%20(e.g.%20%60X[i
-[i, j]: R:i,%20j
 }
 \details{
-The custom type must implement methods for \link[base:dim]{base::dim} for this function
-to work. Implementing methods for \link[base:nrow]{base::nrow} and \link[base:ncol]{base::ncol} is not
-necessary as the default method of those generics calls \link[base:dim]{base::dim}
-internally.
+The custom type must implement methods for \code{dim} for this function
+to work. Implementing methods for \code{nrow} and \code{ncol} is not necessary
+as the default method of those generics calls \code{dim} internally.
 
 \strong{This idea initially comes from \href{https://goo.gl/3RDNQG}{package crochet}.}
 }

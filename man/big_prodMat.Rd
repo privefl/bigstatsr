@@ -49,4 +49,5 @@ tryCatch(test2 <- big_prodMat(X, A, ind.row, ind.col),
 test2 <- big_prodMat(X, A[ind.col, ], ind.row, ind.col)
 true2 <- X[ind.row, ind.col] \%*\% A[ind.col, ]
 all.equal(test2, true2)
+
 }

@@ -16,7 +16,7 @@ a matrix.}
 }
 \value{
 A function in the form of \code{function(x, i, j, ..., drop = TRUE)} that
-is meant to be used as a method for \code{\link[base]{[}} for a custom type.
+is meant to be used as a method for \code{[} for a custom type.
 }
 \description{
 \code{extract} is a function that converts different index types such as negative
@@ -25,15 +25,11 @@ integer vectors or logical vectors passed to the \code{[} function as \code{i}
 integer vectors. The converted indices are provided as the \code{i} parameter of
 \code{extract_vector} or \code{i} and \code{j} parameters of \code{extract_matrix} to facilitate
 implementing the extraction mechanism for custom matrix-like types.
-
-[\code{function as}i\code{(e.g.}X[i]: R:%60%20function%20as%20%60i%60%0A(e.g.%20%60X[i
-[i, j]: R:i,%20j
 }
 \details{
-The custom type must implement methods for \link[base:dim]{base::dim} for this function
-to work. Implementing methods for \link[base:nrow]{base::nrow} and \link[base:ncol]{base::ncol} is not
-necessary as the default method of those generics calls \link[base:dim]{base::dim}
-internally.
+The custom type must implement methods for \code{dim} for this function
+to work. Implementing methods for \code{nrow} and \code{ncol} is not necessary
+as the default method of those generics calls \code{dim} internally.
 
 \strong{This idea initially comes from \href{https://goo.gl/3RDNQG}{package crochet}.}
 }

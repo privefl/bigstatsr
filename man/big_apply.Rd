@@ -14,9 +14,7 @@ big_apply(X, a.FUN, a.combine, ncores = 1, block.size = block_size(nrow(X),
 It must take a \link[=FBM-class]{Filebacked Big Matrix} as first argument and
 \code{ind}, a vector of indices, which are used to split the data.
 For example, if you want to apply a function to \code{X[ind.row, ind.col]},
-you may use \code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.
-
-[ind.row, ind.col[ind]: R:ind.row,%20ind.col[ind}
+you may use \code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.}
 
 \item{a.combine}{function that is used by \link{foreach} to process the tasks
 results as they generated. This can be specified as either a function or a

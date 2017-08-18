@@ -43,4 +43,5 @@ tryCatch(test2 <- big_cprodVec(X, y, ind.row, ind.col),
 test2 <- big_cprodVec(X, y[ind.row], ind.row, ind.col)
 true2 <- crossprod(X[ind.row, ind.col], y[ind.row])
 all.equal(test2, as.numeric(true2))
+
 }

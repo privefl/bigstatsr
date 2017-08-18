@@ -39,8 +39,8 @@ ncores <- function(all.tests = FALSE) {
 #' @param p.FUN The function to be applied to each subset matrix.
 #'   It must take a [Filebacked Big Matrix][FBM-class] as first argument and
 #'   `ind`, a vector of indices, which are used to split the data.
-#'   For example, if you want to apply a function to `X[ind.row, ind.col]`,
-#'   you may use `X[ind.row, ind.col[ind]]` in `a.FUN`.
+#'   For example, if you want to apply a function to \code{X[ind.row, ind.col]},
+#'   you may use \code{X[ind.row, ind.col[ind]]} in `a.FUN`.
 #' @param p.combine function that is used by [foreach] to process the tasks
 #'   results as they generated. This can be specified as either a function or a
 #'   non-empty character string naming the function. Specifying 'c' is useful
@@ -120,8 +120,8 @@ big_applySeq <- function(X, a.FUN, a.combine, block.size, ind, ...) {
 #' @param a.FUN The function to be applied to each subset matrix.
 #'   It must take a [Filebacked Big Matrix][FBM-class] as first argument and
 #'   `ind`, a vector of indices, which are used to split the data.
-#'   For example, if you want to apply a function to `X[ind.row, ind.col]`,
-#'   you may use `X[ind.row, ind.col[ind]]` in `a.FUN`.
+#'   For example, if you want to apply a function to \code{X[ind.row, ind.col]},
+#'   you may use \code{X[ind.row, ind.col[ind]]} in `a.FUN`.
 #' @param a.combine function that is used by [foreach] to process the tasks
 #'   results as they generated. This can be specified as either a function or a
 #'   non-empty character string naming the function. Specifying 'c' is useful

@@ -40,15 +40,14 @@ transform_i_only <- function(i, n, m) {
 #'
 #' `extract` is a function that converts different index types such as negative
 #' integer vectors or logical vectors passed to the `[` function as `i`
-#' (e.g. `X[i]`) or `i` and `j` (e.g. `X[i, j]`) into positive
+#' (e.g. \code{X[i]}) or `i` and `j` (e.g. \code{X[i, j]}) into positive
 #' integer vectors. The converted indices are provided as the `i` parameter of
 #' `extract_vector` or `i` and `j` parameters of `extract_matrix` to facilitate
 #' implementing the extraction mechanism for custom matrix-like types.
 #'
-#' The custom type must implement methods for [base::dim] for this function
-#' to work. Implementing methods for [base::nrow] and [base::ncol] is not
-#' necessary as the default method of those generics calls [base::dim]
-#' internally.
+#' The custom type must implement methods for `dim` for this function
+#' to work. Implementing methods for `nrow` and `ncol` is not necessary
+#' as the default method of those generics calls `dim` internally.
 #'
 #' **This idea initially comes from [package crochet](https://goo.gl/3RDNQG).**
 #'
@@ -59,7 +58,7 @@ transform_i_only <- function(i, n, m) {
 #' a matrix.
 #'
 #' @return A function in the form of `function(x, i, j, ..., drop = TRUE)` that
-#' is meant to be used as a method for \code{\link[base]{[}} for a custom type.
+#' is meant to be used as a method for `[` for a custom type.
 #'
 Extract <- function(extract_vector, extract_matrix) {
 
@@ -97,17 +96,16 @@ Extract <- function(extract_vector, extract_matrix) {
 #' Create an Implementation of [<- For Custom Matrix-Like Types
 #'
 #' `replace` is a function that converts different index types such as negative
-#' integer vectors or logical vectors passed to the `[<-`
-#' function as `i` (e.g. `X[i]`) or `i` and `j` (e.g. `X[i, j]`) into positive
+#' integer vectors or logical vectors passed to the `[<-` function as `i`
+#' (e.g. \code{X[i]}) or `i` and `j` (e.g. \code{X[i, j]}) into positive
 #' integer vectors. The converted indices are provided as the `i` parameter of
 #' `replace_vector` or `i` and `j` parameters of `replace_matrix` to facilitate
 #' implementing the replacement mechanism for custom matrix-like types. Values
 #' are recycled to match the replacement length.
 #'
-#' The custom type must implement methods for [base::dim] for this function
-#' to work. Implementing methods for [base::nrow] and [base::ncol] is not
-#' necessary as the default method of those generics calls [base::dim]
-#' internally.
+#' The custom type must implement methods for `dim` for this function
+#' to work. Implementing methods for `nrow` and `ncol` is not necessary
+#' as the default method of those generics calls `dim` internally.
 #'
 #' **This idea initially comes from [package crochet](https://goo.gl/3RDNQG).**
 #'
@@ -119,7 +117,7 @@ Extract <- function(extract_vector, extract_matrix) {
 #' `j` with the values in `value` and returns `x`, invisibly.
 #'
 #' @return A function in the form of `function(x, i, j, ..., value)` that is
-#' meant to be used as a method for \code{\link[base]{[<-}} for a custom type.
+#' meant to be used as a method for `[<-` for a custom type.
 #'
 Replace <- function(replace_vector, replace_matrix) {
 

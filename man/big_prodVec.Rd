@@ -43,4 +43,5 @@ tryCatch(test2 <- big_prodVec(X, y, ind.row, ind.col),
 test2 <- big_prodVec(X, y[ind.col], ind.row, ind.col)
 true2 <- X[ind.row, ind.col] \%*\% y[ind.col]
 all.equal(test2, as.numeric(true2))
+
 }

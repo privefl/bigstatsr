@@ -49,4 +49,5 @@ tryCatch(test2 <- big_cprodMat(X, A, ind.row, ind.col),
 test2 <- big_cprodMat(X, A[ind.row, ], ind.row, ind.col)
 true2 <- crossprod(X[ind.row, ind.col], A[ind.row, ])
 all.equal(test2, true2)
+
 }

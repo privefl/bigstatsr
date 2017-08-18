@@ -2,118 +2,118 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 auc_cpp <- function(x_pos, x_neg) {
-    .Call('_bigstatsr_auc_cpp', PACKAGE = 'bigstatsr', x_pos, x_neg)
+    .Call(`_bigstatsr_auc_cpp`, x_pos, x_neg)
 }
 
 getXPtrFBM <- function(desc) {
-    .Call('_bigstatsr_getXPtrFBM', PACKAGE = 'bigstatsr', desc)
+    .Call(`_bigstatsr_getXPtrFBM`, desc)
 }
 
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose) {
-    .Call('_bigstatsr_COPY_cdfit_gaussian_hsr', PACKAGE = 'bigstatsr', BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
+    .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
 }
 
 COPY_cdfit_binomial_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose) {
-    .Call('_bigstatsr_COPY_cdfit_binomial_hsr', PACKAGE = 'bigstatsr', BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose)
+    .Call(`_bigstatsr_COPY_cdfit_binomial_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, warn, verbose)
 }
 
 bigcolvars <- function(BM, rowInd, colInd) {
-    .Call('_bigstatsr_bigcolvars', PACKAGE = 'bigstatsr', BM, rowInd, colInd)
+    .Call(`_bigstatsr_bigcolvars`, BM, rowInd, colInd)
 }
 
 mycount1 <- function(BM, rowInd, colInd, codeInd) {
-    .Call('_bigstatsr_mycount1', PACKAGE = 'bigstatsr', BM, rowInd, colInd, codeInd)
+    .Call(`_bigstatsr_mycount1`, BM, rowInd, colInd, codeInd)
 }
 
 mycount2 <- function(BM, rowInd, colInd, codeInd) {
-    .Call('_bigstatsr_mycount2', PACKAGE = 'bigstatsr', BM, rowInd, colInd, codeInd)
+    .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
 }
 
 createFile <- function(fileName, nrow, ncol, type) {
-    invisible(.Call('_bigstatsr_createFile', PACKAGE = 'bigstatsr', fileName, nrow, ncol, type))
+    invisible(.Call(`_bigstatsr_createFile`, fileName, nrow, ncol, type))
 }
 
 decodeMat <- function(source, code) {
-    .Call('_bigstatsr_decodeMat', PACKAGE = 'bigstatsr', source, code)
+    .Call(`_bigstatsr_decodeMat`, source, code)
 }
 
 decodeVec <- function(source, code) {
-    .Call('_bigstatsr_decodeVec', PACKAGE = 'bigstatsr', source, code)
+    .Call(`_bigstatsr_decodeVec`, source, code)
 }
 
 GET_ERROR_TYPE <- function() {
-    .Call('_bigstatsr_GET_ERROR_TYPE', PACKAGE = 'bigstatsr')
+    .Call(`_bigstatsr_GET_ERROR_TYPE`)
 }
 
 GET_ERROR_DIM <- function() {
-    .Call('_bigstatsr_GET_ERROR_DIM', PACKAGE = 'bigstatsr')
+    .Call(`_bigstatsr_GET_ERROR_DIM`)
 }
 
 GET_ERROR_USHORT <- function() {
-    .Call('_bigstatsr_GET_ERROR_USHORT', PACKAGE = 'bigstatsr')
+    .Call(`_bigstatsr_GET_ERROR_USHORT`)
 }
 
 extractVec <- function(xpbm, elemInd) {
-    .Call('_bigstatsr_extractVec', PACKAGE = 'bigstatsr', xpbm, elemInd)
+    .Call(`_bigstatsr_extractVec`, xpbm, elemInd)
 }
 
 extractMat <- function(xpbm, rowInd, colInd) {
-    .Call('_bigstatsr_extractMat', PACKAGE = 'bigstatsr', xpbm, rowInd, colInd)
+    .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
 }
 
 pMatVec4 <- function(BM, x, rowInd, colInd) {
-    .Call('_bigstatsr_pMatVec4', PACKAGE = 'bigstatsr', BM, x, rowInd, colInd)
+    .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
 }
 
 cpMatVec4 <- function(BM, x, rowInd, colInd) {
-    .Call('_bigstatsr_cpMatVec4', PACKAGE = 'bigstatsr', BM, x, rowInd, colInd)
+    .Call(`_bigstatsr_cpMatVec4`, BM, x, rowInd, colInd)
 }
 
 replaceVecOne <- function(xpbm, elemInd, val) {
-    invisible(.Call('_bigstatsr_replaceVecOne', PACKAGE = 'bigstatsr', xpbm, elemInd, val))
+    invisible(.Call(`_bigstatsr_replaceVecOne`, xpbm, elemInd, val))
 }
 
 replaceVec <- function(xpbm, elemInd, vec) {
-    invisible(.Call('_bigstatsr_replaceVec', PACKAGE = 'bigstatsr', xpbm, elemInd, vec))
+    invisible(.Call(`_bigstatsr_replaceVec`, xpbm, elemInd, vec))
 }
 
 replaceMatOne <- function(xpbm, rowInd, colInd, val) {
-    invisible(.Call('_bigstatsr_replaceMatOne', PACKAGE = 'bigstatsr', xpbm, rowInd, colInd, val))
+    invisible(.Call(`_bigstatsr_replaceMatOne`, xpbm, rowInd, colInd, val))
 }
 
 replaceMat <- function(xpbm, rowInd, colInd, mat) {
-    invisible(.Call('_bigstatsr_replaceMat', PACKAGE = 'bigstatsr', xpbm, rowInd, colInd, mat))
+    invisible(.Call(`_bigstatsr_replaceMat`, xpbm, rowInd, colInd, mat))
 }
 
 COPY_sparse_svm <- function(BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message) {
-    .Call('_bigstatsr_COPY_sparse_svm', PACKAGE = 'bigstatsr', BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message)
+    .Call(`_bigstatsr_COPY_sparse_svm`, BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message)
 }
 
 transpose3 <- function(BM, BM2) {
-    invisible(.Call('_bigstatsr_transpose3', PACKAGE = 'bigstatsr', BM, BM2))
+    invisible(.Call(`_bigstatsr_transpose3`, BM, BM2))
 }
 
 univLinReg5 <- function(BM, covar_U, y, rowInd, colInd) {
-    .Call('_bigstatsr_univLinReg5', PACKAGE = 'bigstatsr', BM, covar_U, y, rowInd, colInd)
+    .Call(`_bigstatsr_univLinReg5`, BM, covar_U, y, rowInd, colInd)
 }
 
 IRLS <- function(BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter) {
-    .Call('_bigstatsr_IRLS', PACKAGE = 'bigstatsr', BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter)
+    .Call(`_bigstatsr_IRLS`, BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter)
 }
 
 scaling <- function(source, mean, sd) {
-    .Call('_bigstatsr_scaling', PACKAGE = 'bigstatsr', source, mean, sd)
+    .Call(`_bigstatsr_scaling`, source, mean, sd)
 }
 
 complete2 <- function(mat) {
-    .Call('_bigstatsr_complete2', PACKAGE = 'bigstatsr', mat)
+    .Call(`_bigstatsr_complete2`, mat)
 }
 
 incrSup2 <- function(mat, source) {
-    .Call('_bigstatsr_incrSup2', PACKAGE = 'bigstatsr', mat, source)
+    .Call(`_bigstatsr_incrSup2`, mat, source)
 }
 
 correlize <- function(mat, shift, scale) {
-    .Call('_bigstatsr_correlize', PACKAGE = 'bigstatsr', mat, shift, scale)
+    .Call(`_bigstatsr_correlize`, mat, shift, scale)
 }
 
