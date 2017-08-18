@@ -1,9 +1,6 @@
 ################################################################################
 
-context("BM_CODE_ACC")
-
-opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = FALSE)
+context("BM_CODE_ACC") # TODO: put that for all accessors
 
 x <- matrix(rnorm(256, sd = 10), 16)
 
@@ -54,9 +51,5 @@ test_that("same accessing", {
   expect_equal(X2[1:5, 1:5, drop = TRUE], x[1:5, 1:5, drop = TRUE])
   expect_equal(X2[cbind(1:5, 1:5)], x[cbind(1:5, 1:5)])
 })
-
-################################################################################
-
-options(opt.save)
 
 ################################################################################

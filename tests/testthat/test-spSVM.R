@@ -2,14 +2,10 @@
 #
 # context("SP_SVM")
 #
-# opt.save <- options(bigmemory.typecast.warning = FALSE,
-#                     bigmemory.default.shared = TRUE)
-#
-#
 # # Simulating some data
 # N <- 511 # Some issues for small sample sizes
 # M <- 230
-# x <- matrix(rnorm(N * M, sd = 5), N)
+# x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 # y <- sample(0:1, size = N, replace = TRUE)
 # y.factor <- factor(y, levels = c(1, 0))
 #
@@ -19,9 +15,8 @@
 # ################################################################################
 #
 # test_that("equality with sparseSVM with all data", {
-#   for (t in ALL.TYPES) {
-#     X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-#     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+#   for (t in TEST.TYPES) {
+#     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 #
 #     for (covar in lcovar) {
 #       X2 <- cbind(X[], covar)
@@ -52,9 +47,8 @@
 #     ind <- sample(N, N / 2)
 #   }
 #
-#   for (t in ALL.TYPES) {
-#     X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-#     X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+#   for (t in TEST.TYPES) {
+#     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 #
 #     for (covar in lcovar) {
 #       X2 <- cbind(X[], covar)
@@ -79,9 +73,5 @@
 #     }
 #   }
 # })
-#
-# ################################################################################
-#
-# options(opt.save)
 #
 # ################################################################################

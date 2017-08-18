@@ -23,6 +23,7 @@ predict.big_CMSA <- function(object, X,
   check_args()
 
   ind.col <- which(object[cols_along(X)] != 0)
+  stopifnot(length(ind.col) > 0)
 
   scores <- big_prodVec(X, object[ind.col],
                         ind.row = ind.row,

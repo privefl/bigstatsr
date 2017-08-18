@@ -115,16 +115,5 @@ add_code256 <- function(x, code, save = FALSE) {
   )
 }
 
-
-# function for tests
-asFBMcode <- function(x) {
-  x <- round(x + 100)
-  tmp <- unique(as.vector(x))
-  code <- rep(NA_real_, 256)
-  code[tmp + 1] <- tmp - 100
-  storage.mode(x) <- "raw"
-  add_code256(big_copy(x, type = "raw"), code)
-}
-
 ################################################################################
 

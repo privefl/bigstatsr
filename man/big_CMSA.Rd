@@ -63,3 +63,7 @@ scores is chosen.
 vector (see the \code{method} parameter).
 }
 }
+\details{
+For "mean-wise" or "median-wise" method, tests sometimes crash. I haven't
+been able to reproduce the bug.
+}

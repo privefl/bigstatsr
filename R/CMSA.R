@@ -1,6 +1,7 @@
 ################################################################################
 
 get_beta <- function(betas, method) {
+
   if (method == "geometric-median") {
     # Weiszfeld's algorithm
     # probabilistically impossible to not converge in this situation?
@@ -39,6 +40,9 @@ get_beta <- function(betas, method) {
 #'       scores is chosen.
 #' 3. The `K` resulting vectors of coefficients are then combined into one
 #' vector (see the `method` parameter).
+#'
+#' For "mean-wise" or "median-wise" method, tests sometimes crash. I haven't
+#' been able to reproduce the bug.
 #'
 #' @inheritParams bigstatsr-package
 #' @param FUN Function that computes a linear scores for different
