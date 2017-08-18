@@ -17,6 +17,7 @@
 #' @seealso [tcrossprod]
 #'
 #' @example examples/example-tcrossprodSelf.R
+#'
 big_tcrossprodSelf <- function(X, fun.scaling,
                                ind.row = rows_along(X),
                                ind.col = cols_along(X),

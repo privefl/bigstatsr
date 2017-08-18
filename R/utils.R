@@ -106,10 +106,10 @@ getAvailMem <- function(format = TRUE) {
 #' @param x Any object on which you can call `nrow` and `ncol`.
 #'
 #' @examples
-#' X.desc <- big_attachExtdata()
-#' dim(X.desc)
-#' str(rows_along(X.desc))
-#' str(cols_along(X.desc))
+#' X <- big_attachExtdata()
+#' dim(X)
+#' str(rows_along(X))
+#' str(cols_along(X))
 #'
 #' @rdname seq-dim
 #' @keywords internal

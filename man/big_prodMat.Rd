@@ -30,22 +30,23 @@ We advise you to use only half of the cores you have.}
 Product between a Filebacked Big Matrix and a matrix.
 }
 \examples{
-X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
-m <- ncol(X.desc)
+X <- big_attachExtdata()
+n <- nrow(X)
+m <- ncol(X)
 A <- matrix(0, m, 10); A[] <- rnorm(length(A))
 
-test <- big_prodMat(X.desc, A)
-true <- attach.BM(X.desc)[,] \%*\% A
+test <- big_prodMat(X, A)
+true <- X[] \%*\% A
 all.equal(test, true)
 
 # subsetting
 ind.row <- sample(n, n/2)
 ind.col <- sample(m, m/2)
 
-\dontrun{test2 <- big_prodMat(X.desc, A, ind.row, ind.col)}
+tryCatch(test2 <- big_prodMat(X, A, ind.row, ind.col),
+         error = function(e) print(e))
 # returns an error. You need to use the subset of A:
-test2 <- big_prodMat(X.desc, A[ind.col, ], ind.row, ind.col)
-true2 <- attach.BM(X.desc)[ind.row, ind.col] \%*\% A[ind.col, ]
+test2 <- big_prodMat(X, A[ind.col, ], ind.row, ind.col)
+true2 <- X[ind.row, ind.col] \%*\% A[ind.col, ]
 all.equal(test2, true2)
 }

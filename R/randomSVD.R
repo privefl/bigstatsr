@@ -164,6 +164,7 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' @param verbose Should some progress be printed? Default is `FALSE`.
 #'
 #' @export
+#'
 #' @return A named list (an S3 class "big_SVD") of
 #' - `d`, the singular values,
 #' - `u`, the left singular vectors,
@@ -178,6 +179,7 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #'
 #' @example examples/example-randomSVD.R
 #' @seealso [svds][RSpectra::svds]
+#'
 big_randomSVD <- function(X, fun.scaling,
                           ind.row = rows_along(X),
                           ind.col = cols_along(X),

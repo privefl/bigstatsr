@@ -30,22 +30,23 @@ We advise you to use only half of the cores you have.}
 Cross-product between a Filebacked Big Matrix and a matrix.
 }
 \examples{
-X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
-m <- ncol(X.desc)
+X <- big_attachExtdata()
+n <- nrow(X)
+m <- ncol(X)
 A <- matrix(0, n, 10); A[] <- rnorm(length(A))
 
-test <- big_cprodMat(X.desc, A)
-true <- crossprod(attach.BM(X.desc)[,], A)
+test <- big_cprodMat(X, A)
+true <- crossprod(X[], A)
 all.equal(test, true)
 
 # subsetting
 ind.row <- sample(n, n/2)
 ind.col <- sample(m, m/2)
 
-\dontrun{test2 <- big_cprodMat(X.desc, A, ind.row, ind.col)}
+tryCatch(test2 <- big_cprodMat(X, A, ind.row, ind.col),
+         error = function(e) print(e))
 # returns an error. You need to use the subset of A:
-test2 <- big_cprodMat(X.desc, A[ind.row, ], ind.row, ind.col)
-true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], A[ind.row, ])
+test2 <- big_cprodMat(X, A[ind.row, ], ind.row, ind.col)
+true2 <- crossprod(X[ind.row, ind.col], A[ind.row, ])
 all.equal(test2, true2)
 }

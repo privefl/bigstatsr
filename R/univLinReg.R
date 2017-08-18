@@ -24,9 +24,10 @@ univLinReg_sub <- function(X, ind, U, y.train, ind.train) {
 #' This is also an object of class `mhtest`. See `methods(class = "mhtest")`.
 #'
 #' @example examples/example-univLinReg.R
-#'
 #' @seealso [lm][stats::lm]
+#'
 #' @export
+#'
 big_univLinReg <- function(X, y.train,
                            ind.train = rows_along(X),
                            ind.col = cols_along(X),

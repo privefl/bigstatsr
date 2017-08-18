@@ -9,8 +9,10 @@
 #' @param ... Not used.
 #'
 #' @return A vector of prediction scores, corresponding to `ind.row`.
+#'
 #' @export
 #' @importFrom stats predict
+#'
 #' @seealso [big_CMSA]
 #'
 predict.big_CMSA <- function(object, X,
@@ -51,12 +53,15 @@ predict.big_CMSA <- function(object, X,
 #'
 #' @return A matrix of scores, with rows corresponding to `ind.row`
 #' and columns corresponding to `lambda`.
+#'
 #' @export
 #' @import Matrix
 #' @importFrom stats predict
+#'
 #' @seealso [big_spLinReg], [big_spLogReg] and [big_spSVM].
 #'
 #' @example examples/example-predict.R
+#'
 predict.big_sp <- function(object, X,
                            ind.row = rows_along(X),
                            covar.row = NULL,
@@ -103,11 +108,13 @@ predict.big_sp <- function(object, X,
 #' @param ... Not used.
 #'
 #' @return Vector of **`log10(p-values)`** associated with `scores` and `object`.
+#'
 #' @export
 #' @importFrom stats predict
 #' @importFrom magrittr %>%
 #'
 #' @seealso [big_univLinReg] and [big_univLogReg].
+#'
 predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 
   lpval <- scores %>%
@@ -129,13 +136,16 @@ predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 #' @param ... Not used.
 #'
 #' @export
+#'
 #' @return A matrix of size \eqn{n \times K} where `n` is the number of samples
 #' corresponding to indices in `ind.row` and K the number of PCs
 #' computed in `object`. If `X` is not specified, this just returns
 #' the scores of the training set of `object`.
 #'
 #' @example examples/example-SVD.R
+#'
 #' @seealso [predict][stats::prcomp] [big_SVD] [big_randomSVD]
+#'
 predict.big_SVD <- function(object, X = NULL,
                             ind.row = rows_along(X),
                             ind.col = cols_along(X),
@@ -147,7 +157,7 @@ predict.big_SVD <- function(object, X = NULL,
   } else {
     check_args()
 
-    # multiplication with clever scaling -> see vignettes
+    # Multiplication with clever scaling (see vignettes)
     v2 <- object$v / object$sds
     tmp <- big_prodMat(X, v2, ind.row, ind.col, block.size)
     sweep(tmp, 2, crossprod(object$means, v2), "-")

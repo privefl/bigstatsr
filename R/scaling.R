@@ -3,7 +3,7 @@
 #' Some scaling functions
 #'
 #' Some scaling functions for a Filebacked Big Matrix to be used as
-#' the __`fun.scaling`__ parameter of some functions of this package.
+#' the **`fun.scaling`** parameter of some functions of this package.
 #'
 #' One could think about less common scalings, such as for example the
 #' "y-aware" scaling which uses the inverse of betas of column-wise linear
@@ -12,10 +12,11 @@
 #' and `big_univLinReg` to get betas (and then inverse them).
 #'
 #' @param center A logical value: whether to return means or 0s.
-#' @param scale A logical value: whether to return sds or 1s. __You can't
-#' use scale without using center.__
+#' @param scale A logical value: whether to return sds or 1s. **You can't
+#' use scale without using center.**
+#'
 #' @return
-#' A new __function__ that returns a data.frame of two vectors
+#' A new **function** that returns a data.frame of two vectors
 #' "mean" and "sd" which are of the length of `ind.col`.
 #'
 #' @seealso [scale]
@@ -23,20 +24,20 @@
 #' @export
 #'
 #' @examples
-#' X.desc <- big_attachExtdata()
+#' X <- big_attachExtdata()
 #'
 #' # No scaling
 #' big_noscale <- big_scale(center = FALSE, scale = FALSE)
 #' class(big_noscale) # big_scale returns a new function
-#' str(big_noscale(X.desc))
+#' str(big_noscale(X))
 #' big_noscale2 <- big_scale(center = FALSE)
-#' str(big_noscale2(X.desc)) # you can't scale without centering
+#' str(big_noscale2(X)) # you can't scale without centering
 #'
 #' # Centering
 #' big_center <- big_scale(scale = FALSE)
-#' str(big_center(X.desc))
+#' str(big_center(X))
 #' # + scaling
-#' str(big_scale()(X.desc))
+#' str(big_scale()(X))
 big_scale <- function(center = TRUE, scale = TRUE) {
 
   function(X, ind.row = rows_along(X), ind.col = cols_along(X)) {

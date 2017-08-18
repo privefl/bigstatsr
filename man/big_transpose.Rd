@@ -18,8 +18,12 @@ This function implements a simple cache-oblivious algorithm for
 the transposition of a Filebacked Big Matrix.
 }
 \examples{
-X.desc <- big_attachExtdata()
-Xt.desc <- big_transpose(X.desc, fun.createBM = tmpFBM())
-identical(t(attach.BM(X.desc)[,]), attach.BM(Xt.desc)[,])
+X <- big_copy(matrix(rnorm(150), 10, 15))
+Xt <- big_transpose(X)
+identical(t(X[]), Xt[])
+
+X <- big_attachExtdata()
+Xt <- big_transpose(X)
+identical(t(X[]), Xt[])
 
 }

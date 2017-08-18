@@ -38,24 +38,23 @@ This algorithm is not really memory efficient. I'm planning on fixing this,
 if it is really needed.
 }
 \examples{
-X.desc <- big_attachExtdata()
+X <- big_attachExtdata()
 
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)
-K <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale)
+K <- big_tcrossprodSelf(X, fun.scaling = big_noscale)
 dim(K)
 
-true <- tcrossprod(attach.BM(X.desc)[,])
+true <- tcrossprod(X[])
 all.equal(K, true, check.attributes = FALSE)
 
 # Using only half of the data
-n <- nrow(X.desc)
+n <- nrow(X)
 ind <- sort(sample(n, n/2))
-K2 <- big_tcrossprodSelf(X.desc, fun.scaling = big_noscale,
-                            ind.row = ind)
+K2 <- big_tcrossprodSelf(X, fun.scaling = big_noscale, ind.row = ind)
 dim(K2)
 
-true2 <- tcrossprod(attach.BM(X.desc)[ind, ])
+true2 <- tcrossprod(X[ind, ])
 all.equal(K2, true2, check.attributes = FALSE)
 }
 \seealso{

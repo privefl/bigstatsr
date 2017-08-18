@@ -24,22 +24,23 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 Product between a Filebacked Big Matrix and a vector.
 }
 \examples{
-X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
-m <- ncol(X.desc)
+X <- big_attachExtdata()
+n <- nrow(X)
+m <- ncol(X)
 y <- rnorm(m)
 
-test <- big_prodVec(X.desc, y)      # vector
-true <- attach.BM(X.desc)[,] \%*\% y  # one-column matrix
+test <- big_prodVec(X, y)      # vector
+true <- X[] \%*\% y  # one-column matrix
 all.equal(test, as.numeric(true))
 
 # subsetting
 ind.row <- sample(n, n/2)
 ind.col <- sample(m, m/2)
 
-\dontrun{test2 <- big_prodVec(X.desc, y, ind.row, ind.col)}
+tryCatch(test2 <- big_prodVec(X, y, ind.row, ind.col),
+         error = function(e) print(e))
 # returns an error. You need to use the subset of y:
-test2 <- big_prodVec(X.desc, y[ind.col], ind.row, ind.col)
-true2 <- attach.BM(X.desc)[ind.row, ind.col] \%*\% y[ind.col]
+test2 <- big_prodVec(X, y[ind.col], ind.row, ind.col)
+true2 <- X[ind.row, ind.col] \%*\% y[ind.col]
 all.equal(test2, as.numeric(true2))
 }

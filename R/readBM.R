@@ -33,6 +33,7 @@ get_nline <- function(file) {
 #' Default is `FALSE`.
 #'
 #' @return A Filebacked Big Matrix with two attributes `header` and `info`.
+#'
 #' @export
 #' @importFrom magrittr %>%
 #'

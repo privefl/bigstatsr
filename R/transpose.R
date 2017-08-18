@@ -13,9 +13,13 @@
 #' @export
 #'
 #' @examples
-#' X.desc <- big_attachExtdata()
-#' Xt.desc <- big_transpose(X.desc, fun.createBM = tmpFBM())
-#' identical(t(attach.BM(X.desc)[,]), attach.BM(Xt.desc)[,])
+#' X <- big_copy(matrix(rnorm(150), 10, 15))
+#' Xt <- big_transpose(X)
+#' identical(t(X[]), Xt[])
+#'
+#' X <- big_attachExtdata()
+#' Xt <- big_transpose(X)
+#' identical(t(X[]), Xt[])
 #'
 big_transpose <- function(X, ...) {
 
@@ -25,8 +29,11 @@ big_transpose <- function(X, ...) {
 
   transpose3(res, X)
 
-  # `if`(inherits(X, "BM.code"), as.BM.code(res, code = X@code), res)
-  res
-} # TODO: see how put a code on a FBM
+  save <- list(...)$save
+  `if`(inherits(X, "FBM.code256"),
+       add_code256(res, code = X$code256,
+                   save = `if`(is.null(save), formals(FBM)$save, save)),
+       res)
+}
 
 ################################################################################

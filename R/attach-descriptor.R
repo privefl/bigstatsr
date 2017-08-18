@@ -10,14 +10,12 @@
 #'
 #' @examples
 #' # tmpFBM
-#' tmpfile <- tempfile()
-#' X.desc <- FBM(backingroot = basename(tmpfile),
-#'               backingpath = dirname(tmpfile))(10, 10)
+#' X <- FBM(10, 10, save = TRUE)
 #'
-#' descriptorfile <- paste0(tmpfile, ".desc")
-#' X.desc2 <- big_attach(descriptorfile)
+#' rdsfile <- sub("\\.bk$", ".rds", X$backingfile)
+#' X2 <- big_attach(rdsfile)
 #'
-#' all.equal(X.desc, X.desc2)
+#' all.equal(X[], X2[])
 big_attach <- function(rdsfile) {
 
   rdsfile <- normalizePath(rdsfile)

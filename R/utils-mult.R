@@ -11,24 +11,26 @@
 #' @export
 #'
 #' @examples
-#' X.desc <- big_attachExtdata()
-#' n <- nrow(X.desc)
-#' m <- ncol(X.desc)
+#' X <- big_attachExtdata()
+#' n <- nrow(X)
+#' m <- ncol(X)
 #' y <- rnorm(m)
 #'
-#' test <- big_prodVec(X.desc, y)      # vector
-#' true <- attach.BM(X.desc)[,] %*% y  # one-column matrix
+#' test <- big_prodVec(X, y)      # vector
+#' true <- X[] %*% y  # one-column matrix
 #' all.equal(test, as.numeric(true))
 #'
 #' # subsetting
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
 #'
-#' \dontrun{test2 <- big_prodVec(X.desc, y, ind.row, ind.col)}
+#' tryCatch(test2 <- big_prodVec(X, y, ind.row, ind.col),
+#'          error = function(e) print(e))
 #' # returns an error. You need to use the subset of y:
-#' test2 <- big_prodVec(X.desc, y[ind.col], ind.row, ind.col)
-#' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% y[ind.col]
+#' test2 <- big_prodVec(X, y[ind.col], ind.row, ind.col)
+#' true2 <- X[ind.row, ind.col] %*% y[ind.col]
 #' all.equal(test2, as.numeric(true2))
+#'
 big_prodVec <- function(X, y.col,
                         ind.row = rows_along(X),
                         ind.col = cols_along(X)) {
@@ -49,24 +51,26 @@ big_prodVec <- function(X, y.col,
 #' @export
 #'
 #' @examples
-#' X.desc <- big_attachExtdata()
-#' n <- nrow(X.desc)
-#' m <- ncol(X.desc)
+#' X <- big_attachExtdata()
+#' n <- nrow(X)
+#' m <- ncol(X)
 #' y <- rnorm(n)
 #'
-#' test <- big_cprodVec(X.desc, y)             # vector
-#' true <- crossprod(attach.BM(X.desc)[,], y)  # one-column matrix
+#' test <- big_cprodVec(X, y)             # vector
+#' true <- crossprod(X[], y)  # one-column matrix
 #' all.equal(test, as.numeric(true))
 #'
 #' # subsetting
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
 #'
-#' \dontrun{test2 <- big_cprodVec(X.desc, y, ind.row, ind.col)}
+#' tryCatch(test2 <- big_cprodVec(X, y, ind.row, ind.col),
+#'          error = function(e) print(e))
 #' # returns an error. You need to use the subset of y:
-#' test2 <- big_cprodVec(X.desc, y[ind.row], ind.row, ind.col)
-#' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], y[ind.row])
+#' test2 <- big_cprodVec(X, y[ind.row], ind.row, ind.col)
+#' true2 <- crossprod(X[ind.row, ind.col], y[ind.row])
 #' all.equal(test2, as.numeric(true2))
+#'
 big_cprodVec <- function(X, y.row,
                          ind.row = rows_along(X),
                          ind.col = cols_along(X)) {
@@ -87,24 +91,26 @@ big_cprodVec <- function(X, y.row,
 #' @export
 #'
 #' @examples
-#' X.desc <- big_attachExtdata()
-#' n <- nrow(X.desc)
-#' m <- ncol(X.desc)
+#' X <- big_attachExtdata()
+#' n <- nrow(X)
+#' m <- ncol(X)
 #' A <- matrix(0, m, 10); A[] <- rnorm(length(A))
 #'
-#' test <- big_prodMat(X.desc, A)
-#' true <- attach.BM(X.desc)[,] %*% A
+#' test <- big_prodMat(X, A)
+#' true <- X[] %*% A
 #' all.equal(test, true)
 #'
 #' # subsetting
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
 #'
-#' \dontrun{test2 <- big_prodMat(X.desc, A, ind.row, ind.col)}
+#' tryCatch(test2 <- big_prodMat(X, A, ind.row, ind.col),
+#'          error = function(e) print(e))
 #' # returns an error. You need to use the subset of A:
-#' test2 <- big_prodMat(X.desc, A[ind.col, ], ind.row, ind.col)
-#' true2 <- attach.BM(X.desc)[ind.row, ind.col] %*% A[ind.col, ]
+#' test2 <- big_prodMat(X, A[ind.col, ], ind.row, ind.col)
+#' true2 <- X[ind.row, ind.col] %*% A[ind.col, ]
 #' all.equal(test2, true2)
+#'
 big_prodMat <- function(X, A.col,
                         ind.row = rows_along(X),
                         ind.col = cols_along(X),
@@ -135,24 +141,26 @@ big_prodMat <- function(X, A.col,
 #' @export
 #'
 #' @examples
-#' X.desc <- big_attachExtdata()
-#' n <- nrow(X.desc)
-#' m <- ncol(X.desc)
+#' X <- big_attachExtdata()
+#' n <- nrow(X)
+#' m <- ncol(X)
 #' A <- matrix(0, n, 10); A[] <- rnorm(length(A))
 #'
-#' test <- big_cprodMat(X.desc, A)
-#' true <- crossprod(attach.BM(X.desc)[,], A)
+#' test <- big_cprodMat(X, A)
+#' true <- crossprod(X[], A)
 #' all.equal(test, true)
 #'
 #' # subsetting
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
 #'
-#' \dontrun{test2 <- big_cprodMat(X.desc, A, ind.row, ind.col)}
+#' tryCatch(test2 <- big_cprodMat(X, A, ind.row, ind.col),
+#'          error = function(e) print(e))
 #' # returns an error. You need to use the subset of A:
-#' test2 <- big_cprodMat(X.desc, A[ind.row, ], ind.row, ind.col)
-#' true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], A[ind.row, ])
+#' test2 <- big_cprodMat(X, A[ind.row, ], ind.row, ind.col)
+#' true2 <- crossprod(X[ind.row, ind.col], A[ind.row, ])
 #' all.equal(test2, true2)
+#'
 big_cprodMat <- function(X, A.row,
                          ind.row = rows_along(X),
                          ind.col = cols_along(X),

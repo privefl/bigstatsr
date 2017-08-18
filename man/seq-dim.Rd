@@ -16,10 +16,10 @@ cols_along(x)
 Similar to \link{seq_along}, it creates sequences of size \code{nrow(x)} or \code{ncol(x)}.
 }
 \examples{
-X.desc <- big_attachExtdata()
-dim(X.desc)
-str(rows_along(X.desc))
-str(cols_along(X.desc))
+X <- big_attachExtdata()
+dim(X)
+str(rows_along(X))
+str(cols_along(X))
 
 }
 \keyword{internal}

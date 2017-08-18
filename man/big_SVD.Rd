@@ -58,17 +58,17 @@ To get \eqn{X = U \cdot D \cdot V^T},
 \examples{
 set.seed(1)
 
-X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
+X <- big_attachExtdata()
+n <- nrow(X)
 
 # Using only half of the data
 ind <- sort(sample(n, n/2))
 
-test <- big_SVD(X. = X.desc, fun.scaling = big_scale(), ind.row = ind)
+test <- big_SVD(X, fun.scaling = big_scale(), ind.row = ind)
 str(test)
 plot(test$u)
 
-pca <- prcomp(attach.BM(X.desc)[ind, ], center = TRUE, scale. = TRUE)
+pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
 all.equal(test$means, pca$center)
@@ -88,13 +88,12 @@ plot(scores2, pca$x[, 1:ncol(scores2)])
 plot(test$v[1:100, ], pca$rotation[1:100, 1:ncol(scores2)])
 
 # projecting on new data
-X2 <- sweep(sweep(attach.BM(X.desc)[-ind, ], 2, test$means, '-'),
-            2, test$sds, '/')
+X2 <- sweep(sweep(X[-ind, ], 2, test$means, '-'), 2, test$sds, '/')
 scores.test <- X2 \%*\% test$v
-ind2 <- setdiff(rows_along(X.desc), ind)
-scores.test2 <- predict(test, X.desc, ind.row = ind2) # use this
+ind2 <- setdiff(rows_along(X), ind)
+scores.test2 <- predict(test, X, ind.row = ind2) # use this
 all.equal(scores.test, scores.test2)
-scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
+scores.test3 <- predict(pca, X[-ind, ])
 plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])
 }
 \seealso{
