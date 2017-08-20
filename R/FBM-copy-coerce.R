@@ -76,7 +76,7 @@ setMethod(
     if (!requireNamespace("bigmemory"))
       stop2("You need to install package 'bigmemory'.")
 
-    if (!is.filebacked(x))
+    if (!bigmemory::is.filebacked(x))
       stop2("'x' has to be a FILEBACKED big.matrix.")
 
     opt.save <- options(bigstatsr.check.args = FALSE)
@@ -88,10 +88,17 @@ setMethod(
 
 ################################################################################
 
-#' @exportMethod as.matrix
+#' Convert to base R matrix
+#'
+#' Extract values from a Filebacked Big Matrix and convert to a base R matrix.
+#'
+#' @param x A [FBM][FBM-class] object.
+#'
+#' @export
+#'
 setMethod(
   "as.matrix", signature(x = "FBM"),
-  function(x) as(x, "matrix")
+  function(x) methods::as(x, "matrix")
 )
 setAs("FBM", "matrix", function(from) from[])
 

@@ -25,8 +25,3 @@ test_that("Equality with matrix operations", {
 })
 
 ################################################################################
-
-expect_error(big_colstats(big.matrix(10, 10, type = "raw")),
-             GET_ERROR_TYPE(), fixed = TRUE)
-
-################################################################################

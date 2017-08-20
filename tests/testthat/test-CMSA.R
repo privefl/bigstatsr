@@ -25,7 +25,7 @@ test_that("correlation between predictors", {
       covar <- sample(lcovar)[[1]]
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
-      print(meth <- sample(ALL.METHODS, size = 1))
+      meth <- sample(ALL.METHODS, size = 1)
 
       mod.bigstatsr <- f(X, y, covar.train = covar, alpha = alpha,
                          lambda.min = lambda.min)

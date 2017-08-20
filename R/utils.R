@@ -37,6 +37,8 @@ stop2 <- function(...) stop(sprintf(...), call. = FALSE)
 #'
 #' @return An integer >= 1.
 #'
+#' @export
+#'
 #' @examples
 #' block_size(1e3)
 #' block_size(1e6)

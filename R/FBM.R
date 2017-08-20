@@ -33,7 +33,7 @@ FBM_RC <- methods::setRefClass(
     backingfile = "character",
 
     address = function() {
-      if (identical(.self$extptr, new("externalptr"))) { # nil
+      if (identical(.self$extptr, methods::new("externalptr"))) { # nil
         .self$extptr <- getXPtrFBM(.self$description)
       }
       .self$extptr
@@ -139,6 +139,16 @@ FBM <- function(nrow, ncol,
 #' logical indices (that are recycled) and also a matrix of indices (but only
 #' positive ones).
 #'
+#' @param x A [FBM][FBM-class object].
+#' @param i A vector of indices (or nothing). You can use positive and negative
+#'   indices, logical indices (that are recycled) and also a matrix of indices
+#'   (but only positive ones).
+#' @param j A vector of indices (or nothing). You can use positive and negative
+#'   indices, logical indices (that are recycled).
+#' @param ... Not used. Just to make [nargs] works.
+#' @param drop Whether to delete the dimensions of a matrix which have
+#'   one dimension equals to 1.
+#'
 #' @rdname FBM-class
 #'
 #' @include crochet.R
@@ -153,6 +163,8 @@ setMethod(
   )
 )
 
+#' @param value The values to replace. Should be of length 1 or of the same
+#'   length of the subset to replace.
 #' @rdname FBM-class
 #' @export
 setMethod(

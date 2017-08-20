@@ -20,7 +20,7 @@ size \code{n} x \code{block.size} takes less memory than
 \code{getOption("bigstatsr.block.sizeGB")} GigaBytes (default is 1GB).
 }
 \examples{
-block_size(1e3)
-block_size(1e6)
-block_size(1e6, 6)
+bigstatsr:::block_size(1e3)
+bigstatsr:::block_size(1e6)
+bigstatsr:::block_size(1e6, 6)
 }
