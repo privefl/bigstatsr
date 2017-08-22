@@ -7,10 +7,21 @@
 #include <Rcpp.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
 namespace bigstatsr { namespace biglassoUtils {
+
+IntegerVector asIntVec(const std::vector<size_t>& col_idx) {
+
+  size_t n = col_idx.size();
+  IntegerVector res(n);
+  for (size_t i = 0; i < n; i++)
+    res[i] = col_idx[i];
+
+  return res;
+}
 
 void print_time(bool verbose, bool end = false, int l = -1) {
   if (verbose) {

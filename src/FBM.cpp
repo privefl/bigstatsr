@@ -7,13 +7,13 @@
 
 using namespace Rcpp;
 using namespace boost::interprocess;
+using std::size_t;
 
 /******************************************************************************/
 
-FBM::FBM(const List& desc)
-  : n(desc["nrow"]), m(desc["ncol"]), type(desc["type"]) {
+FBM::FBM(std::string path, size_t n, size_t m, int type)
+  : n(n), m(m), type(type) {
 
-  std::string path = desc["backingfile"];
   try {
     this->file = file_mapping(path.c_str(), read_write);
   } catch(interprocess_exception& e) {
@@ -30,12 +30,12 @@ FBM::FBM(const List& desc)
 /******************************************************************************/
 
 // [[Rcpp::export]]
-SEXP getXPtrFBM(const List& desc) {
+SEXP getXPtrFBM(std::string path, int n, int m, int type) {
 
   // http://gallery.rcpp.org/articles/intro-to-exceptions/
   try {
     // Create a pointer to an FBM object and wrap it as an external pointer
-    XPtr<FBM> ptr(new FBM(desc), true);
+    XPtr<FBM> ptr(new FBM(path, n, m, type), true);
     // Return the external pointer to the R side
     return ptr;
   } catch(std::exception &ex) {

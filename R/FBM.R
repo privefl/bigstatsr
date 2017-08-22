@@ -34,18 +34,12 @@ FBM_RC <- methods::setRefClass(
 
     address = function() {
       if (identical(.self$extptr, methods::new("externalptr"))) { # nil
-        .self$extptr <- getXPtrFBM(.self$description)
+        .self$extptr <- getXPtrFBM(.self$backingfile,
+                                   .self$nrow,
+                                   .self$ncol,
+                                   .self$type)
       }
       .self$extptr
-    },
-
-    description = function() {
-      list(
-        backingfile = .self$backingfile,
-        nrow        = .self$nrow,
-        ncol        = .self$ncol,
-        type        = .self$type
-      )
     }
   ),
 

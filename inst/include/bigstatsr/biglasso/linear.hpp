@@ -30,21 +30,21 @@ double COPY_gLoss(const NumericVector& r, size_t n) {
 // Coordinate descent for gaussian models
 template <class C>
 List COPY_cdfit_gaussian_hsr(C xAcc,
-                             const NumericVector &y,
-                             NumericVector &lambda,
+                             const NumericVector& y,
+                             NumericVector& lambda,
                              size_t L,
                              bool lam_scale,
                              double lambda_min,
                              double alpha,
                              bool user,
                              double eps,
-                             size_t max_iter,
-                             const NumericVector &m,
-                             size_t dfmax,
+                             int max_iter,
+                             const NumericVector& m,
+                             int dfmax,
                              bool verbose) {
+
   size_t n = xAcc.nrow(); // number of observations used for fitting model
   size_t p = xAcc.ncol();
-  // printf("p = %d\n", p); //DEBUG
 
   NumericVector center(p);
   NumericVector scale(p);
@@ -114,7 +114,7 @@ List COPY_cdfit_gaussian_hsr(C xAcc,
       if (Rcpp::sum(beta_old != 0) > dfmax) {
         for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
         return List::create(beta, center, scale, lambda, loss, iter, n_reject,
-                            as<IntegerVector>(Rcpp::wrap(col_idx)));
+                            asIntVec(col_idx));
       }
       // strong set
       cutoff = 2 * lam_l - lambda[l-1];
@@ -192,7 +192,7 @@ List COPY_cdfit_gaussian_hsr(C xAcc,
   }
 
   return List::create(beta, center, scale, lambda, loss, iter, n_reject,
-                      as<IntegerVector>(Rcpp::wrap(col_idx)));
+                      asIntVec(col_idx));
 }
 
 } }

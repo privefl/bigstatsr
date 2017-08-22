@@ -5,8 +5,8 @@ auc_cpp <- function(x_pos, x_neg) {
     .Call(`_bigstatsr_auc_cpp`, x_pos, x_neg)
 }
 
-getXPtrFBM <- function(desc) {
-    .Call(`_bigstatsr_getXPtrFBM`, desc)
+getXPtrFBM <- function(path, n, m, type) {
+    .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
 }
 
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose) {

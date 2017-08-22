@@ -5,7 +5,6 @@
 #include <bigstatsr/biglasso/logistic.hpp>
 
 using namespace Rcpp;
-using std::size_t;
 
 /******************************************************************************/
 
@@ -23,15 +22,15 @@ List COPY_cdfit_binomial_hsr(Environment BM,
                              const IntegerVector& row_idx,
                              const NumericMatrix& covar,
                              NumericVector& lambda,
-                             size_t L,
+                             int L,
                              bool lam_scale,
                              double lambda_min,
                              double alpha,
                              bool user,
                              double eps,
-                             size_t max_iter,
+                             int max_iter,
                              const NumericVector& m,
-                             size_t dfmax,
+                             int dfmax,
                              bool warn,
                              bool verbose) {
 

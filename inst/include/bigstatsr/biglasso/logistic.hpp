@@ -156,7 +156,7 @@ List COPY_cdfit_binomial_hsr(C xAcc,
       if (Rcpp::sum(beta_old != 0) > dfmax) {
         for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
         return List::create(beta0, beta, center, scale, lambda, Dev, iter, n_reject,
-                            as<IntegerVector>(Rcpp::wrap(col_idx)));
+                            asIntVec(col_idx));
       }
 
       // strong set
@@ -204,7 +204,7 @@ List COPY_cdfit_binomial_hsr(C xAcc,
             if (warn) warning("Model saturated; exiting...");
             for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
             return List::create(beta0, beta, center, scale, lambda, Dev, iter, n_reject,
-                                as<IntegerVector>(Rcpp::wrap(col_idx)));
+                                asIntVec(col_idx));
           }
 
           // Intercept
@@ -272,7 +272,7 @@ List COPY_cdfit_binomial_hsr(C xAcc,
   }
 
   return List::create(beta0, beta, center, scale, lambda, Dev, iter, n_reject,
-                      as<IntegerVector>(Rcpp::wrap(col_idx)));
+                      asIntVec(col_idx));
 }
 
 } }

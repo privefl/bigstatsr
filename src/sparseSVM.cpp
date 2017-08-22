@@ -383,12 +383,16 @@ List COPY_sparse_svm(C macc,
 
 // Dispatch function for COPY_sparse_svm
 // [[Rcpp::export]]
-List COPY_sparse_svm(Environment BM, const NumericVector& y,
+List COPY_sparse_svm(Environment BM,
+                     const NumericVector& y,
                      const IntegerVector& row_idx,
-                     const NumericMatrix& covar, NumericVector& lambda,
-                     const NumericVector& pf, double gamma, double alpha,
+                     const NumericMatrix& covar,
+                     NumericVector& lambda,
+                     const NumericVector& pf,
+                     double gamma, double alpha,
                      double thresh, double lambda_min,
-                     int scrflag, size_t dfmax, size_t max_iter, bool user, bool message) {
+                     int scrflag, int dfmax, int max_iter,
+                     bool user, bool message) {
 
   XPtr<FBM> xpBM = BM["address"];
 
