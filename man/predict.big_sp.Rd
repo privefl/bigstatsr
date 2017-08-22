@@ -10,7 +10,7 @@
 \arguments{
 \item{object}{Object of class \code{big_sp}.}
 
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
@@ -19,7 +19,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 
 \item{...}{Not used.}
 }

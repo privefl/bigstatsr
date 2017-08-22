@@ -8,7 +8,7 @@ big_SVD(X, fun.scaling, ind.row = rows_along(X), ind.col = cols_along(X),
   k = 10, block.size = 1000)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
@@ -22,7 +22,8 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{k}{Number of singular vectors/values to compute. Default is \code{10}.}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 }
 \value{
 A named list (an S3 class "big_SVD") of

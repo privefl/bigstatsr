@@ -7,7 +7,7 @@
 big_spLinReg(X, y.train, ind.train = rows_along(X), covar.train = NULL, ...)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 

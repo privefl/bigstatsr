@@ -32,7 +32,6 @@ big_univLinReg <- function(X, y.train,
                            ind.train = rows_along(X),
                            ind.col = cols_along(X),
                            covar.train = NULL,
-                           ncores = 1,
                            thr.eigval = 1e-4) {
 
   check_args()
@@ -51,7 +50,6 @@ big_univLinReg <- function(X, y.train,
                          p.FUN = univLinReg_sub,
                          p.combine = "rbind",
                          ind = ind.col,
-                         ncores = ncores,
                          U = SVD$u[, 1:K, drop = FALSE],
                          y.train = y.train,
                          ind.train = ind.train)

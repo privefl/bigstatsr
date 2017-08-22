@@ -7,7 +7,7 @@
 big_cprodVec(X, y.row, ind.row = rows_along(X), ind.col = cols_along(X))
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y.row}{A vector of same size as \code{ind.row}.}
 

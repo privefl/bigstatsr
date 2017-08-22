@@ -11,6 +11,11 @@ const char* const GET_ERROR_DIM() {
 }
 
 // [[Rcpp::export]]
+const char* const GET_ERROR_BOUNDS() {
+  return ERROR_BOUNDS;
+}
+
+// [[Rcpp::export]]
 const char* const GET_ERROR_USHORT() {
   return ERROR_USHORT;
 }
@@ -18,5 +23,6 @@ const char* const GET_ERROR_USHORT() {
 /*** R
 GET_ERROR_TYPE()
 GET_ERROR_DIM()
+GET_ERROR_BOUNDS()
 GET_ERROR_USHORT()
 */

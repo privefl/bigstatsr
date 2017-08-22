@@ -6,7 +6,7 @@
 \usage{
 big_CMSA(FUN, feval, X, y.train, ind.train = rows_along(X),
   covar.train = NULL, K = 10, method = c("geometric-median", "mean-wise",
-  "median-wise"), ncores = 1, ...)
+  "median-wise"), ...)
 }
 \arguments{
 \item{FUN}{Function that computes a linear scores for different
@@ -19,7 +19,7 @@ maximizing this function. If \code{feval} is like a loss function (which you
 want to minimize), you should use its opposite instead.
 Its only two arguments should be \code{pred} and \code{target} (e.g. \link{AUC}).}
 
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
@@ -35,9 +35,6 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 
 \item{method}{Method for combining vectors of coefficients. The default uses
 the \href{https://en.wikipedia.org/wiki/Geometric_median}{geometric median}.}
-
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
 
 \item{...}{Extra parameters to be passed to FUN.}
 }

@@ -43,7 +43,7 @@ stop2 <- function(...) stop(sprintf(...), call. = FALSE)
 #' block_size(1e3)
 #' block_size(1e6)
 #' block_size(1e6, 6)
-block_size <- function(n, ncores = 1) {
+block_size <- function(n, ncores = foreach::getDoParWorkers()) {
   block.max <- getOption("bigstatsr.block.sizeGB") / ncores
   # 8 * n * m < opt * 1024^3
   # m < opt * 1024^3 / (8 * n)

@@ -5,11 +5,10 @@
 \title{Randomized partial SVD}
 \usage{
 big_randomSVD(X, fun.scaling, ind.row = rows_along(X),
-  ind.col = cols_along(X), k = 10, tol = 1e-04, verbose = FALSE,
-  ncores = 1)
+  ind.col = cols_along(X), k = 10, tol = 1e-04, verbose = FALSE)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
@@ -28,10 +27,9 @@ few singular vectors/values.}}
 \item{tol}{Precision parameter of \link[RSpectra:svds]{svds}.
 Default is \code{1e-4}.}
 
-\item{verbose}{Should some progress be printed? Default is \code{FALSE}.}
-
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
+\item{verbose}{Should some progress be printed? Default is \code{FALSE}.
+If \code{TRUE}, SOCK clusters will be used so that it may be slower on
+non-Windows machines.}
 }
 \value{
 A named list (an S3 class "big_SVD") of

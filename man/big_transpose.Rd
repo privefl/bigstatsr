@@ -7,7 +7,7 @@
 big_transpose(X, ...)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 }
 \value{
 The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions

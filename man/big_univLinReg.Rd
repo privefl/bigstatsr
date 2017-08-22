@@ -5,11 +5,10 @@
 \title{Column-wise linear regression}
 \usage{
 big_univLinReg(X, y.train, ind.train = rows_along(X),
-  ind.col = cols_along(X), covar.train = NULL, ncores = 1,
-  thr.eigval = 1e-04)
+  ind.col = cols_along(X), covar.train = NULL, thr.eigval = 1e-04)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
@@ -23,9 +22,6 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
-
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
 
 \item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
 Default is \code{1e-4}.}

@@ -2,6 +2,9 @@
 
 #' Methods to copy an object to a FBM
 #'
+#' @param x Either a [FBM][FBM-class], a [big.matrix][big.matrix-class] or
+#'   a standard R matrix.
+#'
 #' @export
 #'
 setGeneric(
@@ -17,7 +20,6 @@ big_copy0 <- function(X, ind.row = rows_along(X),
                       ind.col = cols_along(X),
                       ...,
                       block.size = block_size(length(ind.row)),
-                      ncores = 1,
                       warn = TRUE) {
 
   res <- FBM(
@@ -28,16 +30,15 @@ big_copy0 <- function(X, ind.row = rows_along(X),
   )
 
   # Warn only once
-  warn_downcast(from = X, to = res)
+  if (warn) warn_downcast(from = X, to = res)
   opt.save <- options(bigstatsr.typecast.warning = FALSE)
   on.exit(options(opt.save), add = TRUE)
 
-  big_apply(ind = seq_along(ind.col),
-            a.FUN = function(X, X2, ind, ind.row, ind.col) {
-              X2[, ind] <- X[ind.row, ind.col[ind]]
-              NULL
-            }, a.combine = 'c', block.size = block.size, ncores = ncores,
-            X = X, X2 = res, ind.row = ind.row, ind.col = ind.col)
+  big_apply(X, a.FUN = function(X, ind, X2, ind.row, ind.col) {
+    X2[, ind] <- X[ind.row, ind.col[ind]]
+    NULL
+  }, a.combine = 'c', ind = seq_along(ind.col), block.size = block.size,
+  X2 = res, ind.row = ind.row, ind.col = ind.col)
 
   res
 }

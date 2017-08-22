@@ -5,26 +5,11 @@
 \alias{FBM-class}
 \alias{FBM_RC}
 \alias{FBM}
-\alias{[,FBM,ANY,ANY,ANY-method}
-\alias{[<-,FBM,ANY,ANY,ANY-method}
-\alias{dim,FBM-method}
-\alias{length,FBM-method}
-\alias{typeof,FBM-method}
 \title{Class FBM}
 \usage{
 FBM(nrow, ncol, type = c("double", "integer", "unsigned short",
   "unsigned char", "raw"), init = NULL, backingfile = tempfile(),
   save = FALSE)
-
-\S4method{[}{FBM,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
-
-\S4method{[}{FBM,ANY,ANY,ANY}(x, i, j, ...) <- value
-
-\S4method{dim}{FBM}(x)
-
-\S4method{length}{FBM}(x)
-
-\S4method{typeof}{FBM}(x)
 }
 \arguments{
 \item{nrow}{Number of rows.}

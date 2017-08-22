@@ -3,8 +3,12 @@
 
 #include <Rcpp.h>
 
-const char* const ERROR_TYPE = "unknown type detected for big.matrix object!";
-const char* const ERROR_DIM = "incompatibility between dimensions";
+const char* const ERROR_TYPE =
+  "Unknown type detected for Filebacked Big Matrix";
+const char* const ERROR_DIM =
+  "incompatibility between dimensions";
+const char* const ERROR_BOUNDS =
+  "Subscript out of bounds";
 const char* const ERROR_USHORT =
   "Try to fill an 'unsigned short' with a value outside [0:65535]";
 

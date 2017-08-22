@@ -8,7 +8,7 @@ big_counts(X.code, ind.row = rows_along(X.code),
   ind.col = cols_along(X.code), byrow = FALSE)
 }
 \arguments{
-\item{X.code}{A \link{FBM.code256}.}
+\item{X.code}{A \link[=FBM.code256-class]{FBM.code256}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}

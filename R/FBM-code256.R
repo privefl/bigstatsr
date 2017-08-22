@@ -7,10 +7,10 @@
 #' [Filebacked Big Matrix][FBM-class], it adds a slot `code` which is used as
 #' a lookup table of size 256.
 #'
-#' @param x A [FBM.code256][FBM.code256-class].
 #' @param code A numeric vector (of length 256).
 #' You should contruct it with `rep(NA_real_, 256)` and then replace the values
 #' which are of interest for you.
+#' @inheritParams FBM
 #'
 #' @examples
 #' X <- FBM(10, 10, type = "raw")
@@ -63,6 +63,8 @@ FBM.code256_RC <- methods::setRefClass(
 
 #' Wrapper constructor for class `FBM.code256`.
 #'
+#' @inheritDotParams FBM -nrow -ncol -type
+#'
 #' @rdname FBM.code256-class
 #'
 #' @export
@@ -72,27 +74,9 @@ FBM.code256 <- function(nrow, ncol, code, ...) {
   do.call(FBM.code256_RC$new, args = c(as.list(environment()), list(...)))
 }
 
-#' Accessor method for class `FBM.code256`.
-#'
-#' @rdname FBM.code256-class
-#'
-#' @export
-#'
-setMethod(
-  '[', signature(x = "FBM.code256"),
-  Extract(
-    extract_vector = function(x, i) {
-      decodeVec(extractVec(x$address, i), x$code256)
-    },
-    extract_matrix = function(x, i, j) {
-      decodeMat(extractMat(x$address, i, j), x$code256)
-    }
-  )
-)
-
-################################################################################
-
 #' Converter from class `FBM` to `FBM.code256`.
+#'
+#' @param x A [FBM][FBM-class].
 #'
 #' @rdname FBM.code256-class
 #'
@@ -117,3 +101,32 @@ add_code256 <- function(x, code, save = FALSE) {
 
 ################################################################################
 
+#' Methods for the FBM.code256 class
+#'
+#' @name FBM.code256-methods
+#'
+#' @rdname FBM.code256-methods
+NULL
+
+#' Accessor method for class `FBM.code256`.
+#'
+#' @param x A [FBM.code256][FBM.code256-class].
+#' @inheritParams FBM-methods
+#'
+#' @rdname FBM.code256-methods
+#'
+#' @export
+#'
+setMethod(
+  '[', signature(x = "FBM.code256"),
+  Extract(
+    extract_vector = function(x, i) {
+      decodeVec(extractVec(x$address, i), x$code256)
+    },
+    extract_matrix = function(x, i, j) {
+      decodeMat(extractMat(x$address, i, j), x$code256)
+    }
+  )
+)
+
+################################################################################

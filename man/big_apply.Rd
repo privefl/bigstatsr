@@ -4,11 +4,11 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X, a.FUN, a.combine, ncores = 1, block.size = block_size(nrow(X),
-  ncores), ind = cols_along(X), ...)
+big_apply(X, a.FUN, a.combine, ind = cols_along(X),
+  block.size = block_size(nrow(X)), ...)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{a.FUN}{The function to be applied to each subset matrix.
 It must take a \link[=FBM-class]{Filebacked Big Matrix} as first argument and
@@ -24,14 +24,11 @@ The values 'cbind' and 'rbind' can combine vectors into a matrix.
 The values '+' and '*' can be used to process numeric data.
 By default, the results are returned in a list.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
+\item{ind}{Initial vector of subsetting indices.
+Default is the vector of all column indices.}
 
 \item{block.size}{Maximum number of columns (or rows, depending on how you
 use \code{ind} for subsetting) read at once. Default uses \link{block_size}.}
-
-\item{ind}{Initial vector of subsetting indices.
-Default is the vector of all column indices.}
 
 \item{...}{Extra arguments to be passed to \code{a.FUN}.}
 }

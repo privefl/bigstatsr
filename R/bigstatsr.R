@@ -2,9 +2,10 @@
 
 #' @useDynLib bigstatsr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @import foreach
 #'
-#' @param X A [FBM].
-#' @param X.code A [FBM.code256].
+#' @param X A [FBM][FBM-class].
+#' @param X.code A [FBM.code256][FBM.code256-class].
 #'
 #' @param y.train Vector of responses, corresponding to `ind.train`.
 #' @param y01.train Vector of responses, corresponding to `ind.train`.
@@ -19,10 +20,8 @@
 #' @param ind.col An optional vector of the column indices that are used.
 #' If not specified, all columns are used. __Don't use negative indices.__
 #'
-#' @param block.size Maximum number of columns read at once. Default is `1000`.
-#'
-#' @param ncores Number of cores used. Default doesn't use parallelism.
-#' We advise you to use only half of the cores you have.
+#' @param block.size Maximum number of columns read at once.
+#'   Default uses [block_size].
 #'
 #' @param fun.scaling A function that returns a named list of
 #' `mean` and `sd` for every column, to scale each of their elements

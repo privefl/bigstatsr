@@ -8,7 +8,7 @@ big_crossprodSelf(X, fun.scaling, ind.row = rows_along(X),
   ind.col = cols_along(X), block.size = 1000)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
@@ -20,7 +20,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 }
 \value{
 A matrix, \eqn{X.row^T X.row}, with the following two attributes:

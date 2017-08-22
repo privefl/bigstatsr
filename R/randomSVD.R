@@ -16,11 +16,13 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
 
   if (verbose) {
     cl <- parallel::makeCluster(1 + ncores, outfile = "")
+    doParallel::registerDoParallel(cl)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
   } else {
-    cl <- parallel::makeCluster(1 + ncores)
+    opt.save <- options(cores = ncores + 1)
+    on.exit(opt.save, add = TRUE)
   }
-  doParallel::registerDoParallel(cl)
-  on.exit(parallel::stopCluster(cl), add = TRUE)
+  stopifnot(getDoParWorkers() == (ncores + 1))
 
   res <- foreach(ic = 0:ncores) %dopar% {
 
@@ -162,6 +164,8 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' @param tol Precision parameter of [svds][RSpectra::svds].
 #' Default is `1e-4`.
 #' @param verbose Should some progress be printed? Default is `FALSE`.
+#' If `TRUE`, SOCK clusters will be used so that it may be slower on
+#' non-Windows machines.
 #'
 #' @export
 #'
@@ -185,11 +189,11 @@ big_randomSVD <- function(X, fun.scaling,
                           ind.col = cols_along(X),
                           k = 10,
                           tol = 1e-4,
-                          verbose = FALSE,
-                          ncores = 1) {
+                          verbose = FALSE) {
 
   check_args()
 
+  ncores <- getDoParWorkers()
   if (ncores > 1) {
     res <- svds4.par(X, fun.scaling, ind.row, ind.col, k, tol, verbose, ncores)
   } else {

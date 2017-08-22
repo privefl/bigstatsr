@@ -6,9 +6,9 @@
 \alias{bigstatsr-package}
 \title{bigstatsr: Statistical Tools for Bigmemory Matrices}
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
-\item{X.code}{A \link{FBM.code256}.}
+\item{X.code}{A \link[=FBM.code256-class]{FBM.code256}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
@@ -25,10 +25,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
-
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements

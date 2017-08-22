@@ -4,6 +4,7 @@
 /******************************************************************************/
 
 #include <bigstatsr/FBM.h>
+#include <bigstatsr/utils.h>
 
 using namespace Rcpp;
 using std::size_t;
@@ -41,10 +42,13 @@ public:
            const NumericVector& elem_ind)
     : BMAcc<T>(xpBM) {
 
+      size_t LIM = xpBM->nrow() * xpBM->ncol();
       size_t n = elem_ind.size();
       std::vector<size_t> elem_ind2(n);
-      for (size_t k = 0; k < n; k++)
+      for (size_t k = 0; k < n; k++) {
+        myassert(elem_ind[k] >= 0 && elem_ind[k] < LIM, ERROR_BOUNDS);
         elem_ind2[k] = static_cast<size_t>(elem_ind[k]);
+      }
       _elem_ind = elem_ind2;
     }
 
@@ -69,16 +73,22 @@ public:
            const IntegerVector& col_ind)
     : BMAcc<T>(xpBM) {
 
+      size_t LIM_N = xpBM->nrow();
       size_t n = row_ind.size();
       std::vector<size_t> row_ind2(n);
-      for (size_t i = 0; i < n; i++)
+      for (size_t i = 0; i < n; i++) {
+        myassert(row_ind[i] >= 0 && row_ind[i] < LIM_N, ERROR_BOUNDS);
         row_ind2[i] = static_cast<size_t>(row_ind[i]);
+      }
       _row_ind = row_ind2;
 
+      size_t LIM_M = xpBM->ncol();
       size_t m = col_ind.size();
       std::vector<size_t> col_ind2(m);
-      for (size_t j = 0; j < m; j++)
+      for (size_t j = 0; j < m; j++) {
+        myassert(col_ind[j] >= 0 && col_ind[j] < LIM_M, ERROR_BOUNDS);
         col_ind2[j] = static_cast<size_t>(col_ind[j]);
+      }
       _col_ind = col_ind2;
     }
 

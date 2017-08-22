@@ -5,22 +5,37 @@
 \alias{FBM.code256-class}
 \alias{FBM.code256_RC}
 \alias{FBM.code256}
-\alias{[,FBM.code256,ANY,ANY,ANY-method}
 \alias{add_code256}
 \title{Class FBM.code256}
 \usage{
 FBM.code256(nrow, ncol, code, ...)
 
-\S4method{[}{FBM.code256,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
-
 add_code256(x, code, save = FALSE)
 }
 \arguments{
+\item{nrow}{Number of rows.}
+
+\item{ncol}{Number of columns.}
+
 \item{code}{A numeric vector (of length 256).
 You should contruct it with \code{rep(NA_real_, 256)} and then replace the values
 which are of interest for you.}
 
-\item{x}{A \link[=FBM.code256-class]{FBM.code256}.}
+\item{...}{Arguments passed on to \code{FBM}
+\describe{
+  \item{init}{Either a single value (e.g. \code{0}) or as many value as the number
+of elements of the FBM. \strong{Default doesn't initialize the matrix.}}
+  \item{backingfile}{Path to the file storing the Big Matrix on disk.
+An extension ".bk" will be automatically added. Default stores in the
+temporary directory.}
+  \item{save}{Whether to save the result object in an ".rds" file alongside
+the backingfile. Default is \code{FALSE}.}
+}}
+
+\item{x}{A \link[=FBM-class]{FBM}.}
+
+\item{save}{Whether to save the result object in an ".rds" file alongside
+the backingfile. Default is \code{FALSE}.}
 }
 \description{
 A reference class for storing and accessing up to 256 arbitrary different

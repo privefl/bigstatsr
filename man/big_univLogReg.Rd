@@ -5,11 +5,11 @@
 \title{Column-wise logistic regression}
 \usage{
 big_univLogReg(X, y01.train, ind.train = rows_along(X),
-  ind.col = cols_along(X), covar.train = NULL, ncores = 1, tol = 1e-08,
+  ind.col = cols_along(X), covar.train = NULL, tol = 1e-08,
   maxiter = 20)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 \strong{Must be only 0s and 1s.}}
@@ -24,9 +24,6 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
-
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
 
 \item{tol}{Relative tolerance to assess convergence of the coefficient.
 Default is \code{1e-8}.}

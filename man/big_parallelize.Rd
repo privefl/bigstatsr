@@ -4,11 +4,10 @@
 \alias{big_parallelize}
 \title{Split-parApply-Combine}
 \usage{
-big_parallelize(X, p.FUN, p.combine, ind = cols_along(X), ncores = ncores(),
-  ...)
+big_parallelize(X, p.FUN, p.combine, ind = cols_along(X), ...)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{p.FUN}{The function to be applied to each subset matrix.
 It must take a \link[=FBM-class]{Filebacked Big Matrix} as first argument and
@@ -27,9 +26,6 @@ By default, the results are returned in a list.}
 \item{ind}{Initial vector of subsetting indices.
 Default is the vector of all column indices.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
-
 \item{...}{Extra arguments to be passed to \code{p.FUN}.}
 }
 \value{
@@ -46,17 +42,18 @@ part and finally combine the results.
 X <- big_attachExtdata()
 
 ### Computation on all the matrix
+options(cores = 1); foreach::getDoParWorkers()
 true <- big_colstats(X)
 
-big_colstats_sub <- function(X, ind, cols) {
-  big_colstats(X, ind.col = cols[ind])
+big_colstats_sub <- function(X, ind) {
+  big_colstats(X, ind.col = ind)
 }
 # 1. the computation is split along all the columns
 # 2. for each part the computation is done, using `big_colstats`
 # 3. the results (data.frames) are combined via `rbind`.
+options(cores = 2); foreach::getDoParWorkers()
 test <- big_parallelize(X, p.FUN = big_colstats_sub,
-                        p.combine = 'rbind', ncores = 2,
-                        cols = cols_along(X))
+                        p.combine = 'rbind')
 all.equal(test, true)
 
 ### Computation on a part of the matrix
@@ -73,7 +70,7 @@ big_colstats_sub2 <- function(X, ind, rows, cols) {
 # This doesn't work because, by default, the computation is spread
 # along all columns. We must explictly specify the `ind` parameter.
 tryCatch(big_parallelize(X, p.FUN = big_colstats_sub2,
-                         p.combine = 'rbind', ncores = 2,
+                         p.combine = 'rbind',
                          rows = rows, cols = cols),
          error = function(e) print(e))
 

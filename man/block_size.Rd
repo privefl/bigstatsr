@@ -4,7 +4,7 @@
 \alias{block_size}
 \title{Determine a correct value for the block.size parameter}
 \usage{
-block_size(n, ncores = 1)
+block_size(n, ncores = foreach::getDoParWorkers())
 }
 \arguments{
 \item{n}{The number of rows.}
@@ -20,7 +20,7 @@ size \code{n} x \code{block.size} takes less memory than
 \code{getOption("bigstatsr.block.sizeGB")} GigaBytes (default is 1GB).
 }
 \examples{
-bigstatsr:::block_size(1e3)
-bigstatsr:::block_size(1e6)
-bigstatsr:::block_size(1e6, 6)
+block_size(1e3)
+block_size(1e6)
+block_size(1e6, 6)
 }

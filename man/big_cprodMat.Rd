@@ -5,10 +5,10 @@
 \title{Cross-product with a matrix}
 \usage{
 big_cprodMat(X, A.row, ind.row = rows_along(X), ind.col = cols_along(X),
-  block.size = 1000, ncores = 1)
+  block.size = block_size(nrow(X)))
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{A.row}{A matrix with \code{length(ind.row)} rows.}
 
@@ -18,10 +18,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
-
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 }
 \value{
 \eqn{X^T \cdot A}.

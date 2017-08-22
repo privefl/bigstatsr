@@ -7,7 +7,7 @@
 big_spSVM(X, y01.train, ind.train = rows_along(X), covar.train = NULL, ...)
 }
 \arguments{
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 \strong{Must be only 0s and 1s.}}

@@ -10,7 +10,7 @@
 \arguments{
 \item{object}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
 
-\item{X}{A \link{FBM}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
@@ -18,7 +18,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 
 \item{...}{Not used.}
 }

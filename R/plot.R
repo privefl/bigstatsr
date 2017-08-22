@@ -183,7 +183,6 @@ plot.mhtest <- function(x, type = c("Manhattan", "Q-Q", "Volcano"),
 #'
 #' @return A character vector of the length of `df`'s number of rows.
 #' @export
-#' @import foreach
 #'
 #' @examples
 #' set.seed(1)

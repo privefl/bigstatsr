@@ -135,11 +135,18 @@ FBM <- function(nrow, ncol,
 
 ################################################################################
 
+#' Methods for the FBM class
+#'
+#' @name FBM-methods
+#'
+#' @rdname FBM-methods
+NULL
+
 #' Accessor methods for class `FBM`. You can use positive and negative indices,
 #' logical indices (that are recycled) and also a matrix of indices (but only
 #' positive ones).
 #'
-#' @param x A [FBM][FBM-class object].
+#' @param x A [FBM][FBM-class] object.
 #' @param i A vector of indices (or nothing). You can use positive and negative
 #'   indices, logical indices (that are recycled) and also a matrix of indices
 #'   (but only positive ones).
@@ -149,7 +156,7 @@ FBM <- function(nrow, ncol,
 #' @param drop Whether to delete the dimensions of a matrix which have
 #'   one dimension equals to 1.
 #'
-#' @rdname FBM-class
+#' @rdname FBM-methods
 #'
 #' @include crochet.R
 #'
@@ -165,7 +172,7 @@ setMethod(
 
 #' @param value The values to replace. Should be of length 1 or of the same
 #'   length of the subset to replace.
-#' @rdname FBM-class
+#' @rdname FBM-methods
 #' @export
 setMethod(
   '[<-', signature(x = "FBM"),
@@ -200,15 +207,15 @@ setMethod(
 
 #' Dimension and type methods for class `FBM`.
 #'
-#' @rdname FBM-class
+#' @rdname FBM-methods
 #' @export
 setMethod("dim",    signature(x = "FBM"), function(x) c(x$nrow, x$ncol))
 
-#' @rdname FBM-class
+#' @rdname FBM-methods
 #' @export
 setMethod("length", signature(x = "FBM"), function(x) prod(dim(x)))
 
-#' @rdname FBM-class
+#' @rdname FBM-methods
 #' @export
 setMethod("typeof", signature(x = "FBM"), function(x) names(x$type))
 

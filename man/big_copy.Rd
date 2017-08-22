@@ -16,6 +16,10 @@ big_copy(x, ...)
 
 \S4method{big_copy}{big.matrix}(x, ...)
 }
+\arguments{
+\item{x}{Either a \link[=FBM-class]{FBM}, a \link[=big.matrix-class]{big.matrix} or
+a standard R matrix.}
+}
 \description{
 Methods to copy an object to a FBM
 }
