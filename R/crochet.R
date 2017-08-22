@@ -28,9 +28,6 @@ transform_i_only <- function(i, n, m) {
   if (is.matrix(i))
     i <- (transform_ind(i[, 2], m) - 1L) * n + transform_ind(i[, 1], n)
 
-  if (any(i > (n * m)))
-    stop2("Subscript out of bounds.")
-
   i
 }
 
