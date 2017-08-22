@@ -1,36 +1,39 @@
 ################################################################################
 
-#' Methods to copy an object to a FBM
+#' Copy a Filebacked Big Matrix
 #'
-#' @param x Either a [FBM][FBM-class], a [big.matrix][big.matrix-class] or
-#'   a standard R matrix.
+#' Copy a Filebacked Big Matrix with possible subsetting.
 #'
+#' @inheritParams bigstatsr-package
+#' @inheritParams FBM
+#'
+#' @return A copy of the [FBM][FBM-class].
 #' @export
 #'
-setGeneric(
-  "big_copy",
-  function(x, ...) {
-    standardGeneric("big_copy")
-  }
-)
-
-################################################################################
-
-big_copy0 <- function(X, ind.row = rows_along(X),
-                      ind.col = cols_along(X),
-                      ...,
-                      block.size = block_size(length(ind.row)),
-                      warn = TRUE) {
+#' @examples
+#' X <- FBM(10, 10, init = 1:100)
+#' X[]
+#' X2 <- big_copy(X, ind.row = 1:5)
+#' X2[]
+#'
+big_copy <- function(X, ind.row = rows_along(X),
+                     ind.col = cols_along(X),
+                     type = names(X$type),
+                     backingfile = tempfile(),
+                     save = FALSE,
+                     block.size = block_size(length(ind.row))) {
 
   res <- FBM(
     nrow = length(ind.row),
     ncol = length(ind.col),
     init = NULL,
-    ...
+    type = type,
+    backingfile = backingfile,
+    save = save
   )
 
   # Warn only once
-  if (warn) warn_downcast(from = X, to = res)
+  warn_downcast(from = X, to = res)
   opt.save <- options(bigstatsr.typecast.warning = FALSE)
   on.exit(options(opt.save), add = TRUE)
 
@@ -42,65 +45,5 @@ big_copy0 <- function(X, ind.row = rows_along(X),
 
   res
 }
-
-################################################################################
-
-#' @rdname big_copy
-#' @export
-setMethod(
-  "big_copy", signature(x = "matrix"),
-  function(x, ...) {
-
-    opt.save <- options(bigstatsr.check.args = FALSE)
-    on.exit(options(opt.save), add = TRUE)
-
-    big_copy0(X = x, ...)
-  }
-)
-
-#' @rdname big_copy
-#' @export
-setMethod(
-  "big_copy", signature(x = "FBM"),
-  function(x, type = names(x$type), ...) {
-
-    big_copy0(X = x, type = type, ...)
-  }
-)
-
-#' @rdname big_copy
-#' @export
-setMethod(
-  "big_copy", signature(x = "big.matrix"),
-  function(x, ...) {
-
-    if (!requireNamespace("bigmemory"))
-      stop2("You need to install package 'bigmemory'.")
-
-    if (!bigmemory::is.filebacked(x))
-      stop2("'x' has to be a FILEBACKED big.matrix.")
-
-    opt.save <- options(bigstatsr.check.args = FALSE)
-    on.exit(options(opt.save), add = TRUE)
-
-    big_copy0(X = x, ...)
-  }
-)
-
-################################################################################
-
-#' Convert to base R matrix
-#'
-#' Extract values from a Filebacked Big Matrix and convert to a base R matrix.
-#'
-#' @param x A [FBM][FBM-class] object.
-#'
-#' @export
-#'
-setMethod(
-  "as.matrix", signature(x = "FBM"),
-  function(x) methods::as(x, "matrix")
-)
-setAs("FBM", "matrix", function(from) from[])
 
 ################################################################################

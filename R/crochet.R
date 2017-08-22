@@ -12,7 +12,7 @@ transform_ind <- function(k, lim) {
   res <- seq_len(lim)[k]
 
   if (any(is.na(res)))
-    stop2("Error when subsetting (missing values? out of bounds?")
+    stop2("Error when subsetting (missing values? out of bounds?)")
 
   res
 }
