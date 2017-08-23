@@ -19,12 +19,12 @@ test_that("read from write.table", {
 
     write.table(X[], tmp, quote = FALSE)
 
-    test <- big_readBM(tmp,
-                       file.nheader = 1,
-                       info.nelem = 1,
-                       read.what = X[1, 1],
-                       BM.type = t,
-                       transpose = TRUE)
+    test <- big_read(tmp,
+                     file.nheader = 1,
+                     info.nelem = 1,
+                     read.what = X[1, 1],
+                     BM.type = t,
+                     transpose = TRUE)
 
     expect_true(typeof(test) == t)
 
@@ -45,12 +45,12 @@ test_that("read from write.table with dimnames", {
     write.table(X[], tmp, quote = FALSE)
 
     # with transpose
-    test <- big_readBM(tmp,
-                       file.nheader = 1,
-                       info.nelem = 1,
-                       read.what = X[1, 1],
-                       BM.type = t,
-                       transpose = TRUE)
+    test <- big_read(tmp,
+                     file.nheader = 1,
+                     info.nelem = 1,
+                     read.what = X[1, 1],
+                     BM.type = t,
+                     transpose = TRUE)
 
     expect_true(typeof(test) == t)
 
@@ -62,11 +62,11 @@ test_that("read from write.table with dimnames", {
     expect_equal(test[], X[])
 
     # without transpose
-    test2 <- big_readBM(tmp,
-                        file.nheader = 1,
-                        info.nelem = 1,
-                        read.what = X[1, 1],
-                        BM.type = t)
+    test2 <- big_read(tmp,
+                      file.nheader = 1,
+                      info.nelem = 1,
+                      read.what = X[1, 1],
+                      BM.type = t)
 
     expect_true(typeof(test2) == t)
 
