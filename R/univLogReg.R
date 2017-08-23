@@ -60,7 +60,8 @@ big_univLogReg <- function(X, y01.train,
                            ind.col = cols_along(X),
                            covar.train = NULL,
                            tol = 1e-8,
-                           maxiter = 20) {
+                           maxiter = 20,
+                           ncores = 1) {
   check_args()
 
   n <- length(ind.train)
@@ -78,6 +79,7 @@ big_univLogReg <- function(X, y01.train,
                          p.FUN = univLogReg_sub,
                          p.combine = "rbind",
                          ind = ind.col,
+                         ncores = ncores,
                          covar.train = covar.train,
                          y01.train = y01.train,
                          z0 = z0, w0 = w0,

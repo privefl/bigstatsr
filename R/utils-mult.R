@@ -114,7 +114,8 @@ big_cprodVec <- function(X, y.row,
 big_prodMat <- function(X, A.col,
                         ind.row = rows_along(X),
                         ind.col = cols_along(X),
-                        block.size = block_size(nrow(X))) {
+                        ncores = 1,
+                        block.size = block_size(nrow(X), ncores)) {
 
   check_args()
   # assert_class(A.col, 'matrix')  # not only (e.g. sparses matrices)
@@ -122,7 +123,8 @@ big_prodMat <- function(X, A.col,
 
   big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
     X[ind.row, ind.col[ind]] %*% M[ind, ]
-  }, a.combine = "+", ind = seq_along(ind.col), block.size = block.size,
+  }, a.combine = "+", ind = seq_along(ind.col),
+  ncores = ncores, block.size = block.size,
   M = A.col, ind.row = ind.row, ind.col = ind.col)
 }
 
@@ -162,7 +164,8 @@ big_prodMat <- function(X, A.col,
 big_cprodMat <- function(X, A.row,
                          ind.row = rows_along(X),
                          ind.col = cols_along(X),
-                         block.size = block_size(nrow(X))) {
+                         ncores = 1,
+                         block.size = block_size(nrow(X), ncores)) {
 
   check_args()
   # assert_class(A.row, 'matrix')  # not only (e.g. sparses matrices)
@@ -170,7 +173,8 @@ big_cprodMat <- function(X, A.row,
 
   big_apply(X, a.FUN = function(X, ind, M, ind.row) {
     crossprod(X[ind.row, ind], M)
-  }, a.combine = "rbind", ind = ind.col, block.size = block.size,
+  }, a.combine = "rbind", ind = ind.col,
+  ncores = ncores, block.size = block.size,
   M = A.row, ind.row = ind.row)
 }
 

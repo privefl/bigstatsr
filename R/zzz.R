@@ -5,8 +5,6 @@
   options(bigstatsr.check.args = TRUE)
   options(bigstatsr.block.sizeGB = 1)
   options(bigstatsr.typecast.warning = TRUE)
-  doParallel::registerDoParallel()
-  options(cores = 1)
 }
 
 ################################################################################

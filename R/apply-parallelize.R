@@ -1,5 +1,33 @@
 ################################################################################
 
+#' Recommended number of cores to use
+#'
+#' This is base on the following rule: use only physical cores and if you have
+#' only physical cores, leave one core for the OS/UI.
+#'
+#' @inheritParams parallel::detectCores
+#'
+#' @return The recommended number of cores to use.
+#' @export
+#'
+#' @seealso [parallel::detectCores]
+#'
+#' @examples
+#' # Number of cores in total
+#' parallel::detectCores()
+#' # Number of physical cores
+#' parallel::detectCores(logical = FALSE)
+#' # Recommended number of cores to use
+#' ncores()
+ncores <- function(all.tests = FALSE) {
+  all_cores <- parallel::detectCores(all.tests = all.tests)
+  all_physical_cores <- parallel::detectCores(all.tests = all.tests,
+                                              logical = FALSE)
+  `if`(all_physical_cores < all_cores, all_physical_cores, all_cores - 1)
+}
+
+################################################################################
+
 #' Split-parApply-Combine
 #'
 #' A Split-Apply-Combine strategy to parallelize the evaluation of a function.
@@ -31,16 +59,20 @@
 #' @seealso [big_apply]
 big_parallelize <- function(X, p.FUN, p.combine,
                             ind = cols_along(X),
+                            ncores = ncores(),
                             ...) {
 
   check_args()
   assert_args(p.FUN, "ind")
   assert_int(ind); assert_pos(ind)
 
-  ncores <- getDoParWorkers()
   if (ncores > 1) { # parallel
 
     range.parts <- CutBySize(length(ind), nb = ncores)
+
+    cl <- parallel::makeCluster(ncores)
+    doParallel::registerDoParallel(cl)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
 
     # Microsoft R Open?
     multi <- requireNamespace("RevoUtilsMath", quietly = TRUE)
@@ -109,7 +141,8 @@ big_applySeq <- function(X, a.FUN, a.combine, block.size, ind, ...) {
 #' @seealso [big_parallelize]
 big_apply <- function(X, a.FUN, a.combine,
                       ind = cols_along(X),
-                      block.size = block_size(nrow(X)),
+                      ncores = 1,
+                      block.size = block_size(nrow(X), ncores),
                       ...) {
 
   check_args()
@@ -120,6 +153,7 @@ big_apply <- function(X, a.FUN, a.combine,
                   p.FUN = big_applySeq,
                   p.combine = a.combine,
                   ind = ind,
+                  ncores = ncores,
                   a.FUN = a.FUN,
                   a.combine = a.combine,
                   block.size = block.size,

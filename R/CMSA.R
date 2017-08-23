@@ -68,6 +68,7 @@ big_CMSA <- function(FUN, feval, X, y.train,
                      covar.train = NULL,
                      K = 10,
                      method = c("geometric-median", "mean-wise", "median-wise"),
+                     ncores = 1,
                      ...) {
 
   check_args()
@@ -80,6 +81,13 @@ big_CMSA <- function(FUN, feval, X, y.train,
   n <- length(ind.train)
   indCV <- sample(rep_len(1:K, n))
 
+  if (ncores == 1) {
+    registerDoSEQ()
+  } else {
+    cl <- parallel::makeCluster(ncores)
+    doParallel::registerDoParallel(cl)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
+  }
   cross.res <- foreach(ic = 1:K) %dopar% {
 
     in.val <- (indCV == ic)
