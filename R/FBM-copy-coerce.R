@@ -4,6 +4,8 @@
 #'
 #' Copy a Filebacked Big Matrix with possible subsetting.
 #'
+#' @param X Could be any matrix-like object. If it is a FBM, default uses the
+#'   same type, otherwise you should specify the type yourself.
 #' @inheritParams bigstatsr-package
 #' @inheritParams FBM
 #'
@@ -15,6 +17,10 @@
 #' X[]
 #' X2 <- big_copy(X, ind.row = 1:5)
 #' X2[]
+#'
+#' mat <- matrix(101:200, 10)
+#' X3 <- big_copy(mat, type = "double")
+#' X3[]
 #'
 big_copy <- function(X, ind.row = rows_along(X),
                      ind.col = cols_along(X),
@@ -32,11 +38,13 @@ big_copy <- function(X, ind.row = rows_along(X),
     save = save
   )
 
-  # Warn only once
+  # Warn only once and don't check arguments
   warn_downcast(from = X, to = res)
-  opt.save <- options(bigstatsr.typecast.warning = FALSE)
+  opt.save <- options(bigstatsr.typecast.warning = FALSE,
+                      bigstatsr.check.args = FALSE)
   on.exit(options(opt.save), add = TRUE)
 
+  # Don't write in parallel
   big_apply(X, a.FUN = function(X, ind, X2, ind.row, ind.col) {
     X2[, ind] <- X[ind.row, ind.col[ind]]
     NULL

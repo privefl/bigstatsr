@@ -97,7 +97,7 @@ big_SVD <- function(X, fun.scaling,
                     ind.row = rows_along(X),
                     ind.col = cols_along(X),
                     k = 10,
-                    block.size = 1000) {
+                    block.size = block_size(nrow(X))) {
 
   check_args()
 

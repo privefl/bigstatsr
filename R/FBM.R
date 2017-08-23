@@ -110,6 +110,10 @@ FBM_RC$lock("nrow", "ncol", "type")
 #' @param backingfile Path to the file storing the Big Matrix on disk.
 #'   An extension ".bk" will be automatically added. Default stores in the
 #'   temporary directory.
+#' @param create_bk Create a backingfile (the default) or use an existing one
+#'   (which should be named by the `backingfile` parameter and have an
+#'   extension ".bk"). For example, this could be used to convert a filebacked
+#'   `big.matrix` from package **bigmemory** to a [FBM][FBM-class].
 #' @param save Whether to save the result object in an ".rds" file alongside
 #'   the backingfile. Default is `FALSE`.
 #'
@@ -122,9 +126,10 @@ FBM <- function(nrow, ncol,
                          "unsigned char", "raw"),
                 init = NULL,
                 backingfile = tempfile(),
+                create_bk = TRUE,
                 save = FALSE) {
 
-  do.call(FBM_RC$new, args = as.list(environment()))
+  do.call(methods::new, args = c(Class = "FBM", as.list(environment())))
 }
 
 ################################################################################

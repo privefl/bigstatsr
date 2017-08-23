@@ -66,7 +66,7 @@ predict.big_CMSA <- function(object, X,
 predict.big_sp <- function(object, X,
                            ind.row = rows_along(X),
                            covar.row = NULL,
-                           block.size = 1000,
+                           block.size = block_size(nrow(X)),
                            ...) {
 
   check_args()
@@ -150,17 +150,21 @@ predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 predict.big_SVD <- function(object, X = NULL,
                             ind.row = rows_along(X),
                             ind.col = cols_along(X),
-                            block.size = 1000,
+                            block.size = block_size(nrow(X)),
                             ...) {
 
   if (is.null(X)) {
-    object$u %*% diag(object$d, length(object$d))
+    k <- length(object$d)
+    object$u %*% diag(object$d, k, k)
   } else {
     check_args()
 
     # Multiplication with clever scaling (see vignettes)
     v2 <- object$v / object$sds
-    tmp <- big_prodMat(X, v2, ind.row, ind.col, block.size)
+    tmp <- big_prodMat(X, v2,
+                       ind.row = ind.row,
+                       ind.col = ind.col,
+                       block.size = block.size)
     sweep(tmp, 2, crossprod(object$means, v2), "-")
   }
 }

@@ -5,7 +5,7 @@
 \title{Predict method}
 \usage{
 \method{predict}{big_sp}(object, X, ind.row = rows_along(X),
-  covar.row = NULL, block.size = 1000, ...)
+  covar.row = NULL, block.size = block_size(nrow(X)), ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp}.}
@@ -35,7 +35,7 @@ Predict method for class \code{big_sp}.
 # simulating some data
 N <- 73
 M <- 430
-X <- big_copy(matrix(rnorm(N*M, sd = 5), N))
+X <- FBM(N, M, init = rnorm(N * M, sd = 5))
 y <- sample(0:1, size = N, replace = TRUE)
 covar <- matrix(rnorm(N * 3), N)
 

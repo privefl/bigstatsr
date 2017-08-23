@@ -35,6 +35,19 @@ that the \code{read.transfo} function transforms the type of what is read.}
 
 \item{transpose}{Should the resulting Filebacked Big Matrix be transposed?
 Default is \code{FALSE}.}
+
+\item{...}{Arguments passed on to \code{FBM}
+\describe{
+  \item{backingfile}{Path to the file storing the Big Matrix on disk.
+An extension ".bk" will be automatically added. Default stores in the
+temporary directory.}
+  \item{create_bk}{Create a backingfile (the default) or use an existing one
+(which should be named by the \code{backingfile} parameter and have an
+extension ".bk"). For example, this could be used to convert a filebacked
+\code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}.}
+  \item{save}{Whether to save the result object in an ".rds" file alongside
+the backingfile. Default is \code{FALSE}.}
+}}
 }
 \value{
 A Filebacked Big Matrix with two attributes \code{header} and \code{info}.

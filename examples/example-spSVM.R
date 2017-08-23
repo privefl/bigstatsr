@@ -5,7 +5,7 @@ big_spSVM <- bigstatsr:::big_spSVM
 # simulating some data
 N <- 73
 M <- 430
-X <- big_copy(matrix(rnorm(N*M, sd = 5), N))
+X <- FBM(N, M, init = rnorm(N * M, sd = 5))
 y <- sample(0:1, size = N, replace = TRUE)
 y.factor <- factor(y, levels = c(1, 0))
 covar <- matrix(rnorm(N * 3), N)

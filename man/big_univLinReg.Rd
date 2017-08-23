@@ -5,7 +5,8 @@
 \title{Column-wise linear regression}
 \usage{
 big_univLinReg(X, y.train, ind.train = rows_along(X),
-  ind.col = cols_along(X), covar.train = NULL, thr.eigval = 1e-04)
+  ind.col = cols_along(X), covar.train = NULL, thr.eigval = 1e-04,
+  ncores = 1)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -25,6 +26,9 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 
 \item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
 Default is \code{1e-4}.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 }
 \value{
 A data.frame with 3 elements:

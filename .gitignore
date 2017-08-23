@@ -8,5 +8,4 @@ src/*.dll
 backingfiles
 tmp-data
 README.html
-*mutex*
-decktape*
+man

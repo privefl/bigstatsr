@@ -7,6 +7,7 @@
 #' [Filebacked Big Matrix][FBM-class], it adds a slot `code` which is used as
 #' a lookup table of size 256.
 #'
+#' @param x A [FBM][FBM-class].
 #' @param code A numeric vector (of length 256).
 #' You should contruct it with `rep(NA_real_, 256)` and then replace the values
 #' which are of interest for you.
@@ -71,12 +72,12 @@ FBM.code256_RC <- methods::setRefClass(
 #'
 FBM.code256 <- function(nrow, ncol, code, ...) {
 
-  do.call(FBM.code256_RC$new, args = c(as.list(environment()), list(...)))
+  do.call(methods::new, args = c(Class = "FBM.code256",
+                                 as.list(environment()),
+                                 list(...)))
 }
 
 #' Converter from class `FBM` to `FBM.code256`.
-#'
-#' @param x A [FBM][FBM-class].
 #'
 #' @rdname FBM.code256-class
 #'
@@ -88,14 +89,14 @@ add_code256 <- function(x, code, save = FALSE) {
     stop2("'x' must be of type 'unsigned char'")
   # if (length(code) != 256) stop("'code' must be of length 256.")
 
-  FBM.code256_RC$new(
+  FBM.code256(
     nrow = x$nrow,
     ncol = x$ncol,
+    code = code,
     init = NULL,
     backingfile = sub("\\.bk$", "", x$backingfile),
     create_bk = FALSE,
-    save = save,
-    code = code
+    save = save
   )
 }
 

@@ -35,7 +35,6 @@ Imports:
     stats
 LinkingTo: 
     BH,
-    bigmemory, 
     Rcpp,
     RcppArmadillo
 Suggests: 

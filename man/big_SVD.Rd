@@ -5,7 +5,7 @@
 \title{Partial SVD}
 \usage{
 big_SVD(X, fun.scaling, ind.row = rows_along(X), ind.col = cols_along(X),
-  k = 10, block.size = 1000)
+  k = 10, block.size = block_size(nrow(X)))
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

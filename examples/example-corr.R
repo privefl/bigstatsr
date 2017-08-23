@@ -1,4 +1,4 @@
-X <- big_attachExtdata()
+X <- FBM(13, 17, init = rnorm(221))
 
 # Comparing with cor
 K <- big_cor(X)

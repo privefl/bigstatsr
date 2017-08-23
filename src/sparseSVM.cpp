@@ -106,11 +106,12 @@ arma::sp_mat& postprocess(arma::sp_mat &w,
 // Semismooth Newton Coordinate Descent (SNCD) for lasso/elastic-net regularized SVM
 template <class C>
 List COPY_sparse_svm(C macc,
-                     NumericVector &lambda,
-                     const NumericVector &y, const NumericVector &pf,
+                     NumericVector& lambda,
+                     const NumericVector& y,
+                     const NumericVector& pf,
                      double gamma, double alpha,
                      double thresh, double lambda_min,
-                     int scrflag, size_t dfmax, size_t max_iter,
+                     int scrflag, size_t dfmax, int max_iter,
                      bool user, bool message) {
   size_t n = macc.nrow();
   size_t p = macc.ncol();
@@ -260,7 +261,7 @@ List COPY_sparse_svm(C macc,
       }
 
       // Solve KKT equations on eligible predictors
-      while(iter[l]<max_iter) {
+      while(iter[l] < max_iter) {
         iter[l]++;
         mismatch = 0; max_update = 0.0;
         for (j=0; j<p; j++) {

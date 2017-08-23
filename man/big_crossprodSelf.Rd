@@ -5,7 +5,7 @@
 \title{Crossprod}
 \usage{
 big_crossprodSelf(X, fun.scaling, ind.row = rows_along(X),
-  ind.col = cols_along(X), block.size = 1000)
+  ind.col = cols_along(X), block.size = block_size(nrow(X)))
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -39,7 +39,7 @@ This algorithm is not really memory efficient. I'm planning on fixing this,
 if it is really needed.
 }
 \examples{
-X <- big_attachExtdata()
+X <- FBM(13, 17, init = rnorm(221))
 
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)

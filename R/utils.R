@@ -8,17 +8,6 @@ globalVariables("ic") # for foreach
 
 ################################################################################
 
-# function for comparing PCs
-diffPCs <- function(test, rot) {
-  k <- ncol(test)
-  diff1 <- 2 * abs(test - rot[, 1:k]) / (abs(test) + abs(rot[, 1:k]))
-  diff2 <- 2 * abs(test + rot[, 1:k]) / (abs(test) + abs(rot[, 1:k]))
-  diff <- pmin(diff1, diff2)
-  mean(diff)
-}
-
-################################################################################
-
 printf <- function(...) cat(sprintf(...))
 message2 <- function(...) message(sprintf(...))
 warning2 <- function(...) warning(sprintf(...), call. = FALSE)

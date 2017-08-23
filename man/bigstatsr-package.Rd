@@ -28,6 +28,9 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
 
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
+
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
 such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}}

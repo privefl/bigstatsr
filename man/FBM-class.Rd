@@ -9,7 +9,7 @@
 \usage{
 FBM(nrow, ncol, type = c("double", "integer", "unsigned short",
   "unsigned char", "raw"), init = NULL, backingfile = tempfile(),
-  save = FALSE)
+  create_bk = TRUE, save = FALSE)
 }
 \arguments{
 \item{nrow}{Number of rows.}
@@ -36,6 +36,11 @@ of elements of the FBM. \strong{Default doesn't initialize the matrix.}}
 An extension ".bk" will be automatically added. Default stores in the
 temporary directory.}
 
+\item{create_bk}{Create a backingfile (the default) or use an existing one
+(which should be named by the \code{backingfile} parameter and have an
+extension ".bk"). For example, this could be used to convert a filebacked
+\code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}.}
+
 \item{save}{Whether to save the result object in an ".rds" file alongside
 the backingfile. Default is \code{FALSE}.}
 }
@@ -43,6 +48,8 @@ the backingfile. Default is \code{FALSE}.}
 A reference class for storing and accessing matrix-like data stored in files
 on disk. This is very similar to Filebacked Big Matrices provided by the
 \strong{bigmemory} package. Yet, the implementation is much more lighter.
+
+Wrapper constructor for class \code{FBM}.
 }
 
 \examples{

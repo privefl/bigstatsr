@@ -5,7 +5,7 @@
 \title{Tcrossprod}
 \usage{
 big_tcrossprodSelf(X, fun.scaling, ind.row = rows_along(X),
-  ind.col = cols_along(X), block.size = 1000)
+  ind.col = cols_along(X), block.size = block_size(nrow(X)))
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

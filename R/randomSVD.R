@@ -71,7 +71,7 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
           # Compute A * x
           x <- Atx[lo:up] / ms$sd
           Ax[, ic] <- pMatVec4(X, x, ind.row, ind.col.part) -
-            crossprod(x, ms$mean)
+            drop(crossprod(x, ms$mean))
         } else if (c == 2) {
           # Compute At * x
           x <- Ax[, 1]
@@ -118,7 +118,7 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
   A <- function(x, args) {
     printf("%d - computing A * x\n", it <<- it + 1)
     x <- x / ms$sd
-    pMatVec4(X, x, ind.row, ind.col) - crossprod(x, ms$mean)
+    pMatVec4(X, x, ind.row, ind.col) - drop(crossprod(x, ms$mean))
   }
   # Atrans
   Atrans <- function(x, args) {
@@ -185,8 +185,8 @@ big_randomSVD <- function(X, fun.scaling,
                           ind.col = cols_along(X),
                           k = 10,
                           tol = 1e-4,
-                          ncores = 1,
-                          verbose = FALSE) {
+                          verbose = FALSE,
+                          ncores = 1) {
 
   check_args()
 

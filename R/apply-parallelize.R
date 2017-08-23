@@ -18,8 +18,8 @@
 #' # Number of physical cores
 #' parallel::detectCores(logical = FALSE)
 #' # Recommended number of cores to use
-#' ncores()
-ncores <- function(all.tests = FALSE) {
+#' nb_cores()
+nb_cores <- function(all.tests = FALSE) {
   all_cores <- parallel::detectCores(all.tests = all.tests)
   all_physical_cores <- parallel::detectCores(all.tests = all.tests,
                                               logical = FALSE)
@@ -59,7 +59,7 @@ ncores <- function(all.tests = FALSE) {
 #' @seealso [big_apply]
 big_parallelize <- function(X, p.FUN, p.combine,
                             ind = cols_along(X),
-                            ncores = ncores(),
+                            ncores = nb_cores(),
                             ...) {
 
   check_args()

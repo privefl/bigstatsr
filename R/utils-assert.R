@@ -85,7 +85,7 @@ assert_args <- function(f, args.name) {
 assert_cores <- function(ncores) {
   if (ncores > getOption("bigstatsr.ncores.max")) {
     stop2(paste0("You are trying to use more cores than allowed.",
-                 " We advise you to use `ncores()`.\n",
+                 " We advise you to use `nb_cores()`.\n",
                  "You can change this default value with",
                  " `options(bigstatsr.ncores.max = Inf)`."))
   }

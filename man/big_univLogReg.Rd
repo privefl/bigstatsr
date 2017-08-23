@@ -6,7 +6,7 @@
 \usage{
 big_univLogReg(X, y01.train, ind.train = rows_along(X),
   ind.col = cols_along(X), covar.train = NULL, tol = 1e-08,
-  maxiter = 20)
+  maxiter = 20, ncores = 1)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -32,6 +32,9 @@ Default is \code{1e-8}.}
 Default is \code{20}. Usually, convergence is reached within 3 or 4 iterations.
 If there is not convergence,
 \link[stats:glm]{glm} is used instead for the corresponding column.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 }
 \value{
 A data.frame with 4 elements:

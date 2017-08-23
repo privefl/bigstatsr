@@ -66,9 +66,9 @@ List COPY_cdfit_binomial_hsr(C xAcc,
                              double alpha,
                              bool user,
                              double eps,
-                             size_t max_iter,
+                             int max_iter,
                              const NumericVector& m,
-                             size_t dfmax,
+                             int dfmax,
                              bool warn,
                              bool verbose) {
   size_t n = xAcc.nrow(); // number of observations used for fitting model

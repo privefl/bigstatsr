@@ -4,7 +4,7 @@
 \alias{block_size}
 \title{Determine a correct value for the block.size parameter}
 \usage{
-block_size(n, ncores = foreach::getDoParWorkers())
+block_size(n, ncores = 1)
 }
 \arguments{
 \item{n}{The number of rows.}

@@ -5,7 +5,8 @@
 \title{Randomized partial SVD}
 \usage{
 big_randomSVD(X, fun.scaling, ind.row = rows_along(X),
-  ind.col = cols_along(X), k = 10, tol = 1e-04, verbose = FALSE)
+  ind.col = cols_along(X), k = 10, tol = 1e-04, verbose = FALSE,
+  ncores = 1)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -27,9 +28,10 @@ few singular vectors/values.}}
 \item{tol}{Precision parameter of \link[RSpectra:svds]{svds}.
 Default is \code{1e-4}.}
 
-\item{verbose}{Should some progress be printed? Default is \code{FALSE}.
-If \code{TRUE}, SOCK clusters will be used so that it may be slower on
-non-Windows machines.}
+\item{verbose}{Should some progress be printed? Default is \code{FALSE}.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 }
 \value{
 A named list (an S3 class "big_SVD") of

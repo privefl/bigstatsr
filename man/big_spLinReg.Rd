@@ -108,7 +108,7 @@ set.seed(1)
 # simulating some data
 N <- 73
 M <- 430
-X <- big_copy(matrix(rnorm(N*M, sd = 5), N), type = "integer")
+X <- FBM(N, M, init = rnorm(N * M, sd = 5), type = "integer")
 y <- rnorm(N)
 covar <- matrix(rnorm(N * 3), N)
 

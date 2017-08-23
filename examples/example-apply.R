@@ -14,7 +14,7 @@ str(rowsums <- big_apply(X, a.FUN = function(X, ind) rowSums(X[ind, ]),
                          ind = rows_along(X), a.combine = 'c',
                          block.size = 100))
 # it is usually preferred to split along columns
-# because `big.matrix` are stored by column.
+# because matrices are stored by column.
 str(rowsums2 <- big_apply(X, a.FUN = function(X, ind) rowSums(X[, ind]),
                           a.combine = '+'))
 

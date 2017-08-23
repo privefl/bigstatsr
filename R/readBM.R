@@ -31,6 +31,7 @@ get_nline <- function(file) {
 #' that the `read.transfo` function transforms the type of what is read.
 #' @param transpose Should the resulting Filebacked Big Matrix be transposed?
 #' Default is `FALSE`.
+#' @inheritDotParams FBM -nrow -ncol -type -init
 #'
 #' @return A Filebacked Big Matrix with two attributes `header` and `info`.
 #'

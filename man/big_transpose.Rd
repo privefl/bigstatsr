@@ -8,6 +8,19 @@ big_transpose(X, ...)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
+
+\item{...}{Arguments passed on to \code{FBM}
+\describe{
+  \item{backingfile}{Path to the file storing the Big Matrix on disk.
+An extension ".bk" will be automatically added. Default stores in the
+temporary directory.}
+  \item{create_bk}{Create a backingfile (the default) or use an existing one
+(which should be named by the \code{backingfile} parameter and have an
+extension ".bk"). For example, this could be used to convert a filebacked
+\code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}.}
+  \item{save}{Whether to save the result object in an ".rds" file alongside
+the backingfile. Default is \code{FALSE}.}
+}}
 }
 \value{
 The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
@@ -18,7 +31,8 @@ This function implements a simple cache-oblivious algorithm for
 the transposition of a Filebacked Big Matrix.
 }
 \examples{
-X <- big_copy(matrix(rnorm(150), 10, 15))
+X <- FBM(10, 5, init = rnorm(50))
+X[]
 Xt <- big_transpose(X)
 identical(t(X[]), Xt[])
 

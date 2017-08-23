@@ -94,8 +94,7 @@ model fitting.}
 \code{lambda}.}
 }
 \description{
-Fit lasso penalized linear regression path for a Filebacked Big Matrix.
-Covariates can be added to correct for confounders.
+Sparse logistic regression
 }
 \details{
 \strong{This is a modified version of one function of
@@ -110,7 +109,7 @@ set.seed(1)
 # simulating some data
 N <- 73
 M <- 430
-X <- big_copy(matrix(rnorm(N*M, sd = 5), N), type = "integer")
+X <- FBM(N, M, init = rnorm(N * M, sd = 5), type = "integer")
 y <- sample(0:1, size = N, replace = TRUE)
 covar <- matrix(rnorm(N * 3), N)
 

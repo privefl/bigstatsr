@@ -4,8 +4,8 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X, a.FUN, a.combine, ind = cols_along(X),
-  block.size = block_size(nrow(X)), ...)
+big_apply(X, a.FUN, a.combine, ind = cols_along(X), ncores = 1,
+  block.size = block_size(nrow(X), ncores), ...)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -26,6 +26,9 @@ By default, the results are returned in a list.}
 
 \item{ind}{Initial vector of subsetting indices.
 Default is the vector of all column indices.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 
 \item{block.size}{Maximum number of columns (or rows, depending on how you
 use \code{ind} for subsetting) read at once. Default uses \link{block_size}.}
@@ -63,7 +66,7 @@ str(rowsums <- big_apply(X, a.FUN = function(X, ind) rowSums(X[ind, ]),
                          ind = rows_along(X), a.combine = 'c',
                          block.size = 100))
 # it is usually preferred to split along columns
-# because `big.matrix` are stored by column.
+# because matrices are stored by column.
 str(rowsums2 <- big_apply(X, a.FUN = function(X, ind) rowSums(X[, ind]),
                           a.combine = '+'))
 

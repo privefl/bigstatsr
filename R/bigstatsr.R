@@ -23,6 +23,9 @@
 #' @param block.size Maximum number of columns read at once.
 #'   Default uses [block_size].
 #'
+#' @param ncores Number of cores used. Default doesn't use parallelism.
+#'   You may use [nb_cores].
+#'
 #' @param fun.scaling A function that returns a named list of
 #' `mean` and `sd` for every column, to scale each of their elements
 #' such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}

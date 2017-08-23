@@ -6,6 +6,7 @@
 #' the transposition of a Filebacked Big Matrix.
 #'
 #' @inheritParams bigstatsr-package
+#' @inheritDotParams FBM -nrow -ncol -type -init
 #'
 #' @return The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
 #' and type are automatically determined from the input Filebacked Big Matrix.
@@ -13,7 +14,8 @@
 #' @export
 #'
 #' @examples
-#' X <- big_copy(matrix(rnorm(150), 10, 15))
+#' X <- FBM(10, 5, init = rnorm(50))
+#' X[]
 #' Xt <- big_transpose(X)
 #' identical(t(X[]), Xt[])
 #'

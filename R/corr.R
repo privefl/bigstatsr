@@ -18,7 +18,7 @@
 big_cor <- function(X,
                     ind.row = rows_along(X),
                     ind.col = cols_along(X),
-                    block.size = 1000) {
+                    block.size = block_size(nrow(X))) {
 
   check_args()
 
