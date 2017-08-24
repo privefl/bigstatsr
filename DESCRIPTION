@@ -58,6 +58,7 @@ BugReports: https://github.com/privefl/bigstatsr/issues
 Collate: 
     'AUC.R'
     'CMSA.R'
+    'FBM-attach.R'
     'crochet.R'
     'FBM.R'
     'FBM-code256.R'
@@ -65,7 +66,6 @@ Collate:
     'RcppExports.R'
     'SVD.R'
     'apply-parallelize.R'
-    'attach-descriptor.R'
     'biglasso.R'
     'bigstatsr.R'
     'colstats.R'
