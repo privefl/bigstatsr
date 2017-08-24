@@ -58,8 +58,9 @@ FBM_RC <- methods::setRefClass(
 
       if (create_bk) {
         assert_noexist(bkfile)
+        assert_dir(dirname(bkfile))
         createFile(bkfile, nrow, ncol, ALL.TYPES[[typeBM]])
-      } else {  # already exists
+      } else {
         assert_exist(bkfile)
       }
 

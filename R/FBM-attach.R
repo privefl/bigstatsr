@@ -21,6 +21,7 @@ big_attach <- function(rdsfile) {
   rdsfile <- normalizePath(rdsfile)
   fbm <- readRDS(rdsfile)
 
+  # In case of moving files
   if (!file.exists(fbm$backingfile <- sub("\\.rds$", ".bk", rdsfile)))
     stop2("Can't find the backingfile associated with this FBM.")
 

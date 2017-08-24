@@ -28,6 +28,10 @@
 #' X.code2 <- FBM.code256(10, 10, code, init = sample(as.raw(0:3), 100, TRUE))
 #' X.code2[]
 #'
+#' # Copy the FBM with another code
+#' X.code3 <- X.code$copy(code = rnorm(256))
+#' stopifnot(all.equal(X.code$code256, code))
+#'
 #' @include FBM.R
 #'
 #' @exportClass FBM.code256
@@ -52,6 +56,10 @@ FBM.code256_RC <- methods::setRefClass(
       callSuper(type = "unsigned char", ...)
       # super$initialize(nrow, ncol, "unsigned char",  # raw (int in [0:255])
       #                  init, backingfile = tempfile(), save)
+    },
+
+    copy = function(code) {
+      add_code256(.self, code = code, save = FALSE)
     },
 
     show = function() {
