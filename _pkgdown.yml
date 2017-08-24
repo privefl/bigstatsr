@@ -52,7 +52,7 @@ reference:
       - big_transpose
       - big_apply
       - big_parallelize
-      - big_readBM
+      - big_read
       - BM
   - title: "Matrix operations"
     contents:

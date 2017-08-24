@@ -48,8 +48,6 @@ the backingfile. Default is \code{FALSE}.}
 A reference class for storing and accessing matrix-like data stored in files
 on disk. This is very similar to Filebacked Big Matrices provided by the
 \strong{bigmemory} package. Yet, the implementation is much more lighter.
-
-Wrapper constructor for class \code{FBM}.
 }
 
 \examples{

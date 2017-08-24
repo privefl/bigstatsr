@@ -25,7 +25,7 @@
 #'
 big_transpose <- function(X, ...) {
 
-  check_args()
+  check_args(X = "assert_class(X, 'FBM')")
 
   res <- FBM(ncol(X), nrow(X), typeof(X), init = NULL, ...)
 

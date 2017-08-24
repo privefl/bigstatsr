@@ -17,11 +17,11 @@ that replaces a matrix subset of \code{x} based on two vectors of indices \code{
 }
 \value{
 A function in the form of \code{function(x, i, j, ..., value)} that is
-meant to be used as a method for \code{[<-} for a custom type.
+meant to be used as a method for \code{[&lt;-} for a custom type.
 }
 \description{
 \code{replace} is a function that converts different index types such as negative
-integer vectors or logical vectors passed to the \code{[<-} function as \code{i}
+integer vectors or logical vectors passed to the \code{[&lt;-} function as \code{i}
 (e.g. \code{X[i]}) or \code{i} and \code{j} (e.g. \code{X[i, j]}) into positive
 integer vectors. The converted indices are provided as the \code{i} parameter of
 \code{replace_vector} or \code{i} and \code{j} parameters of \code{replace_matrix} to facilitate

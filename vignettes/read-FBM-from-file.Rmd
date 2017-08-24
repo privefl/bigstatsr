@@ -1,17 +1,19 @@
 ---
-title: "Read a BM from a file"
+title: "Read a FBM from a file"
 author: "Florian Privé"
 date: "April 15, 2017"
 output: html_document
 ---
+
+# TODO: redo this with blocks?
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(bigstatsr)
 ```
 
-In this vignette, you will learn how to read a `big.matrix` from a text file. 
-We will see how to use function `big_readBM` through examples.
+In this vignette, you will learn how to read a Filebacked Big Matrix from a text file. 
+We will see how to use function `big_read` through examples.
 
 ## First example
 
@@ -42,17 +44,16 @@ What you can see with these first 3 lines:
 ```{r}
 # See how the options corresponds to what we have seen 
 # when reading the first 3 lines of the file
-test <- big_readBM(tmp,
-                   file.nheader = 1,      # default is 0
-                   info.nelem = 1,        # default is 0
-                   split = " ",           # the default
-                   read.what = double(),  # the default
-                   fun.createBM = BM(descriptor = FALSE))  # default returns a descriptor
+test <- big_read(tmp,
+                 file.nheader = 1,      # default is 0
+                 info.nelem = 1,        # default is 0
+                 split = " ",           # the default
+                 read.what = double())  # the default
 ```
 
 ```{r}
 # print the `big.matrix` elements
-test[,]
+test[]
 ```
 
 ### Understand the resulting object
@@ -82,12 +83,11 @@ There are at least 2 things to note:
     If you want the transposed `big.matrix`, you can use the `transpose` parameter.
 
     ```{r}
-    str(test <- big_readBM(tmp,
-                           file.nheader = 1,     
-                           info.nelem = 1,     
-                           transpose = TRUE,
-                           fun.createBM = BM(descriptor = FALSE)))
-    test[,] - x
+    str(test <- big_read(tmp,
+                         file.nheader = 1,     
+                         info.nelem = 1,     
+                         transpose = TRUE))
+    test[] - x
     ```
 
 ## Second example
@@ -133,15 +133,15 @@ In this function, we have a vector of letters as input, and a vector of half the
 
 ```{r}
 # silently down cast from integer to char
-options(bigmemory.typecast.warning = FALSE)
+options(bigstatsr.typecast.warning = FALSE)
 # read
-str(test <- big_readBM(pedfile,
-                       info.nelem = 6,
-                       read.what = character(),
-                       read.transfo = transfo,
-                       BM.type = "char",
-                       transpose = TRUE))
-attach.BM(test)[,]
+str(test <- big_read(pedfile,
+                     info.nelem = 6,
+                     read.what = character(),
+                     read.transfo = transfo,
+                     BM.type = "integer",
+                     transpose = TRUE))
+test[]
 ```
 
 ```{r}
