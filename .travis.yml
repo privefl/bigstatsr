@@ -11,20 +11,13 @@ warnings_are_errors: false
 
 env:
  global:
-   - _R_CHECK_FORCE_SUGGESTS_: false
    - NOT_CRAN: true
-   - R_CHECK_ARGS="--timings"
-   - R_CHECK_TIME="TRUE"
-   - R_CHECK_TESTS="TRUE"
-   - _R_CHECK_TIMINGS_="0"
+   - _R_CHECK_FORCE_SUGGESTS_: false
 
 notifications:
   email:
     on_success: change
     on_failure: change
-
-before_install:
-- Rscript -e 'Sys.getenv("NOT_CRAN")'
 
 after_success:
   - Rscript -e 'covr::codecov()'
