@@ -12,6 +12,7 @@ library(Matrix)
 test_cores <- function() {
 
   is.cran <- !identical(Sys.getenv("NOT_CRAN"), "true")
+  if (is.cran) stop("CRAANNNNNN")
 
   is.randomSVD <- (get_reporter()$.context == "RANDOM_SVD")
 
