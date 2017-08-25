@@ -1,6 +1,7 @@
 ################################################################################
 
 context("RANDOM_SVD")
+print(nb_cores())
 
 TOL <- 1e-6
 
@@ -26,7 +27,7 @@ test_that("equality with prcomp", {
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
     sc <- sampleScale()
 
-    test <- big_randomSVD(X, k = k, tol = 1e-10,
+    test <- big_randomSVD(X, k = k, tol = 1e-10, ncores = 2,
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
     pca <- prcomp(X[], center = sc$center, scale. = sc$scale)
