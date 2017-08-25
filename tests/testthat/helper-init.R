@@ -10,9 +10,7 @@ test_cores <- function() {
 
   is.randomSVD <- (get_reporter()$.context == "RANDOM_SVD")
 
-  MAX_CORES <- `if`(is.cran && is.randomSVD, 1, 2)
-
-  sample(MAX_CORES, size = 1)
+  `if`(is.cran && is.randomSVD, 1, sample(2, size = 1, prob = c(3, 1)))
 }
 
 ################################################################################
