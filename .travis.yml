@@ -7,24 +7,22 @@ r:
 
 sudo: false
 cache: packages
+warnings_are_errors: false
 
 env:
  global:
    - CRAN: http://cran.rstudio.com
    - _R_CHECK_FORCE_SUGGESTS_: false
+   - NOT_CRAN: true
+   - R_CHECK_ARGS="--as-cran --timings"
+   - R_CHECK_TIME="TRUE"
+   - R_CHECK_TESTS="TRUE"
+   - _R_CHECK_TIMINGS_="0"
 
 notifications:
   email:
     on_success: change
     on_failure: change
-
-
-# https://github.com/travis-ci/travis-ci/issues/6587
-# Set CXX1X for R-devel, as R-devel does not detect CXX1X support for gcc 4.6.3,
-# this was causing hunspell installation to fail
-before_install:
-  - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
-  - export _R_CHECK_TIMINGS_=0
 
 after_success:
   - Rscript -e 'covr::codecov()'

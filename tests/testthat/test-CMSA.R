@@ -34,7 +34,7 @@ test_that("correlation between predictors", {
 
       beta.cmsa <- big_CMSA(big_spLogReg, feval = AUC, X = X,
                             y.train = y, covar.train = covar,
-                            method = meth)
+                            method = meth, ncores = test_cores())
       pred.cmsa <- predict(beta.cmsa, X = X, covar.row = covar)
 
       cor.pval <- cor.test(beta.lol, beta.cmsa)$p.value

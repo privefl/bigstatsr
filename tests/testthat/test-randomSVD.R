@@ -1,7 +1,6 @@
 ################################################################################
 
 context("RANDOM_SVD")
-print(nb_cores())
 
 TOL <- 1e-6
 
@@ -27,7 +26,7 @@ test_that("equality with prcomp", {
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
     sc <- sampleScale()
 
-    test <- big_randomSVD(X, k = k, tol = 1e-10, ncores = 2,
+    test <- big_randomSVD(X, k = k, tol = 1e-10, ncores = test_cores(),
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
     pca <- prcomp(X[], center = sc$center, scale. = sc$scale)
@@ -51,7 +50,7 @@ test_that("equality with prcomp with half of the data", {
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
     sc <- sampleScale()
 
-    test <- big_randomSVD(X,
+    test <- big_randomSVD(X, ncores = test_cores(),
                           ind.row = ind, k = k, tol = 1e-10,
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
@@ -81,7 +80,7 @@ test_that("equality with prcomp with half of half of the data", {
     sc <- sampleScale()
 
     test <- big_randomSVD(X, ind.row = ind, ind.col = ind.col,
-                          k = k, tol = 1e-10,
+                          k = k, tol = 1e-10, ncores = test_cores(),
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
     pca <- prcomp(X[ind, ind.col], center = sc$center, scale. = sc$scale)

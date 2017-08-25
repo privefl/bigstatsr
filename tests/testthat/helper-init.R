@@ -4,6 +4,19 @@ library(Matrix)
 
 ################################################################################
 
+test_cores <- function() {
+
+  is.cran <- !identical(Sys.getenv("NOT_CRAN"), "true")
+
+  is.randomSVD <- (get_reporter()$.context == "RANDOM_SVD")
+
+  MAX_CORES <- `if`(is.cran && is.randomSVD, 1, 2)
+
+  sample(MAX_CORES, size = 1)
+}
+
+################################################################################
+
 TEST.TYPES <- c("raw", "unsigned short", "integer", "double")
 
 asFBMcode <- function(x) {

@@ -34,7 +34,7 @@ test_that("equality with glm with all data", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in lcovar) {
-      mod <- big_univLogReg(X, y, covar.train = covar)
+      mod <- big_univLogReg(X, y, covar.train = covar, ncores = test_cores())
       mod$p.value <- predict(mod, log10 = FALSE)
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
@@ -60,7 +60,8 @@ test_that("equality with glm with only half the data", {
     for (covar in lcovar) {
       mod <- big_univLogReg(X, y[ind],
                             covar.train = covar[ind, ],
-                            ind.train = ind)
+                            ind.train = ind,
+                            ncores = test_cores())
       mod$p.value <- predict(mod, log10 = FALSE)
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
