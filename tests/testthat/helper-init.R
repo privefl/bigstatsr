@@ -1,7 +1,7 @@
 ################################################################################
 
 # Sys.setenv(R_TESTS = "")
-# Sys.unsetenv("R_TESTS")
+Sys.unsetenv("R_TESTS")
 
 ################################################################################
 
@@ -15,7 +15,7 @@ test_cores <- function() {
 
   is.randomSVD <- (get_reporter()$.context == "RANDOM_SVD")
 
-  Sys.setenv(R_TESTS = "")
+  # Sys.setenv(R_TESTS = "")
 
   `if`(is.cran && is.randomSVD, 1, sample(2, size = 1, prob = c(3, 1)))
 }
