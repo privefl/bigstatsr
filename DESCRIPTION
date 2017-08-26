@@ -52,7 +52,7 @@ RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 Remotes: 
     YaohuiZeng/biglasso, 
-    CY-dev/sparseSVM
+    CY-dev/sparseSVM@15ed312d4d87482bbf8d48b6065e7c08c5fe1598
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
 Collate: 

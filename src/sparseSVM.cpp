@@ -7,7 +7,6 @@
 #include <bigstatsr/SubIntMatCovAcc.h>
 #include <bigstatsr/types.h>
 #include <math.h>
-// #include <time.h>
 
 using namespace Rcpp;
 using std::size_t;
