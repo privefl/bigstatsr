@@ -8,12 +8,12 @@ r:
 sudo: false
 cache: packages
 warnings_are_errors: false
+r_check_args: "--no-manual --timings"
 
 env:
  global:
    - NOT_CRAN: true
    - _R_CHECK_FORCE_SUGGESTS_: false
-   - R_CHECK_ARGS="--no-manual --timings"
 
 notifications:
   email:
