@@ -14,7 +14,7 @@ test_cores <- function() {
   is.cran      <- !identical(Sys.getenv("NOT_CRAN"), "true")
   is.randomSVD <- (get_reporter()$.context == "RANDOM_SVD")
 
-  `if`(is.cran && is.randomSVD, 1, sample(2, size = 1))
+  `if`(is.cran, 1, sample(2, size = 1))  #  && is.randomSVD
 }
 
 ################################################################################

@@ -19,5 +19,8 @@ notifications:
     on_success: change
     on_failure: change
 
+before_install:
+  - Rscript -e 'Sys.getenv("NOT_CRAN")'
+
 after_success:
   - Rscript -e 'covr::codecov()'
