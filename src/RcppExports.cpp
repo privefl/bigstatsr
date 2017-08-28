@@ -18,6 +18,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// getXPtrFBM
+SEXP getXPtrFBM(std::string path, int n, int m, int type);
+RcppExport SEXP _bigstatsr_getXPtrFBM(SEXP pathSEXP, SEXP nSEXP, SEXP mSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(getXPtrFBM(path, n, m, type));
+    return rcpp_result_gen;
+END_RCPP
+}
 // COPY_cdfit_gaussian_hsr
 List COPY_cdfit_gaussian_hsr(Environment BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, bool lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool verbose);
 RcppExport SEXP _bigstatsr_COPY_cdfit_gaussian_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP verboseSEXP) {
@@ -212,20 +226,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// getXPtrFBM
-SEXP getXPtrFBM(std::string path, int n, int m, int type);
-RcppExport SEXP _bigstatsr_getXPtrFBM(SEXP pathSEXP, SEXP nSEXP, SEXP mSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type m(mSEXP);
-    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(getXPtrFBM(path, n, m, type));
-    return rcpp_result_gen;
-END_RCPP
-}
 // pMatVec4
 NumericVector pMatVec4(Environment BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP _bigstatsr_pMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
@@ -410,22 +410,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// correlize
-NumericMatrix& correlize(NumericMatrix& mat, const NumericVector& shift, const NumericVector& scale);
-RcppExport SEXP _bigstatsr_correlize(SEXP matSEXP, SEXP shiftSEXP, SEXP scaleSEXP) {
+// scaleK
+void scaleK(Environment BM, const NumericVector& sums, const NumericVector& mu, const NumericVector& delta, int nrow);
+RcppExport SEXP _bigstatsr_scaleK(SEXP BMSEXP, SEXP sumsSEXP, SEXP muSEXP, SEXP deltaSEXP, SEXP nrowSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type shift(shiftSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
-    rcpp_result_gen = Rcpp::wrap(correlize(mat, shift, scale));
-    return rcpp_result_gen;
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type sums(sumsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< int >::type nrow(nrowSEXP);
+    scaleK(BM, sums, mu, delta, nrow);
+    return R_NilValue;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_auc_cpp", (DL_FUNC) &_bigstatsr_auc_cpp, 2},
+    {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 4},
     {"_bigstatsr_COPY_cdfit_gaussian_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_gaussian_hsr, 15},
     {"_bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_binomial_hsr, 16},
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},
@@ -440,7 +442,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_GET_ERROR_USHORT", (DL_FUNC) &_bigstatsr_GET_ERROR_USHORT, 0},
     {"_bigstatsr_extractVec", (DL_FUNC) &_bigstatsr_extractVec, 2},
     {"_bigstatsr_extractMat", (DL_FUNC) &_bigstatsr_extractMat, 3},
-    {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 4},
     {"_bigstatsr_pMatVec4", (DL_FUNC) &_bigstatsr_pMatVec4, 4},
     {"_bigstatsr_cpMatVec4", (DL_FUNC) &_bigstatsr_cpMatVec4, 4},
     {"_bigstatsr_replaceVecOne", (DL_FUNC) &_bigstatsr_replaceVecOne, 3},
@@ -454,7 +455,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_scaling", (DL_FUNC) &_bigstatsr_scaling, 3},
     {"_bigstatsr_complete2", (DL_FUNC) &_bigstatsr_complete2, 1},
     {"_bigstatsr_incrSup2", (DL_FUNC) &_bigstatsr_incrSup2, 2},
-    {"_bigstatsr_correlize", (DL_FUNC) &_bigstatsr_correlize, 3},
+    {"_bigstatsr_scaleK", (DL_FUNC) &_bigstatsr_scaleK, 5},
     {NULL, NULL, 0}
 };
 

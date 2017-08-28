@@ -9,7 +9,6 @@
 #' if it is really needed.
 #'
 #' @inheritParams bigstatsr-package
-#' @inheritSection bigstatsr-package Matrix parallelization
 #'
 #' @return A matrix, \eqn{X.row^T X.row}, with the following two attributes:
 #' - a numeric vector `mean` of column scaling,
@@ -19,46 +18,36 @@
 #'
 #' @example examples/example-crossprodSelf.R
 #'
-big_crossprodSelf2 <- function(X,
-                               fun.scaling,
-                               ind.row = rows_along(X),
-                               ind.col = cols_along(X),
-                               block.size = block_size(nrow(X))) {
+big_crossprodSelf <- function(X,
+                              fun.scaling,
+                              ind.row = rows_along(X),
+                              ind.col = cols_along(X),
+                              block.size = block_size(nrow(X))) {
 
   check_args()
 
   m <- length(ind.col)
   K <- matrix(NA_real_, m, m)
 
+  # means and sds of each column
+  ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col)
+
   intervals <- CutBySize(m, block.size)
   nb.block <- nrow(intervals)
 
-  mu    <- numeric(m)
-  delta <- numeric(m)
-  sums  <- numeric(m)
-
-  for (j in seq_len(nb.block)) {
-
+  for (j in 1:nb.block) {
     ind1 <- seq2(intervals[j, ])
-    tmp1 <- X[ind.row, ind.col[ind1]]
-
-    ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col[ind1])
-    mu[ind1]    <- ms$mean
-    delta[ind1] <- ms$sd
-    sums[ind1]  <- colSums(tmp1)
-
-    K[ind1, ind1] <- crossprod(tmp1)
-    for (i in seq_len(j - 1)) {
+    tmp1 <- scaling(X[ind.row, ind.col[ind1]], ms$mean[ind1], ms$sd[ind1])
+    for (i in 1:j) {
       ind2 <- seq2(intervals[i, ])
-      tmp2 <- X[ind.row, ind.col[ind2]]
+      tmp2 <- scaling(X[ind.row, ind.col[ind2]], ms$mean[ind2], ms$sd[ind2])
 
-      K.part <- crossprod(tmp2, tmp1)
-      K[ind2, ind1] <- K.part
-      K[ind1, ind2] <- t(K.part)
+      K[ind2, ind1] <- crossprod(tmp2, tmp1)
     }
   }
 
-  structure(K, mean = ms$mean, sd = ms$sd)
+  # Complete the lower part of the symmetric matrix
+  structure(complete2(K), mean = ms$mean, sd = ms$sd)
 }
 
 ################################################################################

@@ -10,8 +10,8 @@ DualBigPCA <- function(X, fun.scaling,
                           ind.row = ind.row,
                           ind.col = ind.col,
                           block.size = block.size)
-  means <- attr(K, "mean")
-  sds <- attr(K, "sd")
+  means <- attr(K, "center")
+  sds <- attr(K, "scale")
 
   # compute eigen values/vectors
   eig <- RSpectra::eigs_sym(K, k)
@@ -25,7 +25,7 @@ DualBigPCA <- function(X, fun.scaling,
           tcrossprod(means, colSums(u))) / sds
   v <- sweep(v, 2, d, "/")
 
-  list(d = d, u = u, v = v, means = means, sds = sds)
+  list(d = d, u = u, v = v, center = means, scale = sds)
 }
 
 ################################################################################
@@ -40,8 +40,8 @@ PrimalBigPCA <- function(X, fun.scaling,
                          ind.row = ind.row,
                          ind.col = ind.col,
                          block.size = block.size)
-  means <- attr(K, "mean")
-  sds <- attr(K, "sd")
+  means <- attr(K, "center")
+  sds <- attr(K, "scale")
 
   # compute eigen values/vectors
   eig <- RSpectra::eigs_sym(K, k)
@@ -55,7 +55,7 @@ PrimalBigPCA <- function(X, fun.scaling,
   u <- big_prodMat(X, v2, ind.row, ind.col, block.size = block.size)
   u <- scaling(u, crossprod(means, v2), d)
 
-  list(d = d, u = u, v = v, means = means, sds = sds)
+  list(d = d, u = u, v = v, center = means, scale = sds)
 }
 
 ################################################################################
@@ -84,8 +84,8 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' - `d`, the singular values,
 #' - `u`, the left singular vectors,
 #' - `v`, the right singular vectors,
-#' - `means`, the centering vector,
-#' - `sds`, the scaling vector.
+#' - `center`, the centering vector,
+#' - `scale`, the scaling vector.
 #'
 #' Note that to obtain the Principal Components, you must use
 #' [predict][predict.big_SVD] on the result. See examples.

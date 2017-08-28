@@ -1,5 +1,6 @@
 /******************************************************************************/
 
+#include <bigstatsr/BMAcc.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -53,7 +54,7 @@ NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
 
   for (j = 0; j < m; j++)
     for (i = 0; i <= j; i++)
-      mat(i, j) += source(i,j);
+      mat(i, j) += source(i, j);
 
   return mat;
 }
@@ -61,23 +62,24 @@ NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
 /******************************************************************************/
 
 // [[Rcpp::export]]
-NumericMatrix& correlize(NumericMatrix& mat,
-                         const NumericVector& shift,
-                         const NumericVector& scale) {
+void scaleK(Environment BM,
+                      const NumericVector& sums,
+                      const NumericVector& mu,
+                      const NumericVector& delta,
+                      int nrow) {
 
-  size_t n = mat.nrow();
+  XPtr<FBM> xpBM = BM["address"];
+  BMAcc<double> K(xpBM);
+  size_t n = K.nrow();
   size_t i, j;
 
   for (j = 0; j < n; j++) {
     for (i = 0; i < n; i++) {
-      // corresponds to "- \frac{1}{n} s_X * s_X^T"
-      mat(i, j) -= shift(i) * shift(j);
-      // corresponds to "S^T (...) S"
-      mat(i, j) /= scale(i) * scale(j);
+      K(i, j) -= sums[i] * mu[j] + mu[i] * sums[j];
+      K(i, j) += nrow * mu[i] * mu[j];
+      K(i, j) /= delta(i) * delta(j);
     }
   }
-
-  return mat;
 }
 
 /******************************************************************************/

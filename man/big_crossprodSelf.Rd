@@ -24,10 +24,10 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 Default uses \link{block_size}.}
 }
 \value{
-A matrix, \eqn{X.row^T X.row}, with the following two attributes:
+A temporary \link[=FBM-class]{FBM}, with the following two attributes:
 \itemize{
-\item a numeric vector \code{mean} of column scaling,
-\item a numeric vector \code{sd} of column scaling.
+\item a numeric vector \code{center} of column scaling,
+\item a numeric vector \code{scale} of column scaling.
 }
 }
 \description{
@@ -38,6 +38,14 @@ after applying a particular scaling to it.
 This algorithm is not really memory efficient. I'm planning on fixing this,
 if it is really needed.
 }
+\section{Matrix parallelization}{
+
+Large matrix computations (crossprods) are made block-wise and won't
+be parallelized in order to not have to reduce the size of these blocks.
+Instead, you may use \href{https://mran.microsoft.com/open/}{Microsoft R Open}
+in order to accelerate these block matrix computations.
+}
+
 \examples{
 X <- FBM(13, 17, init = rnorm(221))
 

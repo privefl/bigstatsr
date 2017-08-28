@@ -17,7 +17,7 @@
 #'
 #' @return
 #' A new **function** that returns a data.frame of two vectors
-#' "mean" and "sd" which are of the length of `ind.col`.
+#' "center" and "scale" which are of the length of `ind.col`.
 #'
 #' @seealso [scale]
 #'
@@ -54,7 +54,7 @@ big_scale <- function(center = TRUE, scale = TRUE) {
       sds <- rep(1, m)
     }
 
-    data.frame(mean = means, sd = sds)
+    data.frame(center = means, scale = sds)
   }
 }
 

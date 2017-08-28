@@ -69,14 +69,14 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
         # Slaves do the hard work
         if (c == 1) {
           # Compute A * x
-          x <- Atx[lo:up] / ms$sd
+          x <- Atx[lo:up] / ms$scale
           Ax[, ic] <- pMatVec4(X, x, ind.row, ind.col.part) -
-            drop(crossprod(x, ms$mean))
+            drop(crossprod(x, ms$center))
         } else if (c == 2) {
           # Compute At * x
           x <- Ax[, 1]
           Atx[lo:up] <- (cpMatVec4(X, x, ind.row, ind.col.part) -
-                           sum(x) * ms$mean) / ms$sd
+                           sum(x) * ms$center) / ms$scale
         } else if (c == 3) {
           # End
           break
@@ -94,8 +94,8 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
   l <- do.call("c", res[-1])
   res <- res[[1]]
   s <- c(TRUE, FALSE)
-  res$means <- unlist(l[s], use.names = FALSE)
-  res$sds <- unlist(l[!s], use.names = FALSE)
+  res$center <- unlist(l[s], use.names = FALSE)
+  res$scale  <- unlist(l[!s], use.names = FALSE)
 
   # Return
   res
@@ -117,20 +117,20 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
   # A
   A <- function(x, args) {
     printf("%d - computing A * x\n", it <<- it + 1)
-    x <- x / ms$sd
-    pMatVec4(X, x, ind.row, ind.col) - drop(crossprod(x, ms$mean))
+    x <- x / ms$scale
+    pMatVec4(X, x, ind.row, ind.col) - drop(crossprod(x, ms$center))
   }
   # Atrans
   Atrans <- function(x, args) {
     printf("%d - computing At * x\n", it <<- it + 1)
-    (cpMatVec4(X, x, ind.row, ind.col) - sum(x) * ms$mean) / ms$sd
+    (cpMatVec4(X, x, ind.row, ind.col) - sum(x) * ms$center) / ms$scale
   }
 
   res <- RSpectra::svds(A, k, nu = k, nv = k, opts = list(tol = tol),
                         Atrans = Atrans, dim = c(n, m))
 
-  res$means <- ms$mean
-  res$sds <- ms$sd
+  res$center <- ms$center
+  res$scale  <- ms$scale
 
   res
 }
@@ -171,8 +171,8 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' - `v`, the right singular vectors,
 #' - `niter`, the number of the iteration of the algorithm,
 #' - `nops`, number of Matrix-Vector multiplications used,
-#' - `means`, the centering vector,
-#' - `sds`, the scaling vector.
+#' - `center`, the centering vector,
+#' - `scale`, the scaling vector.
 #'
 #' Note that to obtain the Principal Components, you must use
 #' [predict][predict.big_SVD] on the result. See examples.

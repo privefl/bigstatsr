@@ -8,6 +8,7 @@
 #' if it is really needed.
 #'
 #' @inheritParams bigstatsr-package
+#' @inheritSection bigstatsr-package Matrix parallelization
 #'
 #' @return The correlation matrix
 #' @export
@@ -44,10 +45,32 @@ big_cor <- function(X,
     }
   }
 
-  # 'Correlize' the cross-product (see https://goo.gl/HK2Bqb)
+  # "Correlize" the cross-product (see https://goo.gl/HK2Bqb)
   sums <- sums / sqrt(length(ind.row))
   diags <- sqrt(diag(K) - sums^2)
   correlize(K, shift = sums, scale = diags)
 }
 
 ################################################################################
+
+# // [[Rcpp::export]]
+# NumericMatrix& correlize(NumericMatrix& K,
+#                          const NumericVector& shift,
+#                          const NumericVector& scale) {
+#
+#   size_t n = K.nrow();
+#   size_t i, j;
+#
+#   for (j = 0; j < n; j++) {
+#     for (i = 0; i < n; i++) {
+#       // corresponds to "- \frac{1}{n} s_X * s_X^T"
+#       K(i, j) -= shift[i] * shift[j];
+#       // corresponds to "S^T (...) S"
+#       K(i, j) /= scale[i] * scale[j];
+#     }
+#   }
+#
+#   return K;
+# }
+#
+# /******************************************************************************/
