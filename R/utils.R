@@ -43,6 +43,8 @@ block_size <- function(n, ncores = 1) {
 
 # TODO: case when nb > m
 CutBySize <- function(m, block.size, nb = ceiling(m / block.size)) {
+
+  if (nb > m) nb <- m
   int <- m / nb
 
   upper <- round(1:nb * int)
