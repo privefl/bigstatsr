@@ -5,6 +5,10 @@ r:
   - release
   - devel
 
+os:
+  - linux
+  - osx
+
 sudo: false
 cache: packages
 warnings_are_errors: false
