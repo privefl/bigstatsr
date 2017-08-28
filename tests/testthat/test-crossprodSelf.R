@@ -17,7 +17,7 @@ test_that("equality with crossprod", {
 
     K <- big_crossprodSelf(X, fun.scaling = big_noscale,
                            block.size = 10)
-    expect_equivalent(K, crossprod(X[]))
+    expect_equal(K[], crossprod(X[]))
   }
 })
 
@@ -32,12 +32,15 @@ test_that("equality with crossprod with half of the data", {
     # no scaling
     K <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.col = ind,
                            block.size = 10)
-    expect_equivalent(K, crossprod(X[, ind]))
+    expect_equal(K[], crossprod(X[, ind]))
 
     # full scaling
     K2 <- big_crossprodSelf(X, fun.scaling = big_scale(), ind.col = ind,
                             block.size = 10)
-    expect_equivalent(K2, crossprod(scale(X[, ind])))
+    X.scaled <- scale(X[, ind])
+    expect_equal(K2[], crossprod(X.scaled))
+    expect_equal(attr(K2, "center"), attr(X.scaled, "scaled:center"))
+    expect_equal(attr(K2, "scale"),  attr(X.scaled, "scaled:scale"))
   }
 })
 
@@ -52,12 +55,15 @@ test_that("equality with crossprod with half of the data", {
     # no scaling
     K <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.row = ind,
                            block.size = 10)
-    expect_equivalent(K, crossprod(X[ind, ]))
+    expect_equal(K[], crossprod(X[ind, ]))
 
     # full scaling
     K2 <- big_crossprodSelf(X, fun.scaling = big_scale(), ind.row = ind,
                             block.size = 10)
-    expect_equivalent(K2, crossprod(scale(X[ind, ])))
+    X.scaled <- scale(X[ind, ])
+    expect_equal(K2[], crossprod(X.scaled))
+    expect_equal(attr(K2, "center"), attr(X.scaled, "scaled:center"))
+    expect_equal(attr(K2, "scale"),  attr(X.scaled, "scaled:scale"))
   }
 })
 

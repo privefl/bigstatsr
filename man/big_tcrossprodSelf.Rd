@@ -24,7 +24,7 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 Default uses \link{block_size}.}
 }
 \value{
-A matrix, \eqn{X.row X.row^T}, with the following two attributes:
+A temporary \link[=FBM-class]{FBM}, with the following two attributes:
 \itemize{
 \item a numeric vector \code{center} of column scaling,
 \item a numeric vector \code{scale} of column scaling.
@@ -33,10 +33,6 @@ A matrix, \eqn{X.row X.row^T}, with the following two attributes:
 \description{
 Compute \eqn{X.row X.row^T} for a Filebacked Big Matrix \code{X}
 after applying a particular scaling to it.
-}
-\details{
-This algorithm is not really memory efficient. I'm planning on fixing this,
-if it is really needed.
 }
 \section{Matrix parallelization}{
 
@@ -52,19 +48,20 @@ X <- big_attachExtdata()
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)
 K <- big_tcrossprodSelf(X, fun.scaling = big_noscale)
+class(K)
 dim(K)
+K$backingfile
 
 true <- tcrossprod(X[])
-all.equal(K, true, check.attributes = FALSE)
+all.equal(K[], true)
 
 # Using only half of the data
 n <- nrow(X)
 ind <- sort(sample(n, n/2))
 K2 <- big_tcrossprodSelf(X, fun.scaling = big_noscale, ind.row = ind)
-dim(K2)
 
 true2 <- tcrossprod(X[ind, ])
-all.equal(K2, true2, check.attributes = FALSE)
+all.equal(K2[], true2)
 }
 \seealso{
 \link{tcrossprod}

@@ -34,10 +34,6 @@ A temporary \link[=FBM-class]{FBM}, with the following two attributes:
 Compute \eqn{X.row^T X.row} for a Filebacked Big Matrix \code{X}
 after applying a particular scaling to it.
 }
-\details{
-This algorithm is not really memory efficient. I'm planning on fixing this,
-if it is really needed.
-}
 \section{Matrix parallelization}{
 
 Large matrix computations (crossprods) are made block-wise and won't
@@ -52,19 +48,20 @@ X <- FBM(13, 17, init = rnorm(221))
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)
 K <- big_crossprodSelf(X, fun.scaling = big_noscale)
+class(K)
 dim(K)
+K$backingfile
 
 true <- crossprod(X[])
-all.equal(K, true, check.attributes = FALSE)
+all.equal(K[], true)
 
 # Using only half of the data
 n <- nrow(X)
 ind <- sort(sample(n, n/2))
 K2 <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.row = ind)
-dim(K2)
 
 true2 <- crossprod(X[ind, ])
-all.equal(K2, true2, check.attributes = FALSE)
+all.equal(K2[], true2)
 
 
 }

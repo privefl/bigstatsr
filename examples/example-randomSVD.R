@@ -12,8 +12,8 @@ str(test)
 pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
-all.equal(test$means, pca$center)
-all.equal(test$sds, pca$scale)
+all.equal(test$center, pca$center)
+all.equal(test$scale,  pca$scale)
 
 # use this function to predict scores
 class(test)

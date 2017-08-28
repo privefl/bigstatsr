@@ -160,12 +160,12 @@ predict.big_SVD <- function(object, X = NULL,
     check_args()
 
     # Multiplication with clever scaling (see vignettes)
-    v2 <- object$v / object$sds
+    v2 <- object$v / object$scale
     tmp <- big_prodMat(X, v2,
                        ind.row = ind.row,
                        ind.col = ind.col,
                        block.size = block.size)
-    sweep(tmp, 2, crossprod(object$means, v2), "-")
+    sweep(tmp, 2, crossprod(object$center, v2), "-")
   }
 }
 

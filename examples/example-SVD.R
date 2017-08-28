@@ -13,8 +13,8 @@ plot(test$u)
 pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
-all.equal(test$means, pca$center)
-all.equal(test$sds, pca$scale)
+all.equal(test$center, pca$center)
+all.equal(test$scale,  pca$scale)
 
 # scores and loadings are the same or opposite
 # except for last eigenvalue which is equal to 0
@@ -30,7 +30,7 @@ plot(scores2, pca$x[, 1:ncol(scores2)])
 plot(test$v[1:100, ], pca$rotation[1:100, 1:ncol(scores2)])
 
 # projecting on new data
-X2 <- sweep(sweep(X[-ind, ], 2, test$means, '-'), 2, test$sds, '/')
+X2 <- sweep(sweep(X[-ind, ], 2, test$center, '-'), 2, test$scale, '/')
 scores.test <- X2 %*% test$v
 ind2 <- setdiff(rows_along(X), ind)
 scores.test2 <- predict(test, X, ind.row = ind2) # use this

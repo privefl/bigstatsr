@@ -5,8 +5,6 @@ date: "April 15, 2017"
 output: html_document
 ---
 
-# TODO: redo this with blocks?
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(bigstatsr)
@@ -52,7 +50,7 @@ test <- big_read(tmp,
 ```
 
 ```{r}
-# print the `big.matrix` elements
+# print the FBM elements
 test[]
 ```
 
@@ -78,9 +76,9 @@ There are at least 2 things to note:
 2. the resulting matrix is the transpose of the initial one.
 
 
-    A file is read line by line and a matrix should be stored column by column in order to preserve locality of accesses. So in order to efficiently read the file, each line should be a column of the resulting `big.matrix`. If it is not how you write it, you should ask yourself if your `write` function is efficient.
+    A file is read line by line and a matrix should be stored column by column in order to preserve locality of accesses. So, in order to efficiently read the file, each line should be a column of the resulting Filebacked Big Matrix. If it is not how you write it, you should ask yourself if your `write` function is efficient.
     
-    If you want the transposed `big.matrix`, you can use the `transpose` parameter.
+    If you want the transposed FBM, you can use the `transpose` parameter.
 
     ```{r}
     str(test <- big_read(tmp,
@@ -127,14 +125,11 @@ transfo <- function(read) {
 }
 ```
 
-In this function, we have a vector of letters as input, and a vector of half the input length as output which are now 0, 1 or 2. We can therefore store these values with one-byte integers (for example, with type `"char"`).
+In this function, we have a vector of letters as input, and a vector of half the input length as output which are now 0, 1 or 2. We can therefore store these values with e.g. integers.
 
 ### Read the matrix
 
 ```{r}
-# silently down cast from integer to char
-options(bigstatsr.typecast.warning = FALSE)
-# read
 str(test <- big_read(pedfile,
                      info.nelem = 6,
                      read.what = character(),
@@ -147,11 +142,3 @@ test[]
 ```{r}
 t(attr(test, "info"))
 ```
-
-
-## Final note
-
-I think it is usually a good idea to use filebacked `big.matrix` objects (not the case here) because you can write them once and attach them later on. Moreover, you have usually a very large amount of available disk space, but a limited amount of RAM or shared memory.<br/>
-To do just that, change the parameter `fun.createBM`.
-
-Moreover, using descriptors rather than directly `big.matrix` objects is a good idea.

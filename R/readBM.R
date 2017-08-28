@@ -109,6 +109,6 @@ big_read <- function(file,
   structure(`if`(transpose, big_transpose(res, ...), res),
             header = header,
             info = info)
-} # TODO: see if can read by blocks
+}
 
 ################################################################################

@@ -5,10 +5,6 @@ auc_cpp <- function(x_pos, x_neg) {
     .Call(`_bigstatsr_auc_cpp`, x_pos, x_neg)
 }
 
-getXPtrFBM <- function(path, n, m, type) {
-    .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
-}
-
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose) {
     .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
 }
@@ -65,6 +61,10 @@ extractMat <- function(xpbm, rowInd, colInd) {
     .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
 }
 
+getXPtrFBM <- function(path, n, m, type) {
+    .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
+}
+
 pMatVec4 <- function(BM, x, rowInd, colInd) {
     .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
 }
@@ -109,12 +109,12 @@ scaling <- function(source, mean, sd) {
     .Call(`_bigstatsr_scaling`, source, mean, sd)
 }
 
-complete2 <- function(mat) {
-    .Call(`_bigstatsr_complete2`, mat)
+complete2 <- function(BM) {
+    invisible(.Call(`_bigstatsr_complete2`, BM))
 }
 
-incrSup2 <- function(mat, source) {
-    .Call(`_bigstatsr_incrSup2`, mat, source)
+incrSup2 <- function(BM, source) {
+    invisible(.Call(`_bigstatsr_incrSup2`, BM, source))
 }
 
 scaleK <- function(BM, sums, mu, delta, nrow) {

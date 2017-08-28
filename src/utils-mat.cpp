@@ -29,38 +29,40 @@ NumericMatrix& scaling(NumericMatrix& source,
 
 /******************************************************************************/
 
-// For a squared matrix
+// For a squared FBM
 // [[Rcpp::export]]
-NumericMatrix& complete2(NumericMatrix& mat) {
+void complete2(Environment BM) {
 
-  size_t m = mat.ncol();
+  XPtr<FBM> xpBM = BM["address"];
+  BMAcc<double> K(xpBM);
+  size_t m = K.ncol();
   size_t i, j;
 
   for (j = 0; j < m; j++)
     for (i = j+1; i < m; i++)
-      mat(i, j) = mat(j, i);
-
-  return mat;
+      K(i, j) = K(j, i);
 }
 
 /******************************************************************************/
 
-// For a square matrix
+// For a square FBM
 // [[Rcpp::export]]
-NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
+void incrSup2(Environment BM,
+              const NumericMatrix& source) {
 
-  size_t m = mat.ncol();
+  XPtr<FBM> xpBM = BM["address"];
+  BMAcc<double> K(xpBM);
+  size_t m = K.ncol();
   size_t i, j;
 
   for (j = 0; j < m; j++)
     for (i = 0; i <= j; i++)
-      mat(i, j) += source(i, j);
-
-  return mat;
+      K(i, j) += source(i, j);
 }
 
 /******************************************************************************/
 
+// For a square FBM
 // [[Rcpp::export]]
 void scaleK(Environment BM,
                       const NumericVector& sums,

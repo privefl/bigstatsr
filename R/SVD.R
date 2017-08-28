@@ -11,14 +11,12 @@ DualBigPCA <- function(X, fun.scaling,
                           ind.col = ind.col,
                           block.size = block.size)
   means <- attr(K, "center")
-  sds <- attr(K, "scale")
+  sds   <- attr(K, "scale")
 
   # compute eigen values/vectors
-  eig <- RSpectra::eigs_sym(K, k)
+  eig <- RSpectra::eigs_sym(function(x, args) big_prodVec(K, x), k, n = ncol(K))
   u <- eig$vectors
   d <- sqrt(eig$values)
-  # no longer need K (and eig)
-  rm(K, eig)
 
   # crossprod with clever scaling -> see vignettes
   v <- (big_cprodMat(X, u, ind.row, ind.col, block.size = block.size) -
@@ -41,14 +39,12 @@ PrimalBigPCA <- function(X, fun.scaling,
                          ind.col = ind.col,
                          block.size = block.size)
   means <- attr(K, "center")
-  sds <- attr(K, "scale")
+  sds   <- attr(K, "scale")
 
   # compute eigen values/vectors
-  eig <- RSpectra::eigs_sym(K, k)
+  eig <- RSpectra::eigs_sym(function(x, args) big_prodVec(K, x), k, n = ncol(K))
   v <- eig$vectors
   d <- sqrt(eig$values)
-  # no longer need K (and eig)
-  rm(K, eig)
 
   # multiplication with clever scaling -> see vignettes
   v2 <- v / sds

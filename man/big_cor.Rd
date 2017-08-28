@@ -29,10 +29,6 @@ A temporary \link[=FBM-class]{FBM}, with the following two attributes:
 \description{
 Compute the correlation matrix of a Filebacked Big Matrix.
 }
-\details{
-This algorithm is not really memory efficient. I'm planning on fixing this,
-if it is really needed.
-}
 \section{Matrix parallelization}{
 
 Large matrix computations (crossprods) are made block-wise and won't
@@ -46,19 +42,20 @@ X <- FBM(13, 17, init = rnorm(221))
 
 # Comparing with cor
 K <- big_cor(X)
+class(K)
 dim(K)
+K$backingfile
 
 true <- cor(X[])
-all.equal(K, true)
+all.equal(K[], true)
 
 # Using only half of the data
 n <- nrow(X)
 ind <- sort(sample(n, n/2))
 K2 <- big_cor(X, ind.row = ind)
-dim(K2)
 
 true2 <- cor(X[ind, ])
-all.equal(K2, true2)
+all.equal(K2[], true2)
 }
 \seealso{
 \link{cor} \link{big_crossprodSelf}
