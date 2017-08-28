@@ -1,5 +1,5 @@
 ---
-title: "How to handle operations on a scaled \"big.matrix\""
+title: "How to handle operations on a scaled Big Matrix?"
 author: "Florian Privé"
 date: "February 9, 2017"
 output: html_document
