@@ -47,6 +47,14 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 Easy-to-use, efficient, flexible and scalable
 statistical tools. Use bigmemory matrices.
 }
+\section{Matrix parallelization}{
+
+Large matrix computations (crossprods) are made block-wise and won't
+be parallelized in order to not have to reduce the size of these blocks.
+Instead, you may use \href{https://mran.microsoft.com/open/}{Microsoft R Open}
+in order to accelerate these block matrix computations.
+}
+
 \seealso{
 Useful links:
 \itemize{

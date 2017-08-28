@@ -28,22 +28,24 @@ big_cor <- function(X,
   intervals <- CutBySize(m, block.size)
   nb.block <- nrow(intervals)
 
-  for (j in 1:nb.block) {
+  sums <- numeric(m)
+
+  for (j in seq_len(nb.block)) {
     ind1 <- seq2(intervals[j, ])
     tmp1 <- X[ind.row, ind.col[ind1]]
-    for (i in 1:j) {
+    sums[ind1] <- colSums(tmp1)
+    K[ind1, ind1] <- crossprod(tmp1)
+    for (i in seq_len(j - 1)) {
       ind2 <- seq2(intervals[i, ])
       tmp2 <- X[ind.row, ind.col[ind2]]
-
-      K[ind2, ind1] <- crossprod(tmp2, tmp1)
+      K.part <- crossprod(tmp2, tmp1)
+      K[ind2, ind1] <- K.part
+      K[ind1, ind2] <- t(K.part)
     }
-  } # TODO: transform K in TFBM? Parallelize?
-
-  # Complete the lower part of the symmetric matrix
-  K <- complete2(K)
+  }
 
   # 'Correlize' the cross-product (see https://goo.gl/HK2Bqb)
-  sums <- big_colstats(X, ind.row, ind.col)$sum / sqrt(length(ind.row))
+  sums <- sums / sqrt(length(ind.row))
   diags <- sqrt(diag(K) - sums^2)
   correlize(K, shift = sums, scale = diags)
 }

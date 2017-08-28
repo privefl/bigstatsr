@@ -13,7 +13,7 @@ test_that("equality with cor", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    K <- big_cor(X)
+    K <- big_cor(X, block.size = 10)
     expect_equivalent(K, cor(X[]))
   }
 })
@@ -26,7 +26,7 @@ test_that("equality with cor with half of the data", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    K <- big_cor(X, ind.col = ind)
+    K <- big_cor(X, ind.col = ind, block.size = 10)
     expect_equivalent(K, cor(X[, ind]))
   }
 })
@@ -39,7 +39,7 @@ test_that("equality with cor with half of the data", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    K <- big_cor(X, ind.row = ind)
+    K <- big_cor(X, ind.row = ind, block.size = 10)
     expect_equivalent(K, cor(X[ind, ]))
   }
 })

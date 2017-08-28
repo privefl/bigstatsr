@@ -94,8 +94,7 @@ model fitting.}
 \code{lambda}.}
 }
 \description{
-Fit lasso penalized linear regression path for a Filebacked Big Matrix.
-Covariates can be added to correct for confounders.
+Sparse logistic regression
 }
 \details{
 \strong{This is a modified version of one function of

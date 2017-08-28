@@ -15,7 +15,8 @@ test_that("equality with crossprod", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    K <- big_crossprodSelf(X, fun.scaling = big_noscale)
+    K <- big_crossprodSelf(X, fun.scaling = big_noscale,
+                           block.size = 10)
     expect_equivalent(K, crossprod(X[]))
   }
 })
@@ -29,11 +30,13 @@ test_that("equality with crossprod with half of the data", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     # no scaling
-    K <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.col = ind)
+    K <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.col = ind,
+                           block.size = 10)
     expect_equivalent(K, crossprod(X[, ind]))
 
     # full scaling
-    K2 <- big_crossprodSelf(X, fun.scaling = big_scale(), ind.col = ind)
+    K2 <- big_crossprodSelf(X, fun.scaling = big_scale(), ind.col = ind,
+                            block.size = 10)
     expect_equivalent(K2, crossprod(scale(X[, ind])))
   }
 })
@@ -47,11 +50,13 @@ test_that("equality with crossprod with half of the data", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     # no scaling
-    K <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.row = ind)
+    K <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.row = ind,
+                           block.size = 10)
     expect_equivalent(K, crossprod(X[ind, ]))
 
     # full scaling
-    K2 <- big_crossprodSelf(X, fun.scaling = big_scale(), ind.row = ind)
+    K2 <- big_crossprodSelf(X, fun.scaling = big_scale(), ind.row = ind,
+                            block.size = 10)
     expect_equivalent(K2, crossprod(scale(X[ind, ])))
   }
 })

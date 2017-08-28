@@ -37,6 +37,12 @@
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.row`.
 #' Default is `NULL` and corresponds to only adding an intercept to each model.
 #'
+#' @section Matrix parallelization:
+#'   Large matrix computations (crossprods) are made block-wise and won't
+#'   be parallelized in order to not have to reduce the size of these blocks.
+#'   Instead, you may use [Microsoft R Open](https://mran.microsoft.com/open/)
+#'   in order to accelerate these block matrix computations.
+#'
 "_PACKAGE"
 
 ################################################################################

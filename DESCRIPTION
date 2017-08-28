@@ -48,7 +48,7 @@ Suggests:
     sparseSVM,
     testthat,
     viridis
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 Remotes: 
     YaohuiZeng/biglasso, 
@@ -72,6 +72,7 @@ Collate:
     'corr.R'
     'counts.R'
     'crossprodSelf.R'
+    'crossprodSelf2.R'
     'plot.R'
     'predict.R'
     'randomSVD.R'

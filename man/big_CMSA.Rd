@@ -12,7 +12,7 @@ big_CMSA(FUN, feval, X, y.train, ind.train = rows_along(X),
 \item{FUN}{Function that computes a linear scores for different
 values along a regularization path. For now, this is relevant to
 \link{big_spLinReg}, \link{big_spLogReg} and \link{big_spSVM}.
-The corresponding \code{&lt;FUN&gt;.predict} function should exists.}
+The corresponding \code{<FUN>.predict} function should exists.}
 
 \item{feval}{Custimized evaluation function. You should always aim at
 maximizing this function. If \code{feval} is like a loss function (which you
