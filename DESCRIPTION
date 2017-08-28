@@ -2,7 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Bigmemory Matrices
-Version: 0.1.0.9002
+Version: 0.2.0
+Date: 2017-08-29
 Authors@R: c(
     person("Florian", "Privé", 
            email = "florian.prive.21@gmail.com", 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method â€” plot.big_SVD â€¢ bigstatsr</title>
+<title>Plot method — plot.big_SVD â€¢ bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -160,7 +161,7 @@ multiple loadings. Default is <code>TRUE</code> if the package is installed.</p>
 
     <p>A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
 You can modify it as you wish by adding layers. You might want to read
-<a href = 'http://r4ds.had.co.nz/data-visualisation.html'>this chapter</a>
+<a href='http://r4ds.had.co.nz/data-visualisation.html'>this chapter</a>
 to get more familiar with the package <strong>ggplot2</strong>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -171,22 +172,24 @@ to get more familiar with the package <strong>ggplot2</strong>.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
 
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>svd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>test</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'>
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>svd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'>
 <span class='co'># screeplots</span>
-<span class='fu'>plot</span>(<span class='no'>svd</span>) <span class='co'># 3 PCs seems "significant"</span></div><img src='plot.big_SVD-4.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1.2</span>) <span class='co'># larger font for papers</span></div><img src='plot.big_SVD-6.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>svd</span>) <span class='co'># 3 PCs seems "significant"</span></div><div class='img'><img src='plot.big_SVD-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1.5</span>) <span class='co'># larger font for papers</span></div><div class='img'><img src='plot.big_SVD-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># scores plot</span>
-<span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>) <span class='co'># first 2 PCs</span></div><img src='plot.big_SVD-8.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>, <span class='kw'>scores</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>3</span>))</div><img src='plot.big_SVD-10.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## add color (recall that this return a `ggplot2` object)</span>
+<span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>) <span class='co'># first 2 PCs</span></div><div class='img'><img src='plot.big_SVD-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>, <span class='kw'>scores</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>3</span>))</div><div class='img'><img src='plot.big_SVD-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='co'>## add color (recall that this return a `ggplot2` object)</span>
 <span class='fu'>class</span>(<span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>))</div><div class='output co'>#&gt; [1] "gg"     "ggplot"</div><div class='input'><span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"POP1"</span>, <span class='st'>"POP2"</span>, <span class='st'>"POP3"</span>), <span class='fu'>c</span>(<span class='fl'>143</span>, <span class='fl'>167</span>, <span class='fl'>207</span>))
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
-<span class='fu'>print</span>(<span class='no'>obj2</span> <span class='kw'>&lt;-</span> <span class='no'>obj</span> + <span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>pop</span>) + <span class='fu'>labs</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Population"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): objet 'pop' introuvable</span></div><div class='input'><span class='co'>## change the place of the legend</span>
-<span class='fu'>print</span>(<span class='no'>obj3</span> <span class='kw'>&lt;-</span> <span class='no'>obj2</span> + <span class='fu'>theme</span>(<span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.85</span>, <span class='fl'>0.17</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): objet 'pop' introuvable</span></div><div class='input'><span class='co'>## change the title and the labels of the axes</span>
-<span class='no'>obj3</span> + <span class='fu'>ggtitle</span>(<span class='st'>"Yet another title"</span>) + <span class='fu'>xlab</span>(<span class='st'>"with an other 'x' label"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): objet 'pop' introuvable</span></div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>obj2</span> <span class='kw'>&lt;-</span> <span class='no'>obj</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>pop</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Population"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in FUN(X[[i]], ...): object 'pop' not found</span></div><div class='input'><span class='co'>## change the place of the legend</span>
+<span class='fu'>print</span>(<span class='no'>obj3</span> <span class='kw'>&lt;-</span> <span class='no'>obj2</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a></span>(<span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.82</span>, <span class='fl'>0.17</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in FUN(X[[i]], ...): object 'pop' not found</span></div><div class='input'><span class='co'>## change the title and the labels of the axes</span>
+<span class='no'>obj3</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"Yet another title"</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='st'>"with an other 'x' label"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in FUN(X[[i]], ...): object 'pop' not found</span></div><div class='input'>
 <span class='co'># loadings</span>
-<span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"loadings"</span>, <span class='kw'>loadings</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><img src='plot.big_SVD-20.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## all loadings</span>
-<span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"loadings"</span>, <span class='kw'>loadings</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><img src='plot.big_SVD-22.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># dynamic plots, require the package **plotly**</span>
-<span class='co'>## Not run: plotly::ggplotly(obj3)</span></div></pre>
+<span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"loadings"</span>, <span class='kw'>loadings</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='plot.big_SVD-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='co'>## all loadings</span>
+<span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"loadings"</span>, <span class='kw'>loadings</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘hexbin’ was built under R version 3.4.1</span></div><div class='img'><img src='plot.big_SVD-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+# dynamic plots, require the package **plotly**
+</div><span class='co'># NOT RUN {</span>
+<span class='kw pkg'>plotly</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/plotly/topics/ggplotly'>ggplotly</a></span>(<span class='no'>obj3</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

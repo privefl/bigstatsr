@@ -32,6 +32,7 @@ FBM_RC <- methods::setRefClass(
     type = "integer",
     backingfile = "character",
 
+    # Same idea as in package phaverty/bigmemoryExtras
     address = function() {
       if (identical(.self$extptr, methods::new("externalptr"))) { # nil
         .self$extptr <- getXPtrFBM(.self$backingfile,

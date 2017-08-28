@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cross-Model Selection and Averaging. — big_CMSA • bigstatsr</title>
+<title>Cross-Model Selection and Averaging. � big_CMSA • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -115,9 +116,9 @@ vector (see the <code>method</code> parameter).</p></li>
 </ol>
     
 
-    <pre class="usage"><span class='fu'>big_CMSA</span>(<span class='no'>FUN</span>, <span class='no'>feval</span>, <span class='no'>X.</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>),
+    <pre class="usage"><span class='fu'>big_CMSA</span>(<span class='no'>FUN</span>, <span class='no'>feval</span>, <span class='no'>X</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"geometric-median"</span>, <span class='st'>"mean-wise"</span>,
-  <span class='st'>"median-wise"</span>), <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"median-wise"</span>), <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -134,12 +135,11 @@ The corresponding <code>&lt;FUN&gt;.predict</code> function should exists.</p></
       <td><p>Custimized evaluation function. You should always aim at
 maximizing this function. If <code>feval</code> is like a loss function (which you
 want to minimize), you should use its opposite instead.
-Its only two arguments should be <code>pred</code> and <code>target</code> (e.g. <a href='AUC.html'>AUC</a>).</p></td>
+Its only two arguments should be <code>pred</code> and <code>target</code> (e.g. AUC).</p></td>
     </tr>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>y.train</th>
@@ -164,16 +164,12 @@ Default is <code>NULL</code> and corresponds to only adding an intercept to each
     <tr>
       <th>method</th>
       <td><p>Method for combining vectors of coefficients. The default uses
-the <a href = 'https://en.wikipedia.org/wiki/Geometric_median'>geometric median</a>.</p></td>
-    </tr>
-    <tr>
-      <th>block.size</th>
-      <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
+the <a href='https://en.wikipedia.org/wiki/Geometric_median'>geometric median</a>.</p></td>
     </tr>
     <tr>
       <th>ncores</th>
       <td><p>Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.</p></td>
+You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -187,6 +183,11 @@ We advise you to use only half of the cores you have.</p></td>
 corresponds to the training set. You might want to recompute an optimal
 intercept if needed.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For "mean-wise" or "median-wise" method, tests sometimes crash. I haven't
+been able to reproduce the bug.</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -195,6 +196,8 @@ intercept if needed.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

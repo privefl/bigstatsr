@@ -21,6 +21,14 @@ navbar:
       href: https://github.com/privefl/bigstatsr
 
 reference:
+  - title: "Filebacked Big Matrices"
+    desc: "Constructors and methods for class FBM."
+    contents:
+      - FBM-class
+      - FBM-methods
+      - FBM.code256-class
+      - FBM.code256-methods
+      - big_copy
   - title: "Statistical models"
     desc: "Column-wise and sparse multivariate linear and logistic models."
     contents:
@@ -37,6 +45,7 @@ reference:
       - big_randomSVD
   - title: "Plot and predict methods"
     contents:
+      - predict.big_CMSA
       - plot.mhtest
       - predict.mhtest
       - predict.big_sp
@@ -49,13 +58,15 @@ reference:
       - big_colstats
       - big_scale
       - big_counts
+      - big_read
       - big_transpose
       - big_apply
       - big_parallelize
-      - big_read
-      - BM
+      - block_size
+      - nb_cores
   - title: "Matrix operations"
     contents:
+      - big_cor
       - big_crossprodSelf
       - big_tcrossprodSelf
       - big_prodVec

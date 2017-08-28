@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get coordinates — pasteLoc • bigstatsr</title>
+<title>Get coordinates � pasteLoc • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -127,9 +128,12 @@ for convenience and reproducibility.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='fu'>plot</span>(<span class='fu'>runif</span>(<span class='fl'>20</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))  <span class='co'># note the negative number for the rounding of $y  coord &lt;- pasteLoc(3, digits = c(2, -1))  text(coord, c("a", "b", "c"))</span>
-})</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>plot</span>(<span class='fu'>runif</span>(<span class='fl'>20</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))
+<span class='co'># note the negative number for the rounding of $y</span>
+<span class='no'>coord</span> <span class='kw'>&lt;-</span> <span class='fu'>pasteLoc</span>(<span class='fl'>3</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>, -<span class='fl'>1</span>))
+<span class='fu'>text</span>(<span class='no'>coord</span>, <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>))
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

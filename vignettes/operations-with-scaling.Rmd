@@ -83,11 +83,11 @@ M[] <- rnorm(length(M))
 stats_scale <- big_scale(center = TRUE, scale = TRUE)(X)
 
 # compute M_s
-M_s <- M / stats_scale$sd
+M_s <- M / stats_scale$scale
 # compute the product, without scaling X
 XM_s <- big_prodMat(X, M_s)
 # adjust the result
-final <- sweep(XM_s, 2, crossprod(stats_scale$mean, M_s), '-')
+final <- sweep(XM_s, 2, crossprod(stats_scale$center, M_s), '-')
 
 # verification
 true <- scale(X[]) %*% M

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sparse linear regression — big_spLinReg • bigstatsr</title>
+<title>Sparse linear regression � big_spLinReg • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -99,20 +100,18 @@
     </div>
 
     
-    <p>Fit lasso penalized linear regression path for a <code>big.matrix</code>.
+    <p>Fit lasso penalized linear regression path for a Filebacked Big Matrix.
 Covariates can be added to correct for confounders.</p>
     
 
-    <pre class="usage"><span class='fu'>big_spLinReg</span>(<span class='no'>X.</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_spLinReg</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>y.train</th>
@@ -210,9 +209,9 @@ model fitting.</p></dd>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><strong>This is a modified version of one function of
-<a href = 'https://github.com/YaohuiZeng/biglasso'>package biglasso</a></strong>.
+<a href='https://github.com/YaohuiZeng/biglasso'>package biglasso</a></strong>.
 It adds the possibility to train models with covariables and use many
-types of <code>big.matrix</code> (not only <code>double</code> ones).
+types of <code>FBM</code> (not only <code>double</code> ones).
 Yet, it only corresponds to <code>screen = "SSR"</code> (Sequential Strong Rules).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -221,11 +220,11 @@ Yet, it only corresponds to <code>screen = "SSR"</code> (Sequential Strong Rules
 Simon, N., Taylor, J. and Tibshirani, R. J. (2012),
 Strong rules for discarding predictors in lasso-type problems.
 Journal of the Royal Statistical Society:
-Series B (Statistical Methodology), 74: 245–266.
-<a href = 'http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x'>http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x</a>.</p>
+Series B (Statistical Methodology), 74: 245�266.
+<a href='http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x'>http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x</a>.</p>
 <p>Zeng, Y., and Breheny, P. (2016). The biglasso Package: A Memory- and
 Computation-Efficient Solver for Lasso Model Fitting with Big Data in R.
-arXiv preprint arXiv:1701.05936. <a href = 'https://arxiv.org/abs/1701.05936'>https://arxiv.org/abs/1701.05936</a>.</p>
+arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>https://arxiv.org/abs/1701.05936</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -233,37 +232,56 @@ arXiv preprint arXiv:1701.05936. <a href = 'https://arxiv.org/abs/1701.05936'>ht
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>set.seed(1)
+    <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
 
-# simulating some data
-N <- 73
-M <- 430
-X <- as.big.matrix(matrix(rnorm(N*M, sd = 5), N), type = "integer")
-y <- rnorm(N)
-covar <- matrix(rnorm(N * 3), N)
+<span class='co'># simulating some data</span>
+<span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fl'>73</span>
+<span class='no'>M</span> <span class='kw'>&lt;-</span> <span class='fl'>430</span>
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='no'>N</span>, <span class='no'>M</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"integer"</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>N</span>)
+<span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='fl'>3</span>), <span class='no'>N</span>)
 
-# error, only handle `double` `big.matrix` objects
-not_run({
-    test <- biglasso::biglasso(X, y, family = "gaussian")    print(summary(test$scale))
-})
+<span class='co'># Error, only handle `double` `big.matrix` objects</span>
+<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bigmemory</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix'>as.big.matrix</a></span>(<span class='no'>X</span>[], <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"integer"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in big.matrix(nrow = nrow(x), ncol = ncol(x), type = type, init = NULL,     dimnames = dimnames(x), separated = separated, backingfile = backingfile,     backingpath = backingpath, descriptorfile = descriptorfile,     binarydescriptor = binarydescriptor, shared = shared): Error: memory could not be allocated for instance of type big.matrix</span></div><span class='co'># NOT RUN {</span>
+<span class='kw pkg'>biglasso</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/biglasso/topics/biglasso'>biglasso</a></span>(<span class='no'>X2</span>, <span class='no'>y</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>)
+<span class='co'># }</span><div class='input'>
+<span class='co'># OK here</span>
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>)
+<span class='fu'>str</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; List of 16
+#&gt;  $ intercept     : Named num [1:100] 0.135 0.136 0.136 0.136 0.136 ...
+#&gt;   ..- attr(*, "names")= chr [1:100] "0.3372" "0.3219" "0.3073" "0.2933" ...
+#&gt;  $ beta          :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
+#&gt;   .. ..@ i       : int [1:4818] 206 206 245 139 206 245 139 206 245 139 ...
+#&gt;   .. ..@ p       : int [1:101] 0 0 1 3 6 9 13 18 23 30 ...
+#&gt;   .. ..@ Dim     : int [1:2] 430 100
+#&gt;   .. ..@ Dimnames:List of 2
+#&gt;   .. .. ..$ : NULL
+#&gt;   .. .. ..$ : chr [1:100] "0.3372" "0.3219" "0.3073" "0.2933" ...
+#&gt;   .. ..@ x       : num [1:4818] 0.00364 0.0067 -0.00159 0.00315 0.00903 ...
+#&gt;   .. ..@ factors : list()
+#&gt;  $ iter          : int [1:100] 0 3 5 6 4 5 7 4 7 4 ...
+#&gt;  $ lambda        : num [1:100] 0.337 0.322 0.307 0.293 0.28 ...
+#&gt;  $ penalty       : chr "lasso"
+#&gt;  $ family        : chr "gaussian"
+#&gt;  $ alpha         : num 1
+#&gt;  $ loss          : num [1:100] 61.1 60.3 59.4 57.8 56.3 ...
+#&gt;  $ penalty.factor: num [1:430] 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ n             : int 73
+#&gt;  $ p             : int 430
+#&gt;  $ center        : num [1:430] 0.63 -0.425 0.616 -0.315 0.397 ...
+#&gt;  $ scale         : num [1:430] 4.18 3.74 5.03 4.67 4.63 ...
+#&gt;  $ y             : num [1:73] -0.359 -0.709 -1.888 -0.9 -0.457 ...
+#&gt;  $ col.idx       : num [1:430] 1 2 3 4 5 6 7 8 9 10 ...
+#&gt;  $ rejections    : int [1:100] 430 427 427 427 425 425 424 422 421 419 ...
+#&gt;  - attr(*, "class")= chr "big_sp"</div><div class='input'>
+<span class='co'># How to use covariables?</span>
+<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bigmemory</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix'>as.big.matrix</a></span>(<span class='fu'>cbind</span>(<span class='no'>X</span>[], <span class='no'>covar</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"double"</span>)
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>biglasso</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/biglasso/topics/biglasso'>biglasso</a></span>(<span class='no'>X2</span>, <span class='no'>y</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"gaussian"</span>, <span class='kw'>lambda.min</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
+                           <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"enet"</span>)
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 
-# OK here
-test2 <- big_spLinReg(X, y)
-str(test2)
-
-# how to use covariables?
-X2 <- as.big.matrix(cbind(X[,], covar), type = "double")
-test <- biglasso::biglasso(X2, y, family = "gaussian", lambda.min = 0.01,
-                           alpha = 0.5, penalty = "enet")
-test2 <- big_spLinReg(X, y, covar.train = covar, alpha = 0.5)
-# verification
-print(all.equal(test2$lambda, test$lambda))
-print(all.equal(test2$beta@x, test$beta[-1, ]@x))
-print(all.equal(test2$intercept, test$beta[1, ]))
-</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:12:62: unexpected symbol</span>
-#&gt; <span class='error'>11: not_run({</span>
-#&gt; <span class='error'>12:     test &lt;- biglasso::biglasso(X, y, family = "gaussian")    print</span>
-#&gt; <span class='error'>                                                                 ^</span></div></pre>
+<span class='co'># Verification</span>
+<span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>lambda</span>, <span class='no'>test</span>$<span class='no'>lambda</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>beta</span>@<span class='kw'>x</span>, <span class='no'>test</span>$<span class='no'>beta</span>[-<span class='fl'>1</span>, ]@<span class='kw'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>intercept</span>, <span class='no'>test</span>$<span class='no'>beta</span>[<span class='fl'>1</span>, ])</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

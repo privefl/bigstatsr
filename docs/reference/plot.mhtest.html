@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method — plot.mhtest • bigstatsr</title>
+<title>Plot method � plot.mhtest • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -141,7 +142,7 @@ estimation of coefficients (e.g. betas in linear regression).</p></li>
 
     <p>A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
 You can modify it as you wish by adding layers. You might want to read
-<a href = 'http://r4ds.had.co.nz/data-visualisation.html'>this chapter</a>
+<a href='http://r4ds.had.co.nz/data-visualisation.html'>this chapter</a>
 to get more familiar with the package <strong>ggplot2</strong>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -153,11 +154,11 @@ to get more familiar with the package <strong>ggplot2</strong>.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
 
-<span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>nrow</span>(<span class='no'>X.desc</span>))
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_univLinReg.html'>big_univLinReg</a></span>(<span class='no'>X.desc</span>, <span class='no'>y</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>))
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_univLinReg.html'>big_univLinReg</a></span>(<span class='no'>X</span>, <span class='no'>y</span>)
 
-<span class='fu'>plot</span>(<span class='no'>test</span>)</div><img src='plot.mhtest-2.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><img src='plot.mhtest-4.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Q-Q"</span>)</div><img src='plot.mhtest-6.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>test</span>)</div><div class='img'><img src='plot.mhtest-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='plot.mhtest-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Q-Q"</span>)</div><div class='img'><img src='plot.mhtest-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

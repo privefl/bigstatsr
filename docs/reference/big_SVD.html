@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Partial SVD — big_SVD • bigstatsr</title>
+<title>Partial SVD � big_SVD • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -99,22 +100,21 @@
     </div>
 
     
-    <p>An algorithm for partial SVD (or PCA) of a <code>big.matrix</code> through the eigen
-decomposition of the covariance between variables (primal)
+    <p>An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix through the
+eigen decomposition of the covariance between variables (primal)
 or observations (dual). <strong>Use this algorithm only if there is one dimension
 that is much smaller than the other. Otherwise use <a href='big_randomSVD.html'>big_randomSVD</a>.</strong></p>
     
 
-    <pre class="usage"><span class='fu'>big_SVD</span>(<span class='no'>X.</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>),
-  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</pre>
+    <pre class="usage"><span class='fu'>big_SVD</span>(<span class='no'>X</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
+  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>fun.scaling</th>
@@ -138,7 +138,8 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
     </tr>
     <tr>
       <th>block.size</th>
-      <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
+      <td><p>Maximum number of columns read at once.
+Default uses <a href='block_size.html'>block_size</a>.</p></td>
     </tr>
     </table>
     
@@ -148,8 +149,8 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
 <li><p><code>d</code>, the singular values,</p></li>
 <li><p><code>u</code>, the left singular vectors,</p></li>
 <li><p><code>v</code>, the right singular vectors,</p></li>
-<li><p><code>means</code>, the centering vector,</p></li>
-<li><p><code>sds</code>, the scaling vector.</p></li>
+<li><p><code>center</code>, the centering vector,</p></li>
+<li><p><code>scale</code>, the scaling vector.</p></li>
 </ul>
 
 <p>Note that to obtain the Principal Components, you must use
@@ -175,38 +176,37 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
 
-<span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X</span>)
 
 <span class='co'># Using only half of the data</span>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
 
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_SVD</span>(<span class='kw'>X.</span> <span class='kw'>=</span> <span class='no'>X.desc</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'><span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 5
-#&gt;  $ d    : num [1:10] 172.5 117.6 89.6 87.5 87.2 ...
-#&gt;  $ u    : num [1:258, 1:10] -0.1015 -0.0914 -0.0951 -0.0798 -0.0901 ...
-#&gt;  $ v    : num [1:4542, 1:10] 0.00304 -0.00274 0.02779 -0.01381 0.00599 ...
-#&gt;  $ means: num [1:4542] 1.32 1.6 1.56 1.69 1.05 ...
-#&gt;  $ sds  : num [1:4542] 0.684 0.572 0.616 0.511 0.692 ...
-#&gt;  - attr(*, "class")= chr "big_SVD"</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><img src='big_SVD-6.png' alt='' width='540' height='400' /><div class='input'>
-<span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'>prcomp</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind</span>, ], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_SVD</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'><span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 5
+#&gt;  $ d     : num [1:10] 172.5 117.6 89.6 87.5 87.2 ...
+#&gt;  $ u     : num [1:258, 1:10] -0.1015 -0.0914 -0.0951 -0.0798 -0.0901 ...
+#&gt;  $ v     : num [1:4542, 1:10] 0.00304 -0.00274 0.02779 -0.01381 0.00599 ...
+#&gt;  $ center: num [1:4542] 1.32 1.6 1.56 1.69 1.05 ...
+#&gt;  $ scale : num [1:4542] 0.684 0.572 0.616 0.511 0.692 ...
+#&gt;  - attr(*, "class")= chr "big_SVD"</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><div class='img'><img src='big_SVD-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'>prcomp</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># same scaling</span>
-<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>means</span>, <span class='no'>pca</span>$<span class='no'>center</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>sds</span>, <span class='no'>pca</span>$<span class='no'>scale</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>center</span>, <span class='no'>pca</span>$<span class='no'>center</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>test</span>$<span class='no'>scale</span>,  <span class='no'>pca</span>$<span class='no'>scale</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># scores and loadings are the same or opposite</span>
 <span class='co'># except for last eigenvalue which is equal to 0</span>
 <span class='co'># due to centering of columns</span>
 <span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='no'>test</span>$<span class='no'>u</span> <span class='kw'>%*%</span> <span class='fu'>diag</span>(<span class='no'>test</span>$<span class='no'>d</span>)
 <span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "big_SVD"</div><div class='input'><span class='no'>scores2</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>) <span class='co'># use this function to predict scores</span>
 <span class='fu'>all.equal</span>(<span class='no'>scores</span>, <span class='no'>scores2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>dim</span>(<span class='no'>scores</span>)</div><div class='output co'>#&gt; [1] 258  10</div><div class='input'><span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 258 258</div><div class='input'><span class='fu'>tail</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>)</div><div class='output co'>#&gt; [1] 3.037803e+00 3.014497e+00 2.977890e+00 2.953051e+00 2.877736e+00
-#&gt; [6] 7.585073e-15</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-22.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><img src='big_SVD-24.png' alt='' width='540' height='400' /><div class='input'>
+#&gt; [6] 1.280393e-14</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># projecting on new data</span>
-<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>sweep</span>(<span class='fu'>sweep</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[-<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>means</span>, <span class='st'>'-'</span>),
-            <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>sds</span>, <span class='st'>'/'</span>)
+<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>sweep</span>(<span class='fu'>sweep</span>(<span class='no'>X</span>[-<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>center</span>, <span class='st'>'-'</span>), <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>scale</span>, <span class='st'>'/'</span>)
 <span class='no'>scores.test</span> <span class='kw'>&lt;-</span> <span class='no'>X2</span> <span class='kw'>%*%</span> <span class='no'>test</span>$<span class='no'>v</span>
-<span class='no'>ind2</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.desc</span>), <span class='no'>ind</span>)
-<span class='no'>scores.test2</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X.desc</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind2</span>) <span class='co'># use this</span>
-<span class='fu'>all.equal</span>(<span class='no'>scores.test</span>, <span class='no'>scores.test2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>scores.test3</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>pca</span>, <span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[-<span class='no'>ind</span>, ])
-<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores.test2</span>)])</div><img src='big_SVD-28.png' alt='' width='540' height='400' /></pre>
+<span class='no'>ind2</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='no'>ind</span>)
+<span class='no'>scores.test2</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind2</span>) <span class='co'># use this</span>
+<span class='fu'>all.equal</span>(<span class='no'>scores.test</span>, <span class='no'>scores.test2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>scores.test3</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>pca</span>, <span class='no'>X</span>[-<span class='no'>ind</span>, ])
+<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores.test2</span>)])</div><div class='img'><img src='big_SVD-4.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

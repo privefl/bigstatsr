@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Attach a "big.matrix.descriptor" — big_attach • bigstatsr</title>
+<title>Attach a Filebacked Big Matrix � big_attach • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -95,14 +96,14 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Attach a "big.matrix.descriptor"</h1>
+    <h1>Attach a Filebacked Big Matrix</h1>
     </div>
 
     
-    <p>Attach a "big.matrix.descriptor"</p>
+    <p>Attach a Filebacked Big Matrix</p>
     
 
-    <pre class="usage"><span class='fu'>big_attach</span>(<span class='no'>descriptorfile</span>)
+    <pre class="usage"><span class='fu'>big_attach</span>(<span class='no'>rdsfile</span>)
 
 <span class='fu'>big_attachExtdata</span>()</pre>
     
@@ -110,26 +111,24 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>descriptorfile</th>
-      <td><p>Path to a ".desc" file.</p></td>
+      <th>rdsfile</th>
+      <td><p>Path to a ".rds" file.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A big.matrix.descriptor object.</p>
+    <p>The <a href='FBM-class.html'>FBM</a> object stored in the rdsfile.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># tmpFBM</span>
-<span class='no'>tmpfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
-<span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='createBM.html'>FBM</a></span>(<span class='kw'>backingroot</span> <span class='kw'>=</span> <span class='fu'>basename</span>(<span class='no'>tmpfile</span>),
-              <span class='kw'>backingpath</span> <span class='kw'>=</span> <span class='fu'>dirname</span>(<span class='no'>tmpfile</span>))(<span class='fl'>10</span>, <span class='fl'>10</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='no'>descriptorfile</span> <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='no'>tmpfile</span>, <span class='st'>".desc"</span>)
-<span class='no'>X.desc2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_attach</span>(<span class='no'>descriptorfile</span>)
+<span class='no'>rdsfile</span> <span class='kw'>&lt;-</span> <span class='fu'>sub</span>(<span class='st'>"\\.bk$"</span>, <span class='st'>".rds"</span>, <span class='no'>X</span>$<span class='no'>backingfile</span>)
+<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_attach</span>(<span class='no'>rdsfile</span>)
 
-<span class='fu'>all.equal</span>(<span class='no'>X.desc</span>, <span class='no'>X.desc2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>all.equal</span>(<span class='no'>X</span>[], <span class='no'>X2</span>[])</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
