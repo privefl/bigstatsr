@@ -9,9 +9,6 @@ os:
   - linux
   - osx
 
-compiler:
-  - gcc
-
 sudo: false
 cache: packages
 warnings_are_errors: false
@@ -28,6 +25,7 @@ notifications:
     on_failure: change
 
 before_install:
+  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install llvm; fi
   - Rscript -e 'Sys.getenv("NOT_CRAN")'
 
 after_success:
