@@ -25,7 +25,7 @@ notifications:
     on_failure: change
 
 before_install:
-  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install llvm; fi
+#  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install llvm; fi
   - Rscript -e 'Sys.getenv("NOT_CRAN")'
 
 after_success:
