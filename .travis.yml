@@ -9,7 +9,7 @@ os:
   - linux
   - osx
 
-sudo: false
+sudo: required
 cache: packages
 warnings_are_errors: false
 r_check_args: "--no-manual --timings"
@@ -17,7 +17,7 @@ r_check_args: "--no-manual --timings"
 env:
  global:
    - NOT_CRAN: true
-   - _R_CHECK_FORCE_SUGGESTS_: true
+   - _R_CHECK_FORCE_SUGGESTS_: false
 
 notifications:
   email:

@@ -27,7 +27,7 @@ on_failure:
 
 environment:
   global:
-    _R_CHECK_FORCE_SUGGESTS_: 1
+    _R_CHECK_FORCE_SUGGESTS_: 0
     R_ARCH: x64
     USE_RTOOLS: true
     NOT_CRAN: true
