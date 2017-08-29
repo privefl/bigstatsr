@@ -1,7 +1,7 @@
 Encoding: UTF-8
 Package: bigstatsr
 Type: Package
-Title: Statistical Tools for Bigmemory Matrices
+Title: Statistical Tools for Filebacked Big Matrices
 Version: 0.2.0
 Date: 2017-08-29
 Authors@R: c(
@@ -14,8 +14,8 @@ Authors@R: c(
     person("Hugues", "Aschard", 
            email = "hugues.aschard@pasteur.fr",
            role = "ths"))
-Description: Easy-to-use, efficient, flexible and scalable
-    statistical tools. Use bigmemory matrices.
+Description: Easy-to-use, efficient, flexible and scalable statistical tools.   
+    Use Filebacked Big Matrices matrices.
 License: GPL-3 + file LICENSE
 LazyData: TRUE
 Depends: 

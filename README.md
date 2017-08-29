@@ -31,7 +31,7 @@ devtools::install_github("privefl/bigstatsr", ref = "v-bigmemory")
 
 ## Input format
 
-As inputs, the package **bigstatsr** use [Filebacked Big Matrices (FBM)](https://privefl.github.io/bigstatsr/reference/FBM-class.html). 
+As inputs, the package **bigstatsr** uses [Filebacked Big Matrices (FBM)](https://privefl.github.io/bigstatsr/reference/FBM-class.html). 
 
 ## Bug report
 

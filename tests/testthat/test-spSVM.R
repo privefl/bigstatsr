@@ -17,6 +17,7 @@ lcovar <- list(NULL, covar0)
 ################################################################################
 
 test_that("equality with sparseSVM with all data", {
+  skip_on_cran()
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
@@ -44,6 +45,7 @@ test_that("equality with sparseSVM with all data", {
 ################################################################################
 
 test_that("equality with sparseSVM with only half the data", {
+  skip_on_cran()
   ind <- sample(N, N / 2)
   while (mean(y[ind]) < 0.2 || mean(y[ind]) > 0.8) {
     ind <- sample(N, N / 2)
