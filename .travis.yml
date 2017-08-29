@@ -9,7 +9,10 @@ os:
   - linux
   - osx
 
-sudo: required
+compiler:
+  - gcc
+
+sudo: false
 cache: packages
 warnings_are_errors: false
 r_check_args: "--no-manual --timings"
