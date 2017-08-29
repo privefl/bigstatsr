@@ -4,9 +4,12 @@
 /******************************************************************************/
 
 #include <RcppArmadillo.h>
-#include "../inst/include/bigstatsr/SubIntMatCovAcc.h"
+#include <bigstatsr/SubIntMatCovAcc.h>
+#include <bigstatsr/types.h>
 #include <math.h>
-#include <time.h>
+
+using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -26,10 +29,11 @@ void standardize(C macc,
                  NumericVector &shift,
                  NumericVector &scale,
                  LogicalVector &nonconst) {
-  int n = macc.nrow();
-  int p = macc.ncol();
 
-  int i, j;
+  size_t n = macc.nrow();
+  size_t p = macc.ncol();
+
+  size_t i, j;
   double tmp, xSum, xxSum, csum_pos, csum_neg, mj, sj;
 
   // j == 0 -> intercept
@@ -79,8 +83,8 @@ arma::sp_mat& postprocess(arma::sp_mat &w,
                           const NumericVector &shift,
                           const NumericVector &scale,
                           const LogicalVector &nonconst,
-                          int nlam, int p) {
-  int l, j;
+                          size_t nlam, size_t p) {
+  size_t l, j;
   double prod;
   for (l = 0; l<nlam; l++) {
     prod = 0.0;
@@ -101,25 +105,26 @@ arma::sp_mat& postprocess(arma::sp_mat &w,
 // Semismooth Newton Coordinate Descent (SNCD) for lasso/elastic-net regularized SVM
 template <class C>
 List COPY_sparse_svm(C macc,
-                     NumericVector &lambda,
-                     const NumericVector &y, const NumericVector &pf,
+                     NumericVector& lambda,
+                     const NumericVector& y,
+                     const NumericVector& pf,
                      double gamma, double alpha,
                      double thresh, double lambda_min,
-                     int scrflag, int dfmax, int max_iter,
+                     int scrflag, size_t dfmax, int max_iter,
                      bool user, bool message) {
-  int n = macc.nrow();
-  int p = macc.ncol();
+  size_t n = macc.nrow();
+  size_t p = macc.ncol();
 
   // printf("n = %d ; p = %d\n", n, p); //DEBUG
 
   // returns
-  int nlam = lambda.size();
+  size_t nlam = lambda.size();
   arma::sp_mat w = arma::sp_mat(p, nlam);
   IntegerVector iter(nlam);
   bool saturated = false;
 
   // Declarations
-  int i, j, k, l, lstart, mismatch, nnzero = 0, violations = 0, nv = 0;
+  size_t i, j, k, l, lstart, mismatch, nnzero = 0, violations = 0, nv = 0;
   double gi = 1.0/gamma, pct, lstep, ldiff = 0, lmax, l1, l2, v1, v2, v3,
     tmp, mj, sj, change, max_update, update, scrfactor = 1.0;
   NumericVector sx_pos(p); // column sum of x where y = 1
@@ -249,13 +254,13 @@ List COPY_sparse_svm(C macc,
     while(iter[l] < max_iter) {
       // Check dfmax
       if (nnzero > dfmax) {
-        for (int ll = l; ll<nlam; ll++) iter[ll] = NA_INTEGER;
+        for (size_t ll = l; ll<nlam; ll++) iter[ll] = NA_INTEGER;
         saturated = true;
         break;
       }
 
       // Solve KKT equations on eligible predictors
-      while(iter[l]<max_iter) {
+      while(iter[l] < max_iter) {
         iter[l]++;
         mismatch = 0; max_update = 0.0;
         for (j=0; j<p; j++) {
@@ -297,7 +302,6 @@ List COPY_sparse_svm(C macc,
                 if (fabs(s[j]) > 1 || (w(j, l) != 0 && s[j] != sign(w(j, l)))) mismatch = 1;
               }
               // Update r, d1, d2 and compute candidate of max_update
-              //Rprintf("l=%d, v1=%lf, v2=%lf, pct=%lf, change = %lf, mismatch = %d\n",l+1,v1,v2,pct,change,mismatch);
               change = w(j, l)-w_old[j];
               if (change>1e-6) {
                 for (i=0; i<n; i++) {
@@ -329,7 +333,7 @@ List COPY_sparse_svm(C macc,
             mj = shift[j];
             sj = scale[j];
             // crossprod
-            v1 = 0; for (int i=0;i<n;i++) v1 += (macc(i, j) - mj) / sj * y[i] * d1[i];
+            v1 = 0; for (size_t i=0;i<n;i++) v1 += (macc(i, j) - mj) / sj * y[i] * d1[i];
             v1 = (v1 + syx[j]) / (2.0*n);
             // Check for KKT conditions
             if (fabs(v1)>l1*pf[j]) {
@@ -368,52 +372,38 @@ List COPY_sparse_svm(C macc,
   return List::create(w, iter, lambda, saturated);
 }
 
+/******************************************************************************/
+
+#define SPARSE_SVM(T) {                                                        \
+  return COPY_sparse_svm(                                                      \
+    SubIntMatCovAcc<T>(xpBM, row_idx, covar),                                  \
+    lambda, y, pf, gamma, alpha, thresh, lambda_min,                           \
+    scrflag, dfmax, max_iter, user, message);                                  \
+}
+
 // Dispatch function for COPY_sparse_svm
 // [[Rcpp::export]]
-List COPY_sparse_svm(const S4& BM, const NumericVector& y,
+List COPY_sparse_svm(Environment BM,
+                     const NumericVector& y,
                      const IntegerVector& row_idx,
-                     const NumericMatrix& covar, NumericVector& lambda,
-                     const NumericVector& pf, double gamma, double alpha,
+                     const NumericMatrix& covar,
+                     NumericVector& lambda,
+                     const NumericVector& pf,
+                     double gamma, double alpha,
                      double thresh, double lambda_min,
-                     int scrflag, int dfmax, int max_iter, bool user, bool message) {
+                     int scrflag, int dfmax, int max_iter,
+                     bool user, bool message) {
 
-  XPtr<BigMatrix> xpMat = BM.slot("address");
+  XPtr<FBM> xpBM = BM["address"];
 
-  if (Rf_inherits(BM, "BM.code")) {
+  if (BM.exists("code256")) {
     return COPY_sparse_svm(
-      RawSubIntMatCovAcc(*xpMat, row_idx, covar, BM.slot("code")),
+      RawSubIntMatCovAcc(xpBM, row_idx, covar, BM["code256"]),
       lambda, y, pf, gamma, alpha, thresh, lambda_min,
       scrflag, dfmax, max_iter, user, message);
   } else {
-    switch(xpMat->matrix_type()) {
-    case 1:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<char>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    case 2:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<short>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    case 4:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<int>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    case 6:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<float>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    case 8:
-      return COPY_sparse_svm(
-        SubIntMatCovAcc<double>(*xpMat, row_idx, covar),
-        lambda, y, pf, gamma, alpha, thresh, lambda_min,
-        scrflag, dfmax, max_iter, user, message);
-    default:
-      throw Rcpp::exception(ERROR_TYPE);
-    }
+    int type = xpBM->matrix_type();
+    DISPATCH_TYPE(SPARSE_SVM)
   }
 }
 

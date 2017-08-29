@@ -39,12 +39,15 @@ MY_THEME <- function(p, coeff = 1) {
 #' You can modify it as you wish by adding layers. You might want to read
 #' [this chapter](http://r4ds.had.co.nz/data-visualisation.html)
 #' to get more familiar with the package **ggplot2**.
+#'
 #' @export
 #' @import ggplot2 grid
 #' @importFrom graphics plot
 #'
 #' @example examples/example-plot-bigSVD.R
+#'
 #' @seealso [big_SVD], [big_randomSVD] and [asPlotlyText].
+#'
 plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
                          nval = length(x$d),
                          scores = c(1, 2),
@@ -124,6 +127,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #' @param ... Not used.
 #'
 #' @inherit plot.big_SVD return
+#'
 #' @export
 #' @import ggplot2
 #' @importFrom graphics plot
@@ -131,9 +135,9 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #' @examples
 #' set.seed(1)
 #'
-#' X.desc <- big_attachExtdata()
-#' y <- rnorm(nrow(X.desc))
-#' test <- big_univLinReg(X.desc, y)
+#' X <- big_attachExtdata()
+#' y <- rnorm(nrow(X))
+#' test <- big_univLinReg(X, y)
 #'
 #' plot(test)
 #' plot(test, type = "Volcano")
@@ -179,13 +183,12 @@ plot.mhtest <- function(x, type = c("Manhattan", "Q-Q", "Volcano"),
 #'
 #' @return A character vector of the length of `df`'s number of rows.
 #' @export
-#' @import foreach
 #'
 #' @examples
 #' set.seed(1)
 #'
-#' test <- big_attachExtdata()
-#' svd <- big_SVD(test, big_scale(), k = 10)
+#' X <- big_attachExtdata()
+#' svd <- big_SVD(X, big_scale(), k = 10)
 #'
 #' p <- plot(svd, type = "scores")
 #'

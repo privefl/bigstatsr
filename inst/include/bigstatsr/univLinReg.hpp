@@ -6,6 +6,7 @@
 #include <RcppArmadillo.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -21,17 +22,17 @@ ListOf<NumericVector> univLinReg5(C macc,
                                   const arma::mat& U,
                                   const arma::vec& y) {
 
-  int n = macc.nrow();
-  int m = macc.ncol();
-  int K = U.n_cols;
-  myassert((int)U.n_rows == n, ERROR_DIM);
-  myassert((int)y.n_elem == n, ERROR_DIM);
+  size_t n = macc.nrow();
+  size_t m = macc.ncol();
+  size_t K = U.n_cols;
+  myassert(U.n_rows == n, ERROR_DIM);
+  myassert(y.n_elem == n, ERROR_DIM);
 
   arma::vec x(n), x2(n);
   arma::vec y2 = y - UUty(U, y);
   double y2_sumSq = dot(y2, y2);
   double beta, x_tmp, x_diff, x2_sumSq, beta_num, beta_deno, RSS;
-  int i, j;
+  size_t i, j;
 
   NumericVector betas(m), var(m);
 

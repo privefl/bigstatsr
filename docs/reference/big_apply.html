@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Split-Apply-Combine — big_apply • bigstatsr</title>
+<title>Split-Apply-Combine � big_apply • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -99,51 +100,52 @@
     </div>
 
     
-    <p>A Split-Apply-Combine strategy to apply common R functions to a <code>big.matrix</code>.</p>
+    <p>A Split-Apply-Combine strategy to apply common R functions to a
+Filebacked Big Matrix.</p>
     
 
-    <pre class="usage"><span class='fu'>big_apply</span>(<span class='no'>X.</span>, <span class='no'>a.FUN</span>, <span class='no'>a.combine</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_apply</span>(<span class='no'>X</span>, <span class='no'>a.FUN</span>, <span class='no'>a.combine</span>, <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='no'>ncores</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>a.FUN</th>
       <td><p>The function to be applied to each subset matrix.
-It must take a <code>big.matrix</code> as first argument and <code>ind</code>, a vector of
-indices, which are used to split the data. Example: if you want to apply
-a function to <code>X[ind.row, ind.col]</code>, you may use
-<code>X[ind.row, ind.col[ind]]</code> in <code>a.FUN</code>.</p></td>
+It must take a <a href='FBM-class.html'>Filebacked Big Matrix</a> as first argument and
+<code>ind</code>, a vector of indices, which are used to split the data.
+For example, if you want to apply a function to <code>X[ind.row, ind.col]</code>,
+you may use <code>X[ind.row, ind.col[ind]]</code> in <code>a.FUN</code>.</p></td>
     </tr>
     <tr>
       <th>a.combine</th>
       <td><p>function that is used by foreach to process the tasks
 results as they generated. This can be specified as either a function or a
 non-empty character string naming the function. Specifying 'c' is useful
-for concatenating the results into a vector, for example. The values 'cbind'
-and 'rbind' can combine vectors into a matrix. The values '+' and '*' can be
-used to process numeric data. By default, the results are returned in a list.</p></td>
-    </tr>
-    <tr>
-      <th>ncores</th>
-      <td><p>Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.</p></td>
-    </tr>
-    <tr>
-      <th>block.size</th>
-      <td><p>Maximum number of columns (or rows, depending on how you
-use <code>ind</code> for subsetting) read at once. Default is <code>1000</code>.</p></td>
+for concatenating the results into a vector, for example.
+The values 'cbind' and 'rbind' can combine vectors into a matrix.
+The values '+' and '*' can be used to process numeric data.
+By default, the results are returned in a list.</p></td>
     </tr>
     <tr>
       <th>ind</th>
       <td><p>Initial vector of subsetting indices.
 Default is the vector of all column indices.</p></td>
+    </tr>
+    <tr>
+      <th>ncores</th>
+      <td><p>Number of cores used. Default doesn't use parallelism.
+You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
+    </tr>
+    <tr>
+      <th>block.size</th>
+      <td><p>Maximum number of columns (or rows, depending on how you
+use <code>ind</code> for subsetting) read at once. Default uses <a href='block_size.html'>block_size</a>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -169,36 +171,32 @@ the results (on each cluster and then from each cluster).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
 
 <span class='co'># get the means of each column</span>
 <span class='no'>colMeans_sub</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) <span class='fu'>colMeans</span>(<span class='no'>X</span>[, <span class='no'>ind</span>])
-<span class='no'>colmeans</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X.desc</span>, <span class='kw'>a.FUN</span> <span class='kw'>=</span> <span class='no'>colMeans_sub</span>, <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'c'</span>)
-
+<span class='fu'>str</span>(<span class='no'>colmeans</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X</span>, <span class='kw'>a.FUN</span> <span class='kw'>=</span> <span class='no'>colMeans_sub</span>, <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'c'</span>))</div><div class='output co'>#&gt;  num [1:4542] 1.32 1.59 1.53 1.63 1.09 ...</div><div class='input'>
 <span class='co'># get the norms of each column</span>
 <span class='no'>colNorms_sub</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) <span class='fu'>sqrt</span>(<span class='fu'>colSums</span>(<span class='no'>X</span>[, <span class='no'>ind</span>]^<span class='fl'>2</span>))
-<span class='no'>colnorms</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X.desc</span>, <span class='no'>colNorms_sub</span>, <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'c'</span>)
-
+<span class='fu'>str</span>(<span class='no'>colnorms</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X</span>, <span class='no'>colNorms_sub</span>, <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'c'</span>))</div><div class='output co'>#&gt;  num [1:4542] 33.6 38.4 37.5 39.2 29.6 ...</div><div class='input'>
 <span class='co'># get the sums of each row</span>
 <span class='co'># split along rows: need to change the "complete" `ind` parameter</span>
-<span class='no'>rowsums</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X.desc</span>, <span class='kw'>a.FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) <span class='fu'>rowSums</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ]),
-                     <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.desc</span>), <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'c'</span>,
-                     <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>100</span>)
-<span class='co'># it is usually preferred to split along columns</span>
-<span class='co'># because `big.matrix` are stored by column.</span>
-<span class='no'>rowsums2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X.desc</span>, <span class='kw'>a.FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) <span class='fu'>rowSums</span>(<span class='no'>X</span>[, <span class='no'>ind</span>]),
-                      <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'+'</span>)
-
+<span class='fu'>str</span>(<span class='no'>rowsums</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X</span>, <span class='kw'>a.FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) <span class='fu'>rowSums</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ]),
+                         <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'c'</span>,
+                         <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt;  num [1:517] 6243 6168 6242 6249 6212 ...</div><div class='input'><span class='co'># it is usually preferred to split along columns</span>
+<span class='co'># because matrices are stored by column.</span>
+<span class='fu'>str</span>(<span class='no'>rowsums2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X</span>, <span class='kw'>a.FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) <span class='fu'>rowSums</span>(<span class='no'>X</span>[, <span class='no'>ind</span>]),
+                          <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'+'</span>))</div><div class='output co'>#&gt;  num [1:517] 6243 6168 6242 6249 6212 ...</div><div class='input'>
 <span class='co'>## Every extra parameter to `a.FUN` should be passed to `big_apply`</span>
 <span class='co'># get the crossproduct between X and a matrix A</span>
 <span class='co'># note that we don't explicitly pass `ind.col` to `a.FUN`</span>
 <span class='fu'>body</span>(<span class='no'>big_cprodMat</span>)</div><div class='output co'>#&gt; {
 #&gt;     check_args()
 #&gt;     assert_lengths(ind.row, rows_along(A.row))
-#&gt;     big_apply(X., a.FUN = function(x, ind, M, ind.row) {
-#&gt;         crossprod(x[ind.row, ind], M)
-#&gt;     }, a.combine = "rbind", block.size = block.size, ind = ind.col, 
-#&gt;         ncores = ncores, M = A.row, ind.row = ind.row)
+#&gt;     big_apply(X, a.FUN = function(X, ind, M, ind.row) {
+#&gt;         crossprod(X[ind.row, ind], M)
+#&gt;     }, a.combine = "rbind", ind = ind.col, ncores = ncores, block.size = block.size, 
+#&gt;         M = A.row, ind.row = ind.row)
 #&gt; }</div><div class='input'>
 <span class='co'># get the product between X and a matrix B</span>
 <span class='co'># here, we must explicitly pass `ind.col` to `a.FUN`</span>
@@ -206,10 +204,11 @@ the results (on each cluster and then from each cluster).</p>
 <span class='fu'>body</span>(<span class='no'>big_prodMat</span>)</div><div class='output co'>#&gt; {
 #&gt;     check_args()
 #&gt;     assert_lengths(ind.col, rows_along(A.col))
-#&gt;     big_apply(X., a.FUN = function(x, ind, M, ind.row, ind.col) {
-#&gt;         x[ind.row, ind.col[ind]] %*% M[ind, ]
-#&gt;     }, a.combine = "+", block.size = block.size, ind = seq_along(ind.col), 
-#&gt;         ncores = ncores, M = A.col, ind.row = ind.row, ind.col = ind.col)
+#&gt;     big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
+#&gt;         X[ind.row, ind.col[ind]] %*% M[ind, ]
+#&gt;     }, a.combine = "+", ind = seq_along(ind.col), ncores = ncores, 
+#&gt;         block.size = block.size, M = A.col, ind.row = ind.row, 
+#&gt;         ind.col = ind.col)
 #&gt; }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

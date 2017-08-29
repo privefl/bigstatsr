@@ -4,14 +4,13 @@
 \alias{predict.big_SVD}
 \title{Scores of PCA}
 \usage{
-\method{predict}{big_SVD}(object, X. = NULL, ind.row = rows_along(X.),
-  ind.col = cols_along(X.), block.size = 1000, ...)
+\method{predict}{big_SVD}(object, X = NULL, ind.row = rows_along(X),
+  ind.col = cols_along(X), block.size = block_size(nrow(X)), ...)
 }
 \arguments{
 \item{object}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
 
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
@@ -19,7 +18,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 
 \item{...}{Not used.}
 }
@@ -35,21 +35,21 @@ Get the scores of PCA associated with an svd decomposition (class \code{big_SVD}
 \examples{
 set.seed(1)
 
-X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
+X <- big_attachExtdata()
+n <- nrow(X)
 
 # Using only half of the data
 ind <- sort(sample(n, n/2))
 
-test <- big_SVD(X. = X.desc, fun.scaling = big_scale(), ind.row = ind)
+test <- big_SVD(X, fun.scaling = big_scale(), ind.row = ind)
 str(test)
 plot(test$u)
 
-pca <- prcomp(attach.BM(X.desc)[ind, ], center = TRUE, scale. = TRUE)
+pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
-all.equal(test$means, pca$center)
-all.equal(test$sds, pca$scale)
+all.equal(test$center, pca$center)
+all.equal(test$scale,  pca$scale)
 
 # scores and loadings are the same or opposite
 # except for last eigenvalue which is equal to 0
@@ -65,13 +65,12 @@ plot(scores2, pca$x[, 1:ncol(scores2)])
 plot(test$v[1:100, ], pca$rotation[1:100, 1:ncol(scores2)])
 
 # projecting on new data
-X2 <- sweep(sweep(attach.BM(X.desc)[-ind, ], 2, test$means, '-'),
-            2, test$sds, '/')
+X2 <- sweep(sweep(X[-ind, ], 2, test$center, '-'), 2, test$scale, '/')
 scores.test <- X2 \%*\% test$v
-ind2 <- setdiff(rows_along(X.desc), ind)
-scores.test2 <- predict(test, X.desc, ind.row = ind2) # use this
+ind2 <- setdiff(rows_along(X), ind)
+scores.test2 <- predict(test, X, ind.row = ind2) # use this
 all.equal(scores.test, scores.test2)
-scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
+scores.test3 <- predict(pca, X[-ind, ])
 plot(scores.test2, scores.test3[, 1:ncol(scores.test2)])
 }
 \seealso{

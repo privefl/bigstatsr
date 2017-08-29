@@ -19,18 +19,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // COPY_cdfit_gaussian_hsr
-List COPY_cdfit_gaussian_hsr(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool verbose);
+List COPY_cdfit_gaussian_hsr(Environment BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, bool lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool verbose);
 RcppExport SEXP _bigstatsr_COPY_cdfit_gaussian_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< int >::type L(LSEXP);
-    Rcpp::traits::input_parameter< int >::type lam_scale(lam_scaleSEXP);
+    Rcpp::traits::input_parameter< bool >::type lam_scale(lam_scaleSEXP);
     Rcpp::traits::input_parameter< double >::type lambda_min(lambda_minSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< bool >::type user(userSEXP);
@@ -44,18 +44,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // COPY_cdfit_binomial_hsr
-List COPY_cdfit_binomial_hsr(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, int lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool warn, bool verbose);
+List COPY_cdfit_binomial_hsr(Environment BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, int L, bool lam_scale, double lambda_min, double alpha, bool user, double eps, int max_iter, const NumericVector& m, int dfmax, bool warn, bool verbose);
 RcppExport SEXP _bigstatsr_COPY_cdfit_binomial_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP lam_scaleSEXP, SEXP lambda_minSEXP, SEXP alphaSEXP, SEXP userSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP mSEXP, SEXP dfmaxSEXP, SEXP warnSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< int >::type L(LSEXP);
-    Rcpp::traits::input_parameter< int >::type lam_scale(lam_scaleSEXP);
+    Rcpp::traits::input_parameter< bool >::type lam_scale(lam_scaleSEXP);
     Rcpp::traits::input_parameter< double >::type lambda_min(lambda_minSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< bool >::type user(userSEXP);
@@ -70,12 +70,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // bigcolvars
-ListOf<NumericVector> bigcolvars(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd);
+ListOf<NumericVector> bigcolvars(Environment BM, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP _bigstatsr_bigcolvars(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
     rcpp_result_gen = Rcpp::wrap(bigcolvars(BM, rowInd, colInd));
@@ -83,12 +83,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // mycount1
-IntegerMatrix mycount1(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
+IntegerMatrix mycount1(Environment BM, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
 RcppExport SEXP _bigstatsr_mycount1(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type codeInd(codeIndSEXP);
@@ -97,17 +97,30 @@ BEGIN_RCPP
 END_RCPP
 }
 // mycount2
-IntegerMatrix mycount2(const S4& BM, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
+IntegerMatrix mycount2(Environment BM, const IntegerVector& rowInd, const IntegerVector& colInd, const IntegerVector& codeInd);
 RcppExport SEXP _bigstatsr_mycount2(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP codeIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type codeInd(codeIndSEXP);
     rcpp_result_gen = Rcpp::wrap(mycount2(BM, rowInd, colInd, codeInd));
     return rcpp_result_gen;
+END_RCPP
+}
+// createFile
+void createFile(std::string fileName, int nrow, int ncol, int type);
+RcppExport SEXP _bigstatsr_createFile(SEXP fileNameSEXP, SEXP nrowSEXP, SEXP ncolSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type fileName(fileNameSEXP);
+    Rcpp::traits::input_parameter< int >::type nrow(nrowSEXP);
+    Rcpp::traits::input_parameter< int >::type ncol(ncolSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    createFile(fileName, nrow, ncol, type);
+    return R_NilValue;
 END_RCPP
 }
 // decodeMat
@@ -144,13 +157,82 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// GET_ERROR_DIM
+const char* const GET_ERROR_DIM();
+RcppExport SEXP _bigstatsr_GET_ERROR_DIM() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(GET_ERROR_DIM());
+    return rcpp_result_gen;
+END_RCPP
+}
+// GET_ERROR_BOUNDS
+const char* const GET_ERROR_BOUNDS();
+RcppExport SEXP _bigstatsr_GET_ERROR_BOUNDS() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(GET_ERROR_BOUNDS());
+    return rcpp_result_gen;
+END_RCPP
+}
+// GET_ERROR_USHORT
+const char* const GET_ERROR_USHORT();
+RcppExport SEXP _bigstatsr_GET_ERROR_USHORT() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(GET_ERROR_USHORT());
+    return rcpp_result_gen;
+END_RCPP
+}
+// extractVec
+RObject extractVec(RObject xpbm, const NumericVector& elemInd);
+RcppExport SEXP _bigstatsr_extractVec(SEXP xpbmSEXP, SEXP elemIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type elemInd(elemIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(extractVec(xpbm, elemInd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// extractMat
+RObject extractMat(RObject xpbm, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP _bigstatsr_extractMat(SEXP xpbmSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    rcpp_result_gen = Rcpp::wrap(extractMat(xpbm, rowInd, colInd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getXPtrFBM
+SEXP getXPtrFBM(std::string path, int n, int m, int type);
+RcppExport SEXP _bigstatsr_getXPtrFBM(SEXP pathSEXP, SEXP nSEXP, SEXP mSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(getXPtrFBM(path, n, m, type));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pMatVec4
-NumericVector pMatVec4(const S4& BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
+NumericVector pMatVec4(Environment BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP _bigstatsr_pMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
@@ -159,12 +241,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpMatVec4
-NumericVector cpMatVec4(const S4& BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
+NumericVector cpMatVec4(Environment BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP _bigstatsr_cpMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
@@ -172,13 +254,63 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// replaceVecOne
+void replaceVecOne(RObject xpbm, const NumericVector& elemInd, RObject val);
+RcppExport SEXP _bigstatsr_replaceVecOne(SEXP xpbmSEXP, SEXP elemIndSEXP, SEXP valSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type elemInd(elemIndSEXP);
+    Rcpp::traits::input_parameter< RObject >::type val(valSEXP);
+    replaceVecOne(xpbm, elemInd, val);
+    return R_NilValue;
+END_RCPP
+}
+// replaceVec
+void replaceVec(RObject xpbm, const NumericVector& elemInd, RObject vec);
+RcppExport SEXP _bigstatsr_replaceVec(SEXP xpbmSEXP, SEXP elemIndSEXP, SEXP vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type elemInd(elemIndSEXP);
+    Rcpp::traits::input_parameter< RObject >::type vec(vecSEXP);
+    replaceVec(xpbm, elemInd, vec);
+    return R_NilValue;
+END_RCPP
+}
+// replaceMatOne
+void replaceMatOne(RObject xpbm, const IntegerVector& rowInd, const IntegerVector& colInd, RObject val);
+RcppExport SEXP _bigstatsr_replaceMatOne(SEXP xpbmSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP valSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    Rcpp::traits::input_parameter< RObject >::type val(valSEXP);
+    replaceMatOne(xpbm, rowInd, colInd, val);
+    return R_NilValue;
+END_RCPP
+}
+// replaceMat
+void replaceMat(RObject xpbm, const IntegerVector& rowInd, const IntegerVector& colInd, RObject mat);
+RcppExport SEXP _bigstatsr_replaceMat(SEXP xpbmSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP matSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    Rcpp::traits::input_parameter< RObject >::type mat(matSEXP);
+    replaceMat(xpbm, rowInd, colInd, mat);
+    return R_NilValue;
+END_RCPP
+}
 // COPY_sparse_svm
-List COPY_sparse_svm(const S4& BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, const NumericVector& pf, double gamma, double alpha, double thresh, double lambda_min, int scrflag, int dfmax, int max_iter, bool user, bool message);
+List COPY_sparse_svm(Environment BM, const NumericVector& y, const IntegerVector& row_idx, const NumericMatrix& covar, NumericVector& lambda, const NumericVector& pf, double gamma, double alpha, double thresh, double lambda_min, int scrflag, int dfmax, int max_iter, bool user, bool message);
 RcppExport SEXP _bigstatsr_COPY_sparse_svm(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP pfSEXP, SEXP gammaSEXP, SEXP alphaSEXP, SEXP threshSEXP, SEXP lambda_minSEXP, SEXP scrflagSEXP, SEXP dfmaxSEXP, SEXP max_iterSEXP, SEXP userSEXP, SEXP messageSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
@@ -198,23 +330,23 @@ BEGIN_RCPP
 END_RCPP
 }
 // transpose3
-void transpose3(const S4& BM, const S4& BM2);
+void transpose3(Environment BM, Environment BM2);
 RcppExport SEXP _bigstatsr_transpose3(SEXP BMSEXP, SEXP BM2SEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
-    Rcpp::traits::input_parameter< const S4& >::type BM2(BM2SEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM2(BM2SEXP);
     transpose3(BM, BM2);
     return R_NilValue;
 END_RCPP
 }
 // univLinReg5
-List univLinReg5(const S4& BM, const arma::mat& covar_U, const arma::vec& y, const IntegerVector& rowInd, const IntegerVector& colInd);
+List univLinReg5(Environment BM, const arma::mat& covar_U, const arma::vec& y, const IntegerVector& rowInd, const IntegerVector& colInd);
 RcppExport SEXP _bigstatsr_univLinReg5(SEXP BMSEXP, SEXP covar_USEXP, SEXP ySEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type covar_U(covar_USEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
@@ -224,12 +356,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // IRLS
-List IRLS(const S4& BM, arma::mat& covar, const arma::vec& y, const arma::vec& z0, const arma::vec& w0, const IntegerVector& rowInd, const IntegerVector& colInd, double tol, int maxiter);
+List IRLS(Environment BM, arma::mat& covar, const arma::vec& y, const arma::vec& z0, const arma::vec& w0, const IntegerVector& rowInd, const IntegerVector& colInd, double tol, int maxiter);
 RcppExport SEXP _bigstatsr_IRLS(SEXP BMSEXP, SEXP covarSEXP, SEXP ySEXP, SEXP z0SEXP, SEXP w0SEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP tolSEXP, SEXP maxiterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const S4& >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< arma::mat& >::type covar(covarSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type z0(z0SEXP);
@@ -256,39 +388,38 @@ BEGIN_RCPP
 END_RCPP
 }
 // complete2
-NumericMatrix& complete2(NumericMatrix& mat);
-RcppExport SEXP _bigstatsr_complete2(SEXP matSEXP) {
+void complete2(Environment BM);
+RcppExport SEXP _bigstatsr_complete2(SEXP BMSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
-    rcpp_result_gen = Rcpp::wrap(complete2(mat));
-    return rcpp_result_gen;
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
+    complete2(BM);
+    return R_NilValue;
 END_RCPP
 }
 // incrSup2
-NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source);
-RcppExport SEXP _bigstatsr_incrSup2(SEXP matSEXP, SEXP sourceSEXP) {
+void incrSup2(Environment BM, const NumericMatrix& source);
+RcppExport SEXP _bigstatsr_incrSup2(SEXP BMSEXP, SEXP sourceSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
-    rcpp_result_gen = Rcpp::wrap(incrSup2(mat, source));
-    return rcpp_result_gen;
+    incrSup2(BM, source);
+    return R_NilValue;
 END_RCPP
 }
-// correlize
-NumericMatrix& correlize(NumericMatrix& mat, const NumericVector& shift, const NumericVector& scale);
-RcppExport SEXP _bigstatsr_correlize(SEXP matSEXP, SEXP shiftSEXP, SEXP scaleSEXP) {
+// scaleK
+void scaleK(Environment BM, const NumericVector& sums, const NumericVector& mu, const NumericVector& delta, int nrow);
+RcppExport SEXP _bigstatsr_scaleK(SEXP BMSEXP, SEXP sumsSEXP, SEXP muSEXP, SEXP deltaSEXP, SEXP nrowSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix& >::type mat(matSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type shift(shiftSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
-    rcpp_result_gen = Rcpp::wrap(correlize(mat, shift, scale));
-    return rcpp_result_gen;
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type sums(sumsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< int >::type nrow(nrowSEXP);
+    scaleK(BM, sums, mu, delta, nrow);
+    return R_NilValue;
 END_RCPP
 }
 
@@ -299,11 +430,22 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},
     {"_bigstatsr_mycount1", (DL_FUNC) &_bigstatsr_mycount1, 4},
     {"_bigstatsr_mycount2", (DL_FUNC) &_bigstatsr_mycount2, 4},
+    {"_bigstatsr_createFile", (DL_FUNC) &_bigstatsr_createFile, 4},
     {"_bigstatsr_decodeMat", (DL_FUNC) &_bigstatsr_decodeMat, 2},
     {"_bigstatsr_decodeVec", (DL_FUNC) &_bigstatsr_decodeVec, 2},
     {"_bigstatsr_GET_ERROR_TYPE", (DL_FUNC) &_bigstatsr_GET_ERROR_TYPE, 0},
+    {"_bigstatsr_GET_ERROR_DIM", (DL_FUNC) &_bigstatsr_GET_ERROR_DIM, 0},
+    {"_bigstatsr_GET_ERROR_BOUNDS", (DL_FUNC) &_bigstatsr_GET_ERROR_BOUNDS, 0},
+    {"_bigstatsr_GET_ERROR_USHORT", (DL_FUNC) &_bigstatsr_GET_ERROR_USHORT, 0},
+    {"_bigstatsr_extractVec", (DL_FUNC) &_bigstatsr_extractVec, 2},
+    {"_bigstatsr_extractMat", (DL_FUNC) &_bigstatsr_extractMat, 3},
+    {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 4},
     {"_bigstatsr_pMatVec4", (DL_FUNC) &_bigstatsr_pMatVec4, 4},
     {"_bigstatsr_cpMatVec4", (DL_FUNC) &_bigstatsr_cpMatVec4, 4},
+    {"_bigstatsr_replaceVecOne", (DL_FUNC) &_bigstatsr_replaceVecOne, 3},
+    {"_bigstatsr_replaceVec", (DL_FUNC) &_bigstatsr_replaceVec, 3},
+    {"_bigstatsr_replaceMatOne", (DL_FUNC) &_bigstatsr_replaceMatOne, 4},
+    {"_bigstatsr_replaceMat", (DL_FUNC) &_bigstatsr_replaceMat, 4},
     {"_bigstatsr_COPY_sparse_svm", (DL_FUNC) &_bigstatsr_COPY_sparse_svm, 15},
     {"_bigstatsr_transpose3", (DL_FUNC) &_bigstatsr_transpose3, 2},
     {"_bigstatsr_univLinReg5", (DL_FUNC) &_bigstatsr_univLinReg5, 5},
@@ -311,7 +453,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_scaling", (DL_FUNC) &_bigstatsr_scaling, 3},
     {"_bigstatsr_complete2", (DL_FUNC) &_bigstatsr_complete2, 1},
     {"_bigstatsr_incrSup2", (DL_FUNC) &_bigstatsr_incrSup2, 2},
-    {"_bigstatsr_correlize", (DL_FUNC) &_bigstatsr_correlize, 3},
+    {"_bigstatsr_scaleK", (DL_FUNC) &_bigstatsr_scaleK, 5},
     {NULL, NULL, 0}
 };
 

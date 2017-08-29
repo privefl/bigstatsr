@@ -1,7 +1,7 @@
 /******************************************************************************/
 
 #include <RcppArmadillo.h>
-#include <bigstatsr/SubMatAcc.h>
+#include <bigstatsr/BMCodeAcc.h>
 #include <bigstatsr/univLinReg.hpp>
 
 using namespace Rcpp;
@@ -12,7 +12,7 @@ using namespace Rcpp;
 
 // Dispatch function for univLinReg5
 // [[Rcpp::export]]
-List univLinReg5(const S4& BM,
+List univLinReg5(Environment BM,
                  const arma::mat& covar_U,
                  const arma::vec& y,
                  const IntegerVector& rowInd,

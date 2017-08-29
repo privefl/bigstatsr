@@ -25,6 +25,10 @@ mycount2 <- function(BM, rowInd, colInd, codeInd) {
     .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
 }
 
+createFile <- function(fileName, nrow, ncol, type) {
+    invisible(.Call(`_bigstatsr_createFile`, fileName, nrow, ncol, type))
+}
+
 decodeMat <- function(source, code) {
     .Call(`_bigstatsr_decodeMat`, source, code)
 }
@@ -37,12 +41,52 @@ GET_ERROR_TYPE <- function() {
     .Call(`_bigstatsr_GET_ERROR_TYPE`)
 }
 
+GET_ERROR_DIM <- function() {
+    .Call(`_bigstatsr_GET_ERROR_DIM`)
+}
+
+GET_ERROR_BOUNDS <- function() {
+    .Call(`_bigstatsr_GET_ERROR_BOUNDS`)
+}
+
+GET_ERROR_USHORT <- function() {
+    .Call(`_bigstatsr_GET_ERROR_USHORT`)
+}
+
+extractVec <- function(xpbm, elemInd) {
+    .Call(`_bigstatsr_extractVec`, xpbm, elemInd)
+}
+
+extractMat <- function(xpbm, rowInd, colInd) {
+    .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
+}
+
+getXPtrFBM <- function(path, n, m, type) {
+    .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
+}
+
 pMatVec4 <- function(BM, x, rowInd, colInd) {
     .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
 }
 
 cpMatVec4 <- function(BM, x, rowInd, colInd) {
     .Call(`_bigstatsr_cpMatVec4`, BM, x, rowInd, colInd)
+}
+
+replaceVecOne <- function(xpbm, elemInd, val) {
+    invisible(.Call(`_bigstatsr_replaceVecOne`, xpbm, elemInd, val))
+}
+
+replaceVec <- function(xpbm, elemInd, vec) {
+    invisible(.Call(`_bigstatsr_replaceVec`, xpbm, elemInd, vec))
+}
+
+replaceMatOne <- function(xpbm, rowInd, colInd, val) {
+    invisible(.Call(`_bigstatsr_replaceMatOne`, xpbm, rowInd, colInd, val))
+}
+
+replaceMat <- function(xpbm, rowInd, colInd, mat) {
+    invisible(.Call(`_bigstatsr_replaceMat`, xpbm, rowInd, colInd, mat))
 }
 
 COPY_sparse_svm <- function(BM, y, row_idx, covar, lambda, pf, gamma, alpha, thresh, lambda_min, scrflag, dfmax, max_iter, user, message) {
@@ -65,15 +109,15 @@ scaling <- function(source, mean, sd) {
     .Call(`_bigstatsr_scaling`, source, mean, sd)
 }
 
-complete2 <- function(mat) {
-    .Call(`_bigstatsr_complete2`, mat)
+complete2 <- function(BM) {
+    invisible(.Call(`_bigstatsr_complete2`, BM))
 }
 
-incrSup2 <- function(mat, source) {
-    .Call(`_bigstatsr_incrSup2`, mat, source)
+incrSup2 <- function(BM, source) {
+    invisible(.Call(`_bigstatsr_incrSup2`, BM, source))
 }
 
-correlize <- function(mat, shift, scale) {
-    .Call(`_bigstatsr_correlize`, mat, shift, scale)
+scaleK <- function(BM, sums, mu, delta, nrow) {
+    invisible(.Call(`_bigstatsr_scaleK`, BM, sums, mu, delta, nrow))
 }
 

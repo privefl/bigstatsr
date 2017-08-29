@@ -10,22 +10,20 @@ DualBigPCA <- function(X, fun.scaling,
                           ind.row = ind.row,
                           ind.col = ind.col,
                           block.size = block.size)
-  means <- attr(K, "mean")
-  sds <- attr(K, "sd")
+  means <- attr(K, "center")
+  sds   <- attr(K, "scale")
 
   # compute eigen values/vectors
-  eig <- RSpectra::eigs_sym(K, k)
+  eig <- RSpectra::eigs_sym(function(x, args) big_prodVec(K, x), k, n = ncol(K))
   u <- eig$vectors
   d <- sqrt(eig$values)
-  # no longer need K (and eig)
-  rm(K, eig)
 
   # crossprod with clever scaling -> see vignettes
   v <- (big_cprodMat(X, u, ind.row, ind.col, block.size = block.size) -
           tcrossprod(means, colSums(u))) / sds
   v <- sweep(v, 2, d, "/")
 
-  list(d = d, u = u, v = v, means = means, sds = sds)
+  list(d = d, u = u, v = v, center = means, scale = sds)
 }
 
 ################################################################################
@@ -40,30 +38,28 @@ PrimalBigPCA <- function(X, fun.scaling,
                          ind.row = ind.row,
                          ind.col = ind.col,
                          block.size = block.size)
-  means <- attr(K, "mean")
-  sds <- attr(K, "sd")
+  means <- attr(K, "center")
+  sds   <- attr(K, "scale")
 
   # compute eigen values/vectors
-  eig <- RSpectra::eigs_sym(K, k)
+  eig <- RSpectra::eigs_sym(function(x, args) big_prodVec(K, x), k, n = ncol(K))
   v <- eig$vectors
   d <- sqrt(eig$values)
-  # no longer need K (and eig)
-  rm(K, eig)
 
   # multiplication with clever scaling -> see vignettes
   v2 <- v / sds
   u <- big_prodMat(X, v2, ind.row, ind.col, block.size = block.size)
   u <- scaling(u, crossprod(means, v2), d)
 
-  list(d = d, u = u, v = v, means = means, sds = sds)
+  list(d = d, u = u, v = v, center = means, scale = sds)
 }
 
 ################################################################################
 
 #' Partial SVD
 #'
-#' An algorithm for partial SVD (or PCA) of a `big.matrix` through the eigen
-#' decomposition of the covariance between variables (primal)
+#' An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix through the
+#' eigen decomposition of the covariance between variables (primal)
 #' or observations (dual). **Use this algorithm only if there is one dimension
 #' that is much smaller than the other. Otherwise use [big_randomSVD].**
 #'
@@ -84,23 +80,23 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' - `d`, the singular values,
 #' - `u`, the left singular vectors,
 #' - `v`, the right singular vectors,
-#' - `means`, the centering vector,
-#' - `sds`, the scaling vector.
+#' - `center`, the centering vector,
+#' - `scale`, the scaling vector.
 #'
 #' Note that to obtain the Principal Components, you must use
 #' [predict][predict.big_SVD] on the result. See examples.
 #'
 #' @example examples/example-SVD.R
 #' @seealso [prcomp][stats::prcomp]
-big_SVD <- function(X., fun.scaling,
-                    ind.row = rows_along(X.),
-                    ind.col = cols_along(X.),
+#'
+big_SVD <- function(X, fun.scaling,
+                    ind.row = rows_along(X),
+                    ind.col = cols_along(X),
                     k = 10,
-                    block.size = 1000) {
+                    block.size = block_size(nrow(X))) {
 
   check_args()
 
-  X <- attach.BM(X.)
   if (ncol(X) > length(ind.row)) {
     printf("(2)")
     res <- DualBigPCA(X, fun.scaling, ind.row, ind.col, block.size, k)

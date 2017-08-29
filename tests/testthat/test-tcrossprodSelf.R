@@ -2,25 +2,22 @@
 
 context("TCROSSPROD_SELF")
 
-opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = TRUE)
-
 # Simulating some data
 N <- 43
 M <- 101
-x <- matrix(rnorm(N * M), N)
+x <- matrix(rnorm(N * M, 100, 5), N)
 
 big_noscale <- big_scale(center = FALSE)
 
 ################################################################################
 
 test_that("equality with tcrossprod", {
-  for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    K <- big_tcrossprodSelf(X., fun.scaling = big_noscale)
-    expect_equivalent(K, tcrossprod(X[]))
+    K <- big_tcrossprodSelf(X, fun.scaling = big_noscale,
+                            block.size = 10)
+    expect_equal(K[], tcrossprod(X[]))
   }
 })
 
@@ -29,17 +26,21 @@ test_that("equality with tcrossprod", {
 test_that("equality with tcrossprod with half of the data", {
   ind <- sample(M, M / 2)
 
-  for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     # no scaling
-    K <- big_tcrossprodSelf(X., fun.scaling = big_noscale, ind.col = ind)
-    expect_equivalent(K, tcrossprod(X[, ind]))
+    K <- big_tcrossprodSelf(X, fun.scaling = big_noscale, ind.col = ind,
+                            block.size = 10)
+    expect_equal(K[], tcrossprod(X[, ind]))
 
     # full scaling
-    K2 <- big_tcrossprodSelf(X., fun.scaling = big_scale(), ind.col = ind)
-    expect_equivalent(K2, tcrossprod(scale(X[, ind])))
+    K2 <- big_tcrossprodSelf(X, fun.scaling = big_scale(), ind.col = ind,
+                             block.size = 10)
+    X.scaled <- scale(X[, ind])
+    expect_equal(K2[], tcrossprod(X.scaled))
+    expect_equal(attr(K2, "center"), attr(X.scaled, "scaled:center"))
+    expect_equal(attr(K2, "scale"),  attr(X.scaled, "scaled:scale"))
   }
 })
 
@@ -48,22 +49,22 @@ test_that("equality with tcrossprod with half of the data", {
 test_that("equality with tcrossprod with half of the data", {
   ind <- sample(N, N / 2)
 
-  for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     # no scaling
-    K <- big_tcrossprodSelf(X., fun.scaling = big_noscale, ind.row = ind)
-    expect_equivalent(K, tcrossprod(X[ind, ]))
+    K <- big_tcrossprodSelf(X, fun.scaling = big_noscale, ind.row = ind,
+                            block.size = 10)
+    expect_equal(K[], tcrossprod(X[ind, ]))
 
     # full scaling
-    K2 <- big_tcrossprodSelf(X., fun.scaling = big_scale(), ind.row = ind)
-    expect_equivalent(K2, tcrossprod(scale(X[ind, ])))
+    K2 <- big_tcrossprodSelf(X, fun.scaling = big_scale(), ind.row = ind,
+                             block.size = 10)
+    X.scaled <- scale(X[ind, ])
+    expect_equal(K2[], tcrossprod(X.scaled))
+    expect_equal(attr(K2, "center"), attr(X.scaled, "scaled:center"))
+    expect_equal(attr(K2, "scale"),  attr(X.scaled, "scaled:scale"))
   }
 })
-
-################################################################################
-
-options(opt.save)
 
 ################################################################################

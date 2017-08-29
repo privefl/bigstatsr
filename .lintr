@@ -1,5 +1,0 @@
-linters: with_defaults(object_name_linter = NULL,
-                       commented_code_linter = NULL,
-                       line_length_linter(85)) # nearly perfect
-exclusions: list("R/RcppExports.R", "src/RcppExports.cpp",
-                 "tests/testthat/test-checkArgs.R")

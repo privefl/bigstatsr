@@ -2,15 +2,12 @@
 
 context("UNIV_LOG_REG")
 
-opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = TRUE)
-
 TOL <- 1e-5
 
 # Simulating some data
 N <- 73
 M <- 43
-x <- matrix(rnorm(N * M, sd = 5), N)
+x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 y <- sample(0:1, size = N, replace = TRUE)
 
 covar0 <- matrix(rnorm(N * 3), N)
@@ -33,11 +30,11 @@ getGLM <- function(X, y, covar, ind = NULL) {
 ################################################################################
 
 test_that("equality with glm with all data", {
-  for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
+
     for (covar in lcovar) {
-      mod <- big_univLogReg(X., y, covar.train = covar)
+      mod <- big_univLogReg(X, y, covar.train = covar, ncores = test_cores())
       mod$p.value <- predict(mod, log10 = FALSE)
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
@@ -57,13 +54,14 @@ test_that("equality with glm with only half the data", {
     ind <- sample(N, N / 2)
   }
 
-  for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
+
     for (covar in lcovar) {
-      mod <- big_univLogReg(X., y[ind],
+      mod <- big_univLogReg(X, y[ind],
                             covar.train = covar[ind, ],
-                            ind.train = ind)
+                            ind.train = ind,
+                            ncores = test_cores())
       mod$p.value <- predict(mod, log10 = FALSE)
       mat <- as.matrix(mod[, -3])
       dimnames(mat) <- NULL
@@ -74,9 +72,5 @@ test_that("equality with glm with only half the data", {
     }
   }
 })
-
-################################################################################
-
-options(opt.save)
 
 ################################################################################

@@ -4,11 +4,10 @@
 \alias{big_cprodVec}
 \title{Cross-product with a vector}
 \usage{
-big_cprodVec(X., y.row, ind.row = rows_along(X.), ind.col = cols_along(X.))
+big_cprodVec(X, y.row, ind.row = rows_along(X), ind.col = cols_along(X))
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y.row}{A vector of same size as \code{ind.row}.}
 
@@ -22,25 +21,27 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 \eqn{X^T \cdot y}.
 }
 \description{
-Cross-product between a "big.matrix" and a vector.
+Cross-product between a Filebacked Big Matrix and a vector.
 }
 \examples{
-X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
-m <- ncol(X.desc)
+X <- big_attachExtdata()
+n <- nrow(X)
+m <- ncol(X)
 y <- rnorm(n)
 
-test <- big_cprodVec(X.desc, y)             # vector
-true <- crossprod(attach.BM(X.desc)[,], y)  # one-column matrix
+test <- big_cprodVec(X, y)             # vector
+true <- crossprod(X[], y)  # one-column matrix
 all.equal(test, as.numeric(true))
 
 # subsetting
 ind.row <- sample(n, n/2)
 ind.col <- sample(m, m/2)
 
-\dontrun{test2 <- big_cprodVec(X.desc, y, ind.row, ind.col)}
+tryCatch(test2 <- big_cprodVec(X, y, ind.row, ind.col),
+         error = function(e) print(e))
 # returns an error. You need to use the subset of y:
-test2 <- big_cprodVec(X.desc, y[ind.row], ind.row, ind.col)
-true2 <- crossprod(attach.BM(X.desc)[ind.row, ind.col], y[ind.row])
+test2 <- big_cprodVec(X, y[ind.row], ind.row, ind.col)
+true2 <- crossprod(X[ind.row, ind.col], y[ind.row])
 all.equal(test2, as.numeric(true2))
+
 }

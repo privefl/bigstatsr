@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Correlation — big_cor • bigstatsr</title>
+<title>Correlation � big_cor • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -99,19 +100,18 @@
     </div>
 
     
-    <p>Compute the correlation matrix of a <code>big.matrix</code>.</p>
+    <p>Compute the correlation matrix of a Filebacked Big Matrix.</p>
     
 
-    <pre class="usage"><span class='fu'>big_cor</span>(<span class='no'>X.</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>),
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</pre>
+    <pre class="usage"><span class='fu'>big_cor</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>ind.row</th>
@@ -125,39 +125,49 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
     </tr>
     <tr>
       <th>block.size</th>
-      <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
+      <td><p>Maximum number of columns read at once.
+Default uses <a href='block_size.html'>block_size</a>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The correlation matrix</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>A temporary <a href='FBM-class.html'>FBM</a>, with the following two attributes:</p><ul>
+<li><p>a numeric vector <code>center</code> of column scaling,</p></li>
+<li><p>a numeric vector <code>scale</code> of column scaling.</p></li>
+</ul>
 
-    <p>This algorithm is not really memory efficient. I'm planning on fixing this,
-if it is really needed.</p>
+    
+    <h2 class="hasAnchor" id="matrix-parallelization"><a class="anchor" href="#matrix-parallelization"></a>Matrix parallelization</h2>
+
+    
+    <p>Large matrix computations (crossprods) are made block-wise and won't
+be parallelized in order to not have to reduce the size of these blocks.
+Instead, you may use <a href='https://mran.microsoft.com/open/'>Microsoft R Open</a>
+in order to accelerate these block matrix computations.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>cor</p>
+    <p>cor <a href='big_crossprodSelf.html'>big_crossprodSelf</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>13</span>, <span class='fl'>17</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>221</span>))
 
 <span class='co'># Comparing with cor</span>
-<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cor</span>(<span class='no'>X.desc</span>)
-<span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 4542 4542</div><div class='input'>
-<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>cor</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[])
-<span class='fu'>all.equal</span>(<span class='no'>K</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cor</span>(<span class='no'>X</span>)
+<span class='fu'>class</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] "FBM"
+#&gt; attr(,"package")
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpMLJxFl\\file15c052c2559c.bk"</div><div class='input'>
+<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>cor</span>(<span class='no'>X</span>[])
+<span class='fu'>all.equal</span>(<span class='no'>K</span>[], <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data</span>
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X</span>)
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
-<span class='no'>K2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cor</span>(<span class='no'>X.desc</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)
-<span class='fu'>dim</span>(<span class='no'>K2</span>)</div><div class='output co'>#&gt; [1] 4542 4542</div><div class='input'>
-<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>cor</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind</span>, ])
-<span class='fu'>all.equal</span>(<span class='no'>K2</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='no'>K2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cor</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)
+
+<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>cor</span>(<span class='no'>X</span>[<span class='no'>ind</span>, ])
+<span class='fu'>all.equal</span>(<span class='no'>K2</span>[], <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -166,7 +176,7 @@ if it is really needed.</p>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#details">Details</a></li>
+      <li><a href="#matrix-parallelization">Matrix parallelization</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

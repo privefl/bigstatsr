@@ -4,13 +4,12 @@
 \alias{big_univLinReg}
 \title{Column-wise linear regression}
 \usage{
-big_univLinReg(X., y.train, ind.train = rows_along(X.),
-  ind.col = cols_along(X.), covar.train = NULL, ncores = 1,
-  thr.eigval = 1e-04)
+big_univLinReg(X, y.train, ind.train = rows_along(X),
+  ind.col = cols_along(X), covar.train = NULL, thr.eigval = 1e-04,
+  ncores = 1)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
@@ -25,11 +24,11 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
-
 \item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
 Default is \code{1e-4}.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 }
 \value{
 A data.frame with 3 elements:
@@ -42,22 +41,22 @@ This is also an object of class \code{mhtest}. See \code{methods(class = "mhtest
 }
 \description{
 Slopes of column-wise linear regressions of each column
-of a \code{big.matrix}, with some other associated statistics.
+of a Filebacked Big Matrix, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
 \examples{
 set.seed(1)
 
-X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
+X <- big_attachExtdata()
+n <- nrow(X)
 y <- rnorm(n)
 covar <- matrix(rnorm(n * 3), n)
 
-X1 <- attach.BM(X.desc)[, 1] # only first column of the `big.matrix`
+X1 <- X[, 1] # only first column of the Filebacked Big Matrix
 
 # Without covar
-test <- big_univLinReg(X.desc, y)
-## new class `mhtest`
+test <- big_univLinReg(X, y)
+## New class `mhtest`
 class(test)
 attr(test, "transfo")
 attr(test, "predict")
@@ -70,12 +69,12 @@ str(test)
 summary(lm(y ~ X1))$coefficients[2, ]
 
 # With all data
-str(big_univLinReg(X.desc, y, covar = covar))
+str(big_univLinReg(X, y, covar = covar))
 summary(lm(y ~ X1 + covar))$coefficients[2, ]
 
 # With only half of the data
 ind.train <- sort(sample(n, n/2))
-str(big_univLinReg(X.desc, y[ind.train],
+str(big_univLinReg(X, y[ind.train],
                    covar.train = covar[ind.train, ],
                    ind.train = ind.train))
 summary(lm(y ~ X1 + covar, subset = ind.train))$coefficients[2, ]

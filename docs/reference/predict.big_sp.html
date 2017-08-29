@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Predict method — predict.big_sp • bigstatsr</title>
+<title>Predict method � predict.big_sp • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -103,8 +104,8 @@
     
 
     <pre class="usage"><span class='co'># S3 method for big_sp</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='no'>X.</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>),
-  <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
+  <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -114,9 +115,8 @@
       <td><p>Object of class <code>big_sp</code>.</p></td>
     </tr>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>ind.row</th>
@@ -131,7 +131,8 @@ Default is <code>NULL</code> and corresponds to only adding an intercept to each
     </tr>
     <tr>
       <th>block.size</th>
-      <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
+      <td><p>Maximum number of columns read at once.
+Default uses <a href='block_size.html'>block_size</a>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -153,15 +154,15 @@ and columns corresponding to <code>lambda</code>.</p>
     <pre class="examples"><div class='input'><span class='co'># simulating some data</span>
 <span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fl'>73</span>
 <span class='no'>M</span> <span class='kw'>&lt;-</span> <span class='fl'>430</span>
-<span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'>describe</span>(<span class='fu'>as.big.matrix</span>(<span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span>*<span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='no'>N</span>)))
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='no'>N</span>, <span class='no'>M</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>))
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>N</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='fl'>3</span>), <span class='no'>N</span>)
 
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>N</span>, <span class='no'>N</span>/<span class='fl'>2</span>))
-<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_spLogReg.html'>big_spLogReg</a></span>(<span class='no'>X.desc</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>], <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
+<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_spLogReg.html'>big_spLogReg</a></span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>], <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
                     <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ])
-<span class='no'>ind.test</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.desc</span>), <span class='no'>ind.train</span>)
-<span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>mod</span>, <span class='kw'>X.</span> <span class='kw'>=</span> <span class='no'>X.desc</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>,
+<span class='no'>ind.test</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='no'>ind.train</span>)
+<span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>mod</span>, <span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>,
                 <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ])</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

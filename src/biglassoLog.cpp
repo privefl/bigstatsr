@@ -17,13 +17,13 @@ using namespace Rcpp;
 
 // Dispatch function for COPY_cdfit_binomial_hsr
 // [[Rcpp::export]]
-List COPY_cdfit_binomial_hsr(const S4& BM,
+List COPY_cdfit_binomial_hsr(Environment BM,
                              const NumericVector& y,
                              const IntegerVector& row_idx,
                              const NumericMatrix& covar,
                              NumericVector& lambda,
                              int L,
-                             int lam_scale,
+                             bool lam_scale,
                              double lambda_min,
                              double alpha,
                              bool user,

@@ -4,13 +4,12 @@
 \alias{big_randomSVD}
 \title{Randomized partial SVD}
 \usage{
-big_randomSVD(X., fun.scaling, ind.row = rows_along(X.),
-  ind.col = cols_along(X.), k = 10, tol = 1e-04, verbose = FALSE,
+big_randomSVD(X, fun.scaling, ind.row = rows_along(X),
+  ind.col = cols_along(X), k = 10, tol = 1e-04, verbose = FALSE,
   ncores = 1)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
@@ -32,7 +31,7 @@ Default is \code{1e-4}.}
 \item{verbose}{Should some progress be printed? Default is \code{FALSE}.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
+You may use \link{nb_cores}.}
 }
 \value{
 A named list (an S3 class "big_SVD") of
@@ -42,15 +41,15 @@ A named list (an S3 class "big_SVD") of
 \item \code{v}, the right singular vectors,
 \item \code{niter}, the number of the iteration of the algorithm,
 \item \code{nops}, number of Matrix-Vector multiplications used,
-\item \code{means}, the centering vector,
-\item \code{sds}, the scaling vector.
+\item \code{center}, the centering vector,
+\item \code{scale}, the scaling vector.
 }
 
 Note that to obtain the Principal Components, you must use
 \link[=predict.big_SVD]{predict} on the result. See examples.
 }
 \description{
-An algorithm for partial SVD (or PCA) of a \code{big.matrix} based on the
+An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix based on the
 algorithm in RSpectra (by Yixuan Qiu and Jiali Mei).\cr
 This algorithm is linear in time in all dimensions and is very
 memory-efficient. Thus, it can be used on very large big.matrices.
@@ -70,21 +69,20 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 \examples{
 set.seed(1)
 
-X.desc <- big_attachExtdata()
+X <- big_attachExtdata()
 K <- 10
 
 # Using only half of the data for "training"
-n <- nrow(X.desc)
+n <- nrow(X)
 ind <- sort(sample(n, n/2))
-test <- big_randomSVD(X.desc, fun.scaling = big_scale(), ind.row = ind, k = K)
+test <- big_randomSVD(X, fun.scaling = big_scale(), ind.row = ind, k = K)
 str(test)
-plot(test$u)
 
-pca <- prcomp(attach.BM(X.desc)[ind, ], center = TRUE, scale. = TRUE)
+pca <- prcomp(X[ind, ], center = TRUE, scale. = TRUE)
 
 # same scaling
-all.equal(test$means, pca$center)
-all.equal(test$sds, pca$scale)
+all.equal(test$center, pca$center)
+all.equal(test$scale,  pca$scale)
 
 # use this function to predict scores
 class(test)
@@ -92,11 +90,13 @@ scores <- predict(test)
 # scores and loadings are the same or opposite
 plot(scores, pca$x[, 1:K])
 plot(test$v, pca$rotation[, 1:K])
+plot(test$u)
+plot(test, type = "scores")
 
 # projecting on new data
-ind2 <- setdiff(rows_along(X.desc), ind)
-scores.test2 <- predict(test, X.desc, ind.row = ind2)
-scores.test3 <- predict(pca, attach.BM(X.desc)[-ind, ])
+ind2 <- setdiff(rows_along(X), ind)
+scores.test2 <- predict(test, X, ind.row = ind2)
+scores.test3 <- predict(pca, X[-ind, ])
 plot(scores.test2, scores.test3[, 1:K])
 
 }

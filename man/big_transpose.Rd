@@ -4,26 +4,40 @@
 \alias{big_transpose}
 \title{Transposition}
 \usage{
-big_transpose(X., fun.createBM = BM())
+big_transpose(X, ...)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
-\item{fun.createBM}{A function that creates a \code{big.matrix}. It should have
-exactly 3 parameters \code{nrow}, \code{ncol} and \code{type}. See \link{FBM}.}
+\item{...}{Arguments passed on to \code{FBM}
+\describe{
+  \item{backingfile}{Path to the file storing the Big Matrix on disk.
+An extension ".bk" will be automatically added. Default stores in the
+temporary directory.}
+  \item{create_bk}{Create a backingfile (the default) or use an existing one
+(which should be named by the \code{backingfile} parameter and have an
+extension ".bk"). For example, this could be used to convert a filebacked
+\code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}.}
+  \item{save}{Whether to save the result object in an ".rds" file alongside
+the backingfile. Default is \code{FALSE}.}
+}}
 }
 \value{
-The new transposed \code{big.matrix} (or its descriptor). Its dimensions
-and type are automatically determined from the input \code{big.matrix}.
+The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
+and type are automatically determined from the input Filebacked Big Matrix.
 }
 \description{
 This function implements a simple cache-oblivious algorithm for
-the transposition of a "big.matrix".
+the transposition of a Filebacked Big Matrix.
 }
 \examples{
-X.desc <- big_attachExtdata()
-Xt.desc <- big_transpose(X.desc, fun.createBM = tmpFBM())
-identical(t(attach.BM(X.desc)[,]), attach.BM(Xt.desc)[,])
+X <- FBM(10, 5, init = rnorm(50))
+X[]
+Xt <- big_transpose(X)
+identical(t(X[]), Xt[])
+
+X <- big_attachExtdata()
+Xt <- big_transpose(X)
+identical(t(X[]), Xt[])
 
 }

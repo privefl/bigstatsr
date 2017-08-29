@@ -9,7 +9,7 @@ get_nline <- function(file) {
 
 #' Read a file
 #'
-#' Read a file as a `big.matrix`. For a mini-tutorial, please see the
+#' Read a file as a Filebacked Big Matrix. For a mini-tutorial, please see the
 #' [vignette](https://privefl.github.io/bigstatsr/articles/read-BM-from-file.html).
 #'
 #' @inheritParams bigstatsr-package
@@ -26,27 +26,28 @@ get_nline <- function(file) {
 #' @param read.what What type of elements to scan? Default is `double()`.
 #' You can also use `character()` or `integer()`.
 #' @param read.transfo Function that transforms each line you read.
-#' @param BM.type Type of the resulting `big.matrix`. Default uses the type
-#' of `read.what`. This can be useful if you have only small integers or
+#' @param BM.type Type of the resulting Filebacked Big Matrix. Default uses the
+#' type of `read.what`. This can be useful if you have only small integers or
 #' that the `read.transfo` function transforms the type of what is read.
-#' @param transpose Should the resulting `big.matrix` be transposed?
+#' @param transpose Should the resulting Filebacked Big Matrix be transposed?
 #' Default is `FALSE`.
+#' @inheritDotParams FBM -nrow -ncol -type -init
 #'
-#' @return A `big.matrix` (or its descriptor) with two attributes `header` and
-#' `info`.
+#' @return A Filebacked Big Matrix with two attributes `header` and `info`.
+#'
 #' @export
 #' @importFrom magrittr %>%
 #'
-big_readBM <- function(file,
-                       file.nheader = 0,
-                       file.nline = NULL,
-                       info.nelem = 0,
-                       split = " ",
-                       read.what = double(),
-                       read.transfo = identity,
-                       BM.type = typeof(read.what),
-                       transpose = FALSE,
-                       fun.createBM = BM()) {
+big_read <- function(file,
+                     file.nheader = 0,
+                     file.nline = NULL,
+                     info.nelem = 0,
+                     split = " ",
+                     read.what = double(),
+                     read.transfo = identity,
+                     BM.type = typeof(read.what),
+                     transpose = FALSE,
+                     ...) {
 
   # get #lines of the file
   if (is.null(file.nline)) file.nline <- get_nline(file)
@@ -76,12 +77,13 @@ big_readBM <- function(file,
     read.transfo()
   transfo.nelem <- length(firstline.transfo)
 
-  # prepare the resulting big.matrix
+  # prepare the resulting Filebacked Big Matrix
   if (transpose) {
-    res <- tmpFBM()(nrow = transfo.nelem, ncol = read.nline, type = BM.type)
-    on.exit(tmpFBM.rm(res), add = TRUE)
+    res <- FBM(nrow = transfo.nelem, ncol = read.nline,
+               type = BM.type, init = NULL)
   } else {
-    res <- fun.createBM(nrow = transfo.nelem, ncol = read.nline, type = BM.type)
+    res <- FBM(nrow = transfo.nelem, ncol = read.nline,
+               type = BM.type, init = NULL, ...)
   }
 
   # functions for scanning
@@ -93,11 +95,10 @@ big_readBM <- function(file,
   }
 
   # main read
-  X <- attach.BM(res)
-  X[, 1] <- firstline.transfo
+  res[, 1] <- firstline.transfo
   for (k in 2:read.nline) {
     if (info.nelem) info[, k] <- info.scan(con)
-    X[, k] <- read.transfo(read.scan(con))
+    res[, k] <- read.transfo(read.scan(con))
   }
 
   # check EOF (if can't read another character)
@@ -105,7 +106,7 @@ big_readBM <- function(file,
     warning2("Didn't reach EOF.")
 
   # returns
-  structure(`if`(transpose, big_transpose(res, fun.createBM), res),
+  structure(`if`(transpose, big_transpose(res, ...), res),
             header = header,
             info = info)
 }

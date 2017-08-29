@@ -5,33 +5,17 @@ context("CHECK_ARGS")
 ################################################################################
 
 # defining some objects
-X <- tmpFBM(descriptor = FALSE)(10, 10, type = "raw")
-X.desc <- tmpFBM()(10, 10, type = "raw")
-X.code <- as.BM.code(X, code = rep(0, 256))
-X.code.desc <- as.BM.code(X.desc, code = rep(0, 256))
+X <- FBM(10, 10, type = "raw")
+X.code <- add_code256(X, code = rep(0, 256))
 
 
 test_that("checking of BM (desc) arguments", {
   # X
   expect_null( (function(X) check_args())(X))
-  expect_error((function(X) check_args())(X.desc))
   expect_null( (function(X) check_args())(X.code))
-  expect_error((function(X) check_args())(X.code.desc))
-  # X.desc
-  expect_error((function(X.desc) check_args())(X))
-  expect_null( (function(X.desc) check_args())(X.desc))
-  expect_error((function(X.desc) check_args())(X.code))
-  expect_null( (function(X.desc) check_args())(X.code.desc))
-  # X.
-  expect_null((function(X.) check_args())(X))
-  expect_null((function(X.) check_args())(X.desc))
-  expect_null((function(X.) check_args())(X.code))
-  expect_null((function(X.) check_args())(X.code.desc))
   # X.code
   expect_error((function(X.code) check_args())(X))
-  expect_error((function(X.code) check_args())(X.desc))
   expect_null( (function(X.code) check_args())(X.code))
-  expect_null( (function(X.code) check_args())(X.code.desc))
 })
 
 ################################################################################
@@ -68,9 +52,9 @@ test_that("checking of vector arguments", {
 ################################################################################
 
 # defining some objects
-f1 <- tmpFBM()
+f1 <- FBM
 f2 <- big_scale()
-f3 <- tmpFBM
+f3 <- FBM(10, 10)
 f4 <- big_scale
 
 test_that("checking of function arguments", {
@@ -79,11 +63,6 @@ test_that("checking of function arguments", {
   expect_null( (function(fun.scaling) check_args())(f2))
   expect_error((function(fun.scaling) check_args())(f3))
   expect_error((function(fun.scaling) check_args())(f4))
-  # fun.createBM
-  expect_null( (function(fun.createBM) check_args())(f1))
-  expect_error((function(fun.createBM) check_args())(f2))
-  expect_error((function(fun.createBM) check_args())(f3))
-  expect_error((function(fun.createBM) check_args())(f4))
 })
 
 ################################################################################
@@ -140,12 +119,12 @@ test_that("checking lengths", {
 
 ################################################################################
 
-X.code@code <- rep(NA_real_, 256)
+X.code$code256 <- rep(NA_real_, 256)
 
 test_that("checking missing values", {
   expect_error((function(X.code) check_args())(X.code))
   expect_null((function(X.code) check_args(
-    X.code = "assert_classOrDesc(X.code, 'BM.code')"))(X.code))
+    X.code = "assert_class(X.code, 'FBM.code256')"))(X.code))
 })
 
 ################################################################################

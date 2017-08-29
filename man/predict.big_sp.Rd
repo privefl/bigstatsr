@@ -4,14 +4,13 @@
 \alias{predict.big_sp}
 \title{Predict method}
 \usage{
-\method{predict}{big_sp}(object, X., ind.row = rows_along(X.),
-  covar.row = NULL, block.size = 1000, ...)
+\method{predict}{big_sp}(object, X, ind.row = rows_along(X),
+  covar.row = NULL, block.size = block_size(nrow(X)), ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp}.}
 
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
@@ -20,7 +19,8 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 
 \item{...}{Not used.}
 }
@@ -35,15 +35,15 @@ Predict method for class \code{big_sp}.
 # simulating some data
 N <- 73
 M <- 430
-X.desc <- describe(as.big.matrix(matrix(rnorm(N*M, sd = 5), N)))
+X <- FBM(N, M, init = rnorm(N * M, sd = 5))
 y <- sample(0:1, size = N, replace = TRUE)
 covar <- matrix(rnorm(N * 3), N)
 
 ind.train <- sort(sample(N, N/2))
-mod <- big_spLogReg(X.desc, y[ind.train], ind.train = ind.train,
+mod <- big_spLogReg(X, y[ind.train], ind.train = ind.train,
                     covar.train = covar[ind.train, ])
-ind.test <- setdiff(rows_along(X.desc), ind.train)
-pred <- predict(mod, X. = X.desc, ind.row = ind.test,
+ind.test <- setdiff(rows_along(X), ind.train)
+pred <- predict(mod, X = X, ind.row = ind.test,
                 covar.row = covar[ind.test, ])
 }
 \seealso{

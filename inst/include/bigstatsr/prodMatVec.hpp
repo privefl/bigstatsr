@@ -6,6 +6,7 @@
 #include <Rcpp.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -14,11 +15,11 @@ namespace bigstatsr {
 template <class C>
 NumericVector pMatVec4(C macc, const NumericVector& x) {
 
-  int n = macc.nrow();
-  int m = macc.ncol();
+  size_t n = macc.nrow();
+  size_t m = macc.ncol();
 
   NumericVector res(n);
-  int i, j;
+  size_t i, j;
 
   for (j = 0; j <= m - 4; j += 4) { // unrolling optimization
     for (i = 0; i < n; i++) {
@@ -40,12 +41,12 @@ NumericVector pMatVec4(C macc, const NumericVector& x) {
 template <class C>
 NumericVector cpMatVec4(C macc, const NumericVector& x) {
 
-  int n = macc.nrow();
-  int m = macc.ncol();
+  size_t n = macc.nrow();
+  size_t m = macc.ncol();
 
   NumericVector res(m);
   double tmp;
-  int i, j;
+  size_t i, j;
 
   for (j = 0; j < m; j++) {
     tmp = 0;

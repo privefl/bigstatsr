@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Standard univariate statistics — big_colstats • bigstatsr</title>
+<title>Standard univariate statistics � big_colstats • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -99,20 +100,19 @@
     </div>
 
     
-    <p>Standard <strong>univariate statistics</strong> for columns of a big.matrix.
+    <p>Standard <strong>univariate statistics</strong> for columns of a Filebacked Big Matrix.
 For now, the <code>sum</code> and <code>var</code> are implemented
 (the <code>mean</code> and <code>sd</code> can easily be deduced, see examples).</p>
     
 
-    <pre class="usage"><span class='fu'>big_colstats</span>(<span class='no'>X.</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>))</pre>
+    <pre class="usage"><span class='fu'>big_colstats</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>ind.row</th>
@@ -139,18 +139,18 @@ corresponding column statistics.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
 
-<span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
 
 <span class='co'># Check the results</span>
-<span class='fu'>str</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X.desc</span>))</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
+<span class='fu'>str</span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
 #&gt;  $ sum: num  680 821 789 843 562 666 902 537 536 553 ...
 #&gt;  $ var: num  0.46 0.324 0.393 0.311 0.518 ...</div><div class='input'>
 <span class='co'># Only with the first 100 rows</span>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
-<span class='fu'>str</span>(<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X.desc</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>))</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
+<span class='fu'>str</span>(<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>))</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
 #&gt;  $ sum: num  138 157 115 181 92 106 167 124 120 94 ...
-#&gt;  $ var: num  0.46 0.369 0.513 0.176 0.579 ...</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='no'>test2</span>$<span class='no'>sum</span>)</div><div class='input'><span class='fu'>abline</span>(<span class='fu'>lm</span>(<span class='no'>test2</span>$<span class='no'>sum</span> ~ <span class='no'>test</span>$<span class='no'>sum</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><img src='big_colstats-7.png' alt='' width='540' height='400' /><div class='input'>
-<span class='no'>X.ind</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind</span>, ]
+#&gt;  $ var: num  0.46 0.369 0.513 0.176 0.579 ...</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='no'>test2</span>$<span class='no'>sum</span>)</div><div class='input'><span class='fu'>abline</span>(<span class='fu'>lm</span>(<span class='no'>test2</span>$<span class='no'>sum</span> ~ <span class='no'>test</span>$<span class='no'>sum</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='big_colstats-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>X.ind</span> <span class='kw'>&lt;-</span> <span class='no'>X</span>[<span class='no'>ind</span>, ]
 <span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>sum</span>, <span class='fu'>colSums</span>(<span class='no'>X.ind</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>var</span>, <span class='fu'>apply</span>(<span class='no'>X.ind</span>, <span class='fl'>2</span>, <span class='no'>var</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># deduce mean and sd</span>
 <span class='co'># note that the are also implemented in big_scale()</span>

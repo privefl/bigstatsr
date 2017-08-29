@@ -3,30 +3,39 @@
 #' Transposition
 #'
 #' This function implements a simple cache-oblivious algorithm for
-#' the transposition of a "big.matrix".
+#' the transposition of a Filebacked Big Matrix.
 #'
 #' @inheritParams bigstatsr-package
+#' @inheritDotParams FBM -nrow -ncol -type -init
 #'
-#' @return The new transposed `big.matrix` (or its descriptor). Its dimensions
-#' and type are automatically determined from the input `big.matrix`.
+#' @return The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
+#' and type are automatically determined from the input Filebacked Big Matrix.
 #'
 #' @export
 #'
 #' @examples
-#' X.desc <- big_attachExtdata()
-#' Xt.desc <- big_transpose(X.desc, fun.createBM = tmpFBM())
-#' identical(t(attach.BM(X.desc)[,]), attach.BM(Xt.desc)[,])
+#' X <- FBM(10, 5, init = rnorm(50))
+#' X[]
+#' Xt <- big_transpose(X)
+#' identical(t(X[]), Xt[])
 #'
-big_transpose <- function(X., fun.createBM = BM()) {
+#' X <- big_attachExtdata()
+#' Xt <- big_transpose(X)
+#' identical(t(X[]), Xt[])
+#'
+big_transpose <- function(X, ...) {
 
-  check_args(X. = "assert_classOrDesc(X., 'big.matrix')")
+  check_args(X = "assert_class(X, 'FBM')")
 
-  res <- fun.createBM(ncol(X.), nrow(X.), typeof(X.))
+  res <- FBM(ncol(X), nrow(X), typeof(X), init = NULL, ...)
 
-  X <- attach.BM(X.)
-  transpose3(attach.BM(res), X)
+  transpose3(res, X)
 
-  `if`(inherits(X, "BM.code"), as.BM.code(res, code = X@code), res)
+  save <- list(...)$save
+  `if`(inherits(X, "FBM.code256"),
+       add_code256(res, code = X$code256,
+                   save = `if`(is.null(save), formals(FBM)$save, save)),
+       res)
 }
 
 ################################################################################

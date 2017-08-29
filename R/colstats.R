@@ -2,7 +2,7 @@
 
 #' Standard univariate statistics
 #'
-#' Standard __univariate statistics__ for columns of a big.matrix.
+#' Standard __univariate statistics__ for columns of a Filebacked Big Matrix.
 #' For now, the `sum` and `var` are implemented
 #' (the `mean` and `sd` can easily be deduced, see examples).
 #'
@@ -14,13 +14,12 @@
 #'
 #' @seealso [colSums] [apply]
 #' @example examples/example-colstats.R
-big_colstats <- function(X.,
-                         ind.row = rows_along(X.),
-                         ind.col = cols_along(X.)) {
+big_colstats <- function(X,
+                         ind.row = rows_along(X),
+                         ind.col = cols_along(X)) {
 
-  check_args()
+  # check_args()
 
-  X <- attach.BM(X.)
   data.frame(bigcolvars(X, ind.row, ind.col))
 }
 

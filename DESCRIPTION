@@ -2,7 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Bigmemory Matrices
-Version: 0.1.0.9002
+Version: 0.2.0
+Date: 2017-08-29
 Authors@R: c(
     person("Florian", "Privé", 
            email = "florian.prive.21@gmail.com", 
@@ -18,13 +19,13 @@ Description: Easy-to-use, efficient, flexible and scalable
 License: GPL-3 + file LICENSE
 LazyData: TRUE
 Depends: 
-    R (>= 3.3.2), 
-    bigmemory
+    R (>= 3.3.2)
 Imports: 
     cowplot,
     doParallel,
     foreach, 
     ggplot2,
+    glue,
     graphics,
     magrittr,
     Matrix,
@@ -35,11 +36,11 @@ Imports:
     stats
 LinkingTo: 
     BH,
-    bigmemory, 
     Rcpp,
     RcppArmadillo
 Suggests: 
     biglasso, 
+    bigmemory,
     covr, 
     glmnet,
     grid,
@@ -51,8 +52,36 @@ Suggests:
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 Remotes: 
-    privefl/bigmemory, 
-    YaohuiZeng/biglasso, 
-    CY-dev/sparseSVM
+    CY-dev/sparseSVM@15ed312d4d87482bbf8d48b6065e7c08c5fe1598
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
+Collate: 
+    'AUC.R'
+    'CMSA.R'
+    'FBM-attach.R'
+    'crochet.R'
+    'FBM.R'
+    'FBM-code256.R'
+    'FBM-copy-coerce.R'
+    'RcppExports.R'
+    'SVD.R'
+    'apply-parallelize.R'
+    'biglasso.R'
+    'bigstatsr.R'
+    'colstats.R'
+    'counts.R'
+    'crossprodSelf.R'
+    'plot.R'
+    'predict.R'
+    'randomSVD.R'
+    'readBM.R'
+    'scaling.R'
+    'sparseSVM.R'
+    'tcrossprodSelf.R'
+    'transpose.R'
+    'univLinReg.R'
+    'univLogReg.R'
+    'utils-assert.R'
+    'utils-mult.R'
+    'utils.R'
+    'zzz.R'

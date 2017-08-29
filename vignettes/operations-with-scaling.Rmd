@@ -1,5 +1,5 @@
 ---
-title: "How to handle operations on a scaled \"big.matrix\""
+title: "How to handle operations on a scaled Big Matrix?"
 author: "Florian Privé"
 date: "February 9, 2017"
 output: html_document
@@ -71,26 +71,26 @@ So, we have shown that we can compute a product between a scaled version of a  l
 Let use the `big_apply` function to implement the main problem we have treated in this document.
 
 ```{r}
-X.desc <- big_attachExtdata()
+X <- big_attachExtdata()
 # simulate some data
-M <- matrix(0, ncol(X.desc), 10)
+M <- matrix(0, ncol(X), 10)
 M[] <- rnorm(length(M))
 ```
 
 ```{r}
 ### Treating mu as any vector
 # get mu and s as the column means and column standard deviations
-stats_scale <- big_scale(center = TRUE, scale = TRUE)(X.desc)
+stats_scale <- big_scale(center = TRUE, scale = TRUE)(X)
 
 # compute M_s
-M_s <- M / stats_scale$sd
+M_s <- M / stats_scale$scale
 # compute the product, without scaling X
-XM_s <- big_prodMat(X.desc, M_s)
+XM_s <- big_prodMat(X, M_s)
 # adjust the result
-final <- sweep(XM_s, 2, crossprod(stats_scale$mean, M_s), '-')
+final <- sweep(XM_s, 2, crossprod(stats_scale$center, M_s), '-')
 
 # verification
-true <- scale(attach.BM(X.desc)[,]) %*% M
+true <- scale(X[]) %*% M
 all.equal(final, true)
 
 ### Knowing that mu is the column means of X
@@ -99,4 +99,3 @@ final2 <- sweep(XM_s, 2, colMeans(XM_s), '-')
 # verification
 all.equal(final2, final)
 ```
-

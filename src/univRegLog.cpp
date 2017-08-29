@@ -1,7 +1,7 @@
 /******************************************************************************/
 
 #include <RcppArmadillo.h>
-#include <bigstatsr/SubMatAcc.h>
+#include <bigstatsr/BMCodeAcc.h>
 #include <bigstatsr/univLogReg.hpp>
 
 using namespace Rcpp;
@@ -14,7 +14,7 @@ using namespace Rcpp;
 
 // Dispatch function for IRLS
 // [[Rcpp::export]]
-List IRLS(const S4& BM,
+List IRLS(Environment BM,
           arma::mat& covar,
           const arma::vec& y,
           const arma::vec& z0,

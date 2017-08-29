@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cross-product with a matrix — big_cprodMat • bigstatsr</title>
+<title>Cross-product with a matrix � big_cprodMat • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -99,19 +100,18 @@
     </div>
 
     
-    <p>Cross-product between a "big.matrix" and a matrix.</p>
+    <p>Cross-product between a Filebacked Big Matrix and a matrix.</p>
     
 
-    <pre class="usage"><span class='fu'>big_cprodMat</span>(<span class='no'>X.</span>, <span class='no'>A.row</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.</span>),
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A.row</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
+  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='no'>ncores</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X.</th>
-      <td><p>Either a big.matrix or
-a big.matrix.descriptor.</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>A.row</th>
@@ -128,13 +128,14 @@ If not specified, all rows are used. <strong>Don't use negative indices.</strong
 If not specified, all columns are used. <strong>Don't use negative indices.</strong></p></td>
     </tr>
     <tr>
-      <th>block.size</th>
-      <td><p>Maximum number of columns read at once. Default is <code>1000</code>.</p></td>
-    </tr>
-    <tr>
       <th>ncores</th>
       <td><p>Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.</p></td>
+You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
+    </tr>
+    <tr>
+      <th>block.size</th>
+      <td><p>Maximum number of columns read at once.
+Default uses <a href='block_size.html'>block_size</a>.</p></td>
     </tr>
     </table>
     
@@ -144,23 +145,24 @@ We advise you to use only half of the cores you have.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X.desc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X.desc</span>)
-<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>ncol</span>(<span class='no'>X.desc</span>)
+    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X</span>)
+<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>ncol</span>(<span class='no'>X</span>)
 <span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='no'>n</span>, <span class='fl'>10</span>); <span class='no'>A</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>A</span>))
 
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X.desc</span>, <span class='no'>A</span>)
-<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[,], <span class='no'>A</span>)
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A</span>)
+<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='no'>X</span>[], <span class='no'>A</span>)
 <span class='fu'>all.equal</span>(<span class='no'>test</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># subsetting</span>
 <span class='no'>ind.row</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>)
 <span class='no'>ind.col</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>m</span>, <span class='no'>m</span>/<span class='fl'>2</span>)
 
-<span class='co'>## Not run: test2 &amp;lt;- big_cprodMat(X.desc, A, ind.row, ind.col)</span>
-<span class='co'># returns an error. You need to use the subset of A:</span>
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X.desc</span>, <span class='no'>A</span>[<span class='no'>ind.row</span>, ], <span class='no'>ind.row</span>, <span class='no'>ind.col</span>)
-<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='fu'><a href='completeness-methods.html'>attach.BM</a></span>(<span class='no'>X.desc</span>)[<span class='no'>ind.row</span>, <span class='no'>ind.col</span>], <span class='no'>A</span>[<span class='no'>ind.row</span>, ])
-<span class='fu'>all.equal</span>(<span class='no'>test2</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>tryCatch</span>(<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A</span>, <span class='no'>ind.row</span>, <span class='no'>ind.col</span>),
+         <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'>print</span>(<span class='no'>e</span>))</div><div class='output co'>#&gt; &lt;simpleError: Incompatibility between dimensions.&gt;</div><div class='input'><span class='co'># returns an error. You need to use the subset of A:</span>
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A</span>[<span class='no'>ind.row</span>, ], <span class='no'>ind.row</span>, <span class='no'>ind.col</span>)
+<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='no'>X</span>[<span class='no'>ind.row</span>, <span class='no'>ind.col</span>], <span class='no'>A</span>[<span class='no'>ind.row</span>, ])
+<span class='fu'>all.equal</span>(<span class='no'>test2</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

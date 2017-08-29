@@ -4,12 +4,11 @@
 \alias{big_crossprodSelf}
 \title{Crossprod}
 \usage{
-big_crossprodSelf(X., fun.scaling, ind.row = rows_along(X.),
-  ind.col = cols_along(X.), block.size = 1000)
+big_crossprodSelf(X, fun.scaling, ind.row = rows_along(X),
+  ind.col = cols_along(X), block.size = block_size(nrow(X)))
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
@@ -21,43 +20,48 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{block.size}{Maximum number of columns read at once. Default is \code{1000}.}
+\item{block.size}{Maximum number of columns read at once.
+Default uses \link{block_size}.}
 }
 \value{
-A matrix, \eqn{X.row^T X.row}, with the following two attributes:
+A temporary \link[=FBM-class]{FBM}, with the following two attributes:
 \itemize{
-\item a numeric vector \code{mean} of column scaling,
-\item a numeric vector \code{sd} of column scaling.
+\item a numeric vector \code{center} of column scaling,
+\item a numeric vector \code{scale} of column scaling.
 }
 }
 \description{
-Compute \eqn{X.row^T X.row} for a \code{big.matrix} \code{X}
+Compute \eqn{X.row^T X.row} for a Filebacked Big Matrix \code{X}
 after applying a particular scaling to it.
 }
-\details{
-This algorithm is not really memory efficient. I'm planning on fixing this,
-if it is really needed.
+\section{Matrix parallelization}{
+
+Large matrix computations (crossprods) are made block-wise and won't
+be parallelized in order to not have to reduce the size of these blocks.
+Instead, you may use \href{https://mran.microsoft.com/open/}{Microsoft R Open}
+in order to accelerate these block matrix computations.
 }
+
 \examples{
-X.desc <- big_attachExtdata()
+X <- FBM(13, 17, init = rnorm(221))
 
 # Comparing with tcrossprod
 big_noscale <- big_scale(center = FALSE)
-K <- big_crossprodSelf(X.desc, fun.scaling = big_noscale)
+K <- big_crossprodSelf(X, fun.scaling = big_noscale)
+class(K)
 dim(K)
+K$backingfile
 
-true <- crossprod(attach.BM(X.desc)[,])
-all.equal(K, true, check.attributes = FALSE)
+true <- crossprod(X[])
+all.equal(K[], true)
 
 # Using only half of the data
-n <- nrow(X.desc)
+n <- nrow(X)
 ind <- sort(sample(n, n/2))
-K2 <- big_crossprodSelf(X.desc, fun.scaling = big_noscale,
-                           ind.row = ind)
-dim(K2)
+K2 <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.row = ind)
 
-true2 <- crossprod(attach.BM(X.desc)[ind, ])
-all.equal(K2, true2, check.attributes = FALSE)
+true2 <- crossprod(X[ind, ])
+all.equal(K2[], true2)
 
 
 }

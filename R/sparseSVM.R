@@ -178,12 +178,11 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train,
 #'
 #' @seealso [LiblineaR][LiblineaR::LiblineaR] [sparseSVM][sparseSVM::sparseSVM]
 #'
-big_spSVM <- function(X., y01.train, ind.train = rows_along(X.),
+big_spSVM <- function(X, y01.train, ind.train = rows_along(X),
                       covar.train = NULL, ...) {
 
   check_args()
 
-  X <- attach.BM(X.)
   COPY_sparseSVM(X, y01.train, ind.train, covar.train, ...)
 }
 

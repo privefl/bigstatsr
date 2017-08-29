@@ -1,13 +1,12 @@
 ################################################################################
 
-univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
+univLogReg_sub <- function(X, ind, covar.train, y01.train, z0, w0,
                            ind.train, tol, maxiter) {
-  X <- attach.BM(X.)
 
   res <- IRLS(X, covar.train, y01.train, z0, w0,
               ind.train, ind, tol, maxiter)
 
-  # using `glm` if not converged
+  # Using `glm` if not converged
   indNoConv <- which(res$niter >= maxiter | is.nan(res$estim))
   res$niter[indNoConv] <- NA
   for (j in indNoConv) {
@@ -27,7 +26,7 @@ univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
 #' Column-wise logistic regression
 #'
 #' Slopes of column-wise logistic regressions of each column
-#' of a `big.matrix`, with some other associated statistics.
+#' of a Filebacked Big Matrix, with some other associated statistics.
 #' Covariates can be added to correct for confounders.
 #'
 #' If convergence is not reached by the main algorithm for some columns,
@@ -56,13 +55,13 @@ univLogReg_sub <- function(X., ind, covar.train, y01.train, z0, w0,
 #'
 #' @seealso [glm][stats::glm]
 #' @export
-big_univLogReg <- function(X., y01.train,
-                           ind.train = rows_along(X.),
-                           ind.col = cols_along(X.),
+big_univLogReg <- function(X, y01.train,
+                           ind.train = rows_along(X),
+                           ind.col = cols_along(X),
                            covar.train = NULL,
-                           ncores = 1,
                            tol = 1e-8,
-                           maxiter = 20) {
+                           maxiter = 20,
+                           ncores = 1) {
   check_args()
 
   n <- length(ind.train)
@@ -76,7 +75,7 @@ big_univLogReg <- function(X., y01.train,
   z0 <- log(p0 / (1 - p0)) + (y01.train - p0) / w0
 
   # main computation
-  res <- big_parallelize(X. = X.,
+  res <- big_parallelize(X = X,
                          p.FUN = univLogReg_sub,
                          p.combine = "rbind",
                          ind = ind.col,

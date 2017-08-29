@@ -2,14 +2,10 @@
 
 context("SP_LOG_REG")
 
-opt.save <- options(bigmemory.typecast.warning = FALSE,
-                    bigmemory.default.shared = TRUE)
-
-
 # Simulating some data
 N <- 73
 M <- 230
-x <- matrix(rnorm(N * M, sd = 5), N)
+x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 y <- sample(0:1, size = N, replace = TRUE)
 
 covar0 <- matrix(rnorm(N * 3), N)
@@ -18,17 +14,16 @@ lcovar <- list(NULL, covar0)
 ################################################################################
 
 test_that("equality with biglasso with all data", {
-  for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in lcovar) {
-      X2 <- as.big.matrix(cbind(X[], covar), type = "double")
+      X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double")
       m <- runif(ncol(X2), min = 0.5, max = 2)
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr <- big_spLogReg(X., y, covar.train = covar, alpha = alpha,
+      mod.bigstatsr <- big_spLogReg(X, y, covar.train = covar, alpha = alpha,
                                     lambda.min = lambda.min, penalty.factor = m)
       mod.biglasso <- biglasso::biglasso(X2, y,
                                          family = "binomial",
@@ -52,17 +47,16 @@ test_that("equality with biglasso with only half the data", {
     ind <- sample(N, N / 2)
   }
 
-  for (t in ALL.TYPES) {
-    X <- `if`(t == "raw", asBMcode(x), as.big.matrix(x, type = t))
-    X. <- `if`(runif(1) > 0.5, X, bigmemory::describe(X))
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in lcovar) {
-      X2 <- as.big.matrix(cbind(X[], covar), type = "double")
+      X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double")
       m <- runif(ncol(X2), min = 0.5, max = 2)
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr <- big_spLogReg(X., y[ind], ind.train = ind,
+      mod.bigstatsr <- big_spLogReg(X, y[ind], ind.train = ind,
                                     covar.train = covar[ind, ],
                                     alpha = alpha,
                                     lambda.min = lambda.min,
@@ -81,9 +75,5 @@ test_that("equality with biglasso with only half the data", {
     }
   }
 })
-
-################################################################################
-
-options(opt.save)
 
 ################################################################################

@@ -1,8 +1,10 @@
 /******************************************************************************/
 
+#include <bigstatsr/BMAcc.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
@@ -10,69 +12,76 @@ using namespace Rcpp;
 NumericMatrix& scaling(NumericMatrix& source,
                        const NumericVector& mean,
                        const NumericVector& sd) {
-  int n = source.rows();
-  int m = source.cols();
 
-  for (int j = 0; j < m; j++) {
-    for (int i = 0; i < n; i++) {
-      source(i,j) -= mean[j];
-      source(i,j) /= sd[j];
+  size_t n = source.rows();
+  size_t m = source.cols();
+  size_t i, j;
+
+  for (j = 0; j < m; j++) {
+    for (i = 0; i < n; i++) {
+      source(i, j) -= mean[j];
+      source(i, j) /= sd[j];
     }
   }
 
-  return(source);
+  return source;
 }
 
 /******************************************************************************/
 
-// For a squared matrix
+// For a squared FBM
 // [[Rcpp::export]]
-NumericMatrix& complete2(NumericMatrix& mat) {
-  int m = mat.ncol();
-  int i, j;
+void complete2(Environment BM) {
+
+  XPtr<FBM> xpBM = BM["address"];
+  BMAcc<double> K(xpBM);
+  size_t m = K.ncol();
+  size_t i, j;
 
   for (j = 0; j < m; j++)
     for (i = j+1; i < m; i++)
-      mat(i, j) = mat(j, i);
-
-  return mat;
+      K(i, j) = K(j, i);
 }
 
 /******************************************************************************/
 
-// For a square matrix
+// For a square FBM
 // [[Rcpp::export]]
-NumericMatrix& incrSup2(NumericMatrix& mat, const NumericMatrix& source) {
-  int m = mat.ncol();
-  int i, j;
+void incrSup2(Environment BM,
+              const NumericMatrix& source) {
+
+  XPtr<FBM> xpBM = BM["address"];
+  BMAcc<double> K(xpBM);
+  size_t m = K.ncol();
+  size_t i, j;
 
   for (j = 0; j < m; j++)
     for (i = 0; i <= j; i++)
-      mat(i, j) += source(i,j);
-
-  return mat;
+      K(i, j) += source(i, j);
 }
 
 /******************************************************************************/
 
+// For a square FBM
 // [[Rcpp::export]]
-NumericMatrix& correlize(NumericMatrix& mat,
-                         const NumericVector& shift,
-                         const NumericVector& scale) {
+void scaleK(Environment BM,
+                      const NumericVector& sums,
+                      const NumericVector& mu,
+                      const NumericVector& delta,
+                      int nrow) {
 
-  int n = mat.nrow();
-  int i, j;
+  XPtr<FBM> xpBM = BM["address"];
+  BMAcc<double> K(xpBM);
+  size_t n = K.nrow();
+  size_t i, j;
 
   for (j = 0; j < n; j++) {
     for (i = 0; i < n; i++) {
-      // corresponds to "- \frac{1}{n} s_X * s_X^T"
-      mat(i, j) -= shift(i) * shift(j);
-      // corresponds to "S^T (...) S"
-      mat(i, j) /= scale(i) * scale(j);
+      K(i, j) -= sums[i] * mu[j] + mu[i] * sums[j];
+      K(i, j) += nrow * mu[i] * mu[j];
+      K(i, j) /= delta(i) * delta(j);
     }
   }
-
-  return mat;
 }
 
 /******************************************************************************/

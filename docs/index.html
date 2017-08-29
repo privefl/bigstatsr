@@ -77,41 +77,31 @@
 <div id="bigstatsr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#bigstatsr" class="anchor"></a>bigstatsr</h1></div>
-<p>The R package <strong>bigstatsr</strong> provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory. The package relies on the format <code>big.matrix</code> provided by the R package <a href="https://github.com/kaneplusplus/bigmemory"><strong>bigmemory</strong></a> .</p>
-<p>The package <strong>bigstatsr</strong> enables users with laptop to perform statistical analysis of several dozens of gigabytes of data. The package is fast and efficient because of four different reasons. First, <strong>bigstatsr</strong> is memory-efficient because it uses only small chunks of data at a time. Second, special care has been taken to implement effective algorithms. Third, <code>big.matrix</code> objects use memory-mapping, which provides efficient accesses to matrices. Finally, as matrices are stored on-disk, many processes can easily access them in parallel.</p>
+<p>The R package <strong>bigstatsr</strong> provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format <code>big.matrix</code> provided by the R package <a href="https://github.com/kaneplusplus/bigmemory"><strong>bigmemory</strong></a>, which is <strong>no longer used</strong> by this package.</p>
 <p><a href="https://t.co/aYt0q8MeXJ">Lightning talk at UseR!2017</a></p>
 <p><a href="https://privefl.github.io/bigstatsr/reference/index.html"><strong>LIST OF FEATURES</strong></a></p>
 <p><strong>Note that most of the algorithms of this package don’t handle missing values.</strong></p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>For now, you can install this package using</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"privefl/bigstatsr"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># For the CRAN version</span>
+## Coming soon
+
+<span class="co"># For the current development version</span>
+devtools::<span class="kw">install_github</span>(<span class="st">"privefl/bigstatsr"</span>)
+
+<span class="co"># For the first version (depending on package bigmemory)</span>
+devtools::<span class="kw">install_github</span>(<span class="st">"privefl/bigstatsr"</span>, <span class="dt">ref =</span> <span class="st">"v-bigmemory"</span>)</code></pre></div>
 </div>
 <div id="input-format" class="section level2">
 <h2 class="hasAnchor">
 <a href="#input-format" class="anchor"></a>Input format</h2>
-<p>As inputs, the package <strong>bigstatsr</strong> can use either <code>big.matrix.descriptor</code> objects or simply <code>big.matrix</code> objects (hereinafter referred to as ‘bigmatrices’). Using filebacked bigmatrices seems a convenient solution as it uses only disk storage. Descriptors may be preferred for several reasons:</p>
-<ul>
-<li>it prevents the user from making common mistakes such as loading all the matrix in memory (e.g. by typing <code>X[,]</code> — we recall that this package aims at handling matrices that are too large to fit in memory).</li>
-<li>it prevents the R session from crashing when re-attaching bigmatrices. Indeed, as a <code>big.matrix</code> object is an external pointer to a C++ data structure, R can’t re-attach it (e.g. when restarting the R session) without any further information. The <code>big.matrix.descriptor</code> object provides this information.</li>
-<li>in order to use parallel computing with bigmatrices, you need to use <code>big.matrix.descriptor</code> objects at a given point in time.</li>
-</ul>
-<p>Moreover, a new class is introduced: a <code>BM.code</code>. It is a bigmatrix of type <code>raw</code> (one byte unsigned integer) with an embedded lookup table (the slot <code>code</code>). This enables you to efficiently store a very large matrix with up to 256 different values. For example, this is used in <a href="https://privefl.github.io/bigsnpr/reference/bigSNP-class.html">package <strong>bigsnpr</strong></a> to store genotype matrices.</p>
-<p>To facilitate the manipulation of descriptors and <code>BM.code</code> objects, some methods have been added/extended:</p>
-<ul>
-<li>
-<code>nrow</code>, <code>ncol</code>, <code>dim</code> and <code>length</code> of a descriptor object access the underlying dimensions of the described bigmatrix (use <code>typeof</code> to get the storage mode).</li>
-<li>
-<code>describe</code> and <code>attach.BM</code> are used to switch between descriptors and bigmatrices. Note that, in order to standardize algorithms, describing a descriptor or attaching a bigmatrix simply returns the same object.</li>
-<li>
-<code>as.BM.code</code> to convert a bigmatrix to a <code>BM.code</code> (by specifying its lookup table).</li>
-</ul>
+<p>As inputs, the package <strong>bigstatsr</strong> use <a href="https://privefl.github.io/bigstatsr/reference/FBM-class.html">Filebacked Big Matrices (FBM)</a>.</p>
 </div>
 <div id="bug-report" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-report" class="anchor"></a>Bug report</h2>
-<p>Please open an issue if you find a bug. If you want help using <strong>bigmemory</strong> or <strong>bigstatsr</strong>, please post on Stack Overflow with the tag <em>r-bigmemory</em>. <a href="https://stackoverflow.com/q/5963269/6103040">How to make a great R reproducible example?</a></p>
+<p>Please open an issue if you find a bug. If you want help using <strong>bigstatsr</strong>, please post on Stack Overflow with the tag <em>bigstatsr</em> (not yet created). <a href="https://stackoverflow.com/q/5963269/6103040">How to make a great R reproducible example?</a></p>
 </div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
@@ -131,7 +121,7 @@
 </li>
 </ul>
 <h2>License</h2>
-<p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a> + file <a href="LICENSE">LICENSE</a></p>
+<p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a> + file <a href="LICENSE.html">LICENSE</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Florian Privé <br><small class="roles"> Author, maintainer </small> </li>
@@ -140,6 +130,7 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/privefl/bigstatsr"><img src="https://travis-ci.org/privefl/bigstatsr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/privefl/bigstatsr"><img src="https://ci.appveyor.com/api/projects/status/github/privefl/bigstatsr?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
 <li><a href="https://codecov.io/github/privefl/bigstatsr?branch=master"><img src="https://img.shields.io/codecov/c/github/privefl/bigstatsr/master.svg" alt="Coverage Status"></a></li>
 <li><a href="https://cran.r-project.org/package=bigstatsr"><img src="http://www.r-pkg.org/badges/version/bigstatsr" alt="CRAN_Status_Badge"></a></li>
 </ul>

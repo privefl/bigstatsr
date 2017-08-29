@@ -4,13 +4,12 @@
 \alias{big_univLogReg}
 \title{Column-wise logistic regression}
 \usage{
-big_univLogReg(X., y01.train, ind.train = rows_along(X.),
-  ind.col = cols_along(X.), covar.train = NULL, ncores = 1, tol = 1e-08,
-  maxiter = 20)
+big_univLogReg(X, y01.train, ind.train = rows_along(X),
+  ind.col = cols_along(X), covar.train = NULL, tol = 1e-08,
+  maxiter = 20, ncores = 1)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 \strong{Must be only 0s and 1s.}}
@@ -26,9 +25,6 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-We advise you to use only half of the cores you have.}
-
 \item{tol}{Relative tolerance to assess convergence of the coefficient.
 Default is \code{1e-8}.}
 
@@ -36,6 +32,9 @@ Default is \code{1e-8}.}
 Default is \code{20}. Usually, convergence is reached within 3 or 4 iterations.
 If there is not convergence,
 \link[stats:glm]{glm} is used instead for the corresponding column.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 }
 \value{
 A data.frame with 4 elements:
@@ -50,7 +49,7 @@ This is also an object of class \code{mhtest}. See \code{methods(class = "mhtest
 }
 \description{
 Slopes of column-wise logistic regressions of each column
-of a \code{big.matrix}, with some other associated statistics.
+of a Filebacked Big Matrix, with some other associated statistics.
 Covariates can be added to correct for confounders.
 }
 \details{
@@ -62,15 +61,15 @@ If it can't converge either, all corresponding estimations are set to \code{NA}.
 \examples{
 set.seed(1)
 
-X.desc <- big_attachExtdata()
-n <- nrow(X.desc)
+X <- big_attachExtdata()
+n <- nrow(X)
 y01 <- sample(0:1, size = n, replace = TRUE)
 covar <- matrix(rnorm(n * 3), n)
 
-X1 <- attach.BM(X.desc)[, 1] # only first column of the `big.matrix`
+X1 <- X[, 1] # only first column of the Filebacked Big Matrix
 
 # Without covar
-test <- big_univLogReg(X.desc, y01)
+test <- big_univLogReg(X, y01)
 ## new class `mhtest`
 class(test)
 attr(test, "transfo")
@@ -84,12 +83,12 @@ str(test)
 summary(glm(y01 ~ X1, family = "binomial"))$coefficients[2, ]
 
 # With all data
-str(big_univLogReg(X.desc, y01, covar.train = covar))
+str(big_univLogReg(X, y01, covar.train = covar))
 summary(glm(y01 ~ X1 + covar, family = "binomial"))$coefficients[2, ]
 
 # With only half of the data
 ind.train <- sort(sample(n, n/2))
-str(big_univLogReg(X.desc, y01[ind.train],
+str(big_univLogReg(X, y01[ind.train],
                    covar.train = covar[ind.train, ],
                    ind.train = ind.train))
 summary(glm(y01 ~ X1 + covar, family = "binomial",

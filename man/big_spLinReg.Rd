@@ -4,12 +4,10 @@
 \alias{big_spLinReg}
 \title{Sparse linear regression}
 \usage{
-big_spLinReg(X., y.train, ind.train = rows_along(X.), covar.train = NULL,
-  ...)
+big_spLinReg(X, y.train, ind.train = rows_along(X), covar.train = NULL, ...)
 }
 \arguments{
-\item{X.}{Either a \link[=big.matrix-class]{big.matrix} or
-a \link[=big.matrix.descriptor-class]{big.matrix.descriptor}.}
+\item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 
@@ -94,14 +92,14 @@ model fitting.}
 \code{lambda}.}
 }
 \description{
-Fit lasso penalized linear regression path for a \code{big.matrix}.
+Fit lasso penalized linear regression path for a Filebacked Big Matrix.
 Covariates can be added to correct for confounders.
 }
 \details{
 \strong{This is a modified version of one function of
 \href{https://github.com/YaohuiZeng/biglasso}{package biglasso}}.
 It adds the possibility to train models with covariables and use many
-types of \code{big.matrix} (not only \code{double} ones).
+types of \code{FBM} (not only \code{double} ones).
 Yet, it only corresponds to \code{screen = "SSR"} (Sequential Strong Rules).
 }
 \examples{
@@ -110,28 +108,28 @@ set.seed(1)
 # simulating some data
 N <- 73
 M <- 430
-X <- as.big.matrix(matrix(rnorm(N*M, sd = 5), N), type = "integer")
+X <- FBM(N, M, init = rnorm(N * M, sd = 5), type = "integer")
 y <- rnorm(N)
 covar <- matrix(rnorm(N * 3), N)
 
-# error, only handle `double` `big.matrix` objects
-\dontrun{
-  test <- biglasso::biglasso(X, y, family = "gaussian")
-  print(summary(test$scale))}
+# Error, only handle `double` `big.matrix` objects
+X2 <- bigmemory::as.big.matrix(X[], type = "integer")
+\dontrun{biglasso::biglasso(X2, y, family = "gaussian")}
 
 # OK here
 test2 <- big_spLinReg(X, y)
 str(test2)
 
-# how to use covariables?
-X2 <- as.big.matrix(cbind(X[,], covar), type = "double")
+# How to use covariables?
+X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double")
 test <- biglasso::biglasso(X2, y, family = "gaussian", lambda.min = 0.01,
                            alpha = 0.5, penalty = "enet")
 test2 <- big_spLinReg(X, y, covar.train = covar, alpha = 0.5)
-# verification
-print(all.equal(test2$lambda, test$lambda))
-print(all.equal(test2$beta@x, test$beta[-1, ]@x))
-print(all.equal(test2$intercept, test$beta[1, ]))
+
+# Verification
+all.equal(test2$lambda, test$lambda)
+all.equal(test2$beta@x, test$beta[-1, ]@x)
+all.equal(test2$intercept, test$beta[1, ])
 }
 \references{
 Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,
