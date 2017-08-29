@@ -18,6 +18,7 @@ Description: Easy-to-use, efficient, flexible and scalable statistical tools.
     Use Filebacked Big Matrices matrices.
 License: GPL-3 + file LICENSE
 LazyData: TRUE
+ByteCompile: TRUE
 Depends: 
     R (>= 3.3.2)
 Imports: 

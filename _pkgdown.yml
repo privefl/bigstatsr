@@ -9,10 +9,12 @@ navbar:
       href: reference/index.html
     - text: "Vignettes"
       menu:
+      - text: "Introduction to package bigstatsr"
+        href: https://goo.gl/k3A5hb
+      - text: "Read a FBM from a text file"
+        href: articles/read-BM-from-file.html
       - text: "Operations with scaling"
         href: articles/operations-with-scaling.html
-      - text: "Read a BM from a text file"
-        href: articles/read-BM-from-file.html
   right:
     - text: "About"
       icon: fa-user

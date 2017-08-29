@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create an Implementation of [ For Custom Matrix-Like Types — Extract • bigstatsr</title>
+<title>All news • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -37,7 +37,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -97,63 +97,33 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9 contents">
+
+  <div class="col-md-9">
     <div class="page-header">
-    <h1>Create an Implementation of [ For Custom Matrix-Like Types</h1>
+      <h1>Change log <small>All releases</small></h1>
     </div>
 
-    
-    <p><code>extract</code> is a function that converts different index types such as negative
-integer vectors or logical vectors passed to the <code>[</code> function as <code>i</code>
-(e.g. <code>X[i]</code>) or <code>i</code> and <code>j</code> (e.g. <code>X[i, j]</code>) into positive
-integer vectors. The converted indices are provided as the <code>i</code> parameter of
-<code>extract_vector</code> or <code>i</code> and <code>j</code> parameters of <code>extract_matrix</code> to facilitate
-implementing the extraction mechanism for custom matrix-like types.</p>
-    
-
-    <pre class="usage"><span class='fu'>Extract</span>(<span class='no'>extract_vector</span>, <span class='no'>extract_matrix</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>extract_vector</th>
-      <td><p>A function in the form of <code>function(x, i)</code> that takes
-a subset of <code>x</code> based on a single vector of indices <code>i</code> and returns a vector.</p></td>
-    </tr>
-    <tr>
-      <th>extract_matrix</th>
-      <td><p>A function in the form of <code>function(x, i, j)</code> that
-takes a subset of <code>x</code> based on two vectors of indices <code>i</code> and <code>j</code> and returns
-a matrix.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A function in the form of <code>function(x, i, j, ..., drop = TRUE)</code> that
-is meant to be used as a method for <code>[</code> for a custom type.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The custom type must implement methods for <code>dim</code> for this function
-to work. Implementing methods for <code>nrow</code> and <code>ncol</code> is not necessary
-as the default method of those generics calls <code>dim</code> internally.
-    <strong>This idea initially comes from <a href='https://goo.gl/3RDNQG'>package crochet</a>.</strong></p>
-    
-
+    <div class="contents">
+    <div id="bigstatsr-0-2-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#bigstatsr-0-2-0" class="anchor"></a>bigstatsr 0.2.0</h1>
+<ul>
+<li>Major change: no longer use the <code>big.matrix</code> format of package <strong>bigmemory</strong>
+</li>
+</ul>
+</div>
+    </div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-          </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bigstatsr-0-2-0">0.2.0</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
       <footer>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Statistical Tools for Bigmemory Matrices • bigstatsr</title>
+<title>Statistical Tools for Filebacked Big Matrices • bigstatsr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -39,10 +39,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/operations-with-scaling.html">Operations with scaling</a>
+      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="articles/read-BM-from-file.html">Read a BM from a text file</a>
+      <a href="articles/read-BM-from-file.html">Read a FBM from a text file</a>
+    </li>
+    <li>
+      <a href="articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
   </ul>
 </li>
@@ -78,7 +81,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#bigstatsr" class="anchor"></a>bigstatsr</h1></div>
 <p>The R package <strong>bigstatsr</strong> provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format <code>big.matrix</code> provided by the R package <a href="https://github.com/kaneplusplus/bigmemory"><strong>bigmemory</strong></a>, which is <strong>no longer used</strong> by this package.</p>
-<p><a href="https://t.co/aYt0q8MeXJ">Lightning talk at UseR!2017</a></p>
+<p><a href="https://goo.gl/k3A5hb">Introduction to package <strong>bigstatsr</strong></a></p>
 <p><a href="https://privefl.github.io/bigstatsr/reference/index.html"><strong>LIST OF FEATURES</strong></a></p>
 <p><strong>Note that most of the algorithms of this package don’t handle missing values.</strong></p>
 <div id="installation" class="section level2">
@@ -96,7 +99,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"privefl/bigst
 <div id="input-format" class="section level2">
 <h2 class="hasAnchor">
 <a href="#input-format" class="anchor"></a>Input format</h2>
-<p>As inputs, the package <strong>bigstatsr</strong> use <a href="https://privefl.github.io/bigstatsr/reference/FBM-class.html">Filebacked Big Matrices (FBM)</a>.</p>
+<p>As inputs, the package <strong>bigstatsr</strong> uses <a href="https://privefl.github.io/bigstatsr/reference/FBM-class.html">Filebacked Big Matrices (FBM)</a>.</p>
 </div>
 <div id="bug-report" class="section level2">
 <h2 class="hasAnchor">

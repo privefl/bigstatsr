@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Correlation � big_cor • bigstatsr</title>
+<title>Correlation — big_cor • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -62,10 +62,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a BM from a text file</a>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+    </li>
+    <li>
+      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
   </ul>
 </li>
@@ -158,7 +161,7 @@ in order to accelerate these block matrix computations.</p>
 <span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cor</span>(<span class='no'>X</span>)
 <span class='fu'>class</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] "FBM"
 #&gt; attr(,"package")
-#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpMLJxFl\\file15c052c2559c.bk"</div><div class='input'>
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpYghAli/filedd1334e134a.bk"</div><div class='input'>
 <span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>cor</span>(<span class='no'>X</span>[])
 <span class='fu'>all.equal</span>(<span class='no'>K</span>[], <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data</span>

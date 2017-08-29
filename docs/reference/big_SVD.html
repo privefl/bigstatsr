@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Partial SVD � big_SVD • bigstatsr</title>
+<title>Partial SVD — big_SVD • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -62,10 +62,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a BM from a text file</a>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+    </li>
+    <li>
+      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
   </ul>
 </li>
@@ -199,7 +202,7 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
 <span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='no'>test</span>$<span class='no'>u</span> <span class='kw'>%*%</span> <span class='fu'>diag</span>(<span class='no'>test</span>$<span class='no'>d</span>)
 <span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "big_SVD"</div><div class='input'><span class='no'>scores2</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>) <span class='co'># use this function to predict scores</span>
 <span class='fu'>all.equal</span>(<span class='no'>scores</span>, <span class='no'>scores2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>dim</span>(<span class='no'>scores</span>)</div><div class='output co'>#&gt; [1] 258  10</div><div class='input'><span class='fu'>dim</span>(<span class='no'>pca</span>$<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 258 258</div><div class='input'><span class='fu'>tail</span>(<span class='no'>pca</span>$<span class='no'>sdev</span>)</div><div class='output co'>#&gt; [1] 3.037803e+00 3.014497e+00 2.977890e+00 2.953051e+00 2.877736e+00
-#&gt; [6] 1.280393e-14</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+#&gt; [6] 7.585073e-15</div><div class='input'><span class='fu'>plot</span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'>ncol</span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># projecting on new data</span>
 <span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>sweep</span>(<span class='fu'>sweep</span>(<span class='no'>X</span>[-<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>center</span>, <span class='st'>'-'</span>), <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>scale</span>, <span class='st'>'/'</span>)
 <span class='no'>scores.test</span> <span class='kw'>&lt;-</span> <span class='no'>X2</span> <span class='kw'>%*%</span> <span class='no'>test</span>$<span class='no'>v</span>

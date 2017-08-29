@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Counts � big_counts • bigstatsr</title>
+<title>Counts — big_counts • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -62,10 +62,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a BM from a text file</a>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+    </li>
+    <li>
+      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
   </ul>
 </li>
@@ -177,19 +180,21 @@ Matrix of one million columns, you will create a matrix of nearly 1GB!</strong>.
 #&gt; 5     228  171  171  151  246  236  112  269  250   235
 #&gt; 9     226  325  309  346  158  215  395  134  143   159
 #&gt; &lt;NA&gt;    0    0    0    0    0    0    0    0    0     0</div><div class='input'>
-<span class='fu'>apply</span>(<span class='no'>X</span>[, <span class='fl'>1</span>:<span class='fl'>10</span>], <span class='fl'>2</span>, <span class='no'>table</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;   [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#&gt; 2   63   21   37   20  113   66   10  114  124   123
-#&gt; 5  228  171  171  151  246  236  112  269  250   235
-#&gt; 9  226  325  309  346  158  215  395  134  143   159</div><div class='input'>
+<span class='fu'>apply</span>(<span class='no'>X</span>[, <span class='fl'>1</span>:<span class='fl'>10</span>], <span class='fl'>2</span>, <span class='no'>table</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+#&gt; 2      63   21   37   20  113   66   10  114  124   123
+#&gt; 5     228  171  171  151  246  236  112  269  250   235
+#&gt; 9     226  325  309  346  158  215  395  134  143   159
+#&gt; &lt;NA&gt;    0    0    0    0    0    0    0    0    0     0</div><div class='input'>
 <span class='co'># by rows</span>
 <span class='fu'>big_counts</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 #&gt; 2     532  568  565  540  575  564  541  506  525   510
 #&gt; 5    1777 1780 1712 1755 1722 1752 1765 1805 1758  1831
 #&gt; 9    2233 2194 2265 2247 2245 2226 2236 2231 2259  2201
-#&gt; &lt;NA&gt;    0    0    0    0    0    0    0    0    0     0</div><div class='input'><span class='fu'>apply</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ], <span class='fl'>1</span>, <span class='no'>table</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;   [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#&gt; 2  532  568  565  540  575  564  541  506  525   510
-#&gt; 5 1777 1780 1712 1755 1722 1752 1765 1805 1758  1831
-#&gt; 9 2233 2194 2265 2247 2245 2226 2236 2231 2259  2201</div></pre>
+#&gt; &lt;NA&gt;    0    0    0    0    0    0    0    0    0     0</div><div class='input'><span class='fu'>apply</span>(<span class='no'>X</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ], <span class='fl'>1</span>, <span class='no'>table</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+#&gt; 2     532  568  565  540  575  564  541  506  525   510
+#&gt; 5    1777 1780 1712 1755 1722 1752 1765 1805 1758  1831
+#&gt; 9    2233 2194 2265 2247 2245 2226 2236 2231 2259  2201
+#&gt; &lt;NA&gt;    0    0    0    0    0    0    0    0    0     0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

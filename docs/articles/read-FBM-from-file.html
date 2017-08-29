@@ -39,10 +39,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a BM from a text file</a>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+    </li>
+    <li>
+      <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
   </ul>
 </li>
@@ -92,17 +95,17 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">10</span> 
 M &lt;-<span class="st"> </span><span class="dv">5</span>
 (x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N *<span class="st"> </span>M), <span class="dt">nrow =</span> N, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span>:N], LETTERS[<span class="dv">1</span>:M])))</code></pre></div>
-<pre><code>##             A           B          C           D           E
-## a  0.85767347  0.50151646  1.2341954  0.01881714  0.04895497
-## b -0.38013390  1.62876692 -0.5554458  0.48693077  0.48400645
-## c  0.25747052  1.58386261 -1.3522256  1.91476779  1.70714180
-## d -0.59649329  0.35657538 -2.4582085 -0.70400770 -0.69260583
-## e  1.59268431 -0.32057213 -0.7324864  1.43673704  0.45182208
-## f  0.04883067  0.13633631 -0.4917612  0.91243563  0.28149929
-## g  0.26229002  0.09016973 -0.6153850  0.61262745  0.47010215
-## h  0.49858539  0.23943564 -1.1344803  0.14340208  0.93618135
-## i -0.24570128 -0.25710131  0.1216500  0.39192401  1.89328805
-## j  1.39039826  0.08041765 -0.7269854  0.11550586 -0.65294729</code></pre>
+<pre><code>##             A           B            C          D           E
+## a  0.56266817 -0.84677148  1.802055559 -0.5621413  0.48816234
+## b  0.09833966  0.15411828  0.951485223 -0.7305154  2.11046376
+## c -0.35678303 -1.47821511 -0.753532459 -1.1516353 -0.68561307
+## d -0.90006978 -0.58001349 -0.841103688  0.6287839  0.90718832
+## e -0.22947527  1.38318768  0.478377740  1.7091459 -0.49482404
+## f -0.54052952  0.62995929  1.699403675  1.0530260  0.44692218
+## g -1.27081970  0.07881095  0.431950273 -1.8982343  0.63740367
+## h -0.12462601  0.37068707 -0.001907506  1.5849381 -0.14002593
+## i  1.16352096  0.31218624 -1.153699207 -1.1225131  0.35169438
+## j -0.30614320  0.98241386  1.064989346  1.3340094  0.02141235</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(x, tmp &lt;-<span class="st"> </span><span class="kw">tempfile</span>(), <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </div>
 <div id="get-some-intuition-on-the-file-format" class="section level3">
@@ -111,8 +114,8 @@ M &lt;-<span class="st"> </span><span class="dv">5</span>
 <p>I think it is always a good idea to print the first lines of the file you are interested in reading.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">readLines</span>(tmp, <span class="dv">3</span>), <span class="dv">0</span>, <span class="dv">60</span>)</code></pre></div>
 <pre><code>## [1] "A B C D E"                                                   
-## [2] "a 0.857673473002665 0.50151645579263 1.23419542280584 0.0188"
-## [3] "b -0.380133897983511 1.62876691919373 -0.555445796616095 0.4"</code></pre>
+## [2] "a 0.562668170547243 -0.846771482694089 1.80205555904332 -0.5"
+## [3] "b 0.0983396643936716 0.154118280250644 0.951485222644915 -0."</code></pre>
 <p>What you can see with these first 3 lines:</p>
 <ul>
 <li>the first line of the file stores some names,</li>
@@ -133,18 +136,18 @@ test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_re
                  <span class="dt">read.what =</span> <span class="kw">double</span>())  <span class="co"># the default</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the FBM elements</span>
 test[]</code></pre></div>
-<pre><code>##            [,1]       [,2]       [,3]       [,4]       [,5]        [,6]
-## [1,] 0.85767347 -0.3801339  0.2574705 -0.5964933  1.5926843  0.04883067
-## [2,] 0.50151646  1.6287669  1.5838626  0.3565754 -0.3205721  0.13633631
-## [3,] 1.23419542 -0.5554458 -1.3522256 -2.4582085 -0.7324864 -0.49176125
-## [4,] 0.01881714  0.4869308  1.9147678 -0.7040077  1.4367370  0.91243563
-## [5,] 0.04895497  0.4840065  1.7071418 -0.6926058  0.4518221  0.28149929
-##             [,7]       [,8]       [,9]       [,10]
-## [1,]  0.26229002  0.4985854 -0.2457013  1.39039826
-## [2,]  0.09016973  0.2394356 -0.2571013  0.08041765
-## [3,] -0.61538504 -1.1344803  0.1216500 -0.72698538
-## [4,]  0.61262745  0.1434021  0.3919240  0.11550586
-## [5,]  0.47010215  0.9361814  1.8932881 -0.65294729</code></pre>
+<pre><code>##            [,1]        [,2]       [,3]       [,4]       [,5]       [,6]
+## [1,]  0.5626682  0.09833966 -0.3567830 -0.9000698 -0.2294753 -0.5405295
+## [2,] -0.8467715  0.15411828 -1.4782151 -0.5800135  1.3831877  0.6299593
+## [3,]  1.8020556  0.95148522 -0.7535325 -0.8411037  0.4783777  1.6994037
+## [4,] -0.5621413 -0.73051536 -1.1516353  0.6287839  1.7091459  1.0530260
+## [5,]  0.4881623  2.11046376 -0.6856131  0.9071883 -0.4948240  0.4469222
+##             [,7]         [,8]       [,9]       [,10]
+## [1,] -1.27081970 -0.124626011  1.1635210 -0.30614320
+## [2,]  0.07881095  0.370687070  0.3121862  0.98241386
+## [3,]  0.43195027 -0.001907506 -1.1536992  1.06498935
+## [4,] -1.89823430  1.584938079 -1.1225131  1.33400940
+## [5,]  0.63740367 -0.140025926  0.3516944  0.02141235</code></pre>
 </div>
 <div id="understand-the-resulting-object" class="section level3">
 <h3 class="hasAnchor">
@@ -178,22 +181,22 @@ test[]</code></pre></div>
 ##  $ ncol       : int 5
 ##  $ type       : Named int 8
 ##   ..- attr(*, "names")= chr "double"
-##  $ backingfile: chr "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpcHNKoD\\file2b7c38531d04.bk"
+##  $ backingfile: chr "/tmp/RtmpEEWtoJ/file1087890c270.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test[] -<span class="st"> </span>x</code></pre></div>
 <pre><code>##               A             B             C             D             E
-## a  3.330669e-16 -3.330669e-16 -6.661338e-16  6.938894e-18  2.775558e-17
-## b  4.996004e-16 -3.552714e-15 -5.551115e-16 -2.775558e-16 -5.551115e-17
-## c  3.330669e-16 -2.220446e-16 -1.332268e-15  3.108624e-15  3.108624e-15
-## d -2.220446e-16 -3.330669e-16  2.220446e-15  1.110223e-16 -3.330669e-16
-## e  3.108624e-15 -4.440892e-16  2.220446e-16  1.554312e-15 -1.110223e-16
-## f  4.857226e-17 -1.665335e-16  1.665335e-16  2.220446e-16  1.665335e-16
-## g -3.885781e-16  4.163336e-17  1.110223e-16  0.000000e+00 -4.996004e-16
-## h  2.220446e-16  0.000000e+00 -3.774758e-15 -4.718448e-16 -3.330669e-16
-## i  8.326673e-17 -3.885781e-16  4.024558e-16 -3.330669e-16  1.110223e-15
-## j -1.110223e-15  0.000000e+00 -1.110223e-16 -8.326673e-17 -2.220446e-16</code></pre>
+## a  0.000000e+00  4.440892e-16  1.554312e-15  3.330669e-16  2.775558e-16
+## b -1.387779e-17  4.440892e-16 -3.330669e-16  2.220446e-16  0.000000e+00
+## c  4.440892e-16  1.998401e-15 -4.440892e-16 -1.554312e-15 -4.440892e-16
+## d  4.440892e-16 -2.220446e-16  3.330669e-16  3.330669e-16  2.220446e-16
+## e -1.942890e-16 -2.220446e-16 -4.440892e-16 -1.998401e-15  5.551115e-17
+## f -4.440892e-16 -1.110223e-16  3.552714e-15  3.774758e-15 -1.110223e-16
+## g  3.774758e-15 -5.551115e-17  1.665335e-16  3.108624e-15  0.000000e+00
+## h -3.053113e-16 -2.775558e-16 -1.951564e-18  0.000000e+00  2.775558e-16
+## i -1.998401e-15 -1.110223e-16  1.998401e-15  4.884981e-15  3.330669e-16
+## j  1.665335e-16  4.440892e-16 -2.220446e-15  4.662937e-15 -1.387779e-17</code></pre>
 </li>
 </ol>
 </div>
@@ -259,7 +262,7 @@ transfo &lt;-<span class="st"> </span>function(read) {
 ##  $ ncol       : int 8
 ##  $ type       : Named int 4
 ##   ..- attr(*, "names")= chr "integer"
-##  $ backingfile: chr "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpcHNKoD\\file2b7c2dd21b7a.bk"
+##  $ backingfile: chr "/tmp/RtmpEEWtoJ/file10874b03fa01.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>

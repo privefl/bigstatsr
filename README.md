@@ -8,7 +8,7 @@
 
 The R package **bigstatsr** provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format `big.matrix` provided by the R package [**bigmemory**](https://github.com/kaneplusplus/bigmemory), which is **no longer used** by this package.
 
-[Lightning talk at UseR!2017](https://t.co/aYt0q8MeXJ)
+[Introduction to package **bigstatsr**](https://goo.gl/k3A5hb)
 
 [**LIST OF FEATURES**](https://privefl.github.io/bigstatsr/reference/index.html)
 
