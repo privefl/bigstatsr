@@ -4,7 +4,7 @@
 \name{bigstatsr-package}
 \alias{bigstatsr}
 \alias{bigstatsr-package}
-\title{bigstatsr: Statistical Tools for Bigmemory Matrices}
+\title{bigstatsr: Statistical Tools for Filebacked Big Matrices}
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
 
@@ -44,8 +44,8 @@ for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 }
 \description{
-Easy-to-use, efficient, flexible and scalable
-statistical tools. Use bigmemory matrices.
+Easy-to-use, efficient, flexible and scalable statistical tools.
+Use Filebacked Big Matrices matrices.
 }
 \section{Matrix parallelization}{
 
