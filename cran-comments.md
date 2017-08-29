@@ -1,7 +1,8 @@
 ## Test environments
 * local Linux (CentOS 7), R 3.3.3 and 3.4.0
 * local Windows (10), R 3.4.0
-* Linux and Mac on Travis-CI (devel and release)
+* Linux on Travis-CI (devel and release)
+* Max on Travis-CI (release)
 * Windows on Appveyor (release)
 * win-builder (devel)
 
@@ -17,7 +18,9 @@ Overall, there was 6 NOTEs:
   
 * checking installed package size ... NOTE
 
-  - 5.3Mb on Windows
+  - 12.7 Mb on Linux
+  -  5.3 Mb on Windows
+  -  < 5 Mb on Mac
 
 * checking R code for possible problems ... [10s] NOTE
   FBM.code256_RC: no visible global function definition for 'new'
