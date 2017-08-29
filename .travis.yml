@@ -17,7 +17,7 @@ r_check_args: "--no-manual --timings"
 env:
  global:
    - NOT_CRAN: true
-   - _R_CHECK_FORCE_SUGGESTS_: false
+   - _R_CHECK_FORCE_SUGGESTS_: true
 
 notifications:
   email:
