@@ -9,8 +9,8 @@ get_nline <- function(file) {
 
 #' Read a file
 #'
-#' Read a file as a Filebacked Big Matrix. For a mini-tutorial, please see the
-#' [vignette](https://privefl.github.io/bigstatsr/articles/read-BM-from-file.html).
+#' Read a file as a Filebacked Big Matrix.
+#' For a mini-tutorial, please see [this vignette](https://goo.gl/91oNxU).
 #'
 #' @inheritParams bigstatsr-package
 #' @param file The path to the file to be read.

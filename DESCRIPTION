@@ -75,7 +75,7 @@ Collate:
     'plot.R'
     'predict.R'
     'randomSVD.R'
-    'readBM.R'
+    'read.R'
     'scaling.R'
     'sparseSVM.R'
     'tcrossprodSelf.R'
