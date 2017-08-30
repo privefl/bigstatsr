@@ -58,8 +58,20 @@ FBM.code256_RC <- methods::setRefClass(
       #                  init, backingfile = tempfile(), save)
     },
 
-    copy = function(code) {
+    copy = function(code = .self$code256) {
       add_code256(.self, code = code, save = FALSE)
+    },
+
+    as.FBM = function() {
+      FBM(
+        nrow = .self$nrow,
+        ncol = .self$ncol,
+        type = "unsigned char",
+        init = NULL,
+        backingfile = sub("\\.bk$", "", .self$backingfile),
+        create_bk = FALSE,
+        save = FALSE
+      )
     },
 
     show = function() {

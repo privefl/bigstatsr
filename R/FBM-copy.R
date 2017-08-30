@@ -4,8 +4,7 @@
 #'
 #' Copy a Filebacked Big Matrix with possible subsetting.
 #'
-#' @param X Could be any matrix-like object. If it is a FBM, default uses the
-#'   same type, otherwise you should specify the type yourself.
+#' @param X Could be any matrix-like object.
 #' @inheritParams bigstatsr-package
 #' @inheritParams FBM
 #'
@@ -22,12 +21,25 @@
 #' X3 <- big_copy(mat, type = "double")
 #' X3[]
 #'
+#' X.code <- big_attachExtdata()
+#' class(X.code)
+#' X2.code <- big_copy(X.code)
+#' class(X2.code)
+#' all.equal(X.code[], X2.code[])
+#'
 big_copy <- function(X, ind.row = rows_along(X),
                      ind.col = cols_along(X),
-                     type = names(X$type),
+                     type = typeof(X),
                      backingfile = tempfile(),
                      save = FALSE,
                      block.size = block_size(length(ind.row))) {
+
+  if (inherits(X, "FBM.code256")) {
+    args <- as.list(environment())
+    args$X <- X$as.FBM()
+    res <- do.call(big_copy, args)
+    return(add_code256(res, code = X$code256, save = save))
+  }
 
   res <- FBM(
     nrow = length(ind.row),
