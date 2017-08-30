@@ -8,7 +8,7 @@ y <- sample(0:1, size = N, replace = TRUE)
 covar <- matrix(rnorm(N * 3), N)
 
 # error, only handle `double` `big.matrix` objects
-X2 <- bigmemory::as.big.matrix(X[], type = "integer")
+X2 <- bigmemory::as.big.matrix(X[], type = "integer", shared = FALSE)
 \dontrun{biglasso::biglasso(X2, y, family = "binomial")}
 
 # OK here
@@ -16,7 +16,8 @@ test2 <- big_spLogReg(X, y)
 str(test2)
 
 # how to use covariables?
-X2 <- bigmemory::as.big.matrix(cbind(X[,], covar), type = "double")
+X2 <- bigmemory::as.big.matrix(cbind(X[,], covar), type = "double",
+                               shared = FALSE)
 test <- biglasso::biglasso(X2, y, family = "binomial", lambda.min = 0.01,
                            alpha = 0.5, penalty = "enet")
 test2 <- big_spLogReg(X, y, covar.train = covar, alpha = 0.5)

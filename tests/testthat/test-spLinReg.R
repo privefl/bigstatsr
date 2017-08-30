@@ -18,7 +18,8 @@ test_that("equality with biglasso with all data", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in lcovar) {
-      X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double")
+      X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double",
+                                     shared = FALSE)
       m <- runif(ncol(X2), min = 0.5, max = 2)
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
@@ -48,7 +49,8 @@ test_that("equality with biglasso with only half the data", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in lcovar) {
-      X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double")
+      X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double",
+                                     shared = FALSE)
       m <- runif(ncol(X2), min = 0.5, max = 2)
       alpha <- runif(1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
