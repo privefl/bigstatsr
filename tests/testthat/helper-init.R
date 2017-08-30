@@ -11,7 +11,7 @@ library(Matrix)
 
 test_cores <- function() {
 
-  is.cran      <- !identical(Sys.getenv("NOT_CRAN"), "true")
+  is.cran      <- !identical(Sys.getenv("BIGSTATSR_CRAN"), "false")
   is.randomSVD <- (get_reporter()$.context == "RANDOM_SVD")
 
   `if`(is.cran && is.randomSVD, 1, sample(2, size = 1))
