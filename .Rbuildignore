@@ -20,3 +20,4 @@
 ^useR$
 ^\.lintr$
 ^appveyor\.yml$
+^cran-comments\.md$
