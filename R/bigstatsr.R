@@ -2,6 +2,7 @@
 
 #' @useDynLib bigstatsr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @importFrom methods new
 #' @import foreach
 #'
 #' @param X A [FBM][FBM-class].

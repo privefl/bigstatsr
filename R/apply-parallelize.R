@@ -80,8 +80,8 @@ big_parallelize <- function(X, p.FUN, p.combine,
     foreach(ic = 1:ncores, .combine = p.combine) %dopar% {
       # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
       if (multi) {
-        nthreads.save <- RevoUtilsMath::setMKLthreads(1)
-        on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)
+        eval(parse(text = "threads.save <- RevoUtilsMath::setMKLthreads(1);
+                   on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)"))
       }
 
       p.FUN(X, ind = ind[seq2(range.parts[ic, ])], ...)

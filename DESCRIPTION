@@ -16,7 +16,7 @@ Authors@R: c(
            role = "ths"))
 Description: Easy-to-use, efficient, flexible and scalable statistical tools.   
     Use Filebacked Big Matrices matrices.
-License: GPL-3 + file LICENSE
+License: GPL-3
 LazyData: TRUE
 ByteCompile: TRUE
 Depends: 
@@ -46,7 +46,6 @@ Suggests:
     glmnet,
     grid,
     LiblineaR,
-    RevoUtilsMath,
     sparseSVM,
     testthat,
     viridis

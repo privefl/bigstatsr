@@ -1,4 +1,4 @@
-X <- big_attachExtdata()
+X <- FBM(10, 10, init = rnorm(100))
 
 ### Computation on all the matrix
 true <- big_colstats(X)
