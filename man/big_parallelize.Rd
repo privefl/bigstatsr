@@ -43,7 +43,7 @@ This function splits indices in parts, then apply a given function to each
 part and finally combine the results.
 }
 \examples{
-X <- big_attachExtdata()
+X <- FBM(10, 10, init = rnorm(100))
 
 ### Computation on all the matrix
 true <- big_colstats(X)

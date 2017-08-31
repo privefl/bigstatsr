@@ -75,12 +75,12 @@ big_parallelize <- function(X, p.FUN, p.combine,
     on.exit(parallel::stopCluster(cl), add = TRUE)
 
     # Microsoft R Open?
-    multi <- requireNamespace("RevoUtilsMath", quietly = TRUE)
+    multi <- eval(parse(text = "requireNamespace('RevoUtilsMath', quietly = TRUE)"))
 
     foreach(ic = 1:ncores, .combine = p.combine) %dopar% {
       # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
       if (multi) {
-        eval(parse(text = "threads.save <- RevoUtilsMath::setMKLthreads(1);
+        eval(parse(text = "nthreads.save <- RevoUtilsMath::setMKLthreads(1);
                    on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)"))
       }
 
