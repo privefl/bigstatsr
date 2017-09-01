@@ -14,8 +14,11 @@ Authors@R: c(
     person("Hugues", "Aschard", 
            email = "hugues.aschard@pasteur.fr",
            role = "ths"))
-Description: Easy-to-use, efficient, flexible and scalable statistical tools.   
-    Use Filebacked Big Matrices matrices.
+Description: Easy-to-use, efficient, flexible and scalable statistical tools.
+    Package bigstatsr provides and uses Filebacked Big Matrices via memory-mapping.
+    It provides for instance matrix operations, Principal Component Analysis, 
+    sparse linear supervised models, utility functions and more.
+    A scientific paper associated with this package is in preparation.
 License: GPL-3
 LazyData: TRUE
 ByteCompile: TRUE

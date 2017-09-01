@@ -1,3 +1,10 @@
+## This is a resubmission. In this version,
+* I've removed all the NOTEs I could.
+* I've given some examples of the statistical tools that are provided even if a full list of the features of this package has already been provided in the README file.
+* I've mentionned that there is a scientific paper in preparation associated with this package (not yet submitted, not even to bioRxiv).
+* I've removed the double space in the description. 
+
+
 ## Test environments
 * local Linux (CentOS 7), R 3.3.3 and 3.4.0
 * local Windows (10), R 3.4.0
@@ -9,30 +16,15 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
-Overall, there was 6 NOTEs:
+Overall, there were 2 NOTEs:
 
-* checking package dependencies ... NOTE
-  Package suggested but not available for checking: 'RevoUtilsMath'
-  
-  Package only available with Microsoft R Open (to check if the user is using Microsoft R Open).
-  
 * checking installed package size ... NOTE
 
-  - 12.7 Mb on Linux
-  -  5.3 Mb on Windows
+  - 12.6 Mb on Linux
+  -  5.6 Mb on Windows
   -  < 5 Mb on Mac
 
-* checking R code for possible problems ... [10s] NOTE
-  FBM.code256_RC: no visible global function definition for 'new'
-  FBM_RC: no visible global function definition for 'new'
-
-  NOTE when using Reference Classes. 
-  
-* (on win-builder) Examples with CPU or elapsed time > 10s (x2)
-
-  One example that uses parallelization and takes 12 sec to run.
-  
-* (on win-builder) * checking CRAN incoming feasibility ... NOTE
+* checking CRAN incoming feasibility ... NOTE
   Maintainer: 'Florian Privé <florian.prive.21@gmail.com>'
   New submission
   
