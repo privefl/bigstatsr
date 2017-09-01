@@ -5,85 +5,85 @@ Title: Statistical Tools for Filebacked Big Matrices
 Version: 0.2.1
 Date: 2017-08-30
 Authors@R: c(
-    person("Florian", "Privé", 
-           email = "florian.prive.21@gmail.com", 
-           role = c("aut", "cre")),
-    person("Michael", "Blum", 
-           email = "michael.blum@univ-grenoble-alpes.fr", 
-           role = "ths"),
-    person("Hugues", "Aschard", 
-           email = "hugues.aschard@pasteur.fr",
-           role = "ths"))
+  person("Florian", "Privé", 
+         email = "florian.prive.21@gmail.com", 
+         role = c("aut", "cre")),
+  person("Michael", "Blum", 
+         email = "michael.blum@univ-grenoble-alpes.fr", 
+         role = "ths"),
+  person("Hugues", "Aschard", 
+         email = "hugues.aschard@pasteur.fr",
+         role = "ths"))
 Description: Easy-to-use, efficient, flexible and scalable statistical tools.
-    Package bigstatsr provides and uses Filebacked Big Matrices via memory-mapping.
-    It provides for instance matrix operations, Principal Component Analysis, 
-    sparse linear supervised models, utility functions and more.
-    A scientific paper associated with this package is in preparation.
+  Package bigstatsr provides and uses Filebacked Big Matrices via memory-mapping.
+  It provides for instance matrix operations, Principal Component Analysis,
+  sparse linear supervised models, utility functions and more.
+  A scientific paper associated with this package is in preparation.
 License: GPL-3
 LazyData: TRUE
 ByteCompile: TRUE
 Depends: 
-    R (>= 3.3.2)
+  R (>= 3.3.2)
 Imports: 
-    cowplot,
-    doParallel,
-    foreach, 
-    ggplot2,
-    glue,
-    graphics,
-    magrittr,
-    Matrix,
-    methods,
-    parallel, 
-    Rcpp, 
-    RSpectra, 
-    stats
+  cowplot,
+  doParallel,
+  foreach, 
+  ggplot2,
+  glue,
+  graphics,
+  magrittr,
+  Matrix,
+  methods,
+  parallel, 
+  Rcpp, 
+  RSpectra, 
+  stats
 LinkingTo: 
-    BH,
-    Rcpp,
-    RcppArmadillo
+  BH,
+  Rcpp,
+  RcppArmadillo
 Suggests: 
-    biglasso, 
-    bigmemory,
-    covr, 
-    glmnet,
-    grid,
-    LiblineaR,
-    sparseSVM,
-    testthat,
-    viridis
+  biglasso, 
+  bigmemory,
+  covr, 
+  glmnet,
+  grid,
+  LiblineaR,
+  sparseSVM,
+  testthat,
+  viridis
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 Remotes: CY-dev/sparseSVM@15ed312d4d87482bbf8d48b6065e7c08c5fe1598
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
 Collate: 
-    'AUC.R'
-    'CMSA.R'
-    'FBM-attach.R'
-    'crochet.R'
-    'FBM.R'
-    'FBM-code256.R'
-    'FBM-copy.R'
-    'RcppExports.R'
-    'SVD.R'
-    'apply-parallelize.R'
-    'biglasso.R'
-    'bigstatsr.R'
-    'colstats.R'
-    'counts.R'
-    'crossprodSelf.R'
-    'plot.R'
-    'predict.R'
-    'randomSVD.R'
-    'read.R'
-    'scaling.R'
-    'sparseSVM.R'
-    'tcrossprodSelf.R'
-    'transpose.R'
-    'univLinReg.R'
-    'univLogReg.R'
-    'utils-assert.R'
-    'utils-mult.R'
-    'utils.R'
-    'zzz.R'
+  'AUC.R'
+  'CMSA.R'
+  'FBM-attach.R'
+  'crochet.R'
+  'FBM.R'
+  'FBM-code256.R'
+  'FBM-copy.R'
+  'RcppExports.R'
+  'SVD.R'
+  'apply-parallelize.R'
+  'biglasso.R'
+  'bigstatsr.R'
+  'colstats.R'
+  'counts.R'
+  'crossprodSelf.R'
+  'plot.R'
+  'predict.R'
+  'randomSVD.R'
+  'read.R'
+  'scaling.R'
+  'sparseSVM.R'
+  'tcrossprodSelf.R'
+  'transpose.R'
+  'univLinReg.R'
+  'univLogReg.R'
+  'utils-assert.R'
+  'utils-mult.R'
+  'utils.R'
+  'zzz.R'
