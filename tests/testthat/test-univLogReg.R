@@ -2,7 +2,7 @@
 
 context("UNIV_LOG_REG")
 
-TOL <- 1e-5
+TOL <- 1e-4
 
 # Simulating some data
 N <- 73

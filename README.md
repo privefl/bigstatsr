@@ -20,7 +20,7 @@ __Note that most of the algorithms of this package don't handle missing values._
 
 ```r
 # For the CRAN version
-## Coming soon
+install.packages("bigstatsr")
 
 # For the current development version
 devtools::install_github("privefl/bigstatsr")

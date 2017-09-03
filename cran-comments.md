@@ -3,6 +3,9 @@
 * I've given some examples of the statistical tools that are provided even if a full list of the features of this package has already been provided in the README file.
 * I've mentionned that there is a scientific paper in preparation associated with this package (not yet submitted, not even to bioRxiv).
 * I've removed the double space in the description. 
+* I've removed the Remotes field from the DESCRIPTION file.
+* I've reduced some tolerances of tests.
+* I've incremented the package version.
 
 
 ## Test environments

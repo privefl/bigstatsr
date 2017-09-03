@@ -2,7 +2,7 @@
 
 context("SVD")
 
-TOL <- 1e-5
+TOL <- 1e-4
 
 # function for sampling scaling
 sampleScale <- function() {

@@ -2,7 +2,7 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 0.2.1
+Version: 0.2.2
 Date: 2017-08-30
 Authors@R: c(
   person("Florian", "Privé", 
@@ -54,7 +54,6 @@ Suggests:
   viridis
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-Remotes: CY-dev/sparseSVM@15ed312d4d87482bbf8d48b6065e7c08c5fe1598
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
 Collate: 
