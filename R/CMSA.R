@@ -51,7 +51,7 @@ get_beta <- function(betas, method) {
 #' The corresponding `<FUN>.predict` function should exists.
 #' @param K Number of folds that are used.
 #' @param ... Extra parameters to be passed to FUN.
-#' @param feval Custimized evaluation function. You should always aim at
+#' @param feval Customized evaluation function. You should always aim at
 #' maximizing this function. If `feval` is like a loss function (which you
 #' want to minimize), you should use its opposite instead.
 #' Its only two arguments should be `pred` and `target` (e.g. [AUC]).

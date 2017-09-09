@@ -24,7 +24,7 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{thr.eigval}{Threshold to remove "unsignificant" singular vectors.
+\item{thr.eigval}{Threshold to remove "insignificant" singular vectors.
 Default is \code{1e-4}.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.

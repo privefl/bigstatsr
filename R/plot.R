@@ -20,7 +20,7 @@ MY_THEME <- function(p, coeff = 1) {
 #'
 #' @param x An object of class `big_SVD`.
 #' @param type Either
-#' - "screeplot": plot of decresing singular values (the default).
+#' - "screeplot": plot of decreasing singular values (the default).
 #' - "scores": plot of the scores associated with 2 Principal Components.
 #' - "loadings": plot of loadings associated with 1 Principal Component.
 #' @param nval Number of singular values to plot. Default plots all computed.

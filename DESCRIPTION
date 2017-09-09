@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 0.2.2
-Date: 2017-08-30
+Version: 0.2.3
+Date: 2017-09-08
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 
@@ -42,7 +42,8 @@ LinkingTo:
   BH,
   Rcpp,
   RcppArmadillo
-Suggests: 
+Suggests:
+  spelling, 
   biglasso, 
   bigmemory,
   covr, 

@@ -14,7 +14,7 @@ univLinReg_sub <- function(X, ind, U, y.train, ind.train) {
 #' Covariates can be added to correct for confounders.
 #'
 #' @inheritParams bigstatsr-package
-#' @param thr.eigval Threshold to remove "unsignificant" singular vectors.
+#' @param thr.eigval Threshold to remove "insignificant" singular vectors.
 #' Default is \code{1e-4}.
 #'
 #' @return A data.frame with 3 elements:

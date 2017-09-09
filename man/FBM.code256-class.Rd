@@ -18,7 +18,7 @@ add_code256(x, code, save = FALSE)
 \item{ncol}{Number of columns.}
 
 \item{code}{A numeric vector (of length 256).
-You should contruct it with \code{rep(NA_real_, 256)} and then replace the values
+You should construct it with \code{rep(NA_real_, 256)} and then replace the values
 which are of interest for you.}
 
 \item{...}{Arguments passed on to \code{FBM}

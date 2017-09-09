@@ -2,7 +2,7 @@
 % Please edit documentation in R/sparseSVM.R
 \name{COPY_sparseSVM}
 \alias{COPY_sparseSVM}
-\title{Fit sparse linear SVM with lasso or elasti-net regularization}
+\title{Fit sparse linear SVM with lasso or elastic-net regularization}
 \usage{
 COPY_sparseSVM(X, y.train, ind.train, covar.train, alpha = 1, gamma = 0.1,
   nlambda = 100, lambda.min = if (nrow(X) > ncol(X)) 0.01 else 0.05, lambda,

@@ -16,7 +16,7 @@ get_nline <- function(file) {
 #' @param file The path to the file to be read.
 #' @param file.nheader Number of lines to read at the beginning of the file,
 #' as a separate header information. Default is `0`. Each line is read as one
-#' string. You may need to postprocess it with [strsplit]. See examples.
+#' string. You may need to post-process it with [strsplit]. See examples.
 #' @param file.nline Number of total lines of the file. Default is `NULL` and a
 #' function computes it. This function doesn't work for compressed files so that
 #' you will have to explicitly specify the number of lines of the file.

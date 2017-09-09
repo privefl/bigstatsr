@@ -13,7 +13,7 @@ big_read(file, file.nheader = 0, file.nline = NULL, info.nelem = 0,
 
 \item{file.nheader}{Number of lines to read at the beginning of the file,
 as a separate header information. Default is \code{0}. Each line is read as one
-string. You may need to postprocess it with \link{strsplit}. See examples.}
+string. You may need to post-process it with \link{strsplit}. See examples.}
 
 \item{file.nline}{Number of total lines of the file. Default is \code{NULL} and a
 function computes it. This function doesn't work for compressed files so that

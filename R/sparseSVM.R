@@ -5,7 +5,7 @@
 ###        https://github.com/CY-dev/sparseSVM        ###
 #########################################################
 
-#' Fit sparse linear SVM with lasso or elasti-net regularization
+#' Fit sparse linear SVM with lasso or elastic-net regularization
 #'
 #' Fit solution paths for sparse linear SVM regularized by lasso or elastic-net
 #' over a grid of values for the regularization parameter lambda.
@@ -166,7 +166,7 @@ COPY_sparseSVM <- function(X, y.train, ind.train, covar.train,
 #' **For now, this function is not exported anymore.** This is because it
 #' doesn't match the results from package sparseSVM anymore, due to
 #' [a change](https://github.com/CY-dev/sparseSVM/pull/6) the author made.
-#' I've contacted him multiple times, without success.
+#' I have contacted him multiple times, without success.
 #' If you really want to use this function, use `bigstatsr:::big_spSVM`.
 #'
 #' @inheritParams bigstatsr-package

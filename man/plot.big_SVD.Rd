@@ -13,7 +13,7 @@
 
 \item{type}{Either
 \itemize{
-\item "screeplot": plot of decresing singular values (the default).
+\item "screeplot": plot of decreasing singular values (the default).
 \item "scores": plot of the scores associated with 2 Principal Components.
 \item "loadings": plot of loadings associated with 1 Principal Component.
 }}

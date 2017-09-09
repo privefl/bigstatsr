@@ -88,7 +88,7 @@ faster algorithm.
 \strong{For now, this function is not exported anymore.} This is because it
 doesn't match the results from package sparseSVM anymore, due to
 \href{https://github.com/CY-dev/sparseSVM/pull/6}{a change} the author made.
-I've contacted him multiple times, without success.
+I have contacted him multiple times, without success.
 If you really want to use this function, use \code{bigstatsr:::big_spSVM}.
 }
 \examples{

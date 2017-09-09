@@ -12,8 +12,8 @@
 #' and `big_univLinReg` to get betas (and then inverse them).
 #'
 #' @param center A logical value: whether to return means or 0s.
-#' @param scale A logical value: whether to return sds or 1s. **You can't
-#' use scale without using center.**
+#' @param scale A logical value: whether to return standard deviations or 1s.
+#'   **You can't use scale without using center.**
 #'
 #' @return
 #' A new **function** that returns a data.frame of two vectors

@@ -8,7 +8,7 @@
 }
 \arguments{
 \item{object}{An object of class \code{mhtest} from you get the probability
-function with possibily pre-transformation of scores.}
+function with possibly pre-transformation of scores.}
 
 \item{scores}{Raw scores (before transformation) that you want to transform
 to p-values.}

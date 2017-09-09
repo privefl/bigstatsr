@@ -9,8 +9,8 @@ big_scale(center = TRUE, scale = TRUE)
 \arguments{
 \item{center}{A logical value: whether to return means or 0s.}
 
-\item{scale}{A logical value: whether to return sds or 1s. \strong{You can't
-use scale without using center.}}
+\item{scale}{A logical value: whether to return standard deviations or 1s.
+\strong{You can't use scale without using center.}}
 }
 \value{
 A new \strong{function} that returns a data.frame of two vectors

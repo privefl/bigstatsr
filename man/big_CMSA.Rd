@@ -14,7 +14,7 @@ values along a regularization path. For now, this is relevant to
 \link{big_spLinReg}, \link{big_spLogReg} and \link{big_spSVM}.
 The corresponding \code{<FUN>.predict} function should exists.}
 
-\item{feval}{Custimized evaluation function. You should always aim at
+\item{feval}{Customized evaluation function. You should always aim at
 maximizing this function. If \code{feval} is like a loss function (which you
 want to minimize), you should use its opposite instead.
 Its only two arguments should be \code{pred} and \code{target} (e.g. \link{AUC}).}

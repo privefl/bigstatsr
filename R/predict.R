@@ -102,9 +102,9 @@ predict.big_sp <- function(object, X,
 #' Predict method for class `mhtest`.
 #'
 #' @param object An object of class `mhtest` from you get the probability
-#' function with possibily pre-transformation of scores.
+#'   function with possibly pre-transformation of scores.
 #' @param scores Raw scores (before transformation) that you want to transform
-#' to p-values.
+#'   to p-values.
 #' @param log10 Are p-values returned on the `log10` scale? Default is `TRUE`.
 #' @param ... Not used.
 #'

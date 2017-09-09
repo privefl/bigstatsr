@@ -9,7 +9,7 @@
 #'
 #' @param x A [FBM][FBM-class].
 #' @param code A numeric vector (of length 256).
-#' You should contruct it with `rep(NA_real_, 256)` and then replace the values
+#' You should construct it with `rep(NA_real_, 256)` and then replace the values
 #' which are of interest for you.
 #' @inheritParams FBM
 #'
