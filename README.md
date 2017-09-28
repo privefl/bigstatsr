@@ -39,6 +39,8 @@ As inputs, package **bigstatsr** uses [Filebacked Big Matrices (FBM)](https://pr
 Please open an issue if you find a bug.
 If you want help using **bigstatsr**, please post on Stack Overflow with the tag *bigstatsr* (not yet created). [How to make a great R reproducible example?](https://stackoverflow.com/q/5963269/6103040)
 
+- [Computing the null space of a bigmatrix in R](https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/) (works if one dimension is not too large)
+
 
 ## Code of conduct
 
