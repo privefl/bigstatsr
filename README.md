@@ -34,10 +34,12 @@ devtools::install_github("privefl/bigstatsr", ref = "v-bigmemory")
 
 As inputs, package **bigstatsr** uses [Filebacked Big Matrices (FBM)](https://privefl.github.io/bigstatsr/reference/FBM-class.html). 
 
-## Bug report
+## Bug report / Help
 
 Please open an issue if you find a bug.
 If you want help using **bigstatsr**, please post on Stack Overflow with the tag *bigstatsr* (not yet created). [How to make a great R reproducible example?](https://stackoverflow.com/q/5963269/6103040)
+
+- Parallelization: package **bigstatsr** uses package **foreach** for its parallelization tasks. Learn more on parallelism with **foreach** with [this tuto](https://privefl.github.io/blog/a-guide-to-parallelism-in-r/).
 
 - [Computing the null space of a bigmatrix in R](https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/) (works if one dimension is not too large)
 
