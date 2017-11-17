@@ -48,7 +48,7 @@ Easy-to-use, efficient, flexible and scalable statistical tools.
 Package bigstatsr provides and uses Filebacked Big Matrices via memory-mapping.
 It provides for instance matrix operations, Principal Component Analysis,
 sparse linear supervised models, utility functions and more.
-A scientific paper associated with this package is in preparation.
+Preprint: https://doi.org/10.1101/190926.
 }
 \section{Matrix parallelization}{
 
