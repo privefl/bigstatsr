@@ -35,3 +35,16 @@ test_that("Same as wilcox test", {
 })
 
 ################################################################################
+
+test_that("Same as package ROCR (AUC < 0.5)", {
+  for (i in 1:5) {
+    N <- 10^i
+    x4 <- c(sample(10, size = N, replace = TRUE),
+            sample(5,  size = N, replace = TRUE))
+    y4 <- rep(0:1, each = N)
+
+    expect_equivalent(AUC(x4, y4), ModelMetrics::auc(y4, x4))
+  }
+})
+
+################################################################################

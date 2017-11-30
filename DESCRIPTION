@@ -50,6 +50,7 @@ Suggests:
   glmnet,
   grid,
   LiblineaR,
+  ModelMetrics,
   sparseSVM,
   testthat,
   viridis

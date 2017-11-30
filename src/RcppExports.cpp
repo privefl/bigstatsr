@@ -6,15 +6,15 @@
 
 using namespace Rcpp;
 
-// auc_cpp
-double auc_cpp(const NumericVector& x_pos, const NumericVector& x_neg);
-RcppExport SEXP _bigstatsr_auc_cpp(SEXP x_posSEXP, SEXP x_negSEXP) {
+// auc_sorted
+double auc_sorted(const NumericVector& x, const LogicalVector& y);
+RcppExport SEXP _bigstatsr_auc_sorted(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_pos(x_posSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_neg(x_negSEXP);
-    rcpp_result_gen = Rcpp::wrap(auc_cpp(x_pos, x_neg));
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const LogicalVector& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(auc_sorted(x, y));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -424,7 +424,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_bigstatsr_auc_cpp", (DL_FUNC) &_bigstatsr_auc_cpp, 2},
+    {"_bigstatsr_auc_sorted", (DL_FUNC) &_bigstatsr_auc_sorted, 2},
     {"_bigstatsr_COPY_cdfit_gaussian_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_gaussian_hsr, 15},
     {"_bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_binomial_hsr, 16},
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},

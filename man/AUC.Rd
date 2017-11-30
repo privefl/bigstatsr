@@ -8,7 +8,7 @@
 \usage{
 AUC(pred, target, digits = NULL)
 
-AUCBoot(pred, target, nboot = 1000, seed = NA, digits = NULL)
+AUCBoot(pred, target, nboot = 10000, seed = NA, digits = NULL)
 }
 \arguments{
 \item{pred}{Vector of predictions.}
