@@ -49,7 +49,7 @@ RObject extractVec(RObject xpbm,
 /******************************************************************************/
 
 template <typename T, int RTYPE>
-Vector<RTYPE> extractMat(SubBMAcc<T> macc) {
+Matrix<RTYPE> extractMat(SubBMAcc<T> macc) {
 
   size_t n = macc.nrow();
   size_t m = macc.ncol();

@@ -5,6 +5,10 @@ auc_sorted <- function(x, y) {
     .Call(`_bigstatsr_auc_sorted`, x, y)
 }
 
+getXPtrFBM <- function(path, n, m, type) {
+    .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
+}
+
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose) {
     .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, covar, lambda, L, lam_scale, lambda_min, alpha, user, eps, max_iter, m, dfmax, verbose)
 }
@@ -59,10 +63,6 @@ extractVec <- function(xpbm, elemInd) {
 
 extractMat <- function(xpbm, rowInd, colInd) {
     .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
-}
-
-getXPtrFBM <- function(path, n, m, type) {
-    .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
 }
 
 pMatVec4 <- function(BM, x, rowInd, colInd) {
