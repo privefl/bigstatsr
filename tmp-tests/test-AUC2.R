@@ -1,4 +1,4 @@
-install.packages("pROC")
+# install.packages("pROC")
 y <- rep(0:1, each = 4)
 x <- c(1:4, 2:5)
 pROC::auc(y, x)
@@ -18,6 +18,10 @@ microbenchmark::microbenchmark(
   bigstatsr::AUC(x2, y2)
 )
 
+AUC3 <- function(x3, y3) {
+  wilcox.test(x3[y3 == 0], x3[y3 == 1], alternative = "less")$statistic /
+    (sum(y3 == 0) * 1 * sum(y3 == 1))
+}
 
 x3 <- sample(10, size = 1e4, replace = TRUE)
 x3 <- runif(1e3)
@@ -25,17 +29,16 @@ y3 <- sample(0:1, size = length(x3), replace = TRUE)
 pROC::auc(y3, x3)
 bigstatsr::AUC(x3, y3)
 AUC3(x3, y3)
+Hmisc::somers2(x3, y3)
 microbenchmark::microbenchmark(
   pROC::auc(y3, x3),
   bigstatsr::AUC(x3, y3),
   AUC3(x3, y3),
+  Hmisc::somers2(x3, y3),
   times = 10
 )
 
-AUC3 <- function(x3, y3) {
-  wilcox.test(x3[y3 == 0], x3[y3 == 1], alternative = "less")$statistic /
-    (sum(y3 == 0) * 1 * sum(y3 == 1))
-}
+
 
 
 set.seed(1)
@@ -49,12 +52,14 @@ bigstatsr::AUC(x4, y4)
 # AUC3(x4, y4)
 # ROCR::performance(ROCR::prediction(x4, y4), measure="auc")@y.values[[1]]
 ModelMetrics::auc(y4, x4)
+Hmisc::somers2(x4, y4)
 microbenchmark::microbenchmark(
   # pROC::auc(y4, x4),
-  bigstatsr:::AUC2(x4, as.logical(y4)),
+  bigstatsr:::AUC2(x4, y4),
   # AUC3(x4, y4),
   # ROCR::performance(ROCR::prediction(x4, y4), measure="auc")@y.values[[1]],
   ModelMetrics::auc(y4, x4),
+  Hmisc::somers2(x4, y4),
   times = 20
 )
 

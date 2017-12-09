@@ -34,6 +34,8 @@ devtools::install_github("privefl/bigstatsr", ref = "v-bigmemory")
 
 As inputs, package **bigstatsr** uses [Filebacked Big Matrices (FBM)](https://privefl.github.io/bigstatsr/reference/FBM-class.html). 
 
+To memory-map character text files, see [package **mmapcharr**](https://github.com/privefl/mmapcharr).
+
 ## Bug report / Help
 
 Please open an issue if you find a bug.
