@@ -12,6 +12,9 @@ using std::size_t;
 
 namespace bigstatsr {
 
+// Based on equations (4.4), (4.5) and (4.6) from Sikorska, K. (2014).
+// Computationally fast approaches to genome-wide association studies.
+
 arma::vec UUty(const arma::mat& U, const arma::vec& y) {
   // printf("address: %p\n", &Ut);
   return U * (U.t() * y);
