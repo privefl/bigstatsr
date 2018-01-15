@@ -26,7 +26,7 @@ transform_i_only <- function(i, n, m) {
     stop2("Only positive vector subsetting is allowed")
 
   if (is.matrix(i))
-    i <- (transform_ind(i[, 2], m) - 1L) * n + transform_ind(i[, 1], n)
+    i <- (transform_ind(i[, 2], m) - 1) * n + transform_ind(i[, 1], n)
 
   i
 }
