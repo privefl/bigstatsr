@@ -14,7 +14,7 @@ univLogReg_sub <- function(X, ind, covar.train, y01.train, z0, w0,
                       family = "binomial",
                       control = list(epsilon = tol, maxit = 100))
     coeffs <- `if`(mod$converged, summary(mod)$coefficients[1, 1:2], c(NA, NA))
-    res$estim[j] <- coeffs[1]
+    res$estim[j]   <- coeffs[1]
     res$std.err[j] <- coeffs[2]
   }
 

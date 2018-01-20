@@ -75,8 +75,10 @@ predict.big_sp <- function(object, X,
 
   if (is.null(covar.row)) {
 
-    scores <- big_prodMat(X, betas,
+    ind.col <- which(rowSums(betas != 0) > 0)
+    scores <- big_prodMat(X, betas[ind.col, , drop = FALSE],
                           ind.row = ind.row,
+                          ind.col = ind.col,
                           block.size = block.size)
 
   } else {
@@ -84,10 +86,12 @@ predict.big_sp <- function(object, X,
     assert_lengths(ind.row, rows_along(covar.row))
 
     ind.X <- cols_along(X)
+    ind.col <- which(rowSums(betas != 0)[ind.X] > 0)
     scores <- big_prodMat(X, betas[ind.X, ],
                           ind.row = ind.row,
+                          ind.col = ind.col,
                           block.size = block.size) +
-      covar.row %*% betas[-ind.X, ]
+      covar.row %*% betas[-ind.X, , drop = FALSE]
 
   }
 
