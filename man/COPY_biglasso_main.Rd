@@ -6,8 +6,9 @@
 \usage{
 COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   family = c("gaussian", "binomial"), alpha = 0.5, K = 10,
-  lambda.min = if (n > p) 0.001 else 0.01, nlambda = 100, eps = 1e-07,
-  max.iter = 1000, dfmax = 20000, warn = TRUE, ncores = 1)
+  ind.sets = sample(rep_len(1:K, n)), lambda.min = if (n > p) 0.001 else
+  0.01, nlambda = 100, eps = 1e-07, max.iter = 1000, dfmax = 20000,
+  warn = TRUE, ncores = 1)
 }
 \arguments{
 \item{family}{Either "gaussian" or "binomial", depending on the response.}

@@ -48,11 +48,11 @@ List COPY_cdfit_gaussian_hsr(C macc,
   arma::sp_mat beta = arma::sp_mat(p, L); // beta
   NumericVector beta_old(p);
   NumericVector loss(L);
-  IntegerVector iter(L, NA_INTEGER);
+  IntegerVector iter(L);
 
   double l1, l2, cutoff, shift, lam_l;
   double max_update, update, thresh, shift_scaled, cpsum;
-  size_t i, j, l, violations;
+  size_t i, j, l, ll, violations;
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
@@ -65,7 +65,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) > dfmax) {
-      // for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+      for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
       return List::create(beta, loss, iter);
     }
     // strong set

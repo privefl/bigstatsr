@@ -40,6 +40,30 @@ NumericVector get_summaries(C macc,
 
 /******************************************************************************/
 
+// template <class C>
+// NumericVector predict(C macc,
+//                       const NumericVector& beta,
+//                       const NumericVector& scale) {
+//
+//   size_t n = macc.nrow();
+//   size_t m = macc.ncol();
+//   NumericVector pred(n);
+//   double bj;
+//
+//   for (size_t j = 0; j < m; j++) {
+//     bj = beta[j] / scale[j];
+//     if (bj != 0) {
+//       for (size_t i = 0; i < n; i++) {
+//         pred[i] += macc(i, j) * bj;
+//       }
+//     }
+//   }
+//
+//   return pred - Rcpp::sum(pred) / n;
+// }
+
+/******************************************************************************/
+
 inline double COPY_lasso(double z, double l1, double l2, double v) {
   double s = 0;
   if (z > 0) s = 1;

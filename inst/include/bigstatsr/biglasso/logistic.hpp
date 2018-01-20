@@ -54,14 +54,15 @@ List COPY_cdfit_binomial_hsr(C macc,
                              double eps,
                              int max_iter,
                              int dfmax,
-                             bool warn) {
+                             bool warn,
+                             Function feval) {
 
   size_t n = macc.nrow(); // number of observations used for fitting model
   size_t p = macc.ncol();
   size_t L = lambda.size();
 
   NumericVector Dev(L);
-  IntegerVector iter(L, NA_INTEGER);
+  IntegerVector iter(L);
   NumericVector beta0(L);
 
   arma::sp_mat beta = arma::sp_mat(p, L); //beta
@@ -70,12 +71,13 @@ List COPY_cdfit_binomial_hsr(C macc,
   NumericVector w(n);
   NumericVector s(n); //y_i - pi_i
   NumericVector eta(n);
+  NumericVector pred(n);
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   double xwr, pi, u, v, cutoff, l1, l2, shift, shift_scaled, si, lam_l;
   double sum_wx_sq, sum_wx, sum_w, x, xw;
   double max_update, update, thresh; // for convergence check
-  size_t i, j, l, violations;
+  size_t i, j, l, ll, violations;
 
   double ybar = Rcpp::sum(y) / n;
   beta_old0 = beta0[0] = log(ybar / (1-ybar));
@@ -95,9 +97,11 @@ List COPY_cdfit_binomial_hsr(C macc,
   // Path
   for (l = 1; l < L; l++) {
 
+    Rcout << l << std::endl; //DEBUG
+
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) > dfmax) {
-      // for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+      for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
       return List::create(beta0, beta, Dev, iter);
     }
 
@@ -136,7 +140,7 @@ List COPY_cdfit_binomial_hsr(C macc,
 
         if (Dev[l] / nullDev < .01) {
           if (warn) warning("Model saturated; exiting...");
-          // for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+          for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
           return List::create(beta0, beta, Dev, iter);
         }
 
@@ -204,6 +208,13 @@ List COPY_cdfit_binomial_hsr(C macc,
                                          alpha, s, n, p);
       if (violations == 0) break;
     }
+
+    // Get prediction from beta_old
+    // pred = predict(macc, beta_old, scale);
+    // NumericVector blabla = pred + beta0[l] - eta;
+    // Rcout << blabla << std::endl;
+    double metric = feval(eta, target);
+    Rcout << metric << std::endl;
   }
 
   return List::create(beta0, beta, Dev, iter);

@@ -165,6 +165,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                family = c("gaussian", "binomial"),
                                alpha = 0.5,
                                K = 10,
+                               ind.sets = sample(rep_len(1:K, n)),
                                lambda.min = `if`(n > p, .001, .01),
                                nlambda = 100,
                                eps = 1e-7,
@@ -177,7 +178,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
   n <- length(ind.train)
   if (is.null(covar.train)) covar.train <- matrix(0, n, 0)
-  assert_lengths(y.train, ind.train, rows_along(covar.train))
+  assert_lengths(y.train, ind.train, rows_along(covar.train), ind.sets)
+  p <- length(ind.col) + ncol(covar.train)
 
   if (alpha > 1 || alpha < 1e-4) stop("alpha must be between 1e-4 and 1.")
 
@@ -195,7 +197,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   if (family == "binomial") y.train <- transform_levels(y.train)
 
   # Get summaries
-  ind.sets <- sample(rep_len(1:K, n))
   ## Parallelize over columns
   list_summaries <-
     big_apply(X, a.FUN = function(X, ind, y.train, ind.train, ind.sets, K) {
@@ -217,6 +218,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
   cross.res <- foreach(ic = 1:K) %dopar% {
+
+    print(ic)
 
     in.val <- (ind.sets == ic)
 
