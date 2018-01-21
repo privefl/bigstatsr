@@ -10,31 +10,60 @@ using std::size_t;
 
 /******************************************************************************/
 
-#define SUBMATCOVACC(T) SubMatCovAcc<T>(xpBM, rows, cols, covar)
-#define RAWSUBMATCOVACC RawSubMatCovAcc(xpBM, rows, cols, covar, BM["code256"])
+#define SUBMATCOVACC(T)     SubMatCovAcc<T>(xpBM, rows,     cols, covar)
+#define SUBMATCOVACC_VAL(T) SubMatCovAcc<T>(xpBM, rows_val, cols, covar_val)
 
-#define DISPATCH_SUBMATCOVACC(CALL) {                                          \
+#define RAWSUBMATCOVACC     RawSubMatCovAcc(xpBM, rows,     cols, covar,     BM["code256"])
+#define RAWSUBMATCOVACC_VAL RawSubMatCovAcc(xpBM, rows_val, cols, covar_val, BM["code256"])
+
+
+#define DISPATCH_SUBMATCOVACC_VAL(CALL) {                                      \
                                                                                \
   XPtr<FBM> xpBM = BM["address"];                                              \
   IntegerVector rows = row_idx - 1;                                            \
   IntegerVector cols = col_idx - 1;                                            \
+  IntegerVector rows_val = row_idx_val - 1;                                    \
                                                                                \
   if (BM.exists("code256")) {                                                  \
-    CALL(RAWSUBMATCOVACC);                                                     \
+    CALL(RAWSUBMATCOVACC, RAWSUBMATCOVACC_VAL);                                \
   } else {                                                                     \
     switch(xpBM->matrix_type()) {                                              \
     case 8:                                                                    \
-      CALL(SUBMATCOVACC(double))                                               \
+      CALL(SUBMATCOVACC(double), SUBMATCOVACC_VAL(double))                     \
     case 4:                                                                    \
-      CALL(SUBMATCOVACC(int))                                                  \
+      CALL(SUBMATCOVACC(int), SUBMATCOVACC_VAL(int))                           \
     case 1:                                                                    \
-      CALL(SUBMATCOVACC(unsigned char))                                        \
+      CALL(SUBMATCOVACC(unsigned char), SUBMATCOVACC_VAL(unsigned char))       \
     case 2:                                                                    \
-      CALL(SUBMATCOVACC(unsigned short))                                       \
+      CALL(SUBMATCOVACC(unsigned short), SUBMATCOVACC_VAL(unsigned short))     \
     default:                                                                   \
       throw Rcpp::exception(ERROR_TYPE);                                       \
     }                                                                          \
   }                                                                            \
+}
+
+#define DISPATCH_SUBMATCOVACC(CALL) {                                          \
+                                                                               \
+XPtr<FBM> xpBM = BM["address"];                                                \
+IntegerVector rows = row_idx - 1;                                              \
+IntegerVector cols = col_idx - 1;                                              \
+                                                                               \
+if (BM.exists("code256")) {                                                    \
+  CALL(RAWSUBMATCOVACC);                                                       \
+} else {                                                                       \
+  switch(xpBM->matrix_type()) {                                                \
+  case 8:                                                                      \
+    CALL(SUBMATCOVACC(double))                                                 \
+  case 4:                                                                      \
+    CALL(SUBMATCOVACC(int))                                                    \
+  case 1:                                                                      \
+    CALL(SUBMATCOVACC(unsigned char))                                          \
+  case 2:                                                                      \
+    CALL(SUBMATCOVACC(unsigned short))                                         \
+  default:                                                                     \
+    throw Rcpp::exception(ERROR_TYPE);                                         \
+  }                                                                            \
+}                                                                              \
 }
 
 /******************************************************************************/

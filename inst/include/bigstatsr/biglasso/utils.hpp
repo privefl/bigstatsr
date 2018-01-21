@@ -40,27 +40,29 @@ NumericVector get_summaries(C macc,
 
 /******************************************************************************/
 
-// template <class C>
-// NumericVector predict(C macc,
-//                       const NumericVector& beta,
-//                       const NumericVector& scale) {
-//
-//   size_t n = macc.nrow();
-//   size_t m = macc.ncol();
-//   NumericVector pred(n);
-//   double bj;
-//
-//   for (size_t j = 0; j < m; j++) {
-//     bj = beta[j] / scale[j];
-//     if (bj != 0) {
-//       for (size_t i = 0; i < n; i++) {
-//         pred[i] += macc(i, j) * bj;
-//       }
-//     }
-//   }
-//
-//   return pred - Rcpp::sum(pred) / n;
-// }
+template <class C>
+NumericVector predict(C macc,
+                      const NumericVector& beta,
+                      const NumericVector& center,
+                      const NumericVector& scale) {
+
+  size_t n = macc.nrow();
+  size_t m = macc.ncol();
+  NumericVector pred(n);
+  double bj, shift = 0;
+
+  for (size_t j = 0; j < m; j++) {
+    bj = beta[j] / scale[j];
+    if (bj != 0) {
+      for (size_t i = 0; i < n; i++) {
+        pred[i] += macc(i, j) * bj;
+      }
+      shift += center[j] * bj;
+    }
+  }
+
+  return pred - shift;
+}
 
 /******************************************************************************/
 

@@ -55,11 +55,20 @@ List COPY_cdfit_binomial_hsr(C macc,
                              int max_iter,
                              int dfmax,
                              bool warn,
-                             Function feval) {
+                             C macc_val,
+                             const NumericVector& y_val,
+                             Function feval,
+                             int n_abort,
+                             int nlam_min) {
 
   size_t n = macc.nrow(); // number of observations used for fitting model
   size_t p = macc.ncol();
-  size_t L = lambda.size();
+  int L = lambda.size();
+
+  NumericVector metrics(L, R_NegInf);
+  NumericVector pred_val(macc_val.nrow());
+  double metric_max = R_NegInf;
+  int no_change = 0;
 
   NumericVector Dev(L);
   IntegerVector iter(L);
@@ -71,13 +80,13 @@ List COPY_cdfit_binomial_hsr(C macc,
   NumericVector w(n);
   NumericVector s(n); //y_i - pi_i
   NumericVector eta(n);
-  NumericVector pred(n);
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   double xwr, pi, u, v, cutoff, l1, l2, shift, shift_scaled, si, lam_l;
   double sum_wx_sq, sum_wx, sum_w, x, xw;
   double max_update, update, thresh; // for convergence check
-  size_t i, j, l, ll, violations;
+  size_t i, j;
+  int l, ll, violations;
 
   double ybar = Rcpp::sum(y) / n;
   beta_old0 = beta0[0] = log(ybar / (1-ybar));
@@ -102,7 +111,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) > dfmax) {
       for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-      return List::create(beta0, beta, Dev, iter);
+      return List::create(beta0, beta, Dev, iter, metrics);
     }
 
     // strong set
@@ -141,7 +150,7 @@ List COPY_cdfit_binomial_hsr(C macc,
         if (Dev[l] / nullDev < .01) {
           if (warn) warning("Model saturated; exiting...");
           for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-          return List::create(beta0, beta, Dev, iter);
+          return List::create(beta0, beta, Dev, iter, metrics);
         }
 
         // Intercept
@@ -213,11 +222,28 @@ List COPY_cdfit_binomial_hsr(C macc,
     // pred = predict(macc, beta_old, scale);
     // NumericVector blabla = pred + beta0[l] - eta;
     // Rcout << blabla << std::endl;
-    double metric = feval(eta, target);
+    pred_val = predict(macc_val, beta_old, center, scale) + beta0[l];
+    pred_val = 1 / (1 + exp(-pred_val));
+    double metric = Rcpp::sum((1 - y_val) * log(1 - pred_val) +
+                              y_val * log(pred_val));
     Rcout << metric << std::endl;
+    metrics[l] = metric;
+    if (metric > metric_max) {
+      metric_max = metric;
+      no_change = 0;
+    } else if (metric > metrics[l - 1]) {
+      if (no_change > 0) no_change--;
+    } else {
+      no_change++;
+    }
+    if (l >= nlam_min && no_change >= n_abort) {
+      if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
+      for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+      return List::create(beta0, beta, Dev, iter, metrics);
+    }
   }
 
-  return List::create(beta0, beta, Dev, iter);
+  return List::create(beta0, beta, Dev, iter, metrics);
 }
 
 } }

@@ -38,7 +38,10 @@ List COPY_cdfit_gaussian_hsr(C macc,
                              double alpha,
                              double eps,
                              int max_iter,
-                             int dfmax) {
+                             int dfmax,
+                             C macc_val,
+                             const NumericVector& y_val,
+                             Function feval) {
 
   size_t n = macc.nrow(); // number of observations used for fitting model
   size_t p = macc.ncol();

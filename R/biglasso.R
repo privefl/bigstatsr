@@ -31,17 +31,21 @@ summaries <- function(X, y.train, ind.train, ind.col,
 
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
-                               eps, max.iter, dfmax, warn) {
+                               eps, max.iter, dfmax, warn,
+                               ind.val, covar.val, y.val, feval, n.abort, nlam.min) {
 
   assert_lengths(y.train, ind.train, rows_along(covar.train))
+  assert_lengths(y.val, ind.val, rows_along(covar.val))
   assert_lengths(ind.col, center, scale, resid)
+  stopifnot(length(intersect(ind.train, ind.val)) == 0)
 
   ## fit model
   if (family == "gaussian") {
 
     res <- COPY_cdfit_gaussian_hsr(
       X, y.train - mean(y.train), ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, eps, max.iter, dfmax)
+      lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
+      ind.val, covar.val, y.val, feval)
 
     a <- rep(mean(y.train), nlambda)
     b <- Matrix(res[[1]], sparse = TRUE)
@@ -51,13 +55,15 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   } else if (family == "binomial") {
 
     res <- COPY_cdfit_binomial_hsr(
-      X, y.train, ind.train, ind.col, covar.train, lambda, center, scale, resid,
-      alpha, eps, max.iter, dfmax, warn)
+      X, y.train, ind.train, ind.col, covar.train,
+      lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
+      ind.val, covar.val, y.val, feval, n.abort, nlam.min)
 
     a <- res[[1]]
     b <- Matrix(res[[2]], sparse = TRUE)
     loss <- res[[3]]
     iter <- res[[4]]
+    metric <- res[[5]]
 
   } else {
     stop("Current version only supports Gaussian or Binominal response!")
@@ -70,6 +76,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   iter <- iter[ind]
   lambda <- lambda[ind]
   loss <- loss[ind]
+  metric <- metric[ind]
 
   if (warn && any(iter >= max.iter))
     warning("Algorithm failed to converge for some values of lambda")
@@ -90,6 +97,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     family = family,
     alpha = alpha,
     loss = loss,
+    metric = metric,
     ind.train = ind.train,
     ind.col = ind.col
   ), class = "big_sp")
@@ -160,12 +168,16 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #'     model fitting.}
 #'
 #' @import Matrix
+#' @include AUC.R
 #' @keywords internal
 COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                family = c("gaussian", "binomial"),
                                alpha = 0.5,
                                K = 10,
                                ind.sets = sample(rep_len(1:K, n)),
+                               feval = `if`(family == "gaussian", MINUS_RMSE, AUC),
+                               n.abort = 10,
+                               nlam.min = 60,
                                lambda.min = `if`(n > p, .001, .01),
                                nlambda = 100,
                                eps = 1e-7,
@@ -243,7 +255,11 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.col = ind.col[keep],
       covar.train = covar.train[!in.val, keep.covar, drop = FALSE],
       family, lambda, center, scale, resid, alpha,
-      eps, max.iter, dfmax, warn
+      eps, max.iter, dfmax, warn,
+      ind.val = ind.train[in.val],
+      covar.val = covar.train[in.val, keep.covar, drop = FALSE],
+      y.val = y.train[in.val],
+      feval, n.abort, nlam.min
     )
 
     # scores <- predict(mod, X, ind.row = ind.train[in.val],
