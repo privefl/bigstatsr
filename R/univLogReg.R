@@ -72,7 +72,7 @@ big_univLogReg <- function(X, y01.train,
   mod0 <- stats::glm(y01.train ~ covar.train[, -1] - 1, family = "binomial")
   p0 <- mod0$fitted
   w0 <- p0 * (1 - p0)
-  z0 <- log(p0 / (1 - p0)) + (y01.train - p0) / w0
+  z0 <- log(p0 / (1 - p0)) * w0 + (y01.train - p0)
 
   # main computation
   res <- big_parallelize(X = X,

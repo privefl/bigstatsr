@@ -40,6 +40,7 @@ big_univLinReg <- function(X, y.train,
   n <- length(ind.train)
   covar.train <- cbind(rep(1, n), covar.train)
   assert_lengths(ind.train, y.train, rows_along(covar.train))
+  stopifnot(n > ncol(covar.train))
 
   # get SVD of covar
   SVD <- svd(covar.train, nv = 0)
