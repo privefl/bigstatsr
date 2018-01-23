@@ -57,7 +57,6 @@ List COPY_cdfit_binomial_hsr(C macc,
                              bool warn,
                              C macc_val,
                              const NumericVector& y_val,
-                             Function feval,
                              int n_abort,
                              int nlam_min) {
 
@@ -65,9 +64,10 @@ List COPY_cdfit_binomial_hsr(C macc,
   size_t p = macc.ncol();
   int L = lambda.size();
 
+  size_t n_val = macc_val.nrow();
+  NumericVector pred_val(n_val);
   NumericVector metrics(L, R_NegInf);
-  NumericVector pred_val(macc_val.nrow());
-  double metric_max = R_NegInf;
+  double metric, metric_max = R_NegInf;
   int no_change = 0;
 
   NumericVector Dev(L);
@@ -224,8 +224,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     // Rcout << blabla << std::endl;
     pred_val = predict(macc_val, beta_old, center, scale) + beta0[l];
     pred_val = 1 / (1 + exp(-pred_val));
-    double metric = Rcpp::sum((1 - y_val) * log(1 - pred_val) +
-                              y_val * log(pred_val));
+    metric = Rcpp::sum((1 - y_val) * log(1 - pred_val) + y_val * log(pred_val));
     Rcout << metric << std::endl;
     metrics[l] = metric;
     if (metric > metric_max) {

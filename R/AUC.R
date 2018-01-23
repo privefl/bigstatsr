@@ -1,14 +1,5 @@
 ################################################################################
 
-MINUS_RMSE <- function(pred, target, digits = NULL) {
-
-  assert_lengths(pred, target)
-
-  round2(sqrt(sum((pred - target)^2)), digits)
-}
-
-################################################################################
-
 #' AUC
 #'
 #' Compute the Area Under the ROC Curve (AUC) of a predictor

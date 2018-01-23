@@ -21,9 +21,11 @@ using namespace bigstatsr::biglassoUtils;
 
 
 // Gaussian loss
-double COPY_gLoss(const NumericVector& r, size_t n) {
+double COPY_gLoss(const NumericVector& r) {
   double l = 0;
-  for (size_t i = 0; i < n; i++) l += pow(r[i], 2);
+  for (int i = 0; i < r.size(); i++) {
+    l += pow(r[i], 2);
+  }
   return l;
 }
 
@@ -39,13 +41,21 @@ List COPY_cdfit_gaussian_hsr(C macc,
                              double eps,
                              int max_iter,
                              int dfmax,
+                             bool warn,
                              C macc_val,
                              const NumericVector& y_val,
-                             Function feval) {
+                             int n_abort,
+                             int nlam_min) {
 
   size_t n = macc.nrow(); // number of observations used for fitting model
   size_t p = macc.ncol();
-  size_t L = lambda.size();
+  int L = lambda.size();
+
+  size_t n_val = macc_val.nrow();
+  NumericVector pred_val(n_val);
+  NumericVector metrics(L, R_PosInf);
+  double metric, metric_min = R_PosInf;
+  int no_change = 0;
 
   // Objects to be returned to R
   arma::sp_mat beta = arma::sp_mat(p, L); // beta
@@ -60,7 +70,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
   double sumResid = Rcpp::sum(r);
-  loss[0] = COPY_gLoss(r, n);
+  loss[0] = COPY_gLoss(r);
   thresh = eps * loss[0] / n;
 
   // Path
@@ -128,7 +138,25 @@ List COPY_cdfit_gaussian_hsr(C macc,
       if (violations == 0) break;
     }
 
-    loss[l] = COPY_gLoss(r, n);
+    loss[l] = COPY_gLoss(r);
+  }
+
+  pred_val = predict(macc_val, beta_old, center, scale);
+  metric = COPY_gLoss(pred_val - y_val);
+  Rcout << metric << std::endl;
+  metrics[l] = metric;
+  if (metric < metric_min) {
+    metric_min = metric;
+    no_change = 0;
+  } else if (metric < metrics[l - 1]) {
+    if (no_change > 0) no_change--;
+  } else {
+    no_change++;
+  }
+  if (l >= nlam_min && no_change >= n_abort) {
+    if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
+    for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+    return List::create(beta, loss, iter, metrics);
   }
 
   return List::create(beta, loss, iter);

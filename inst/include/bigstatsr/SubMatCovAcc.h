@@ -20,8 +20,8 @@ using std::size_t;
 #define DISPATCH_SUBMATCOVACC_VAL(CALL) {                                      \
                                                                                \
   XPtr<FBM> xpBM = BM["address"];                                              \
-  IntegerVector rows = row_idx - 1;                                            \
-  IntegerVector cols = col_idx - 1;                                            \
+  IntegerVector rows     = row_idx     - 1;                                    \
+  IntegerVector cols     = col_idx     - 1;                                    \
   IntegerVector rows_val = row_idx_val - 1;                                    \
                                                                                \
   if (BM.exists("code256")) {                                                  \
@@ -29,11 +29,11 @@ using std::size_t;
   } else {                                                                     \
     switch(xpBM->matrix_type()) {                                              \
     case 8:                                                                    \
-      CALL(SUBMATCOVACC(double), SUBMATCOVACC_VAL(double))                     \
+      CALL(SUBMATCOVACC(double),         SUBMATCOVACC_VAL(double))             \
     case 4:                                                                    \
-      CALL(SUBMATCOVACC(int), SUBMATCOVACC_VAL(int))                           \
+      CALL(SUBMATCOVACC(int),            SUBMATCOVACC_VAL(int))                \
     case 1:                                                                    \
-      CALL(SUBMATCOVACC(unsigned char), SUBMATCOVACC_VAL(unsigned char))       \
+      CALL(SUBMATCOVACC(unsigned char),  SUBMATCOVACC_VAL(unsigned char))      \
     case 2:                                                                    \
       CALL(SUBMATCOVACC(unsigned short), SUBMATCOVACC_VAL(unsigned short))     \
     default:                                                                   \
@@ -44,26 +44,26 @@ using std::size_t;
 
 #define DISPATCH_SUBMATCOVACC(CALL) {                                          \
                                                                                \
-XPtr<FBM> xpBM = BM["address"];                                                \
-IntegerVector rows = row_idx - 1;                                              \
-IntegerVector cols = col_idx - 1;                                              \
+  XPtr<FBM> xpBM = BM["address"];                                              \
+  IntegerVector rows = row_idx - 1;                                            \
+  IntegerVector cols = col_idx - 1;                                            \
                                                                                \
-if (BM.exists("code256")) {                                                    \
-  CALL(RAWSUBMATCOVACC);                                                       \
-} else {                                                                       \
-  switch(xpBM->matrix_type()) {                                                \
-  case 8:                                                                      \
-    CALL(SUBMATCOVACC(double))                                                 \
-  case 4:                                                                      \
-    CALL(SUBMATCOVACC(int))                                                    \
-  case 1:                                                                      \
-    CALL(SUBMATCOVACC(unsigned char))                                          \
-  case 2:                                                                      \
-    CALL(SUBMATCOVACC(unsigned short))                                         \
-  default:                                                                     \
-    throw Rcpp::exception(ERROR_TYPE);                                         \
+  if (BM.exists("code256")) {                                                  \
+    CALL(RAWSUBMATCOVACC);                                                     \
+  } else {                                                                     \
+    switch(xpBM->matrix_type()) {                                              \
+    case 8:                                                                    \
+      CALL(SUBMATCOVACC(double))                                               \
+    case 4:                                                                    \
+      CALL(SUBMATCOVACC(int))                                                  \
+    case 1:                                                                    \
+      CALL(SUBMATCOVACC(unsigned char))                                        \
+    case 2:                                                                    \
+      CALL(SUBMATCOVACC(unsigned short))                                       \
+    default:                                                                   \
+      throw Rcpp::exception(ERROR_TYPE);                                       \
+    }                                                                          \
   }                                                                            \
-}                                                                              \
 }
 
 /******************************************************************************/

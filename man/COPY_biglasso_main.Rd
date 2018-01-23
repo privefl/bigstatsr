@@ -6,10 +6,9 @@
 \usage{
 COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   family = c("gaussian", "binomial"), alpha = 0.5, K = 10,
-  ind.sets = sample(rep_len(1:K, n)), feval = if (family == "gaussian")
-  MINUS_RMSE else AUC, n.abort = 10, nlam.min = 60, lambda.min = if (n >
-  p) 0.001 else 0.01, nlambda = 100, eps = 1e-07, max.iter = 1000,
-  dfmax = 20000, warn = TRUE, ncores = 1)
+  ind.sets = sample(rep_len(1:K, n)), nlambda = 200, lambda.min = if (n >
+  p) 1e-04 else 0.001, nlam.min = 50, n.abort = 10, eps = 1e-07,
+  max.iter = 1000, dfmax = 20000, warn = TRUE, ncores = 1)
 }
 \arguments{
 \item{family}{Either "gaussian" or "binomial", depending on the response.}
@@ -20,11 +19,11 @@ defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 \code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
 (\code{1e-6}) and \code{1} is the elastic-net penalty. Default is \code{0.5}.}
 
+\item{nlambda}{The number of lambda values. Default is \code{100}.}
+
 \item{lambda.min}{The smallest value for lambda, \strong{as a fraction of
 lambda.max}. Default is \code{.001} if the number of observations is larger than
 the number of covariates and \code{.01} otherwise.}
-
-\item{nlambda}{The number of lambda values. Default is \code{100}.}
 
 \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any

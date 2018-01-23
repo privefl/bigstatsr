@@ -32,7 +32,7 @@ summaries <- function(X, y.train, ind.train, ind.col,
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
                                eps, max.iter, dfmax, warn,
-                               ind.val, covar.val, y.val, feval, n.abort, nlam.min) {
+                               ind.val, covar.val, y.val, n.abort, nlam.min) {
 
   assert_lengths(y.train, ind.train, rows_along(covar.train))
   assert_lengths(y.val, ind.val, rows_along(covar.val))
@@ -44,8 +44,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
     res <- COPY_cdfit_gaussian_hsr(
       X, y.train - mean(y.train), ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
-      ind.val, covar.val, y.val, feval)
+      lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
+      ind.val, covar.val, y.val, n.abort, nlam.min)
 
     a <- rep(mean(y.train), nlambda)
     b <- Matrix(res[[1]], sparse = TRUE)
@@ -57,7 +57,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     res <- COPY_cdfit_binomial_hsr(
       X, y.train, ind.train, ind.col, covar.train,
       lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
-      ind.val, covar.val, y.val, feval, n.abort, nlam.min)
+      ind.val, covar.val, y.val, n.abort, nlam.min)
 
     a <- res[[1]]
     b <- Matrix(res[[2]], sparse = TRUE)
@@ -175,11 +175,10 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                alpha = 0.5,
                                K = 10,
                                ind.sets = sample(rep_len(1:K, n)),
-                               feval = `if`(family == "gaussian", MINUS_RMSE, AUC),
+                               nlambda = 200,
+                               lambda.min = `if`(n > p, .0001, .001),
+                               nlam.min = 50,
                                n.abort = 10,
-                               nlam.min = 60,
-                               lambda.min = `if`(n > p, .001, .01),
-                               nlambda = 100,
                                eps = 1e-7,
                                max.iter = 1000,
                                dfmax = 20e3,
@@ -259,7 +258,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.val = ind.train[in.val],
       covar.val = covar.train[in.val, keep.covar, drop = FALSE],
       y.val = y.train[in.val],
-      feval, n.abort, nlam.min
+      n.abort, nlam.min
     )
 
     # scores <- predict(mod, X, ind.row = ind.train[in.val],
@@ -303,12 +302,15 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #' arXiv preprint arXiv:1701.05936. \url{https://arxiv.org/abs/1701.05936}.
 #'
 #' @export
-big_spLinReg <- function(X, y.train, ind.train = rows_along(X),
+big_spLinReg <- function(X, y.train,
+                         ind.train = rows_along(X),
+                         ind.col = cols_along(X),
                          covar.train = NULL, ...) {
 
   check_args()
 
-  COPY_biglasso_main(X, y.train, ind.train, covar.train, family = "gaussian", ...)
+  COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
+                     family = "gaussian", ...)
 }
 
 ################################################################################
@@ -323,12 +325,15 @@ big_spLinReg <- function(X, y.train, ind.train = rows_along(X),
 #' @example examples/example-spLogReg.R
 #'
 #' @export
-big_spLogReg <- function(X, y01.train, ind.train = rows_along(X),
+big_spLogReg <- function(X, y01.train,
+                         ind.train = rows_along(X),
+                         ind.col = cols_along(X),
                          covar.train = NULL, ...) {
 
   check_args()
 
-  COPY_biglasso_main(X, y01.train, ind.train, covar.train, family = "binomial", ...)
+  COPY_biglasso_main(X, y01.train, ind.train, ind.col, covar.train,
+                     family = "binomial", ...)
 }
 
 ################################################################################

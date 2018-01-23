@@ -4,8 +4,8 @@
 \alias{big_spLogReg}
 \title{Sparse logistic regression}
 \usage{
-big_spLogReg(X, y01.train, ind.train = rows_along(X), covar.train = NULL,
-  ...)
+big_spLogReg(X, y01.train, ind.train = rows_along(X),
+  ind.col = cols_along(X), covar.train = NULL, ...)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -16,6 +16,9 @@ big_spLogReg(X, y01.train, ind.train = rows_along(X), covar.train = NULL,
 \item{ind.train}{An optional vector of the row indices that are used,
 for the training part. If not specified, all rows are used.
 \strong{Don't use negative indices.}}
+
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
