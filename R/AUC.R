@@ -18,22 +18,11 @@
 #' @param pred Vector of predictions.
 #' @param target Vector of true labels (must have exactly two levels,
 #' no missing values).
-#' @param nboot Number of bootstrap samples to evaluate the 95\% CI.
-#' Default is `1e3`.
+#' @param nboot Number of bootstrap samples used to evaluate the 95\% CI.
+#' Default is `1e4`.
 #' @param seed See [set.seed]. Use it for reproducibility.
 #' Default doesn't set any seed.
 #' @param digits See [round]. Default doesn't use rounding.
-#'
-#' @references
-#' Hanley, J. A., & McNeil, B. J. (1982).
-#' The meaning and use of the area under a
-#' receiver operating characteristic (ROC) curve.
-#' Radiology, 143(1), 29-36.
-#' \url{http://dx.doi.org/10.1148/radiology.143.1.7063747}.
-#'
-#' Tom Fawcett. 2006. An introduction to ROC analysis.
-#' Pattern Recogn. Lett. 27, 8 (June 2006), 861-874.
-#' \url{http://dx.doi.org/10.1016/j.patrec.2005.10.010}.
 #'
 #' @seealso [wilcox.test]
 #' @examples
@@ -46,6 +35,16 @@
 #' y <- sign(z)
 #' print(AUC(x, y))
 #' print(AUCBoot(x, y))
+#'
+#' # Partial AUC
+#' pAUC <- function(pred, target, p = 0.1) {
+#'   val.min <- min(target)
+#'   q <- quantile(pred[target == val.min], probs = 1 - p)
+#'   ind <- (target != val.min) | (pred > q)
+#'   bigstatsr::AUC(pred[ind], target[ind]) * p
+#' }
+#' pAUC(x, y)
+#' pAUC(x, y, 0.2)
 #' @name AUC
 NULL
 

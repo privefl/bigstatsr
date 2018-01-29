@@ -101,7 +101,7 @@ size_t COPY_check_strong_set(LogicalVector& in_A,
 
       l1 = lambda * alpha;
       l2 = lambda - l1;
-      if(fabs(z[j] - beta_old[j] * l2) > l1) {
+      if (fabs(z[j] - beta_old[j] * l2) > l1) {
         in_A[j] = true;
         violations++;
       }

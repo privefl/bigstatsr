@@ -42,15 +42,18 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   ## fit model
   if (family == "gaussian") {
 
-    res <- COPY_cdfit_gaussian_hsr(
-      X, y.train - mean(y.train), ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
-      ind.val, covar.val, y.val, n.abort, nlam.min)
+    y.train.mean <- mean(y.train)
 
-    a <- rep(mean(y.train), nlambda)
+    res <- COPY_cdfit_gaussian_hsr(
+      X, y.train - y.train.mean, ind.train, ind.col, covar.train,
+      lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
+      ind.val, covar.val, y.val - y.train.mean, n.abort, nlam.min)
+
     b <- Matrix(res[[1]], sparse = TRUE)
+    a <- rep(y.train.mean, ncol(b))
     loss <- res[[2]]
     iter <- res[[3]]
+    metric <- res[[4]]
 
   } else if (family == "binomial") {
 
@@ -253,8 +256,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.train = ind.train[!in.val],
       ind.col = ind.col[keep],
       covar.train = covar.train[!in.val, keep.covar, drop = FALSE],
-      family, lambda, center, scale, resid, alpha,
-      eps, max.iter, dfmax, warn,
+      family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
       ind.val = ind.train[in.val],
       covar.val = covar.train[in.val, keep.covar, drop = FALSE],
       y.val = y.train[in.val],

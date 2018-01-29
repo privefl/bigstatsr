@@ -76,6 +76,8 @@ List COPY_cdfit_gaussian_hsr(C macc,
   // Path
   for (l = 1; l < L; l++) {
 
+    Rcout << "Iteration n°" << l << std::endl;
+
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) > dfmax) {
       for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
@@ -139,24 +141,24 @@ List COPY_cdfit_gaussian_hsr(C macc,
     }
 
     loss[l] = COPY_gLoss(r);
-  }
 
-  pred_val = predict(macc_val, beta_old, center, scale);
-  metric = COPY_gLoss(pred_val - y_val);
-  Rcout << metric << std::endl;
-  metrics[l] = metric;
-  if (metric < metric_min) {
-    metric_min = metric;
-    no_change = 0;
-  } else if (metric < metrics[l - 1]) {
-    if (no_change > 0) no_change--;
-  } else {
-    no_change++;
-  }
-  if (l >= nlam_min && no_change >= n_abort) {
-    if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
-    for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-    return List::create(beta, loss, iter, metrics);
+    pred_val = predict(macc_val, beta_old, center, scale);
+    metric = COPY_gLoss(pred_val - y_val);
+    Rcout << metric << std::endl;
+    metrics[l] = metric;
+    if (metric < metric_min) {
+      metric_min = metric;
+      no_change = 0;
+    } else if (metric < metrics[l - 1]) {
+      if (no_change > 0) no_change--;
+    } else {
+      no_change++;
+    }
+    if (l >= nlam_min && no_change >= n_abort) {
+      if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
+      for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
+      return List::create(beta, loss, iter, metrics);
+    }
   }
 
   return List::create(beta, loss, iter);
