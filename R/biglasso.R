@@ -29,6 +29,40 @@ summaries <- function(X, y.train, ind.train, ind.col,
 ###                  https://github.com/YaohuiZeng/biglasso                  ###
 ################################################################################
 
+#' @return A named list with following variables:
+#'   \item{intercept}{A vector of intercepts, corresponding to each lambda.}
+#'   \item{beta}{The fitted matrix of coefficients, store in sparse matrix
+#'     representation. The number of rows is equal to the number of
+#'     coefficients, and the number of columns is equal to `nlambda`.}
+#'   \item{iter}{A vector of length `nlambda` containing the number of
+#'     iterations until convergence at each value of `lambda`.}
+#'   \item{lambda}{The sequence of regularization parameter values in the path.}
+#'   \item{family}{Either `"gaussian"` or `"binomial"` depending on the
+#'     function used.}
+#'   \item{alpha}{Input parameter.}
+#'   \item{loss}{A vector containing either the residual sum of squares
+#'     (for linear models) or negative log-likelihood (for logistic models)
+#'     of the fitted model at each value of `lambda`.}
+#'   \item{loss.val}{A vector containing the loss for the corresponding
+#'     validation set.}
+#'   \item{n}{The number of observations used in the model fitting. It's equal
+#'     to `length(row.idx)`.}
+#'   \item{p}{The number of dimensions (including covariables,
+#'     but not the intercept).}
+#'   \item{center}{The sample mean vector of the variables, i.e., column mean
+#'     of the sub-matrix of `X` used for model fitting.}
+#'   \item{scale}{The sample standard deviation of the variables, i.e.,
+#'     column standard deviation of the sub-matrix of `X` used for model
+#'     fitting.}
+#'   \item{y}{The response vector used in the model fitting. Depending on
+#'     `row.idx`, it could be a subset of the raw input of the response vector
+#'     y.}
+#'   \item{col.idx}{The indices of features that have 'scale' value greater
+#'     than `1e-6`. Features with 'scale' less than 1e-6 are removed from
+#'     model fitting.}
+#'
+#' @import Matrix
+#'
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
                                eps, max.iter, dfmax, warn,
@@ -36,7 +70,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
   assert_lengths(y.train, ind.train, rows_along(covar.train))
   assert_lengths(y.val, ind.val, rows_along(covar.val))
-  assert_lengths(ind.col, center, scale, resid)
+  assert_lengths(c(ind.col, cols_along(covar.train)), center, scale, resid)
   stopifnot(length(intersect(ind.train, ind.val)) == 0)
 
   ## fit model
@@ -53,7 +87,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     a <- rep(y.train.mean, ncol(b))
     loss <- res[[2]]
     iter <- res[[3]]
-    metric <- res[[4]]
+    loss.val <- res[[4]]
 
   } else if (family == "binomial") {
 
@@ -66,7 +100,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     b <- Matrix(res[[2]], sparse = TRUE)
     loss <- res[[3]]
     iter <- res[[4]]
-    metric <- res[[5]]
+    loss.val <- -res[[5]]
 
   } else {
     stop("Current version only supports Gaussian or Binominal response!")
@@ -78,8 +112,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   b <- b[, ind, drop = FALSE]
   iter <- iter[ind]
   lambda <- lambda[ind]
-  loss <- loss[ind]
-  metric <- metric[ind]
+  loss <- loss[ind] / length(ind.train)
+  loss.val <- loss.val[ind] / length(ind.val)
 
   if (warn && any(iter >= max.iter))
     warning("Algorithm failed to converge for some values of lambda")
@@ -100,7 +134,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     family = family,
     alpha = alpha,
     loss = loss,
-    metric = metric,
+    loss.val = loss.val,
     ind.train = ind.train,
     ind.col = ind.col
   ), class = "big_sp")
@@ -126,9 +160,9 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' \code{alpha = 1} is the lasso penalty and \code{alpha} in between `0`
 #' (`1e-6`) and `1` is the elastic-net penalty. Default is `0.5`.
 #' @param lambda.min The smallest value for lambda, **as a fraction of
-#' lambda.max**. Default is `.001` if the number of observations is larger than
-#' the number of covariates and `.01` otherwise.
-#' @param nlambda The number of lambda values. Default is `100`.
+#' lambda.max**. Default is `.0001` if the number of observations is larger than
+#' the number of variables and `.001` otherwise.
+#' @param nlambda The number of lambda values. Default is `200`.
 #' @param eps Convergence threshold for inner coordinate descent.
 #' The algorithm iterates until the maximum change in the objective after any
 #' coefficient update is less than `eps` times the null deviance.
@@ -139,40 +173,19 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' heavy for models with a large number of nonzero coefficients.
 #' @param warn Return warning messages for failures to converge and model
 #' saturation? Default is `TRUE`.
+#' @param K Number of sets used in the Cross-Model Selection and Averaging
+#'   (CMSA) procedure.
+#' @param ind.sets Integer vectors of values between `1` and `K` specifying
+#'   which set each index of the training set is in. Default randomly assigns
+#'   these values.
+#' @param return.all Whether to return coefficients for all lambda values.
+#'   Default is `FALSE` and returns only coefficients which maximize prediction
+#'   on the corresponding validation set.
+#' @param nlam.min Minimum number of lambda values to investigate.
+#' @param n.abort Number of lambda values for which prediction on the validation
+#'   set must decrease before stopping.
+#' @param ncores Number of cores to use to train the K models.
 #'
-#' @return A named list with following variables:
-#'   \item{intercept}{A vector of intercepts, corresponding to each lambda.}
-#'   \item{beta}{The fitted matrix of coefficients, store in sparse matrix
-#'     representation. The number of rows is equal to the number of
-#'     coefficients, and the number of columns is equal to `nlambda`.}
-#'   \item{iter}{A vector of length `nlambda` containing the number of
-#'     iterations until convergence at each value of `lambda`.}
-#'   \item{lambda}{The sequence of regularization parameter values in the path.}
-#'   \item{family}{Either `"gaussian"` or `"binomial"` depending on the
-#'     function used.}
-#'   \item{alpha}{Input parameter.}
-#'   \item{loss}{A vector containing either the residual sum of squares
-#'     (for linear models) or negative log-likelihood (for logistic models)
-#'     of the fitted model at each value of `lambda`.}
-#'   \item{n}{The number of observations used in the model fitting. It's equal
-#'     to `length(row.idx)`.}
-#'   \item{p}{The number of dimensions (including covariables,
-#'     but not the intercept).}
-#'   \item{center}{The sample mean vector of the variables, i.e., column mean
-#'     of the sub-matrix of `X` used for model fitting.}
-#'   \item{scale}{The sample standard deviation of the variables, i.e.,
-#'     column standard deviation of the sub-matrix of `X` used for model
-#'     fitting.}
-#'   \item{y}{The response vector used in the model fitting. Depending on
-#'     `row.idx`, it could be a subset of the raw input of the response vector
-#'     y.}
-#'   \item{col.idx}{The indices of features that have 'scale' value greater
-#'     than `1e-6`. Features with 'scale' less than 1e-6 are removed from
-#'     model fitting.}
-#'
-#' @import Matrix
-#' @include AUC.R
-#' @keywords internal
 COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                family = c("gaussian", "binomial"),
                                alpha = 0.5,
@@ -186,6 +199,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                max.iter = 1000,
                                dfmax = 20e3,
                                warn = TRUE,
+                               return.all = FALSE,
                                ncores = 1) {
 
   family <- match.arg(family)
@@ -211,6 +225,12 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   if (family == "binomial") y.train <- transform_levels(y.train)
 
   # Get summaries
+  ## Get also for covariables
+  summaries.covar <-
+    summaries(X, y.train, ind.train, integer(0), covar.train, ind.sets, K)
+  if (!all(summaries.covar$keep))
+    stop("Please use covariables with some variation.")
+
   ## Parallelize over columns
   list_summaries <-
     big_apply(X, a.FUN = function(X, ind, y.train, ind.train, ind.sets, K) {
@@ -219,9 +239,9 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       )
     }, a.combine = 'c', ncores = ncores, ind = ind.col, y.train = y.train,
     ind.train = ind.train, ind.sets = ind.sets, K = K)
-  ## Get also for covariables
-  summaries.covar <-
-    summaries(X, y.train, ind.train, integer(0), covar.train, ind.sets, K)
+
+  keep <- do.call('c', lapply(list_summaries, function(x) x[["keep"]]))
+
 
   ## fit models
   if (ncores == 1) {
@@ -238,14 +258,13 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     in.val <- (ind.sets == ic)
 
     ## Merge summaries
-    keep   <- do.call('c', lapply(list_summaries, function(x) x[["keep"]]))
     center <- do.call('c', lapply(list_summaries, function(x) x[["center"]][ic, ]))[keep]
     scale  <- do.call('c', lapply(list_summaries, function(x) x[["scale"]][ic, ]))[keep]
     resid  <- do.call('c', lapply(list_summaries, function(x) x[["resid"]][ic, ]))[keep]
-    keep.covar <- summaries.covar$keep
-    center <- c(center, summaries.covar[["center"]][ic, keep.covar])
-    scale  <- c(scale,  summaries.covar[["scale"]][ic, keep.covar])
-    resid  <- c(resid,  summaries.covar[["resid"]][ic, keep.covar])
+    # keep.covar <- summaries.covar$keep ## should all be TRUE
+    center <- c(center, summaries.covar[["center"]][ic, ])
+    scale  <- c(scale,  summaries.covar[["scale"]][ic, ])
+    resid  <- c(resid,  summaries.covar[["resid"]][ic, ])
     ## Compute lambdas of the path
     lambda.max <- max(abs(resid)) / alpha
     lambda <- exp(
@@ -255,18 +274,27 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       X, y.train = y.train[!in.val],
       ind.train = ind.train[!in.val],
       ind.col = ind.col[keep],
-      covar.train = covar.train[!in.val, keep.covar, drop = FALSE],
+      covar.train = covar.train[!in.val, , drop = FALSE],
       family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
       ind.val = ind.train[in.val],
-      covar.val = covar.train[in.val, keep.covar, drop = FALSE],
+      covar.val = covar.train[in.val, , drop = FALSE],
       y.val = y.train[in.val],
       n.abort, nlam.min
     )
+  }
 
-    # scores <- predict(mod, X, ind.row = ind.train[in.val],
-    #                   covar.row = covar.train[in.val, ])
-    #
-    # list(betas = mod$beta, scores = scores)
+  if (return.all) {
+    cross.res
+  } else {
+    structure(lapply(cross.res, function(x) {
+      best <- which.min(x$loss.val)
+      ind <- seq_along(x$ind.col)
+      list(
+        intercept  = unname(x$intercept[best]),
+        beta.X     = x$beta[ind, best],
+        beta.covar = x$beta[-ind, best]
+      )
+    }), class = "big_sp_best_list", ind.col = ind.col[keep], family = family)
   }
 }
 

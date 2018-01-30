@@ -29,6 +29,39 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
   \item{}{}
 }}
 }
+\value{
+A named list with following variables:
+\item{intercept}{A vector of intercepts, corresponding to each lambda.}
+\item{beta}{The fitted matrix of coefficients, store in sparse matrix
+representation. The number of rows is equal to the number of
+coefficients, and the number of columns is equal to \code{nlambda}.}
+\item{iter}{A vector of length \code{nlambda} containing the number of
+iterations until convergence at each value of \code{lambda}.}
+\item{lambda}{The sequence of regularization parameter values in the path.}
+\item{family}{Either \code{"gaussian"} or \code{"binomial"} depending on the
+function used.}
+\item{alpha}{Input parameter.}
+\item{loss}{A vector containing either the residual sum of squares
+(for linear models) or negative log-likelihood (for logistic models)
+of the fitted model at each value of \code{lambda}.}
+\item{loss.val}{A vector containing the loss for the corresponding
+validation set.}
+\item{n}{The number of observations used in the model fitting. It's equal
+to \code{length(row.idx)}.}
+\item{p}{The number of dimensions (including covariables,
+but not the intercept).}
+\item{center}{The sample mean vector of the variables, i.e., column mean
+of the sub-matrix of \code{X} used for model fitting.}
+\item{scale}{The sample standard deviation of the variables, i.e.,
+column standard deviation of the sub-matrix of \code{X} used for model
+fitting.}
+\item{y}{The response vector used in the model fitting. Depending on
+\code{row.idx}, it could be a subset of the raw input of the response vector
+y.}
+\item{col.idx}{The indices of features that have 'scale' value greater
+than \code{1e-6}. Features with 'scale' less than 1e-6 are removed from
+model fitting.}
+}
 \description{
 Sparse logistic regression
 }

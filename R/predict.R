@@ -59,12 +59,13 @@ predict.big_CMSA <- function(object, X,
 #' @import Matrix
 #' @importFrom stats predict
 #'
-#' @seealso [big_spLinReg], [big_spLogReg] and [big_spSVM].
+#' @seealso [big_spLinReg] and [big_spLogReg].
 #'
 #' @example examples/example-predict.R
 #'
 predict.big_sp <- function(object, X,
                            ind.row = rows_along(X),
+                           ind.col = object$ind.col,
                            covar.row = NULL,
                            block.size = block_size(nrow(X)),
                            ...) {
@@ -75,28 +76,72 @@ predict.big_sp <- function(object, X,
 
   if (is.null(covar.row)) {
 
-    ind.col <- which(rowSums(betas != 0) > 0)
-    scores <- big_prodMat(X, betas[ind.col, , drop = FALSE],
+    ind.nozero <- which(rowSums(betas != 0) > 0)
+    scores <- big_prodMat(X, betas[ind.nozero, , drop = FALSE],
                           ind.row = ind.row,
-                          ind.col = ind.col,
+                          ind.col = ind.col[ind.nozero],
                           block.size = block.size)
 
   } else {
 
     assert_lengths(ind.row, rows_along(covar.row))
 
-    ind.X <- cols_along(X)
-    ind.col <- which(rowSums(betas != 0)[ind.X] > 0)
-    scores <- big_prodMat(X, betas[ind.X, ],
+    ind.X <- seq_along(ind.col)
+    ind.nozero <- which(rowSums(betas != 0)[ind.X] > 0)
+    scores <- big_prodMat(X, betas[ind.X[ind.nozero], ],
                           ind.row = ind.row,
-                          ind.col = ind.col,
+                          ind.col = ind.col[ind.nozero],
                           block.size = block.size) +
       covar.row %*% betas[-ind.X, , drop = FALSE]
-
   }
 
   rownames(scores) <- ind.row
   as.matrix(sweep(scores, 2, object$intercept, "+"))
+}
+
+################################################################################
+
+#' Predict method
+#'
+#' Predict method for class `big_sp_best_list`.
+#'
+#' @param object Object of class `big_sp_best_list`.
+#' @inheritParams bigstatsr-package
+#' @param ... Not used.
+#'
+#' @return A vector of scores, corresponding to `ind.row`.
+#'
+#' @export
+#' @importFrom stats predict
+#'
+#' @seealso [big_spLinReg] and [big_spLogReg].
+#'
+#' @example examples/example-predict.R
+#'
+predict.big_sp_best_list <- function(object, X,
+                                     ind.row = rows_along(X),
+                                     ind.col = attr(object, "ind.col"),
+                                     covar.row = NULL,
+                                     proba = attr(object, "family") == "binomial",
+                                     ...) {
+
+  check_args()
+
+  sapply(object, function(obj) {
+    beta.X <- obj$beta.X
+    ind.nozero <- which(beta.X != 0)
+
+    scores <- big_prodVec(X, beta.X[ind.nozero],
+                          ind.row = ind.row,
+                          ind.col = ind.col[ind.nozero]) +
+      obj$intercept
+
+    if (!is.null(covar.row))
+      scores <- scores + drop(covar.row %*% obj$beta.covar)
+
+    names(scores) <- ind.row
+    `if`(proba, 1 / (1 + exp(-scores)), scores)
+  })
 }
 
 ################################################################################

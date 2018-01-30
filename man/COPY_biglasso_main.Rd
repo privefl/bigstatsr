@@ -8,7 +8,8 @@ COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   family = c("gaussian", "binomial"), alpha = 0.5, K = 10,
   ind.sets = sample(rep_len(1:K, n)), nlambda = 200, lambda.min = if (n >
   p) 1e-04 else 0.001, nlam.min = 50, n.abort = 10, eps = 1e-07,
-  max.iter = 1000, dfmax = 20000, warn = TRUE, ncores = 1)
+  max.iter = 1000, dfmax = 20000, warn = TRUE, return.all = FALSE,
+  ncores = 1)
 }
 \arguments{
 \item{family}{Either "gaussian" or "binomial", depending on the response.}
@@ -19,11 +20,23 @@ defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 \code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
 (\code{1e-6}) and \code{1} is the elastic-net penalty. Default is \code{0.5}.}
 
-\item{nlambda}{The number of lambda values. Default is \code{100}.}
+\item{K}{Number of sets used in the Cross-Model Selection and Averaging
+(CMSA) procedure.}
+
+\item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
+which set each index of the training set is in. Default randomly assigns
+these values.}
+
+\item{nlambda}{The number of lambda values. Default is \code{200}.}
 
 \item{lambda.min}{The smallest value for lambda, \strong{as a fraction of
-lambda.max}. Default is \code{.001} if the number of observations is larger than
-the number of covariates and \code{.01} otherwise.}
+lambda.max}. Default is \code{.0001} if the number of observations is larger than
+the number of variables and \code{.001} otherwise.}
+
+\item{nlam.min}{Minimum number of lambda values to investigate.}
+
+\item{n.abort}{Number of lambda values for which prediction on the validation
+set must decrease before stopping.}
 
 \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
@@ -38,37 +51,12 @@ heavy for models with a large number of nonzero coefficients.}
 
 \item{warn}{Return warning messages for failures to converge and model
 saturation? Default is \code{TRUE}.}
-}
-\value{
-A named list with following variables:
-\item{intercept}{A vector of intercepts, corresponding to each lambda.}
-\item{beta}{The fitted matrix of coefficients, store in sparse matrix
-representation. The number of rows is equal to the number of
-coefficients, and the number of columns is equal to \code{nlambda}.}
-\item{iter}{A vector of length \code{nlambda} containing the number of
-iterations until convergence at each value of \code{lambda}.}
-\item{lambda}{The sequence of regularization parameter values in the path.}
-\item{family}{Either \code{"gaussian"} or \code{"binomial"} depending on the
-function used.}
-\item{alpha}{Input parameter.}
-\item{loss}{A vector containing either the residual sum of squares
-(for linear models) or negative log-likelihood (for logistic models)
-of the fitted model at each value of \code{lambda}.}
-\item{n}{The number of observations used in the model fitting. It's equal
-to \code{length(row.idx)}.}
-\item{p}{The number of dimensions (including covariables,
-but not the intercept).}
-\item{center}{The sample mean vector of the variables, i.e., column mean
-of the sub-matrix of \code{X} used for model fitting.}
-\item{scale}{The sample standard deviation of the variables, i.e.,
-column standard deviation of the sub-matrix of \code{X} used for model
-fitting.}
-\item{y}{The response vector used in the model fitting. Depending on
-\code{row.idx}, it could be a subset of the raw input of the response vector
-y.}
-\item{col.idx}{The indices of features that have 'scale' value greater
-than \code{1e-6}. Features with 'scale' less than 1e-6 are removed from
-model fitting.}
+
+\item{return.all}{Whether to return coefficients for all lambda values.
+Default is \code{FALSE} and returns only coefficients which maximize prediction
+on the corresponding validation set.}
+
+\item{ncores}{Number of cores to use to train the K models.}
 }
 \description{
 Fit solution paths for linear or logistic regression models penalized by
@@ -81,4 +69,3 @@ The objective function for linear regression (\code{family = "gaussian"}) is
 (\code{family = "binomial"}) it is \deqn{-\frac{1}{n} loglike +
 \textrm{penalty}.}
 }
-\keyword{internal}
