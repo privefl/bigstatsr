@@ -106,7 +106,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   // Path
   for (l = 1; l < L; l++) {
 
-    Rcout << l << std::endl; //DEBUG
+    // Rcout << l << std::endl; //DEBUG
 
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) > dfmax) {
@@ -225,7 +225,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     pred_val = predict(macc_val, beta_old, center, scale) + beta0[l];
     pred_val = 1 / (1 + exp(-pred_val));
     metric = Rcpp::sum((1 - y_val) * log(1 - pred_val) + y_val * log(pred_val));
-    Rcout << metric << std::endl;
+    // Rcout << metric << std::endl;
     metrics[l] = metric;
     if (metric > metric_max) {
       metric_max = metric;

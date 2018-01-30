@@ -29,6 +29,8 @@ summaries <- function(X, y.train, ind.train, ind.col,
 ###                  https://github.com/YaohuiZeng/biglasso                  ###
 ################################################################################
 
+#' Train one model
+#'
 #' @return A named list with following variables:
 #'   \item{intercept}{A vector of intercepts, corresponding to each lambda.}
 #'   \item{beta}{The fitted matrix of coefficients, store in sparse matrix
@@ -153,7 +155,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' (\code{family = "binomial"}) it is \deqn{-\frac{1}{n} loglike +
 #' \textrm{penalty}.}
 #'
-#' @param family Either "gaussian" or "binomial", depending on the response.
+#' @param family Either "gaussian" (linear) or "binomial" (logistic).
 #' @param alpha The elastic-net mixing parameter that controls the relative
 #' contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 #' defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
@@ -174,17 +176,16 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param warn Return warning messages for failures to converge and model
 #' saturation? Default is `TRUE`.
 #' @param K Number of sets used in the Cross-Model Selection and Averaging
-#'   (CMSA) procedure.
+#'   (CMSA) procedure. Default is `10`.
 #' @param ind.sets Integer vectors of values between `1` and `K` specifying
 #'   which set each index of the training set is in. Default randomly assigns
 #'   these values.
 #' @param return.all Whether to return coefficients for all lambda values.
 #'   Default is `FALSE` and returns only coefficients which maximize prediction
 #'   on the corresponding validation set.
-#' @param nlam.min Minimum number of lambda values to investigate.
+#' @param nlam.min Minimum number of lambda values to investigate. Default is `50`.
 #' @param n.abort Number of lambda values for which prediction on the validation
-#'   set must decrease before stopping.
-#' @param ncores Number of cores to use to train the K models.
+#'   set must decrease before stopping. Default is `10`.
 #'
 COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                family = c("gaussian", "binomial"),
@@ -253,8 +254,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   }
   cross.res <- foreach(ic = 1:K) %dopar% {
 
-    print(ic)
-
     in.val <- (ind.sets == ic)
 
     ## Merge summaries
@@ -311,10 +310,27 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #' types of `FBM` (not only `double` ones).
 #' Yet, it only corresponds to `screen = "SSR"` (Sequential Strong Rules).
 #'
-#' @inheritParams bigstatsr-package
-#' @inheritDotParams COPY_biglasso_part -X -y.train -ind.train -covar.train -family
+#' Also, to remove the choice of the lambda parameter, we introduce the
+#' Cross-Model Selection and Averaging (CMSA) procedure:
+#' 1. This function separates the training set in `K` folds (e.g. 10).
+#' 2. __In turn__,
+#'     - each fold is considered as an inner validation set and the others
+#'       (K - 1) folds form an inner training set,
+#'     - the model is trained on the inner training set and the corresponding
+#'       predictions (scores) for the inner validation set are computed,
+#'     - the vector of scores which maximizes log-likelihood is determined,
+#'     - the vector of coefficients corresponding to the previous vector of
+#'       scores is chosen.
+#' 3. The `K` resulting vectors of coefficients can then be combined into one
+#' vector (see [get_beta]) or you can just combine the predictions
+#' (e.g. using `predict` followed by `rowMeans`).
 #'
-#' @inherit COPY_biglasso_part return
+#' @inheritParams bigstatsr-package
+#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family
+#'
+#' @return Return an object of class `big_sp_best_list` (a list of K elements),
+#'   which has a method `predict` that can compute K vectors of predictions,
+#'   which could be combined with e.g. `rowSums`. See details.
 #'
 #' @example examples/example-spLinReg.R
 #'
@@ -335,7 +351,9 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 big_spLinReg <- function(X, y.train,
                          ind.train = rows_along(X),
                          ind.col = cols_along(X),
-                         covar.train = NULL, ...) {
+                         covar.train = NULL,
+                         ncores = 1,
+                         ...) {
 
   check_args()
 
@@ -348,7 +366,7 @@ big_spLinReg <- function(X, y.train,
 #' Sparse logistic regression
 #'
 #' @inheritParams bigstatsr-package
-#' @inheritDotParams COPY_biglasso_part -X -y.train -ind.train -covar.train -family
+#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family
 #'
 #' @inherit big_spLinReg return description details seealso references
 #'
@@ -358,12 +376,52 @@ big_spLinReg <- function(X, y.train,
 big_spLogReg <- function(X, y01.train,
                          ind.train = rows_along(X),
                          ind.col = cols_along(X),
-                         covar.train = NULL, ...) {
+                         covar.train = NULL,
+                         ncores = 1,
+                         ...) {
 
   check_args()
 
   COPY_biglasso_main(X, y01.train, ind.train, ind.col, covar.train,
                      family = "binomial", ...)
+}
+
+################################################################################
+
+#' Combine sets of coefficients
+#'
+#' @param method Method for combining vectors of coefficients. The default uses
+#' the [geometric median](https://en.wikipedia.org/wiki/Geometric_median).
+#'
+#' @return A vector of resulting coefficients.
+#' @export
+get_beta <- function(betas, method = c("geometric-median",
+                                       "mean-wise",
+                                       "median-wise")) {
+
+  method <- match.arg(method)
+
+  if (method == "geometric-median") {
+    # Weiszfeld's algorithm
+    # probabilistically impossible to not converge in this situation?
+    b.old <- rowMeans(betas)
+
+    repeat {
+      norm <- sqrt(colSums((betas - b.old)^2))
+      b.new <- rowSums(sweep(betas, 2, norm, "/")) / sum(1 / norm)
+      dif <- max(abs(b.new - b.old))
+      if (dif < 1e-10) break
+      b.old <- b.new
+    }
+
+    b.new
+  } else if (method == "mean-wise") {
+    rowMeans(betas)
+  } else if (method == "median-wise") {
+    apply(betas, 1, stats::median)
+  } else {
+    stop("This method is not implemented.")
+  }
 }
 
 ################################################################################

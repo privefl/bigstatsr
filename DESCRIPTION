@@ -60,7 +60,6 @@ URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
 Collate: 
     'AUC.R'
-    'CMSA.R'
     'FBM-attach.R'
     'crochet.R'
     'FBM.R'

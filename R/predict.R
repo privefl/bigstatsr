@@ -2,50 +2,6 @@
 
 #' Predict method
 #'
-#' Predict method for class `big_CMSA`.
-#'
-#' @param object Object of class `big_CMSA`.
-#' @inheritParams bigstatsr-package
-#' @param ... Not used.
-#'
-#' @return A vector of prediction scores, corresponding to `ind.row`.
-#'
-#' @export
-#' @importFrom stats predict
-#'
-#' @seealso [big_CMSA]
-#'
-predict.big_CMSA <- function(object, X,
-                             ind.row = rows_along(X),
-                             covar.row = NULL,
-                             ...) {
-
-  check_args()
-
-  ind.col <- which(object[cols_along(X)] != 0)
-  stopifnot(length(ind.col) > 0)
-
-  scores <- big_prodVec(X, object[ind.col],
-                        ind.row = ind.row,
-                        ind.col = ind.col)
-
-  if (!is.null(covar.row)) {
-
-    assert_lengths(ind.row, rows_along(covar.row))
-
-    ncov <- ncol(covar.row)
-
-    scores <- scores + as.numeric(covar.row %*% tail(object, ncov))
-  }
-
-  names(scores) <- ind.row
-  scores
-}
-
-################################################################################
-
-#' Predict method
-#'
 #' Predict method for class `big_sp`.
 #'
 #' @param object Object of class `big_sp`.
@@ -60,8 +16,6 @@ predict.big_CMSA <- function(object, X,
 #' @importFrom stats predict
 #'
 #' @seealso [big_spLinReg] and [big_spLogReg].
-#'
-#' @example examples/example-predict.R
 #'
 predict.big_sp <- function(object, X,
                            ind.row = rows_along(X),
@@ -116,13 +70,11 @@ predict.big_sp <- function(object, X,
 #'
 #' @seealso [big_spLinReg] and [big_spLogReg].
 #'
-#' @example examples/example-predict.R
-#'
 predict.big_sp_best_list <- function(object, X,
                                      ind.row = rows_along(X),
                                      ind.col = attr(object, "ind.col"),
                                      covar.row = NULL,
-                                     proba = attr(object, "family") == "binomial",
+                                     proba = (attr(object, "family") == "binomial"),
                                      ...) {
 
   check_args()
@@ -173,7 +125,6 @@ predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 
   `if`(log10, lpval, 10^lpval)
 }
-
 
 ################################################################################
 

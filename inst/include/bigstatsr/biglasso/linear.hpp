@@ -76,7 +76,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
   // Path
   for (l = 1; l < L; l++) {
 
-    Rcout << "Iteration n°" << l << std::endl;
+    // Rcout << "Iteration n°" << l << std::endl;
 
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) > dfmax) {
@@ -144,7 +144,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
     pred_val = predict(macc_val, beta_old, center, scale);
     metric = COPY_gLoss(pred_val - y_val);
-    Rcout << metric << std::endl;
+    // Rcout << metric << std::endl;
     metrics[l] = metric;
     if (metric < metric_min) {
       metric_min = metric;

@@ -12,7 +12,7 @@ COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   ncores = 1)
 }
 \arguments{
-\item{family}{Either "gaussian" or "binomial", depending on the response.}
+\item{family}{Either "gaussian" (linear) or "binomial" (logistic).}
 
 \item{alpha}{The elastic-net mixing parameter that controls the relative
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
@@ -21,7 +21,7 @@ defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 (\code{1e-6}) and \code{1} is the elastic-net penalty. Default is \code{0.5}.}
 
 \item{K}{Number of sets used in the Cross-Model Selection and Averaging
-(CMSA) procedure.}
+(CMSA) procedure. Default is \code{10}.}
 
 \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
 which set each index of the training set is in. Default randomly assigns
@@ -33,10 +33,10 @@ these values.}
 lambda.max}. Default is \code{.0001} if the number of observations is larger than
 the number of variables and \code{.001} otherwise.}
 
-\item{nlam.min}{Minimum number of lambda values to investigate.}
+\item{nlam.min}{Minimum number of lambda values to investigate. Default is \code{50}.}
 
 \item{n.abort}{Number of lambda values for which prediction on the validation
-set must decrease before stopping.}
+set must decrease before stopping. Default is \code{10}.}
 
 \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
@@ -55,8 +55,6 @@ saturation? Default is \code{TRUE}.}
 \item{return.all}{Whether to return coefficients for all lambda values.
 Default is \code{FALSE} and returns only coefficients which maximize prediction
 on the corresponding validation set.}
-
-\item{ncores}{Number of cores to use to train the K models.}
 }
 \description{
 Fit solution paths for linear or logistic regression models penalized by
