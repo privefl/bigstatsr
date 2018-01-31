@@ -47,7 +47,7 @@ Default value is \code{1e-7}.}
 \code{20e3} because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.}
   \item{warn}{Return warning messages for failures to converge and model
-saturation? Default is \code{TRUE}.}
+saturation? Default is \code{FALSE}.}
   \item{K}{Number of sets used in the Cross-Model Selection and Averaging
 (CMSA) procedure. Default is \code{10}.}
   \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
@@ -64,7 +64,7 @@ set must decrease before stopping. Default is \code{10}.}
 \value{
 Return an object of class \code{big_sp_best_list} (a list of K elements),
 which has a method \code{predict} that can compute K vectors of predictions,
-which could be combined with e.g. \code{rowSums}. See details.
+which could be combined with e.g. \code{rowMeans}. See details.
 }
 \description{
 Sparse logistic regression

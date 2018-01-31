@@ -174,7 +174,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' `20e3` because, for large data sets, computational burden may be
 #' heavy for models with a large number of nonzero coefficients.
 #' @param warn Return warning messages for failures to converge and model
-#' saturation? Default is `TRUE`.
+#' saturation? Default is `FALSE`.
 #' @param K Number of sets used in the Cross-Model Selection and Averaging
 #'   (CMSA) procedure. Default is `10`.
 #' @param ind.sets Integer vectors of values between `1` and `K` specifying
@@ -199,7 +199,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                eps = 1e-7,
                                max.iter = 1000,
                                dfmax = 20e3,
-                               warn = TRUE,
+                               warn = FALSE,
                                return.all = FALSE,
                                ncores = 1) {
 
@@ -330,7 +330,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #'
 #' @return Return an object of class `big_sp_best_list` (a list of K elements),
 #'   which has a method `predict` that can compute K vectors of predictions,
-#'   which could be combined with e.g. `rowSums`. See details.
+#'   which could be combined with e.g. `rowMeans`. See details.
 #'
 #' @example examples/example-spLinReg.R
 #'

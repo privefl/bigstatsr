@@ -3,74 +3,70 @@
 context("SP_LIN_REG")
 
 # Simulating some data
-N <- 73
-M <- 230
+N <- 530
+M <- 730
 x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
-y <- rnorm(N)
+s <- rowSums(x[, 1:10])
+y <- s + rnorm(N)
 
 covar0 <- matrix(rnorm(N * 3), N)
 lcovar <- list(NULL, covar0)
 
 ################################################################################
 
-test_that("equality with biglasso with all data", {
+test_that("can be used with a subset of samples", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in lcovar) {
-      X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double",
-                                     shared = FALSE)
-      m <- runif(ncol(X2), min = 0.5, max = 2)
-      alpha <- runif(1)
+
+      ind <- sample(N, N / 2)
+
+      alpha <- runif(1, min = 1e-6, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar, alpha = alpha,
-                                    lambda.min = lambda.min, penalty.factor = m)
-      mod.biglasso <- biglasso::biglasso(X2, y,
-                                         family = "gaussian",
-                                         alpha = alpha,
-                                         penalty = "enet",
-                                         lambda.min = lambda.min,
-                                         penalty.factor = m)
+                                    lambda.min = lambda.min)
+      preds <- rowMeans(
+        predict(mod.bigstatsr, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
+      )
+      expect_gt(cor(preds, y[-ind]), 0.8)
 
-      expect_equal(mod.bigstatsr$lambda, mod.biglasso$lambda)
-      expect_equivalent(mod.bigstatsr$beta@x, mod.biglasso$beta[-1, ]@x)
-      expect_equal(mod.bigstatsr$intercept, mod.biglasso$beta[1, ])
+      mod.bigstatsr2 <- big_spLinReg(X, y[ind], ind.train = ind,
+                                     covar.train = covar[ind, ],
+                                     alpha = alpha,
+                                     lambda.min = lambda.min)
+      preds2 <- rowMeans(
+        predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
+      )
+      expect_gt(cor(preds2, y[-ind]), 0.5)
     }
   }
 })
 
 ################################################################################
 
-test_that("equality with biglasso with only half the data", {
-  ind <- sample(N, N / 2)
-
+test_that("can be used with a subset of variables", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in lcovar) {
-      X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double",
-                                     shared = FALSE)
-      m <- runif(ncol(X2), min = 0.5, max = 2)
-      alpha <- runif(1)
+
+      ind <- sample(N, N / 2)
+
+      alpha <- runif(1, min = 1e-6, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr <- big_spLinReg(X, y[ind], ind.train = ind,
-                                    covar.train = covar[ind, ],
-                                    alpha = alpha,
-                                    lambda.min = lambda.min,
-                                    penalty.factor = m)
-      mod.biglasso <- biglasso::biglasso(X2, y,
-                                         family = "gaussian",
-                                         row.idx = ind,
-                                         alpha = alpha,
-                                         penalty = "enet",
-                                         lambda.min = lambda.min,
-                                         penalty.factor = m)
-
-      expect_equal(mod.bigstatsr$lambda, mod.biglasso$lambda)
-      expect_equivalent(mod.bigstatsr$beta@x, mod.biglasso$beta[-1, ]@x)
-      expect_equal(mod.bigstatsr$intercept, mod.biglasso$beta[1, ])
+      mod.bigstatsr3 <- big_spLinReg(X, y[ind], ind.train = ind,
+                                     ind.col = 11:M,
+                                     covar.train = covar[ind, ],
+                                     alpha = alpha,
+                                     lambda.min = lambda.min)
+      preds3 <- rowMeans(
+        predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
+      )
+      # Test that prediction is bad (because not the first variable in the prediction)
+      expect_lt(cor(preds3, y[-ind]), 0.2)
     }
   }
 })

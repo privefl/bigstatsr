@@ -81,7 +81,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) > dfmax) {
       for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-      return List::create(beta, loss, iter);
+      return List::create(beta, loss, iter, metrics);
     }
     // strong set
     lam_l = lambda[l];
@@ -161,7 +161,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     }
   }
 
-  return List::create(beta, loss, iter);
+  return List::create(beta, loss, iter, metrics);
 }
 
 } }

@@ -6,7 +6,7 @@
 \usage{
 \method{predict}{big_sp_best_list}(object, X, ind.row = rows_along(X),
   ind.col = attr(object, "ind.col"), covar.row = NULL,
-  proba = attr(object, "family") == "binomial", ...)
+  proba = (attr(object, "family") == "binomial"), ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp_best_list}.}

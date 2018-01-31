@@ -112,6 +112,11 @@ I have been thinking of using the unsigned short type to make a `FBM.code65536` 
 A `big.matrix` is basically an S4 class object that stores a pointer to a C++ object (an external pointer). When you restart your R session, this pointer becomes `Nil` and it may make your R session crash. You'll need a different object, a `big.matrix.descriptor` (using `describe()`) which stores enough information to make it possible to create this external pointer again (using `attach.big.matrix()`).
 Therefore, one has to often switch between descriptors and `big.matrix` objects.
 
+```{r, echo=FALSE, out.width="60%"}
+knitr::include_graphics("https://i.stack.imgur.com/CZsnH.png")
+```
+
+
 For FBMs, I use the nice idea of the package [**bigmemoryExtras**](https://github.com/phaverty/bigmemoryExtras). Basically, I use a Reference Class (RC) object with active binding. In this object, I store the external pointer *and* the information needed to create the pointer to the C++ object. The active binding makes this automatic so that the user never need to use `attach.big.matrix()` or `describe()` anymore (and no more session crash!). 
 
 What this also mean is that you can now serialize a FBM (for example, saving it in an rds file with `saveRDS()` or using it in a parallel algorithm). For instance, with a standard `big.matrix` object, you'll need to pass the descriptor object in paralell algorithms:
@@ -297,7 +302,7 @@ all.equal(test1, true)
 The **biganalytics** strategy is to make a loop, which is slow because there are a lot of elements to loop through. I use a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results. 
 
 ```{r, out.width="70%", echo=FALSE}
-knitr::include_graphics("https://cdn.rawgit.com/privefl/useR-2017/f89f5928/split-apply-combine.svg")
+knitr::include_graphics("https://privefl.github.io/useR-2017/split-apply-combine.svg")
 ```
 
 
