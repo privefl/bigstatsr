@@ -7,6 +7,8 @@
 get_beta(betas, method = c("geometric-median", "mean-wise", "median-wise"))
 }
 \arguments{
+\item{betas}{Matrix of coefficient vectors to be combined.}
+
 \item{method}{Method for combining vectors of coefficients. The default uses
 the \href{https://en.wikipedia.org/wiki/Geometric_median}{geometric median}.}
 }

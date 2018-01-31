@@ -44,3 +44,4 @@ model fitting.}
 \description{
 Train one model
 }
+\keyword{internal}

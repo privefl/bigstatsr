@@ -65,6 +65,8 @@ summaries <- function(X, y.train, ind.train, ind.col,
 #'
 #' @import Matrix
 #'
+#' @keywords internal
+#'
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
                                eps, max.iter, dfmax, warn,
@@ -186,6 +188,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param nlam.min Minimum number of lambda values to investigate. Default is `50`.
 #' @param n.abort Number of lambda values for which prediction on the validation
 #'   set must decrease before stopping. Default is `10`.
+#'
+#' @keywords internal
 #'
 COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                family = c("gaussian", "binomial"),
@@ -391,7 +395,8 @@ big_spLogReg <- function(X, y01.train,
 #' Combine sets of coefficients
 #'
 #' @param method Method for combining vectors of coefficients. The default uses
-#' the [geometric median](https://en.wikipedia.org/wiki/Geometric_median).
+#'   the [geometric median](https://en.wikipedia.org/wiki/Geometric_median).
+#' @param betas Matrix of coefficient vectors to be combined.
 #'
 #' @return A vector of resulting coefficients.
 #' @export

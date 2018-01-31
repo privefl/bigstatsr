@@ -1,5 +1,6 @@
 â
 advisor
+al
 Arnoldi
 arXiv
 Aschard
@@ -18,6 +19,7 @@ boldsymbol
 Breheny
 cbind
 cdot
+CMSA
 confounders
 Crossprod
 crossprods
@@ -25,6 +27,7 @@ didn
 doesn
 doi
 eigen
+et
 Fawcett
 FBM
 filebacked
@@ -69,7 +72,7 @@ scalable
 semismooth
 sparseSVM
 spLinReg
-spSVM
+spLogReg
 strsplit
 svd
 svds

@@ -23,6 +23,8 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
+\item{proba}{Whether to return probabilities?}
+
 \item{...}{Not used.}
 }
 \value{

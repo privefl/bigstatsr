@@ -62,6 +62,7 @@ predict.big_sp <- function(object, X,
 #' @param object Object of class `big_sp_best_list`.
 #' @inheritParams bigstatsr-package
 #' @param ... Not used.
+#' @param proba Whether to return probabilities?
 #'
 #' @return A vector of scores, corresponding to `ind.row`.
 #'

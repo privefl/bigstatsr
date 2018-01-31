@@ -15,7 +15,7 @@ Overall, there were 2 NOTEs:
 
 * checking installed package size ... NOTE
 
-  - 12.6 Mb on Linux
+  - 12.5 Mb on Linux
   -  5.6 Mb on Windows
   -  < 5 Mb on Mac
 
