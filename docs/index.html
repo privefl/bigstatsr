@@ -42,10 +42,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -61,6 +64,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -91,20 +100,22 @@
 <span class="kw">install.packages</span>(<span class="st">"bigstatsr"</span>)
 
 <span class="co"># For the current development version</span>
-devtools::<span class="kw">install_github</span>(<span class="st">"privefl/bigstatsr"</span>)
-
-<span class="co"># For the first version (depending on package bigmemory)</span>
-devtools::<span class="kw">install_github</span>(<span class="st">"privefl/bigstatsr"</span>, <span class="dt">ref =</span> <span class="st">"v-bigmemory"</span>)</code></pre></div>
+devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"privefl/bigstatsr"</span>)</code></pre></div>
 </div>
 <div id="input-format" class="section level2">
 <h2 class="hasAnchor">
 <a href="#input-format" class="anchor"></a>Input format</h2>
 <p>As inputs, package <strong>bigstatsr</strong> uses <a href="https://privefl.github.io/bigstatsr/reference/FBM-class.html">Filebacked Big Matrices (FBM)</a>.</p>
+<p>To memory-map character text files, see <a href="https://github.com/privefl/mmapcharr">package <strong>mmapcharr</strong></a>.</p>
 </div>
-<div id="bug-report" class="section level2">
+<div id="bug-report-help" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-report" class="anchor"></a>Bug report</h2>
+<a href="#bug-report-help" class="anchor"></a>Bug report / Help</h2>
 <p>Please open an issue if you find a bug. If you want help using <strong>bigstatsr</strong>, please post on Stack Overflow with the tag <em>bigstatsr</em> (not yet created). <a href="https://stackoverflow.com/q/5963269/6103040">How to make a great R reproducible example?</a></p>
+<ul>
+<li><p>Parallelization: package <strong>bigstatsr</strong> uses package <strong>foreach</strong> for its parallelization tasks. Learn more on parallelism with <strong>foreach</strong> with <a href="https://privefl.github.io/blog/a-guide-to-parallelism-in-r/">this tuto</a>.</p></li>
+<li><p><a href="https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/">Computing the null space of a bigmatrix in R</a> (works if one dimension is not too large)</p></li>
+</ul>
 </div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
@@ -127,6 +138,10 @@ devtools::<span class="kw">install_github</span>(<span class="st">"privefl/bigst
 </ul>
 <h2>License</h2>
 <p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing bigstatsr</a></li>
+</ul>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Florian Privé <br><small class="roles"> Author, maintainer </small> </li>
@@ -138,6 +153,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"privefl/bigst
 <li><a href="https://ci.appveyor.com/project/privefl/bigstatsr"><img src="https://ci.appveyor.com/api/projects/status/github/privefl/bigstatsr?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
 <li><a href="https://codecov.io/github/privefl/bigstatsr?branch=master"><img src="https://img.shields.io/codecov/c/github/privefl/bigstatsr/master.svg" alt="Coverage Status"></a></li>
 <li><a href="https://cran.r-project.org/package=bigstatsr"><img src="http://www.r-pkg.org/badges/version/bigstatsr" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://cran.r-project.org/package=bigstatsr"><img src="http://cranlogs.r-pkg.org/badges/grand-total/bigstatsr" alt="CRAN_downloads"></a></li>
 </ul>
 </div>
 </div>

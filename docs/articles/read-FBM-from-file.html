@@ -42,10 +42,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -61,6 +64,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -94,18 +103,18 @@
 <a href="#store-a-fake-file" class="anchor"></a>Store a fake file</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">10</span> 
 M &lt;-<span class="st"> </span><span class="dv">5</span>
-(x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N *<span class="st"> </span>M), <span class="dt">nrow =</span> N, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span>:N], LETTERS[<span class="dv">1</span>:M])))</code></pre></div>
-<pre><code>##             A           B            C          D           E
-## a  0.56266817 -0.84677148  1.802055559 -0.5621413  0.48816234
-## b  0.09833966  0.15411828  0.951485223 -0.7305154  2.11046376
-## c -0.35678303 -1.47821511 -0.753532459 -1.1516353 -0.68561307
-## d -0.90006978 -0.58001349 -0.841103688  0.6287839  0.90718832
-## e -0.22947527  1.38318768  0.478377740  1.7091459 -0.49482404
-## f -0.54052952  0.62995929  1.699403675  1.0530260  0.44692218
-## g -1.27081970  0.07881095  0.431950273 -1.8982343  0.63740367
-## h -0.12462601  0.37068707 -0.001907506  1.5849381 -0.14002593
-## i  1.16352096  0.31218624 -1.153699207 -1.1225131  0.35169438
-## j -0.30614320  0.98241386  1.064989346  1.3340094  0.02141235</code></pre>
+(x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N <span class="op">*</span><span class="st"> </span>M), <span class="dt">nrow =</span> N, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span><span class="op">:</span>N], LETTERS[<span class="dv">1</span><span class="op">:</span>M])))</code></pre></div>
+<pre><code>##            A           B           C          D           E
+## a -0.6235075 -0.79023233  0.73813710  0.8852084 -0.02732649
+## b  0.8671257 -1.16156439  1.44196637 -1.4258653 -0.24070104
+## c  1.7689600 -1.65387554 -0.22234688  1.4756310  0.81645056
+## d  0.5892803 -0.87012744 -1.20095838  0.6076114  0.05241164
+## e -1.8938624  1.22788396  0.28212427 -1.3734765 -0.34319998
+## f -0.1616032 -0.02173788  0.01387595 -0.5217316 -0.82642736
+## g  0.1555337  0.54581953  1.11861214 -0.1523459  1.49099785
+## h  0.8154142 -0.53619856  0.49271488  0.2901883  0.15885724
+## i -0.1020557 -0.29309720 -0.14988710  1.7802657  0.62438524
+## j -0.1859529  1.27865446 -0.05038405 -0.2853816  0.98485838</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(x, tmp &lt;-<span class="st"> </span><span class="kw">tempfile</span>(), <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </div>
 <div id="get-some-intuition-on-the-file-format" class="section level3">
@@ -114,8 +123,8 @@ M &lt;-<span class="st"> </span><span class="dv">5</span>
 <p>I think it is always a good idea to print the first lines of the file you are interested in reading.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">readLines</span>(tmp, <span class="dv">3</span>), <span class="dv">0</span>, <span class="dv">60</span>)</code></pre></div>
 <pre><code>## [1] "A B C D E"                                                   
-## [2] "a 0.562668170547243 -0.846771482694089 1.80205555904332 -0.5"
-## [3] "b 0.0983396643936716 0.154118280250644 0.951485222644915 -0."</code></pre>
+## [2] "a -0.623507485417661 -0.79023232619397 0.738137101100882 0.8"
+## [3] "b 0.867125679483973 -1.16156439088919 1.44196637370161 -1.42"</code></pre>
 <p>What you can see with these first 3 lines:</p>
 <ul>
 <li>the first line of the file stores some names,</li>
@@ -136,18 +145,18 @@ test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_re
                  <span class="dt">read.what =</span> <span class="kw">double</span>())  <span class="co"># the default</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the FBM elements</span>
 test[]</code></pre></div>
-<pre><code>##            [,1]        [,2]       [,3]       [,4]       [,5]       [,6]
-## [1,]  0.5626682  0.09833966 -0.3567830 -0.9000698 -0.2294753 -0.5405295
-## [2,] -0.8467715  0.15411828 -1.4782151 -0.5800135  1.3831877  0.6299593
-## [3,]  1.8020556  0.95148522 -0.7535325 -0.8411037  0.4783777  1.6994037
-## [4,] -0.5621413 -0.73051536 -1.1516353  0.6287839  1.7091459  1.0530260
-## [5,]  0.4881623  2.11046376 -0.6856131  0.9071883 -0.4948240  0.4469222
-##             [,7]         [,8]       [,9]       [,10]
-## [1,] -1.27081970 -0.124626011  1.1635210 -0.30614320
-## [2,]  0.07881095  0.370687070  0.3121862  0.98241386
-## [3,]  0.43195027 -0.001907506 -1.1536992  1.06498935
-## [4,] -1.89823430  1.584938079 -1.1225131  1.33400940
-## [5,]  0.63740367 -0.140025926  0.3516944  0.02141235</code></pre>
+<pre><code>##             [,1]       [,2]       [,3]        [,4]       [,5]        [,6]
+## [1,] -0.62350749  0.8671257  1.7689600  0.58928033 -1.8938624 -0.16160323
+## [2,] -0.79023233 -1.1615644 -1.6538755 -0.87012744  1.2278840 -0.02173788
+## [3,]  0.73813710  1.4419664 -0.2223469 -1.20095838  0.2821243  0.01387595
+## [4,]  0.88520844 -1.4258653  1.4756310  0.60761138 -1.3734765 -0.52173161
+## [5,] -0.02732649 -0.2407010  0.8164506  0.05241164 -0.3432000 -0.82642736
+##            [,7]       [,8]       [,9]       [,10]
+## [1,]  0.1555337  0.8154142 -0.1020557 -0.18595287
+## [2,]  0.5458195 -0.5361986 -0.2930972  1.27865446
+## [3,]  1.1186121  0.4927149 -0.1498871 -0.05038405
+## [4,] -0.1523459  0.2901883  1.7802657 -0.28538163
+## [5,]  1.4909979  0.1588572  0.6243852  0.98485838</code></pre>
 </div>
 <div id="understand-the-resulting-object" class="section level3">
 <h3 class="hasAnchor">
@@ -181,22 +190,22 @@ test[]</code></pre></div>
 ##  $ ncol       : int 5
 ##  $ type       : Named int 8
 ##   ..- attr(*, "names")= chr "double"
-##  $ backingfile: chr "/tmp/RtmpEEWtoJ/file1087890c270.bk"
+##  $ backingfile: chr "/tmp/Rtmpb1EZ1F/file7b15682e2e28.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test[] -<span class="st"> </span>x</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test[] <span class="op">-</span><span class="st"> </span>x</code></pre></div>
 <pre><code>##               A             B             C             D             E
-## a  0.000000e+00  4.440892e-16  1.554312e-15  3.330669e-16  2.775558e-16
-## b -1.387779e-17  4.440892e-16 -3.330669e-16  2.220446e-16  0.000000e+00
-## c  4.440892e-16  1.998401e-15 -4.440892e-16 -1.554312e-15 -4.440892e-16
-## d  4.440892e-16 -2.220446e-16  3.330669e-16  3.330669e-16  2.220446e-16
-## e -1.942890e-16 -2.220446e-16 -4.440892e-16 -1.998401e-15  5.551115e-17
-## f -4.440892e-16 -1.110223e-16  3.552714e-15  3.774758e-15 -1.110223e-16
-## g  3.774758e-15 -5.551115e-17  1.665335e-16  3.108624e-15  0.000000e+00
-## h -3.053113e-16 -2.775558e-16 -1.951564e-18  0.000000e+00  2.775558e-16
-## i -1.998401e-15 -1.110223e-16  1.998401e-15  4.884981e-15  3.330669e-16
-## j  1.665335e-16  4.440892e-16 -2.220446e-15  4.662937e-15 -1.387779e-17</code></pre>
+## a -3.330669e-16  1.110223e-16  0.000000e+00  0.000000e+00 -6.938894e-18
+## b -2.220446e-16 -2.220446e-15  3.330669e-15 -2.886580e-15 -2.775558e-17
+## c -1.554312e-15 -3.330669e-15  1.665335e-16  6.661338e-16 -1.110223e-16
+## d  3.330669e-16 -4.440892e-16 -6.661338e-16  0.000000e+00  0.000000e+00
+## e  4.662937e-15  8.881784e-16  5.551115e-17  6.661338e-16  1.110223e-16
+## f  3.885781e-16  1.040834e-17 -1.387779e-17 -1.110223e-16 -4.440892e-16
+## g -8.326673e-17 -3.330669e-16 -1.776357e-15  5.551115e-17  4.884981e-15
+## h  3.330669e-16  1.110223e-16  4.440892e-16 -2.220446e-16 -3.885781e-16
+## i  1.387779e-16 -4.440892e-16  2.498002e-16  4.218847e-15  3.330669e-16
+## j -4.440892e-16  3.330669e-15  3.469447e-17  1.665335e-16  3.330669e-16</code></pre>
 </li>
 </ol>
 </div>
@@ -241,9 +250,9 @@ test[]</code></pre></div>
 <p>Let us make a function that regroup these letters by pairs and count the number that are different from the corresponding reference:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ACTG &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"T"</span>, <span class="st">"G"</span>)
 ref &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">c</span>(<span class="st">"T"</span>, <span class="st">"T"</span>, <span class="st">"G"</span>, <span class="st">"C"</span>, <span class="st">"C"</span>, <span class="st">"T"</span>, <span class="st">"G"</span>, <span class="st">"C"</span>), ACTG)
-transfo &lt;-<span class="st"> </span>function(read) {
+transfo &lt;-<span class="st"> </span><span class="cf">function</span>(read) {
   read.int &lt;-<span class="st"> </span><span class="kw">match</span>(read, ACTG)
-  (read.int[<span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>)] !=<span class="st"> </span>ref) +<span class="st"> </span>(read.int[<span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>)] !=<span class="st"> </span>ref)
+  (read.int[<span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>)] <span class="op">!=</span><span class="st"> </span>ref) <span class="op">+</span><span class="st"> </span>(read.int[<span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>)] <span class="op">!=</span><span class="st"> </span>ref)
 }</code></pre></div>
 <p>In this function, we have a vector of letters as input, and a vector of half the input length as output which are now 0, 1 or 2. We can therefore store these values with e.g. integers.</p>
 </div>
@@ -262,7 +271,7 @@ transfo &lt;-<span class="st"> </span>function(read) {
 ##  $ ncol       : int 8
 ##  $ type       : Named int 4
 ##   ..- attr(*, "names")= chr "integer"
-##  $ backingfile: chr "/tmp/RtmpEEWtoJ/file10874b03fa01.bk"
+##  $ backingfile: chr "/tmp/Rtmpb1EZ1F/file7b151218974d.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>

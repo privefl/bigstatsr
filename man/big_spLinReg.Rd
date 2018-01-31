@@ -4,7 +4,8 @@
 \alias{big_spLinReg}
 \title{Sparse linear regression}
 \usage{
-big_spLinReg(X, y.train, ind.train = rows_along(X), covar.train = NULL, ...)
+big_spLinReg(X, y.train, ind.train = rows_along(X), ind.col = cols_along(X),
+  covar.train = NULL, ncores = 1, ...)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -15,81 +16,54 @@ big_spLinReg(X, y.train, ind.train = rows_along(X), covar.train = NULL, ...)
 for the training part. If not specified, all rows are used.
 \strong{Don't use negative indices.}}
 
+\item{ind.col}{An optional vector of the column indices that are used.
+If not specified, all columns are used. \strong{Don't use negative indices.}}
+
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{...}{Arguments passed on to \code{COPY_biglasso}
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
+
+\item{...}{Arguments passed on to \code{COPY_biglasso_main}
 \describe{
   \item{alpha}{The elastic-net mixing parameter that controls the relative
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 \code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
-(\code{1e-6}) and \code{1} is the elastic-net penalty.}
-  \item{lambda.min}{The smallest value for lambda, as a fraction of
-lambda.max. Default is \code{.001} if the number of observations is larger than
-the number of covariates and \code{.01} otherwise.}
-  \item{nlambda}{The number of lambda values. Default is \code{100}.}
-  \item{lambda.log.scale}{Whether compute the grid values of lambda on log
-scale (default) or linear scale.}
-  \item{lambda}{A user-specified sequence of lambda values. By default, a
-sequence of values of length \code{nlambda} is computed, equally spaced on
-the log scale.}
+(\code{1e-6}) and \code{1} is the elastic-net penalty. Default is \code{0.5}.}
+  \item{lambda.min}{The smallest value for lambda, \strong{as a fraction of
+lambda.max}. Default is \code{.0001} if the number of observations is larger than
+the number of variables and \code{.001} otherwise.}
+  \item{nlambda}{The number of lambda values. Default is \code{200}.}
   \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
 Default value is \code{1e-7}.}
   \item{max.iter}{Maximum number of iterations. Default is \code{1000}.}
   \item{dfmax}{Upper bound for the number of nonzero coefficients. Default is
-no upper bound. However, for large data sets, computational burden may be
+\code{20e3} because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.}
-  \item{penalty.factor}{A multiplicative factor for the penalty applied to
-each coefficient. If supplied, \code{penalty.factor} must be a numeric
-vector of length equal to sum of the number of columns of \code{X} and the
-number of covariables (intercept excluded). The purpose of \code{penalty.factor}
-is to apply differential penalization if some coefficients are thought to be
-more likely than others to be in the model. Current package doesn't allow
-unpenalized coefficients. That is \code{penalty.factor} cannot be 0.}
   \item{warn}{Return warning messages for failures to converge and model
-saturation? Default is \code{TRUE}.}
-  \item{verbose}{Whether to print out the start, the timing of each lambda
-iteration and the end. Default is \code{FALSE}.}
+saturation? Default is \code{FALSE}.}
+  \item{K}{Number of sets used in the Cross-Model Selection and Averaging
+(CMSA) procedure. Default is \code{10}.}
+  \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
+which set each index of the training set is in. Default randomly assigns
+these values.}
+  \item{return.all}{Whether to return coefficients for all lambda values.
+Default is \code{FALSE} and returns only coefficients which maximize prediction
+on the corresponding validation set.}
+  \item{nlam.min}{Minimum number of lambda values to investigate. Default is \code{50}.}
+  \item{n.abort}{Number of lambda values for which prediction on the validation
+set must decrease before stopping. Default is \code{10}.}
 }}
 }
 \value{
-A named list with following variables:
-\item{intercept}{A vector of intercepts, corresponding to each lambda.}
-\item{beta}{The fitted matrix of coefficients, store in sparse matrix
-representation. The number of rows is equal to the number of
-coefficients, and the number of columns is equal to \code{nlambda}.}
-\item{iter}{A vector of length \code{nlambda} containing the number of
-iterations until convergence at each value of \code{lambda}.}
-\item{lambda}{The sequence of regularization parameter values in the path.}
-\item{penalty}{Penalty used. See the input parameter \code{alpha}.}
-\item{family}{Either \code{"gaussian"} or \code{"binomial"} depending on the
-function used.}
-\item{alpha}{Input parameter.}
-\item{loss}{A vector containing either the residual sum of squares
-(for linear models) or negative log-likelihood (for logistic models)
-of the fitted model at each value of \code{lambda}.}
-\item{penalty.factor}{Input parameter.}
-\item{n}{The number of observations used in the model fitting. It's equal
-to \code{length(row.idx)}.}
-\item{p}{The number of dimensions (including covariables,
-but not the intercept).}
-\item{center}{The sample mean vector of the variables, i.e., column mean
-of the sub-matrix of \code{X} used for model fitting.}
-\item{scale}{The sample standard deviation of the variables, i.e.,
-column standard deviation of the sub-matrix of \code{X} used for model
-fitting.}
-\item{y}{The response vector used in the model fitting. Depending on
-\code{row.idx}, it could be a subset of the raw input of the response vector
-y.}
-\item{col.idx}{The indices of features that have 'scale' value greater
-than \code{1e-6}. Features with 'scale' less than 1e-6 are removed from
-model fitting.}
-\item{rejections}{The number of features rejected at each value of
-\code{lambda}.}
+Return an object of class \code{big_sp_best_list} (a list of K elements),
+which has a method \code{predict} that can compute K vectors of predictions,
+which could be combined with e.g. \code{rowMeans}. See details.
 }
 \description{
 Fit lasso penalized linear regression path for a Filebacked Big Matrix.
@@ -101,36 +75,48 @@ Covariates can be added to correct for confounders.
 It adds the possibility to train models with covariables and use many
 types of \code{FBM} (not only \code{double} ones).
 Yet, it only corresponds to \code{screen = "SSR"} (Sequential Strong Rules).
+
+Also, to remove the choice of the lambda parameter, we introduce the
+Cross-Model Selection and Averaging (CMSA) procedure:
+\enumerate{
+\item This function separates the training set in \code{K} folds (e.g. 10).
+\item \strong{In turn},
+\itemize{
+\item each fold is considered as an inner validation set and the others
+(K - 1) folds form an inner training set,
+\item the model is trained on the inner training set and the corresponding
+predictions (scores) for the inner validation set are computed,
+\item the vector of scores which maximizes log-likelihood is determined,
+\item the vector of coefficients corresponding to the previous vector of
+scores is chosen.
+}
+\item The \code{K} resulting vectors of coefficients can then be combined into one
+vector (see \link{get_beta}) or you can just combine the predictions
+(e.g. using \code{predict} followed by \code{rowMeans}).
+}
 }
 \examples{
 set.seed(1)
 
 # simulating some data
-N <- 73
-M <- 430
+N <- 230
+M <- 730
 X <- FBM(N, M, init = rnorm(N * M, sd = 5), type = "integer")
-y <- rnorm(N)
+y <- X[, 1:5] + rnorm(N)
 covar <- matrix(rnorm(N * 3), N)
 
-# Error, only handle `double` `big.matrix` objects
-X2 <- bigmemory::as.big.matrix(X[], type = "integer", shared = FALSE)
-\dontrun{biglasso::biglasso(X2, y, family = "gaussian")}
+ind.train <- sort(sample(nrow(X), 150))
+ind.test <- setdiff(rows_along(X), ind.train)
 
-# OK here
-test2 <- big_spLinReg(X, y)
-str(test2)
+test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
+                     covar.train = covar[ind.train, ],
+                     warn = FALSE)
+# K = 10 predictions
+str(preds <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ]))
+# Combine them
+preds2 <- rowMeans(preds)
 
-# How to use covariables?
-X2 <- bigmemory::as.big.matrix(cbind(X[], covar), type = "double",
-                               shared = FALSE)
-test <- biglasso::biglasso(X2, y, family = "gaussian", lambda.min = 0.01,
-                           alpha = 0.5, penalty = "enet")
-test2 <- big_spLinReg(X, y, covar.train = covar, alpha = 0.5)
-
-# Verification
-all.equal(test2$lambda, test$lambda)
-all.equal(test2$beta@x, test$beta[-1, ]@x)
-all.equal(test2$intercept, test$beta[1, ])
+plot(preds2, y[ind.test], pch = 20); abline(0, 1, col = "red")
 }
 \references{
 Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,

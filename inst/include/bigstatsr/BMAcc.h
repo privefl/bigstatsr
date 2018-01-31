@@ -99,8 +99,10 @@ public:
     }
 
   inline T& operator()(size_t i, size_t j) {
+    // https://stackoverflow.com/a/32087373/6103040
+    return BMAcc<T>::operator()(_row_ind[i], _col_ind[j]);
     // https://stackoverflow.com/a/7076312/6103040
-    return this->_pMat[_row_ind[i] + _col_ind[j] * this->_nrow];
+    // return this->_pMat[_row_ind[i] + _col_ind[j] * this->_nrow];
   }
 
   size_t nrow() const { return _row_ind.size(); }

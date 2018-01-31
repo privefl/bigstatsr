@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 0.2.3
-Date: 2017-11-17
+Version: 0.2.4
+Date: 2018-01-31
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 
@@ -52,41 +52,37 @@ Suggests:
   grid,
   LiblineaR,
   ModelMetrics,
-  sparseSVM,
   testthat,
   viridis
-Remotes: CY-dev/sparseSVM@15ed312d4d87482bbf8d48b6065e7c08c5fe1598
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
 Collate: 
-  'AUC.R'
-  'CMSA.R'
-  'FBM-attach.R'
-  'crochet.R'
-  'FBM.R'
-  'FBM-code256.R'
-  'FBM-copy.R'
-  'RcppExports.R'
-  'SVD.R'
-  'apply-parallelize.R'
-  'biglasso.R'
-  'bigstatsr.R'
-  'colstats.R'
-  'counts.R'
-  'crossprodSelf.R'
-  'plot.R'
-  'predict.R'
-  'randomSVD.R'
-  'read.R'
-  'scaling.R'
-  'sparseSVM.R'
-  'tcrossprodSelf.R'
-  'transpose.R'
-  'univLinReg.R'
-  'univLogReg.R'
-  'utils-assert.R'
-  'utils-mult.R'
-  'utils.R'
-  'zzz.R'
+    'AUC.R'
+    'FBM-attach.R'
+    'crochet.R'
+    'FBM.R'
+    'FBM-code256.R'
+    'FBM-copy.R'
+    'RcppExports.R'
+    'SVD.R'
+    'apply-parallelize.R'
+    'biglasso.R'
+    'bigstatsr.R'
+    'colstats.R'
+    'counts.R'
+    'crossprodSelf.R'
+    'plot.R'
+    'predict.R'
+    'randomSVD.R'
+    'read.R'
+    'scaling.R'
+    'tcrossprodSelf.R'
+    'transpose.R'
+    'univLinReg.R'
+    'univLogReg.R'
+    'utils-assert.R'
+    'utils-mult.R'
+    'utils.R'
+    'zzz.R'

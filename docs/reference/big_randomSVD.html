@@ -65,10 +65,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -85,6 +88,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -204,8 +213,8 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 #&gt;  $ d     : num [1:10] 172.5 117.6 89.6 87.5 87.2 ...
 #&gt;  $ u     : num [1:258, 1:10] -0.1015 -0.0914 -0.0951 -0.0798 -0.0901 ...
 #&gt;  $ v     : num [1:4542, 1:10] 0.00304 -0.00274 0.02779 -0.01381 0.00599 ...
-#&gt;  $ niter : int 9
-#&gt;  $ nops  : int 162
+#&gt;  $ niter : int 8
+#&gt;  $ nops  : int 150
 #&gt;  $ center: num [1:4542] 1.32 1.6 1.56 1.69 1.05 ...
 #&gt;  $ scale : num [1:4542] 0.684 0.572 0.616 0.511 0.692 ...
 #&gt;  - attr(*, "class")= chr "big_SVD"</div><div class='input'>
@@ -216,12 +225,12 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 <span class='co'># use this function to predict scores</span>
 <span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "big_SVD"</div><div class='input'><span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>)
 <span class='co'># scores and loadings are the same or opposite</span>
-<span class='fu'>plot</span>(<span class='no'>scores</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><div class='img'><img src='big_randomSVD-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>)</div><div class='img'><img src='big_randomSVD-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>scores</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><div class='img'><img src='big_randomSVD-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>)</div><div class='img'><img src='big_randomSVD-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># projecting on new data</span>
 <span class='no'>ind2</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='no'>ind</span>)
 <span class='no'>scores.test2</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind2</span>)
 <span class='no'>scores.test3</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>pca</span>, <span class='no'>X</span>[-<span class='no'>ind</span>, ])
-<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-10.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

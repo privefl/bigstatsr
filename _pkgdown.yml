@@ -11,16 +11,20 @@ navbar:
       menu:
       - text: "Introduction to package bigstatsr"
         href: https://goo.gl/k3A5hb
-      - text: "Read a FBM from a text file"
-        href: articles/read-BM-from-file.html
+      - text: "Packages bigstatsr and bigmemory"
+        href: articles/bigstatsr-and-bigmemory.html
       - text: "Operations with scaling"
         href: articles/operations-with-scaling.html
+      - text: "Read a FBM from a text file"
+        href: articles/read-BM-from-file.html
   right:
     - text: "About"
       icon: fa-user
       href: https://privefl.github.io/about.html
     - icon: fa-github
       href: https://github.com/privefl/bigstatsr
+    - icon: fa-newspaper-o
+      href: news/index.html
 
 reference:
   - title: "Filebacked Big Matrices"
@@ -38,8 +42,6 @@ reference:
       - big_univLogReg
       - big_spLinReg
       - big_spLogReg
-      - big_spSVM
-      - big_CMSA
       - AUC
   - title: "SVD (and PCA)"
     contents:
@@ -47,10 +49,10 @@ reference:
       - big_randomSVD
   - title: "Plot and predict methods"
     contents:
-      - predict.big_CMSA
       - plot.mhtest
       - predict.mhtest
       - predict.big_sp
+      - predict.big_sp_best_list
       - plot.big_SVD
       - predict.big_SVD
       - asPlotlyText

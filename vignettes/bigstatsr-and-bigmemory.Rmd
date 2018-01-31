@@ -1,0 +1,343 @@
+---
+title: "Packages bigstatsr and bigmemory"
+author: "Florian Privé"
+date: "January 7, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
+```
+
+
+I'm a super fan of package **bigmemory**. It's by far the most convenient solution I found for analyzing large genomic data in R on my computer. I've been using it for almost two years now and have also contributed some features. 
+
+At first, package **bigstatsr** was using the `big.matrix` objects. Yet, at some point, I felt the need to become independent of package **bigmemory**. As package **bigstatsr** will be a central tool of all my work during my thesis, I need to add whatever feature I want whenever I want to. Thus, I reimplemented an object very similar to the filebacked `big.matrix` object, called "FBM" (Filebacked Big Matrix, very original) in this package. These two formats are so similar that you can easily convert (without copying the data) between the two objects.
+
+In this vignette, I explain the main differences between my package **bigstatsr** and the packages of the *bigmemory* family.
+
+## Formats and types
+
+### Format
+
+Package **bigmemory** provides 3 types of `big.matrix` objects:
+
+- a "RAM" `big.matrix`, which is not shared between processes and use directly random access memory,
+- a shared `big.matrix`, which uses some shared memory (still a mystery for me),
+- a filebacked `big.matrix` (so, shared between processes), which stores the data on disk and access it via memory-mapping.
+
+I placed a lot of interest for shared matrices (filebacked or not). Yet, I encountered memory limitations with the shared `big.matrix` (non-filebacked). So, at some point, I was using only filebacked `big.matrix` objects. So, in bigstatsr, you will found only the `FBM` format, which is very similar to the filebacked `big.matrix` format. To prove it, let us convert from one to the other (without copying the backingfile).
+
+```{r}
+library(bigmemory)
+library(bigstatsr)
+```
+
+```{r}
+FBM2BM <- function(fbm) {
+  
+  new_desc <- new("big.matrix.descriptor",
+                  description = list(
+                    sharedType = "FileBacked",
+                    filename   = basename(fbm$backingfile),
+                    dirname    = bigmemory:::format_path(dirname(fbm$backingfile)),
+                    totalRows  = as.double(nrow(fbm)),
+                    totalCols  = as.double(ncol(fbm)),
+                    rowOffset  = c(0, nrow(fbm)),
+                    colOffset  = c(0, ncol(fbm)),
+                    nrow       = as.double(nrow(fbm)),
+                    ncol       = as.double(ncol(fbm)),
+                    rowNames   = NULL,
+                    colNames   = NULL,
+                    type       = typeof(fbm),
+                    separated  = FALSE
+                  ))
+  
+  attach.big.matrix(new_desc)
+}
+
+# Create a temporary FBM
+fbm <- FBM(10, 10)
+fbm$backingfile
+fbm[]
+
+# Convert it to a big.matrix
+bm <- FBM2BM(fbm)
+# Same backingfile
+paste0(dir.name(bm), file.name(bm))
+# Changing values of one changes the value of the other
+bm[]
+bm[1, 1] <- 2
+fbm[1, 1]
+```
+
+```{r}
+BM2FBM <- function(bm) {
+  FBM(nrow = nrow(bm), ncol = ncol(bm), type = typeof(bm),
+      backingfile = file.path(dir.name(bm), sub("\\.bk$", "", file.name(bm))),
+      create_bk = FALSE)
+}
+
+# Convert the filebacked big.matrix to a FBM
+fbm2 <- BM2FBM(bm)
+bm[, 3] <- 1
+fbm2[]
+```
+
+
+### Types
+
+Package **bigmemory** handles many types:
+
+- unsigned char (1-byte unsigned integer)
+- char (1-byte signed integer)
+- short (2-byte signed integer)
+- integer (4-byte signed integer)
+- float (single precision floating-point numbers)
+- double (double precision floating-point numbers)
+- complex
+
+For now, package **bigstatsr** handles less types:
+
+- unsigned char
+- unsigned short
+- integer
+- double
+
+Additionally, the unsigned char type is used in the `FBM.code256` format, which instead of accessing integer values ranging from 0 to 255, it uses some code to access 256 arbitrary different values. I make a lot of use of this format in my other R package **bigsnpr** in order to store genotype dosages.
+I have been thinking of using the unsigned short type to make a `FBM.code65536` in order to store 65536 different values. I would use it to store some strings in order to implement a "big.data.frame" feature (with no more than 65536 strings in it, unfortunately). Yet, as I'm not needing this right now, I haven't implemented it yet and I'm not sure I will.
+
+## Class
+
+A `big.matrix` is basically an S4 class object that stores a pointer to a C++ object (an external pointer). When you restart your R session, this pointer becomes `Nil` and it may make your R session crash. You'll need a different object, a `big.matrix.descriptor` (using `describe()`) which stores enough information to make it possible to create this external pointer again (using `attach.big.matrix()`).
+Therefore, one has to often switch between descriptors and `big.matrix` objects.
+
+```{r, echo=FALSE, out.width="60%"}
+knitr::include_graphics("https://i.stack.imgur.com/CZsnH.png")
+```
+
+
+For FBMs, I use the nice idea of the package [**bigmemoryExtras**](https://github.com/phaverty/bigmemoryExtras). Basically, I use a Reference Class (RC) object with active binding. In this object, I store the external pointer *and* the information needed to create the pointer to the C++ object. The active binding makes this automatic so that the user never need to use `attach.big.matrix()` or `describe()` anymore (and no more session crash!). 
+
+What this also mean is that you can now serialize a FBM (for example, saving it in an rds file with `saveRDS()` or using it in a parallel algorithm). For instance, with a standard `big.matrix` object, you'll need to pass the descriptor object in paralell algorithms:
+
+```{r}
+X <- FBM(10, 10); X[] <- rnorm(length(X))
+bm <- FBM2BM(X)
+```
+
+```{r}
+library(foreach)
+cl <- parallel::makeCluster(2)
+doParallel::registerDoParallel(cl)
+# Won't work because bm will be Nil when copied to the cluster
+tryCatch({
+  foreach(j = 1:10, .combine = 'c') %dopar% {
+    sum(bm[, j])
+  }
+}, error = function(e) print(e))
+parallel::stopCluster(cl)
+```
+
+```{r}
+cl <- parallel::makeCluster(2)
+doParallel::registerDoParallel(cl)
+# Need to pass the descriptor instead and to reattach
+bm.desc <- describe(bm)
+foreach(j = 1:10, .combine = 'c') %dopar% {
+  x <- bigmemory::attach.big.matrix(bm.desc)
+  sum(x[, j])
+}
+
+# You can directly pass FBMs, the address will be reattached automatically
+foreach(j = 1:10, .combine = 'c') %dopar% {
+  sum(X[, j])
+}
+parallel::stopCluster(cl)
+```
+
+## C++ accessors
+
+Let use compute column sums of a `big.matrix` object in Rcpp.
+
+```{Rcpp}
+// [[Rcpp::depends(BH, bigmemory)]]
+#include <bigmemory/MatrixAccessor.hpp>
+#include <Rcpp.h>
+using namespace Rcpp;
+
+
+// [[Rcpp::export]]
+NumericVector colsums_bm(SEXP pBigMat) {
+  
+  XPtr<BigMatrix> xpMat(pBigMat);
+  MatrixAccessor<double> macc(*xpMat);
+  
+  int n = macc.nrow();
+  int m = macc.ncol();
+  
+  NumericVector res(m);
+  for (int j = 0; j < m; j++) {
+    for (int i = 0; i < n; i++) {
+      res[j] += macc[j][i];
+    }
+  }
+  
+  return res;
+}
+```
+
+```{r}
+colsums_bm(bm@address)
+```
+
+Now, let us do it for an `FBM`.
+
+```{Rcpp}
+// [[Rcpp::depends(BH, bigstatsr)]]
+#include <bigstatsr/BMAcc.h>
+
+
+// [[Rcpp::export]]
+NumericVector colsums_fbm(Environment fbm) {
+  
+  XPtr<FBM> xpMat = fbm["address"];
+  BMAcc<double> macc(xpMat);
+  
+  int n = macc.nrow();
+  int m = macc.ncol();
+  
+  NumericVector res(m);
+  for (int j = 0; j < m; j++) {
+    for (int i = 0; i < n; i++) {
+      res[j] += macc(i, j);
+    }
+  }
+  
+  return res;
+}
+```
+
+```{r}
+colsums_fbm(X)
+```
+
+So, `FBM` objects uses the same accessor in C++ than standard Rcpp matrices. So, it is easier to adapt existing Rcpp algorithms to be used for `FBM` objects, e.g. using templates. Note that there is also a sub-FBM accessors, so that you can also use the same algorithms on a subset of the FBM object. For example:
+
+```{Rcpp}
+// [[Rcpp::depends(BH, bigstatsr)]]
+#include <bigstatsr/BMAcc.h>
+
+
+template <class C>
+NumericVector colsums_fbm_templated(C macc) {
+  
+  int n = macc.nrow();
+  int m = macc.ncol();
+  
+  NumericVector res(m);
+  for (int j = 0; j < m; j++) {
+    for (int i = 0; i < n; i++) {
+      res[j] += macc(i, j);
+    }
+  }
+  
+  return res;
+}
+
+// [[Rcpp::export]]
+NumericVector colsums_matrix(const NumericMatrix& x) {
+  
+  return colsums_fbm_templated(x);
+}
+
+// [[Rcpp::export]]
+NumericVector colsums_fbm2(Environment fbm) {
+  
+  XPtr<FBM> xpMat = fbm["address"];
+  BMAcc<double> macc(xpMat);
+  
+  return colsums_fbm_templated(macc);
+}
+
+// [[Rcpp::export]]
+NumericVector colsums_fbm2_sub(Environment fbm,
+                               const IntegerVector& ind_row,
+                               const IntegerVector& ind_col) {
+  
+  XPtr<FBM> xpMat = fbm["address"];
+  SubBMAcc<double> macc(xpMat, ind_row - 1, ind_col - 1);
+  
+  return colsums_fbm_templated(macc);
+}
+```
+
+```{r}
+class(mat <- X[]) 
+colsums_matrix(mat)
+colsums_fbm2(X)
+colsums_fbm2_sub(X, rows_along(X), 1:6)
+```
+
+## Apply an R function
+
+```{r}
+m <- matrix(nrow = 1e5, ncol = 50)
+m[] <- rnorm(length(m))
+m <- as.big.matrix(m)
+
+# Brute force solution (if you have enough RAM)
+system.time(
+  true <- sqrt(rowSums(m[]^2))
+)
+
+system.time(
+  test1 <- biganalytics::apply(m, 1, function(x) {
+    sqrt(sum(x^2))
+  })
+)
+all.equal(test1, true)
+```
+
+The **biganalytics** strategy is to make a loop, which is slow because there are a lot of elements to loop through. I use a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results. 
+
+```{r, out.width="70%", echo=FALSE}
+knitr::include_graphics("https://privefl.github.io/useR-2017/split-apply-combine.svg")
+```
+
+
+```{r}
+m2 <- big_copy(m)
+# Here, I split the rows, which is NOT the default
+system.time(
+  test2 <- big_apply(m2, a.FUN = function(X, ind) {
+    sqrt(rowSums(X[ind, , drop = FALSE]^2))
+  }, a.combine = 'c', ind = rows_along(m2), block.size = 1000)
+)
+all.equal(test2, true)
+```
+
+## Matrix operations
+
+```{r}
+m <- matrix(nrow = 10e3, ncol = 2000)
+m[] <- rnorm(length(m))
+m <- as.big.matrix(m)
+a <- matrix(rnorm(20 * ncol(m)), ncol(m), 20)
+system.time(
+  true <- m[] %*% a
+)
+
+library(bigalgebra)
+system.time(
+  test <- m %*% a
+)
+
+m2 <- big_copy(m)
+# Function built on top of big_apply
+system.time(
+  test2 <- big_prodMat(m2, a)
+)
+```
+
+Making functions (not operators) makes it possible to use subsetting.

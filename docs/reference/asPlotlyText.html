@@ -65,10 +65,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -85,6 +88,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -132,7 +141,7 @@
 <span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"POP1"</span>, <span class='st'>"POP2"</span>, <span class='st'>"POP3"</span>), <span class='fu'>c</span>(<span class='fl'>143</span>, <span class='fl'>167</span>, <span class='fl'>207</span>))
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Population</span> <span class='kw'>=</span> <span class='no'>pop</span>, <span class='kw'>Index</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>517</span>)
 
-<span class='fu'>plot</span>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>p</span> + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in {    paste(names(df)[ic], df[[ic]], sep = ": ")}: task 1 failed - "objet de type 'closure' non indiçable"</span></div><div class='img'><img src='asPlotlyText-1.png' alt='' width='700' height='432.632880098887' /></div><span class='co'># NOT RUN {</span>
+<span class='fu'>plot</span>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>p</span> + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in {    paste(names(df)[ic], df[[ic]], sep = ": ")}: task 1 failed - "objet de type 'closure' non indiçable"</span></div><div class='img'><img src='asPlotlyText-2.png' alt='' width='700' height='432.632880098887' /></div><span class='co'># NOT RUN {</span>
 <span class='kw pkg'>plotly</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/plotly/topics/ggplotly'>ggplotly</a></span>(<span class='no'>p2</span>, <span class='kw'>tooltip</span> <span class='kw'>=</span> <span class='st'>"text"</span>)
 <span class='co'># }</span></pre>
   </div>

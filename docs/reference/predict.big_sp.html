@@ -65,10 +65,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -85,6 +88,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -108,7 +117,8 @@
 
     <pre class="usage"><span class='co'># S3 method for big_sp</span>
 <span class='fu'>predict</span>(<span class='no'>object</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
-  <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='no'>...</span>)</pre>
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>object</span>$<span class='no'>ind.col</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -125,6 +135,11 @@
       <th>ind.row</th>
       <td><p>An optional vector of the row indices that are used.
 If not specified, all rows are used. <strong>Don't use negative indices.</strong></p></td>
+    </tr>
+    <tr>
+      <th>ind.col</th>
+      <td><p>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don't use negative indices.</strong></p></td>
     </tr>
     <tr>
       <th>covar.row</th>
@@ -150,23 +165,9 @@ and columns corresponding to <code>lambda</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='big_spLinReg.html'>big_spLinReg</a>, <a href='big_spLogReg.html'>big_spLogReg</a> and <a href='big_spSVM.html'>big_spSVM</a>.</p>
+    <p><a href='big_spLinReg.html'>big_spLinReg</a> and <a href='big_spLogReg.html'>big_spLogReg</a>.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># simulating some data</span>
-<span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fl'>73</span>
-<span class='no'>M</span> <span class='kw'>&lt;-</span> <span class='fl'>430</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='no'>N</span>, <span class='no'>M</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>))
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>N</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='fl'>3</span>), <span class='no'>N</span>)
-
-<span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>N</span>, <span class='no'>N</span>/<span class='fl'>2</span>))
-<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_spLogReg.html'>big_spLogReg</a></span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>], <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
-                    <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ])
-<span class='no'>ind.test</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='no'>ind.train</span>)
-<span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>mod</span>, <span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>,
-                <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ])</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -176,9 +177,7 @@ and columns corresponding to <code>lambda</code>.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

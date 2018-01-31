@@ -25,9 +25,6 @@ install.packages("bigstatsr")
 
 # For the current development version
 devtools::install_github("privefl/bigstatsr")
-
-# For the first version (depending on package bigmemory)
-devtools::install_github("privefl/bigstatsr", ref = "v-bigmemory")
 ```
 
 ## Input format

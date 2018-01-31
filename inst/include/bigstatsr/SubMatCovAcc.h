@@ -3,23 +3,52 @@
 
 /******************************************************************************/
 
-#include <bigstatsr/FBM.h>
-#include <bigstatsr/utils.h>
+#include <bigstatsr/BMAcc.h>
 
 using namespace Rcpp;
 using std::size_t;
 
 /******************************************************************************/
 
-#define SUBMATCOVACC(T) SubMatCovAcc<T>(xpBM, rows, covar)
-#define RAWSUBMATCOVACC RawSubMatCovAcc(xpBM, rows, covar, BM["code256"])
+#define SUBMATCOVACC(T)     SubMatCovAcc<T>(xpBM, rows,     cols, covar)
+#define SUBMATCOVACC_VAL(T) SubMatCovAcc<T>(xpBM, rows_val, cols, covar_val)
+
+#define RAWSUBMATCOVACC     RawSubMatCovAcc(xpBM, rows,     cols, covar,     BM["code256"])
+#define RAWSUBMATCOVACC_VAL RawSubMatCovAcc(xpBM, rows_val, cols, covar_val, BM["code256"])
+
+
+#define DISPATCH_SUBMATCOVACC_VAL(CALL) {                                      \
+                                                                               \
+  XPtr<FBM> xpBM = BM["address"];                                              \
+  IntegerVector rows     = row_idx     - 1;                                    \
+  IntegerVector cols     = col_idx     - 1;                                    \
+  IntegerVector rows_val = row_idx_val - 1;                                    \
+                                                                               \
+  if (BM.exists("code256")) {                                                  \
+    CALL(RAWSUBMATCOVACC, RAWSUBMATCOVACC_VAL);                                \
+  } else {                                                                     \
+    switch(xpBM->matrix_type()) {                                              \
+    case 8:                                                                    \
+      CALL(SUBMATCOVACC(double),         SUBMATCOVACC_VAL(double))             \
+    case 4:                                                                    \
+      CALL(SUBMATCOVACC(int),            SUBMATCOVACC_VAL(int))                \
+    case 1:                                                                    \
+      CALL(SUBMATCOVACC(unsigned char),  SUBMATCOVACC_VAL(unsigned char))      \
+    case 2:                                                                    \
+      CALL(SUBMATCOVACC(unsigned short), SUBMATCOVACC_VAL(unsigned short))     \
+    default:                                                                   \
+      throw Rcpp::exception(ERROR_TYPE);                                       \
+    }                                                                          \
+  }                                                                            \
+}
 
 #define DISPATCH_SUBMATCOVACC(CALL) {                                          \
                                                                                \
-  XPtr<FBM> xpBM = BM["address"];                                             \
+  XPtr<FBM> xpBM = BM["address"];                                              \
   IntegerVector rows = row_idx - 1;                                            \
+  IntegerVector cols = col_idx - 1;                                            \
                                                                                \
-  if (BM.exists("code256")) {                                                 \
+  if (BM.exists("code256")) {                                                  \
     CALL(RAWSUBMATCOVACC);                                                     \
   } else {                                                                     \
     switch(xpBM->matrix_type()) {                                              \
@@ -41,47 +70,42 @@ using std::size_t;
 
 // For biglasso
 template<typename T>
-class SubMatCovAcc {
+class SubMatCovAcc : public SubBMAcc<T> {
 public:
   SubMatCovAcc(const FBM * xpBM,
                const IntegerVector& row_ind,
-               const NumericMatrix& covar) {
+               const IntegerVector& col_ind,
+               const NumericMatrix& covar)
+    : SubBMAcc<T>(xpBM, row_ind, col_ind) {
+
+    _ncolsub = col_ind.size();
 
     if (covar.nrow() != 0) {
-      myassert(row_ind.length() == covar.nrow(), ERROR_DIM);
+      myassert(row_ind.size() == covar.nrow(), ERROR_DIM);
       _ncoladd = covar.ncol();
       _covar = covar;
     }  else {
       _ncoladd = 0;
     }
-
-    size_t n = row_ind.size();
-    std::vector<size_t> row_ind2(n);
-    for (size_t i = 0; i < n; i++)
-      row_ind2[i] = static_cast<size_t>(row_ind[i]);
-    _row_ind = row_ind2;
-
-    _pMat = static_cast<T*>(xpBM->matrix());
-    _nrow = xpBM->nrow();
-    _ncol = xpBM->ncol();
   }
 
   inline double operator() (size_t i, size_t j) {
-    if (j < _ncol) {
-      return _pMat[_row_ind[i] + j * _nrow];
+    int j2 = j - _ncolsub;
+    if (j2 < 0) {
+      // https://stackoverflow.com/a/32087373/6103040
+      return SubBMAcc<T>::operator()(i, j);
+      // https://stackoverflow.com/a/7076312/6103040
+      // return this->_pMat[_row_ind[i] + _col_ind[j] * this->_nrow];
     } else {
-      return _covar(i, j - _ncol);
+      return _covar(i, j2);
     }
   }
 
-  size_t nrow() const { return _row_ind.size(); }
-  size_t ncol() const { return _ncol + _ncoladd; }
+  size_t nrow() const { return this->_row_ind.size(); }
+  size_t ncol() const { return _ncolsub + _ncoladd; }
 
 protected:
-  T *_pMat;
-  size_t _nrow;
-  size_t _ncol;
-  std::vector<size_t> _row_ind;
+  size_t _ncolsub;
   size_t _ncoladd;
   NumericMatrix _covar;
 };
@@ -92,18 +116,20 @@ class RawSubMatCovAcc : public SubMatCovAcc<unsigned char> {
 public:
   RawSubMatCovAcc(const FBM * xpBM,
                   const IntegerVector& row_ind,
+                  const IntegerVector& col_ind,
                   const NumericMatrix& covar,
                   const NumericVector& code256)
-    : SubMatCovAcc<unsigned char>(xpBM, row_ind, covar) {
+    : SubMatCovAcc<unsigned char>(xpBM, row_ind, col_ind, covar) {
       _code256 = code256;
     }
 
   inline double operator() (size_t i, size_t j) {
-    if (j < _ncol) {
+    int j2 = j - this->_ncolsub;
+    if (j2 < 0) {
       // https://stackoverflow.com/a/32087373/6103040
       return _code256[SubMatCovAcc<unsigned char>::operator()(i, j)];;
     } else {
-      return _covar(i, j - _ncol);
+      return _covar(i, j2);
     }
   }
 

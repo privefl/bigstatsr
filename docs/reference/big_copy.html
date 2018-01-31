@@ -65,10 +65,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -85,6 +88,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -107,7 +116,7 @@
     
 
     <pre class="usage"><span class='fu'>big_copy</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>X</span>$<span class='no'>type</span>), <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>tempfile</span>(), <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>typeof</span>(<span class='no'>X</span>), <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>tempfile</span>(), <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>length</span>(<span class='no'>ind.row</span>)))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -115,8 +124,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>Could be any matrix-like object. If it is a FBM, default uses the
-same type, otherwise you should specify the type yourself.</p></td>
+      <td><p>Could be any matrix-like object.</p></td>
     </tr>
     <tr>
       <th>ind.row</th>
@@ -197,6 +205,13 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
 #&gt;  [8,]  108  118  128  138  148  158  168  178  188   198
 #&gt;  [9,]  109  119  129  139  149  159  169  179  189   199
 #&gt; [10,]  110  120  130  140  150  160  170  180  190   200</div><div class='input'>
+<span class='no'>X.code</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='fu'>class</span>(<span class='no'>X.code</span>)</div><div class='output co'>#&gt; [1] "FBM.code256"
+#&gt; attr(,"package")
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='no'>X2.code</span> <span class='kw'>&lt;-</span> <span class='fu'>big_copy</span>(<span class='no'>X.code</span>)
+<span class='fu'>class</span>(<span class='no'>X2.code</span>)</div><div class='output co'>#&gt; [1] "FBM.code256"
+#&gt; attr(,"package")
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>X.code</span>[], <span class='no'>X2.code</span>[])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

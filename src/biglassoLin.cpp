@@ -8,11 +8,10 @@ using namespace Rcpp;
 
 /******************************************************************************/
 
-#define CALL_COPY_CDFIT_GAUSSIAN_HSR(ACC) {                                    \
-  return bigstatsr::biglassoLin::COPY_cdfit_gaussian_hsr(                      \
-    ACC, y, lambda, L, lam_scale, lambda_min, alpha,                           \
-    user, eps, max_iter, m, dfmax, verbose                                     \
-  );                                                                           \
+#define CALL_COPY_CDFIT_GAUSSIAN_HSR(ACC, ACC_VAL) {                           \
+  return bigstatsr::biglassoLin::COPY_cdfit_gaussian_hsr(ACC, y,               \
+    lambda, center, scale, resid, alpha, eps, max_iter, dfmax, warn,           \
+    ACC_VAL, y_val, n_abort, nlam_min);                                        \
 }
 
 // Dispatch function for COPY_cdfit_gaussian_hsr
@@ -20,20 +19,24 @@ using namespace Rcpp;
 List COPY_cdfit_gaussian_hsr(Environment BM,
                              const NumericVector& y,
                              const IntegerVector& row_idx,
+                             const IntegerVector& col_idx,
                              const NumericMatrix& covar,
-                             NumericVector& lambda,
-                             int L,
-                             bool lam_scale,
-                             double lambda_min,
+                             const NumericVector& lambda,
+                             const NumericVector& center,
+                             const NumericVector& scale,
+                             NumericVector& resid,
                              double alpha,
-                             bool user,
                              double eps,
                              int max_iter,
-                             const NumericVector& m,
                              int dfmax,
-                             bool verbose) {
+                             bool warn,
+                             const IntegerVector& row_idx_val,
+                             const NumericMatrix& covar_val,
+                             const NumericVector& y_val,
+                             int n_abort,
+                             int nlam_min) {
 
-  DISPATCH_SUBMATCOVACC(CALL_COPY_CDFIT_GAUSSIAN_HSR)
+  DISPATCH_SUBMATCOVACC_VAL(CALL_COPY_CDFIT_GAUSSIAN_HSR)
 }
 
 /******************************************************************************/

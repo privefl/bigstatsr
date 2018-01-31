@@ -36,7 +36,7 @@ test_that("Same as wilcox test", {
 
 ################################################################################
 
-test_that("Same as package ROCR (AUC < 0.5)", {
+test_that("Same as package ModelMetrics (AUC < 0.5)", {
   for (i in 1:5) {
     N <- 10^i
     x4 <- c(sample(10, size = N, replace = TRUE),

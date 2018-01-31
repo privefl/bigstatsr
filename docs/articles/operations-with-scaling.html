@@ -42,10 +42,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -61,6 +64,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -116,14 +125,14 @@ M[] &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw"
 stats_scale &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_scale.html">big_scale</a></span>(<span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="ot">TRUE</span>)(X)
 
 <span class="co"># compute M_s</span>
-M_s &lt;-<span class="st"> </span>M /<span class="st"> </span>stats_scale$scale
+M_s &lt;-<span class="st"> </span>M <span class="op">/</span><span class="st"> </span>stats_scale<span class="op">$</span>scale
 <span class="co"># compute the product, without scaling X</span>
 XM_s &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_prodMat.html">big_prodMat</a></span>(X, M_s)
 <span class="co"># adjust the result</span>
-final &lt;-<span class="st"> </span><span class="kw">sweep</span>(XM_s, <span class="dv">2</span>, <span class="kw">crossprod</span>(stats_scale$center, M_s), <span class="st">'-'</span>)
+final &lt;-<span class="st"> </span><span class="kw">sweep</span>(XM_s, <span class="dv">2</span>, <span class="kw">crossprod</span>(stats_scale<span class="op">$</span>center, M_s), <span class="st">'-'</span>)
 
 <span class="co"># verification</span>
-true &lt;-<span class="st"> </span><span class="kw">scale</span>(X[]) %*%<span class="st"> </span>M
+true &lt;-<span class="st"> </span><span class="kw">scale</span>(X[]) <span class="op">%*%</span><span class="st"> </span>M
 <span class="kw">all.equal</span>(final, true)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Knowing that mu is the column means of X
