@@ -65,10 +65,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -85,6 +88,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -109,7 +118,7 @@ and possibly its 95% confidence interval.</p>
 
     <pre class="usage"><span class='fu'>AUC</span>(<span class='no'>pred</span>, <span class='no'>target</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>AUCBoot</span>(<span class='no'>pred</span>, <span class='no'>target</span>, <span class='kw'>nboot</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>AUCBoot</span>(<span class='no'>pred</span>, <span class='no'>target</span>, <span class='kw'>nboot</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -129,8 +138,8 @@ no missing values).</p></td>
     </tr>
     <tr>
       <th>nboot</th>
-      <td><p>Number of bootstrap samples to evaluate the 95% CI.
-Default is <code>1e3</code>.</p></td>
+      <td><p>Number of bootstrap samples used to evaluate the 95% CI.
+Default is <code>1e4</code>.</p></td>
     </tr>
     <tr>
       <th>seed</th>
@@ -153,17 +162,6 @@ probability: $$P(score(x_{case}) &gt; score(x_{control})).$$
 Note that I consider equality between scores as a 50%-probability of
 one being greater than the other.</p>
     
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Hanley, J. A., &amp; McNeil, B. J. (1982).
-The meaning and use of the area under a
-receiver operating characteristic (ROC) curve.
-Radiology, 143(1), 29-36.
-<a href='http://dx.doi.org/10.1148/radiology.143.1.7063747'>http://dx.doi.org/10.1148/radiology.143.1.7063747</a>.</p>
-<p>Tom Fawcett. 2006. An introduction to ROC analysis.
-Pattern Recogn. Lett. 27, 8 (June 2006), 861-874.
-<a href='http://dx.doi.org/10.1016/j.patrec.2005.10.010'>http://dx.doi.org/10.1016/j.patrec.2005.10.010</a>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>wilcox.test</p>
@@ -176,7 +174,15 @@ Pattern Recogn. Lett. 27, 8 (June 2006), 861-874.
 <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>x</span>), <span class='no'>x</span>, <span class='fu'>abs</span>(<span class='no'>x</span>))
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>sign</span>(<span class='no'>z</span>)
 <span class='fu'>print</span>(<span class='fu'>AUC</span>(<span class='no'>x</span>, <span class='no'>y</span>))</div><div class='output co'>#&gt; [1] 0.8071659</div><div class='input'><span class='fu'>print</span>(<span class='fu'>AUCBoot</span>(<span class='no'>x</span>, <span class='no'>y</span>))</div><div class='output co'>#&gt;       Mean       2.5%      97.5%         Sd 
-#&gt; 0.80608943 0.70540804 0.88921345 0.04767838 </div></pre>
+#&gt; 0.80706332 0.70504945 0.89642714 0.04852244 </div><div class='input'>
+<span class='co'># Partial AUC</span>
+<span class='no'>pAUC</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>pred</span>, <span class='no'>target</span>, <span class='no'>p</span> <span class='kw'>=</span> <span class='fl'>0.1</span>) {
+  <span class='no'>val.min</span> <span class='kw'>&lt;-</span> <span class='fu'>min</span>(<span class='no'>target</span>)
+  <span class='no'>q</span> <span class='kw'>&lt;-</span> <span class='fu'>quantile</span>(<span class='no'>pred</span>[<span class='no'>target</span> <span class='kw'>==</span> <span class='no'>val.min</span>], <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fl'>1</span> - <span class='no'>p</span>)
+  <span class='no'>ind</span> <span class='kw'>&lt;-</span> (<span class='no'>target</span> <span class='kw'>!=</span> <span class='no'>val.min</span>) <span class='kw'>|</span> (<span class='no'>pred</span> <span class='kw'>&gt;</span> <span class='no'>q</span>)
+  <span class='kw pkg'>bigstatsr</span><span class='kw ns'>::</span><span class='fu'>AUC</span>(<span class='no'>pred</span>[<span class='no'>ind</span>], <span class='no'>target</span>[<span class='no'>ind</span>]) * <span class='no'>p</span>
+}
+<span class='fu'>pAUC</span>(<span class='no'>x</span>, <span class='no'>y</span>)</div><div class='output co'>#&gt; [1] 0.00962963</div><div class='input'><span class='fu'>pAUC</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='fl'>0.2</span>)</div><div class='output co'>#&gt; [1] 0.05802469</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -186,8 +192,6 @@ Pattern Recogn. Lett. 27, 8 (June 2006), 861-874.
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

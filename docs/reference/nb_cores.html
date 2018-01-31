@@ -65,10 +65,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -85,6 +88,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -129,9 +138,9 @@ only physical cores, leave one core for the OS/UI.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Number of cores in total</span>
-<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>()</div><div class='output co'>#&gt; [1] 12</div><div class='input'><span class='co'># Number of physical cores</span>
-<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>(<span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] 6</div><div class='input'><span class='co'># Recommended number of cores to use</span>
-<span class='fu'>nb_cores</span>()</div><div class='output co'>#&gt; [1] 6</div></pre>
+<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>()</div><div class='output co'>#&gt; [1] 4</div><div class='input'><span class='co'># Number of physical cores</span>
+<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>(<span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># Recommended number of cores to use</span>
+<span class='fu'>nb_cores</span>()</div><div class='output co'>#&gt; [1] 2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

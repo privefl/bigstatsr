@@ -65,10 +65,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -85,6 +88,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -152,7 +161,7 @@ corresponding column statistics.</p>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
 <span class='fu'>str</span>(<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>))</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
 #&gt;  $ sum: num  138 157 115 181 92 106 167 124 120 94 ...
-#&gt;  $ var: num  0.46 0.369 0.513 0.176 0.579 ...</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='no'>test2</span>$<span class='no'>sum</span>)</div><div class='input'><span class='fu'>abline</span>(<span class='fu'>lm</span>(<span class='no'>test2</span>$<span class='no'>sum</span> ~ <span class='no'>test</span>$<span class='no'>sum</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='big_colstats-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+#&gt;  $ var: num  0.46 0.369 0.513 0.176 0.579 ...</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='no'>test2</span>$<span class='no'>sum</span>)</div><div class='input'><span class='fu'>abline</span>(<span class='fu'>lm</span>(<span class='no'>test2</span>$<span class='no'>sum</span> ~ <span class='no'>test</span>$<span class='no'>sum</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='big_colstats-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='no'>X.ind</span> <span class='kw'>&lt;-</span> <span class='no'>X</span>[<span class='no'>ind</span>, ]
 <span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>sum</span>, <span class='fu'>colSums</span>(<span class='no'>X.ind</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>var</span>, <span class='fu'>apply</span>(<span class='no'>X.ind</span>, <span class='fl'>2</span>, <span class='no'>var</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># deduce mean and sd</span>

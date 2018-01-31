@@ -65,10 +65,13 @@
       <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
+    </li>
+    <li>
+      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -85,6 +88,12 @@
 <li>
   <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
   </a>
 </li>
@@ -165,43 +174,49 @@ part and finally combine the results.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+ <span class='co'># CRAN is super slow when parallelism.</span>
+  <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
 
-<span class='co'>### Computation on all the matrix</span>
-<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>)
+  <span class='co'>### Computation on all the matrix</span>
+  <span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>)
 
-<span class='no'>big_colstats_sub</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) {
-  <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>, <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>ind</span>)
-}
-<span class='co'># 1. the computation is split along all the columns</span>
-<span class='co'># 2. for each part the computation is done, using `big_colstats`</span>
-<span class='co'># 3. the results (data.frames) are combined via `rbind`.</span>
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub</span>,
-                        <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='fu'>all.equal</span>(<span class='no'>test</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'>### Computation on a part of the matrix</span>
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X</span>)
-<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>ncol</span>(<span class='no'>X</span>)
-<span class='no'>rows</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>)) <span class='co'># sort to provide some locality in accesses</span>
-<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>m</span>, <span class='no'>m</span>/<span class='fl'>2</span>)) <span class='co'># idem</span>
+  <span class='no'>big_colstats_sub</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) {
+    <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>, <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>ind</span>)
+  }
+  <span class='co'># 1. the computation is split along all the columns</span>
+  <span class='co'># 2. for each part the computation is done, using `big_colstats`</span>
+  <span class='co'># 3. the results (data.frames) are combined via `rbind`.</span>
+  <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub</span>,
+                          <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+  <span class='fu'>all.equal</span>(<span class='no'>test</span>, <span class='no'>true</span>)
 
-<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>cols</span>)
+  <span class='co'>### Computation on a part of the matrix</span>
+  <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X</span>)
+  <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>ncol</span>(<span class='no'>X</span>)
+  <span class='no'>rows</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>)) <span class='co'># sort to provide some locality in accesses</span>
+  <span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>m</span>, <span class='no'>m</span>/<span class='fl'>2</span>)) <span class='co'># idem</span>
 
-<span class='no'>big_colstats_sub2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>, <span class='no'>rows</span>, <span class='no'>cols</span>) {
-  <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>cols</span>[<span class='no'>ind</span>])
-}
-<span class='co'># This doesn't work because, by default, the computation is spread</span>
-<span class='co'># along all columns. We must explictly specify the `ind` parameter.</span>
-<span class='fu'>tryCatch</span>(<span class='fu'>big_parallelize</span>(<span class='no'>X</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub2</span>,
-                         <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                         <span class='kw'>rows</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='no'>cols</span>),
-         <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'>message</span>(<span class='no'>e</span>))</div><div class='output co'>#&gt; <span class='error'>Error in {    if (multi) {        nthreads.save &lt;- RevoUtilsMath::setMKLthreads(1)        on.exit(RevoUtilsMath::setMKLthreads(nthreads.save),             add = TRUE)    }    p.FUN(X, ind = ind[seq2(range.parts[ic, ])], ...)}: task 2 failed - "Subscript out of bounds"</span></div><div class='input'>
-<span class='co'># This now works, using `ind = seq_along(cols)`.</span>
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub2</span>,
-                         <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                         <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'>seq_along</span>(<span class='no'>cols</span>),
-                         <span class='kw'>rows</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='no'>cols</span>)
-<span class='fu'>all.equal</span>(<span class='no'>test2</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+  <span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>cols</span>)
+
+  <span class='no'>big_colstats_sub2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>, <span class='no'>rows</span>, <span class='no'>cols</span>) {
+    <span class='fu'><a href='big_colstats.html'>big_colstats</a></span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>cols</span>[<span class='no'>ind</span>])
+  }
+  <span class='co'># This doesn't work because, by default, the computation is spread</span>
+  <span class='co'># along all columns. We must explictly specify the `ind` parameter.</span>
+  <span class='fu'>tryCatch</span>(<span class='fu'>big_parallelize</span>(<span class='no'>X</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub2</span>,
+                           <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                           <span class='kw'>rows</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='no'>cols</span>),
+           <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'>message</span>(<span class='no'>e</span>))
+
+  <span class='co'># This now works, using `ind = seq_along(cols)`.</span>
+  <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_parallelize</span>(<span class='no'>X</span>, <span class='kw'>p.FUN</span> <span class='kw'>=</span> <span class='no'>big_colstats_sub2</span>,
+                           <span class='kw'>p.combine</span> <span class='kw'>=</span> <span class='st'>'rbind'</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                           <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'>seq_along</span>(<span class='no'>cols</span>),
+                           <span class='kw'>rows</span> <span class='kw'>=</span> <span class='no'>rows</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='no'>cols</span>)
+  <span class='fu'>all.equal</span>(<span class='no'>test2</span>, <span class='no'>true2</span>)
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
