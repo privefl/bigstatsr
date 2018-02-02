@@ -41,9 +41,3 @@ If you want help using **bigstatsr**, please post on Stack Overflow with the tag
 - Parallelization: package **bigstatsr** uses package **foreach** for its parallelization tasks. Learn more on parallelism with **foreach** with [this tuto](https://privefl.github.io/blog/a-guide-to-parallelism-in-r/).
 
 - [Computing the null space of a bigmatrix in R](https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/) (works if one dimension is not too large)
-
-
-## Code of conduct
-
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/privefl/bigstatsr/blob/master/code_of_conduct.md). 
-By participating in this project you agree to abide by its terms.
