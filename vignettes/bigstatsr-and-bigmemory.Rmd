@@ -10,9 +10,9 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 
 
-I'm a super fan of package **bigmemory**. It's by far the most convenient solution I found for analyzing large genomic data in R on my computer. I've been using it for almost two years now and have also contributed some features. 
+I'm a fan of package **bigmemory**. It's by far the most convenient solution I found for analyzing large genomic data in R on my computer. I've been using it for almost two years now and have also contributed some features. 
 
-At first, package **bigstatsr** was using the `big.matrix` objects. Yet, at some point, I felt the need to become independent of package **bigmemory**. As package **bigstatsr** will be a central tool of all my work during my thesis, I need to add whatever feature I want whenever I want to. Thus, I reimplemented an object very similar to the filebacked `big.matrix` object, called "FBM" (Filebacked Big Matrix, very original) in this package. These two formats are so similar that you can easily convert (without copying the data) between the two objects.
+At first, package **bigstatsr** was using the `big.matrix` objects of package **bigmemory**. Yet, at some point, I felt the need to become independent of package **bigmemory**. As package **bigstatsr** will be a central tool of all my thesis work, I need to add whatever feature I want whenever I want to. Thus, I reimplemented an object very similar to the filebacked `big.matrix` object, called "FBM" (Filebacked Big Matrix, very original) in this package. These two formats are so similar that you can easily convert (without copying the data) between the two objects.
 
 In this vignette, I explain the main differences between my package **bigstatsr** and the packages of the *bigmemory* family.
 
@@ -119,7 +119,7 @@ knitr::include_graphics("https://i.stack.imgur.com/CZsnH.png")
 
 For FBMs, I use the nice idea of the package [**bigmemoryExtras**](https://github.com/phaverty/bigmemoryExtras). Basically, I use a Reference Class (RC) object with active binding. In this object, I store the external pointer *and* the information needed to create the pointer to the C++ object. The active binding makes this automatic so that the user never need to use `attach.big.matrix()` or `describe()` anymore (and no more session crash!). 
 
-What this also mean is that you can now serialize a FBM (for example, saving it in an rds file with `saveRDS()` or using it in a parallel algorithm). For instance, with a standard `big.matrix` object, you'll need to pass the descriptor object in paralell algorithms:
+What this also means is that you can now serialize a FBM (for example, saving it in an rds file with `saveRDS()` or using it in a parallel algorithm). For instance, with a standard `big.matrix` object, you'll need to pass the descriptor object in paralell algorithms:
 
 ```{r}
 X <- FBM(10, 10); X[] <- rnorm(length(X))
@@ -158,14 +158,13 @@ parallel::stopCluster(cl)
 
 ## C++ accessors
 
-Let use compute column sums of a `big.matrix` object in Rcpp.
+Let us compute the column sums of a `big.matrix` object in Rcpp.
 
 ```{Rcpp}
 // [[Rcpp::depends(BH, bigmemory)]]
 #include <bigmemory/MatrixAccessor.hpp>
 #include <Rcpp.h>
 using namespace Rcpp;
-
 
 // [[Rcpp::export]]
 NumericVector colsums_bm(SEXP pBigMat) {
@@ -197,7 +196,6 @@ Now, let us do it for an `FBM`.
 // [[Rcpp::depends(BH, bigstatsr)]]
 #include <bigstatsr/BMAcc.h>
 
-
 // [[Rcpp::export]]
 NumericVector colsums_fbm(Environment fbm) {
   
@@ -222,12 +220,11 @@ NumericVector colsums_fbm(Environment fbm) {
 colsums_fbm(X)
 ```
 
-So, `FBM` objects uses the same accessor in C++ than standard Rcpp matrices. So, it is easier to adapt existing Rcpp algorithms to be used for `FBM` objects, e.g. using templates. Note that there is also a sub-FBM accessors, so that you can also use the same algorithms on a subset of the FBM object. For example:
+So, the main difference is that **bigmemory** uses `macc[j][i]` whereas `FBM` objects use the same accessor in C++ as standard Rcpp matrices, `macc(i, j)`. So, it is easier to adapt existing Rcpp algorithms to be used for `FBM` objects, e.g. using templates. Note that there is also a sub-FBM accessor, so that you can also use the same algorithms on a subset of the FBM object. For example:
 
 ```{Rcpp}
 // [[Rcpp::depends(BH, bigstatsr)]]
 #include <bigstatsr/BMAcc.h>
-
 
 template <class C>
 NumericVector colsums_fbm_templated(C macc) {
@@ -291,6 +288,7 @@ system.time(
   true <- sqrt(rowSums(m[]^2))
 )
 
+# Using package biganalytics (of the bigmemory family)
 system.time(
   test1 <- biganalytics::apply(m, 1, function(x) {
     sqrt(sum(x^2))
@@ -299,7 +297,7 @@ system.time(
 all.equal(test1, true)
 ```
 
-The **biganalytics** strategy is to make a loop, which is slow because there are a lot of elements to loop through. I use a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results. 
+The **biganalytics** strategy is to make a loop, which is slow because there are a lot of elements to loop through. Package **bigstatsr** uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results. 
 
 ```{r, out.width="70%", echo=FALSE}
 knitr::include_graphics("https://privefl.github.io/useR-2017/split-apply-combine.svg")
@@ -315,6 +313,14 @@ system.time(
   }, a.combine = 'c', ind = rows_along(m2), block.size = 1000)
 )
 all.equal(test2, true)
+
+# Here, I split the columns (the default)
+system.time(
+  test3 <- big_apply(m2, a.FUN = function(X, ind) {
+    rowSums(X[, ind, drop = FALSE]^2)
+  }, a.combine = '+', block.size = 10)
+)
+all.equal(sqrt(test3), true)
 ```
 
 ## Matrix operations
