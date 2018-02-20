@@ -273,7 +273,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     lambda <- exp(
       seq(log(lambda.max), log(lambda.max * lambda.min), length.out = nlambda))
 
-    mod <- COPY_biglasso_part(
+    COPY_biglasso_part(
       X, y.train = y.train[!in.val],
       ind.train = ind.train[!in.val],
       ind.col = ind.col[keep],
@@ -362,7 +362,7 @@ big_spLinReg <- function(X, y.train,
   check_args()
 
   COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
-                     family = "gaussian", ...)
+                     family = "gaussian", ncores = ncores, ...)
 }
 
 ################################################################################
@@ -387,7 +387,7 @@ big_spLogReg <- function(X, y01.train,
   check_args()
 
   COPY_biglasso_main(X, y01.train, ind.train, ind.col, covar.train,
-                     family = "binomial", ...)
+                     family = "binomial", ncores = ncores, ...)
 }
 
 ################################################################################
