@@ -16,11 +16,13 @@
 #'
 #' @example examples/example-crossprodSelf.R
 #'
-big_crossprodSelf <- function(X,
-                              fun.scaling,
-                              ind.row = rows_along(X),
-                              ind.col = cols_along(X),
-                              block.size = block_size(nrow(X))) {
+big_crossprodSelf <- function(
+  X,
+  fun.scaling = big_scale(center = FALSE, scale = FALSE),
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  block.size = block_size(nrow(X))
+) {
 
   check_args()
 

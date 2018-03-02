@@ -180,13 +180,15 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' @example examples/example-randomSVD.R
 #' @seealso [svds][RSpectra::svds]
 #'
-big_randomSVD <- function(X, fun.scaling,
-                          ind.row = rows_along(X),
-                          ind.col = cols_along(X),
-                          k = 10,
-                          tol = 1e-4,
-                          verbose = FALSE,
-                          ncores = 1) {
+big_randomSVD <- function(
+  X, fun.scaling = big_scale(center = FALSE, scale = FALSE),
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  k = 10,
+  tol = 1e-4,
+  verbose = FALSE,
+  ncores = 1
+) {
 
   check_args()
 

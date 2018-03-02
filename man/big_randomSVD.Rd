@@ -4,16 +4,17 @@
 \alias{big_randomSVD}
 \title{Randomized partial SVD}
 \usage{
-big_randomSVD(X, fun.scaling, ind.row = rows_along(X),
-  ind.col = cols_along(X), k = 10, tol = 1e-04, verbose = FALSE,
-  ncores = 1)
+big_randomSVD(X, fun.scaling = big_scale(center = FALSE, scale = FALSE),
+  ind.row = rows_along(X), ind.col = cols_along(X), k = 10, tol = 1e-04,
+  verbose = FALSE, ncores = 1)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{fun.scaling}{A function that returns a named list of
 \code{mean} and \code{sd} for every column, to scale each of their elements
-such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}}
+such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}
+Default doesn't use any scaling.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}

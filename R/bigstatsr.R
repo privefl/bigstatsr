@@ -28,8 +28,9 @@
 #'   You may use [nb_cores].
 #'
 #' @param fun.scaling A function that returns a named list of
-#' `mean` and `sd` for every column, to scale each of their elements
-#' such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}
+#'   `mean` and `sd` for every column, to scale each of their elements
+#'   such as followed: \deqn{\frac{X_{i,j} - mean_j}{sd_j}.}
+#'   Default doesn't use any scaling.
 #'
 #' @param covar.train Matrix of covariables to be added in each model to correct
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.train`.

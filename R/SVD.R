@@ -89,7 +89,8 @@ PrimalBigPCA <- function(X, fun.scaling,
 #' @example examples/example-SVD.R
 #' @seealso [prcomp][stats::prcomp]
 #'
-big_SVD <- function(X, fun.scaling,
+big_SVD <- function(X,
+                    fun.scaling = big_scale(center = FALSE, scale = FALSE),
                     ind.row = rows_along(X),
                     ind.col = cols_along(X),
                     k = 10,
