@@ -138,6 +138,8 @@ predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 #' @param ... Not used.
 #'
 #' @export
+#' @importFrom stats predict
+#' @importFrom magrittr %>%
 #'
 #' @return A matrix of size \eqn{n \times K} where `n` is the number of samples
 #' corresponding to indices in `ind.row` and K the number of PCs
@@ -155,18 +157,18 @@ predict.big_SVD <- function(object, X = NULL,
                             ...) {
 
   if (is.null(X)) {
-    k <- length(object$d)
-    object$u %*% diag(object$d, k, k)
+    # U * D
+    sweep(object$u, 2, object$d, '*')
   } else {
     check_args()
 
     # Multiplication with clever scaling (see vignettes)
     v2 <- object$v / object$scale
-    tmp <- big_prodMat(X, v2,
-                       ind.row = ind.row,
-                       ind.col = ind.col,
-                       block.size = block.size)
-    sweep(tmp, 2, crossprod(object$center, v2), "-")
+    big_prodMat(X, v2,
+                ind.row = ind.row,
+                ind.col = ind.col,
+                block.size = block.size) %>%
+      sweep(2, crossprod(object$center, v2), '-')
   }
 }
 
