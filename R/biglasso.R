@@ -289,15 +289,20 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   if (return.all) {
     cross.res
   } else {
-    structure(lapply(cross.res, function(x) {
-      best <- which.min(x$loss.val)
-      ind <- seq_along(x$ind.col)
-      list(
-        intercept  = unname(x$intercept[best]),
-        beta.X     = x$beta[ind, best],
-        beta.covar = x$beta[-ind, best]
-      )
-    }), class = "big_sp_best_list", ind.col = ind.col[keep], family = family)
+    structure(
+      lapply(cross.res, function(x) {
+        best <- which.min(x$loss.val)
+        ind <- seq_along(x$ind.col)
+        list(
+          intercept  = unname(x$intercept[best]),
+          beta.X     = x$beta[ind, best],
+          beta.covar = x$beta[-ind, best]
+        )
+      }),
+      class = "big_sp_best_list",
+      ind.col = ind.col[keep],
+      family = family
+    )
   }
 }
 

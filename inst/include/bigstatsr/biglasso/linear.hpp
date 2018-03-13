@@ -22,11 +22,7 @@ using namespace bigstatsr::biglassoUtils;
 
 // Gaussian loss
 double COPY_gLoss(const NumericVector& r) {
-  double l = 0;
-  for (int i = 0; i < r.size(); i++) {
-    l += pow(r[i], 2);
-  }
-  return l;
+  return std::inner_product(r.begin(), r.end(), r.begin(), 0.0);
 }
 
 // Coordinate descent for gaussian models
@@ -53,8 +49,8 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
   size_t n_val = macc_val.nrow();
   NumericVector pred_val(n_val);
-  NumericVector metrics(L, R_PosInf);
-  double metric, metric_min = R_PosInf;
+  NumericVector metrics(L, NA_REAL);
+  double metric, metric_min;
   int no_change = 0;
 
   // Objects to be returned to R
@@ -65,13 +61,15 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
   double l1, l2, cutoff, shift, lam_l;
   double max_update, update, thresh, shift_scaled, cpsum;
-  size_t i, j, l, ll, violations;
+  size_t i, j;
+  int l, ll, violations;
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
   double sumResid = Rcpp::sum(r);
   loss[0] = COPY_gLoss(r);
   thresh = eps * loss[0] / n;
+  metrics[0] = metric_min = COPY_gLoss(y_val);
 
   // Path
   for (l = 1; l < L; l++) {

@@ -26,7 +26,7 @@ using namespace bigstatsr::biglassoUtils;
 double COPY_wmean(const NumericVector& r, const NumericVector& w, size_t n) {
   double rw_sum = 0, w_sum = 0;
   for (size_t i = 0; i < n; i++) {
-    w_sum += w[i];
+    w_sum  += w[i];
     rw_sum += r[i] * w[i];
   }
   return rw_sum / w_sum;
@@ -66,8 +66,8 @@ List COPY_cdfit_binomial_hsr(C macc,
 
   size_t n_val = macc_val.nrow();
   NumericVector pred_val(n_val);
-  NumericVector metrics(L, R_NegInf);
-  double metric, metric_max = R_NegInf;
+  NumericVector metrics(L, NA_REAL);
+  double metric, metric_max;
   int no_change = 0;
 
   NumericVector Dev(L);
@@ -89,7 +89,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   int l, ll, violations;
 
   double ybar = Rcpp::sum(y) / n;
-  beta_old0 = beta0[0] = log(ybar / (1-ybar));
+  beta_old0 = beta0[0] = log(ybar / (1 - ybar));
   double nullDev = 0;
   NumericVector r(n);
   for (i = 0; i < n; i++) {
@@ -102,6 +102,8 @@ List COPY_cdfit_binomial_hsr(C macc,
 
   double sumWResid = 0; // temp result: sum of w * r
   Dev[0] = nullDev;
+  metrics[0] = metric_max =
+    Rcpp::sum((1 - y_val) * log(1 - ybar) + y_val * log(ybar));
 
   // Path
   for (l = 1; l < L; l++) {

@@ -71,3 +71,32 @@ test_that("can be used with a subset of variables", {
 })
 
 ################################################################################
+
+test_that("parameter 'return.all' works and loss computation is correct", {
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
+
+    for (covar in lcovar) {
+
+      alpha <- runif(1, min = 1e-6, max = 1)
+      lambda.min <- runif(1, min = 0.01, max = 0.5)
+
+      mod.bigstatsr4 <- big_spLogReg(X, y, covar.train = covar, alpha = alpha,
+                                     lambda.min = lambda.min, return.all = TRUE)
+      expect_true(all(sapply(mod.bigstatsr4, class) == "big_sp"))
+
+      loss.val <- lapply(mod.bigstatsr4, function(obj) {
+        ind.val <- setdiff(rows_along(X), obj$ind.train)
+        y.val <- y[ind.val]
+        preds <- predict(obj, X, ind.row = ind.val, covar.row = covar[ind.val, ])
+        preds_prob <- unname(1 / (1 + exp(-preds)))
+        apply(preds_prob, 2, function(p) {
+          -mean(y.val * log(p) + (1 - y.val) * log(1 - p))  ## negLogLik
+        })
+      })
+      expect_equal(loss.val, lapply(mod.bigstatsr4, function(obj) obj$loss.val))
+    }
+  }
+})
+
+################################################################################
