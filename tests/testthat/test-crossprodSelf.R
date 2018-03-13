@@ -7,16 +7,13 @@ N <- 101
 M <- 43
 x <- matrix(rnorm(N * M, 100, 5), N)
 
-big_noscale <- big_scale(center = FALSE)
-
 ################################################################################
 
 test_that("equality with crossprod", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    K <- big_crossprodSelf(X, fun.scaling = big_noscale,
-                           block.size = 10)
+    K <- big_crossprodSelf(X, block.size = 10)
     expect_equal(K[], crossprod(X[]))
   }
 })
@@ -30,8 +27,7 @@ test_that("equality with crossprod with half of the data", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     # no scaling
-    K <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.col = ind,
-                           block.size = 10)
+    K <- big_crossprodSelf(X, ind.col = ind, block.size = 10)
     expect_equal(K[], crossprod(X[, ind]))
 
     # full scaling
@@ -53,8 +49,7 @@ test_that("equality with crossprod with half of the data", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     # no scaling
-    K <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.row = ind,
-                           block.size = 10)
+    K <- big_crossprodSelf(X, ind.row = ind, block.size = 10)
     expect_equal(K[], crossprod(X[ind, ]))
 
     # full scaling

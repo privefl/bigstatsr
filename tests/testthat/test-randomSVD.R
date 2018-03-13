@@ -24,8 +24,13 @@ test_that("equality with prcomp", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
-    sc <- sampleScale()
 
+    test <- big_randomSVD(X, k = k, tol = 1e-10, ncores = test_cores())
+    pca <- prcomp(X[], center = FALSE, scale. = FALSE)
+    expect_equal(diffPCs(predict(test), pca$x), 0, tolerance = TOL)
+    expect_equal(diffPCs(test$v, pca$rotation), 0, tolerance = TOL)
+
+    sc <- sampleScale()
     test <- big_randomSVD(X, k = k, tol = 1e-10, ncores = test_cores(),
                           fun.scaling = big_scale(center = sc$center,
                                                   scale = sc$scale))
