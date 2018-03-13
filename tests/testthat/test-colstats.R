@@ -2,6 +2,10 @@
 
 context("COLSTATS")
 
+set.seed(SEED)
+
+################################################################################
+
 # Simulating some data
 x <- matrix(rnorm(100, 100, 5), 10, 10)
 ind <- 1:5

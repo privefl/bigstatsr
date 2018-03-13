@@ -2,6 +2,10 @@
 
 context("TRANSPOSE")
 
+set.seed(SEED)
+
+################################################################################
+
 # Simulating some data
 x <- matrix(rnorm(2e4, 100, 5), 200, 100)
 

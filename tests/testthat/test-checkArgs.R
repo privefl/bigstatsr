@@ -2,6 +2,8 @@
 
 context("CHECK_ARGS")
 
+set.seed(SEED)
+
 ################################################################################
 
 # defining some objects

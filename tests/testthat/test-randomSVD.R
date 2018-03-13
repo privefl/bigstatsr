@@ -2,6 +2,10 @@
 
 context("RANDOM_SVD")
 
+set.seed(SEED)
+
+################################################################################
+
 TOL <- 1e-4
 
 # function for sampling scaling

@@ -2,6 +2,10 @@
 
 context("UNIV_LOG_REG")
 
+set.seed(SEED)
+
+################################################################################
+
 TOL <- 1e-4
 
 # Simulating some data

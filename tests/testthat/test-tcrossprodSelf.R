@@ -2,6 +2,10 @@
 
 context("TCROSSPROD_SELF")
 
+set.seed(SEED)
+
+################################################################################
+
 # Simulating some data
 N <- 43
 M <- 101

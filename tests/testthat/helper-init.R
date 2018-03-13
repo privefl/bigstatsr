@@ -45,4 +45,7 @@ diffPCs <- function(test, rot) {
 
 opt.save <- options(bigstatsr.typecast.warning = FALSE)
 
+set.seed(NULL)
+cat("---- SEED:", SEED <- round(runif(1, 1, 999)), "----\n")
+
 ################################################################################

@@ -2,6 +2,10 @@
 
 context("FBM_ACCESSORS")
 
+set.seed(SEED)
+
+################################################################################
+
 test_extract <- function(call) {
   call <- deparse(substitute(call))
   eval(parse(text = sprintf("expect_equal(%s, %s)",
