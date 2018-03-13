@@ -37,7 +37,8 @@ test_that("can be used with a subset of samples", {
                                      alpha = alpha,
                                      lambda.min = lambda.min)
       preds2 <- rowMeans(
-        predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
+        predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
+                covar.row = covar[-ind, ])
       )
       expect_gt(cor(preds2, y[-ind]), 0.5)
     }
@@ -63,10 +64,11 @@ test_that("can be used with a subset of variables", {
                                      alpha = alpha,
                                      lambda.min = lambda.min)
       preds3 <- rowMeans(
-        predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
+        predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
+                covar.row = covar[-ind, ])
       )
-      # Test that prediction is bad (because not the first variable in the prediction)
-      expect_lt(cor(preds3, y[-ind]), 0.2)
+      # Test that prediction is bad when removing the first variables
+      expect_lt(cor(preds3, y[-ind]), 0.2)  ## BUG HERE SOMETIMES?
     }
   }
 })

@@ -6,7 +6,8 @@ context("SP_LOG_REG")
 N <- 530
 M <- 730
 x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
-y <- as.numeric(rowSums(x[, 1:5] - 100) + rnorm(N) > 0)
+s <- rowSums(x[, 1:5] - 100) + 5 * rnorm(N)
+y <- as.numeric(s > 0)
 
 covar0 <- matrix(rnorm(N * 3), N)
 lcovar <- list(NULL, covar0)
@@ -36,7 +37,8 @@ test_that("can be used with a subset of samples", {
                                      alpha = alpha,
                                      lambda.min = lambda.min)
       preds2 <- rowMeans(
-        predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
+        predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
+                covar.row = covar[-ind, ])
       )
       expect_gt(AUC(preds2, y[-ind]), 0.7)
     }
@@ -62,9 +64,10 @@ test_that("can be used with a subset of variables", {
                                      alpha = alpha,
                                      lambda.min = lambda.min)
       preds3 <- rowMeans(
-        predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
+        predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
+                covar.row = covar[-ind, ])
       )
-      # Test that prediction is bad (because not the first variable in the prediction)
+      # Test that prediction is bad when removing the first variables
       expect_lt(AUC(preds3, y[-ind]), 0.6)
     }
   }
