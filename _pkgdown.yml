@@ -16,7 +16,7 @@ navbar:
       - text: "Operations with scaling"
         href: articles/operations-with-scaling.html
       - text: "Read a FBM from a text file"
-        href: articles/read-BM-from-file.html
+        href: articles/read-FBM-from-file.html
   right:
     - text: "About"
       icon: fa-user
@@ -43,6 +43,7 @@ reference:
       - big_spLinReg
       - big_spLogReg
       - AUC
+      - get_beta
   - title: "SVD (and PCA)"
     contents:
       - big_SVD

@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,11 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Sparse linear regression — big_spLinReg" />
+
+<meta property="og:description" content="Fit lasso penalized linear regression path for a Filebacked Big Matrix.
+Covariates can be added to correct for confounders." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -71,7 +78,7 @@
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -259,7 +266,7 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 #&gt;   ..$ : NULL</div><div class='input'><span class='co'># Combine them</span>
 <span class='no'>preds2</span> <span class='kw'>&lt;-</span> <span class='fu'>rowMeans</span>(<span class='no'>preds</span>)
 
-<span class='fu'>plot</span>(<span class='no'>preds2</span>, <span class='no'>y</span>[<span class='no'>ind.test</span>], <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>); <span class='fu'>abline</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='big_spLinReg-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>plot</span>(<span class='no'>preds2</span>, <span class='no'>y</span>[<span class='no'>ind.test</span>], <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>); <span class='fu'>abline</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='big_spLinReg-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -286,7 +293,7 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -294,3 +301,4 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 
   </body>
 </html>
+

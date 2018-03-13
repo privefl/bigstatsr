@@ -8,8 +8,11 @@
 <title>Read a FBM from a file • bigstatsr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Read a FBM from a file">
+<meta property="og:description" content="">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -48,7 +51,7 @@
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -104,17 +107,17 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">10</span> 
 M &lt;-<span class="st"> </span><span class="dv">5</span>
 (x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N <span class="op">*</span><span class="st"> </span>M), <span class="dt">nrow =</span> N, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span><span class="op">:</span>N], LETTERS[<span class="dv">1</span><span class="op">:</span>M])))</code></pre></div>
-<pre><code>##            A           B           C          D           E
-## a -0.6235075 -0.79023233  0.73813710  0.8852084 -0.02732649
-## b  0.8671257 -1.16156439  1.44196637 -1.4258653 -0.24070104
-## c  1.7689600 -1.65387554 -0.22234688  1.4756310  0.81645056
-## d  0.5892803 -0.87012744 -1.20095838  0.6076114  0.05241164
-## e -1.8938624  1.22788396  0.28212427 -1.3734765 -0.34319998
-## f -0.1616032 -0.02173788  0.01387595 -0.5217316 -0.82642736
-## g  0.1555337  0.54581953  1.11861214 -0.1523459  1.49099785
-## h  0.8154142 -0.53619856  0.49271488  0.2901883  0.15885724
-## i -0.1020557 -0.29309720 -0.14988710  1.7802657  0.62438524
-## j -0.1859529  1.27865446 -0.05038405 -0.2853816  0.98485838</code></pre>
+<pre><code>##            A          B           C          D          E
+## a  0.6239741  1.5862622 -0.08791586 -1.7811556 -0.5434460
+## b  1.8708465 -0.3022183  1.17121762 -0.3741830 -0.3755662
+## c -1.2105313 -1.7218551  0.72654564  0.4786953  1.2468896
+## d  1.7481514  0.0432174 -0.13639331  0.5295397 -1.0439324
+## e -0.6875242  0.9385644  0.41697188 -0.3065039 -0.3427709
+## f -0.3276712  0.4824068 -0.16695066 -0.2385979 -0.5421285
+## g  0.3275872 -0.2899213  1.13373948  1.2507340  0.3494791
+## h -0.4167759  0.9309272 -0.30636394 -0.7461085 -0.5193590
+## i -0.7583215 -0.0740474  1.00343784  1.1499141 -0.5625549
+## j  0.8512885  0.7122964 -0.79890831  1.0060848  0.6663244</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(x, tmp &lt;-<span class="st"> </span><span class="kw">tempfile</span>(), <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </div>
 <div id="get-some-intuition-on-the-file-format" class="section level3">
@@ -123,8 +126,8 @@ M &lt;-<span class="st"> </span><span class="dv">5</span>
 <p>I think it is always a good idea to print the first lines of the file you are interested in reading.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">readLines</span>(tmp, <span class="dv">3</span>), <span class="dv">0</span>, <span class="dv">60</span>)</code></pre></div>
 <pre><code>## [1] "A B C D E"                                                   
-## [2] "a -0.623507485417661 -0.79023232619397 0.738137101100882 0.8"
-## [3] "b 0.867125679483973 -1.16156439088919 1.44196637370161 -1.42"</code></pre>
+## [2] "a 0.623974076052307 1.58626220312115 -0.0879158561862716 -1."
+## [3] "b 1.87084648102771 -0.302218253993179 1.1712176220296 -0.374"</code></pre>
 <p>What you can see with these first 3 lines:</p>
 <ul>
 <li>the first line of the file stores some names,</li>
@@ -145,18 +148,18 @@ test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_re
                  <span class="dt">read.what =</span> <span class="kw">double</span>())  <span class="co"># the default</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the FBM elements</span>
 test[]</code></pre></div>
-<pre><code>##             [,1]       [,2]       [,3]        [,4]       [,5]        [,6]
-## [1,] -0.62350749  0.8671257  1.7689600  0.58928033 -1.8938624 -0.16160323
-## [2,] -0.79023233 -1.1615644 -1.6538755 -0.87012744  1.2278840 -0.02173788
-## [3,]  0.73813710  1.4419664 -0.2223469 -1.20095838  0.2821243  0.01387595
-## [4,]  0.88520844 -1.4258653  1.4756310  0.60761138 -1.3734765 -0.52173161
-## [5,] -0.02732649 -0.2407010  0.8164506  0.05241164 -0.3432000 -0.82642736
-##            [,7]       [,8]       [,9]       [,10]
-## [1,]  0.1555337  0.8154142 -0.1020557 -0.18595287
-## [2,]  0.5458195 -0.5361986 -0.2930972  1.27865446
-## [3,]  1.1186121  0.4927149 -0.1498871 -0.05038405
-## [4,] -0.1523459  0.2901883  1.7802657 -0.28538163
-## [5,]  1.4909979  0.1588572  0.6243852  0.98485838</code></pre>
+<pre><code>##             [,1]       [,2]       [,3]       [,4]       [,5]       [,6]
+## [1,]  0.62397408  1.8708465 -1.2105313  1.7481514 -0.6875242 -0.3276712
+## [2,]  1.58626220 -0.3022183 -1.7218551  0.0432174  0.9385644  0.4824068
+## [3,] -0.08791586  1.1712176  0.7265456 -0.1363933  0.4169719 -0.1669507
+## [4,] -1.78115559 -0.3741830  0.4786953  0.5295397 -0.3065039 -0.2385979
+## [5,] -0.54344604 -0.3755662  1.2468896 -1.0439324 -0.3427709 -0.5421285
+##            [,7]       [,8]       [,9]      [,10]
+## [1,]  0.3275872 -0.4167759 -0.7583215  0.8512885
+## [2,] -0.2899213  0.9309272 -0.0740474  0.7122964
+## [3,]  1.1337395 -0.3063639  1.0034378 -0.7989083
+## [4,]  1.2507340 -0.7461085  1.1499141  1.0060848
+## [5,]  0.3494791 -0.5193590 -0.5625549  0.6663244</code></pre>
 </div>
 <div id="understand-the-resulting-object" class="section level3">
 <h3 class="hasAnchor">
@@ -190,22 +193,22 @@ test[]</code></pre></div>
 ##  $ ncol       : int 5
 ##  $ type       : Named int 8
 ##   ..- attr(*, "names")= chr "double"
-##  $ backingfile: chr "/tmp/Rtmpb1EZ1F/file7b15682e2e28.bk"
+##  $ backingfile: chr "/tmp/RtmpYt5RsX/file49a81d15fb.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test[] <span class="op">-</span><span class="st"> </span>x</code></pre></div>
 <pre><code>##               A             B             C             D             E
-## a -3.330669e-16  1.110223e-16  0.000000e+00  0.000000e+00 -6.938894e-18
-## b -2.220446e-16 -2.220446e-15  3.330669e-15 -2.886580e-15 -2.775558e-17
-## c -1.554312e-15 -3.330669e-15  1.665335e-16  6.661338e-16 -1.110223e-16
-## d  3.330669e-16 -4.440892e-16 -6.661338e-16  0.000000e+00  0.000000e+00
-## e  4.662937e-15  8.881784e-16  5.551115e-17  6.661338e-16  1.110223e-16
-## f  3.885781e-16  1.040834e-17 -1.387779e-17 -1.110223e-16 -4.440892e-16
-## g -8.326673e-17 -3.330669e-16 -1.776357e-15  5.551115e-17  4.884981e-15
-## h  3.330669e-16  1.110223e-16  4.440892e-16 -2.220446e-16 -3.885781e-16
-## i  1.387779e-16 -4.440892e-16  2.498002e-16  4.218847e-15  3.330669e-16
-## j -4.440892e-16  3.330669e-15  3.469447e-17  1.665335e-16  3.330669e-16</code></pre>
+## a  1.110223e-16  4.440892e-15 -1.387779e-17 -1.554312e-15  3.330669e-16
+## b  1.998401e-15  3.885781e-16  8.881784e-16 -1.665335e-16  2.775558e-16
+## c  4.662937e-15 -2.220446e-15 -3.330669e-16 -2.220446e-16 -3.996803e-15
+## d -4.440892e-15  2.081668e-17 -3.608225e-16 -1.110223e-16  3.996803e-15
+## e  0.000000e+00  2.220446e-16 -2.775558e-16  1.665335e-16 -3.885781e-16
+## f  2.775558e-16  3.330669e-16  3.053113e-16  1.387779e-16 -1.110223e-16
+## g -5.551115e-17 -1.110223e-16  4.440892e-16  3.330669e-15 -3.330669e-16
+## h -3.885781e-16 -4.440892e-16  1.110223e-16 -2.220446e-16  0.000000e+00
+## i  4.440892e-16 -4.163336e-17 -3.552714e-15  2.886580e-15 -4.440892e-16
+## j -1.110223e-16 -3.330669e-16  3.330669e-16  1.554312e-15  3.330669e-16</code></pre>
 </li>
 </ol>
 </div>
@@ -271,7 +274,7 @@ transfo &lt;-<span class="st"> </span><span class="cf">function</span>(read) {
 ##  $ ncol       : int 8
 ##  $ type       : Named int 4
 ##   ..- attr(*, "names")= chr "integer"
-##  $ backingfile: chr "/tmp/Rtmpb1EZ1F/file7b151218974d.bk"
+##  $ backingfile: chr "/tmp/RtmpYt5RsX/file49a823b0a8c4.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>
@@ -323,7 +326,7 @@ transfo &lt;-<span class="st"> </span><span class="cf">function</span>(read) {
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

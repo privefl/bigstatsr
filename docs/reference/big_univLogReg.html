@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,12 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Column-wise logistic regression — big_univLogReg" />
+
+<meta property="og:description" content="Slopes of column-wise logistic regressions of each column
+of a Filebacked Big Matrix, with some other associated statistics.
+Covariates can be added to correct for confounders." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -71,7 +79,7 @@
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -209,8 +217,8 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 #&gt;     lpval &lt;- stats::pnorm(xtr, lower.tail = FALSE, log.p = TRUE)
 #&gt;     (log(2) + lpval) / log(10)
 #&gt;   }
-#&gt; &lt;environment: 0xe7bbde0&gt;</div><div class='input'><span class='co'>## plot results</span>
-<span class='fu'>plot</span>(<span class='no'>test</span>)</div><div class='img'><img src='big_univLogReg-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='big_univLogReg-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='co'>## To get p-values associated with the test</span>
+#&gt; &lt;environment: 0xde3db68&gt;</div><div class='input'><span class='co'>## plot results</span>
+<span class='fu'>plot</span>(<span class='no'>test</span>)</div><div class='img'><img src='big_univLogReg-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='big_univLogReg-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='co'>## To get p-values associated with the test</span>
 <span class='no'>test</span>$<span class='no'>p.value</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='kw'>log10</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  5 variables:
 #&gt;  $ estim  : num  0.0288 -0.1992 -0.1646 0.1359 -0.2578 ...
@@ -221,7 +229,7 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 #&gt;  - attr(*, "transfo")=function (x)  
 #&gt;  - attr(*, "predict")=function (xtr)  
 #&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 99 15 102 3 15 3 99 102
-#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x80708e0&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0xa226f40&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
 #&gt; 0.02878213 0.13006503 0.22129029 0.82486641 </div><div class='input'>
 <span class='co'># With all data</span>
 <span class='fu'>str</span>(<span class='fu'>big_univLogReg</span>(<span class='no'>X</span>, <span class='no'>y01</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  4 variables:
@@ -232,7 +240,7 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 #&gt;  - attr(*, "transfo")=function (x)  
 #&gt;  - attr(*, "predict")=function (xtr)  
 #&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 99 15 102 3 15 3 99 102
-#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x80708e0&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0xa226f40&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
 #&gt; 0.03005979 0.13238497 0.22706347 0.82037439 </div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
@@ -246,7 +254,7 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 #&gt;  - attr(*, "transfo")=function (x)  
 #&gt;  - attr(*, "predict")=function (xtr)  
 #&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 99 15 102 3 15 3 99 102
-#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x80708e0&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>,
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0xa226f40&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>,
             <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
 #&gt; 0.42875404 0.19649943 2.18196072 0.02911243 </div></pre>
   </div>
@@ -273,7 +281,7 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -281,3 +289,4 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 
   </body>
 </html>
+

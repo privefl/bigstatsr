@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,13 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Class FBM — FBM-class" />
+
+<meta property="og:description" content="A reference class for storing and accessing matrix-like data stored in files
+on disk. This is very similar to Filebacked Big Matrices provided by the
+bigmemory package. Yet, the implementation is much more lighter.
+Wrapper constructor for class FBM." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -71,7 +80,7 @@
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -176,17 +185,17 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>FBM</span>(<span class='fl'>10</span>, <span class='fl'>10</span>)
 <span class='fu'>typeof</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; [1] "double"</div><div class='input'><span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
-<span class='no'>X</span>[, <span class='fl'>1</span>:<span class='fl'>6</span>]</div><div class='output co'>#&gt;               [,1]       [,2]       [,3]        [,4]        [,5]         [,6]
-#&gt;  [1,] -1.791337818 -0.8432650  1.1651380  1.13199575  1.35224643  0.929763401
-#&gt;  [2,] -3.045363930 -0.6840283 -0.2783777 -0.02443501  0.78862870 -1.290008417
-#&gt;  [3,] -0.097388392  0.8459935 -0.5468960 -0.89638534 -2.24788016 -0.570331658
-#&gt;  [4,] -1.296783557 -0.6240430 -0.2793260 -0.39005692  0.04787734  0.961281650
-#&gt;  [5,]  0.191180067  0.8847433  0.2120864 -1.07864812  0.88008117 -0.212036108
-#&gt;  [6,]  0.811118929  0.2261341  0.1821841  0.96456971 -1.01640210 -0.533410636
-#&gt;  [7,] -0.735002273 -0.5610931 -1.2074401  0.75619792 -0.15845325  0.002205478
-#&gt;  [8,] -0.104626876 -0.5480882  1.5545471 -0.27871042 -2.25195394 -0.346823573
-#&gt;  [9,] -0.695506182  0.3304972 -1.7377733 -1.05027468 -0.22329538 -0.485861799
-#&gt; [10,]  0.003144412 -0.7534743 -0.3793331 -1.11388494 -0.76745061  0.216737308</div><div class='input'><span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
+<span class='no'>X</span>[, <span class='fl'>1</span>:<span class='fl'>6</span>]</div><div class='output co'>#&gt;              [,1]        [,2]        [,3]        [,4]       [,5]        [,6]
+#&gt;  [1,]  1.04106093 -0.71617421  0.16912717 -0.70257240  0.2195934 -0.26112976
+#&gt;  [2,]  0.52821969 -1.15940397  1.76904716 -1.01322840  0.9114683 -0.39821783
+#&gt;  [3,] -0.67322334 -0.86386085 -0.39869117  0.03383893 -1.0396207 -0.90108979
+#&gt;  [4,]  0.05597672  0.03909524  2.08205060  0.37254100 -2.4759738  0.08500260
+#&gt;  [5,]  0.83425396 -0.63883378  0.56966661  0.07009365 -0.7310125  0.30512830
+#&gt;  [6,]  0.48882704 -0.72197894  0.29858759  0.05378260 -0.1428284 -0.04228224
+#&gt;  [7,] -1.58335580  2.00290074  0.90501827 -0.47646816 -0.5425438  1.02368660
+#&gt;  [8,]  0.62073626  1.45422163 -1.99365285  0.20150012 -0.1125554  0.37465879
+#&gt;  [9,] -0.39274253 -0.83954784  0.05911866 -0.11305926 -0.1833031  0.12900758
+#&gt; [10,]  1.12504158 -0.12140872 -0.29240017  0.98190298  2.5502731  0.37789519</div><div class='input'><span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
 <span class='no'>X</span>[, <span class='fl'>1</span>]</div><div class='output co'>#&gt;  [1]  1  2  3  4  5  6  7  8  9 10</div><div class='input'><span class='no'>X</span>[<span class='fl'>1</span>, ]  <span class='co'># not recommended for large matrices</span></div><div class='output co'>#&gt;  [1]  1 11 21 31 41 51 61 71 81 91</div><div class='input'><span class='no'>X</span>[, -<span class='fl'>1</span>]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9]
 #&gt;  [1,]   11   21   31   41   51   61   71   81   91
 #&gt;  [2,]   12   22   32   42   52   62   72   82   92
@@ -238,7 +247,7 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -246,3 +255,4 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
 
   </body>
 </html>
+

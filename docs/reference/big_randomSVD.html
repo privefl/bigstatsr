@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,13 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Randomized partial SVD — big_randomSVD" />
+
+<meta property="og:description" content="An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix based on the
+algorithm in RSpectra (by Yixuan Qiu and Jiali Mei).
+This algorithm is linear in time in all dimensions and is very
+memory-efficient. Thus, it can be used on very large big.matrices." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -71,7 +80,7 @@
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -118,9 +127,9 @@ This algorithm is linear in time in all dimensions and is very
 memory-efficient. Thus, it can be used on very large big.matrices.</p>
     
 
-    <pre class="usage"><span class='fu'>big_randomSVD</span>(<span class='no'>X</span>, <span class='no'>fun.scaling</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
-  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>big_randomSVD</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
+  <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -133,7 +142,8 @@ memory-efficient. Thus, it can be used on very large big.matrices.</p>
       <th>fun.scaling</th>
       <td><p>A function that returns a named list of
 <code>mean</code> and <code>sd</code> for every column, to scale each of their elements
-such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}.$$</p></td>
+such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}.$$
+Default doesn't use any scaling.</p></td>
     </tr>
     <tr>
       <th>ind.row</th>
@@ -225,12 +235,12 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 <span class='co'># use this function to predict scores</span>
 <span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "big_SVD"</div><div class='input'><span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>)
 <span class='co'># scores and loadings are the same or opposite</span>
-<span class='fu'>plot</span>(<span class='no'>scores</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><div class='img'><img src='big_randomSVD-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>)</div><div class='img'><img src='big_randomSVD-9.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>scores</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><div class='img'><img src='big_randomSVD-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>)</div><div class='img'><img src='big_randomSVD-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># projecting on new data</span>
 <span class='no'>ind2</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='no'>ind</span>)
 <span class='no'>scores.test2</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind2</span>)
 <span class='no'>scores.test3</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>pca</span>, <span class='no'>X</span>[-<span class='no'>ind</span>, ])
-<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-10.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -256,7 +266,7 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -264,3 +274,4 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 
   </body>
 </html>
+

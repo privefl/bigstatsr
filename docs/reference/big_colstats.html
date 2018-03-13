@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,12 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Standard univariate statistics — big_colstats" />
+
+<meta property="og:description" content="Standard univariate statistics for columns of a Filebacked Big Matrix.
+For now, the sum and var are implemented
+(the mean and sd can easily be deduced, see examples)." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -71,7 +79,7 @@
       <a href="../articles/operations-with-scaling.html">Operations with scaling</a>
     </li>
     <li>
-      <a href="../articles/read-BM-from-file.html">Read a FBM from a text file</a>
+      <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
   </ul>
 </li>
@@ -161,7 +169,7 @@ corresponding column statistics.</p>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
 <span class='fu'>str</span>(<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>))</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
 #&gt;  $ sum: num  138 157 115 181 92 106 167 124 120 94 ...
-#&gt;  $ var: num  0.46 0.369 0.513 0.176 0.579 ...</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='no'>test2</span>$<span class='no'>sum</span>)</div><div class='input'><span class='fu'>abline</span>(<span class='fu'>lm</span>(<span class='no'>test2</span>$<span class='no'>sum</span> ~ <span class='no'>test</span>$<span class='no'>sum</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='big_colstats-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+#&gt;  $ var: num  0.46 0.369 0.513 0.176 0.579 ...</div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='no'>test2</span>$<span class='no'>sum</span>)</div><div class='input'><span class='fu'>abline</span>(<span class='fu'>lm</span>(<span class='no'>test2</span>$<span class='no'>sum</span> ~ <span class='no'>test</span>$<span class='no'>sum</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='big_colstats-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='no'>X.ind</span> <span class='kw'>&lt;-</span> <span class='no'>X</span>[<span class='no'>ind</span>, ]
 <span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>sum</span>, <span class='fu'>colSums</span>(<span class='no'>X.ind</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='no'>test2</span>$<span class='no'>var</span>, <span class='fu'>apply</span>(<span class='no'>X.ind</span>, <span class='fl'>2</span>, <span class='no'>var</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># deduce mean and sd</span>
@@ -192,7 +200,7 @@ corresponding column statistics.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
@@ -200,3 +208,4 @@ corresponding column statistics.</p>
 
   </body>
 </html>
+
