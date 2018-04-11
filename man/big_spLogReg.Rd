@@ -67,7 +67,8 @@ which has a method \code{predict} that can compute K vectors of predictions,
 which could be combined with e.g. \code{rowMeans}. See details.
 }
 \description{
-Sparse logistic regression
+Fit lasso penalized linear regression path for a Filebacked Big Matrix.
+Covariates can be added to correct for confounders.
 }
 \details{
 \strong{This is a modified version of one function of
