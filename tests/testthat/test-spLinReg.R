@@ -72,7 +72,7 @@ test_that("can be used with a subset of variables", {
                 covar.row = covar[-ind, ])
       )
       # Test that prediction is bad when removing the first variables
-      expect_lt(cor(preds3, y[-ind]), 0.2)  ## BUG HERE SOMETIMES?
+      if (any(diff(preds3) != 0)) expect_lt(cor(preds3, y[-ind]), 0.2)
     }
   }
 })
