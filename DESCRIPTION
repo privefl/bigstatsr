@@ -17,8 +17,8 @@ Authors@R: c(
 Description: Easy-to-use, efficient, flexible and scalable statistical tools.
   Package bigstatsr provides and uses Filebacked Big Matrices via memory-mapping.
   It provides for instance matrix operations, Principal Component Analysis,
-  sparse linear supervised models, utility functions and more. 
-  <10.1093/bioinformatics/bty185>
+  sparse linear supervised models, utility functions and more
+  <doi:10.1093/bioinformatics/bty185>.
 License: GPL-3
 Language: en-US
 LazyData: TRUE
