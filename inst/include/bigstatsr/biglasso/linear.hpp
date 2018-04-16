@@ -112,7 +112,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
             shift = beta(j, l) - beta_old[j];
             if (shift !=0) {
               // compute objective update for checking convergence
-              update = pow(shift, 2);
+              update = shift * shift;
               if (update > max_update) {
                 max_update = update;
               }

@@ -76,27 +76,27 @@ List COPY_cdfit_binomial_hsr(C macc,
 
   arma::sp_mat beta = arma::sp_mat(p, L); //beta
   NumericVector beta_old(p); //Beta from previous iteration
-  double beta_old0 = 0; //beta0 from previous iteration
+  double beta0_old = 0; //beta0 from previous iteration
   NumericVector w(n);
   NumericVector s(n); //y_i - pi_i
   NumericVector eta(n);
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
-  double xwr, pi, u, v, cutoff, l1, l2, shift, shift_scaled, si, lam_l;
+  double xwr, pi, u, v, cutoff, l1, l2, shift, shift_scaled, si, lam_l, cj, sj;
   double sum_wx_sq, sum_wx, sum_w, x, xw;
   double max_update, update, thresh; // for convergence check
   size_t i, j;
   int l, ll, violations;
 
   double ybar = Rcpp::sum(y) / n;
-  beta_old0 = beta0[0] = log(ybar / (1 - ybar));
+  beta0_old = beta0[0] = log(ybar / (1 - ybar));
   double nullDev = 0;
   NumericVector r(n);
   for (i = 0; i < n; i++) {
     r[i] = y[i];
-    nullDev = nullDev - y[i]*log(ybar) - (1-y[i])*log(1-ybar);
+    nullDev -= y[i] * log(ybar) + (1 - y[i]) * log(1 - ybar);
     s[i] = y[i] - ybar;
-    eta[i] = beta_old0;
+    eta[i] = beta0_old;
   }
   thresh = eps * nullDev / n;
 
@@ -157,9 +157,9 @@ List COPY_cdfit_binomial_hsr(C macc,
 
         // Intercept
         si = COPY_wmean(r, w, n);
-        beta0[l] = si + beta_old0;
+        beta0[l] = si + beta0_old;
         if (si != 0) {
-          beta_old0 = beta0[l];
+          beta0_old = beta0[l];
           for (i = 0; i < n; i++) {
             r[i] -= si; //update r
             eta[i] += si; //update eta
@@ -183,9 +183,10 @@ List COPY_cdfit_binomial_hsr(C macc,
               sum_wx += xw;
               sum_wx_sq += x * xw;
             }
-            xwr = (xwr - center[j] * sumWResid) / scale[j];
-            v = (sum_wx_sq - 2 * center[j] * sum_wx +
-              pow(center[j], 2) * sum_w) / pow(scale[j], 2) / n;
+            cj = center[j];
+            sj = scale[j];
+            xwr = (xwr - cj * sumWResid) / sj;
+            v = (sum_wx_sq - 2 * cj * sum_wx + cj * cj * sum_w) / (sj * sj * n);
             u = xwr / n + v * beta_old[j];
             l1 = lam_l * alpha;
             l2 = lam_l - l1;
@@ -194,13 +195,13 @@ List COPY_cdfit_binomial_hsr(C macc,
             shift = beta(j, l) - beta_old[j];
             if (shift != 0) {
               // update change of objective function
-              update = pow(shift, 2) * v;
+              update = shift * shift * v;
               if (update > max_update) max_update = update;
 
               // Update resid & eta
-              shift_scaled = shift / scale[j];
+              shift_scaled = shift / sj;
               for (size_t i = 0; i < n; i++) {
-                si = shift_scaled * (macc(i, j) - center[j]);
+                si = shift_scaled * (macc(i, j) - cj);
                 r[i] -= si;
                 eta[i] += si;
               }

@@ -1,7 +1,7 @@
 ---
 title: "Packages bigstatsr and bigmemory"
 author: "Florian Privé"
-date: "January 7, 2017"
+date: "January 7, 2018"
 output: html_document
 ---
 
