@@ -3,8 +3,8 @@ set.seed(1)
 # simulating some data
 N <- 230
 M <- 730
-X <- FBM(N, M, init = rnorm(N * M, sd = 5), type = "integer")
-y <- X[, 1:5] + rnorm(N)
+X <- FBM(N, M, init = rnorm(N * M, sd = 5))
+y <- rowSums(X[, 1:5]) + rnorm(N)
 covar <- matrix(rnorm(N * 3), N)
 
 ind.train <- sort(sample(nrow(X), 150))
