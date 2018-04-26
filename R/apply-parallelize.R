@@ -15,7 +15,9 @@ nb_cores <- function() {
   if (Sys.info()[["sysname"]] == "Windows") {
     ncores <- parallel::detectCores(logical = FALSE)
   } else {
-    ncores <- as.integer(system("nproc", intern = TRUE))
+    cmd <- "[[ $(uname) = 'Darwin' ]] && sysctl -n hw.physicalcpu_max ||
+            lscpu -p | egrep -v '^#' | sort -u -t, -k 2,4 | wc -l"
+    ncores <- as.integer(system(cmd, intern = TRUE))
   }
 
   all_cores <- parallel::detectCores(logical = TRUE)
