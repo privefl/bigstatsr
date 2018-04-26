@@ -5,25 +5,22 @@
 #' This is base on the following rule: use only physical cores and if you have
 #' only physical cores, leave one core for the OS/UI.
 #'
-#' @inheritParams parallel::detectCores
-#'
 #' @return The recommended number of cores to use.
 #' @export
 #'
-#' @seealso [parallel::detectCores]
-#'
 #' @examples
-#' # Number of cores in total
-#' parallel::detectCores()
-#' # Number of physical cores
-#' parallel::detectCores(logical = FALSE)
-#' # Recommended number of cores to use
 #' nb_cores()
-nb_cores <- function(all.tests = FALSE) {
-  all_cores <- parallel::detectCores(all.tests = all.tests)
-  all_physical_cores <- parallel::detectCores(all.tests = all.tests,
-                                              logical = FALSE)
-  `if`(all_physical_cores < all_cores, all_physical_cores, all_cores - 1)
+nb_cores <- function() {
+
+  if (Sys.info()[["sysname"]] == "Windows") {
+    ncores <- parallel::detectCores(logical = FALSE)
+  } else {
+    ncores <- as.integer(system("nproc", intern = TRUE))
+  }
+
+  all_cores <- parallel::detectCores(logical = TRUE)
+
+  `if`(ncores < all_cores, ncores, all_cores - 1)
 }
 
 ################################################################################

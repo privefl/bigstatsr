@@ -2,6 +2,7 @@
 % Please edit documentation in R/AUC.R
 \name{AUC}
 \alias{AUC}
+\alias{AUC}
 \alias{AUCBoot}
 \title{AUC}
 \usage{

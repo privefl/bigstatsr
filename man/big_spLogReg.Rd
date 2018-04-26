@@ -67,8 +67,7 @@ which has a method \code{predict} that can compute K vectors of predictions,
 which could be combined with e.g. \code{rowMeans}. See details.
 }
 \description{
-Fit lasso penalized linear regression path for a Filebacked Big Matrix.
-Covariates can be added to correct for confounders.
+Sparse logistic regression
 }
 \details{
 \strong{This is a modified version of one function of
@@ -97,13 +96,13 @@ vector (see \link{get_beta}) or you can just combine the predictions
 }
 }
 \examples{
-set.seed(1)
+set.seed(2)
 
 # simulating some data
 N <- 230
 M <- 730
-X <- FBM(N, M, init = rnorm(N * M, sd = 5), type = "integer")
-y01 <- as.numeric(X[, 1:5] + rnorm(N) > 0)
+X <- FBM(N, M, init = rnorm(N * M, sd = 5))
+y01 <- as.numeric((rowSums(X[, 1:5]) + 2 * rnorm(N)) > 0)
 covar <- matrix(rnorm(N * 3), N)
 
 ind.train <- sort(sample(nrow(X), 150))
