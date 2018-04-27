@@ -1,3 +1,7 @@
+## bigstatsr 0.3.1
+
+- fixed a bug in `big_prodMat` when using a dimension of 1. We need to find a proper way to also handle dimensions of 0.
+
 ## bigstatsr 0.3.0
 
 - **Package {bigstatsr} is published in [Bioinformatics](http://dx.doi.org/10.1093/bioinformatics/bty185)**

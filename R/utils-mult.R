@@ -122,7 +122,7 @@ big_prodMat <- function(X, A.col,
   assert_lengths(ind.col, rows_along(A.col))
 
   big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
-    X[ind.row, ind.col[ind]] %*% M[ind, ]
+    X[ind.row, ind.col[ind], drop = FALSE] %*% M[ind, , drop = FALSE]
   }, a.combine = "+", ind = seq_along(ind.col),
   ncores = ncores, block.size = block.size,
   M = A.col, ind.row = ind.row, ind.col = ind.col)
@@ -172,7 +172,7 @@ big_cprodMat <- function(X, A.row,
   assert_lengths(ind.row, rows_along(A.row))
 
   big_apply(X, a.FUN = function(X, ind, M, ind.row) {
-    crossprod(X[ind.row, ind], M)
+    crossprod(X[ind.row, ind, drop = FALSE], M)
   }, a.combine = "rbind", ind = ind.col,
   ncores = ncores, block.size = block.size,
   M = A.row, ind.row = ind.row)

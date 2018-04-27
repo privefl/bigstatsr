@@ -97,7 +97,7 @@ assert_lengths <- function(...) {
   lengths <- lengths(list(...))
   if (length(lengths) > 1) {
     if (any(diff(lengths) != 0))
-      stop2("Incompatibility between dimensions.")
+      stop2(GET_ERROR_DIM())
   } else {
     stop2("You should check the lengths of at least two elements.")
   }
