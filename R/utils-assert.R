@@ -122,9 +122,20 @@ assert_pos <- function(x)  {
 ################################################################################
 
 # 0s AND 1s
-assert_01 <- function(x, type)  {
+assert_01 <- function(x)  {
   if (!all(x %in% 0:1))
     stop2("'%s' should be composed only of 0s and 1s.", deparse(substitute(x)))
+}
+
+assert_multiple <- function(x) {
+
+  nuniq <- length(unique(x))
+
+  if (nuniq < 2) {
+    stop2("'%s' should be composed of different values.", deparse(substitute(x)))
+  } else if (nuniq == 2) {
+    warning2("'%s' is composed of only two different levels.", deparse(substitute(x)))
+  }
 }
 
 ################################################################################

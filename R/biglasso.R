@@ -227,7 +227,11 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     tryCatch(y.train <- as.numeric(y.train), error = function(e)
       stop("y.train must numeric or able to be coerced to numeric"))
 
-  if (family == "binomial") y.train <- transform_levels(y.train)
+  if (family == "binomial") {
+    y.train <- transform_levels(y.train)
+  } else {
+    assert_multiple(y.train)
+  }
 
   # Get summaries
   ## Get also for covariables

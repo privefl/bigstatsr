@@ -10,8 +10,10 @@ set.seed(SEED)
 N <- 530
 M <- 730
 x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
-s <- rowSums(x[, 1:10])
+s <- rowSums(x[, 1:10] - 100)
 y <- s + rnorm(N)
+y2 <- (y > 0)
+y3 <- y; y3[] <- 0
 
 covar0 <- matrix(rnorm(N * 3), N)
 lcovar <- list(NULL, covar0)
@@ -24,8 +26,12 @@ test_that("can be used with a subset of samples", {
 
     for (covar in lcovar) {
 
-      ind <- sample(N, N / 2)
+      expect_error(big_spLinReg(X, y3, covar.train = covar, ncores = test_cores()),
+                   "'y.train' should be composed of different values.", fixed = TRUE)
+      expect_warning(big_spLinReg(X, y2, covar.train = covar, ncores = test_cores()),
+                     "'y.train' is composed of only two different levels.", fixed = TRUE)
 
+      ind <- sample(N, N / 2)
       alpha <- runif(1, min = 1e-6, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
