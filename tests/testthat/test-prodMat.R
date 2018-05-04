@@ -42,20 +42,25 @@ for (t in TEST.TYPES) {
                  "Incompatibility between dimensions.")
   })
 
-  test_that("OK with dimension 1", {
+  test_that("OK with dimension 0 or 1", {
+    DIM <- sample(0:1, 1)
     ind.row <- sample(N, size = 17)
-    ind.col <- sample(M, size = 1)
-    A.col <- matrix(1, 1, 7)
-    expect_equal(dim(big_prodMat(X, A.col, ind.row, ind.col)), c(17, 7))
+    ind.col <- sample(M, size = DIM)
+    A.col <- matrix(1, DIM, 7)
+    expect_equal(big_prodMat(X, A.col, ind.row, ind.col),
+                 X[ind.row, ind.col, drop = FALSE] %*% A.col)
     A.row <- matrix(1, 17, 7)
-    expect_equal(dim(big_cprodMat(X, A.row, ind.row, ind.col)), c(1, 7))
+    expect_equal(big_cprodMat(X, A.row, ind.row, ind.col),
+                 crossprod(X[ind.row, ind.col, drop = FALSE], A.row))
 
-    ind.row <- sample(N, size = 1)
+    ind.row <- sample(N, size = DIM)
     ind.col <- sample(M, size = 17)
     A.col <- matrix(1, 17, 7)
-    expect_equal(dim(big_prodMat(X, A.col, ind.row, ind.col)), c(1, 7))
-    A.row <- matrix(1, 1, 7)
-    expect_equal(dim(big_cprodMat(X, A.row, ind.row, ind.col)), c(17, 7))
+    expect_equal(big_prodMat(X, A.col, ind.row, ind.col),
+                 X[ind.row, ind.col, drop = FALSE] %*% A.col)
+    A.row <- matrix(1, DIM, 7)
+    expect_equal(big_cprodMat(X, A.row, ind.row, ind.col),
+                 crossprod(X[ind.row, ind.col, drop = FALSE], A.row))
   })
 }
 

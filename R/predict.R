@@ -42,7 +42,7 @@ predict.big_sp <- function(object, X,
 
     ind.X <- seq_along(ind.col)
     ind.nozero <- which(rowSums(betas != 0)[ind.X] > 0)
-    scores <- big_prodMat(X, betas[ind.X[ind.nozero], ],
+    scores <- big_prodMat(X, betas[ind.X[ind.nozero], , drop = FALSE],
                           ind.row = ind.row,
                           ind.col = ind.col[ind.nozero],
                           block.size = block.size) +

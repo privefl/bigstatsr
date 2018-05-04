@@ -121,11 +121,15 @@ big_prodMat <- function(X, A.col,
   # assert_class(A.col, 'matrix')  # not only (e.g. sparses matrices)
   assert_lengths(ind.col, rows_along(A.col))
 
-  big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
-    X[ind.row, ind.col[ind], drop = FALSE] %*% M[ind, , drop = FALSE]
-  }, a.combine = "+", ind = seq_along(ind.col),
-  ncores = ncores, block.size = block.size,
-  M = A.col, ind.row = ind.row, ind.col = ind.col)
+  if (length(ind.row) > 0 && length(ind.col) > 0) {
+    big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
+      X[ind.row, ind.col[ind], drop = FALSE] %*% M[ind, , drop = FALSE]
+    }, a.combine = "+", ind = seq_along(ind.col),
+    ncores = ncores, block.size = block.size,
+    M = A.col, ind.row = ind.row, ind.col = ind.col)
+  } else {
+    matrix(0, length(ind.row), ncol(A.col))
+  }
 }
 
 ################################################################################
@@ -171,11 +175,15 @@ big_cprodMat <- function(X, A.row,
   # assert_class(A.row, 'matrix')  # not only (e.g. sparses matrices)
   assert_lengths(ind.row, rows_along(A.row))
 
-  big_apply(X, a.FUN = function(X, ind, M, ind.row) {
-    crossprod(X[ind.row, ind, drop = FALSE], M)
-  }, a.combine = "rbind", ind = ind.col,
-  ncores = ncores, block.size = block.size,
-  M = A.row, ind.row = ind.row)
+  if (length(ind.row) > 0 && length(ind.col) > 0) {
+    big_apply(X, a.FUN = function(X, ind, M, ind.row) {
+      crossprod(X[ind.row, ind, drop = FALSE], M)
+    }, a.combine = "rbind", ind = ind.col,
+    ncores = ncores, block.size = block.size,
+    M = A.row, ind.row = ind.row)
+  } else {
+    matrix(0, length(ind.col), ncol(A.row))
+  }
 }
 
 ################################################################################
