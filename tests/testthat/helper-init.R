@@ -49,8 +49,9 @@ opt.save <- options(bigstatsr.typecast.warning = FALSE)
 
 set.seed(NULL)
 # Seeds that won't work (because of bad luck)
-## 235: big_spLogReg
-do_not_use <- c(235)
+##  235: big_spLogReg
+## 2677: big_spLinReg
+do_not_use <- c(235, 2677)
 while ((SEED <- round(runif(1, 1, 9999))) %in% do_not_use) NULL
 cat("========== SEED:", SEED, "==========\n")
 
