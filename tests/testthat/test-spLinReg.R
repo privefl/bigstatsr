@@ -24,7 +24,7 @@ test_that("can be used with a subset of samples", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    for (covar in lcovar) {
+    for (covar in sample(lcovar, 1)) {
 
       expect_error(big_spLinReg(X, y3, covar.train = covar, ncores = test_cores()),
                    "'y.train' should be composed of different values.", fixed = TRUE)
@@ -61,7 +61,7 @@ test_that("can be used with a subset of variables", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    for (covar in lcovar) {
+    for (covar in sample(lcovar, 1)) {
 
       ind <- sample(N, N / 2)
 
@@ -89,7 +89,7 @@ test_that("parameter 'return.all' works and loss computation is correct", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    for (covar in lcovar) {
+    for (covar in sample(lcovar, 1)) {
 
       alpha <- runif(1, min = 1e-6, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
