@@ -25,14 +25,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Column-wise linear regression — big_univLinReg" />
 
 <meta property="og:description" content="Slopes of column-wise linear regressions of each column
 of a Filebacked Big Matrix, with some other associated statistics.
 Covariates can be added to correct for confounders." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +58,12 @@ Covariates can be added to correct for confounders." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -106,6 +113,7 @@ Covariates can be added to correct for confounders." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -113,23 +121,27 @@ Covariates can be added to correct for confounders." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Column-wise linear regression</h1>
+    
+    <div class="hidden name"><code>big_univLinReg.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Slopes of column-wise linear regressions of each column
 of a Filebacked Big Matrix, with some other associated statistics.
 Covariates can be added to correct for confounders.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>thr.eigval</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>,
   <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -181,7 +193,7 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></p>
+    <div class='dont-index'><p><a href='http://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -197,13 +209,12 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 <span class='co'># Without covar</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>)
 <span class='co'>## New class `mhtest`</span>
-<span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "mhtest"     "data.frame"</div><div class='input'><span class='fu'>attr</span>(<span class='no'>test</span>, <span class='st'>"transfo"</span>)</div><div class='output co'>#&gt; function (x)  .Primitive("abs")</div><div class='input'><span class='fu'>attr</span>(<span class='no'>test</span>, <span class='st'>"predict"</span>)</div><div class='output co'>#&gt; function (xtr) 
-#&gt; {
-#&gt;     lpval &lt;- stats::pt(xtr, df = 515, lower.tail = FALSE, log.p = TRUE)
-#&gt;     (log(2) + lpval)/log(10)
-#&gt; }
-#&gt; &lt;environment: 0x85f7118&gt;</div><div class='input'><span class='co'>## plot results</span>
-<span class='fu'>plot</span>(<span class='no'>test</span>)</div><div class='img'><img src='big_univLinReg-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='big_univLinReg-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='co'>## To get p-values associated with the test</span>
+<span class='fu'>class</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "mhtest"     "data.frame"</div><div class='input'><span class='fu'>attr</span>(<span class='no'>test</span>, <span class='st'>"transfo"</span>)</div><div class='output co'>#&gt; function (x)  .Primitive("abs")</div><div class='input'><span class='fu'>attr</span>(<span class='no'>test</span>, <span class='st'>"predict"</span>)</div><div class='output co'>#&gt; function(xtr) {
+#&gt;        lpval &lt;- stats::pt(xtr, df = 515, lower.tail = FALSE, log.p = TRUE)
+#&gt;        (log(2) + lpval) / log(10)
+#&gt;      }
+#&gt; &lt;environment: 0xa6be8f8&gt;</div><div class='input'><span class='co'>## plot results</span>
+<span class='fu'>plot</span>(<span class='no'>test</span>)</div><div class='img'><img src='big_univLinReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='big_univLinReg-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## To get p-values associated with the test</span>
 <span class='no'>test</span>$<span class='no'>p.value</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='kw'>log10</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  4 variables:
 #&gt;  $ estim  : num  -0.0311 0.0956 -0.0961 0.0327 -0.0246 ...
@@ -211,7 +222,9 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 #&gt;  $ score  : num  -0.473 1.221 -1.353 0.408 -0.397 ...
 #&gt;  $ p.value: num  0.636 0.223 0.177 0.683 0.692 ...
 #&gt;  - attr(*, "transfo")=function (x)  
-#&gt;  - attr(*, "predict")=function (xtr)  </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt;  - attr(*, "predict")=function (xtr)  
+#&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 1 1 4 6 1 6 1 4
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0xa401c48&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
 #&gt; -0.03111113  0.06575485 -0.47313823  0.63631503 </div><div class='input'>
 <span class='co'># With all data</span>
 <span class='fu'>str</span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  3 variables:
@@ -219,7 +232,9 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 #&gt;  $ std.err: num  0.066 0.0785 0.0714 0.0803 0.0625 ...
 #&gt;  $ score  : num  -0.447 1.266 -1.316 0.436 -0.347 ...
 #&gt;  - attr(*, "transfo")=function (x)  
-#&gt;  - attr(*, "predict")=function (xtr)  </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt;  - attr(*, "predict")=function (xtr)  
+#&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 1 1 4 6 1 6 1 4
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0xd2352b0&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
 #&gt; -0.02947921  0.06597253 -0.44684070  0.65517903 </div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
@@ -230,7 +245,9 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 #&gt;  $ std.err: num  0.0902 0.1126 0.0991 0.1104 0.0868 ...
 #&gt;  $ score  : num  -0.955 0.454 -0.915 0.417 -1.072 ...
 #&gt;  - attr(*, "transfo")=function (x)  
-#&gt;  - attr(*, "predict")=function (xtr)  </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
+#&gt;  - attr(*, "predict")=function (xtr)  
+#&gt;   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 1 1 4 6 1 6 1 4
+#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0xc5f1de0&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>y</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
 #&gt; -0.08612891  0.09019549 -0.95491370  0.34053284 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -259,6 +276,8 @@ This is also an object of class <code>mhtest</code>. See <code>methods(class = "
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

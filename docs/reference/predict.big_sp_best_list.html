@@ -25,12 +25,15 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Predict method — predict.big_sp_best_list" />
 
 <meta property="og:description" content="Predict method for class big_sp_best_list." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -53,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -104,6 +111,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -111,22 +119,26 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Predict method</h1>
+    
+    <div class="hidden name"><code>predict.big_sp_best_list.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Predict method for class <code>big_sp_best_list</code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='co'># S3 method for big_sp_best_list</span>
 <span class='fu'>predict</span>(<span class='no'>object</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'>attr</span>(<span class='no'>object</span>, <span class='st'>"ind.col"</span>), <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>proba</span> <span class='kw'>=</span> (<span class='fu'>attr</span>(<span class='no'>object</span>, <span class='st'>"family"</span>) <span class='kw'>==</span> <span class='st'>"binomial"</span>), <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -169,7 +181,7 @@ Default is <code>NULL</code> and corresponds to only adding an intercept to each
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='big_spLinReg.html'>big_spLinReg</a> and <a href='big_spLogReg.html'>big_spLogReg</a>.</p>
+    <div class='dont-index'><p><a href='big_spLinReg.html'>big_spLinReg</a> and <a href='big_spLogReg.html'>big_spLogReg</a>.</p></div>
     
 
   </div>
@@ -197,6 +209,8 @@ Default is <code>NULL</code> and corresponds to only adding an intercept to each
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

@@ -25,13 +25,16 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Crossprod — big_crossprodSelf" />
 
 <meta property="og:description" content="Compute \(X.row^T X.row\) for a Filebacked Big Matrix X
 after applying a particular scaling to it." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -54,8 +57,12 @@ after applying a particular scaling to it." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -105,6 +112,7 @@ after applying a particular scaling to it." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -112,22 +120,26 @@ after applying a particular scaling to it." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Crossprod</h1>
+    
+    <div class="hidden name"><code>big_crossprodSelf.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Compute \(X.row^T X.row\) for a Filebacked Big Matrix <code>X</code>
 after applying a particular scaling to it.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
   <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -176,7 +188,7 @@ in order to accelerate these block matrix computations.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>crossprod</p>
+    <div class='dont-index'><p>crossprod</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -187,7 +199,7 @@ in order to accelerate these block matrix computations.</p>
 <span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
 <span class='fu'>class</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] "FBM"
 #&gt; attr(,"package")
-#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpcPSzbb/file48664b4d4c7d.bk"</div><div class='input'>
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpbDvu3m/filecc946bd2831.bk"</div><div class='input'>
 <span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='no'>X</span>[])
 <span class='fu'>all.equal</span>(<span class='no'>K</span>[], <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data</span>
@@ -228,6 +240,8 @@ in order to accelerate these block matrix computations.</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

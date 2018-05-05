@@ -25,12 +25,15 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Plotly text — asPlotlyText" />
 
 <meta property="og:description" content="Convert a data.frame to plotly text" />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -53,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -104,6 +111,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -111,19 +119,23 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plotly text</h1>
+    
+    <div class="hidden name"><code>asPlotlyText.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Convert a data.frame to plotly text</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -147,7 +159,7 @@
 <span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"POP1"</span>, <span class='st'>"POP2"</span>, <span class='st'>"POP3"</span>), <span class='fu'>c</span>(<span class='fl'>143</span>, <span class='fl'>167</span>, <span class='fl'>207</span>))
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Population</span> <span class='kw'>=</span> <span class='no'>pop</span>, <span class='kw'>Index</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>517</span>)
 
-<span class='fu'>plot</span>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>p</span> + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in {    paste(names(df)[ic], df[[ic]], sep = ": ")}: task 1 failed - "objet de type 'closure' non indiçable"</span></div><div class='img'><img src='asPlotlyText-1.png' alt='' width='700' height='432.632880098887' /></div><span class='co'># NOT RUN {</span>
+<span class='fu'>plot</span>(<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>p</span> + <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='fu'>asPlotlyText</span>(<span class='no'>df</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in {    paste(names(df)[ic], df[[ic]], sep = ": ")}: task 1 failed - "objet de type 'closure' non indiçable"</span></div><div class='img'><img src='asPlotlyText-1.png' alt='' width='700' height='433' /></div><span class='co'># NOT RUN {</span>
 <span class='kw pkg'>plotly</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/plotly/topics/ggplotly'>ggplotly</a></span>(<span class='no'>p2</span>, <span class='kw'>tooltip</span> <span class='kw'>=</span> <span class='st'>"text"</span>)
 <span class='co'># }</span></pre>
   </div>
@@ -175,6 +187,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -27,8 +27,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -86,17 +90,20 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Read a FBM from a file</h1>
                         <h4 class="author">Florian Privé</h4>
             
             <h4 class="date">April 15, 2017</h4>
-          </div>
+      
+      
+      <div class="hidden name"><code>read-FBM-from-file.Rmd</code></div>
+
+    </div>
 
     
     
-<div class="contents">
 <p>In this vignette, you will learn how to read a Filebacked Big Matrix from a text file. We will see how to use function <code>big_read</code> through examples.</p>
 <div id="first-example" class="section level2">
 <h2 class="hasAnchor">
@@ -107,17 +114,17 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">10</span> 
 M &lt;-<span class="st"> </span><span class="dv">5</span>
 (x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N <span class="op">*</span><span class="st"> </span>M), <span class="dt">nrow =</span> N, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span><span class="op">:</span>N], LETTERS[<span class="dv">1</span><span class="op">:</span>M])))</code></pre></div>
-<pre><code>##            A          B           C          D          E
-## a  0.6239741  1.5862622 -0.08791586 -1.7811556 -0.5434460
-## b  1.8708465 -0.3022183  1.17121762 -0.3741830 -0.3755662
-## c -1.2105313 -1.7218551  0.72654564  0.4786953  1.2468896
-## d  1.7481514  0.0432174 -0.13639331  0.5295397 -1.0439324
-## e -0.6875242  0.9385644  0.41697188 -0.3065039 -0.3427709
-## f -0.3276712  0.4824068 -0.16695066 -0.2385979 -0.5421285
-## g  0.3275872 -0.2899213  1.13373948  1.2507340  0.3494791
-## h -0.4167759  0.9309272 -0.30636394 -0.7461085 -0.5193590
-## i -0.7583215 -0.0740474  1.00343784  1.1499141 -0.5625549
-## j  0.8512885  0.7122964 -0.79890831  1.0060848  0.6663244</code></pre>
+<pre><code>##            A          B          C           D          E
+## a -0.6594544  1.3932252 -1.1299504  0.07311504 -1.2078392
+## b  0.0932772 -0.5241988 -2.4506645 -0.11779700 -1.0606472
+## c  0.2107361 -0.7606973  0.4241648  0.02598765 -1.0889548
+## d -2.0023472  0.1588765 -0.6063318  0.99112315  0.8028421
+## e -0.6362996 -0.1957331  0.3743711  1.34053269 -0.8631147
+## f -0.2610563  1.1082560 -0.4068320  0.26599960  0.6938705
+## g  0.5097357 -1.7143578 -1.2705511 -0.76723731  1.0862291
+## h -0.3631019 -1.2907195 -0.8856421 -0.48659393  0.5109361
+## i  0.1830537 -0.2957363  0.2486053  1.52625939 -1.1507642
+## j  0.2151022  0.9800550 -0.6254508  1.16182924 -0.4504622</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(x, tmp &lt;-<span class="st"> </span><span class="kw">tempfile</span>(), <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </div>
 <div id="get-some-intuition-on-the-file-format" class="section level3">
@@ -126,8 +133,8 @@ M &lt;-<span class="st"> </span><span class="dv">5</span>
 <p>I think it is always a good idea to print the first lines of the file you are interested in reading.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">readLines</span>(tmp, <span class="dv">3</span>), <span class="dv">0</span>, <span class="dv">60</span>)</code></pre></div>
 <pre><code>## [1] "A B C D E"                                                   
-## [2] "a 0.623974076052307 1.58626220312115 -0.0879158561862716 -1."
-## [3] "b 1.87084648102771 -0.302218253993179 1.1712176220296 -0.374"</code></pre>
+## [2] "a -0.65945444322264 1.3932251802256 -1.12995037739124 0.0731"
+## [3] "b 0.0932772029717324 -0.524198761436396 -2.45066450315106 -0"</code></pre>
 <p>What you can see with these first 3 lines:</p>
 <ul>
 <li>the first line of the file stores some names,</li>
@@ -148,18 +155,18 @@ test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_re
                  <span class="dt">read.what =</span> <span class="kw">double</span>())  <span class="co"># the default</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the FBM elements</span>
 test[]</code></pre></div>
-<pre><code>##             [,1]       [,2]       [,3]       [,4]       [,5]       [,6]
-## [1,]  0.62397408  1.8708465 -1.2105313  1.7481514 -0.6875242 -0.3276712
-## [2,]  1.58626220 -0.3022183 -1.7218551  0.0432174  0.9385644  0.4824068
-## [3,] -0.08791586  1.1712176  0.7265456 -0.1363933  0.4169719 -0.1669507
-## [4,] -1.78115559 -0.3741830  0.4786953  0.5295397 -0.3065039 -0.2385979
-## [5,] -0.54344604 -0.3755662  1.2468896 -1.0439324 -0.3427709 -0.5421285
+<pre><code>##             [,1]       [,2]        [,3]       [,4]       [,5]       [,6]
+## [1,] -0.65945444  0.0932772  0.21073611 -2.0023472 -0.6362996 -0.2610563
+## [2,]  1.39322518 -0.5241988 -0.76069731  0.1588765 -0.1957331  1.1082560
+## [3,] -1.12995038 -2.4506645  0.42416481 -0.6063318  0.3743711 -0.4068320
+## [4,]  0.07311504 -0.1177970  0.02598765  0.9911232  1.3405327  0.2659996
+## [5,] -1.20783924 -1.0606472 -1.08895480  0.8028421 -0.8631147  0.6938705
 ##            [,7]       [,8]       [,9]      [,10]
-## [1,]  0.3275872 -0.4167759 -0.7583215  0.8512885
-## [2,] -0.2899213  0.9309272 -0.0740474  0.7122964
-## [3,]  1.1337395 -0.3063639  1.0034378 -0.7989083
-## [4,]  1.2507340 -0.7461085  1.1499141  1.0060848
-## [5,]  0.3494791 -0.5193590 -0.5625549  0.6663244</code></pre>
+## [1,]  0.5097357 -0.3631019  0.1830537  0.2151022
+## [2,] -1.7143578 -1.2907195 -0.2957363  0.9800550
+## [3,] -1.2705511 -0.8856421  0.2486053 -0.6254508
+## [4,] -0.7672373 -0.4865939  1.5262594  1.1618292
+## [5,]  1.0862291  0.5109361 -1.1507642 -0.4504622</code></pre>
 </div>
 <div id="understand-the-resulting-object" class="section level3">
 <h3 class="hasAnchor">
@@ -193,22 +200,22 @@ test[]</code></pre></div>
 ##  $ ncol       : int 5
 ##  $ type       : Named int 8
 ##   ..- attr(*, "names")= chr "double"
-##  $ backingfile: chr "/tmp/RtmpYt5RsX/file49a81d15fb.bk"
+##  $ backingfile: chr "/tmp/RtmpzQeRB0/file16ae77b5a476.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test[] <span class="op">-</span><span class="st"> </span>x</code></pre></div>
 <pre><code>##               A             B             C             D             E
-## a  1.110223e-16  4.440892e-15 -1.387779e-17 -1.554312e-15  3.330669e-16
-## b  1.998401e-15  3.885781e-16  8.881784e-16 -1.665335e-16  2.775558e-16
-## c  4.662937e-15 -2.220446e-15 -3.330669e-16 -2.220446e-16 -3.996803e-15
-## d -4.440892e-15  2.081668e-17 -3.608225e-16 -1.110223e-16  3.996803e-15
-## e  0.000000e+00  2.220446e-16 -2.775558e-16  1.665335e-16 -3.885781e-16
-## f  2.775558e-16  3.330669e-16  3.053113e-16  1.387779e-16 -1.110223e-16
-## g -5.551115e-17 -1.110223e-16  4.440892e-16  3.330669e-15 -3.330669e-16
-## h -3.885781e-16 -4.440892e-16  1.110223e-16 -2.220446e-16  0.000000e+00
-## i  4.440892e-16 -4.163336e-17 -3.552714e-15  2.886580e-15 -4.440892e-16
-## j -1.110223e-16 -3.330669e-16  3.330669e-16  1.554312e-15  3.330669e-16</code></pre>
+## a -4.440892e-16  1.332268e-15  4.440892e-15 -2.775558e-17 -3.330669e-15
+## b  1.387779e-17 -4.440892e-16  3.552714e-15 -4.857226e-16 -6.661338e-16
+## c  8.326673e-17  1.110223e-16 -5.551115e-17  4.510281e-17 -1.110223e-15
+## d  2.664535e-15  0.000000e+00  1.110223e-16 -3.330669e-16 -3.330669e-16
+## e -2.220446e-16 -1.942890e-16  2.220446e-16 -4.440892e-15  3.330669e-16
+## f -3.330669e-16 -6.661338e-16  3.885781e-16 -5.551115e-17 -3.330669e-16
+## g  1.110223e-16  1.998401e-15  2.664535e-15  1.110223e-16 -1.110223e-15
+## h -3.330669e-16 -1.776357e-15  3.330669e-16 -5.551115e-17 -2.220446e-16
+## i  2.220446e-16  3.330669e-16 -8.326673e-17  4.884981e-15  3.330669e-15
+## j -4.163336e-16 -2.220446e-16 -4.440892e-16  2.664535e-15  0.000000e+00</code></pre>
 </li>
 </ol>
 </div>
@@ -274,7 +281,7 @@ transfo &lt;-<span class="st"> </span><span class="cf">function</span>(read) {
 ##  $ ncol       : int 8
 ##  $ type       : Named int 4
 ##   ..- attr(*, "names")= chr "integer"
-##  $ backingfile: chr "/tmp/RtmpYt5RsX/file49a823b0a8c4.bk"
+##  $ backingfile: chr "/tmp/RtmpzQeRB0/file16ae46da3acd.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>
@@ -304,7 +311,6 @@ transfo &lt;-<span class="st"> </span><span class="cf">function</span>(read) {
 ## [10,] "FAM2" "NA07345" "0"  "0"  "1"  "1"</code></pre>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -331,6 +337,8 @@ transfo &lt;-<span class="st"> </span><span class="cf">function</span>(read) {
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

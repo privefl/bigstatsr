@@ -25,13 +25,16 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Recommended number of cores to use — nb_cores" />
 
 <meta property="og:description" content="This is base on the following rule: use only physical cores and if you have
 only physical cores, leave one core for the OS/UI." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -54,8 +57,12 @@ only physical cores, leave one core for the OS/UI." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -105,6 +112,7 @@ only physical cores, leave one core for the OS/UI." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -112,51 +120,36 @@ only physical cores, leave one core for the OS/UI." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Recommended number of cores to use</h1>
+    
+    <div class="hidden name"><code>nb_cores.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This is base on the following rule: use only physical cores and if you have
 only physical cores, leave one core for the OS/UI.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>nb_cores</span>(<span class='kw'>all.tests</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>all.tests</th>
-      <td><p>Logical: if true apply all known tests.</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>nb_cores</span>()</pre>
+        
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The recommended number of cores to use.</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>parallel::detectCores</a></p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Number of cores in total</span>
-<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>()</div><div class='output co'>#&gt; [1] 4</div><div class='input'><span class='co'># Number of physical cores</span>
-<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/parallel/topics/detectCores'>detectCores</a></span>(<span class='kw'>logical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># Recommended number of cores to use</span>
-<span class='fu'>nb_cores</span>()</div><div class='output co'>#&gt; [1] 2</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>nb_cores</span>()</div><div class='output co'>#&gt; [1] 2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -175,6 +168,8 @@ only physical cores, leave one core for the OS/UI.</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

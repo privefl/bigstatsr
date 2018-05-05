@@ -25,12 +25,15 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Split-parApply-Combine — big_parallelize" />
 
 <meta property="og:description" content="A Split-Apply-Combine strategy to parallelize the evaluation of a function." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -53,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -104,6 +111,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -111,20 +119,24 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Split-parApply-Combine</h1>
+    
+    <div class="hidden name"><code>big_parallelize.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>A Split-Apply-Combine strategy to parallelize the evaluation of a function.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>big_parallelize</span>(<span class='no'>X</span>, <span class='no'>p.FUN</span>, <span class='no'>p.combine</span>, <span class='kw'>ind</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fu'><a href='nb_cores.html'>nb_cores</a></span>(), <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -176,7 +188,7 @@ part and finally combine the results.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='big_apply.html'>big_apply</a></p>
+    <div class='dont-index'><p><a href='big_apply.html'>big_apply</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -252,6 +264,8 @@ part and finally combine the results.</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

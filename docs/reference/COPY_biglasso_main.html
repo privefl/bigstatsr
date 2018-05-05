@@ -25,14 +25,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Sparse regression path — COPY_biglasso_main" />
 
 <meta property="og:description" content="Fit solution paths for linear or logistic regression models penalized by
 lasso (alpha = 1) or elastic-net (1e-6 &lt; alpha &lt; 1) over a grid of values
 for the regularization parameter lambda." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +58,12 @@ for the regularization parameter lambda." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -106,6 +113,7 @@ for the regularization parameter lambda." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -113,17 +121,21 @@ for the regularization parameter lambda." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Sparse regression path</h1>
+    
+    <div class="hidden name"><code>COPY_biglasso_main.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Fit solution paths for linear or logistic regression models penalized by
 lasso (alpha = 1) or elastic-net (1e-6 &lt; alpha &lt; 1) over a grid of values
 for the regularization parameter lambda.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>COPY_biglasso_main</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='no'>ind.train</span>, <span class='no'>ind.col</span>, <span class='no'>covar.train</span>,
   <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"gaussian"</span>, <span class='st'>"binomial"</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>10</span>,
@@ -132,7 +144,7 @@ for the regularization parameter lambda.</p>
   <span class='kw'>max.iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>dfmax</span> <span class='kw'>=</span> <span class='fl'>20000</span>, <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return.all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -238,6 +250,8 @@ $$\frac{1}{2n}\textrm{RSS} + \textrm{penalty},$$ for logistic regression
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

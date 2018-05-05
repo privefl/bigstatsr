@@ -25,13 +25,16 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Counts — big_counts" />
 
 <meta property="og:description" content="Counts by columns (or rows) the number of each unique element of a
 FBM.code256." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -54,8 +57,12 @@ FBM.code256." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -105,6 +112,7 @@ FBM.code256." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -112,21 +120,25 @@ FBM.code256." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Counts</h1>
+    
+    <div class="hidden name"><code>big_counts.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Counts by columns (or rows) the number of each unique element of a
 <code>FBM.code256</code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>big_counts</span>(<span class='no'>X.code</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X.code</span>),
   <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X.code</span>), <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -156,7 +168,9 @@ Default is <code>FALSE</code> (columns).</p></td>
 <li><p>K is the number of unique elements of the <code>BM.code</code>,</p></li>
 <li><p>n is its number of rows,</p></li>
 <li><p>m is its number of columns.</p></li>
-</ul><p><strong>Beware that K is up to 256. So, if you apply this on a Filebacked Big
+</ul>
+
+<p><strong>Beware that K is up to 256. So, if you apply this on a Filebacked Big
 Matrix of one million columns, you will create a matrix of nearly 1GB!</strong>.</p>
     
 
@@ -234,6 +248,8 @@ Matrix of one million columns, you will create a matrix of nearly 1GB!</strong>.
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

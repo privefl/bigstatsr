@@ -25,13 +25,16 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Sparse linear regression — big_spLinReg" />
 
 <meta property="og:description" content="Fit lasso penalized linear regression path for a Filebacked Big Matrix.
 Covariates can be added to correct for confounders." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -54,8 +57,12 @@ Covariates can be added to correct for confounders." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -105,6 +112,7 @@ Covariates can be added to correct for confounders." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -112,21 +120,25 @@ Covariates can be added to correct for confounders." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Sparse linear regression</h1>
+    
+    <div class="hidden name"><code>big_spLinReg.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Fit lasso penalized linear regression path for a Filebacked Big Matrix.
 Covariates can be added to correct for confounders.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>big_spLinReg</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -240,7 +252,7 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/glmnet/topics/glmnet'>glmnet</a> <a href='http://www.rdocumentation.org/packages/biglasso/topics/biglasso'>biglasso</a></p>
+    <div class='dont-index'><p><a href='http://www.rdocumentation.org/packages/glmnet/topics/glmnet'>glmnet</a> <a href='http://www.rdocumentation.org/packages/biglasso/topics/biglasso'>biglasso</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -249,8 +261,8 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 <span class='co'># simulating some data</span>
 <span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fl'>230</span>
 <span class='no'>M</span> <span class='kw'>&lt;-</span> <span class='fl'>730</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='no'>N</span>, <span class='no'>M</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"integer"</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>X</span>[, <span class='fl'>1</span>:<span class='fl'>5</span>] + <span class='fu'>rnorm</span>(<span class='no'>N</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='no'>N</span>, <span class='no'>M</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='no'>M</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>))
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rowSums</span>(<span class='no'>X</span>[, <span class='fl'>1</span>:<span class='fl'>5</span>]) + <span class='fu'>rnorm</span>(<span class='no'>N</span>)
 <span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rnorm</span>(<span class='no'>N</span> * <span class='fl'>3</span>), <span class='no'>N</span>)
 
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='fl'>150</span>))
@@ -260,13 +272,13 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
                      <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
                      <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='co'># K = 10 predictions</span>
-<span class='fu'>str</span>(<span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ]))</div><div class='output co'>#&gt;  num [1:80, 1:10] 4.942 -0.104 -3.103 1.468 1.589 ...
+<span class='fu'>str</span>(<span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ]))</div><div class='output co'>#&gt;  num [1:80, 1:10] 0.645 3.773 -13.639 -15.03 9.483 ...
 #&gt;  - attr(*, "dimnames")=List of 2
 #&gt;   ..$ : chr [1:80] "4" "5" "6" "7" ...
 #&gt;   ..$ : NULL</div><div class='input'><span class='co'># Combine them</span>
 <span class='no'>preds2</span> <span class='kw'>&lt;-</span> <span class='fu'>rowMeans</span>(<span class='no'>preds</span>)
 
-<span class='fu'>plot</span>(<span class='no'>preds2</span>, <span class='no'>y</span>[<span class='no'>ind.test</span>], <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>); <span class='fu'>abline</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='big_spLinReg-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>plot</span>(<span class='no'>preds2</span>, <span class='no'>y</span>[<span class='no'>ind.test</span>], <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>); <span class='fu'>abline</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='big_spLinReg-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -298,6 +310,8 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

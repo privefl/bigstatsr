@@ -25,8 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Create an Implementation of [ For Custom Matrix-Like Types — Extract" />
 
 <meta property="og:description" content="extract is a function that converts different index types such as negative
@@ -36,6 +37,8 @@ integer vectors. The converted indices are provided as the i parameter of
 extract_vector or i and j parameters of extract_matrix to facilitate
 implementing the extraction mechanism for custom matrix-like types." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -58,8 +61,12 @@ implementing the extraction mechanism for custom matrix-like types." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +116,7 @@ implementing the extraction mechanism for custom matrix-like types." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,12 +124,15 @@ implementing the extraction mechanism for custom matrix-like types." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create an Implementation of [ For Custom Matrix-Like Types</h1>
+    
+    <div class="hidden name"><code>Extract.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>extract</code> is a function that converts different index types such as negative
 integer vectors or logical vectors passed to the <code>[</code> function as <code>i</code>
@@ -130,10 +141,11 @@ integer vectors. The converted indices are provided as the <code>i</code> parame
 <code>extract_vector</code> or <code>i</code> and <code>j</code> parameters of <code>extract_matrix</code> to facilitate
 implementing the extraction mechanism for custom matrix-like types.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>Extract</span>(<span class='no'>extract_vector</span>, <span class='no'>extract_matrix</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -158,8 +170,8 @@ is meant to be used as a method for <code>[</code> for a custom type.</p>
 
     <p>The custom type must implement methods for <code>dim</code> for this function
 to work. Implementing methods for <code>nrow</code> and <code>ncol</code> is not necessary
-as the default method of those generics calls <code>dim</code> internally.
-    <strong>This idea initially comes from <a href='https://goo.gl/3RDNQG'>package crochet</a>.</strong></p>
+as the default method of those generics calls <code>dim</code> internally.</p>
+<p><strong>This idea initially comes from <a href='https://goo.gl/3RDNQG'>package crochet</a>.</strong></p>
     
 
   </div>
@@ -187,6 +199,8 @@ as the default method of those generics calls <code>dim</code> internally.
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

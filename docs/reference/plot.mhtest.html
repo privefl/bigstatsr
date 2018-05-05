@@ -25,12 +25,15 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Plot method — plot.mhtest" />
 
 <meta property="og:description" content="Plot method for class mhtest." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -53,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -104,6 +111,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -111,21 +119,25 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot method</h1>
+    
+    <div class="hidden name"><code>plot.mhtest.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Plot method for class <code>mhtest</code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='co'># S3 method for mhtest</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Manhattan"</span>, <span class='st'>"Q-Q"</span>, <span class='st'>"Volcano"</span>),
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='no'>type</span>, <span class='st'>"Plot"</span>), <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -165,8 +177,8 @@ to get more familiar with the package <strong>ggplot2</strong>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='big_univLinReg.html'>big_univLinReg</a>, <a href='big_univLogReg.html'>big_univLogReg</a>,
-<a href='plot.big_SVD.html'>plot.big_SVD</a> and <a href='asPlotlyText.html'>asPlotlyText</a>.</p>
+    <div class='dont-index'><p><a href='big_univLinReg.html'>big_univLinReg</a>, <a href='big_univLogReg.html'>big_univLogReg</a>,
+<a href='plot.big_SVD.html'>plot.big_SVD</a> and <a href='asPlotlyText.html'>asPlotlyText</a>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -176,7 +188,7 @@ to get more familiar with the package <strong>ggplot2</strong>.</p>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>nrow</span>(<span class='no'>X</span>))
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_univLinReg.html'>big_univLinReg</a></span>(<span class='no'>X</span>, <span class='no'>y</span>)
 
-<span class='fu'>plot</span>(<span class='no'>test</span>)</div><div class='img'><img src='plot.mhtest-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='plot.mhtest-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Q-Q"</span>)</div><div class='img'><img src='plot.mhtest-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>test</span>)</div><div class='img'><img src='plot.mhtest-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='plot.mhtest-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Q-Q"</span>)</div><div class='img'><img src='plot.mhtest-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -205,6 +217,8 @@ to get more familiar with the package <strong>ggplot2</strong>.</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

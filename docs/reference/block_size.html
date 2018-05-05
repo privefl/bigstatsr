@@ -25,14 +25,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Determine a correct value for the block.size parameter — block_size" />
 
 <meta property="og:description" content="It determines the value of block.size such that a matrix of doubles of
 size n x block.size takes less memory than
 getOption("bigstatsr.block.sizeGB") GigaBytes (default is 1GB)." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +58,12 @@ getOption("bigstatsr.block.sizeGB") GigaBytes (default is 1GB)." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -106,6 +113,7 @@ getOption("bigstatsr.block.sizeGB") GigaBytes (default is 1GB)." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -113,21 +121,25 @@ getOption("bigstatsr.block.sizeGB") GigaBytes (default is 1GB)." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Determine a correct value for the block.size parameter</h1>
+    
+    <div class="hidden name"><code>block_size.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>It determines the value of <code>block.size</code> such that a matrix of doubles of
 size <code>n</code> x <code>block.size</code> takes less memory than
 <code>getOption("bigstatsr.block.sizeGB")</code> GigaBytes (default is 1GB).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>block_size</span>(<span class='no'>n</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -172,6 +184,8 @@ size <code>n</code> x <code>block.size</code> takes less memory than
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

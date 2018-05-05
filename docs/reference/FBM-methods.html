@@ -25,8 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Methods for the FBM class — FBM-methods" />
 
 <meta property="og:description" content="Methods for the FBM class
@@ -35,6 +36,8 @@ logical indices (that are recycled) and also a matrix of indices (but only
 positive ones).
 Dimension and type methods for class FBM." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -57,8 +60,12 @@ Dimension and type methods for class FBM." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -108,6 +115,7 @@ Dimension and type methods for class FBM." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -115,12 +123,15 @@ Dimension and type methods for class FBM." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Methods for the FBM class</h1>
+    
+    <div class="hidden name"><code>FBM-methods.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Methods for the FBM class</p>
 <p>Accessor methods for class <code>FBM</code>. You can use positive and negative indices,
@@ -128,6 +139,7 @@ logical indices (that are recycled) and also a matrix of indices (but only
 positive ones).</p>
 <p>Dimension and type methods for class <code>FBM</code>.</p>
     
+    </div>
 
     <pre class="usage"># S4 method for FBM,ANY,ANY,ANY
 [(x, i, j, ..., drop = TRUE)
@@ -144,7 +156,7 @@ length(x)
 # S4 method for FBM
 typeof(x)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -200,6 +212,8 @@ length of the subset to replace.</p></td>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

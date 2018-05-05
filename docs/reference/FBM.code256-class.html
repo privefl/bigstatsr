@@ -25,8 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Class FBM.code256 — FBM.code256-class" />
 
 <meta property="og:description" content="A reference class for storing and accessing up to 256 arbitrary different
@@ -36,6 +37,8 @@ a lookup table of size 256.
 Wrapper constructor for class FBM.code256.
 Converter from class FBM to FBM.code256." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -58,8 +61,12 @@ Converter from class FBM to FBM.code256." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -109,6 +116,7 @@ Converter from class FBM to FBM.code256." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,12 +124,15 @@ Converter from class FBM to FBM.code256." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Class FBM.code256</h1>
+    
+    <div class="hidden name"><code>FBM.code256-class.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>A reference class for storing and accessing up to 256 arbitrary different
 values using a Filebacked Big Matrix of type <code>unsigned char</code>. Compared to a
@@ -130,12 +141,13 @@ a lookup table of size 256.</p>
 <p>Wrapper constructor for class <code>FBM.code256</code>.</p>
 <p>Converter from class <code>FBM</code> to <code>FBM.code256</code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>FBM.code256</span>(<span class='no'>nrow</span>, <span class='no'>ncol</span>, <span class='no'>code</span>, <span class='no'>...</span>)
 
 <span class='fu'>add_code256</span>(<span class='no'>x</span>, <span class='no'>code</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -248,6 +260,8 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

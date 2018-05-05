@@ -25,12 +25,15 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Product with a vector — big_prodVec" />
 
 <meta property="og:description" content="Product between a Filebacked Big Matrix and a vector." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -53,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -104,6 +111,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -111,19 +119,23 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Product with a vector</h1>
+    
+    <div class="hidden name"><code>big_prodVec.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Product between a Filebacked Big Matrix and a vector.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>big_prodVec</span>(<span class='no'>X</span>, <span class='no'>y.col</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -165,7 +177,7 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
 <span class='no'>ind.col</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>m</span>, <span class='no'>m</span>/<span class='fl'>2</span>)
 
 <span class='fu'>tryCatch</span>(<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_prodVec</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='no'>ind.row</span>, <span class='no'>ind.col</span>),
-         <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'>print</span>(<span class='no'>e</span>))</div><div class='output co'>#&gt; &lt;Rcpp::exception in pMatVec4(X, y.col, ind.row, ind.col): incompatibility between dimensions&gt;</div><div class='input'><span class='co'># returns an error. You need to use the subset of y:</span>
+         <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'>print</span>(<span class='no'>e</span>))</div><div class='output co'>#&gt; &lt;Rcpp::exception in pMatVec4(X, y.col, ind.row, ind.col): Incompatibility between dimensions.&gt;</div><div class='input'><span class='co'># returns an error. You need to use the subset of y:</span>
 <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_prodVec</span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.col</span>], <span class='no'>ind.row</span>, <span class='no'>ind.col</span>)
 <span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='no'>X</span>[<span class='no'>ind.row</span>, <span class='no'>ind.col</span>] <span class='kw'>%*%</span> <span class='no'>y</span>[<span class='no'>ind.col</span>]
 <span class='fu'>all.equal</span>(<span class='no'>test2</span>, <span class='fu'>as.numeric</span>(<span class='no'>true2</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
@@ -195,6 +207,8 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

@@ -25,13 +25,16 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Transposition — big_transpose" />
 
 <meta property="og:description" content="This function implements a simple cache-oblivious algorithm for
 the transposition of a Filebacked Big Matrix." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -54,8 +57,12 @@ the transposition of a Filebacked Big Matrix." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">bigstatsr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">bigstatsr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -105,6 +112,7 @@ the transposition of a Filebacked Big Matrix." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -112,20 +120,24 @@ the transposition of a Filebacked Big Matrix." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Transposition</h1>
+    
+    <div class="hidden name"><code>big_transpose.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This function implements a simple cache-oblivious algorithm for
 the transposition of a Filebacked Big Matrix.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>big_transpose</span>(<span class='no'>X</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -156,17 +168,17 @@ and type are automatically determined from the input Filebacked Big Matrix.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>10</span>, <span class='fl'>5</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>50</span>))
-<span class='no'>X</span>[]</div><div class='output co'>#&gt;             [,1]       [,2]        [,3]       [,4]       [,5]
-#&gt;  [1,] -2.4298220  0.8026269  0.03442445  0.9604049 -1.1837680
-#&gt;  [2,]  0.6840947 -1.5066966  0.31560441 -1.1723163 -0.3105925
-#&gt;  [3,] -0.4401606  0.2411087  1.04898341 -0.2596051 -0.7069316
-#&gt;  [4,] -0.7617191  0.2417620  0.24066041  0.6155269 -0.9518207
-#&gt;  [5,]  0.1342995  1.6173050 -0.66118867 -1.9269711 -0.9555700
-#&gt;  [6,] -0.2323571  0.3694784 -0.94931860  0.7119835 -0.1826885
-#&gt;  [7,] -0.5040429 -0.5738322 -1.29325532 -0.5350299  0.5131919
-#&gt;  [8,]  1.2085269 -0.9312511  0.77767228  0.4241146 -0.3920569
-#&gt;  [9,]  1.3328910 -0.5952995 -0.93097554  1.6491252  2.0074487
-#&gt; [10,]  0.3425188 -0.3418070  0.94231203 -1.4270323  0.7090764</div><div class='input'><span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
+<span class='no'>X</span>[]</div><div class='output co'>#&gt;             [,1]       [,2]       [,3]        [,4]       [,5]
+#&gt;  [1,] -2.8169842  0.3855069  0.5913048 -0.22732826  1.5553302
+#&gt;  [2,]  0.7898039 -0.3917545 -0.2166777  1.79147466 -0.1287416
+#&gt;  [3,] -0.2528321 -0.7882823  1.3222424 -1.45891673  1.4495220
+#&gt;  [4,]  1.4889384  1.3847570  1.2286628 -0.01605104  0.6708421
+#&gt;  [5,] -1.0726015  0.6366588 -1.1113088  0.24789593 -1.6392339
+#&gt;  [6,]  0.6764968 -0.2816759 -0.9808922  0.25579782  0.5639595
+#&gt;  [7,] -0.5051317  1.1605421 -1.1477744  0.30728533 -1.5745259
+#&gt;  [8,] -2.2938082 -0.8976570  0.2521351 -0.66326929 -0.9540209
+#&gt;  [9,]  0.1154338  1.2207443  0.7771618  0.28017447 -2.5693577
+#&gt; [10,] -0.1250256 -0.7245374 -0.3691363  1.27140087  0.9533794</div><div class='input'><span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
 <span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
 <span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
@@ -197,6 +209,8 @@ and type are automatically determined from the input Filebacked Big Matrix.</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>
