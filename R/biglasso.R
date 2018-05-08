@@ -261,6 +261,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     doParallel::registerDoParallel(cl)
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
+
   cross.res <- foreach(alpha = alphas) %:% foreach(ic = 1:K) %dopar% {
 
     in.val <- (ind.sets == ic)

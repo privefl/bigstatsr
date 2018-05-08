@@ -48,14 +48,10 @@ test_that("equality with other functions", {
     expect_equal(big_prodMat(X, B, ncores = test_cores()), X[] %*% B)
 
     # no combine
-    no_comb <- big_apply(X, function(x, ind) colMeans(x[, ind]))
-    expect_equal(no_comb[[1]], colmeans)
-
-    size <- sample(M, size = 1)
-    no_comb2 <- big_apply(X, function(x, ind) colMeans(x[, ind]),
-                          block.size = size)
-    expect_length(no_comb2, ceiling(M / size))
-    expect_equal(do.call(c, no_comb2), colmeans)
+    size <- sample(c(1, sample(M, size = 1), M), 1)
+    no_comb <- big_apply(X, function(x, ind) colMeans(x[, ind, drop = FALSE]),
+                         ncores = test_cores(), block.size = size)
+    expect_equal(do.call(c, no_comb), colmeans)
   }
 })
 

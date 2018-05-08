@@ -28,6 +28,11 @@ You may use \link{nb_cores}.}
 
 \item{...}{Extra arguments to be passed to \code{p.FUN}.}
 }
+\value{
+Return a list of \code{ncores} elements, each element being the result of
+one of the cores, computed on a block. The elements of this list are then
+combined with \code{do.call(p.combine, .)} if \code{p.combined} is given.
+}
 \description{
 A Split-Apply-Combine strategy to parallelize the evaluation of a function.
 }

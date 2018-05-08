@@ -48,6 +48,9 @@ nb_cores <- function() {
 #'   Default is the vector of all column indices.
 #' @param ... Extra arguments to be passed to `p.FUN`.
 #'
+#' @return Return a list of `ncores` elements, each element being the result of
+#'   one of the cores, computed on a block. The elements of this list are then
+#'   combined with `do.call(p.combine, .)` if `p.combined` is given.
 #' @export
 #'
 #' @example examples/example-parallelize.R
@@ -58,51 +61,36 @@ big_parallelize <- function(X, p.FUN,
                             ncores = nb_cores(),
                             ...) {
 
-  check_args()
   assert_args(p.FUN, "ind")
   assert_int(ind); assert_pos(ind)
+  assert_cores(ncores)
 
-  if (ncores > 1) { # parallel
-
-    range.parts <- CutBySize(length(ind), nb = ncores)
-
+  if (ncores == 1) {
+    registerDoSEQ()
+  } else {
     cl <- parallel::makeCluster(ncores)
     doParallel::registerDoParallel(cl)
     on.exit(parallel::stopCluster(cl), add = TRUE)
-
-    # Microsoft R Open?
-    multi <- eval(parse(text = "requireNamespace('RevoUtilsMath', quietly = TRUE)"))
-
-    res <- foreach(ic = 1:ncores) %dopar% {
-      # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
-      if (multi) {
-        eval(parse(text = "nthreads.save <- RevoUtilsMath::setMKLthreads(1);
-                   on.exit(RevoUtilsMath::setMKLthreads(nthreads.save), add = TRUE)"))
-      }
-
-      p.FUN(X, ind = ind[seq2(range.parts[ic, ])], ...)
-    }
-
-    `if`(is.null(p.combine), res, do.call(p.combine, res))
-
-  } else { # sequential
-
-    p.FUN(X, ind = ind, ...)
-
   }
+
+  range.parts <- CutBySize(length(ind), nb = ncores)
+
+  res <- foreach(ic = seq_len(ncores)) %dopar% {
+    p.FUN(X, ind = ind[seq2(range.parts[ic, ])], ...)
+  }
+
+  `if`(is.null(p.combine), res, do.call(p.combine, res))
 }
 
 ################################################################################
 
-big_applySeq <- function(X, a.FUN, a.combine, block.size, ind, ...) {
+big_applySeq <- function(X, a.FUN, block.size, ind, ...) {
 
   intervals <- CutBySize(length(ind), block.size)
 
-  res <- foreach(ic = rows_along(intervals)) %do% {
+  foreach(ic = rows_along(intervals)) %do% {
     a.FUN(X, ind = ind[seq2(intervals[ic, ])], ...)
   }
-
-  `if`(is.null(a.combine), res, do.call(a.combine, res))
 }
 
 ################################################################################
@@ -144,19 +132,20 @@ big_apply <- function(X, a.FUN,
                       block.size = block_size(nrow(X), ncores),
                       ...) {
 
-  check_args()
   assert_args(a.FUN, "ind")
-  assert_int(ind); assert_pos(ind)
 
-  big_parallelize(X = X,
-                  p.FUN = big_applySeq,
-                  p.combine = a.combine,
-                  ind = ind,
-                  ncores = ncores,
-                  a.FUN = a.FUN,
-                  a.combine = a.combine,
-                  block.size = block.size,
-                  ...)
+  res <- big_parallelize(X = X,
+                         p.FUN = big_applySeq,
+                         p.combine = NULL,
+                         ind = ind,
+                         ncores = ncores,
+                         a.FUN = a.FUN,
+                         block.size = block.size,
+                         ...)
+
+  res <- unlist(res, recursive = FALSE)
+
+  `if`(is.null(a.combine), res, do.call(a.combine, res))
 }
 
 ################################################################################
