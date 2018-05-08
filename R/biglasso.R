@@ -149,7 +149,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' Sparse regression path
 #'
 #' Fit solution paths for linear or logistic regression models penalized by
-#' lasso (alpha = 1) or elastic-net (1e-6 < alpha < 1) over a grid of values
+#' lasso (alpha = 1) or elastic-net (1e-4 < alpha < 1) over a grid of values
 #' for the regularization parameter lambda.
 #'
 #' The objective function for linear regression (\code{family = "gaussian"}) is
@@ -158,11 +158,12 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' \textrm{penalty}.}
 #'
 #' @param family Either "gaussian" (linear) or "binomial" (logistic).
-#' @param alpha The elastic-net mixing parameter that controls the relative
+#' @param alphas The elastic-net mixing parameter that controls the relative
 #' contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 #' defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 #' \code{alpha = 1} is the lasso penalty and \code{alpha} in between `0`
-#' (`1e-6`) and `1` is the elastic-net penalty. Default is `0.5`.
+#' (`1e-4`) and `1` is the elastic-net penalty. Default is `0.5`. **You can
+#' pass multiple values, and only one will be used (optimized by grid-search).**
 #' @param lambda.min The smallest value for lambda, **as a fraction of
 #' lambda.max**. Default is `.0001` if the number of observations is larger than
 #' the number of variables and `.001` otherwise.
@@ -182,9 +183,9 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param ind.sets Integer vectors of values between `1` and `K` specifying
 #'   which set each index of the training set is in. Default randomly assigns
 #'   these values.
-#' @param return.all Whether to return coefficients for all lambda values.
-#'   Default is `FALSE` and returns only coefficients which maximize prediction
-#'   on the corresponding validation set.
+#' @param return.all Whether to return coefficients for all alpha and lambda
+#'   values. Default is `FALSE` and returns only coefficients which maximize
+#'   prediction on the validation sets.
 #' @param nlam.min Minimum number of lambda values to investigate. Default is `50`.
 #' @param n.abort Number of lambda values for which prediction on the validation
 #'   set must decrease before stopping. Default is `10`.
@@ -193,7 +194,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #'
 COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                family = c("gaussian", "binomial"),
-                               alpha = 0.5,
+                               alphas = 0.5,
                                K = 10,
                                ind.sets = sample(rep_len(1:K, n)),
                                nlambda = 200,
@@ -214,7 +215,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   assert_lengths(y.train, ind.train, rows_along(covar.train), ind.sets)
   p <- length(ind.col) + ncol(covar.train)
 
-  if (alpha > 1 || alpha < 1e-4) stop("alpha must be between 1e-4 and 1.")
+  if (any(alphas < 1e-4 | alphas > 1)) stop("alpha must be between 1e-4 and 1.")
 
   if (nlambda < 2) stop("nlambda must be at least 2")
 
@@ -260,7 +261,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     doParallel::registerDoParallel(cl)
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
-  cross.res <- foreach(ic = 1:K) %dopar% {
+  cross.res <- foreach(alpha = alphas) %:% foreach(ic = 1:K) %dopar% {
 
     in.val <- (ind.sets == ic)
 
@@ -293,8 +294,16 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   if (return.all) {
     cross.res
   } else {
+
+    # Choose the best alpha (for the best lambdas)
+    ind.min <- which.min(
+      sapply(cross.res, function(l) {
+        mean(sapply(l, function(x) min(x$loss.val)))
+      })
+    )
+
     structure(
-      lapply(cross.res, function(x) {
+      lapply(cross.res[[ind.min]], function(x) {
         best <- which.min(x$loss.val)
         ind <- seq_along(x$ind.col)
         list(
@@ -305,7 +314,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       }),
       class = "big_sp_best_list",
       ind.col = ind.col[keep],
-      family = family
+      family = family,
+      alpha = alphas[ind.min]
     )
   }
 }

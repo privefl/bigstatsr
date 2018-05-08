@@ -1,7 +1,6 @@
 ################################################################################
 
 context("SP_LIN_REG")
-cat("\nLong run..\n")
 
 set.seed(SEED)
 
@@ -21,6 +20,7 @@ lcovar <- list(NULL, covar0)
 
 ################################################################################
 
+cat("\nLong run..\n")
 test_that("can be used with a subset of samples", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
@@ -36,7 +36,7 @@ test_that("can be used with a subset of samples", {
       alpha <- runif(1, min = 1e-6, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar, alpha = alpha,
+      mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar, alphas = alpha,
                                     lambda.min = lambda.min)
       preds <- rowMeans(
         predict(mod.bigstatsr, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
@@ -45,7 +45,7 @@ test_that("can be used with a subset of samples", {
 
       mod.bigstatsr2 <- big_spLinReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
-                                     alpha = alpha,
+                                     alphas = alpha,
                                      lambda.min = lambda.min)
       preds2 <- rowMeans(
         predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
@@ -58,6 +58,7 @@ test_that("can be used with a subset of samples", {
 
 ################################################################################
 
+cat("\nLong run..\n")
 test_that("can be used with a subset of variables", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
@@ -72,7 +73,7 @@ test_that("can be used with a subset of variables", {
       mod.bigstatsr3 <- big_spLinReg(X, y[ind], ind.train = ind,
                                      ind.col = 11:M,
                                      covar.train = covar[ind, ],
-                                     alpha = alpha,
+                                     alphas = alpha,
                                      lambda.min = lambda.min)
       preds3 <- rowMeans(
         predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
@@ -86,6 +87,7 @@ test_that("can be used with a subset of variables", {
 
 ################################################################################
 
+cat("\nLong run..\n")
 test_that("parameter 'return.all' works and loss computation is correct", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
@@ -95,17 +97,20 @@ test_that("parameter 'return.all' works and loss computation is correct", {
       alpha <- runif(1, min = 1e-6, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr4 <- big_spLinReg(X, y, covar.train = covar, alpha = alpha,
+      mod.bigstatsr4 <- big_spLinReg(X, y, covar.train = covar, alphas = alpha,
                                      lambda.min = lambda.min, return.all = TRUE)
-      expect_true(all(sapply(mod.bigstatsr4, class) == "big_sp"))
 
-      loss.val <- lapply(mod.bigstatsr4, function(obj) {
+      expect_length(mod.bigstatsr4, 1)
+      flatten <- unlist(mod.bigstatsr4, recursive = FALSE)
+      expect_true(all(sapply(flatten, class) == "big_sp"))
+
+      loss.val <- lapply(flatten, function(obj) {
         ind.val <- setdiff(rows_along(X), obj$ind.train)
         y.val <- y[ind.val]
         preds <- predict(obj, X, ind.row = ind.val, covar.row = covar[ind.val, ])
         apply(unname(preds), 2, function(pred) mean((y.val - pred)^2))  ## MSE
       })
-      expect_equal(loss.val, lapply(mod.bigstatsr4, function(obj) obj$loss.val))
+      expect_equal(loss.val, lapply(flatten, function(obj) obj$loss.val))
     }
   }
 })

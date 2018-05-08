@@ -1,6 +1,10 @@
+## bigstatsr 0.3.2
+
+- you can now provide multiple $\alpha$ values (as a numeric vector) in `big_spLinReg` and `big_spLogReg`. One will be choosed by grid-search.
+
 ## bigstatsr 0.3.1
 
-- fixed a bug in `big_prodMat` when using a dimension of 1. We need to find a proper way to also handle dimensions of 0.
+- fixed a bug in `big_prodMat` when using a dimension of 1 or 0.
 
 ## bigstatsr 0.3.0
 
@@ -12,7 +16,7 @@
 
 ## bigstatsr 0.2.4
 
-- **Integrate CMSA directly in `big_spLinReg` and `big_spLogReg`**
+- **Integrate Cross-Model Selection and Averagind (CMSA) directly in `big_spLinReg` and `big_spLogReg`, a procedure that automatically chooses the value of the $\lambda$ hyper-parameter.**
 
 - **Speed up `big_spLinReg` and `big_spLogReg` ([issue #12](https://github.com/privefl/bigstatsr/issues/12))**
 

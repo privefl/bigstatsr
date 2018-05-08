@@ -29,11 +29,12 @@ You may use \link{nb_cores}.}
 
 \item{...}{Arguments passed on to \code{COPY_biglasso_main}
 \describe{
-  \item{alpha}{The elastic-net mixing parameter that controls the relative
+  \item{alphas}{The elastic-net mixing parameter that controls the relative
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 \code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
-(\code{1e-6}) and \code{1} is the elastic-net penalty. Default is \code{0.5}.}
+(\code{1e-4}) and \code{1} is the elastic-net penalty. Default is \code{0.5}. \strong{You can
+pass multiple values, and only one will be used (optimized by grid-search).}}
   \item{lambda.min}{The smallest value for lambda, \strong{as a fraction of
 lambda.max}. Default is \code{.0001} if the number of observations is larger than
 the number of variables and \code{.001} otherwise.}
@@ -53,9 +54,9 @@ saturation? Default is \code{FALSE}.}
   \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
 which set each index of the training set is in. Default randomly assigns
 these values.}
-  \item{return.all}{Whether to return coefficients for all lambda values.
-Default is \code{FALSE} and returns only coefficients which maximize prediction
-on the corresponding validation set.}
+  \item{return.all}{Whether to return coefficients for all alpha and lambda
+values. Default is \code{FALSE} and returns only coefficients which maximize
+prediction on the validation sets.}
   \item{nlam.min}{Minimum number of lambda values to investigate. Default is \code{50}.}
   \item{n.abort}{Number of lambda values for which prediction on the validation
 set must decrease before stopping. Default is \code{10}.}
