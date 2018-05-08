@@ -4,7 +4,7 @@
 \alias{big_parallelize}
 \title{Split-parApply-Combine}
 \usage{
-big_parallelize(X, p.FUN, p.combine, ind = cols_along(X),
+big_parallelize(X, p.FUN, p.combine = NULL, ind = cols_along(X),
   ncores = nb_cores(), ...)
 }
 \arguments{
@@ -16,13 +16,9 @@ It must take a \link[=FBM-class]{Filebacked Big Matrix} as first argument and
 For example, if you want to apply a function to \code{X[ind.row, ind.col]},
 you may use \code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.}
 
-\item{p.combine}{function that is used by \link{foreach} to process the tasks
-results as they generated. This can be specified as either a function or a
-non-empty character string naming the function. Specifying 'c' is useful
-for concatenating the results into a vector, for example.
-The values 'cbind' and 'rbind' can combine vectors into a matrix.
-The values '+' and '*' can be used to process numeric data.
-By default, the results are returned in a list.}
+\item{p.combine}{Function to combine the results with \code{do.call}.
+The default is \code{NULL}, in which case the results are returned as a list,
+each element being the result of a block.}
 
 \item{ind}{Initial vector of subsetting indices.
 Default is the vector of all column indices.}
@@ -31,9 +27,6 @@ Default is the vector of all column indices.}
 You may use \link{nb_cores}.}
 
 \item{...}{Extra arguments to be passed to \code{p.FUN}.}
-}
-\value{
-The result of \link{foreach}.
 }
 \description{
 A Split-Apply-Combine strategy to parallelize the evaluation of a function.

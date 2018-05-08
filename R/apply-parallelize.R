@@ -41,23 +41,19 @@ nb_cores <- function() {
 #'   `ind`, a vector of indices, which are used to split the data.
 #'   For example, if you want to apply a function to \code{X[ind.row, ind.col]},
 #'   you may use \code{X[ind.row, ind.col[ind]]} in `a.FUN`.
-#' @param p.combine function that is used by [foreach] to process the tasks
-#'   results as they generated. This can be specified as either a function or a
-#'   non-empty character string naming the function. Specifying 'c' is useful
-#'   for concatenating the results into a vector, for example.
-#'   The values 'cbind' and 'rbind' can combine vectors into a matrix.
-#'   The values '+' and '*' can be used to process numeric data.
-#'   By default, the results are returned in a list.
+#' @param p.combine Function to combine the results with `do.call`.
+#'   The default is `NULL`, in which case the results are returned as a list,
+#'   each element being the result of a block.
 #' @param ind Initial vector of subsetting indices.
 #'   Default is the vector of all column indices.
 #' @param ... Extra arguments to be passed to `p.FUN`.
 #'
-#' @return The result of [foreach].
 #' @export
 #'
 #' @example examples/example-parallelize.R
 #' @seealso [big_apply]
-big_parallelize <- function(X, p.FUN, p.combine,
+big_parallelize <- function(X, p.FUN,
+                            p.combine = NULL,
                             ind = cols_along(X),
                             ncores = nb_cores(),
                             ...) {
@@ -77,7 +73,7 @@ big_parallelize <- function(X, p.FUN, p.combine,
     # Microsoft R Open?
     multi <- eval(parse(text = "requireNamespace('RevoUtilsMath', quietly = TRUE)"))
 
-    foreach(ic = 1:ncores, .combine = p.combine) %dopar% {
+    res <- foreach(ic = 1:ncores) %dopar% {
       # https://www.r-bloggers.com/too-much-parallelism-is-as-bad/
       if (multi) {
         eval(parse(text = "nthreads.save <- RevoUtilsMath::setMKLthreads(1);
@@ -86,8 +82,13 @@ big_parallelize <- function(X, p.FUN, p.combine,
 
       p.FUN(X, ind = ind[seq2(range.parts[ic, ])], ...)
     }
+
+    `if`(is.null(p.combine), res, do.call(p.combine, res))
+
   } else { # sequential
+
     p.FUN(X, ind = ind, ...)
+
   }
 }
 
@@ -97,9 +98,11 @@ big_applySeq <- function(X, a.FUN, a.combine, block.size, ind, ...) {
 
   intervals <- CutBySize(length(ind), block.size)
 
-  foreach(ic = rows_along(intervals), .combine = a.combine) %do% {
+  res <- foreach(ic = rows_along(intervals)) %do% {
     a.FUN(X, ind = ind[seq2(intervals[ic, ])], ...)
   }
+
+  `if`(is.null(a.combine), res, do.call(a.combine, res))
 }
 
 ################################################################################
@@ -121,25 +124,21 @@ big_applySeq <- function(X, a.FUN, a.combine, block.size, ind, ...) {
 #'   `ind`, a vector of indices, which are used to split the data.
 #'   For example, if you want to apply a function to \code{X[ind.row, ind.col]},
 #'   you may use \code{X[ind.row, ind.col[ind]]} in `a.FUN`.
-#' @param a.combine function that is used by [foreach] to process the tasks
-#'   results as they generated. This can be specified as either a function or a
-#'   non-empty character string naming the function. Specifying 'c' is useful
-#'   for concatenating the results into a vector, for example.
-#'   The values 'cbind' and 'rbind' can combine vectors into a matrix.
-#'   The values '+' and '*' can be used to process numeric data.
-#'   By default, the results are returned in a list.
+#' @param a.combine Function to combine the results with `do.call`.
+#'   The default is `NULL`, in which case the results are returned as a list,
+#'   each element being the result of a block.
 #' @param ind Initial vector of subsetting indices.
 #'   Default is the vector of all column indices.
 #' @param block.size Maximum number of columns (or rows, depending on how you
 #'   use `ind` for subsetting) read at once. Default uses [block_size].
 #' @param ... Extra arguments to be passed to `a.FUN`.
 #'
-#' @return The result of [foreach].
 #' @export
 #'
 #' @example examples/example-apply.R
 #' @seealso [big_parallelize]
-big_apply <- function(X, a.FUN, a.combine,
+big_apply <- function(X, a.FUN,
+                      a.combine = NULL,
                       ind = cols_along(X),
                       ncores = 1,
                       block.size = block_size(nrow(X), ncores),
