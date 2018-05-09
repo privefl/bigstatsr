@@ -29,3 +29,8 @@ notifications:
 
 before_install:
   - Rscript -e 'Sys.getenv("BIGSTATSR_CRAN")'
+
+script:
+  - |
+    R CMD build .
+    travis_wait 30 R CMD check bigstatsr*tar.gz
