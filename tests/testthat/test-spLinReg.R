@@ -20,7 +20,6 @@ lcovar <- list(NULL, covar0)
 
 ################################################################################
 
-cat("\nLong run..\n")
 test_that("can be used with a subset of samples", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
@@ -58,7 +57,6 @@ test_that("can be used with a subset of samples", {
 
 ################################################################################
 
-cat("\nLong run..\n")
 test_that("can be used with a subset of variables", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
@@ -87,7 +85,6 @@ test_that("can be used with a subset of variables", {
 
 ################################################################################
 
-cat("\nLong run..\n")
 test_that("parameter 'return.all' works and loss computation is correct", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
