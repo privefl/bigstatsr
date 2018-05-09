@@ -34,3 +34,6 @@ script:
   - |
     R CMD build .
     travis_wait 30 R CMD check bigstatsr*tar.gz
+
+after_failure:
+  find *Rcheck -name '*.fail' -print -exec cat '{}' \;
