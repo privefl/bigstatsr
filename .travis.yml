@@ -30,6 +30,7 @@ notifications:
 before_install:
   - Rscript -e 'Sys.getenv("BIGSTATSR_CRAN")'
 
+# https://github.com/travis-ci/travis-ci/issues/3849
 script:
   - |
     R CMD build .
