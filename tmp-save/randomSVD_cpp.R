@@ -152,7 +152,7 @@ svds4.seq2 <- function(X., fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' in Rokhlin, V., Szlam, A., & Tygert, M. (2010).
 #' A Randomized Algorithm for Principal Component Analysis.
 #' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
-#' \url{http://dx.doi.org/10.1137/080736417}.
+#' \url{https://doi.org/10.1137/080736417}.
 #'
 #' @inheritParams bigstatsr-package
 #' @param k Number of singular vectors/values to compute. Default is `10`.

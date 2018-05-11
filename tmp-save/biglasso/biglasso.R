@@ -261,7 +261,7 @@ COPY_biglasso <- function(X, y.train, ind.train, covar.train,
 #' Strong rules for discarding predictors in lasso-type problems.
 #' Journal of the Royal Statistical Society:
 #' Series B (Statistical Methodology), 74: 245–266.
-#' \url{http://dx.doi.org/10.1111/j.1467-9868.2011.01004.x}.
+#' \url{https://doi.org/10.1111/j.1467-9868.2011.01004.x}.
 #'
 #' Zeng, Y., and Breheny, P. (2016). The biglasso Package: A Memory- and
 #' Computation-Efficient Solver for Lasso Model Fitting with Big Data in R.
