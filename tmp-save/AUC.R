@@ -29,11 +29,11 @@
 #' The meaning and use of the area under a
 #' receiver operating characteristic (ROC) curve.
 #' Radiology, 143(1), 29-36.
-#' \url{http://dx.doi.org/10.1148/radiology.143.1.7063747}.
+#' \url{https://doi.org/10.1148/radiology.143.1.7063747}.
 #'
 #' Tom Fawcett. 2006. An introduction to ROC analysis.
 #' Pattern Recogn. Lett. 27, 8 (June 2006), 861-874.
-#' \url{http://dx.doi.org/10.1016/j.patrec.2005.10.010}.
+#' \url{https://doi.org/10.1016/j.patrec.2005.10.010}.
 #'
 #' @seealso [wilcox.test]
 #' @examples

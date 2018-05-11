@@ -8,7 +8,7 @@
 
 ## bigstatsr 0.3.0
 
-- **Package {bigstatsr} is published in [Bioinformatics](http://dx.doi.org/10.1093/bioinformatics/bty185)**
+- **Package {bigstatsr} is published in [Bioinformatics](https://doi.org/10.1093/bioinformatics/bty185)**
 
 ## bigstatsr 0.2.6
 

@@ -7,6 +7,6 @@ citEntry(entry = "Article",
   year="2018",
   publisher="Oxford University Press",
   doi = "10.1093/bioinformatics/bty185",
-  url = "http://dx.doi.org/10.1093/bioinformatics/bty185",
+  url = "https://doi.org/10.1093/bioinformatics/bty185",
   textVersion='Privé, Florian, et al. "Efficient analysis of large-scale genome-wide data with two R packages: bigstatsr and bigsnpr." Bioinformatics (2018).'
 )
