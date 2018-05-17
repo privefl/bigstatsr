@@ -11,8 +11,6 @@ R package {bigstatsr} provides functions for fast statistical analysis of large-
 
 <img src="bigstatsr.png" width="130" align="right">
 
-[Introduction to package {bigstatsr}](https://goo.gl/k3A5hb)
-
 [**LIST OF FEATURES**](https://privefl.github.io/bigstatsr/reference/index.html)
 
 **Note that most of the algorithms of this package don't handle missing values.**
@@ -24,6 +22,40 @@ R package {bigstatsr} provides functions for fast statistical analysis of large-
 # For the current development version
 devtools::install_github("privefl/bigstatsr")
 ```
+
+## Small example
+
+```r
+library(bigstatsr)
+
+# Create the data on disk
+X <- FBM(10e3, 10e3, backingfile = "test", save = TRUE)
+# If you open a new session you can do
+X <- big_attach("test.rds")
+
+# Fill it by chunks with random values
+U <- matrix(0, nrow(X), 5); U[] <- rnorm(length(U))
+V <- matrix(0, ncol(X), 5); V[] <- rnorm(length(V))
+NCORES <- nb_cores()
+# X = U V^T + E
+big_apply(X, a.FUN = function(X, ind, U, V) {
+  X[, ind] <- tcrossprod(U, V[ind, ]) + rnorm(nrow(X) * length(ind))
+  NULL  ## you don't want to return anything there
+}, a.combine = 'c', ncores = NCORES, U = U, V = V)
+# Check some values
+X[1:5, 1:5]
+
+# Compute first 10 PCs
+obj.svd <- big_randomSVD(X, fun.scaling = big_scale(), 
+                         k = 10, ncores = NCORES)
+plot(obj.svd)
+
+# Cleanup
+unlink(paste0("test", c(".bk", ".rds")))
+```
+
+Learn more with this 
+[introduction to package {bigstatsr}](https://goo.gl/k3A5hb).
 
 ## Input format
 
