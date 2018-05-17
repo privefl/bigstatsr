@@ -1,15 +1,34 @@
 ################################################################################
 
+#' Theme ggplot2
+#'
+#' Theme ggplot2 used by this package.
+#'
+#' @param size.rel Relative size. Default is `1`.
+#'
+#' @import ggplot2
+#'
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#' qplot(y = 1:10)
+#' qplot(y = 1:10) + theme_bw()
+#' qplot(y = 1:10) + theme_bigstatsr()
+theme_bigstatsr <- function(size.rel = 1) {
+  theme_bw() %+replace%
+    theme(plot.title    = element_text(size = rel(2.0 * size.rel), hjust = 0.5),
+          plot.subtitle = element_text(size = rel(1.5 * size.rel), hjust = 0.5),
+          legend.title  = element_text(size = rel(1.8 * size.rel)),
+          legend.text   = element_text(size = rel(1.3 * size.rel)),
+          axis.title    = element_text(size = rel(1.5 * size.rel)),
+          axis.text     = element_text(size = rel(1.2 * size.rel)),
+          legend.key.height = unit(1.3 * size.rel, "line"),
+          legend.key.width  = unit(1.3 * size.rel, "line"))
+}
+
 MY_THEME <- function(p, coeff = 1) {
-  p + theme_bw() +
-    theme(plot.title    = element_text(size = rel(2.0 * coeff), hjust = 0.5),
-          plot.subtitle = element_text(size = rel(1.5 * coeff), hjust = 0.5),
-          legend.title  = element_text(size = rel(1.8 * coeff)),
-          legend.text   = element_text(size = rel(1.3 * coeff)),
-          axis.title    = element_text(size = rel(1.5 * coeff)),
-          axis.text     = element_text(size = rel(1.2 * coeff)),
-          legend.key.height = unit(1.3 * coeff, "line"),
-          legend.key.width = unit(1.3 * coeff, "line"))
+  p + theme_bigstatsr(size.rel = coeff)
 }
 
 ################################################################################
