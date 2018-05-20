@@ -16,7 +16,7 @@
 #' qplot(y = 1:10) + theme_bw()
 #' qplot(y = 1:10) + theme_bigstatsr()
 theme_bigstatsr <- function(size.rel = 1) {
-  theme_bw() %+replace%
+  theme_bw() +
     theme(plot.title    = element_text(size = rel(2.0 * size.rel), hjust = 0.5),
           plot.subtitle = element_text(size = rel(1.5 * size.rel), hjust = 0.5),
           legend.title  = element_text(size = rel(1.8 * size.rel)),
