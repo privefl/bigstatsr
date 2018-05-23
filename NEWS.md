@@ -1,3 +1,7 @@
+## bigstatsr 0.3.3
+
+- Before, this package used only the "PSOCK" type of cluster, which has some significant overhead. Now, it uses the "FORK" type on non-Windows systems. You can change this with `options(bigstatsr.cluster.type = "PSOCK")`.
+
 ## bigstatsr 0.3.2
 
 - you can now provide multiple $\alpha$ values (as a numeric vector) in `big_spLinReg` and `big_spLogReg`. One will be choosed by grid-search.

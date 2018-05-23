@@ -14,10 +14,11 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
   Atx  <- FBM(m, 1)
   calc <- FBM(ncores, 1, init = 0)
 
+  cluster_type <- getOption("bigstatsr.cluster.type")
   if (verbose) {
-    cl <- parallel::makeCluster(1 + ncores, outfile = "")
+    cl <- parallel::makeCluster(1 + ncores, type = cluster_type, outfile = "")
   } else {
-    cl <- parallel::makeCluster(1 + ncores)
+    cl <- parallel::makeCluster(1 + ncores, type = cluster_type)
   }
   doParallel::registerDoParallel(cl)
   on.exit(parallel::stopCluster(cl), add = TRUE)
