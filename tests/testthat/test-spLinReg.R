@@ -32,7 +32,7 @@ test_that("can be used with a subset of samples", {
                      "'y.train' is composed of only two different levels.", fixed = TRUE)
 
       ind <- sample(N, N / 2)
-      alpha <- runif(1, min = 1e-6, max = 1)
+      alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar, alphas = alpha,
@@ -40,7 +40,7 @@ test_that("can be used with a subset of samples", {
       preds <- rowMeans(
         predict(mod.bigstatsr, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
       )
-      expect_gt(cor(preds, y[-ind]), 0.8)
+      expect_gt(cor(preds, y[-ind]), 0.6)
 
       mod.bigstatsr2 <- big_spLinReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
@@ -65,7 +65,7 @@ test_that("can be used with a subset of variables", {
 
       ind <- sample(N, N / 2)
 
-      alpha <- runif(1, min = 1e-6, max = 1)
+      alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr3 <- big_spLinReg(X, y[ind], ind.train = ind,
@@ -91,7 +91,7 @@ test_that("parameter 'return.all' works and loss computation is correct", {
 
     for (covar in sample(lcovar, 1)) {
 
-      alpha <- runif(1, min = 1e-6, max = 1)
+      alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr4 <- big_spLinReg(X, y, covar.train = covar, alphas = alpha,

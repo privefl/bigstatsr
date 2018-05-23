@@ -26,7 +26,7 @@ test_that("can be used with a subset of samples", {
 
       ind <- sample(N, N / 2)
 
-      alpha <- runif(1, min = 1e-6, max = 1)
+      alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr <- big_spLogReg(X, y, covar.train = covar, alphas = alpha,
@@ -59,7 +59,7 @@ test_that("can be used with a subset of variables", {
 
       ind <- sample(N, N / 2)
 
-      alpha <- runif(1, min = 1e-6, max = 1)
+      alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr3 <- big_spLogReg(X, y[ind], ind.train = ind,
@@ -85,7 +85,7 @@ test_that("parameter 'return.all' works and loss computation is correct", {
 
     for (covar in sample(lcovar, 1)) {
 
-      alpha <- runif(1, min = 1e-6, max = 1)
+      alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr4 <- big_spLogReg(X, y, covar.train = covar, alphas = alpha,
