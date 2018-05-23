@@ -4,22 +4,20 @@
 \alias{plot.mhtest}
 \title{Plot method}
 \usage{
-\method{plot}{mhtest}(x, type = c("Manhattan", "Q-Q", "Volcano"),
-  main = paste(type, "Plot"), coeff = 1, ...)
+\method{plot}{mhtest}(x, type = c("hist", "Manhattan", "Q-Q", "Volcano"),
+  coeff = 1, ...)
 }
 \arguments{
 \item{x}{An object of class \code{mhtest}.}
 
-\item{type}{Either
+\item{type}{Either.
 \itemize{
-\item "Manhattan": plot of the negative logarithm (in base 10) of p-values
-(the default).
+\item "hist": histogram of p-values (the default).
+\item "Manhattan": plot of the negative logarithm (in base 10) of p-values.
 \item "Q-Q": Q-Q plot.
 \item "Volcaco": plot of the negative logarithm of p-values against the
-estimation of coefficients (e.g. betas in linear regression).
+estimation of coefficients (e.g. betas in linear regression)
 }}
-
-\item{main}{The title of the plot. Default use the \code{type}.}
 
 \item{coeff}{Relative size of text. Default is \code{1}.}
 
@@ -44,6 +42,8 @@ test <- big_univLinReg(X, y)
 plot(test)
 plot(test, type = "Volcano")
 plot(test, type = "Q-Q")
+plot(test, type = "Manhattan")
+plot(test, type = "Manhattan") + ggplot2::ggtitle(NULL)
 
 }
 \seealso{

@@ -135,13 +135,12 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #' Plot method for class `mhtest`.
 #'
 #' @param x An object of class `mhtest`.
-#' @param type Either
-#' - "Manhattan": plot of the negative logarithm (in base 10) of p-values
-#'   (the default).
+#' @param type Either.
+#' - "hist": histogram of p-values (the default).
+#' - "Manhattan": plot of the negative logarithm (in base 10) of p-values.
 #' - "Q-Q": Q-Q plot.
 #' - "Volcaco": plot of the negative logarithm of p-values against the
-#'   estimation of coefficients (e.g. betas in linear regression).
-#' @param main The title of the plot. Default use the `type`.
+#'   estimation of coefficients (e.g. betas in linear regression)
 #' @param coeff Relative size of text. Default is `1`.
 #' @param ... Not used.
 #'
@@ -161,35 +160,45 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 #' plot(test)
 #' plot(test, type = "Volcano")
 #' plot(test, type = "Q-Q")
+#' plot(test, type = "Manhattan")
+#' plot(test, type = "Manhattan") + ggplot2::ggtitle(NULL)
 #'
 #' @seealso [big_univLinReg], [big_univLogReg],
 #' [plot.big_SVD] and [asPlotlyText].
-plot.mhtest <- function(x, type = c("Manhattan", "Q-Q", "Volcano"),
-                        main = paste(type, "Plot"),
+plot.mhtest <- function(x, type = c("hist", "Manhattan", "Q-Q", "Volcano"),
                         coeff = 1,
                         ...) {
 
   lpval <- predict(x) # log10(p)
 
   type <- match.arg(type)
+  main <- paste(type, "plot")
 
   if (type == "Manhattan") {
-    MY_THEME(qplot(y = -lpval), coeff = coeff) +
+    qplot(y = -lpval) +
       labs(title = main, x = "Column Index",
            y = expression(-log[10](italic("p-value"))))
   } else if (type == "Volcano") {
-    MY_THEME(qplot(x = x[["estim"]], y = -lpval), coeff = coeff) +
+    qplot(x = x[["estim"]], y = -lpval) +
       labs(title = main, x = "Estimate",
            y = expression(-log[10](italic("p-value"))))
   } else if (type == "Q-Q") {
     unif.ranked <- stats::ppoints(length(lpval))[rank(lpval)]
-    MY_THEME(qplot(x = -log10(unif.ranked), y = -lpval),
-             coeff = coeff) +
+    qplot(x = -log10(unif.ranked), y = -lpval) +
       labs(title = main,
            x = expression(Expected~~-log[10](italic("p-value"))),
            y = expression(Observed~~-log[10](italic("p-value")))) +
       geom_abline(slope = 1, intercept = 0, color = "red")
+  } else if (type == "hist") {
+    pval <- 10^lpval
+    h <- graphics::hist(pval, breaks = "FD", plot = FALSE)
+    ggplot() +
+      geom_histogram(aes(pval), breaks = h$breaks,
+                     color = "#FFFFFF", fill = "#000000", alpha = 0.5) +
+      labs(x = "p-value")
   }
+
+  last_plot() + theme_bigstatsr(size.rel = coeff)
 }
 
 ################################################################################
