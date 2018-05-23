@@ -67,7 +67,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   size_t n_val = macc_val.nrow();
   NumericVector pred_val(n_val);
   NumericVector metrics(L, NA_REAL);
-  double metric, metric_max;
+  double metric, metric_min;
   int no_change = 0;
 
   NumericVector Dev(L);
@@ -102,8 +102,8 @@ List COPY_cdfit_binomial_hsr(C macc,
 
   double sumWResid = 0; // temp result: sum of w * r
   Dev[0] = nullDev;
-  metrics[0] = metric_max =
-    Rcpp::sum((1 - y_val) * log(1 - ybar) + y_val * log(ybar));
+  metrics[0] = metric_min =
+    -Rcpp::sum((1 - y_val) * log(1 - ybar) + y_val * log(ybar));
 
   // Path
   for (l = 1; l < L; l++) {
@@ -227,17 +227,17 @@ List COPY_cdfit_binomial_hsr(C macc,
     // Rcout << blabla << std::endl;
     pred_val = predict(macc_val, beta_old, center, scale) + beta0[l];
     pred_val = 1 / (1 + exp(-pred_val));
-    metric = Rcpp::sum((1 - y_val) * log(1 - pred_val) + y_val * log(pred_val));
+    metric = -Rcpp::sum((1 - y_val) * log(1 - pred_val) + y_val * log(pred_val));
     // Rcout << metric << std::endl;
     metrics[l] = metric;
-    if (metric > metric_max) {
-      metric_max = metric;
+    if (metric < 0.99 * metric_min) {
+      metric_min = metric;
       no_change = 0;
-    } else if (metric > metrics[l - 1]) {
-      if (no_change > 0) no_change--;
-    } else {
+    }
+    if (metric > 0.995 * metrics[l - 1]) {
       no_change++;
     }
+
     if (l >= nlam_min && no_change >= n_abort) {
       if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
       for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;

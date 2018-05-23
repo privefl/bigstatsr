@@ -104,7 +104,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     b <- Matrix(res[[2]], sparse = TRUE)
     loss <- res[[3]]
     iter <- res[[4]]
-    loss.val <- -res[[5]]
+    loss.val <- res[[5]]
 
   } else {
     stop("Current version only supports Gaussian or Binominal response!")
