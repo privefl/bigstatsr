@@ -13,7 +13,7 @@ ind.test <- setdiff(rows_along(X), ind.train)
 
 test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
                      covar.train = covar[ind.train, ],
-                     return.all = TRUE)[[1]]
+                     return.all = TRUE, alpha = 0.9)[[1]]
 
 str(test)
 tmp <- test[[2]]

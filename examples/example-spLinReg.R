@@ -12,7 +12,7 @@ ind.test <- setdiff(rows_along(X), ind.train)
 
 test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
                      covar.train = covar[ind.train, ],
-                     warn = FALSE)
+                     alpha = 1)
 # K = 10 predictions
 str(preds <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ]))
 # Combine them
