@@ -33,7 +33,7 @@ You may use \link{nb_cores}.}
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 \code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
-(\code{1e-4}) and \code{1} is the elastic-net penalty. Default is \code{0.5}. \strong{You can
+(\code{1e-4}) and \code{1} is the elastic-net penalty. Default is \code{1}. \strong{You can
 pass multiple values, and only one will be used (optimized by grid-search).}}
   \item{lambda.min}{The smallest value for lambda, \strong{as a fraction of
 lambda.max}. Default is \code{.0001} if the number of observations is larger than

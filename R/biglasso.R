@@ -162,7 +162,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 #' defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 #' \code{alpha = 1} is the lasso penalty and \code{alpha} in between `0`
-#' (`1e-4`) and `1` is the elastic-net penalty. Default is `0.5`. **You can
+#' (`1e-4`) and `1` is the elastic-net penalty. Default is `1`. **You can
 #' pass multiple values, and only one will be used (optimized by grid-search).**
 #' @param lambda.min The smallest value for lambda, **as a fraction of
 #' lambda.max**. Default is `.0001` if the number of observations is larger than
@@ -194,7 +194,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #'
 COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                family = c("gaussian", "binomial"),
-                               alphas = 0.5,
+                               alphas = 1,
                                K = 10,
                                ind.sets = sample(rep_len(1:K, n)),
                                nlambda = 200,

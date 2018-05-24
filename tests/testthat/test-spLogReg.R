@@ -34,7 +34,7 @@ test_that("can be used with a subset of samples", {
       preds <- rowMeans(
         predict(mod.bigstatsr, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
       )
-      expect_gt(AUC(preds, y[-ind]), 0.8)
+      expect_gt(AUC(preds, y[-ind]), 0.7)
 
       mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
