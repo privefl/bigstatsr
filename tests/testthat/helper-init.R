@@ -43,15 +43,15 @@ diffPCs <- function(test, rot) {
 
 ################################################################################
 
-opt.save <- options(bigstatsr.typecast.warning = FALSE)
+opt.save <- options(bigstatsr.typecast.warning = FALSE,
+                    bigstatsr.block.sizeGB = 1e-5)
 
 ################################################################################
 
 set.seed(NULL)
 # Seeds that won't work (because of bad luck)
 ##  235: big_spLogReg
-## 2677: big_spLinReg
-do_not_use <- c(235, 2677)
+do_not_use <- c(235)
 while ((SEED <- round(runif(1, 1, 9999))) %in% do_not_use) NULL
 cat("========== SEED:", SEED, "==========\n")
 

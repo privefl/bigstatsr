@@ -42,8 +42,11 @@ nb_cores <- function() {
 #'   For example, if you want to apply a function to \code{X[ind.row, ind.col]},
 #'   you may use \code{X[ind.row, ind.col[ind]]} in `a.FUN`.
 #' @param p.combine Function to combine the results with `do.call`.
-#'   The default is `NULL`, in which case the results are returned as a list,
-#'   each element being the result of a block.
+#'   This function should accept multiple arguments (`...`). For example, you
+#'   can use `c`, `cbind`, `rbind`. This package also provides function `plus`
+#'   to add multiple arguments together. The default is `NULL`, in which case
+#'   the results are not combined and are returned as a list, each element being
+#'   the result of a block.
 #' @param ind Initial vector of subsetting indices.
 #'   Default is the vector of all column indices.
 #' @param ... Extra arguments to be passed to `p.FUN`.
@@ -114,8 +117,11 @@ big_applySeq <- function(X, a.FUN, block.size, ind, ...) {
 #'   For example, if you want to apply a function to \code{X[ind.row, ind.col]},
 #'   you may use \code{X[ind.row, ind.col[ind]]} in `a.FUN`.
 #' @param a.combine Function to combine the results with `do.call`.
-#'   The default is `NULL`, in which case the results are returned as a list,
-#'   each element being the result of a block.
+#'   This function should accept multiple arguments (`...`). For example, you
+#'   can use `c`, `cbind`, `rbind`. This package also provides function `plus`
+#'   to add multiple arguments together. The default is `NULL`, in which case
+#'   the results are not combined and are returned as a list, each element being
+#'   the result of a block.
 #' @param ind Initial vector of subsetting indices.
 #'   Default is the vector of all column indices.
 #' @param block.size Maximum number of columns (or rows, depending on how you
@@ -147,6 +153,23 @@ big_apply <- function(X, a.FUN,
   res <- unlist(res, recursive = FALSE)
 
   `if`(is.null(a.combine), res, do.call(a.combine, res))
+}
+
+################################################################################
+
+#' Add
+#'
+#' Add multiple arguments
+#'
+#' @param ... Multiple arguments to be added together
+#'
+#' @return ` Reduce('+', list(...))`
+#' @export
+#'
+#' @examples
+#' plus(1:3, 4:6, 1:3)
+plus <- function(...) {
+  Reduce('+', list(...))
 }
 
 ################################################################################

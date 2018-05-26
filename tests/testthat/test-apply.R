@@ -28,8 +28,8 @@ test_that("equality with other functions", {
     expect_equal(colnorms, sqrt(colSums(X[]^2)))
 
     # get the sums of each row
-    rowsums <- big_apply(X, function(x, ind) rowSums(x[, ind]), a.combine = "+",
-                         ncores = test_cores())
+    rowsums <- big_apply(X, function(x, ind) rowSums(x[, ind]),
+                         a.combine = "plus", ncores = test_cores())
     expect_equal(rowsums, rowSums(X[]))
 
     # get the maximum element of X (in absolute value)

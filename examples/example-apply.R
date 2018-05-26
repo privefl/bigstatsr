@@ -16,7 +16,7 @@ str(rowsums <- big_apply(X, a.FUN = function(X, ind) rowSums(X[ind, ]),
 # it is usually preferred to split along columns
 # because matrices are stored by column.
 str(rowsums2 <- big_apply(X, a.FUN = function(X, ind) rowSums(X[, ind]),
-                          a.combine = '+'))
+                          a.combine = 'plus'))
 
 ## Every extra parameter to `a.FUN` should be passed to `big_apply`
 # get the crossproduct between X and a matrix A

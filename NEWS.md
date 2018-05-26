@@ -1,3 +1,9 @@
+## bigstatsr 0.3.4
+
+- Fix a bug in `big_spLinReg` related to the computation of summaries.
+
+- Now provides function `plus` to be used as the `combine` argument in `big_apply` and `big_parallelize` instead of `'+'`.
+
 ## bigstatsr 0.3.3
 
 - Before, this package used only the "PSOCK" type of cluster, which has some significant overhead. Now, it uses the "FORK" type on non-Windows systems. You can change this with `options(bigstatsr.cluster.type = "PSOCK")`.

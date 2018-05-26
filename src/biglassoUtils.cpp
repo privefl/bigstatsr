@@ -15,7 +15,7 @@ NumericVector bigsummaries(Environment BM,
                            const IntegerVector& row_idx,
                            const IntegerVector& col_idx,
                            const NumericMatrix& covar,
-                           const IntegerVector& y,
+                           const NumericVector& y,
                            const IntegerVector& which_set,
                            int K) {
 

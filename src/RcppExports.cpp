@@ -77,7 +77,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // bigsummaries
-NumericVector bigsummaries(Environment BM, const IntegerVector& row_idx, const IntegerVector& col_idx, const NumericMatrix& covar, const IntegerVector& y, const IntegerVector& which_set, int K);
+NumericVector bigsummaries(Environment BM, const IntegerVector& row_idx, const IntegerVector& col_idx, const NumericMatrix& covar, const NumericVector& y, const IntegerVector& which_set, int K);
 RcppExport SEXP _bigstatsr_bigsummaries(SEXP BMSEXP, SEXP row_idxSEXP, SEXP col_idxSEXP, SEXP covarSEXP, SEXP ySEXP, SEXP which_setSEXP, SEXP KSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -86,7 +86,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type col_idx(col_idxSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type which_set(which_setSEXP);
     Rcpp::traits::input_parameter< int >::type K(KSEXP);
     rcpp_result_gen = Rcpp::wrap(bigsummaries(BM, row_idx, col_idx, covar, y, which_set, K));

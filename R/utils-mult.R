@@ -124,7 +124,7 @@ big_prodMat <- function(X, A.col,
   if (length(ind.row) > 0 && length(ind.col) > 0) {
     big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
       X[ind.row, ind.col[ind], drop = FALSE] %*% M[ind, , drop = FALSE]
-    }, a.combine = "+", ind = seq_along(ind.col),
+    }, a.combine = "plus", ind = seq_along(ind.col),
     ncores = ncores, block.size = block.size,
     M = A.col, ind.row = ind.row, ind.col = ind.col)
   } else {

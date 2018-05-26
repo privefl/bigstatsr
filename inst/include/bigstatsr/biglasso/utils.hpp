@@ -15,7 +15,7 @@ namespace bigstatsr { namespace biglassoUtils {
 // summaries
 template <class C>
 NumericVector get_summaries(C macc,
-                            const IntegerVector& y,
+                            const NumericVector& y,
                             const IntegerVector& which_set,
                             int K) {
 

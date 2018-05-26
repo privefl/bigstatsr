@@ -9,9 +9,12 @@ set.seed(SEED)
 # Simulating some data
 N <- 530
 M <- 730
+m <- 30
 x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
-s <- rowSums(x[, 1:5] - 100) + 5 * rnorm(N)
-y <- as.numeric(s > 0)
+set <- sample(M, size = m)
+eff <- rnorm(m)
+s <- drop(scale(x[, set]) %*% eff) / m
+y <- as.numeric((s + rnorm(N) / 10) > 0)
 
 covar0 <- matrix(rnorm(N * 3), N)
 lcovar <- list(NULL, covar0)
@@ -34,7 +37,7 @@ test_that("can be used with a subset of samples", {
       preds <- rowMeans(
         predict(mod.bigstatsr, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
       )
-      expect_gt(AUC(preds, y[-ind]), 0.7)
+      expect_gt(AUC(preds, y[-ind]), 0.6)
 
       mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
@@ -44,7 +47,7 @@ test_that("can be used with a subset of samples", {
         predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
                 covar.row = covar[-ind, ])
       )
-      expect_gt(AUC(preds2, y[-ind]), 0.7)
+      expect_gt(AUC(preds2, y[-ind]), 0.6)
     }
   }
 })
@@ -58,12 +61,13 @@ test_that("can be used with a subset of variables", {
     for (covar in sample(lcovar, 1)) {
 
       ind <- sample(N, N / 2)
+      ind.col <- cols_along(X)[-set]
 
       alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr3 <- big_spLogReg(X, y[ind], ind.train = ind,
-                                     ind.col = 6:M,
+                                     ind.col = ind.col,
                                      covar.train = covar[ind, ],
                                      alphas = alpha,
                                      lambda.min = lambda.min)
@@ -71,7 +75,7 @@ test_that("can be used with a subset of variables", {
         predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
                 covar.row = covar[-ind, ])
       )
-      # Test that prediction is bad when removing the first variables
+      # Test that prediction is bad when removing the causal variables
       expect_lt(AUC(preds3, y[-ind]), 0.6)
     }
   }

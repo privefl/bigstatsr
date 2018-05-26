@@ -10,10 +10,10 @@ summaries <- function(X, y.train, ind.train, ind.col,
 
   all <- colSums(tmp)
   n.sets <- length(ind.train) - table(ind.sets)
-  SUM_X  <- sweep(-tmp[, , 1], 2, all[, 1], '+')
-  SUM_XX <- sweep(-tmp[, , 2], 2, all[, 2], '+')
-  SUM_XY <- sweep(-tmp[, , 3], 2, all[, 3], '+')
-  SUM_Y  <- sweep(-tmp[, , 4], 2, all[, 4], '+')
+  SUM_X  <- sweep(-matrix(tmp[, , 1], K), 2, all[, 1], '+')
+  SUM_XX <- sweep(-matrix(tmp[, , 2], K), 2, all[, 2], '+')
+  SUM_XY <- sweep(-matrix(tmp[, , 3], K), 2, all[, 3], '+')
+  SUM_Y  <- sweep(-matrix(tmp[, , 4], K), 2, all[, 4], '+')
 
   center.sets <- sweep(SUM_X, 1, n.sets, '/')
   scale.sets  <- sqrt(sweep(SUM_XX, 1, n.sets, '/') - center.sets^2)
@@ -244,10 +244,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   ## Parallelize over columns
   list_summaries <-
     big_apply(X, a.FUN = function(X, ind, y.train, ind.train, ind.sets, K) {
-      list(
-        summaries(X, y.train, ind.train, ind, ind.sets = ind.sets, K = K)
-      )
-    }, a.combine = 'c', ncores = ncores, ind = ind.col, y.train = y.train,
+      summaries(X, y.train, ind.train, ind, ind.sets = ind.sets, K = K)
+    }, ncores = ncores, ind = ind.col, y.train = y.train,
     ind.train = ind.train, ind.sets = ind.sets, K = K)
 
   keep <- do.call('c', lapply(list_summaries, function(x) x[["keep"]]))

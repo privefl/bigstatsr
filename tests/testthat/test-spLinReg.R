@@ -7,11 +7,14 @@ set.seed(SEED)
 ################################################################################
 
 # Simulating some data
-N <- 530
+N <- 230
 M <- 730
+m <- 30
 x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
-s <- rowSums(x[, 1:10] - 100)
-y <- s + rnorm(N)
+set <- sample(M, size = m)
+eff <- rnorm(m)
+s <- drop(scale(x[, set]) %*% eff) / m
+y <- s + rnorm(N) / 10
 y2 <- (y > 0)
 y3 <- y; y3[] <- 0
 
@@ -64,12 +67,13 @@ test_that("can be used with a subset of variables", {
     for (covar in sample(lcovar, 1)) {
 
       ind <- sample(N, N / 2)
+      ind.col <- cols_along(X)[-set]
 
       alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
       mod.bigstatsr3 <- big_spLinReg(X, y[ind], ind.train = ind,
-                                     ind.col = 11:M,
+                                     ind.col = ind.col,
                                      covar.train = covar[ind, ],
                                      alphas = alpha,
                                      lambda.min = lambda.min)

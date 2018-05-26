@@ -17,8 +17,11 @@ For example, if you want to apply a function to \code{X[ind.row, ind.col]},
 you may use \code{X[ind.row, ind.col[ind]]} in \code{a.FUN}.}
 
 \item{p.combine}{Function to combine the results with \code{do.call}.
-The default is \code{NULL}, in which case the results are returned as a list,
-each element being the result of a block.}
+This function should accept multiple arguements (\code{...}). For example, you
+can use \code{c}, \code{cbind}, \code{rbind}. This package also provides function \code{plus}
+to add multiple arguments together. The default is \code{NULL}, in which case
+the results are not combined and are returned as a list, each element being
+the result of a block.}
 
 \item{ind}{Initial vector of subsetting indices.
 Default is the vector of all column indices.}
