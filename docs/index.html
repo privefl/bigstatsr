@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
       </span>
     </div>
 
@@ -50,7 +50,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
+      <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
     </li>
     <li>
       <a href="articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -101,7 +101,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#bigstatsr" class="anchor"></a>bigstatsr</h1></div>
 <p>R package {bigstatsr} provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format <code>big.matrix</code> provided by <a href="https://github.com/kaneplusplus/bigmemory">R package {bigmemory}</a>, which is <strong>no longer used</strong> by this package (see <a href="https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html">the corresponding vignette</a>).</p>
-<p><a href="https://goo.gl/k3A5hb">Introduction to package {bigstatsr}</a></p>
+<p><img src="https://raw.githubusercontent.com/privefl/bigstatsr/master/bigstatsr.png" width="130" align="right"></p>
 <p><a href="https://privefl.github.io/bigstatsr/reference/index.html"><strong>LIST OF FEATURES</strong></a></p>
 <p><strong>Note that most of the algorithms of this package don’t handle missing values.</strong></p>
 <div id="installation" class="section level2">
@@ -109,6 +109,37 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># For the current development version</span>
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"privefl/bigstatsr"</span>)</code></pre></div>
+</div>
+<div id="small-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#small-example" class="anchor"></a>Small example</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(bigstatsr)
+
+<span class="co"># Create the data on disk</span>
+X &lt;-<span class="st"> </span><span class="kw"><a href="reference/FBM-class.html">FBM</a></span>(<span class="fl">10e3</span>, <span class="fl">10e3</span>, <span class="dt">backingfile =</span> <span class="st">"test"</span>, <span class="dt">save =</span> <span class="ot">TRUE</span>)
+<span class="co"># If you open a new session you can do</span>
+X &lt;-<span class="st"> </span><span class="kw"><a href="reference/big_attach.html">big_attach</a></span>(<span class="st">"test.rds"</span>)
+
+<span class="co"># Fill it by chunks with random values</span>
+U &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X), <span class="dv">5</span>); U[] &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">length</span>(U))
+V &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="kw">ncol</span>(X), <span class="dv">5</span>); V[] &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">length</span>(V))
+NCORES &lt;-<span class="st"> </span><span class="kw"><a href="reference/nb_cores.html">nb_cores</a></span>()
+<span class="co"># X = U V^T + E</span>
+<span class="kw"><a href="reference/big_apply.html">big_apply</a></span>(X, <span class="dt">a.FUN =</span> <span class="cf">function</span>(X, ind, U, V) {
+  X[, ind] &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(U, V[ind, ]) <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(X) <span class="op">*</span><span class="st"> </span><span class="kw">length</span>(ind))
+  <span class="ot">NULL</span>  ## you don't want to return anything there
+}, <span class="dt">a.combine =</span> <span class="st">'c'</span>, <span class="dt">ncores =</span> NCORES, <span class="dt">U =</span> U, <span class="dt">V =</span> V)
+<span class="co"># Check some values</span>
+X[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]
+
+<span class="co"># Compute first 10 PCs</span>
+obj.svd &lt;-<span class="st"> </span><span class="kw"><a href="reference/big_randomSVD.html">big_randomSVD</a></span>(X, <span class="dt">fun.scaling =</span> <span class="kw"><a href="reference/big_scale.html">big_scale</a></span>(), 
+                         <span class="dt">k =</span> <span class="dv">10</span>, <span class="dt">ncores =</span> NCORES)
+<span class="kw">plot</span>(obj.svd)
+
+<span class="co"># Cleanup</span>
+<span class="kw">unlink</span>(<span class="kw">paste0</span>(<span class="st">"test"</span>, <span class="kw">c</span>(<span class="st">".bk"</span>, <span class="st">".rds"</span>)))</code></pre></div>
+<p>Learn more with this <a href="https://privefl.github.io/R-presentation/bigstatsr.html">introduction to package {bigstatsr}</a>.</p>
 </div>
 <div id="input-format" class="section level2">
 <h2 class="hasAnchor">

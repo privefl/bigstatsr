@@ -31,7 +31,7 @@
 <meta property="og:title" content="Sparse regression path — COPY_biglasso_main" />
 
 <meta property="og:description" content="Fit solution paths for linear or logistic regression models penalized by
-lasso (alpha = 1) or elastic-net (1e-6 &lt; alpha &lt; 1) over a grid of values
+lasso (alpha = 1) or elastic-net (1e-4 &lt; alpha &lt; 1) over a grid of values
 for the regularization parameter lambda." />
 <meta name="twitter:card" content="summary" />
 
@@ -60,7 +60,7 @@ for the regularization parameter lambda." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
       </span>
     </div>
 
@@ -77,7 +77,7 @@ for the regularization parameter lambda." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
+      <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -132,13 +132,13 @@ for the regularization parameter lambda." />
     <div class="ref-description">
     
     <p>Fit solution paths for linear or logistic regression models penalized by
-lasso (alpha = 1) or elastic-net (1e-6 &lt; alpha &lt; 1) over a grid of values
+lasso (alpha = 1) or elastic-net (1e-4 &lt; alpha &lt; 1) over a grid of values
 for the regularization parameter lambda.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>COPY_biglasso_main</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='no'>ind.train</span>, <span class='no'>ind.col</span>, <span class='no'>covar.train</span>,
-  <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"gaussian"</span>, <span class='st'>"binomial"</span>), <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"gaussian"</span>, <span class='st'>"binomial"</span>), <span class='kw'>alphas</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>ind.sets</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>rep_len</span>(<span class='fl'>1</span>:<span class='no'>K</span>, <span class='no'>n</span>)), <span class='kw'>nlambda</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>lambda.min</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>n</span> <span class='kw'>&gt;</span>
   <span class='no'>p</span>) <span class='fl'>1e-04</span> <span class='kw'>else</span> <span class='fl'>0.001</span>, <span class='kw'>nlam.min</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>n.abort</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>eps</span> <span class='kw'>=</span> <span class='fl'>1e-07</span>,
   <span class='kw'>max.iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>dfmax</span> <span class='kw'>=</span> <span class='fl'>20000</span>, <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return.all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -152,12 +152,13 @@ for the regularization parameter lambda.</p>
       <td><p>Either "gaussian" (linear) or "binomial" (logistic).</p></td>
     </tr>
     <tr>
-      <th>alpha</th>
+      <th>alphas</th>
       <td><p>The elastic-net mixing parameter that controls the relative
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 defined as $$ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.$$
 <code>alpha = 1</code> is the lasso penalty and <code>alpha</code> in between <code>0</code>
-(<code>1e-6</code>) and <code>1</code> is the elastic-net penalty. Default is <code>0.5</code>.</p></td>
+(<code>1e-4</code>) and <code>1</code> is the elastic-net penalty. Default is <code>1</code>. <strong>You can
+pass multiple values, and only one will be used (optimized by grid-search).</strong></p></td>
     </tr>
     <tr>
       <th>K</th>
@@ -213,9 +214,9 @@ saturation? Default is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>return.all</th>
-      <td><p>Whether to return coefficients for all lambda values.
-Default is <code>FALSE</code> and returns only coefficients which maximize prediction
-on the corresponding validation set.</p></td>
+      <td><p>Whether to return coefficients for all alpha and lambda
+values. Default is <code>FALSE</code> and returns only coefficients which maximize
+prediction on the validation sets.</p></td>
     </tr>
     </table>
     

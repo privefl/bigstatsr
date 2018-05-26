@@ -59,7 +59,7 @@ after applying a particular scaling to it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@ after applying a particular scaling to it." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
+      <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -199,7 +199,7 @@ in order to accelerate these block matrix computations.</p>
 <span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
 <span class='fu'>class</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] "FBM"
 #&gt; attr(,"package")
-#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 517 517</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpbDvu3m/filecc966e78cf0.bk"</div><div class='input'>
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 517 517</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpLIx0yj/file580a33d2a2d.bk"</div><div class='input'>
 <span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>tcrossprod</span>(<span class='no'>X</span>[])
 <span class='fu'>all.equal</span>(<span class='no'>K</span>[], <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data</span>

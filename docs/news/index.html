@@ -55,7 +55,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
       </span>
     </div>
 
@@ -72,7 +72,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
+      <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -123,11 +123,33 @@
       
     </div>
 
+    <div id="bigstatsr-0-3-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-3-4" class="anchor"></a>bigstatsr 0.3.4</h2>
+<ul>
+<li><p>Fix a bug in <code>big_spLinReg</code> related to the computation of summaries.</p></li>
+<li><p>Now provides function <code>plus</code> to be used as the <code>combine</code> argument in <code>big_apply</code> and <code>big_parallelize</code> instead of <code>'+'</code>.</p></li>
+</ul>
+</div>
+    <div id="bigstatsr-0-3-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-3-3" class="anchor"></a>bigstatsr 0.3.3</h2>
+<ul>
+<li>Before, this package used only the “PSOCK” type of cluster, which has some significant overhead. Now, it uses the “FORK” type on non-Windows systems. You can change this with <code>options(bigstatsr.cluster.type = "PSOCK")</code>.</li>
+</ul>
+</div>
+    <div id="bigstatsr-0-3-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-3-2" class="anchor"></a>bigstatsr 0.3.2</h2>
+<ul>
+<li>you can now provide multiple $\alpha$ values (as a numeric vector) in <code>big_spLinReg</code> and <code>big_spLogReg</code>. One will be choosed by grid-search.</li>
+</ul>
+</div>
     <div id="bigstatsr-0-3-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-3-1" class="anchor"></a>bigstatsr 0.3.1</h2>
 <ul>
-<li>fixed a bug in <code>big_prodMat</code> when using a dimension of 1. We need to find a proper way to also handle dimensions of 0.</li>
+<li>fixed a bug in <code>big_prodMat</code> when using a dimension of 1 or 0.</li>
 </ul>
 </div>
     <div id="bigstatsr-0-3-0" class="section level2">
@@ -148,7 +170,7 @@
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-2-4" class="anchor"></a>bigstatsr 0.2.4</h2>
 <ul>
-<li><p><strong>Integrate CMSA directly in <code>big_spLinReg</code> and <code>big_spLogReg</code></strong></p></li>
+<li><p><strong>Integrate Cross-Model Selection and Averagind (CMSA) directly in <code>big_spLinReg</code> and <code>big_spLogReg</code>, a procedure that automatically chooses the value of the $\lambda$ hyper-parameter.</strong></p></li>
 <li><p><strong>Speed up <code>big_spLinReg</code> and <code>big_spLogReg</code> (<a href="https://github.com/privefl/bigstatsr/issues/12">issue #12</a>)</strong></p></li>
 </ul>
 </div>
@@ -172,6 +194,9 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bigstatsr-0-3-4">0.3.4</a></li>
+        <li><a href="#bigstatsr-0-3-3">0.3.3</a></li>
+        <li><a href="#bigstatsr-0-3-2">0.3.2</a></li>
         <li><a href="#bigstatsr-0-3-1">0.3.1</a></li>
         <li><a href="#bigstatsr-0-3-0">0.3.0</a></li>
         <li><a href="#bigstatsr-0-2-6">0.2.6</a></li>

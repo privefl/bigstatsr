@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="https://goo.gl/k3A5hb">Introduction to package bigstatsr</a>
+      <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -173,11 +173,12 @@ You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
     <tr>
       <th>...</th>
       <td><p>Arguments passed on to <code>COPY_biglasso_main</code></p><dl class='dl-horizontal'>
-  <dt>alpha</dt><dd><p>The elastic-net mixing parameter that controls the relative
+  <dt>alphas</dt><dd><p>The elastic-net mixing parameter that controls the relative
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 defined as $$ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.$$
 <code>alpha = 1</code> is the lasso penalty and <code>alpha</code> in between <code>0</code>
-(<code>1e-6</code>) and <code>1</code> is the elastic-net penalty. Default is <code>0.5</code>.</p></dd>
+(<code>1e-4</code>) and <code>1</code> is the elastic-net penalty. Default is <code>1</code>. <strong>You can
+pass multiple values, and only one will be used (optimized by grid-search).</strong></p></dd>
   <dt>lambda.min</dt><dd><p>The smallest value for lambda, <strong>as a fraction of
 lambda.max</strong>. Default is <code>.0001</code> if the number of observations is larger than
 the number of variables and <code>.001</code> otherwise.</p></dd>
@@ -197,9 +198,9 @@ saturation? Default is <code>FALSE</code>.</p></dd>
   <dt>ind.sets</dt><dd><p>Integer vectors of values between <code>1</code> and <code>K</code> specifying
 which set each index of the training set is in. Default randomly assigns
 these values.</p></dd>
-  <dt>return.all</dt><dd><p>Whether to return coefficients for all lambda values.
-Default is <code>FALSE</code> and returns only coefficients which maximize prediction
-on the corresponding validation set.</p></dd>
+  <dt>return.all</dt><dd><p>Whether to return coefficients for all alpha and lambda
+values. Default is <code>FALSE</code> and returns only coefficients which maximize
+prediction on the validation sets.</p></dd>
   <dt>nlam.min</dt><dd><p>Minimum number of lambda values to investigate. Default is <code>50</code>.</p></dd>
   <dt>n.abort</dt><dd><p>Number of lambda values for which prediction on the validation
 set must decrease before stopping. Default is <code>10</code>.</p></dd>
@@ -269,9 +270,9 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y01</span>[<span class='no'>ind.train</span>], <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
                      <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
-                     <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+                     <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='co'># K = 10 predictions</span>
-<span class='fu'>str</span>(<span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ]))</div><div class='output co'>#&gt;  num [1:80, 1:10] 0.855 0.595 0.547 0.982 0.973 ...
+<span class='fu'>str</span>(<span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ]))</div><div class='output co'>#&gt;  num [1:80, 1:10] 0.877 0.598 0.534 0.986 0.971 ...
 #&gt;  - attr(*, "dimnames")=List of 2
 #&gt;   ..$ : chr [1:80] "1" "5" "7" "9" ...
 #&gt;   ..$ : NULL</div><div class='input'><span class='co'># Combine them</span>
@@ -279,7 +280,7 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
 <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>preds2</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>as.logical</span>(<span class='no'>y01</span>[<span class='no'>ind.test</span>]), <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"density"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fu'>I</span>(<span class='fl'>0.4</span>)) +
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"Case?"</span>)</div><div class='img'><img src='big_spLogReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>AUC</span>(<span class='no'>preds2</span>, <span class='no'>y01</span>[<span class='no'>ind.test</span>])</div><div class='output co'>#&gt; [1] 0.9365079</div></pre>
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"Case?"</span>)</div><div class='img'><img src='big_spLogReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>AUC</span>(<span class='no'>preds2</span>, <span class='no'>y01</span>[<span class='no'>ind.test</span>])</div><div class='output co'>#&gt; [1] 0.9384127</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -10,7 +10,7 @@ navbar:
     - text: "Vignettes"
       menu:
       - text: "Introduction to package bigstatsr"
-        href: https://goo.gl/k3A5hb
+        href: https://privefl.github.io/R-presentation/bigstatsr.html
       - text: "Packages bigstatsr and bigmemory"
         href: articles/bigstatsr-and-bigmemory.html
       - text: "Operations with scaling"
@@ -50,6 +50,7 @@ reference:
       - big_randomSVD
   - title: "Plot and predict methods"
     contents:
+      - theme_bigstatsr
       - plot.mhtest
       - predict.mhtest
       - predict.big_sp
@@ -65,9 +66,10 @@ reference:
       - big_counts
       - big_read
       - big_transpose
+      - block_size
+      - plus
       - big_apply
       - big_parallelize
-      - block_size
       - nb_cores
   - title: "Matrix operations"
     contents:

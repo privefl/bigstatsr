@@ -318,7 +318,7 @@ all.equal(test2, true)
 system.time(
   test3 <- big_apply(m2, a.FUN = function(X, ind) {
     rowSums(X[, ind, drop = FALSE]^2)
-  }, a.combine = '+', block.size = 10)
+  }, a.combine = 'plus', block.size = 10)
 )
 all.equal(sqrt(test3), true)
 ```
