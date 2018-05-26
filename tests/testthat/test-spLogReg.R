@@ -78,7 +78,7 @@ test_that("can be used with a subset of variables", {
                 covar.row = covar[-ind, ])
       )
       # Test that prediction is bad when removing the causal variables
-      expect_lt(AUC(preds3, y[-ind]), 0.6)
+      expect_lt(AUC(preds3, y[-ind]), 0.65)
     }
   }
 })
