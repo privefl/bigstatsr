@@ -56,7 +56,7 @@ test_that("can be used with a subset of samples", {
         predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
                 covar.row = covar[-ind, ])
       )
-      expect_gt(cor(preds2, y[-ind]), 0.4)
+      expect_gt(cor(preds2, y[-ind]), 0.35)
     }
   }
 })
