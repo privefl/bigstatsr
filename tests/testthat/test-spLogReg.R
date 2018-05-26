@@ -29,20 +29,21 @@ test_that("can be used with a subset of samples", {
 
       ind <- sample(N, N / 2)
 
-      alpha <- runif(1, min = 0.1, max = 1)
+      alphas <- c(runif(1, min = 0.01, max = 1), 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr <- big_spLogReg(X, y, covar.train = covar, alphas = alpha,
-                                    lambda.min = lambda.min)
+      mod.bigstatsr <- big_spLogReg(X, y, covar.train = covar, alphas = alphas,
+                                    lambda.min = lambda.min, ncores = test_cores())
       preds <- rowMeans(
         predict(mod.bigstatsr, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
       )
-      expect_gt(AUC(preds, y[-ind]), 0.6)
+      expect_gt(AUC(preds, y[-ind]), 0.7)
 
       mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
-                                     alphas = alpha,
-                                     lambda.min = lambda.min)
+                                     alphas = alphas,
+                                     lambda.min = lambda.min,
+                                     ncores = test_cores())
       preds2 <- rowMeans(
         predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
                 covar.row = covar[-ind, ])
@@ -70,7 +71,8 @@ test_that("can be used with a subset of variables", {
                                      ind.col = ind.col,
                                      covar.train = covar[ind, ],
                                      alphas = alpha,
-                                     lambda.min = lambda.min)
+                                     lambda.min = lambda.min,
+                                     ncores = test_cores())
       preds3 <- rowMeans(
         predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
                 covar.row = covar[-ind, ])
@@ -92,8 +94,12 @@ test_that("parameter 'return.all' works and loss computation is correct", {
       alpha <- runif(1, min = 0.1, max = 1)
       lambda.min <- runif(1, min = 0.01, max = 0.5)
 
-      mod.bigstatsr4 <- big_spLogReg(X, y, covar.train = covar, alphas = alpha,
-                                     lambda.min = lambda.min, return.all = TRUE)
+      mod.bigstatsr4 <- big_spLogReg(X, y,
+                                     covar.train = covar,
+                                     alphas = alpha,
+                                     lambda.min = lambda.min,
+                                     return.all = TRUE,
+                                     ncores = test_cores())
 
       expect_length(mod.bigstatsr4, 1)
       flatten <- unlist(mod.bigstatsr4, recursive = FALSE)
