@@ -23,9 +23,11 @@ using namespace bigstatsr::biglassoUtils;
 /******************************************************************************/
 
 // Weighted mean
-double COPY_wmean(const NumericVector& r, const NumericVector& w, size_t n) {
+double COPY_wmean(const NumericVector& r, const NumericVector& w) {
+
+  int n = w.size();
   double rw_sum = 0, w_sum = 0;
-  for (size_t i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     w_sum  += w[i];
     rw_sum += r[i] * w[i];
   }
@@ -33,12 +35,8 @@ double COPY_wmean(const NumericVector& r, const NumericVector& w, size_t n) {
 }
 
 // Weighted sum
-double COPY_wsum(const NumericVector &r, const NumericVector &w, size_t n) {
-  double rw_sum = 0;
-  for (size_t i = 0; i < n; i++) {
-    rw_sum += r[i] * w[i];
-  }
-  return rw_sum;
+double COPY_wsum(const NumericVector &r, const NumericVector &w) {
+  return std::inner_product(r.begin(), r.end(), w.begin(), 0.0);
 }
 
 
@@ -156,7 +154,7 @@ List COPY_cdfit_binomial_hsr(C macc,
         }
 
         // Intercept
-        si = COPY_wmean(r, w, n);
+        si = COPY_wmean(r, w);
         beta0[l] = si + beta0_old;
         if (si != 0) {
           beta0_old = beta0[l];
@@ -165,7 +163,7 @@ List COPY_cdfit_binomial_hsr(C macc,
             eta[i] += si; //update eta
           }
         }
-        sumWResid = COPY_wsum(r, w, n); // update temp result: sum of w * r, used for computing xwr;
+        sumWResid = COPY_wsum(r, w); // update temp result: sum of w * r, used for computing xwr;
 
         max_update = 0;
         sum_w = Rcpp::sum(w);
@@ -206,7 +204,7 @@ List COPY_cdfit_binomial_hsr(C macc,
                 eta[i] += si;
               }
 
-              sumWResid = COPY_wsum(r, w, n); // update temp result w * r, used for computing xwr;
+              sumWResid = COPY_wsum(r, w); // update temp result w * r, used for computing xwr;
               beta_old[j] = beta(j, l); // update beta_old
             }
           }

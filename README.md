@@ -40,7 +40,7 @@ NCORES <- nb_cores()
 # X = U V^T + E
 big_apply(X, a.FUN = function(X, ind, U, V) {
   X[, ind] <- tcrossprod(U, V[ind, ]) + rnorm(nrow(X) * length(ind))
-  NULL  ## you don't want to return anything there
+  NULL  ## you don't want to return anything here
 }, a.combine = 'c', ncores = NCORES, U = U, V = V)
 # Check some values
 X[1:5, 1:5]
