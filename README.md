@@ -29,7 +29,7 @@ devtools::install_github("privefl/bigstatsr")
 library(bigstatsr)
 
 # Create the data on disk
-X <- FBM(10e3, 10e3, backingfile = "test", save = TRUE)
+X <- FBM(5e3, 10e3, backingfile = "test", save = TRUE)
 # If you open a new session you can do
 X <- big_attach("test.rds")
 
