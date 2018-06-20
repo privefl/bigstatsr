@@ -89,15 +89,16 @@ List COPY_cdfit_gaussian_hsr(C macc,
     }
 
     // Approx: no check of rest set
-    while(iter[l] < max_iter){
-      while(iter[l] < max_iter) {
+    while (iter[l] < max_iter) {
+      while (iter[l] < max_iter) {
         iter[l]++;
 
-        //solve lasso over ever-active set
+        // Solve lasso over ever-active set
         max_update = 0;
         for (j = 0; j < p; j++) {
+
           if (in_A[j]) {
-            //crossprod_resid - given specific rows of X: separate computation
+            // Crossprod_resid - given specific rows of X: separate computation
             cpsum = 0;
             for (i = 0; i < n; i++) {
               cpsum += macc(i, j) * r[i];
@@ -107,10 +108,10 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
             l1 = lam_l * alpha;
             l2 = lam_l - l1;
-            beta(j, l) = COPY_lasso(resid[j], l1, l2, 1);
+            beta(j, l) = COPY_lasso(resid[j], l1, l2, 1.0);
 
             shift = beta(j, l) - beta_old[j];
-            if (shift !=0) {
+            if (shift != 0) {
               // compute objective update for checking convergence
               update = shift * shift;
               if (update > max_update) {
