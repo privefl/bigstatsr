@@ -135,15 +135,15 @@ List COPY_cdfit_binomial_hsr(C macc,
             pi = 0;
             w[i] = .0001;
           } else {
-            pi = exp(eta[i]) / (1 + exp(eta[i]));
+            pi = 1 / (1 + exp(-eta[i]));
             w[i] = pi * (1 - pi);
           }
           s[i] = y[i] - pi;
           r[i] = s[i] / w[i];
           if (y[i] == 1) {
-            Dev[l] = Dev[l] - log(pi);
+            Dev[l] -= log(pi);
           } else {
-            Dev[l] = Dev[l] - log(1-pi);
+            Dev[l] -= log(1 - pi);
           }
         }
 
@@ -159,11 +159,12 @@ List COPY_cdfit_binomial_hsr(C macc,
         if (si != 0) {
           beta0_old = beta0[l];
           for (i = 0; i < n; i++) {
-            r[i] -= si; //update r
-            eta[i] += si; //update eta
+            r[i] -= si;   // update r
+            eta[i] += si; // update eta
           }
         }
-        sumWResid = COPY_wsum(r, w); // update temp result: sum of w * r, used for computing xwr;
+        // update temp result: sum of w * r, used for computing xwr;
+        sumWResid = COPY_wsum(r, w);
 
         max_update = 0;
         sum_w = Rcpp::sum(w);
@@ -205,7 +206,7 @@ List COPY_cdfit_binomial_hsr(C macc,
               }
 
               sumWResid = COPY_wsum(r, w); // update temp result w * r, used for computing xwr;
-              beta_old[j] = beta(j, l); // update beta_old
+              beta_old[j] = beta(j, l);    // update beta_old
             }
           }
         }
