@@ -7,9 +7,9 @@
 COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   family = c("gaussian", "binomial"), alphas = 1, K = 10,
   ind.sets = sample(rep_len(1:K, n)), nlambda = 200, lambda.min = if (n >
-  p) 1e-04 else 0.001, nlam.min = 50, n.abort = 10, eps = 1e-07,
-  max.iter = 1000, dfmax = 20000, warn = FALSE, return.all = FALSE,
-  ncores = 1)
+  p) 1e-04 else 0.001, nlam.min = 50, n.abort = 10, base.train = NULL,
+  eps = 1e-07, max.iter = 1000, dfmax = 20000, warn = FALSE,
+  return.all = FALSE, ncores = 1)
 }
 \arguments{
 \item{family}{Either "gaussian" (linear) or "binomial" (logistic).}

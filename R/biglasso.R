@@ -201,6 +201,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                lambda.min = `if`(n > p, .0001, .001),
                                nlam.min = 50,
                                n.abort = 10,
+                               base.train = NULL,
                                eps = 1e-7,
                                max.iter = 1000,
                                dfmax = 20e3,
@@ -228,10 +229,13 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     tryCatch(y.train <- as.numeric(y.train), error = function(e)
       stop("y.train must numeric or able to be coerced to numeric"))
 
+  if (is.null(base.train)) base.train <- rep(0, n)
+
   if (family == "binomial") {
     y.train <- transform_levels(y.train)
   } else {
     assert_multiple(y.train)
+    y.train <- y.train - base.train
   }
 
   # Get summaries
