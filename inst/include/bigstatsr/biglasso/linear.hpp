@@ -114,15 +114,14 @@ List COPY_cdfit_gaussian_hsr(C macc,
             if (shift != 0) {
               // compute objective update for checking convergence
               update = shift * shift;
-              if (update > max_update) {
-                max_update = update;
-              }
-              // update r and sum of residual
+              if (update > max_update) max_update = update;
+
+              // update r (residuals)
               shift_scaled = shift / scale[j];
+              sumResid = 0;
               for (i = 0; i < n; i++) {
-                update = shift_scaled * (macc(i, j) - center[j]);
-                r[i] -= update;
-                sumResid -= update;
+                r[i] -= shift_scaled * (macc(i, j) - center[j]);
+                sumResid += r[i];
               }
               beta_old[j] = beta(j, l); // update beta_old
             }
