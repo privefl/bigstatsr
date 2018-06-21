@@ -77,7 +77,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     // Rcout << "Iteration n°" << l << std::endl;
 
     // Check dfmax
-    if (Rcpp::sum(beta_old != 0) > dfmax) {
+    if (Rcpp::sum(beta_old != 0) >= dfmax) {
       for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
       return List::create(beta, loss, iter, metrics);
     }

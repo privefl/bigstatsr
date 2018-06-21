@@ -9,7 +9,7 @@ y <- 2 + rowSums(X[, 1:5]) + 3 * rnorm(N)
 cor(rowSums(X[, 1:5]), y)
 NCORES <- nb_cores()
 
-ind.train <- sort(sample(nrow(X), 350))
+ind.train <- sort(sample(nrow(X), 150))
 ind.test <- setdiff(rows_along(X), ind.train)
 
 test <- big_spLinReg(X, y[ind.train], ind.train = ind.train, alpha = 1)
@@ -20,6 +20,16 @@ preds2 <- rowMeans(preds)
 cor(preds2, y[ind.test])
 plot(preds2, y[ind.test], pch = 20); abline(0, 1, col = "red")
 
+# Base prediction
+y.base <- 2 + rowSums(X[, 1:5]) + 3 * rnorm(N)
+test2 <- big_spLinReg(X, y[ind.train], ind.train = ind.train, alpha = 1,
+                      base.train = y.base[ind.train])
+str(preds2 <- rowMeans(predict(test2, X, ind.row = ind.test)))
+cor(preds2, y[ind.test])
+plot(preds2 + y.base[ind.test], y[ind.test], pch = 20); abline(0, 1, col = "red")
+
+
+## TIMINGS
 system.time(
   test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
                        ncores = 1, alpha = 1, return.all = TRUE)
@@ -34,8 +44,7 @@ system.time(
   test2 <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
                        ncores = NCORES, alpha = 0.1, return.all = TRUE)
 )
-##  22 sec for alpha = 0.5
-## 300 sec for alpha = 0.1
+## 40-50-120 sec for alpha = 0.1
 
 tmp2 <- test2[[1]][[1]]
 plot(tmp2$iter, pch = 20)
