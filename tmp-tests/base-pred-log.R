@@ -19,7 +19,7 @@ str(preds <- predict(test, X, ind.row = ind.test))
 preds2 <- rowMeans(preds)
 AUC(preds2, y01[ind.test])
 plot(preds2, y01[ind.test], pch = 20); abline(0, 1, col = "red")
-str(test)
+# str(test)
 
 system.time(
   test <- big_spLogReg(X, y01[ind.train], ind.train = ind.train,
@@ -38,7 +38,7 @@ system.time(
                        ncores = NCORES, alpha = 0.01, return.all = TRUE)
 )
 # alpha = 0.1  -> 10 sec
-# alpha = 0.01 -> 72 sec / 74 / 60 / 44 / 64
+# alpha = 0.01 -> 46 / 58 / 65 / 54 / 51
 tmp2 <- test2[[1]][[1]]
 plot(tmp2$iter, pch = 20)
 plot(tmp2$loss.val, pch = 20)

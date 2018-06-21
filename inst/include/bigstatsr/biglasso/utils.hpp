@@ -81,12 +81,15 @@ size_t COPY_check_strong_set(LogicalVector& in_A,
                              const LogicalVector& in_S,
                              NumericVector& z,
                              C macc,
-                             const NumericVector& beta_old,
                              const NumericVector& center,
                              const NumericVector& scale,
-                             double lambda, double sumResid, double alpha,
+                             const NumericVector& beta_old,
+                             double lambda,
+                             double sumResid,
+                             double alpha,
                              const NumericVector& r,
                              size_t n, size_t p) {
+
   double sum, l1, l2;
   size_t i, j, violations = 0;
 

@@ -47,7 +47,7 @@ List COPY_cdfit_binomial_hsr(C macc,
                              const NumericVector& lambda,
                              const NumericVector& center,
                              const NumericVector& scale,
-                             NumericVector& resid,
+                             NumericVector& z,
                              double alpha,
                              double eps,
                              int max_iter,
@@ -77,31 +77,33 @@ List COPY_cdfit_binomial_hsr(C macc,
   double beta0_old = 0; //beta0 from previous iteration
   NumericVector w(n);
   NumericVector s(n); //y_i - pi_i
+  NumericVector r(n);
   NumericVector eta(n);
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   double xwr, pi, u, v, cutoff, l1, l2, shift, shift_scaled, si, lam_l, cj, sj;
-  double sum_wx_sq, sum_wx, sum_w, x, xw;
+  double sumWResid, sum_wx_sq, sum_wx, sum_w, x, xw;
   double max_update, update, thresh; // for convergence check
-  size_t i, j;
-  int l, ll, violations;
+  size_t i, j, violations;
+  int l, ll;
 
+  // REPLACE ??
   double ybar = Rcpp::sum(y) / n;
-  beta0_old = beta0[0] = log(ybar / (1 - ybar));
+  beta0_old = beta0[0] = log(ybar / (1 - ybar));                 // REPLACE HERE
   double nullDev = 0;
-  NumericVector r(n);
   for (i = 0; i < n; i++) {
     r[i] = y[i];
     nullDev -= y[i] * log(ybar) + (1 - y[i]) * log(1 - ybar);
-    s[i] = y[i] - ybar;
+    s[i] = y[i] - ybar;                                          // REPLACE HERE
     eta[i] = beta0_old;
   }
   thresh = eps * nullDev / n;
 
-  double sumWResid = 0; // temp result: sum of w * r
+  // REPLACE ??
   Dev[0] = nullDev;
   metrics[0] = metric_min =
     -Rcpp::sum((1 - y_val) * log(1 - ybar) + y_val * log(ybar));
+
 
   // Path
   for (l = 1; l < L; l++) {
@@ -109,7 +111,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     // Rcout << l << std::endl; //DEBUG
 
     // Check dfmax
-    if (Rcpp::sum(beta_old != 0) > dfmax) {
+    if (Rcpp::sum(beta_old != 0) >= dfmax) {
       for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
       return List::create(beta0, beta, Dev, iter, metrics);
     }
@@ -118,7 +120,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     lam_l = lambda[l];
     cutoff = 2 * lam_l - lambda[l - 1];
     for (j = 0; j < p; j++) {
-      in_S[j] = (fabs(resid[j]) > (cutoff * alpha));
+      in_S[j] = (fabs(z[j]) > (cutoff * alpha));
     }
 
     // Approx: no check of rest set
@@ -197,9 +199,9 @@ List COPY_cdfit_binomial_hsr(C macc,
               update = shift * shift * v;
               if (update > max_update) max_update = update;
 
-              // Update resid & eta
+              // Update r & eta
               shift_scaled = shift / sj;
-              for (size_t i = 0; i < n; i++) {
+              for (i = 0; i < n; i++) {
                 si = shift_scaled * (macc(i, j) - cj);
                 r[i] -= si;
                 eta[i] += si;
@@ -214,9 +216,10 @@ List COPY_cdfit_binomial_hsr(C macc,
         if (max_update < thresh)  break;
       }
       // Scan for violations in strong set
-      violations = COPY_check_strong_set(in_A, in_S, resid, macc, beta_old,
-                                         center, scale, lam_l, Rcpp::sum(s),
-                                         alpha, s, n, p);
+      violations = COPY_check_strong_set(
+        in_A, in_S, z, macc, center, scale, beta_old,
+        lam_l, Rcpp::sum(s), alpha, s, n, p
+      );
       if (violations == 0) break;
     }
 

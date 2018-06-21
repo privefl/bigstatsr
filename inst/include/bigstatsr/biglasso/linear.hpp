@@ -32,7 +32,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
                              const NumericVector& lambda,
                              const NumericVector& center,
                              const NumericVector& scale,
-                             NumericVector& resid,
+                             NumericVector& z,
                              double alpha,
                              double eps,
                              int max_iter,
@@ -61,8 +61,8 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
   double l1, l2, cutoff, shift, lam_l;
   double max_update, update, thresh, shift_scaled, cpsum;
-  size_t i, j;
-  int l, ll, violations;
+  size_t i, j, violations;
+  int l, ll;
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
@@ -85,7 +85,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     lam_l = lambda[l];
     cutoff = 2 * lam_l - lambda[l-1];
     for (j = 0; j < p; j++) {
-      in_S[j] = (fabs(resid[j]) > (cutoff * alpha));
+      in_S[j] = (fabs(z[j]) > (cutoff * alpha));
     }
 
     // Approx: no check of rest set
@@ -104,11 +104,11 @@ List COPY_cdfit_gaussian_hsr(C macc,
               cpsum += macc(i, j) * r[i];
             }
             cpsum = (cpsum - center[j] * sumResid) / scale[j];
-            resid[j] = cpsum / n + beta_old[j];
+            z[j] = cpsum / n + beta_old[j];
 
             l1 = lam_l * alpha;
             l2 = lam_l - l1;
-            beta(j, l) = COPY_lasso(resid[j], l1, l2, 1.0);
+            beta(j, l) = COPY_lasso(z[j], l1, l2, 1.0);
 
             shift = beta(j, l) - beta_old[j];
             if (shift != 0) {
@@ -132,9 +132,9 @@ List COPY_cdfit_gaussian_hsr(C macc,
       }
 
       // Scan for violations in strong set
-      violations = COPY_check_strong_set(in_A, in_S, resid, macc, beta_old,
-                                         center, scale, lam_l, sumResid,
-                                         alpha, r, n, p);
+      violations = COPY_check_strong_set(
+        in_A, in_S, z, macc, center, scale, beta_old,
+        lam_l, sumResid, alpha, r, n, p);
       if (violations == 0) break;
     }
 
