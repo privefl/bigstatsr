@@ -247,7 +247,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
   ## Parallelize over columns
   list_summaries <-
-    big_apply(X, a.FUN = function(X, ind, y.train, ind.train, ind.sets, K) {
+    big_parallelize(X, p.FUN = function(X, ind, y.train, ind.train, ind.sets, K) {
       summaries(X, y.train, ind.train, ind, ind.sets = ind.sets, K = K)
     }, ncores = ncores, ind = ind.col, y.train = y.train,
     ind.train = ind.train, ind.sets = ind.sets, K = K)

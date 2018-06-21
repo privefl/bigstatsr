@@ -77,10 +77,10 @@ big_parallelize <- function(X, p.FUN,
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
 
-  range.parts <- CutBySize(length(ind), nb = ncores)
+  intervals <- CutBySize(length(ind), nb = ncores)
 
-  res <- foreach(ic = seq_len(ncores)) %dopar% {
-    p.FUN(X, ind = ind[seq2(range.parts[ic, ])], ...)
+  res <- foreach(ic = rows_along(intervals)) %dopar% {
+    p.FUN(X, ind = ind[seq2(intervals[ic, ])], ...)
   }
 
   `if`(is.null(p.combine), res, do.call(p.combine, res))
