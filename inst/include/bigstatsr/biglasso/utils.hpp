@@ -22,7 +22,7 @@ NumericVector get_summaries(C macc,
   int n = macc.nrow();
   int m = macc.ncol();
 
-  arma::cube cubeArray(K, m, 4, arma::fill::zeros);
+  arma::cube cubeArray(K, m, 3, arma::fill::zeros);
 
   for (int j = 0; j < m; j++) {
     for (int i = 0; i < n; i++) {
@@ -31,7 +31,6 @@ NumericVector get_summaries(C macc,
       cubeArray(k, j, 0) += x;
       cubeArray(k, j, 1) += x * x;
       cubeArray(k, j, 2) += x * y[i];
-      cubeArray(k, j, 3) += y[i];
     }
   }
 

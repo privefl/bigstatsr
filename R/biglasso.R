@@ -9,16 +9,19 @@ summaries <- function(X, y.train, ind.train, ind.col,
   tmp <- bigsummaries(X, ind.train, ind.col, covar.train, y.train, ind.sets, K)
 
   all <- colSums(tmp)
-  n.sets <- length(ind.train) - table(ind.sets)
   SUM_X  <- sweep(-matrix(tmp[, , 1], K), 2, all[, 1], '+')
   SUM_XX <- sweep(-matrix(tmp[, , 2], K), 2, all[, 2], '+')
   SUM_XY <- sweep(-matrix(tmp[, , 3], K), 2, all[, 3], '+')
-  SUM_Y  <- sweep(-matrix(tmp[, , 4], K), 2, all[, 4], '+')
+
+  ind.sets <- factor(ind.sets, levels = 1:K)
+  n.sets <- length(ind.train) - table(ind.sets)
+  SUM_Y <- sum(y.train) - tapply(y.train, ind.sets, sum)
+  MEAN_Y <- SUM_Y / n.sets
 
   center.sets <- sweep(SUM_X, 1, n.sets, '/')
   scale.sets  <- sqrt(sweep(SUM_XX, 1, n.sets, '/') - center.sets^2)
   keep        <- (colSums(scale.sets > 1e-6) == K)
-  resid.sets  <- (SUM_XY - center.sets * SUM_Y) /
+  resid.sets  <- (SUM_XY - sweep(SUM_X, 1, MEAN_Y, '*')) /
     sweep(scale.sets, 1, n.sets, '*')
 
   list(keep = keep, center = center.sets, scale = scale.sets, resid = resid.sets)

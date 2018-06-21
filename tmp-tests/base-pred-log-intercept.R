@@ -1,18 +1,27 @@
-N <- 100
+
+null_pred <- function(y, base) {
+
+  ind0 <- which(y == 0)
+  ind1 <- which(y == 1)
+  x <- base
+
+  f <- function(b0) {
+    sum(1 / (1 + exp(b0 + base[ind1]))) -
+      sum(1 / (1 + exp(-(b0 + base[ind0]))))
+  }
+  b0 <- stats::uniroot(f, c(-10, 10), check.conv = TRUE,
+                       tol = .Machine$double.eps)$root
+
+  c(b0, mean(1 / (1 + exp(-(b0 + x)))))
+}
+
+N <- 99000
 x <- runif(N)
 y <- sample(0:1, size = N, replace = TRUE)
 
-ind0 <- which(y == 0)
-ind1 <- which(y == 1)
-
-f <- function(b0) {
-  sum(1 / (1 + exp(b0 + x[ind1]))) - sum(1 / (1 + exp(-(b0 + x[ind0]))))
-}
-str(xmin <- uniroot(f, c(-20, 20)), tol = sqrt(.Machine$double.eps))
+null_pred(y, x)
 
 x <- rep(0, N)
-str(xmin <- uniroot(f, c(-10, 10)), tol = sqrt(.Machine$double.eps))
-log(mean(y) / (1 - mean(y)))
-
-
-curve(Vectorize(f)(x), from = -2, to = 2)
+(y_bar <- mean(y))
+log(y_bar / (1 - y_bar))
+null_pred(y, x)

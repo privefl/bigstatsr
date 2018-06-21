@@ -5,15 +5,24 @@ set.seed(1)
 N <- 500
 M <- 730
 X <- FBM(N, M, init = rnorm(N * M, sd = 5))
-y <- rowSums(X[, 1:5]) + rnorm(N)
+y <- 2 + rowSums(X[, 1:5]) + 3 * rnorm(N)
+cor(rowSums(X[, 1:5]), y)
 NCORES <- nb_cores()
 
-ind.train <- sort(sample(nrow(X), 150))
+ind.train <- sort(sample(nrow(X), 350))
 ind.test <- setdiff(rows_along(X), ind.train)
+
+test <- big_spLinReg(X, y[ind.train], ind.train = ind.train, alpha = 1)
+# K = 10 predictions
+str(preds <- predict(test, X, ind.row = ind.test))
+# Combine them
+preds2 <- rowMeans(preds)
+cor(preds2, y[ind.test])
+plot(preds2, y[ind.test], pch = 20); abline(0, 1, col = "red")
 
 system.time(
   test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
-                       ncores = NCORES, alpha = 1, return.all = TRUE)
+                       ncores = 1, alpha = 1, return.all = TRUE)
 )
 tmp <- test[[1]][[1]]
 plot(tmp$beta[1, ], pch = 20)
