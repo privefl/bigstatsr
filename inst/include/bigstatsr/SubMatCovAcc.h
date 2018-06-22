@@ -89,7 +89,7 @@ public:
     }
   }
 
-  inline double operator() (size_t i, size_t j) {
+  FORCE_INLINE double operator() (size_t i, size_t j) {
     int j2 = j - _ncolsub;
     if (j2 < 0) {
       // https://stackoverflow.com/a/32087373/6103040
@@ -123,7 +123,7 @@ public:
       _code256 = code256;
     }
 
-  inline double operator() (size_t i, size_t j) {
+  FORCE_INLINE double operator() (size_t i, size_t j) {
     int j2 = j - this->_ncolsub;
     if (j2 < 0) {
       // https://stackoverflow.com/a/32087373/6103040
