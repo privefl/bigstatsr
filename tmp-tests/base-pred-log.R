@@ -1,6 +1,7 @@
 library(bigstatsr)
 set.seed(2)
 
+options(bigstatsr.cluster.type = "PSOCK")
 # simulating some data
 N <- 530
 M <- 730
@@ -13,6 +14,7 @@ ind.train <- sort(sample(nrow(X), 300))
 ind.test <- setdiff(rows_along(X), ind.train)
 
 test <- big_spLogReg(X, y01[ind.train], ind.train = ind.train, alpha = 1)
+
 # K = 10 predictions
 str(preds <- predict(test, X, ind.row = ind.test))
 # Combine them
@@ -38,7 +40,7 @@ system.time(
                        ncores = NCORES, alpha = 0.01, return.all = TRUE)
 )
 # alpha = 0.1  -> 10 sec
-# alpha = 0.01 -> 46 / 58 / 65 / 54 / 51
+# alpha = 0.01 -> 46 / 58 / 65 / 54 / 51 (4 cores Windows) /// 46 / 80 / 72 / 70 / 66 (6 cores Linux)
 tmp2 <- test2[[1]][[1]]
 plot(tmp2$iter, pch = 20)
 plot(tmp2$loss.val, pch = 20)

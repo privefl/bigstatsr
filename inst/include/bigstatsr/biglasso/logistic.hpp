@@ -22,18 +22,6 @@ using namespace bigstatsr::biglassoUtils;
 
 /******************************************************************************/
 
-// Weighted mean
-double COPY_wmean(const NumericVector& r, const NumericVector& w) {
-
-  int n = w.size();
-  double rw_sum = 0, w_sum = 0;
-  for (int i = 0; i < n; i++) {
-    w_sum  += w[i];
-    rw_sum += r[i] * w[i];
-  }
-  return rw_sum / w_sum;
-}
-
 // Weighted sum
 double COPY_wsum(const NumericVector &r, const NumericVector &w) {
   return std::inner_product(r.begin(), r.end(), w.begin(), 0.0);
@@ -81,25 +69,24 @@ List COPY_cdfit_binomial_hsr(C macc,
   NumericVector eta(n);
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
-  double xwr, pi, u, v, cutoff, l1, l2, shift, shift_scaled, si, lam_l, cj, sj;
-  double sumWResid, sum_wx_sq, sum_wx, sum_w, x, xw;
+  double xwr, pi, u, v, cutoff, l1, l2, shift, shift_scaled, si, lam_l, dev_l, cj, sj;
+  double sumWResid, sum_s, sum_wx_sq, sum_wx, sum_w, x, xw;
   double max_update, update, thresh; // for convergence check
   size_t i, j, violations;
   int l, ll;
 
-  // REPLACE ??
+
+  // REPLACE HERE ??
   double ybar = Rcpp::sum(y) / n;
-  beta0_old = beta0[0] = log(ybar / (1 - ybar));                 // REPLACE HERE
+  beta0_old = beta0[0] = log(ybar / (1 - ybar));
   double nullDev = 0;
   for (i = 0; i < n; i++) {
-    r[i] = y[i];
     nullDev -= y[i] * log(ybar) + (1 - y[i]) * log(1 - ybar);
-    s[i] = y[i] - ybar;                                          // REPLACE HERE
     eta[i] = beta0_old;
   }
   thresh = eps * nullDev / n;
 
-  // REPLACE ??
+  // REPLACE HERE ??
   Dev[0] = nullDev;
   metrics[0] = metric_min =
     -Rcpp::sum((1 - y_val) * log(1 - ybar) + y_val * log(ybar));
@@ -127,8 +114,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     while (iter[l] < max_iter) {
       while (iter[l] < max_iter) {
         iter[l]++;
-        Dev[l] = 0;
-
+        dev_l = sum_s = sum_w = 0;
         for (i = 0; i < n; i++) {
           if (eta[i] > 10) {
             pi = 1;
@@ -140,23 +126,27 @@ List COPY_cdfit_binomial_hsr(C macc,
             pi = 1 / (1 + exp(-eta[i]));
             w[i] = pi * (1 - pi);
           }
+          sum_w += w[i];
           s[i] = y[i] - pi;
+          sum_s += s[i];
           r[i] = s[i] / w[i];
           if (y[i] == 1) {
-            Dev[l] -= log(pi);
+            dev_l -= log(pi);
           } else {
-            Dev[l] -= log(1 - pi);
+            dev_l -= log(1 - pi);
           }
         }
 
-        if (Dev[l] / nullDev < .01) {
+        if (dev_l / nullDev < .01) {
           if (warn) warning("Model saturated; exiting...");
           for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
           return List::create(beta0, beta, Dev, iter, metrics);
         }
+        Dev[l] = dev_l;
 
         // Intercept
-        si = COPY_wmean(r, w);
+        // Rcout << (COPY_wsum(r, w) - sum_s) << std::endl;
+        si = sum_s / sum_w;
         beta0[l] = si + beta0_old;
         if (si != 0) {
           beta0_old = beta0[l];
@@ -166,10 +156,9 @@ List COPY_cdfit_binomial_hsr(C macc,
           }
         }
         // update temp result: sum of w * r, used for computing xwr;
-        sumWResid = COPY_wsum(r, w);
+        sumWResid = 0;  // COPY_wsum(r, w); Rcout << sumWResid << std::endl;
 
         max_update = 0;
-        sum_w = Rcpp::sum(w);
         for (j = 0; j < p; j++) {
           if (in_A[j]) {
             // Weighted cross product of y with jth column of x
@@ -216,9 +205,10 @@ List COPY_cdfit_binomial_hsr(C macc,
         if (max_update < thresh)  break;
       }
       // Scan for violations in strong set
+      // Rcout << (Rcpp::sum(s) == sum_s) << std::endl;
       violations = COPY_check_strong_set(
         in_A, in_S, z, macc, center, scale, beta_old,
-        lam_l, Rcpp::sum(s), alpha, s, n, p
+        lam_l, sum_s, alpha, s, n, p
       );
       if (violations == 0) break;
     }
