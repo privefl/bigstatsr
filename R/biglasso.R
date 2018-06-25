@@ -190,7 +190,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param eps Convergence threshold for inner coordinate descent.
 #' The algorithm iterates until the maximum change in the objective after any
 #' coefficient update is less than `eps` times the null deviance.
-#' Default value is `1e-7`.
+#' Default value is `1e-5`.
 #' @param max.iter Maximum number of iterations. Default is `1000`.
 #' @param dfmax Upper bound for the number of nonzero coefficients. Default is
 #' `20e3` because, for large data sets, computational burden may be
@@ -221,7 +221,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                nlam.min = 50,
                                n.abort = 10,
                                base.train = NULL,
-                               eps = 1e-7,
+                               eps = 1e-5,
                                max.iter = 1000,
                                dfmax = 20e3,
                                warn = FALSE,
