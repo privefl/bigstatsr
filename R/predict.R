@@ -62,7 +62,7 @@ predict.big_sp <- function(object, X,
 #' @param object Object of class `big_sp_best_list`.
 #' @inheritParams bigstatsr-package
 #' @param ... Not used.
-#' @param proba Whether to return probabilities?
+#' @param proba Whether to return probabilities? Default is `FALSE`.
 #'
 #' @return A vector of scores, corresponding to `ind.row`.
 #'
@@ -75,7 +75,7 @@ predict.big_sp_best_list <- function(object, X,
                                      ind.row = rows_along(X),
                                      ind.col = attr(object, "ind.col"),
                                      covar.row = NULL,
-                                     proba = (attr(object, "family") == "binomial"),
+                                     proba = FALSE,
                                      ...) {
 
   check_args()

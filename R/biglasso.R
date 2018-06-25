@@ -88,10 +88,11 @@ null_pred <- function(y, base) {
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
                                eps, max.iter, dfmax, warn,
-                               ind.val, covar.val, y.val, n.abort, nlam.min) {
+                               ind.val, covar.val, y.val, n.abort, nlam.min,
+                               b0, base.train, base.val) {
 
-  assert_lengths(y.train, ind.train, rows_along(covar.train))
-  assert_lengths(y.val, ind.val, rows_along(covar.val))
+  assert_lengths(y.train, base.train, ind.train, rows_along(covar.train))
+  assert_lengths(y.val, base.val, ind.val, rows_along(covar.val))
   assert_lengths(c(ind.col, cols_along(covar.train)), center, scale, resid)
   stopifnot(length(intersect(ind.train, ind.val)) == 0)
 
@@ -114,9 +115,9 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   } else if (family == "binomial") {
 
     res <- COPY_cdfit_binomial_hsr(
-      X, y.train, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
-      ind.val, covar.val, y.val, n.abort, nlam.min)
+      X, y.train, base.train, ind.train, ind.col, covar.train,
+      lambda, center, scale, resid, alpha, b0, eps, max.iter, dfmax, warn,
+      ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
 
     a <- res[[1]]
     b <- Matrix(res[[2]], sparse = TRUE)
@@ -256,6 +257,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       null_pred(y.train[-ind], base.train[-ind])
     })
     b0 <- tmp[1, ]
+    assert_lengths(b0, 1:K)
     y_null.train <- tmp[2, ]
   } else {
     assert_multiple(y.train)
@@ -290,6 +292,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
 
+  alphas <- sort(alphas)
   cross.res <- foreach(alpha = alphas) %:% foreach(ic = 1:K) %dopar% {
 
     in.val <- (ind.sets == ic)
@@ -316,7 +319,11 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.val = ind.train[in.val],
       covar.val = covar.train[in.val, , drop = FALSE],
       y.val = y.train[in.val],
-      n.abort, nlam.min
+      n.abort, nlam.min,
+      ## used only for binomial:
+      b0 = b0[ic],
+      base.train = base.train[!in.val],
+      base.val = base.train[in.val]
     )
   }
 

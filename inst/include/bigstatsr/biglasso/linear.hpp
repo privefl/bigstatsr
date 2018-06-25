@@ -6,7 +6,7 @@
 /******              https://github.com/YaohuiZeng/biglasso              ******/
 /******************************************************************************/
 
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 
 using namespace Rcpp;
 using std::size_t;
@@ -54,7 +54,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
   int no_change = 0;
 
   // Objects to be returned to R
-  arma::sp_mat beta = arma::sp_mat(p, L); // beta
+  NumericMatrix beta(p, L);
   NumericVector beta_old(p);
   NumericVector loss(L);
   IntegerVector iter(L);

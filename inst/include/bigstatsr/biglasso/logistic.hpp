@@ -6,7 +6,7 @@
 /******              https://github.com/YaohuiZeng/biglasso              ******/
 /******************************************************************************/
 
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 
 using namespace Rcpp;
 using std::size_t;
@@ -32,17 +32,20 @@ double COPY_wsum(const NumericVector &r, const NumericVector &w) {
 template <class C>
 List COPY_cdfit_binomial_hsr(C macc,
                              const NumericVector& y,
+                             const NumericVector& base,
                              const NumericVector& lambda,
                              const NumericVector& center,
                              const NumericVector& scale,
                              NumericVector& z,
                              double alpha,
+                             double beta0_old,
                              double eps,
                              int max_iter,
                              int dfmax,
                              bool warn,
                              C macc_val,
                              const NumericVector& y_val,
+                             const NumericVector& base_val,
                              int n_abort,
                              int nlam_min) {
 
@@ -60,11 +63,10 @@ List COPY_cdfit_binomial_hsr(C macc,
   IntegerVector iter(L);
   NumericVector beta0(L);
 
-  arma::sp_mat beta = arma::sp_mat(p, L); //beta
-  NumericVector beta_old(p); //Beta from previous iteration
-  double beta0_old = 0; //beta0 from previous iteration
+  NumericMatrix beta(p, L);
+  NumericVector beta_old(p); // Betas from previous iteration
   NumericVector w(n);
-  NumericVector s(n); //y_i - pi_i
+  NumericVector s(n); // y_i - pi_i
   NumericVector r(n);
   NumericVector eta(n);
   LogicalVector in_A(p); // ever active set
@@ -75,22 +77,24 @@ List COPY_cdfit_binomial_hsr(C macc,
   size_t i, j, violations;
   int l, ll;
 
-
-  // REPLACE HERE ??
-  double ybar = Rcpp::sum(y) / n;
-  beta0_old = beta0[0] = log(ybar / (1 - ybar));
+  // compute metric for training set
+  beta0[0] = beta0_old;
   double nullDev = 0;
   for (i = 0; i < n; i++) {
-    nullDev -= y[i] * log(ybar) + (1 - y[i]) * log(1 - ybar);
-    eta[i] = beta0_old;
+    eta[i] = beta0_old + base[i];  // prediction from null model
+    pi = 1 / (1 + exp(-eta[i]));
+    nullDev -= y[i] * log(pi) + (1 - y[i]) * log(1 - pi);
   }
   thresh = eps * nullDev / n;
-
-  // REPLACE HERE ??
   Dev[0] = nullDev;
-  metrics[0] = metric_min =
-    -Rcpp::sum((1 - y_val) * log(1 - ybar) + y_val * log(ybar));
 
+  // compute metric for validation set
+  metric_min = 0;
+  for (i = 0; i < n_val; i++) {
+    pi = 1 / (1 + exp(-(beta0_old + base_val[i])));
+    metric_min -= y_val[i] * log(pi) + (1 - y_val[i]) * log(1 - pi);
+  }
+  metrics[0] = metric_min;
 
   // Path
   for (l = 1; l < L; l++) {
@@ -218,7 +222,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     // NumericVector blabla = pred + beta0[l] - eta;
     // Rcout << blabla << std::endl;
     pred_val = predict(macc_val, beta_old, center, scale) + beta0[l];
-    pred_val = 1 / (1 + exp(-pred_val));
+    pred_val = 1 / (1 + exp(-(base_val + pred_val)));
     metric = -Rcpp::sum((1 - y_val) * log(1 - pred_val) + y_val * log(pred_val));
     // Rcout << metric << std::endl;
     metrics[l] = metric;

@@ -21,13 +21,13 @@ cor(preds2, y[ind.test])
 plot(preds2, y[ind.test], pch = 20); abline(0, 1, col = "red")
 
 # Base prediction
-y.base <- 2 + rowSums(X[, 1:5]) + 3 * rnorm(N)
-test2 <- big_spLinReg(X, y[ind.train], ind.train = ind.train, alpha = 1,
+y.base <- rowMeans(predict(test, X))
+test2 <- big_spLinReg(X, y[ind.train], ind.train = ind.train, alpha = 0.01,
                       base.train = y.base[ind.train])
-str(preds2 <- rowMeans(predict(test2, X, ind.row = ind.test)))
-cor(preds2, y[ind.test])
-plot(preds2 + y.base[ind.test], y[ind.test], pch = 20); abline(0, 1, col = "red")
-
+str(preds3 <- rowMeans(predict(test2, X, ind.row = ind.test)))
+cor(preds3, y[ind.test])
+plot(preds3 + y.base[ind.test], y[ind.test], pch = 20); abline(0, 1, col = "red")
+cor(preds3 + y.base[ind.test], y[ind.test])
 
 ## TIMINGS
 system.time(
