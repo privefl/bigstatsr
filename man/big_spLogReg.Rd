@@ -42,10 +42,10 @@ the number of variables and \code{.001} otherwise.}
   \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
-Default value is \code{1e-7}.}
+Default value is \code{1e-5}.}
   \item{max.iter}{Maximum number of iterations. Default is \code{1000}.}
   \item{dfmax}{Upper bound for the number of nonzero coefficients. Default is
-\code{20e3} because, for large data sets, computational burden may be
+\code{50e3} because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.}
   \item{warn}{Return warning messages for failures to converge and model
 saturation? Default is \code{FALSE}.}

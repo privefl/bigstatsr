@@ -8,7 +8,7 @@ COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   family = c("gaussian", "binomial"), alphas = 1, K = 10,
   ind.sets = sample(rep_len(1:K, n)), nlambda = 200, lambda.min = if (n >
   p) 1e-04 else 0.001, nlam.min = 50, n.abort = 10, base.train = NULL,
-  eps = 1e-07, max.iter = 1000, dfmax = 20000, warn = FALSE,
+  eps = 1e-05, max.iter = 1000, dfmax = 50000, warn = FALSE,
   return.all = FALSE, ncores = 1)
 }
 \arguments{
@@ -42,12 +42,12 @@ set must decrease before stopping. Default is \code{10}.}
 \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
-Default value is \code{1e-7}.}
+Default value is \code{1e-5}.}
 
 \item{max.iter}{Maximum number of iterations. Default is \code{1000}.}
 
 \item{dfmax}{Upper bound for the number of nonzero coefficients. Default is
-\code{20e3} because, for large data sets, computational burden may be
+\code{50e3} because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.}
 
 \item{warn}{Return warning messages for failures to converge and model

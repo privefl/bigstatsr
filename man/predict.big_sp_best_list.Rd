@@ -5,8 +5,7 @@
 \title{Predict method}
 \usage{
 \method{predict}{big_sp_best_list}(object, X, ind.row = rows_along(X),
-  ind.col = attr(object, "ind.col"), covar.row = NULL,
-  proba = (attr(object, "family") == "binomial"), ...)
+  ind.col = attr(object, "ind.col"), covar.row = NULL, proba = FALSE, ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp_best_list}.}
@@ -23,7 +22,7 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{proba}{Whether to return probabilities?}
+\item{proba}{Whether to return probabilities? Default is \code{FALSE}.}
 
 \item{...}{Not used.}
 }

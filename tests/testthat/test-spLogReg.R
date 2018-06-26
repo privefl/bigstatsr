@@ -22,6 +22,7 @@ lcovar <- list(NULL, covar0)
 ################################################################################
 
 test_that("can be used with a subset of samples", {
+
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
@@ -29,26 +30,25 @@ test_that("can be used with a subset of samples", {
 
       ind <- sample(N, N / 2)
 
-      alphas <- c(runif(1, min = 0.01, max = 1), 1)
-      lambda.min <- runif(1, min = 0.01, max = 0.5)
+      alphas <- c(runif(1, min = 0.1, max = 1), 1)
 
-      mod.bigstatsr <- big_spLogReg(X, y, covar.train = covar, alphas = alphas,
-                                    lambda.min = lambda.min, ncores = test_cores())
+      mod.bigstatsr <- big_spLogReg(X, y, covar.train = covar,
+                                    alphas = alphas,
+                                    ncores = test_cores())
       preds <- rowMeans(
         predict(mod.bigstatsr, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
       )
-      expect_gt(AUC(preds, y[-ind]), 0.7)
+      expect_gt(AUC(preds, y[-ind]), 0.9)
 
       mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
                                      alphas = alphas,
-                                     lambda.min = lambda.min,
                                      ncores = test_cores())
       preds2 <- rowMeans(
         predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
                 covar.row = covar[-ind, ])
       )
-      expect_gt(AUC(preds2, y[-ind]), 0.6)
+      expect_gt(AUC(preds2, y[-ind]), 0.7)
     }
   }
 })
@@ -56,6 +56,7 @@ test_that("can be used with a subset of samples", {
 ################################################################################
 
 test_that("can be used with a subset of variables", {
+
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
@@ -64,14 +65,12 @@ test_that("can be used with a subset of variables", {
       ind <- sample(N, N / 2)
       ind.col <- cols_along(X)[-set]
 
-      alpha <- runif(1, min = 0.1, max = 1)
-      lambda.min <- runif(1, min = 0.01, max = 0.5)
+      alphas <- c(runif(1, min = 0.1, max = 1), 1)
 
       mod.bigstatsr3 <- big_spLogReg(X, y[ind], ind.train = ind,
                                      ind.col = ind.col,
                                      covar.train = covar[ind, ],
-                                     alphas = alpha,
-                                     lambda.min = lambda.min,
+                                     alphas = alphas,
                                      ncores = test_cores())
       preds3 <- rowMeans(
         predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
@@ -86,18 +85,17 @@ test_that("can be used with a subset of variables", {
 ################################################################################
 
 test_that("parameter 'return.all' works and loss computation is correct", {
+
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in sample(lcovar, 1)) {
 
-      alpha <- runif(1, min = 0.1, max = 1)
-      lambda.min <- runif(1, min = 0.01, max = 0.5)
+      alpha <- runif(1, min = 0.01, max = 1)
 
       mod.bigstatsr4 <- big_spLogReg(X, y,
                                      covar.train = covar,
                                      alphas = alpha,
-                                     lambda.min = lambda.min,
                                      return.all = TRUE,
                                      ncores = test_cores())
 
@@ -115,6 +113,50 @@ test_that("parameter 'return.all' works and loss computation is correct", {
         })
       })
       expect_equal(loss.val, lapply(flatten, function(obj) obj$loss.val))
+    }
+  }
+})
+
+################################################################################
+
+test_that("Use a base predictor", {
+
+  for (t in TEST.TYPES) {
+    X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
+
+    for (covar in sample(lcovar, 1)) {
+
+      ind <- sample(N, N / 2)
+      alphas <- c(runif(1, min = 0.01, max = 1), 1)
+      ind.sets <- sample(rep_len(1:10, length(ind)))
+
+      mod.bigstatsr <- big_spLogReg(X, y[ind], ind.train = ind,
+                                    covar.train = covar[ind, ],
+                                    alphas = alphas,
+                                    ind.sets = ind.sets,
+                                    ncores = test_cores())
+      preds <- rowMeans(predict(mod.bigstatsr, X, covar.row = covar))
+      expect_gt(AUC(preds[-ind], y[-ind]), 0.7)
+
+      mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
+                                     base.train = rep(5, length(ind)),
+                                     covar.train = covar[ind, ],
+                                     alphas = alphas,
+                                     ind.sets = ind.sets,
+                                     ncores = test_cores())
+      expect_equal(sapply(mod.bigstatsr2, function(x) x$intercept) + 5,
+                   sapply(mod.bigstatsr, function(x) x$intercept))
+      expect_equal(sapply(mod.bigstatsr2, function(x) x$beta.X),
+                   sapply(mod.bigstatsr, function(x) x$beta.X))
+
+      mod.bigstatsr3 <- big_spLogReg(X, y[ind], ind.train = ind,
+                                     base.train = preds[ind] / 2,
+                                     covar.train = covar[ind, ],
+                                     alphas = alphas,
+                                     ind.sets = ind.sets,
+                                     ncores = test_cores())
+      preds3 <- rowMeans(predict(mod.bigstatsr3, X, covar.row = covar))
+      expect_gt(cor(preds3, preds), 0.9)
     }
   }
 })

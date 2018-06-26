@@ -36,7 +36,7 @@ null_pred <- function(y, base) {
     sum(1 / (1 + exp(b0 + base[ind1]))) -
       sum(1 / (1 + exp(-(b0 + base[ind0]))))
   }
-  b0 <- stats::uniroot(f, c(-10, 10), check.conv = TRUE,
+  b0 <- stats::uniroot(f, c(-20, 20), check.conv = TRUE,
                        tol = .Machine$double.eps)$root
 
   c(b0, mean(1 / (1 + exp(-(b0 + x)))))
@@ -193,7 +193,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' Default value is `1e-5`.
 #' @param max.iter Maximum number of iterations. Default is `1000`.
 #' @param dfmax Upper bound for the number of nonzero coefficients. Default is
-#' `20e3` because, for large data sets, computational burden may be
+#' `50e3` because, for large data sets, computational burden may be
 #' heavy for models with a large number of nonzero coefficients.
 #' @param warn Return warning messages for failures to converge and model
 #' saturation? Default is `FALSE`.
@@ -223,7 +223,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                base.train = NULL,
                                eps = 1e-5,
                                max.iter = 1000,
-                               dfmax = 20e3,
+                               dfmax = 50e3,
                                warn = FALSE,
                                return.all = FALSE,
                                ncores = 1) {
