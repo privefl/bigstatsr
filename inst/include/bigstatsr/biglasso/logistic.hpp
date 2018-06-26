@@ -59,11 +59,11 @@ List COPY_cdfit_binomial_hsr(C macc,
   double metric, metric_min;
   int no_change = 0;
 
-  NumericVector Dev(L);
-  IntegerVector iter(L);
-  NumericVector beta0(L);
+  NumericVector Dev(L, NA_REAL);
+  IntegerVector iter(L, NA_INTEGER);
+  double beta0_max = beta0_old;
 
-  NumericMatrix beta(p, L);
+  NumericVector beta_max(p);
   NumericVector beta_old(p); // Betas from previous iteration
   NumericVector w(n);
   NumericVector s(n); // y_i - pi_i
@@ -75,10 +75,8 @@ List COPY_cdfit_binomial_hsr(C macc,
   double sumWResid, sum_s, sum_wx_sq, sum_wx, sum_w, x, xw;
   double max_update, update, thresh; // for convergence check
   size_t i, j, violations;
-  int l, ll;
 
   // compute metric for training set
-  beta0[0] = beta0_old;
   double nullDev = 0;
   for (i = 0; i < n; i++) {
     eta[i] = beta0_old + base[i];  // prediction from null model
@@ -95,26 +93,29 @@ List COPY_cdfit_binomial_hsr(C macc,
     metric_min -= y_val[i] * log(pi) + (1 - y_val[i]) * log(1 - pi);
   }
   metrics[0] = metric_min;
+  iter[0] = 0;
 
   // Path
-  for (l = 1; l < L; l++) {
+  for (int l = 1; l < L; l++) {
 
     // Rcout << l << std::endl; //DEBUG
 
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) >= dfmax) {
-      for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-      return List::create(beta0, beta, Dev, iter, metrics);
+      return List::create(beta0_max, beta_max, Dev, iter, metrics);
     }
 
-    // strong set
     lam_l = lambda[l];
+    l1 = lam_l * alpha;
+    l2 = lam_l - l1;
+    // strong set
     cutoff = 2 * lam_l - lambda[l - 1];
     for (j = 0; j < p; j++) {
       in_S[j] = (fabs(z[j]) > (cutoff * alpha));
     }
 
     // Approx: no check of rest set
+    iter[l] = 0;
     while (iter[l] < max_iter) {
       while (iter[l] < max_iter) {
         iter[l]++;
@@ -143,17 +144,15 @@ List COPY_cdfit_binomial_hsr(C macc,
 
         if (dev_l / nullDev < .01) {
           if (warn) warning("Model saturated; exiting...");
-          for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-          return List::create(beta0, beta, Dev, iter, metrics);
+          return List::create(beta0_max, beta_max, Dev, iter, metrics);
         }
         Dev[l] = dev_l;
 
         // Intercept
         // Rcout << (COPY_wsum(r, w) - sum_s) << std::endl;
         si = sum_s / sum_w;
-        beta0[l] = si + beta0_old;
         if (si != 0) {
-          beta0_old = beta0[l];
+          beta0_old += si;
           for (i = 0; i < n; i++) {
             r[i] -= si;   // update r
             eta[i] += si; // update eta
@@ -182,11 +181,8 @@ List COPY_cdfit_binomial_hsr(C macc,
             xwr = (xwr - cj * sumWResid) / sj;
             v = (sum_wx_sq - 2 * cj * sum_wx + cj * cj * sum_w) / (sj * sj * n);
             u = xwr / n + v * beta_old[j];
-            l1 = lam_l * alpha;
-            l2 = lam_l - l1;
-            beta(j, l) = COPY_lasso(u, l1, l2, v);
 
-            shift = beta(j, l) - beta_old[j];
+            shift = COPY_lasso(u, l1, l2, v) - beta_old[j];
             if (shift != 0) {
               // update change of objective function
               update = shift * shift * v;
@@ -201,7 +197,7 @@ List COPY_cdfit_binomial_hsr(C macc,
               }
 
               sumWResid = COPY_wsum(r, w); // update temp result w * r, used for computing xwr;
-              beta_old[j] = beta(j, l);    // update beta_old
+              beta_old[j] += shift;    // update beta_old
             }
           }
         }
@@ -219,14 +215,16 @@ List COPY_cdfit_binomial_hsr(C macc,
 
     // Get prediction from beta_old
     // pred = predict(macc, beta_old, scale);
-    // NumericVector blabla = pred + beta0[l] - eta;
+    // NumericVector blabla = pred + beta_old - eta;
     // Rcout << blabla << std::endl;
-    pred_val = predict(macc_val, beta_old, center, scale) + beta0[l];
+    pred_val = predict(macc_val, beta_old, center, scale) + beta0_old;
     pred_val = 1 / (1 + exp(-(base_val + pred_val)));
     metric = -Rcpp::sum((1 - y_val) * log(1 - pred_val) + y_val * log(pred_val));
     // Rcout << metric << std::endl;
     metrics[l] = metric;
     if (metric < 0.99 * metric_min) {
+      beta0_max = beta0_old;
+      std::copy(beta_old.begin(), beta_old.end(), beta_max.begin());
       metric_min = metric;
       no_change = 0;
     }
@@ -236,12 +234,11 @@ List COPY_cdfit_binomial_hsr(C macc,
 
     if (l >= nlam_min && no_change >= n_abort) {
       if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
-      for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-      return List::create(beta0, beta, Dev, iter, metrics);
+      return List::create(beta0_max, beta_max, Dev, iter, metrics);
     }
   }
 
-  return List::create(beta0, beta, Dev, iter, metrics);
+  return List::create(beta0_max, beta_max, Dev, iter, metrics);
 }
 
 } }

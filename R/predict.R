@@ -12,7 +12,6 @@
 #' and columns corresponding to `lambda`.
 #'
 #' @export
-#' @import Matrix
 #' @importFrom stats predict
 #'
 #' @seealso [big_spLinReg] and [big_spLogReg].
@@ -42,7 +41,7 @@ predict.big_sp <- function(object, X,
 
     ind.X <- seq_along(ind.col)
     ind.nozero <- which(rowSums(betas != 0)[ind.X] > 0)
-    scores <- big_prodMat(X, betas[ind.X[ind.nozero], , drop = FALSE],
+    scores <- big_prodMat(X, betas[ind.X[ind.nozero], ],
                           ind.row = ind.row,
                           ind.col = ind.col[ind.nozero],
                           block.size = block.size) +
@@ -62,7 +61,7 @@ predict.big_sp <- function(object, X,
 #' @param object Object of class `big_sp_best_list`.
 #' @inheritParams bigstatsr-package
 #' @param ... Not used.
-#' @param proba Whether to return probabilities? Default is `FALSE`.
+#' @param proba Whether to return probabilities?
 #'
 #' @return A vector of scores, corresponding to `ind.row`.
 #'
@@ -75,12 +74,13 @@ predict.big_sp_best_list <- function(object, X,
                                      ind.row = rows_along(X),
                                      ind.col = attr(object, "ind.col"),
                                      covar.row = NULL,
-                                     proba = FALSE,
+                                     proba = (attr(object, "family") == "binomial"),
                                      ...) {
 
   check_args()
 
   sapply(object, function(obj) {
+
     beta.X <- obj$beta.X
     ind.nozero <- which(beta.X != 0)
 

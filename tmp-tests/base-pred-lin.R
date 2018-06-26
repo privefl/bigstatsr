@@ -13,6 +13,9 @@ ind.train <- sort(sample(nrow(X), 150))
 ind.test <- setdiff(rows_along(X), ind.train)
 
 test <- big_spLinReg(X, y[ind.train], ind.train = ind.train, alpha = 1)
+# tmp <- test[[1]][[1]]
+# plot(tmp$loss, pch = 20)
+# points(tmp$loss.val, pch = 20, col = 3)
 # K = 10 predictions
 str(preds <- predict(test, X, ind.row = ind.test))
 # Combine them
@@ -35,7 +38,7 @@ system.time(
                        ncores = 1, alpha = 1, return.all = TRUE)
 )
 tmp <- test[[1]][[1]]
-plot(tmp$beta[1, ], pch = 20)
+plot(tmp$beta, pch = 20)
 for (i in 2:5) points(tmp$beta[i, ], pch = 20, col = i)
 plot(tmp$iter, pch = 20)
 plot(tmp$loss.val, pch = 20)
@@ -49,8 +52,7 @@ system.time(
 tmp2 <- test2[[1]][[1]]
 plot(tmp2$iter, pch = 20)
 plot(tmp2$loss.val, pch = 20)
-plot(tmp2$beta[1, ], pch = 20)
-for (i in 2:5) points(tmp2$beta[i, ], pch = 20, col = i)
+plot(tmp2$beta, pch = 20)
 
 
 test0 <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
@@ -64,8 +66,7 @@ system.time(
 tmp3 <- test3[[1]][[1]]
 plot(tmp3$iter, pch = 20)
 plot(tmp3$loss.val, pch = 20)
-plot(tmp3$beta[1, ], pch = 20)
-for (i in 2:5) points(tmp3$beta[i, ], pch = 20, col = i)
+plot(tmp3$beta, pch = 20)
 
 
 test3 <- big_spLinReg(X, y[ind.train], ind.train = ind.train,

@@ -51,9 +51,8 @@ null_pred <- function(y, base) {
 #'
 #' @return A named list with following variables:
 #'   \item{intercept}{A vector of intercepts, corresponding to each lambda.}
-#'   \item{beta}{The fitted matrix of coefficients, store in sparse matrix
-#'     representation. The number of rows is equal to the number of
-#'     coefficients, and the number of columns is equal to `nlambda`.}
+#'   \item{beta}{The vector of coefficients that minimized the loss on the
+#'     validation set.}
 #'   \item{iter}{A vector of length `nlambda` containing the number of
 #'     iterations until convergence at each value of `lambda`.}
 #'   \item{lambda}{The sequence of regularization parameter values in the path.}
@@ -81,8 +80,6 @@ null_pred <- function(y, base) {
 #'     than `1e-6`. Features with 'scale' less than 1e-6 are removed from
 #'     model fitting.}
 #'
-#' @import Matrix
-#'
 #' @keywords internal
 #'
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
@@ -106,8 +103,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
       lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
       ind.val, covar.val, y.val - y.train.mean, n.abort, nlam.min)
 
-    b <- Matrix(res[[1]], sparse = TRUE)
-    a <- rep(y.train.mean, ncol(b))
+    a <- y.train.mean
+    b <- res[[1]]
     loss <- res[[2]]
     iter <- res[[3]]
     loss.val <- res[[4]]
@@ -120,7 +117,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
 
     a <- res[[1]]
-    b <- Matrix(res[[2]], sparse = TRUE)
+    b <- res[[2]]
     loss <- res[[3]]
     iter <- res[[4]]
     loss.val <- res[[5]]
@@ -131,8 +128,6 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
   ## Eliminate saturated lambda values, if any
   ind <- !is.na(iter)
-  a <- a[ind]
-  b <- b[, ind, drop = FALSE]
   iter <- iter[ind]
   lambda <- lambda[ind]
   loss <- loss[ind] / length(ind.train)
@@ -143,10 +138,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
   ## Unstandardize coefficients:
   bb <- b / scale
-  aa <- a - as.numeric(crossprod(center, bb))
-
-  ## Names
-  names(aa) <- colnames(bb) <- signif(lambda, digits = 4)
+  aa <- a - sum(center * bb)
 
   ## Output
   structure(list(
@@ -340,12 +332,11 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
     structure(
       lapply(cross.res[[ind.min]], function(x) {
-        best <- which.min(x$loss.val)
         ind <- seq_along(x$ind.col)
         list(
-          intercept  = unname(x$intercept[best]),
-          beta.X     = x$beta[ind, best],
-          beta.covar = x$beta[-ind, best]
+          intercept  = x$intercept,
+          beta.X     = x$beta[ind],
+          beta.covar = x$beta[-ind]
         )
       }),
       class = "big_sp_best_list",

@@ -99,10 +99,10 @@ big_SVD <- function(X,
   check_args()
 
   if (ncol(X) > length(ind.row)) {
-    printf("(2)")
+    # printf("(2)")
     res <- DualBigPCA(X, fun.scaling, ind.row, ind.col, block.size, k)
   } else {
-    printf("(1)")
+    # printf("(1)")
     res <- PrimalBigPCA(X, fun.scaling, ind.row, ind.col, block.size, k)
   }
 

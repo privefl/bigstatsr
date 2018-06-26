@@ -1,7 +1,6 @@
 library(bigstatsr)
 set.seed(2)
 
-options(bigstatsr.cluster.type = "PSOCK")
 # simulating some data
 N <- 530
 M <- 730
@@ -14,6 +13,8 @@ ind.train <- sort(sample(nrow(X), 300))
 ind.test <- setdiff(rows_along(X), ind.train)
 
 test <- big_spLogReg(X, y01[ind.train], ind.train = ind.train, alpha = 1)
+# tmp <- test[[1]][[1]]
+# plot(tmp$loss, pch = 20); points(tmp$loss.val, pch = 20, col = 3)
 
 # K = 10 predictions
 str(preds <- predict(test, X, ind.row = ind.test))

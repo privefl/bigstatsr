@@ -33,7 +33,6 @@ Imports:
   glue,
   graphics,
   magrittr,
-  Matrix,
   methods,
   parallel, 
   Rcpp, 
