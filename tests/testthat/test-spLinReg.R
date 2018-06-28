@@ -7,8 +7,8 @@ set.seed(SEED)
 ################################################################################
 
 # Simulating some data
-N <- 530
-M <- 730
+N <- 934
+M <- 1053
 m <- 30
 x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 set <- sample(M, size = m)

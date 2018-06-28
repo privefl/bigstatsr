@@ -7,8 +7,8 @@ set.seed(SEED)
 ################################################################################
 
 # Simulating some data
-N <- 530
-M <- 730
+N <- 934
+M <- 1053
 m <- 30
 x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 set <- sample(M, size = m)
@@ -45,7 +45,7 @@ test_that("can be used with a subset of samples", {
                                      ncores = test_cores())
       preds2 <- predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
                         covar.row = covar[-ind, ])
-      expect_gt(AUC(preds2, y[-ind]), 0.65)
+      expect_gt(AUC(preds2, y[-ind]), 0.7)
     }
   }
 })
@@ -72,7 +72,7 @@ test_that("can be used with a subset of variables", {
       preds3 <- predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
                         covar.row = covar[-ind, ])
       # Test that prediction is bad when removing the causal variables
-      expect_lt(AUC(preds3, y[-ind]), 0.65)
+      expect_lt(AUC(preds3, y[-ind]), 0.7)
     }
   }
 })
@@ -130,7 +130,7 @@ test_that("Use a base predictor", {
                                     ind.sets = ind.sets,
                                     ncores = test_cores())
       preds <- predict(mod.bigstatsr, X, covar.row = covar)
-      expect_gt(AUC(preds[-ind], y[-ind]), 0.65)
+      expect_gt(AUC(preds[-ind], y[-ind]), 0.7)
 
       mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
                                      base.train = rep(5, length(ind)),
