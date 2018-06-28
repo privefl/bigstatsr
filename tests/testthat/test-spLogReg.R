@@ -45,7 +45,7 @@ test_that("can be used with a subset of samples", {
                                      ncores = test_cores())
       preds2 <- predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
                         covar.row = covar[-ind, ])
-      expect_gt(AUC(preds2, y[-ind]), 0.7)
+      expect_gt(AUC(preds2, y[-ind]), 0.65)
     }
   }
 })
@@ -130,7 +130,7 @@ test_that("Use a base predictor", {
                                     ind.sets = ind.sets,
                                     ncores = test_cores())
       preds <- predict(mod.bigstatsr, X, covar.row = covar)
-      expect_gt(AUC(preds[-ind], y[-ind]), 0.7)
+      expect_gt(AUC(preds[-ind], y[-ind]), 0.65)
 
       mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
                                      base.train = rep(5, length(ind)),
