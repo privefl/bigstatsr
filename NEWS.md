@@ -1,3 +1,13 @@
+## bigstatsr 0.4.0
+
+- possibility to add a "base predictor" for `big_spLinReg` and `big_spLogReg`.
+
+- **don't store the whole regularization path (as a sparse matrix) in `big_spLinReg` and `big_spLogReg` anymore because it caused major slowdowns.**
+
+- directly average the K predictions in `predict.big_sp_best_list`.
+
+- only use the "PSOCK" type of cluster because "FORK" can leave zombies behind. You can change this with `options(bigstatsr.cluster.type = "PSOCK")`.
+
 ## bigstatsr 0.3.4
 
 - Fix a bug in `big_spLinReg` related to the computation of summaries.
