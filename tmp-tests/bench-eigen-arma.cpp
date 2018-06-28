@@ -16,8 +16,8 @@ Eigen::MatrixXd multEigen(const Eigen::Map<Eigen::MatrixXd> X,
 }
 
 /*** R
-X <- matrix(1, 400, 1000)
-Y <- matrix(1, 1000, 200)
+X <- matrix(1, 400, 5000)
+Y <- matrix(1, 5000, 2000)
 all.equal(multArma(X, Y), multEigen(X, Y))
 microbenchmark::microbenchmark(
   multArma(X, Y),
