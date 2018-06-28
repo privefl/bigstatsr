@@ -319,32 +319,29 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     )
   }
 
-  if (return.all) {
-    cross.res
-  } else {
+  if (return.all) return(cross.res)
 
-    # Choose the best alpha (for the best lambdas)
-    ind.min <- which.min(
-      sapply(cross.res, function(l) {
-        mean(sapply(l, function(x) min(x$loss.val)))
-      })
-    )
+  # Choose the best alpha (for the best lambdas)
+  ind.min <- which.min(
+    sapply(cross.res, function(l) {
+      mean(sapply(l, function(x) min(x$loss.val, na.rm = TRUE)))
+    })
+  )
 
-    structure(
-      lapply(cross.res[[ind.min]], function(x) {
-        ind <- seq_along(x$ind.col)
-        list(
-          intercept  = x$intercept,
-          beta.X     = x$beta[ind],
-          beta.covar = x$beta[-ind]
-        )
-      }),
-      class = "big_sp_best_list",
-      ind.col = ind.col[keep],
-      family = family,
-      alpha = alphas[ind.min]
-    )
-  }
+  structure(
+    lapply(cross.res[[ind.min]], function(x) {
+      ind <- seq_along(x$ind.col)
+      list(
+        intercept  = x$intercept,
+        beta.X     = x$beta[ind],
+        beta.covar = x$beta[-ind]
+      )
+    }),
+    class = "big_sp_best_list",
+    ind.col = ind.col[keep],
+    family = family,
+    alpha = alphas[ind.min]
+  )
 }
 
 ################################################################################

@@ -41,19 +41,16 @@ test_that("can be used with a subset of samples", {
       mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar,
                                     alphas = alphas,
                                     ncores = test_cores())
-      preds <- rowMeans(
-        predict(mod.bigstatsr, X, ind.row = (1:N)[-ind], covar.row = covar[-ind, ])
-      )
+      preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],
+                       covar.row = covar[-ind, ])
       expect_gt(cor(preds, y[-ind]), 0.8)
 
       mod.bigstatsr2 <- big_spLinReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
                                      alphas = alphas,
                                      ncores = test_cores())
-      preds2 <- rowMeans(
-        predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
-                covar.row = covar[-ind, ])
-      )
+      preds2 <- predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
+                        covar.row = covar[-ind, ])
       expect_gt(cor(preds2, y[-ind]), 0.6)
     }
   }
@@ -78,10 +75,8 @@ test_that("can be used with a subset of variables", {
                                      covar.train = covar[ind, ],
                                      alphas = alpha,
                                      ncores = test_cores())
-      preds3 <- rowMeans(
-        predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
-                covar.row = covar[-ind, ])
-      )
+      preds3 <- predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
+                        covar.row = covar[-ind, ])
       # Test that prediction is bad when removing the first variables
       if (any(diff(preds3) != 0)) expect_lt(cor(preds3, y[-ind]), 0.2)
     }
@@ -105,16 +100,17 @@ test_that("parameter 'return.all' works and loss computation is correct", {
                                      ncores = test_cores())
 
       expect_length(mod.bigstatsr4, 1)
-      flatten <- unlist(mod.bigstatsr4, recursive = FALSE)
+      flatten <- mod.bigstatsr4[[1]]
       expect_true(all(sapply(flatten, class) == "big_sp"))
 
-      loss.val <- lapply(flatten, function(obj) {
+      lapply(flatten, function(obj) {
         ind.val <- setdiff(rows_along(X), obj$ind.train)
         y.val <- y[ind.val]
         preds <- predict(obj, X, ind.row = ind.val, covar.row = covar[ind.val, ])
-        apply(unname(preds), 2, function(pred) mean((y.val - pred)^2))  ## MSE
+        loss.val <- mean((y.val - preds)^2)  ## MSE
+        diff <- abs(loss.val - obj$loss.val)
+        expect_true(any(diff < 1e-8))
       })
-      expect_equal(loss.val, lapply(flatten, function(obj) obj$loss.val))
     }
   }
 })
@@ -137,7 +133,7 @@ test_that("Use a base predictor", {
                                     alphas = alphas,
                                     ind.sets = ind.sets,
                                     ncores = test_cores())
-      preds <- rowMeans(predict(mod.bigstatsr, X, covar.row = covar))
+      preds <- predict(mod.bigstatsr, X, covar.row = covar)
       expect_gt(cor(preds[-ind], y[-ind]), 0.6)
 
       mod.bigstatsr2 <- big_spLinReg(X, y[ind], ind.train = ind,
@@ -157,7 +153,7 @@ test_that("Use a base predictor", {
                                      alphas = alphas,
                                      ind.sets = ind.sets,
                                      ncores = test_cores())
-      preds3 <- rowMeans(predict(mod.bigstatsr3, X, covar.row = covar))
+      preds3 <- predict(mod.bigstatsr3, X, covar.row = covar)
       expect_equal(preds3, preds / 2, tolerance = 0.1)
     }
   }

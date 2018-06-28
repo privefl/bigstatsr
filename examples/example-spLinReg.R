@@ -11,11 +11,7 @@ ind.train <- sort(sample(nrow(X), 150))
 ind.test <- setdiff(rows_along(X), ind.train)
 
 test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
-                     covar.train = covar[ind.train, ],
-                     alpha = 1)
-# K = 10 predictions
-str(preds <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ]))
-# Combine them
-preds2 <- rowMeans(preds)
+                     covar.train = covar[ind.train, ])
 
-plot(preds2, y[ind.test], pch = 20); abline(0, 1, col = "red")
+preds <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ])
+plot(preds, y[ind.test], pch = 20); abline(0, 1, col = "red")

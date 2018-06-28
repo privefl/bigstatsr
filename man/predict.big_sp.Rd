@@ -5,8 +5,7 @@
 \title{Predict method}
 \usage{
 \method{predict}{big_sp}(object, X, ind.row = rows_along(X),
-  ind.col = object$ind.col, covar.row = NULL,
-  block.size = block_size(nrow(X)), ...)
+  ind.col = object$ind.col, covar.row = NULL, ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp}.}
@@ -23,14 +22,10 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{block.size}{Maximum number of columns read at once.
-Default uses \link{block_size}.}
-
 \item{...}{Not used.}
 }
 \value{
-A matrix of scores, with rows corresponding to \code{ind.row}
-and columns corresponding to \code{lambda}.
+A vector of scores, corresponding to \code{ind.row}.
 }
 \description{
 Predict method for class \code{big_sp}.

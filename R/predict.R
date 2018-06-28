@@ -8,8 +8,7 @@
 #' @inheritParams bigstatsr-package
 #' @param ... Not used.
 #'
-#' @return A matrix of scores, with rows corresponding to `ind.row`
-#' and columns corresponding to `lambda`.
+#' @return A vector of scores, corresponding to `ind.row`.
 #'
 #' @export
 #' @importFrom stats predict
@@ -20,36 +19,32 @@ predict.big_sp <- function(object, X,
                            ind.row = rows_along(X),
                            ind.col = object$ind.col,
                            covar.row = NULL,
-                           block.size = block_size(nrow(X)),
                            ...) {
 
   check_args()
 
-  betas <- object$beta
+  beta <- object$beta
 
   if (is.null(covar.row)) {
 
-    ind.nozero <- which(rowSums(betas != 0) > 0)
-    scores <- big_prodMat(X, betas[ind.nozero, , drop = FALSE],
+    ind.nozero <- which(beta != 0)
+    scores <- big_prodVec(X, beta[ind.nozero],
                           ind.row = ind.row,
-                          ind.col = ind.col[ind.nozero],
-                          block.size = block.size)
-
+                          ind.col = ind.col[ind.nozero])
   } else {
 
     assert_lengths(ind.row, rows_along(covar.row))
 
     ind.X <- seq_along(ind.col)
-    ind.nozero <- which(rowSums(betas != 0)[ind.X] > 0)
-    scores <- big_prodMat(X, betas[ind.X[ind.nozero], ],
+    ind.nozero <- which(beta[ind.X] != 0)
+    scores <- big_prodVec(X, beta[ind.nozero],
                           ind.row = ind.row,
-                          ind.col = ind.col[ind.nozero],
-                          block.size = block.size) +
-      covar.row %*% betas[-ind.X, , drop = FALSE]
+                          ind.col = ind.col[ind.nozero]) +
+      drop(covar.row %*% beta[-ind.X])
   }
 
-  rownames(scores) <- ind.row
-  as.matrix(sweep(scores, 2, object$intercept, '+'))
+  names(scores) <- ind.row
+  scores + object$intercept
 }
 
 ################################################################################
@@ -79,7 +74,7 @@ predict.big_sp_best_list <- function(object, X,
 
   check_args()
 
-  sapply(object, function(obj) {
+  K_scores <- sapply(object, function(obj) {
 
     beta.X <- obj$beta.X
     ind.nozero <- which(beta.X != 0)
@@ -92,9 +87,12 @@ predict.big_sp_best_list <- function(object, X,
     if (!is.null(covar.row))
       scores <- scores + drop(covar.row %*% obj$beta.covar)
 
-    names(scores) <- ind.row
-    `if`(proba, 1 / (1 + exp(-scores)), scores)
+    scores
   })
+
+  one_score <- rowMeans(K_scores)
+  names(one_score) <- ind.row
+  `if`(proba, 1 / (1 + exp(-one_score)), one_score)
 }
 
 ################################################################################
