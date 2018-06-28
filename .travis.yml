@@ -26,15 +26,3 @@ notifications:
   email:
     on_success: change
     on_failure: change
-
-before_install:
-  - Rscript -e 'Sys.getenv("BIGSTATSR_CRAN")'
-
-# https://github.com/travis-ci/travis-ci/issues/3849
-script:
-  - |
-    R CMD build .
-    travis_wait 40 R CMD check bigstatsr*tar.gz
-
-after_failure:
-  find *Rcheck -name '*.fail' -print -exec cat '{}' \;

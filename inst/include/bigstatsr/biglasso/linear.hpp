@@ -6,7 +6,7 @@
 /******              https://github.com/YaohuiZeng/biglasso              ******/
 /******************************************************************************/
 
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 
 using namespace Rcpp;
 using std::size_t;
@@ -32,7 +32,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
                              const NumericVector& lambda,
                              const NumericVector& center,
                              const NumericVector& scale,
-                             NumericVector& resid,
+                             NumericVector& z,
                              double alpha,
                              double eps,
                              int max_iter,
@@ -49,81 +49,80 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
   size_t n_val = macc_val.nrow();
   NumericVector pred_val(n_val);
-  NumericVector metrics(L, NA_REAL);
   double metric, metric_min;
   int no_change = 0;
 
-  // Objects to be returned to R
-  arma::sp_mat beta = arma::sp_mat(p, L); // beta
   NumericVector beta_old(p);
-  NumericVector loss(L);
-  IntegerVector iter(L);
+  // Objects to be returned to R
+  IntegerVector iter(L, NA_INTEGER);
+  NumericVector beta_max(p);
+  NumericVector loss(L, NA_REAL);
+  NumericVector metrics(L, NA_REAL);
 
-  double l1, l2, cutoff, shift, lam_l;
+  double l1, l2, lam_l, cutoff, shift;
   double max_update, update, thresh, shift_scaled, cpsum;
-  size_t i, j;
-  int l, ll, violations;
+  size_t i, j, violations;
   LogicalVector in_A(p); // ever active set
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
   double sumResid = Rcpp::sum(r);
+  iter[0] = 0;
   loss[0] = COPY_gLoss(r);
   thresh = eps * loss[0] / n;
   metrics[0] = metric_min = COPY_gLoss(y_val);
 
   // Path
-  for (l = 1; l < L; l++) {
+  for (int l = 1; l < L; l++) {
 
     // Rcout << "Iteration n°" << l << std::endl;
 
     // Check dfmax
-    if (Rcpp::sum(beta_old != 0) > dfmax) {
-      for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-      return List::create(beta, loss, iter, metrics);
+    if (Rcpp::sum(beta_old != 0) >= dfmax) {
+      return List::create(beta_max, loss, iter, metrics);
     }
-    // strong set
+
     lam_l = lambda[l];
+    l1 = lam_l * alpha;
+    l2 = lam_l - l1;
+    // strong set
     cutoff = 2 * lam_l - lambda[l-1];
     for (j = 0; j < p; j++) {
-      in_S[j] = (fabs(resid[j]) > (cutoff * alpha));
+      in_S[j] = (fabs(z[j]) > (cutoff * alpha));
     }
 
     // Approx: no check of rest set
-    while(iter[l] < max_iter){
-      while(iter[l] < max_iter) {
+    iter[l] = 0;
+    while (iter[l] < max_iter) {
+      while (iter[l] < max_iter) {
         iter[l]++;
 
-        //solve lasso over ever-active set
+        // Solve lasso over ever-active set
         max_update = 0;
         for (j = 0; j < p; j++) {
+
           if (in_A[j]) {
-            //crossprod_resid - given specific rows of X: separate computation
+            // Crossprod_resid - given specific rows of X: separate computation
             cpsum = 0;
             for (i = 0; i < n; i++) {
               cpsum += macc(i, j) * r[i];
             }
             cpsum = (cpsum - center[j] * sumResid) / scale[j];
-            resid[j] = cpsum / n + beta_old[j];
+            z[j] = cpsum / n + beta_old[j];
 
-            l1 = lam_l * alpha;
-            l2 = lam_l - l1;
-            beta(j, l) = COPY_lasso(resid[j], l1, l2, 1);
-
-            shift = beta(j, l) - beta_old[j];
-            if (shift !=0) {
+            shift = COPY_lasso(z[j], l1, l2, 1.0) - beta_old[j];
+            if (shift != 0) {
               // compute objective update for checking convergence
               update = shift * shift;
-              if (update > max_update) {
-                max_update = update;
-              }
-              // update r and sum of residual
+              if (update > max_update) max_update = update;
+
+              // update r (residuals)
               shift_scaled = shift / scale[j];
+              sumResid = 0;
               for (i = 0; i < n; i++) {
-                update = shift_scaled * (macc(i, j) - center[j]);
-                r[i] -= update;
-                sumResid -= update;
+                r[i] -= shift_scaled * (macc(i, j) - center[j]);
+                sumResid += r[i];
               }
-              beta_old[j] = beta(j, l); // update beta_old
+              beta_old[j] += shift; // update beta_old
             }
           }
         }
@@ -132,9 +131,9 @@ List COPY_cdfit_gaussian_hsr(C macc,
       }
 
       // Scan for violations in strong set
-      violations = COPY_check_strong_set(in_A, in_S, resid, macc, beta_old,
-                                         center, scale, lam_l, sumResid,
-                                         alpha, r, n, p);
+      violations = COPY_check_strong_set(
+        in_A, in_S, z, macc, center, scale, beta_old,
+        lam_l, sumResid, alpha, r, n, p);
       if (violations == 0) break;
     }
 
@@ -145,6 +144,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     // Rcout << metric << std::endl;
     metrics[l] = metric;
     if (metric < 0.99 * metric_min) {
+      std::copy(beta_old.begin(), beta_old.end(), beta_max.begin());
       metric_min = metric;
       no_change = 0;
     }
@@ -154,12 +154,11 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
     if (l >= nlam_min && no_change >= n_abort) {
       if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
-      for (ll = l; ll < L; ll++) iter[ll] = NA_INTEGER;
-      return List::create(beta, loss, iter, metrics);
+      return List::create(beta_max, loss, iter, metrics);
     }
   }
 
-  return List::create(beta, loss, iter, metrics);
+  return List::create(beta_max, loss, iter, metrics);
 }
 
 } }

@@ -36,7 +36,7 @@ null_pred <- function(y, base) {
     sum(1 / (1 + exp(b0 + base[ind1]))) -
       sum(1 / (1 + exp(-(b0 + base[ind0]))))
   }
-  b0 <- stats::uniroot(f, c(-20, 20), check.conv = TRUE,
+  b0 <- stats::uniroot(f, c(-10, 10), check.conv = TRUE,
                        tol = .Machine$double.eps)$root
 
   c(b0, mean(1 / (1 + exp(-(b0 + x)))))
@@ -51,8 +51,9 @@ null_pred <- function(y, base) {
 #'
 #' @return A named list with following variables:
 #'   \item{intercept}{A vector of intercepts, corresponding to each lambda.}
-#'   \item{beta}{The vector of coefficients that minimized the loss on the
-#'     validation set.}
+#'   \item{beta}{The fitted matrix of coefficients, store in sparse matrix
+#'     representation. The number of rows is equal to the number of
+#'     coefficients, and the number of columns is equal to `nlambda`.}
 #'   \item{iter}{A vector of length `nlambda` containing the number of
 #'     iterations until convergence at each value of `lambda`.}
 #'   \item{lambda}{The sequence of regularization parameter values in the path.}
@@ -80,16 +81,17 @@ null_pred <- function(y, base) {
 #'     than `1e-6`. Features with 'scale' less than 1e-6 are removed from
 #'     model fitting.}
 #'
+#' @import Matrix
+#'
 #' @keywords internal
 #'
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
                                eps, max.iter, dfmax, warn,
-                               ind.val, covar.val, y.val, n.abort, nlam.min,
-                               b0, base.train, base.val) {
+                               ind.val, covar.val, y.val, n.abort, nlam.min) {
 
-  assert_lengths(y.train, base.train, ind.train, rows_along(covar.train))
-  assert_lengths(y.val, base.val, ind.val, rows_along(covar.val))
+  assert_lengths(y.train, ind.train, rows_along(covar.train))
+  assert_lengths(y.val, ind.val, rows_along(covar.val))
   assert_lengths(c(ind.col, cols_along(covar.train)), center, scale, resid)
   stopifnot(length(intersect(ind.train, ind.val)) == 0)
 
@@ -103,8 +105,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
       lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
       ind.val, covar.val, y.val - y.train.mean, n.abort, nlam.min)
 
-    a <- y.train.mean
-    b <- res[[1]]
+    b <- Matrix(res[[1]], sparse = TRUE)
+    a <- rep(y.train.mean, ncol(b))
     loss <- res[[2]]
     iter <- res[[3]]
     loss.val <- res[[4]]
@@ -112,12 +114,12 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   } else if (family == "binomial") {
 
     res <- COPY_cdfit_binomial_hsr(
-      X, y.train, base.train, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, b0, eps, max.iter, dfmax, warn,
-      ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
+      X, y.train, ind.train, ind.col, covar.train,
+      lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
+      ind.val, covar.val, y.val, n.abort, nlam.min)
 
     a <- res[[1]]
-    b <- res[[2]]
+    b <- Matrix(res[[2]], sparse = TRUE)
     loss <- res[[3]]
     iter <- res[[4]]
     loss.val <- res[[5]]
@@ -128,6 +130,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
   ## Eliminate saturated lambda values, if any
   ind <- !is.na(iter)
+  a <- a[ind]
+  b <- b[, ind, drop = FALSE]
   iter <- iter[ind]
   lambda <- lambda[ind]
   loss <- loss[ind] / length(ind.train)
@@ -138,7 +142,10 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
   ## Unstandardize coefficients:
   bb <- b / scale
-  aa <- a - sum(center * bb)
+  aa <- a - as.numeric(crossprod(center, bb))
+
+  ## Names
+  names(aa) <- colnames(bb) <- signif(lambda, digits = 4)
 
   ## Output
   structure(list(
@@ -182,10 +189,10 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param eps Convergence threshold for inner coordinate descent.
 #' The algorithm iterates until the maximum change in the objective after any
 #' coefficient update is less than `eps` times the null deviance.
-#' Default value is `1e-5`.
+#' Default value is `1e-7`.
 #' @param max.iter Maximum number of iterations. Default is `1000`.
 #' @param dfmax Upper bound for the number of nonzero coefficients. Default is
-#' `50e3` because, for large data sets, computational burden may be
+#' `20e3` because, for large data sets, computational burden may be
 #' heavy for models with a large number of nonzero coefficients.
 #' @param warn Return warning messages for failures to converge and model
 #' saturation? Default is `FALSE`.
@@ -213,9 +220,9 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                nlam.min = 50,
                                n.abort = 10,
                                base.train = NULL,
-                               eps = 1e-5,
+                               eps = 1e-7,
                                max.iter = 1000,
-                               dfmax = 50e3,
+                               dfmax = 20e3,
                                warn = FALSE,
                                return.all = FALSE,
                                ncores = 1) {
@@ -249,7 +256,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       null_pred(y.train[-ind], base.train[-ind])
     })
     b0 <- tmp[1, ]
-    assert_lengths(b0, 1:K)
     y_null.train <- tmp[2, ]
   } else {
     assert_multiple(y.train)
@@ -284,7 +290,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
 
-  alphas <- sort(alphas)
   cross.res <- foreach(alpha = alphas) %:% foreach(ic = 1:K) %dopar% {
 
     in.val <- (ind.sets == ic)
@@ -311,37 +316,37 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.val = ind.train[in.val],
       covar.val = covar.train[in.val, , drop = FALSE],
       y.val = y.train[in.val],
-      n.abort, nlam.min,
-      ## used only for binomial:
-      b0 = b0[ic],
-      base.train = base.train[!in.val],
-      base.val = base.train[in.val]
+      n.abort, nlam.min
     )
   }
 
-  if (return.all) return(cross.res)
+  if (return.all) {
+    cross.res
+  } else {
 
-  # Choose the best alpha (for the best lambdas)
-  ind.min <- which.min(
-    sapply(cross.res, function(l) {
-      mean(sapply(l, function(x) min(x$loss.val, na.rm = TRUE)))
-    })
-  )
+    # Choose the best alpha (for the best lambdas)
+    ind.min <- which.min(
+      sapply(cross.res, function(l) {
+        mean(sapply(l, function(x) min(x$loss.val)))
+      })
+    )
 
-  structure(
-    lapply(cross.res[[ind.min]], function(x) {
-      ind <- seq_along(x$ind.col)
-      list(
-        intercept  = x$intercept,
-        beta.X     = x$beta[ind],
-        beta.covar = x$beta[-ind]
-      )
-    }),
-    class = "big_sp_best_list",
-    ind.col = ind.col[keep],
-    family = family,
-    alpha = alphas[ind.min]
-  )
+    structure(
+      lapply(cross.res[[ind.min]], function(x) {
+        best <- which.min(x$loss.val)
+        ind <- seq_along(x$ind.col)
+        list(
+          intercept  = unname(x$intercept[best]),
+          beta.X     = x$beta[ind, best],
+          beta.covar = x$beta[-ind, best]
+        )
+      }),
+      class = "big_sp_best_list",
+      ind.col = ind.col[keep],
+      family = family,
+      alpha = alphas[ind.min]
+    )
+  }
 }
 
 ################################################################################

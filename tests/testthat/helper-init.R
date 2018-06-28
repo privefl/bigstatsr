@@ -7,17 +7,18 @@ Sys.unsetenv("R_TESTS")
 
 library(testthat)
 library(bigstatsr)
-library(Matrix)
 
 ################################################################################
 
-test_cores <- function() {
+opt.save <- options(bigstatsr.typecast.warning = FALSE,
+                    bigstatsr.block.sizeGB = 1e-5)
 
-  is.cran      <- !identical(Sys.getenv("BIGSTATSR_CRAN"), "false")
-  # is.randomSVD <- (get_reporter()$.context == "RANDOM_SVD")
+################################################################################
 
-  `if`(is.cran, 1, sample(2, size = 1))  # && is.randomSVD
-}
+not_cran <- identical(Sys.getenv("BIGSTATSR_CRAN"), "false") ||
+  identical(Sys.getenv("NOT_CRAN"), "true")
+
+test_cores <- function() `if`(not_cran, sample(2, size = 1), 1)
 
 ################################################################################
 
@@ -45,16 +46,14 @@ diffPCs <- function(test, rot) {
 
 ################################################################################
 
-opt.save <- options(bigstatsr.typecast.warning = FALSE,
-                    bigstatsr.block.sizeGB = 1e-5)
-
-################################################################################
-
 set.seed(NULL)
-# Seeds that won't work (because of bad luck)
-##  235: big_spLogReg
-do_not_use <- c(235)
-while ((SEED <- round(runif(1, 1, 9999))) %in% do_not_use) NULL
+if (not_cran) {
+  # Seeds that won't work (because of bad luck)
+  do_not_use <- c()
+  while ((SEED <- round(runif(1, 1, 9999))) %in% do_not_use) NULL
+} else {
+  SEED <- 1
+}
 cat("========== SEED:", SEED, "==========\n")
 
 ################################################################################

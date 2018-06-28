@@ -48,13 +48,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // COPY_cdfit_binomial_hsr
-List COPY_cdfit_binomial_hsr(Environment BM, const NumericVector& y, const IntegerVector& row_idx, const IntegerVector& col_idx, const NumericMatrix& covar, const NumericVector& lambda, const NumericVector& center, const NumericVector& scale, NumericVector& resid, double alpha, double eps, int max_iter, int dfmax, bool warn, const IntegerVector& row_idx_val, const NumericMatrix& covar_val, const NumericVector& y_val, int n_abort, int nlam_min);
-RcppExport SEXP _bigstatsr_COPY_cdfit_binomial_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP col_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP centerSEXP, SEXP scaleSEXP, SEXP residSEXP, SEXP alphaSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP dfmaxSEXP, SEXP warnSEXP, SEXP row_idx_valSEXP, SEXP covar_valSEXP, SEXP y_valSEXP, SEXP n_abortSEXP, SEXP nlam_minSEXP) {
+List COPY_cdfit_binomial_hsr(Environment BM, const NumericVector& y, const NumericVector& base, const IntegerVector& row_idx, const IntegerVector& col_idx, const NumericMatrix& covar, const NumericVector& lambda, const NumericVector& center, const NumericVector& scale, NumericVector& resid, double alpha, double b0, double eps, int max_iter, int dfmax, bool warn, const IntegerVector& row_idx_val, const NumericMatrix& covar_val, const NumericVector& y_val, const NumericVector& base_val, int n_abort, int nlam_min);
+RcppExport SEXP _bigstatsr_COPY_cdfit_binomial_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP baseSEXP, SEXP row_idxSEXP, SEXP col_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP centerSEXP, SEXP scaleSEXP, SEXP residSEXP, SEXP alphaSEXP, SEXP b0SEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP dfmaxSEXP, SEXP warnSEXP, SEXP row_idx_valSEXP, SEXP covar_valSEXP, SEXP y_valSEXP, SEXP base_valSEXP, SEXP n_abortSEXP, SEXP nlam_minSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type base(baseSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx(row_idxSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type col_idx(col_idxSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar(covarSEXP);
@@ -63,6 +64,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type resid(residSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type b0(b0SEXP);
     Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< int >::type dfmax(dfmaxSEXP);
@@ -70,9 +72,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type row_idx_val(row_idx_valSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covar_val(covar_valSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y_val(y_valSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type base_val(base_valSEXP);
     Rcpp::traits::input_parameter< int >::type n_abort(n_abortSEXP);
     Rcpp::traits::input_parameter< int >::type nlam_min(nlam_minSEXP);
-    rcpp_result_gen = Rcpp::wrap(COPY_cdfit_binomial_hsr(BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, warn, row_idx_val, covar_val, y_val, n_abort, nlam_min));
+    rcpp_result_gen = Rcpp::wrap(COPY_cdfit_binomial_hsr(BM, y, base, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, b0, eps, max_iter, dfmax, warn, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -425,7 +428,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_auc_sorted", (DL_FUNC) &_bigstatsr_auc_sorted, 2},
     {"_bigstatsr_COPY_cdfit_gaussian_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_gaussian_hsr, 19},
-    {"_bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_binomial_hsr, 19},
+    {"_bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_binomial_hsr, 22},
     {"_bigstatsr_bigsummaries", (DL_FUNC) &_bigstatsr_bigsummaries, 7},
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},
     {"_bigstatsr_mycount1", (DL_FUNC) &_bigstatsr_mycount1, 4},

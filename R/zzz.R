@@ -3,8 +3,7 @@
 .onLoad <- function(libname, pkgname) {
   options(
     bigstatsr.ncores.max = parallel::detectCores(),
-    bigstatsr.cluster.type =
-      `if`(Sys.info()[["sysname"]] == "Windows", "PSOCK", "FORK"),
+    bigstatsr.cluster.type = "PSOCK",
     bigstatsr.check.args = TRUE,
     bigstatsr.block.sizeGB = 1,
     bigstatsr.typecast.warning = TRUE

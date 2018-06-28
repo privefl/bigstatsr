@@ -16,14 +16,14 @@ nb_cores <- function() {
     ncores <- parallel::detectCores(logical = FALSE)
   } else {
     # https://stackoverflow.com/a/23378780/6103040
-    cmd <- "[[ $(uname) = 'Darwin' ]] && sysctl -n hw.physicalcpu_max ||
+    cmd <- "[ $(uname) = 'Darwin' ] && sysctl -n hw.physicalcpu_max ||
             lscpu -p | egrep -v '^#' | sort -u -t, -k 2,4 | wc -l"
     ncores <- as.integer(system(cmd, intern = TRUE))
   }
 
   all_cores <- parallel::detectCores(logical = TRUE)
 
-  `if`(ncores < all_cores, ncores, all_cores - 1)
+  `if`(ncores < all_cores, ncores, all_cores - 1L)
 }
 
 ################################################################################
@@ -77,10 +77,10 @@ big_parallelize <- function(X, p.FUN,
     on.exit(parallel::stopCluster(cl), add = TRUE)
   }
 
-  range.parts <- CutBySize(length(ind), nb = ncores)
+  intervals <- CutBySize(length(ind), nb = ncores)
 
-  res <- foreach(ic = seq_len(ncores)) %dopar% {
-    p.FUN(X, ind = ind[seq2(range.parts[ic, ])], ...)
+  res <- foreach(ic = rows_along(intervals)) %dopar% {
+    p.FUN(X, ind = ind[seq2(intervals[ic, ])], ...)
   }
 
   `if`(is.null(p.combine), res, do.call(p.combine, res))

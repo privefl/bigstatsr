@@ -37,6 +37,7 @@ get_nline <- function(file) {
 #'
 #' @export
 #' @importFrom magrittr %>%
+#' @importFrom utils head tail
 #'
 big_read <- function(file,
                      file.nheader = 0,

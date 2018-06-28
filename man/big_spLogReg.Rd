@@ -42,10 +42,10 @@ the number of variables and \code{.001} otherwise.}
   \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
-Default value is \code{1e-7}.}
+Default value is \code{1e-5}.}
   \item{max.iter}{Maximum number of iterations. Default is \code{1000}.}
   \item{dfmax}{Upper bound for the number of nonzero coefficients. Default is
-\code{20e3} because, for large data sets, computational burden may be
+\code{50e3} because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.}
   \item{warn}{Return warning messages for failures to converge and model
 saturation? Default is \code{FALSE}.}
@@ -110,17 +110,14 @@ ind.train <- sort(sample(nrow(X), 150))
 ind.test <- setdiff(rows_along(X), ind.train)
 
 test <- big_spLogReg(X, y01[ind.train], ind.train = ind.train,
-                     covar.train = covar[ind.train, ],
-                     alpha = 1)
-# K = 10 predictions
-str(preds <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ]))
-# Combine them
-preds2 <- rowMeans(preds)
+                     covar.train = covar[ind.train, ])
 
+preds <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ])
 library(ggplot2)
-qplot(preds2, fill = as.logical(y01[ind.test]), geom = "density", alpha = I(0.4)) +
-  labs(fill = "Case?")
-AUC(preds2, y01[ind.test])
+qplot(preds, fill = as.logical(y01[ind.test]), geom = "density", alpha = I(0.4)) +
+  labs(fill = "Case?") +
+  theme_bigstatsr()
+AUC(preds, y01[ind.test])
 }
 \references{
 Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,

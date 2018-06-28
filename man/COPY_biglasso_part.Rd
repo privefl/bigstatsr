@@ -6,14 +6,13 @@
 \usage{
 COPY_biglasso_part(X, y.train, ind.train, ind.col, covar.train, family, lambda,
   center, scale, resid, alpha, eps, max.iter, dfmax, warn, ind.val, covar.val,
-  y.val, n.abort, nlam.min)
+  y.val, n.abort, nlam.min, b0, base.train, base.val)
 }
 \value{
 A named list with following variables:
 \item{intercept}{A vector of intercepts, corresponding to each lambda.}
-\item{beta}{The fitted matrix of coefficients, store in sparse matrix
-representation. The number of rows is equal to the number of
-coefficients, and the number of columns is equal to \code{nlambda}.}
+\item{beta}{The vector of coefficients that minimized the loss on the
+validation set.}
 \item{iter}{A vector of length \code{nlambda} containing the number of
 iterations until convergence at each value of \code{lambda}.}
 \item{lambda}{The sequence of regularization parameter values in the path.}
