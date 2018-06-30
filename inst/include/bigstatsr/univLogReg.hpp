@@ -27,8 +27,8 @@ List IRLS(C macc,
   myassert(covar.n_rows == n, ERROR_DIM);
   myassert(y.n_elem == n, ERROR_DIM);
 
-  arma::mat tcovar(K, n), cprod(K, K), cprod_inv(K, K);
-  arma::vec Xb(n), p(n), w(n), z(n), betas_old(K), betas_new(K);
+  arma::mat cprod(K, K), cprod_inv(K, K);
+  arma::vec Xb(n), p(n), w(n), coeffs(K), shift(K);
   double diff;
   size_t i, j, c;
 
@@ -42,25 +42,23 @@ List IRLS(C macc,
     }
 
     c = 1;
-    betas_new = solve(covar.t() * (covar.each_col() % w0), covar.t() * z0);
+    coeffs = solve(covar.t() * (covar.each_col() % w0), covar.t() * z0);
 
     do {
       c++;
-      betas_old = betas_new;
 
-      Xb = covar * betas_old;
+      Xb = covar * coeffs;
       p = 1 / (1 + exp(-Xb));
       w = p % (1 - p);
-      z = Xb % w + y - p;
 
       cprod = covar.t() * (covar.each_col() % w);
-      betas_new = solve(cprod, covar.t() * z);
+      shift = solve(cprod, covar.t() * (y - p));
+      coeffs += shift;
 
-      diff = 2 * max(abs(betas_old - betas_new)
-                       / (abs(betas_old) + abs(betas_new)));
+      diff = max(abs(shift) / (abs(shift) + abs(coeffs)));
     } while (diff > tol && c < maxiter);
 
-    beta[j] = betas_new(0);
+    beta[j] = coeffs(0);
     cprod_inv = inv(cprod);
     var[j] = cprod_inv(0, 0);
     niter[j] = c;
