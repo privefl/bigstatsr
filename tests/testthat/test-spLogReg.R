@@ -46,6 +46,9 @@ test_that("can be used with a subset of samples", {
       preds2 <- predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
                         covar.row = covar[-ind, ])
       expect_gt(AUC(preds2, y[-ind]), 0.7)
+
+      expect_error(predict(mod.bigstatsr2, X, covar.row = covar, abc = 2),
+                   "Argument 'abc' not used.")
     }
   }
 })

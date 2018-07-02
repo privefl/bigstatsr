@@ -47,6 +47,9 @@ test_that("equality with lm with all data", {
 
       p <- plot(mod, type = sample(c("Manhattan", "Q-Q", "Volcano"), 1))
       expect_s3_class(p, "ggplot")
+
+      expect_error(predict(mod, abc = 2), "Argument 'abc' not used.")
+      expect_error(plot(mod, abc = 2), "Argument 'abc' not used.")
     }
   }
 })

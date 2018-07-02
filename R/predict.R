@@ -21,6 +21,7 @@ predict.big_sp <- function(object, X,
                            covar.row = NULL,
                            ...) {
 
+  assert_nodots()
   check_args()
 
   beta <- object$beta
@@ -72,6 +73,7 @@ predict.big_sp_best_list <- function(object, X,
                                      proba = (attr(object, "family") == "binomial"),
                                      ...) {
 
+  assert_nodots()
   check_args()
 
   K_scores <- sapply(object, function(obj) {
@@ -112,15 +114,14 @@ predict.big_sp_best_list <- function(object, X,
 #'
 #' @export
 #' @importFrom stats predict
-#' @importFrom magrittr %>%
 #'
 #' @seealso [big_univLinReg] and [big_univLogReg].
 #'
 predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 
-  lpval <- scores %>%
-    attr(object, "transfo")() %>%
-    attr(object, "predict")()
+  assert_nodots()
+  scores.trans <- attr(object, "transfo")(scores)
+  lpval <- attr(object, "predict")(scores.trans)
 
   `if`(log10, lpval, 10^lpval)
 }
@@ -137,7 +138,6 @@ predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 #'
 #' @export
 #' @importFrom stats predict
-#' @importFrom magrittr %>%
 #'
 #' @return A matrix of size \eqn{n \times K} where `n` is the number of samples
 #' corresponding to indices in `ind.row` and K the number of PCs
@@ -154,6 +154,8 @@ predict.big_SVD <- function(object, X = NULL,
                             block.size = block_size(nrow(X)),
                             ...) {
 
+  assert_nodots()
+
   if (is.null(X)) {
     # U * D
     sweep(object$u, 2, object$d, '*')
@@ -162,11 +164,11 @@ predict.big_SVD <- function(object, X = NULL,
 
     # Multiplication with clever scaling (see vignettes)
     v2 <- object$v / object$scale
-    big_prodMat(X, v2,
-                ind.row = ind.row,
-                ind.col = ind.col,
-                block.size = block.size) %>%
-      sweep(2, crossprod(object$center, v2), '-')
+    Xv2 <- big_prodMat(X, v2,
+                       ind.row = ind.row,
+                       ind.col = ind.col,
+                       block.size = block.size)
+    sweep(Xv2, 2, crossprod(object$center, v2), '-')
   }
 }
 

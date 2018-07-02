@@ -200,3 +200,13 @@ assert_ext <- function(file, ext) {
 }
 
 ################################################################################
+
+# ... not used
+assert_nodots <- function() {
+
+  list_dots <- eval(parse(text = "list(...)"), parent.frame())
+  if (!identical(list_dots, list()))
+    stop2("Argument '%s' not used.", names(list_dots[1]))
+}
+
+################################################################################

@@ -76,6 +76,8 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
                          viridis = requireNamespace("viridis", quietly = TRUE),
                          ...) {
 
+  assert_nodots()
+
   assert_lengths(nval, 1)
   assert_lengths(scores, 1:2)
 
@@ -168,6 +170,8 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 plot.mhtest <- function(x, type = c("hist", "Manhattan", "Q-Q", "Volcano"),
                         coeff = 1,
                         ...) {
+
+  assert_nodots()
 
   lpval <- predict(x) # log10(p)
 

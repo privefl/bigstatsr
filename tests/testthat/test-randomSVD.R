@@ -46,6 +46,9 @@ test_that("equality with prcomp", {
 
     p <- plot(test, type = sample(c("screeplot", "scores", "loadings"), 1))
     expect_s3_class(p, "ggplot")
+
+    expect_error(predict(test, abc = 2), "Argument 'abc' not used.")
+    expect_error(plot(test, abc = 2), "Argument 'abc' not used.")
   }
 })
 
