@@ -39,7 +39,7 @@ test_that("read without dimnames", {
                        backingfile = tmp, save = save)
 
       expect_true(typeof(test$FBM) == t)
-      expect_equal(test$FBM$backingfile, paste0(tmp, ".bk"))
+      expect_equal(test$FBM$backingfile, normalizePath(paste0(tmp, ".bk")))
       expect_true(file.exists(paste0(tmp, ".rds")) == save)
       expect_equal(test$FBM[], X[, -(skip - 5)])
       expect_identical(test$colnames, NULL)
