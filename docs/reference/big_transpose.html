@@ -59,7 +59,7 @@ the transposition of a Filebacked Big Matrix." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -178,11 +178,9 @@ and type are automatically determined from the input Filebacked Big Matrix.</p>
 #&gt;  [7,]  0.3632666 -1.46919721 -0.27238743 -0.6668816  0.4001965
 #&gt;  [8,] -1.2024052  1.71161610  1.35087625 -2.2213390 -0.7016278
 #&gt;  [9,] -1.0570538 -1.45108239 -0.86418153 -2.3504406  0.1666218
-#&gt; [10,]  0.7734351  0.53026708 -0.05273192  2.1559279 -0.7677546</div><div class='input'><span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
-<span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt; [10,]  0.7734351  0.53026708 -0.05273192  2.1559279 -0.7677546</div><div class='input'><span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; <span class='error'>Error in match.arg(type): 'arg' should be one of “double”, “integer”, “unsigned short”, “unsigned char”, “raw”</span></div><div class='input'><span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; <span class='error'>Error in identical(t(X[]), Xt[]): objet 'Xt' introuvable</span></div><div class='input'>
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
-<span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; <span class='error'>Error in match.arg(type): 'arg' should be one of “double”, “integer”, “unsigned short”, “unsigned char”, “raw”</span></div><div class='input'><span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; <span class='error'>Error in identical(t(X[]), Xt[]): objet 'Xt' introuvable</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

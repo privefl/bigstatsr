@@ -59,7 +59,7 @@ Covariates can be added to correct for confounders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -187,10 +187,10 @@ the number of variables and <code>.001</code> otherwise.</p></dd>
   <dt>eps</dt><dd><p>Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than <code>eps</code> times the null deviance.
-Default value is <code>1e-7</code>.</p></dd>
+Default value is <code>1e-5</code>.</p></dd>
   <dt>max.iter</dt><dd><p>Maximum number of iterations. Default is <code>1000</code>.</p></dd>
   <dt>dfmax</dt><dd><p>Upper bound for the number of nonzero coefficients. Default is
-<code>20e3</code> because, for large data sets, computational burden may be
+<code>50e3</code> because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.</p></dd>
   <dt>warn</dt><dd><p>Return warning messages for failures to converge and model
 saturation? Default is <code>FALSE</code>.</p></dd>
@@ -270,16 +270,10 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 <span class='no'>ind.test</span> <span class='kw'>&lt;-</span> <span class='fu'>setdiff</span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='no'>ind.train</span>)
 
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>], <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
-                     <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
-                     <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='co'># K = 10 predictions</span>
-<span class='fu'>str</span>(<span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ]))</div><div class='output co'>#&gt;  num [1:80, 1:10] 3.66 5.22 -6.81 -14.67 22.81 ...
-#&gt;  - attr(*, "dimnames")=List of 2
-#&gt;   ..$ : chr [1:80] "4" "5" "6" "7" ...
-#&gt;   ..$ : NULL</div><div class='input'><span class='co'># Combine them</span>
-<span class='no'>preds2</span> <span class='kw'>&lt;-</span> <span class='fu'>rowMeans</span>(<span class='no'>preds</span>)
+                     <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ])
 
-<span class='fu'>plot</span>(<span class='no'>preds2</span>, <span class='no'>y</span>[<span class='no'>ind.test</span>], <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>); <span class='fu'>abline</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='big_spLinReg-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ])
+<span class='fu'>plot</span>(<span class='no'>preds</span>, <span class='no'>y</span>[<span class='no'>ind.test</span>], <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>); <span class='fu'>abline</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='big_spLinReg-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

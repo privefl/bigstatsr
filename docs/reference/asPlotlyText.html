@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -153,7 +153,8 @@
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
 
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>svd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'>
+<span class='no'>svd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>)
 
 <span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"POP1"</span>, <span class='st'>"POP2"</span>, <span class='st'>"POP3"</span>), <span class='fu'>c</span>(<span class='fl'>143</span>, <span class='fl'>167</span>, <span class='fl'>207</span>))

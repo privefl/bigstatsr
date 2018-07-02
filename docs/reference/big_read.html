@@ -30,7 +30,7 @@
 
 <meta property="og:title" content="Read a file — big_read" />
 
-<meta property="og:description" content="Read a file as a Filebacked Big Matrix.
+<meta property="og:description" content="Read a file as a Filebacked Big Matrix and a data frame of meta information.
 For a mini-tutorial, please see this vignette." />
 <meta name="twitter:card" content="summary" />
 
@@ -59,7 +59,7 @@ For a mini-tutorial, please see this vignette." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -130,14 +130,15 @@ For a mini-tutorial, please see this vignette." />
 
     <div class="ref-description">
     
-    <p>Read a file as a Filebacked Big Matrix.
+    <p>Read a file as a Filebacked Big Matrix and a data frame of meta information.
 For a mini-tutorial, please see <a href='https://goo.gl/91oNxU'>this vignette</a>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>big_read</span>(<span class='no'>file</span>, <span class='kw'>file.nheader</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>file.nline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>info.nelem</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>split</span> <span class='kw'>=</span> <span class='st'>" "</span>, <span class='kw'>read.what</span> <span class='kw'>=</span> <span class='fu'>double</span>(), <span class='kw'>read.transfo</span> <span class='kw'>=</span> <span class='no'>identity</span>,
-  <span class='kw'>BM.type</span> <span class='kw'>=</span> <span class='fu'>typeof</span>(<span class='no'>read.what</span>), <span class='kw'>transpose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_read</span>(<span class='no'>file</span>, <span class='no'>sep</span>, <span class='no'>header</span>, <span class='kw'>confirmed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ind.skip</span> <span class='kw'>=</span> <span class='fu'>integer</span>(<span class='fl'>0</span>), <span class='kw'>ind.meta</span> <span class='kw'>=</span> <span class='fu'>integer</span>(<span class='fl'>0</span>), <span class='kw'>nlines</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>nlines.block</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fun.con</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>f</span>) <span class='fu'>file</span>(<span class='no'>f</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='st'>"rt"</span>),
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,45 +148,52 @@ For a mini-tutorial, please see <a href='https://goo.gl/91oNxU'>this vignette</a
       <td><p>The path to the file to be read.</p></td>
     </tr>
     <tr>
-      <th>file.nheader</th>
-      <td><p>Number of lines to read at the beginning of the file,
-as a separate header information. Default is <code>0</code>. Each line is read as one
-string. You may need to post-process it with strsplit. See examples.</p></td>
+      <th>sep</th>
+      <td><p>The field separator character.</p></td>
     </tr>
     <tr>
-      <th>file.nline</th>
-      <td><p>Number of total lines of the file. Default is <code>NULL</code> and a
-function computes it. This function doesn't work for compressed files so that
-you will have to explicitly specify the number of lines of the file.</p></td>
+      <th>header</th>
+      <td><p>A logical value indicating whether the file contains the names
+of the variables as its first line.</p></td>
     </tr>
     <tr>
-      <th>info.nelem</th>
-      <td><p>Number of elements of extra information to read at the
-beginning of each line. Default is <code>0</code>.</p></td>
+      <th>confirmed</th>
+      <td><p>A logical value indicating whether you don't want to pause
+to confirm that everything has been parsed like you wanted.
+Default is <code>FALSE</code> and will ask you to confirm during execution.</p></td>
     </tr>
     <tr>
-      <th>split</th>
-      <td><p>The separator used in the file. Default is a space.</p></td>
+      <th>verbose</th>
+      <td><p>Be verbose? Default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
-      <th>read.what</th>
-      <td><p>What type of elements to scan? Default is <code>double()</code>.
-You can also use <code>character()</code> or <code>integer()</code>.</p></td>
+      <th>ind.skip</th>
+      <td><p>An integer vector specifying which columns to skip.</p></td>
     </tr>
     <tr>
-      <th>read.transfo</th>
-      <td><p>Function that transforms each line you read.</p></td>
+      <th>ind.meta</th>
+      <td><p>An integer vector specifying which columns should be part of
+the meta information. Non-numeric columns will automatically be added to
+meta information because they can't be stored in an FBM.</p></td>
     </tr>
     <tr>
-      <th>BM.type</th>
-      <td><p>Type of the resulting Filebacked Big Matrix. Default uses the
-type of <code>read.what</code>. This can be useful if you have only small integers or
-that the <code>read.transfo</code> function transforms the type of what is read.</p></td>
+      <th>nlines</th>
+      <td><p>Number of lines of the file (including possible header).
+Default automatically gets this number thanks to a function of David Gohel.</p></td>
     </tr>
     <tr>
-      <th>transpose</th>
-      <td><p>Should the resulting Filebacked Big Matrix be transposed?
-Default is <code>FALSE</code>.</p></td>
+      <th>nlines.block</th>
+      <td><p>Number of lines to be read at once. Default automatically
+gets this number based on <code>getOption("bigstatsr.block.sizeGB")</code>.</p></td>
+    </tr>
+    <tr>
+      <th>fun.con</th>
+      <td><p>Function to open a connection from a file.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Type of the resulting Filebacked Big Matrix.
+Default is automatically guessing between <code>"integer"</code> and <code>"double"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -205,7 +213,12 @@ the backingfile. Default is <code>FALSE</code>.</p></dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A Filebacked Big Matrix with two attributes <code>header</code> and <code>info</code>.</p>
+    <p>A list with 3 elements:</p><ul>
+<li><p>A Filebacked Big Matrix.</p></li>
+<li><p>A vector of colnames.</p></li>
+<li><p>A data frame of meta information (e.g. non-numeric variables such as rownames)</p></li>
+</ul>
+
     
 
   </div>

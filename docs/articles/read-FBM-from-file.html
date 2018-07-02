@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@
       <h1>Read a FBM from a file</h1>
                         <h4 class="author">Florian Privé</h4>
             
-            <h4 class="date">April 15, 2017</h4>
+            <h4 class="date">July 2, 2018</h4>
       
       
       <div class="hidden name"><code>read-FBM-from-file.Rmd</code></div>
@@ -114,33 +114,34 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">10</span> 
 M &lt;-<span class="st"> </span><span class="dv">5</span>
 (x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N <span class="op">*</span><span class="st"> </span>M), <span class="dt">nrow =</span> N, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span><span class="op">:</span>N], LETTERS[<span class="dv">1</span><span class="op">:</span>M])))</code></pre></div>
-<pre><code>##            A          B           C           D          E
-## a  1.6629059  0.9653518 -0.06177439 -1.31869019  1.1274157
-## b  1.5954515 -0.5478212 -0.85802981  0.96203926  1.2259971
-## c -1.0480412 -1.4463486  0.66713315 -0.65733542 -0.3075625
-## d -1.9249015  0.4367236  0.25901683  0.79396782 -0.3211437
-## e -0.7313834 -1.7314402  0.18414210  1.65279203  1.8196698
-## f  1.3175905 -1.1605600 -0.05954605  1.27837965 -0.2611877
-## g -0.3834129  2.2039792  1.99430624 -0.29066790  0.3752880
-## h  0.2770802 -0.7227019 -0.99244550  0.01457338  0.9744050
-## i  0.4666723  1.0086349  0.41688926 -0.83712505  1.6571498
-## j -1.0953711 -1.0040860 -1.73679452  0.67516938  0.1650424</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(x, tmp &lt;-<span class="st"> </span><span class="kw">tempfile</span>(), <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>##            A           B          C          D          E
+## a -0.5012842 -1.01638112  0.6431569  0.3010146  0.1773628
+## b  1.0769175  0.87507547 -1.0000411 -1.6684975 -0.3992185
+## c -0.9635243 -1.81573157  1.5019412  0.7688201  1.0585572
+## d  1.2057561  1.84850172  0.8021510 -0.1745887  0.5372155
+## e  0.9124845 -0.06139848  3.0403706  0.7956344  0.7706572
+## f  0.4069333 -1.95886051 -0.6632168  0.6026123  1.5658110
+## g  1.7947611 -1.85962067  0.9394588  1.4280654  0.7438458
+## h  0.2049261 -0.26905033  1.0338126  1.3316962  0.1952131
+## i  0.2558195  0.61503663 -0.4861771 -1.7211329  0.4495153
+## j  0.9697344  0.08757377 -0.3309853 -0.2722960 -0.2550894</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csv &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">".csv"</span>)
+data.table<span class="op">::</span><span class="kw">fwrite</span>(<span class="kw">cbind.data.frame</span>(<span class="dt">L =</span> letters[<span class="dv">1</span><span class="op">:</span>N], x), csv, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">sep =</span> <span class="st">" "</span>)</code></pre></div>
 </div>
 <div id="get-some-intuition-on-the-file-format" class="section level3">
 <h3 class="hasAnchor">
 <a href="#get-some-intuition-on-the-file-format" class="anchor"></a>Get some intuition on the file format</h3>
 <p>I think it is always a good idea to print the first lines of the file you are interested in reading.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">readLines</span>(tmp, <span class="dv">3</span>), <span class="dv">0</span>, <span class="dv">60</span>)</code></pre></div>
-<pre><code>## [1] "A B C D E"                                                   
-## [2] "a 1.66290592499996 0.96535178850581 -0.0617743851959436 -1.3"
-## [3] "b 1.5954514995639 -0.547821221565329 -0.858029814774196 0.96"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">readLines</span>(csv, <span class="dv">3</span>), <span class="dv">0</span>, <span class="dv">60</span>)</code></pre></div>
+<pre><code>## [1] "L A B C D E"                                                 
+## [2] "a -0.501284242982575 -1.0163811233929 0.643156853779931 0.30"
+## [3] "b 1.07691749512552 0.875075471697452 -1.00004111033554 -1.66"</code></pre>
 <p>What you can see with these first 3 lines:</p>
 <ul>
-<li>the first line of the file stores some names,</li>
-<li>the first element of following lines stores also some names,</li>
-<li>the elements are doubles,</li>
-<li>the elements are separated by a space.</li>
+<li>the first line of the file stores some names (header),</li>
+<li>the first element of all following lines stores also some names,</li>
+<li>the elements are separated by a space,</li>
+<li>the elements are doubles.</li>
 </ul>
 </div>
 <div id="read-the-file" class="section level3">
@@ -148,25 +149,26 @@ M &lt;-<span class="st"> </span><span class="dv">5</span>
 <a href="#read-the-file" class="anchor"></a>Read the file</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># See how the options corresponds to what we have seen </span>
 <span class="co"># when reading the first 3 lines of the file</span>
-test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(tmp,
-                 <span class="dt">file.nheader =</span> <span class="dv">1</span>,      <span class="co"># default is 0</span>
-                 <span class="dt">info.nelem =</span> <span class="dv">1</span>,        <span class="co"># default is 0</span>
-                 <span class="dt">split =</span> <span class="st">" "</span>,           <span class="co"># the default</span>
-                 <span class="dt">read.what =</span> <span class="kw">double</span>())  <span class="co"># the default</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the FBM elements</span>
-test[]</code></pre></div>
-<pre><code>##             [,1]       [,2]       [,3]       [,4]       [,5]        [,6]
-## [1,]  1.66290592  1.5954515 -1.0480412 -1.9249015 -0.7313834  1.31759049
-## [2,]  0.96535179 -0.5478212 -1.4463486  0.4367236 -1.7314402 -1.16055999
-## [3,] -0.06177439 -0.8580298  0.6671331  0.2590168  0.1841421 -0.05954605
-## [4,] -1.31869019  0.9620393 -0.6573354  0.7939678  1.6527920  1.27837965
-## [5,]  1.12741565  1.2259971 -0.3075625 -0.3211437  1.8196698 -0.26118770
-##            [,7]        [,8]       [,9]      [,10]
-## [1,] -0.3834129  0.27708019  0.4666723 -1.0953711
-## [2,]  2.2039792 -0.72270192  1.0086349 -1.0040860
-## [3,]  1.9943062 -0.99244550  0.4168893 -1.7367945
-## [4,] -0.2906679  0.01457338 -0.8371251  0.6751694
-## [5,]  0.3752880  0.97440501  1.6571498  0.1650424</code></pre>
+test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">confirmed =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## Will use blocks of 10 lines</code></pre>
+<pre><code>## Will add 1 more columns to meta information.</code></pre>
+<pre><code>## Will create a 10 x 5 FBM of type 'double'.</code></pre>
+<pre><code>## Will create a 10 x 1 df of meta information.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(test)</code></pre></div>
+<pre><code>## List of 3
+##  $ FBM     :Reference class 'FBM' [package "bigstatsr"] with 6 fields
+##   ..$ extptr     :&lt;externalptr&gt; 
+##   ..$ nrow       : int 10
+##   ..$ ncol       : int 5
+##   ..$ type       : Named int 8
+##   .. ..- attr(*, "names")= chr "double"
+##   ..$ backingfile: chr "/tmp/RtmpqtaKtO/file4914587a845.bk"
+##   ..$ address    :&lt;externalptr&gt; 
+##   ..and 17 methods, of which 3 are  possibly relevant:
+##   ..  initialize, save, show#envRefClass
+##  $ colnames: chr [1:5] "A" "B" "C" "D" ...
+##  $ meta    :'data.frame':    10 obs. of  1 variable:
+##   ..$ L: chr [1:10] "a" "b" "c" "d" ...</code></pre>
 </div>
 <div id="understand-the-resulting-object" class="section level3">
 <h3 class="hasAnchor">
@@ -175,47 +177,28 @@ test[]</code></pre></div>
 <ol style="list-style-type: decimal">
 <li>
 <p>where are the names?</p>
-<p>The extra info are stored as attributes of the resulting object. You can add dimnames to a <code>big.matrix</code> but I think it may not be a good idea. Moreover, the names of the header won’t be formatted like you want them to. The reason is that a header can be many things, and parsing it is difficult.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(info &lt;-<span class="st"> </span><span class="kw">attr</span>(test, <span class="st">"info"</span>)) <span class="co"># a matrix (info.nelem x read.nline)</span></code></pre></div>
-<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-## [1,] "a"  "b"  "c"  "d"  "e"  "f"  "g"  "h"  "i"  "j"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(colnames &lt;-<span class="st"> </span>info[<span class="dv">1</span>, ])</code></pre></div>
+<ul>
+<li><p>rownames are stored in <code>$meta</code> information</p></li>
+<li><p>colnames are stored in <code>$colnames</code></p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(rownames &lt;-<span class="st"> </span>test<span class="op">$</span>meta<span class="op">$</span>L)</code></pre></div>
 <pre><code>##  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(header &lt;-<span class="st"> </span><span class="kw">attr</span>(test, <span class="st">"header"</span>))  <span class="co"># one single string</span></code></pre></div>
-<pre><code>## [1] "A B C D E"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(rownames &lt;-<span class="st"> </span><span class="kw">strsplit</span>(header, <span class="dt">split =</span> <span class="st">" "</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)[[<span class="dv">1</span>]])</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(colnames &lt;-<span class="st"> </span>test<span class="op">$</span>colnames)</code></pre></div>
 <pre><code>## [1] "A" "B" "C" "D" "E"</code></pre>
 </li>
 <li>
-<p>the resulting matrix is the transpose of the initial one.</p>
-<p>A file is read line by line and a matrix should be stored column by column in order to preserve locality of accesses. So, in order to efficiently read the file, each line should be a column of the resulting Filebacked Big Matrix. If it is not how you write it, you should ask yourself if your <code>write</code> function is efficient.</p>
-<p>If you want the transposed FBM, you can use the <code>transpose</code> parameter.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(tmp,
-                     <span class="dt">file.nheader =</span> <span class="dv">1</span>,     
-                     <span class="dt">info.nelem =</span> <span class="dv">1</span>,     
-                     <span class="dt">transpose =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<p>the resulting matrix is stored in <code>$FBM</code>. If you want this FBM to be used in another session later, <strong>make sure to specify the <code>backingfile</code> and <code>save = TRUE</code></strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(test<span class="op">$</span>FBM)</code></pre></div>
 <pre><code>## Reference class 'FBM' [package "bigstatsr"] with 6 fields
 ##  $ extptr     :&lt;externalptr&gt; 
 ##  $ nrow       : int 10
 ##  $ ncol       : int 5
 ##  $ type       : Named int 8
 ##   ..- attr(*, "names")= chr "double"
-##  $ backingfile: chr "/tmp/RtmpLzv0LN/file5f6b226e8783.bk"
+##  $ backingfile: chr "/tmp/RtmpqtaKtO/file4914587a845.bk"
 ##  $ address    :&lt;externalptr&gt; 
 ##  and 17 methods, of which 3 are  possibly relevant:
 ##    initialize, save, show#envRefClass</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test[] <span class="op">-</span><span class="st"> </span>x</code></pre></div>
-<pre><code>##               A             B             C             D             E
-## a  4.884981e-15  0.000000e+00 -2.775558e-17  3.330669e-15 -6.661338e-16
-## b  2.220446e-15  0.000000e+00 -4.440892e-16 -3.330669e-16  0.000000e+00
-## c -4.440892e-16 -2.664535e-15  0.000000e+00  1.110223e-16  2.220446e-16
-## d -2.442491e-15 -2.220446e-16 -5.551115e-17 -4.440892e-16  1.110223e-16
-## e  1.110223e-16 -4.440892e-15 -3.885781e-16  3.552714e-15 -4.440892e-15
-## f  4.218847e-15  2.220446e-15 -2.081668e-17  3.552714e-15 -1.110223e-16
-## g  3.330669e-16 -8.881784e-16  2.886580e-15  1.665335e-16 -3.330669e-16
-## h  3.885781e-16 -3.330669e-16  0.000000e+00  3.122502e-17  4.440892e-16
-## i -4.996004e-16  3.330669e-15 -2.220446e-16  3.330669e-16 -1.332268e-15
-## j -3.552714e-15 -1.554312e-15  0.000000e+00 -3.330669e-16  3.330669e-16</code></pre>
 </li>
 </ol>
 </div>
@@ -223,92 +206,53 @@ test[]</code></pre></div>
 <div id="second-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#second-example" class="anchor"></a>Second example</h2>
-<div id="a-genotype-file" class="section level3">
+<div id="a-larger-dataset" class="section level3">
 <h3 class="hasAnchor">
-<a href="#a-genotype-file" class="anchor"></a>A genotype file</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pedfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"example.ped"</span>, <span class="dt">package =</span> <span class="st">"bigstatsr"</span>)
-<span class="kw">cat</span>(<span class="kw">readLines</span>(pedfile), <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</code></pre></div>
-<pre><code>## FAM1 NA06985 0 0 1 1 A T T T G G C C A T T T G G C C
-## FAM1 NA06991 0 0 1 1 C T T T G G C C C T T T G G C C
-## 0 NA06993 0 0 1 1 C T T T G G C T C T T T G G C T
-## 0 NA06994 0 0 1 1 C T T T G G C C C T T T G G C C
-## 0 NA07000 0 0 2 1 C T T T G G C T C T T T G G C T
-## 0 NA07019 0 0 1 1 C T T T G G C C C T T T G G C C
-## 0 NA07022 0 0 2 1 C T T T G G 0 0 C T T T G G 0 0
-## 0 NA07029 0 0 1 1 C T T T G G C C C T T T G G C C
-## FAM2 NA07056 0 0 0 2 C T T T A G C T C T T T A G C T
-## FAM2 NA07345 0 0 1 1 C T T T G G C C C T T T G G C C</code></pre>
+<a href="#a-larger-dataset" class="anchor"></a>A larger dataset</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">big_iris &lt;-<span class="st"> </span><span class="kw">do.call</span>(<span class="st">"rbind"</span>, <span class="kw">rep</span>(<span class="kw">list</span>(iris), <span class="dv">1000</span>))
+<span class="kw">dim</span>(big_iris)</code></pre></div>
+<pre><code>## [1] 150000      5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csv &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">".csv"</span>)
+data.table<span class="op">::</span><span class="kw">fwrite</span>(big_iris, csv, <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </div>
 <div id="get-some-intuition-on-the-file-format-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#get-some-intuition-on-the-file-format-1" class="anchor"></a>Get some intuition on the file format</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">readLines</span>(pedfile, <span class="dv">2</span>)</code></pre></div>
-<pre><code>## [1] "FAM1 NA06985 0 0 1 1 A T T T G G C C A T T T G G C C"
-## [2] "FAM1 NA06991 0 0 1 1 C T T T G G C C C T T T G G C C"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">readLines</span>(csv, <span class="dv">5</span>)</code></pre></div>
+<pre><code>## [1] "Sepal.Length,Sepal.Width,Petal.Length,Petal.Width,Species"
+## [2] "5.1,3.5,1.4,0.2,setosa"                                   
+## [3] "4.9,3,1.4,0.2,setosa"                                     
+## [4] "4.7,3.2,1.3,0.2,setosa"                                   
+## [5] "4.6,3.1,1.5,0.2,setosa"</code></pre>
 <p>What you can see with these first 2 lines:</p>
 <ul>
-<li>there is no header lines,</li>
-<li>the first 6 elements of each line are different from the rest of the line (they are info on each sample),</li>
-<li>the elements are characters (“A”, “C”, “T” or “G”) and zeros are encoding missing values,</li>
-<li>the elements are separated by a space.</li>
+<li>there is a header,</li>
+<li>the first 4 columns seems numeric but not the last one,</li>
+<li>the elements are separated by commas.</li>
 </ul>
-</div>
-<div id="defining-a-transformation-function" class="section level3">
-<h3 class="hasAnchor">
-<a href="#defining-a-transformation-function" class="anchor"></a>Defining a transformation function</h3>
-<p>Basically, the letters are grouped by pairs and we compare the number of these letters that are different from a reference. So, each pair can have either 0, 1 or 2 letters that differ from the reference.</p>
-<p>Let us make a function that regroup these letters by pairs and count the number that are different from the corresponding reference:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ACTG &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"T"</span>, <span class="st">"G"</span>)
-ref &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">c</span>(<span class="st">"T"</span>, <span class="st">"T"</span>, <span class="st">"G"</span>, <span class="st">"C"</span>, <span class="st">"C"</span>, <span class="st">"T"</span>, <span class="st">"G"</span>, <span class="st">"C"</span>), ACTG)
-transfo &lt;-<span class="st"> </span><span class="cf">function</span>(read) {
-  read.int &lt;-<span class="st"> </span><span class="kw">match</span>(read, ACTG)
-  (read.int[<span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>)] <span class="op">!=</span><span class="st"> </span>ref) <span class="op">+</span><span class="st"> </span>(read.int[<span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>)] <span class="op">!=</span><span class="st"> </span>ref)
-}</code></pre></div>
-<p>In this function, we have a vector of letters as input, and a vector of half the input length as output which are now 0, 1 or 2. We can therefore store these values with e.g. integers.</p>
 </div>
 <div id="read-the-matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#read-the-matrix" class="anchor"></a>Read the matrix</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(pedfile,
-                     <span class="dt">info.nelem =</span> <span class="dv">6</span>,
-                     <span class="dt">read.what =</span> <span class="kw">character</span>(),
-                     <span class="dt">read.transfo =</span> transfo,
-                     <span class="dt">BM.type =</span> <span class="st">"integer"</span>,
-                     <span class="dt">transpose =</span> <span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>## Reference class 'FBM' [package "bigstatsr"] with 6 fields
-##  $ extptr     :&lt;externalptr&gt; 
-##  $ nrow       : int 10
-##  $ ncol       : int 8
-##  $ type       : Named int 4
-##   ..- attr(*, "names")= chr "integer"
-##  $ backingfile: chr "/tmp/RtmpLzv0LN/file5f6b49021f9b.bk"
-##  $ address    :&lt;externalptr&gt; 
-##  and 17 methods, of which 3 are  possibly relevant:
-##    initialize, save, show#envRefClass</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test[]</code></pre></div>
-<pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
-##  [1,]    1    0    0    0    2    0    0    0
-##  [2,]    1    0    0    0    1    0    0    0
-##  [3,]    1    0    0    1    1    0    0    1
-##  [4,]    1    0    0    0    1    0    0    0
-##  [5,]    1    0    0    1    1    0    0    1
-##  [6,]    1    0    0    0    1    0    0    0
-##  [7,]    1    0    0   NA    1    0    0   NA
-##  [8,]    1    0    0    0    1    0    0    0
-##  [9,]    1    0    1    1    1    0    1    1
-## [10,]    1    0    0    0    1    0    0    0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t</span>(<span class="kw">attr</span>(test, <span class="st">"info"</span>))</code></pre></div>
-<pre><code>##       [,1]   [,2]      [,3] [,4] [,5] [,6]
-##  [1,] "FAM1" "NA06985" "0"  "0"  "1"  "1" 
-##  [2,] "FAM1" "NA06991" "0"  "0"  "1"  "1" 
-##  [3,] "0"    "NA06993" "0"  "0"  "1"  "1" 
-##  [4,] "0"    "NA06994" "0"  "0"  "1"  "1" 
-##  [5,] "0"    "NA07000" "0"  "0"  "2"  "1" 
-##  [6,] "0"    "NA07019" "0"  "0"  "1"  "1" 
-##  [7,] "0"    "NA07022" "0"  "0"  "2"  "1" 
-##  [8,] "0"    "NA07029" "0"  "0"  "1"  "1" 
-##  [9,] "FAM2" "NA07056" "0"  "0"  "0"  "2" 
-## [10,] "FAM2" "NA07345" "0"  "0"  "1"  "1"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">","</span>, <span class="dt">confirmed =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>## Will use blocks of 150000 lines</code></pre>
+<pre><code>## Will add 1 more columns to meta information.</code></pre>
+<pre><code>## Will create a 150000 x 4 FBM of type 'double'.</code></pre>
+<pre><code>## Will create a 150000 x 1 df of meta information.</code></pre>
+<pre><code>## List of 3
+##  $ FBM     :Reference class 'FBM' [package "bigstatsr"] with 6 fields
+##   ..$ extptr     :&lt;externalptr&gt; 
+##   ..$ nrow       : int 150000
+##   ..$ ncol       : int 4
+##   ..$ type       : Named int 8
+##   .. ..- attr(*, "names")= chr "double"
+##   ..$ backingfile: chr "/tmp/RtmpqtaKtO/file491472c9c05e.bk"
+##   ..$ address    :&lt;externalptr&gt; 
+##   ..and 17 methods, of which 3 are  possibly relevant:
+##   ..  initialize, save, show#envRefClass
+##  $ colnames: chr [1:4] "Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"
+##  $ meta    :'data.frame':    150000 obs. of  1 variable:
+##   ..$ Species: chr [1:150000] "setosa" "setosa" "setosa" "setosa" ...</code></pre>
 </div>
 </div>
   </div>

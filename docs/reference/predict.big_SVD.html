@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -190,7 +190,8 @@ the scores of the training set of <code>object</code>.</p>
 <span class='co'># Using only half of the data</span>
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'>sort</span>(<span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
 
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'><span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 5
+<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)
+<span class='fu'>str</span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 5
 #&gt;  $ d     : num [1:10] 172.5 117.6 89.6 87.5 87.2 ...
 #&gt;  $ u     : num [1:258, 1:10] -0.1015 -0.0914 -0.0951 -0.0798 -0.0901 ...
 #&gt;  $ v     : num [1:4542, 1:10] 0.00304 -0.00274 0.02779 -0.01381 0.00599 ...

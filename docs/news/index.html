@@ -55,7 +55,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -123,6 +123,23 @@
       
     </div>
 
+    <div id="bigstatsr-0-4-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-4-1" class="anchor"></a>bigstatsr 0.4.1</h2>
+<ul>
+<li>change <code>big_read</code> so that it is faster (corresponding vignette updated).</li>
+</ul>
+</div>
+    <div id="bigstatsr-0-4-0" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-4-0" class="anchor"></a>bigstatsr 0.4.0</h2>
+<ul>
+<li><p>possibility to add a “base predictor” for <code>big_spLinReg</code> and <code>big_spLogReg</code>.</p></li>
+<li><p><strong>don’t store the whole regularization path (as a sparse matrix) in <code>big_spLinReg</code> and <code>big_spLogReg</code> anymore because it caused major slowdowns.</strong></p></li>
+<li><p>directly average the K predictions in <code>predict.big_sp_best_list</code>.</p></li>
+<li><p>only use the “PSOCK” type of cluster because “FORK” can leave zombies behind. You can change this with <code>options(bigstatsr.cluster.type = "PSOCK")</code>.</p></li>
+</ul>
+</div>
     <div id="bigstatsr-0-3-4" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-3-4" class="anchor"></a>bigstatsr 0.3.4</h2>
@@ -194,6 +211,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bigstatsr-0-4-1">0.4.1</a></li>
+        <li><a href="#bigstatsr-0-4-0">0.4.0</a></li>
         <li><a href="#bigstatsr-0-3-4">0.3.4</a></li>
         <li><a href="#bigstatsr-0-3-3">0.3.3</a></li>
         <li><a href="#bigstatsr-0-3-2">0.3.2</a></li>

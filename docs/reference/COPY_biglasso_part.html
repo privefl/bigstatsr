@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -135,15 +135,14 @@
 
     <pre class="usage"><span class='fu'>COPY_biglasso_part</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='no'>ind.train</span>, <span class='no'>ind.col</span>, <span class='no'>covar.train</span>, <span class='no'>family</span>, <span class='no'>lambda</span>,
   <span class='no'>center</span>, <span class='no'>scale</span>, <span class='no'>resid</span>, <span class='no'>alpha</span>, <span class='no'>eps</span>, <span class='no'>max.iter</span>, <span class='no'>dfmax</span>, <span class='no'>warn</span>, <span class='no'>ind.val</span>, <span class='no'>covar.val</span>,
-  <span class='no'>y.val</span>, <span class='no'>n.abort</span>, <span class='no'>nlam.min</span>)</pre>
+  <span class='no'>y.val</span>, <span class='no'>n.abort</span>, <span class='no'>nlam.min</span>, <span class='no'>b0</span>, <span class='no'>base.train</span>, <span class='no'>base.val</span>)</pre>
         
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A named list with following variables:</p>
 <dt>intercept</dt><dd><p>A vector of intercepts, corresponding to each lambda.</p></dd>
-<dt>beta</dt><dd><p>The fitted matrix of coefficients, store in sparse matrix
-representation. The number of rows is equal to the number of
-coefficients, and the number of columns is equal to <code>nlambda</code>.</p></dd>
+<dt>beta</dt><dd><p>The vector of coefficients that minimized the loss on the
+validation set.</p></dd>
 <dt>iter</dt><dd><p>A vector of length <code>nlambda</code> containing the number of
 iterations until convergence at each value of <code>lambda</code>.</p></dd>
 <dt>lambda</dt><dd><p>The sequence of regularization parameter values in the path.</p></dd>

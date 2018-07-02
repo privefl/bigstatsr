@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -203,7 +203,8 @@ to get more familiar with the package <strong>ggplot2</strong>.</p>
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
 
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>svd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; (2)</div><div class='input'>
+<span class='no'>svd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
 <span class='co'># screeplots</span>
 <span class='fu'>plot</span>(<span class='no'>svd</span>) <span class='co'># 3 PCs seems "significant"</span></div><div class='img'><img src='plot.big_SVD-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>svd</span>, <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1.5</span>) <span class='co'># larger font for papers</span></div><div class='img'><img src='plot.big_SVD-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># scores plot</span>

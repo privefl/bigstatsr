@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
       </span>
     </div>
 
@@ -135,8 +135,7 @@
 
     <pre class="usage"><span class='co'># S3 method for big_sp</span>
 <span class='fu'>predict</span>(<span class='no'>object</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
-  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>object</span>$<span class='no'>ind.col</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)), <span class='no'>...</span>)</pre>
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='no'>object</span>$<span class='no'>ind.col</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,11 +165,6 @@ for confounders (e.g. the scores of PCA), corresponding to <code>ind.row</code>.
 Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</p></td>
     </tr>
     <tr>
-      <th>block.size</th>
-      <td><p>Maximum number of columns read at once.
-Default uses <a href='block_size.html'>block_size</a>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>Not used.</p></td>
     </tr>
@@ -178,8 +172,7 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A matrix of scores, with rows corresponding to <code>ind.row</code>
-and columns corresponding to <code>lambda</code>.</p>
+    <p>A vector of scores, corresponding to <code>ind.row</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
