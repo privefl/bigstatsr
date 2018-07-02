@@ -1,3 +1,7 @@
+## bigstatsr 0.4.1
+
+- change `big_read` so that it is faster (corresponding vignette updated).
+
 ## bigstatsr 0.4.0
 
 - possibility to add a "base predictor" for `big_spLinReg` and `big_spLogReg`.

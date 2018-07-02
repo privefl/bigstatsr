@@ -1,7 +1,7 @@
 ---
 title: "Read a FBM from a file"
 author: "Florian Privé"
-date: "April 15, 2017"
+date: "July 2, 2018"
 output: html_document
 ---
 
@@ -16,42 +16,39 @@ We will see how to use function `big_read` through examples.
 ## First example
 
 ### Store a fake file
+
 ```{r}
 N <- 10 
 M <- 5
 (x <- matrix(rnorm(N * M), nrow = N, dimnames = list(letters[1:N], LETTERS[1:M])))
-write.table(x, tmp <- tempfile(), quote = FALSE)
+csv <- tempfile(fileext = ".csv")
+data.table::fwrite(cbind.data.frame(L = letters[1:N], x), csv, quote = FALSE, sep = " ")
 ```
 
 ### Get some intuition on the file format
 
 I think it is always a good idea to print the first lines of the file you are interested in reading.
 ```{r}
-substr(readLines(tmp, 3), 0, 60)
+substr(readLines(csv, 3), 0, 60)
 ```
 
 What you can see with these first 3 lines:
 
-- the first line of the file stores some names,
-- the first element of following lines stores also some names,
-- the elements are doubles,
-- the elements are separated by a space.
+- the first line of the file stores some names (header),
+- the first element of all following lines stores also some names,
+- the elements are separated by a space, 
+- the elements are doubles.
 
 ### Read the file
 
 ```{r}
 # See how the options corresponds to what we have seen 
 # when reading the first 3 lines of the file
-test <- big_read(tmp,
-                 file.nheader = 1,      # default is 0
-                 info.nelem = 1,        # default is 0
-                 split = " ",           # the default
-                 read.what = double())  # the default
+test <- big_read(csv, header = TRUE, sep = " ", confirmed = TRUE)
 ```
 
 ```{r}
-# print the FBM elements
-test[]
+str(test)
 ```
 
 ### Understand the resulting object
@@ -60,85 +57,50 @@ There are at least 2 things to note:
 
 1. where are the names?
   
-    The extra info are stored as attributes of the resulting object. You can 
-    add dimnames to a `big.matrix` but I think it may not be a good idea. 
-    Moreover, the names of the header won't be formatted like you want them to.
-    The reason is that a header can be many things, and parsing it is difficult.
+    - rownames are stored in `$meta` information
+    
+    - colnames are stored in `$colnames`
 
     ```{r}
-    (info <- attr(test, "info")) # a matrix (info.nelem x read.nline)
-    (colnames <- info[1, ])
-    (header <- attr(test, "header"))  # one single string
-    (rownames <- strsplit(header, split = " ", fixed = TRUE)[[1]])
+    (rownames <- test$meta$L)
+    (colnames <- test$colnames)
     ```
 
     
-2. the resulting matrix is the transpose of the initial one.
-
-
-    A file is read line by line and a matrix should be stored column by column in order to preserve locality of accesses. So, in order to efficiently read the file, each line should be a column of the resulting Filebacked Big Matrix. If it is not how you write it, you should ask yourself if your `write` function is efficient.
-    
-    If you want the transposed FBM, you can use the `transpose` parameter.
+2. the resulting matrix is stored in `$FBM`. If you want this FBM to be used in another session later, **make sure to specify the `backingfile` and `save = TRUE`**.
 
     ```{r}
-    str(test <- big_read(tmp,
-                         file.nheader = 1,     
-                         info.nelem = 1,     
-                         transpose = TRUE))
-    test[] - x
+    str(test$FBM)
     ```
 
 ## Second example
 
-### A genotype file
+### A larger dataset
 
 ```{r}
-pedfile <- system.file("extdata", "example.ped", package = "bigstatsr")
-cat(readLines(pedfile), sep = "\n")
+big_iris <- do.call("rbind", rep(list(iris), 1000))
+dim(big_iris)
+```
+
+```{r}
+csv <- tempfile(fileext = ".csv")
+data.table::fwrite(big_iris, csv, quote = FALSE)
 ```
 
 ### Get some intuition on the file format
 
 ```{r}
-readLines(pedfile, 2)
+readLines(csv, 5)
 ```
 
 What you can see with these first 2 lines:
 
-- there is no header lines,
-- the first 6 elements of each line are different from the rest of the line (they are info on each sample),
-- the elements are characters ("A", "C", "T" or "G") and zeros are encoding missing values,
-- the elements are separated by a space.
-
-### Defining a transformation function
-
-Basically, the letters are grouped by pairs and we compare the number of these letters that are different from a reference. So, each pair can have either 0, 1 or 2 letters that differ from the reference.
-
-Let us make a function that regroup these letters by pairs and count the number that are different from the corresponding reference:
-
-```{r}
-ACTG <- c("A", "C", "T", "G")
-ref <- match(c("T", "T", "G", "C", "C", "T", "G", "C"), ACTG)
-transfo <- function(read) {
-  read.int <- match(read, ACTG)
-  (read.int[c(TRUE, FALSE)] != ref) + (read.int[c(FALSE, TRUE)] != ref)
-}
-```
-
-In this function, we have a vector of letters as input, and a vector of half the input length as output which are now 0, 1 or 2. We can therefore store these values with e.g. integers.
+- there is a header,
+- the first 4 columns seems numeric but not the last one,
+- the elements are separated by commas.
 
 ### Read the matrix
 
 ```{r}
-str(test <- big_read(pedfile,
-                     info.nelem = 6,
-                     read.what = character(),
-                     read.transfo = transfo,
-                     BM.type = "integer",
-                     transpose = TRUE))
-test[]
-```
-
-```{r}
-t(attr(test, "info"))
+str(test <- big_read(csv, header = TRUE, sep = ",", confirmed = TRUE))
 ```

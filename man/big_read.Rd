@@ -4,37 +4,41 @@
 \alias{big_read}
 \title{Read a file}
 \usage{
-big_read(file, file.nheader = 0, file.nline = NULL, info.nelem = 0,
-  split = " ", read.what = double(), read.transfo = identity,
-  BM.type = typeof(read.what), transpose = FALSE, ...)
+big_read(file, sep, header, confirmed = FALSE, verbose = TRUE,
+  ind.skip = integer(0), ind.meta = integer(0), nlines = NULL,
+  nlines.block = NULL, fun.con = function(f) file(f, open = "rt"),
+  type = NULL, ...)
 }
 \arguments{
 \item{file}{The path to the file to be read.}
 
-\item{file.nheader}{Number of lines to read at the beginning of the file,
-as a separate header information. Default is \code{0}. Each line is read as one
-string. You may need to post-process it with \link{strsplit}. See examples.}
+\item{sep}{The field separator character.}
 
-\item{file.nline}{Number of total lines of the file. Default is \code{NULL} and a
-function computes it. This function doesn't work for compressed files so that
-you will have to explicitly specify the number of lines of the file.}
+\item{header}{A logical value indicating whether the file contains the names
+of the variables as its first line.}
 
-\item{info.nelem}{Number of elements of extra information to read at the
-beginning of each line. Default is \code{0}.}
+\item{confirmed}{A logical value indicating whether you don't want to pause
+to confirm that everything has been parsed like you wanted.
+Default is \code{FALSE} and will ask you to confirm during execution.}
 
-\item{split}{The separator used in the file. Default is a space.}
+\item{verbose}{Be verbose? Default is \code{TRUE}.}
 
-\item{read.what}{What type of elements to scan? Default is \code{double()}.
-You can also use \code{character()} or \code{integer()}.}
+\item{ind.skip}{An integer vector specifying which columns to skip.}
 
-\item{read.transfo}{Function that transforms each line you read.}
+\item{ind.meta}{An integer vector specifying which columns should be part of
+the meta information. Non-numeric columns will automatically be added to
+meta information because they can't be stored in an FBM.}
 
-\item{BM.type}{Type of the resulting Filebacked Big Matrix. Default uses the
-type of \code{read.what}. This can be useful if you have only small integers or
-that the \code{read.transfo} function transforms the type of what is read.}
+\item{nlines}{Number of lines of the file (including possible header).
+Default automatically gets this number thanks to a function of David Gohel.}
 
-\item{transpose}{Should the resulting Filebacked Big Matrix be transposed?
-Default is \code{FALSE}.}
+\item{nlines.block}{Number of lines to be read at once. Default automatically
+gets this number based on \code{getOption("bigstatsr.block.sizeGB")}.}
+
+\item{fun.con}{Function to open a connection from a file.}
+
+\item{type}{Type of the resulting Filebacked Big Matrix.
+Default is automatically guessing between \code{"integer"} and \code{"double"}.}
 
 \item{...}{Arguments passed on to \code{FBM}
 \describe{
@@ -50,9 +54,14 @@ the backingfile. Default is \code{FALSE}.}
 }}
 }
 \value{
-A Filebacked Big Matrix with two attributes \code{header} and \code{info}.
+A list with 3 elements:
+\itemize{
+\item A Filebacked Big Matrix.
+\item A vector of colnames.
+\item A data frame of meta information (e.g. non-numeric variables such as rownames)
+}
 }
 \description{
-Read a file as a Filebacked Big Matrix.
+Read a file as a Filebacked Big Matrix and a data frame of meta information.
 For a mini-tutorial, please see \href{https://goo.gl/91oNxU}{this vignette}.
 }

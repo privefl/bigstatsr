@@ -4,6 +4,7 @@ big_read <- function(file,
                      header,
                      confirmed = FALSE,
                      verbose = TRUE,
+                     ind.skip = integer(0),
                      ind.meta = integer(0),
                      nlines = NULL,
                      nlines.block = NULL,
@@ -43,18 +44,22 @@ big_read <- function(file,
   coltypes.num <- bigstatsr:::ALL.TYPES[coltypes]
   is.meta <- is.na(coltypes.num)
   is.meta[ind.meta] <- TRUE
+  is.num <- !is.meta
+  is.meta[ind.skip] <- FALSE
+  is.num[ind.skip] <- FALSE
   ind.meta.all <- which(is.meta)
   meta_diff <- setdiff(ind.meta.all, ind.meta)
   if (length(meta_diff) > 0) {
     message3(sprintf("Will add %s more columns to meta information.", length(meta_diff)))
   }
 
-  p <- ncol(top_guided) - length(ind.meta.all)
-  colnames <- `if`(header, names(top_guided)[!is.meta], NULL)
+  p <- sum(is.num)
+  colnames <- `if`(header, names(top_guided)[is.num], NULL)
+  stopifnot((p + length(ind.meta.all) + length(ind.skip)) == ncol(top_guided))
 
   # Prepare the resulting Filebacked Big Matrix
   if (is.null(type)) {
-    type <- `if`(any(coltypes[!is.meta] == "double"), "double", "integer")
+    type <- `if`(any(coltypes[is.num] == "double"), "double", "integer")
   }
   message3("Will create a %s x %s FBM of type '%s'.", n, p, type)
   message3("Will create a %s x %s df of meta information.", n, length(ind.meta.all))
@@ -69,14 +74,21 @@ big_read <- function(file,
   con <- fun.con(file)
   on.exit(close(con), add = TRUE)
 
-  # Read by blocks
+  # Column types
   coltypes.meta <- names(top_guided)[is.meta]
+  colclasses <- as.list(coltypes)
+  for (i in ind.skip) colclasses[i] <- list(NULL)
+  # Types after skipping some column
+  no.skip <- !(cols_along(top_guided) %in% ind.skip)
+  is.meta <- is.meta[no.skip]
+  is.num <- is.num[no.skip]
+  stopifnot(all( (is.meta + is.num) == 1 ))
+
   meta_df <- big_apply(res, a.FUN = function(X, ind) {
-    header <- `if`(ind[1] == 1, header, FALSE)
     df_part <- read.csv(
-      con, sep = sep, header = header, nrows = length(ind),
-      colClasses = coltypes, stringsAsFactors = FALSE)
-    X[ind, ] <- as.matrix(df_part[!is.meta])
+      con, sep = sep, header = header && (ind[1] == 1), nrows = length(ind),
+      colClasses = colclasses, stringsAsFactors = FALSE)
+    X[ind, ] <- as.matrix(df_part[is.num])
     stats::setNames(df_part[is.meta], coltypes.meta)
   }, a.combine = "rbind", ind = seq_len(n), block.size = nlines.block)
 
@@ -84,12 +96,12 @@ big_read <- function(file,
   list(FBM = res, colnames = colnames, meta = meta_df)
 }
 
-tmp <- cbind.data.frame(iris, matrix(round(rnorm(150 * 5000)), 150))
+tmp <- cbind.data.frame(iris, matrix(round(rnorm(150 * 500)), 150))
 csv <- "tmp-data/fake.csv"
 sep <- "|"
 header <- TRUE
 data.table::fwrite(tmp, csv, quote = FALSE, col.names = header, sep = sep)
-test <- big_read(csv, sep = sep, header = header, ind.meta = 1:5, confirmed = TRUE, nlines.block = 40)
+test <- big_read(csv, sep = sep, header = header, ind.meta = 1:5, ind.skip = 6:50, confirmed = TRUE, nlines.block = 40)
 typeof(test$FBM)
 dim(test$FBM)
 str(test$meta)
