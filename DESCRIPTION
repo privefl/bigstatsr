@@ -30,7 +30,7 @@ Imports:
   data.table,
   doParallel,
   foreach, 
-  ggplot2 (>= 2.2.1),
+  ggplot2 (>= 3.0.0),
   glue,
   graphics,
   methods,
@@ -52,8 +52,7 @@ Suggests:
   grid,
   LiblineaR,
   ModelMetrics,
-  testthat,
-  viridis
+  testthat
 RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 URL: https://privefl.github.io/bigstatsr

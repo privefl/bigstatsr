@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{big_SVD}(x, type = c("screeplot", "scores", "loadings"),
   nval = length(x$d), scores = c(1, 2), loadings = 1, cols = 2,
-  coeff = 1, viridis = requireNamespace("viridis", quietly = TRUE), ...)
+  coeff = 1, viridis = TRUE, ...)
 }
 \arguments{
 \item{x}{An object of class \code{big_SVD}.}
@@ -31,8 +31,7 @@ the number of columns of the resulting multiplot.}
 
 \item{coeff}{Relative size of text. Default is \code{1}.}
 
-\item{viridis}{Whether to use colors of package viridis when plotting
-multiple loadings. Default is \code{TRUE} if the package is installed.}
+\item{viridis}{Deprecated argument.}
 
 \item{...}{Not used.}
 }

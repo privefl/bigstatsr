@@ -50,8 +50,7 @@ MY_THEME <- function(p, coeff = 1) {
 #' @param cols If multiple vector of loadings are to be plotted, this defines
 #' the number of columns of the resulting multiplot.
 #' @param coeff Relative size of text. Default is `1`.
-#' @param viridis Whether to use colors of package viridis when plotting
-#' multiple loadings. Default is `TRUE` if the package is installed.
+#' @param viridis Deprecated argument.
 #' @param ... Not used.
 #'
 #' @return A `ggplot2` object. You can plot it using the `print` method.
@@ -73,10 +72,13 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
                          loadings = 1,
                          cols = 2,
                          coeff = 1,
-                         viridis = requireNamespace("viridis", quietly = TRUE),
+                         viridis = TRUE,
                          ...) {
 
   assert_nodots()
+
+  if (!missing(viridis))
+    warning2("Argument 'viridis' is deprecated and will be removed.")
 
   assert_lengths(nval, 1)
   assert_lengths(scores, 1:2)
@@ -107,11 +109,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
       all.p <- lapply(loadings, function(i) {
         p <- plot(x, type = "loadings", loading = i, coeff = coeff)
         p$layers[[1]] <- NULL
-        if (viridis) {
-          p + geom_hex() + viridis::scale_fill_viridis()
-        } else {
-          p + geom_hex()
-        }
+        p + geom_hex() + scale_fill_viridis_c()
       })
 
       cowplot::plot_grid(plotlist = all.p, align = "hv", ncol = cols)
