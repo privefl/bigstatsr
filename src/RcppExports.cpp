@@ -293,51 +293,51 @@ BEGIN_RCPP
 END_RCPP
 }
 // replaceVecOne
-void replaceVecOne(RObject xpbm, const NumericVector& elemInd, RObject val);
+void replaceVecOne(SEXP xpbm, const NumericVector& elemInd, SEXP val);
 RcppExport SEXP _bigstatsr_replaceVecOne(SEXP xpbmSEXP, SEXP elemIndSEXP, SEXP valSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type xpbm(xpbmSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type elemInd(elemIndSEXP);
-    Rcpp::traits::input_parameter< RObject >::type val(valSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type val(valSEXP);
     replaceVecOne(xpbm, elemInd, val);
     return R_NilValue;
 END_RCPP
 }
 // replaceVec
-void replaceVec(RObject xpbm, const NumericVector& elemInd, RObject vec);
+void replaceVec(SEXP xpbm, const NumericVector& elemInd, SEXP vec);
 RcppExport SEXP _bigstatsr_replaceVec(SEXP xpbmSEXP, SEXP elemIndSEXP, SEXP vecSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type xpbm(xpbmSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type elemInd(elemIndSEXP);
-    Rcpp::traits::input_parameter< RObject >::type vec(vecSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
     replaceVec(xpbm, elemInd, vec);
     return R_NilValue;
 END_RCPP
 }
 // replaceMatOne
-void replaceMatOne(RObject xpbm, const IntegerVector& rowInd, const IntegerVector& colInd, RObject val);
+void replaceMatOne(SEXP xpbm, const IntegerVector& rowInd, const IntegerVector& colInd, SEXP val);
 RcppExport SEXP _bigstatsr_replaceMatOne(SEXP xpbmSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP valSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type xpbm(xpbmSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    Rcpp::traits::input_parameter< RObject >::type val(valSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type val(valSEXP);
     replaceMatOne(xpbm, rowInd, colInd, val);
     return R_NilValue;
 END_RCPP
 }
 // replaceMat
-void replaceMat(RObject xpbm, const IntegerVector& rowInd, const IntegerVector& colInd, RObject mat);
+void replaceMat(SEXP xpbm, const IntegerVector& rowInd, const IntegerVector& colInd, SEXP mat);
 RcppExport SEXP _bigstatsr_replaceMat(SEXP xpbmSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP matSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type xpbm(xpbmSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    Rcpp::traits::input_parameter< RObject >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type mat(matSEXP);
     replaceMat(xpbm, rowInd, colInd, mat);
     return R_NilValue;
 END_RCPP

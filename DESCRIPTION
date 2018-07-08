@@ -24,7 +24,7 @@ Language: en-US
 LazyData: TRUE
 ByteCompile: TRUE
 Depends: 
-  R (>= 3.2.3)
+  R (>= 3.3.0)
 Imports: 
   cowplot,
   data.table,
