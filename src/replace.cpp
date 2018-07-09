@@ -55,7 +55,7 @@ Vector<RTYPE_OUT> conv_vec(Vector<RTYPE_IN> nv) {
 
     for (; i < n; i++) {
       res[i] = CTYPE(nv[i]);
-      if (nv[i] != res[i]) {
+      if (res[i] != nv[i]) {
         warning("%s (%s -> %s)\n  %s from R type '%s' to C type '%s'.",
                 "At least one value changed", nv[i], double(res[i]),
                 "while converting", Rf_type2char(RTYPE_IN), type2name<CTYPE>());
@@ -65,6 +65,30 @@ Vector<RTYPE_OUT> conv_vec(Vector<RTYPE_IN> nv) {
   }
 
   for (; i < n; i++) res[i] = CTYPE(nv[i]);
+
+  return res;
+}
+
+IntegerVector conv_vec_dbl2int(NumericVector nv) {
+
+  int i = 0, n = nv.size();
+  IntegerVector res(n);
+  res.attr("dim") = nv.attr("dim");
+
+  if (do_warn_downcast()) {
+
+    for (; i < n; i++) {
+      res[i] = nv[i];
+      if (res[i] != nv[i] && res[i] != NA_INTEGER) {
+        warning("%s (%s -> %s)\n  %s",
+                "At least one value changed", nv[i], res[i],
+                "while converting from R type 'double' to C type 'integer'.");
+        break;
+      }
+    }
+  }
+
+  for (; i < n; i++) res[i] = nv[i];
 
   return res;
 }
@@ -154,7 +178,7 @@ void replaceVec(SEXP xpbm,
     case LGLSXP:  REPLACE_VEC(int, as<LogicalVector>(vec))
     case INTSXP:  REPLACE_VEC(int, as<IntegerVector>(vec))
     case REALSXP: {
-      IntegerVector vec2 = conv_vec<REALSXP, INTSXP, int>(vec);
+      IntegerVector vec2 = conv_vec_dbl2int(vec);
       REPLACE_VEC(int, vec2)
     }
     default: stop("This R type is not supported.");
@@ -162,8 +186,9 @@ void replaceVec(SEXP xpbm,
   case 8:
     switch(TYPEOF(vec)) {
     case RAWSXP:  REPLACE_VEC(double, as<RawVector>(vec))
-    case LGLSXP:  REPLACE_VEC(double, as<LogicalVector>(vec))
-    case INTSXP:  REPLACE_VEC(double, as<IntegerVector>(vec))
+    // int -> double for handling NA by Rcpp
+    case LGLSXP:  REPLACE_VEC(double, as<NumericVector>(vec))
+    case INTSXP:  REPLACE_VEC(double, as<NumericVector>(vec))
     case REALSXP: REPLACE_VEC(double, as<NumericVector>(vec))
     default: stop("This R type is not supported.");
     }
@@ -264,7 +289,7 @@ void replaceMat(SEXP xpbm,
     case LGLSXP:  REPLACE_MAT(int, as<LogicalVector>(mat))
     case INTSXP:  REPLACE_MAT(int, as<IntegerVector>(mat))
     case REALSXP: {
-      IntegerVector mat2 = conv_vec<REALSXP, INTSXP, int>(mat);
+      IntegerVector mat2 = conv_vec_dbl2int(mat);
       REPLACE_MAT(int, mat2)
     }
     default: stop("This R type is not supported.");
@@ -272,8 +297,9 @@ void replaceMat(SEXP xpbm,
   case 8:
     switch(TYPEOF(mat)) {
     case RAWSXP:  REPLACE_MAT(double, as<RawVector>(mat))
-    case LGLSXP:  REPLACE_MAT(double, as<LogicalVector>(mat))
-    case INTSXP:  REPLACE_MAT(double, as<IntegerVector>(mat))
+    // int -> double for handling NA by Rcpp
+    case LGLSXP:  REPLACE_MAT(double, as<NumericVector>(mat))
+    case INTSXP:  REPLACE_MAT(double, as<NumericVector>(mat))
     case REALSXP: REPLACE_MAT(double, as<NumericVector>(mat))
     default: stop("This R type is not supported.");
     }
