@@ -59,7 +59,7 @@ test_that("Copy of same type", {
 ################################################################################
 
 test_that("Copy with conversion", {
-  options(bigstatsr.typecast.warning = TRUE)
+  options(bigstatsr.downcast.warning = TRUE)
 
   X <- big_copy(x0)
   expect_warning(X[1, 1] <- NA)
@@ -68,7 +68,7 @@ test_that("Copy with conversion", {
   expect_identical(X2[1, 1], NA_integer_)
   expect_equal(X2[], floor(X[]))
 
-  options(bigstatsr.typecast.warning = FALSE)
+  options(bigstatsr.downcast.warning = FALSE)
 })
 
 ################################################################################

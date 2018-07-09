@@ -13,7 +13,7 @@ options(width = 110)
 
 ```{r, warning=FALSE}
 library(bigstatsr)
-options(bigstatsr.typecast.warning = FALSE)
+options(bigstatsr.downcast.warning = FALSE)
 
 N <- M <- 2000
 x4 <- matrix(rnorm(N * M, 100, 10), N)

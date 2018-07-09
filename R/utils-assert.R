@@ -1,31 +1,5 @@
 ################################################################################
 
-warn_downcast <- function(from, to) {
-
-  if (getOption("bigstatsr.typecast.warning")) {
-
-    from.type <- typeof(from)
-    to.type   <- typeof(to)
-
-    from.type.int <- try(ALL.TYPES[[from.type]], silent = TRUE)
-    if (class(from.type.int) == "try-error") {
-      warning(glue::glue(
-        "The type of the input is unknown.\n",
-        "Assignment could possibly down cast from {from.type} to {to.type}.\n",
-        "Hint: To remove this warning, use ",
-        "options(bigstatsr.typecast.warning = FALSE)."), call. = FALSE)
-    } else {
-      if (from.type.int > ALL.TYPES[[to.type]])
-        warning(glue::glue(
-          "Assignment will down cast from {from.type} to {to.type}.\n",
-          "Hint: To remove this warning, use ",
-          "options(bigstatsr.typecast.warning = FALSE)."), call. = FALSE)
-    }
-  }
-}
-
-################################################################################
-
 check_args <- function(...) {
 
   if (getOption("bigstatsr.check.args")) {

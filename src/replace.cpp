@@ -10,41 +10,20 @@ using std::size_t;
 
 /******************************************************************************/
 
-#define USHORT_MIN 0
-#define USHORT_MAX 65535
+bool do_warn_downcast() {
 
-const IntegerVector& checkShort(const IntegerVector& vec) {
+  Environment base("package:base");
+  Function get_option = base["getOption"];
+  SEXP warn = get_option("bigstatsr.downcast.warning");
 
-  size_t K = vec.size();
-
-  for (size_t k = 0; k < K; k++)
-    myassert(vec[k] >= USHORT_MIN && vec[k] <= USHORT_MAX, ERROR_USHORT);
-
-  return vec;
-}
-
-const IntegerMatrix& checkShort(const IntegerMatrix& mat) {
-
-  size_t K = mat.size();
-
-  for (size_t k = 0; k < K; k++)
-    myassert(mat[k] >= USHORT_MIN && mat[k] <= USHORT_MAX, ERROR_USHORT);
-
-  return mat;
+  if (TYPEOF(warn) == LGLSXP) {
+    return as<LogicalVector>(warn)[0];
+  } else {
+    return true;  // but this shoud not happen
+  }
 }
 
 /******************************************************************************/
-
-std::string int2name(int RTYPE) {
-
-  switch(RTYPE) {
-  case 10: return "logical";
-  case 13: return "integer";
-  case 14: return "double";
-  case 24: return "raw";
-  default: return "unknown";
-  }
-}
 
 template<typename CTYPE>
 std::string type2name() {
@@ -63,26 +42,28 @@ std::string type2name() {
   }
 }
 
+/******************************************************************************/
+
 template <int RTYPE_IN, int RTYPE_OUT, typename CTYPE>
 Vector<RTYPE_OUT> conv_vec(Vector<RTYPE_IN> nv) {
 
-  int i, n = nv.size();
+  int i = 0, n = nv.size();
   Vector<RTYPE_OUT> res(n);
   res.attr("dim") = nv.attr("dim");
 
-  for (i = 0; i < n; i++) {
-    res[i] = CTYPE(nv[i]);
-    if (nv[i] != res[i]) {
-      std::string CTYPE_name = type2name<CTYPE>();
-      double res_i = res[i];
-      if (CTYPE_name == "unsigned char (raw)") res_i = int(res_i); // printing
+  if (do_warn_downcast()) {
 
-      // warning("%s (%s -> %s)\n  %s from R type '%s' to C type '%s'.",
-      //         "At least one value changed", nv[i], res_i,
-      //         "while converting", int2name(RTYPE_IN), CTYPE_name);
-      break;
+    for (; i < n; i++) {
+      res[i] = CTYPE(nv[i]);
+      if (nv[i] != res[i]) {
+        warning("%s (%s -> %s)\n  %s from R type '%s' to C type '%s'.",
+                "At least one value changed", nv[i], double(res[i]),
+                "while converting", Rf_type2char(RTYPE_IN), type2name<CTYPE>());
+        break;
+      }
     }
   }
+
   for (; i < n; i++) res[i] = CTYPE(nv[i]);
 
   return res;
@@ -115,14 +96,14 @@ void replaceVecOne(SEXP xpbm,
 /******************************************************************************/
 
 template <class C, int RTYPE>
-void replaceVec(C macc, const Vector<RTYPE>& vec) {
+void replace_vec(C macc, const Vector<RTYPE>& vec) {
 
   for (size_t k = 0; k < macc.nelem(); k++)
     macc[k] = vec[k];
 }
 
 #define REPLACE_VEC(BM_TYPE, VEC) {                                            \
-return replaceVec(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC);                  \
+return replace_vec(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC);                  \
 }
 
 // [[Rcpp::export]]
@@ -134,13 +115,58 @@ void replaceVec(SEXP xpbm,
 
   switch(xpBM->matrix_type()) {
   case 1:
-    REPLACE_VEC(unsigned char,  as<RawVector>(vec))
+    switch(TYPEOF(vec)) {
+    case RAWSXP:  REPLACE_VEC(unsigned char, as<RawVector>(vec))
+    case LGLSXP:  {
+      RawVector vec2 = conv_vec<LGLSXP, RAWSXP, unsigned char>(vec);
+      REPLACE_VEC(unsigned char, vec2)
+    }
+    case INTSXP:  {
+      RawVector vec2 = conv_vec<INTSXP, RAWSXP, unsigned char>(vec);
+      REPLACE_VEC(unsigned char, vec2)
+    }
+    case REALSXP: {
+      RawVector vec2 = conv_vec<REALSXP, RAWSXP, unsigned char>(vec);
+      REPLACE_VEC(unsigned char, vec2)
+    }
+    default: stop("This R type is not supported.");
+    }
   case 2:
-    REPLACE_VEC(unsigned short, checkShort(as<IntegerVector>(vec)))
+    switch(TYPEOF(vec)) {
+    case RAWSXP:  REPLACE_VEC(unsigned short, as<RawVector>(vec))
+    case LGLSXP:  {
+      IntegerVector vec2 = conv_vec<LGLSXP, INTSXP, unsigned short>(vec);
+      REPLACE_VEC(unsigned short, vec2)
+    }
+    case INTSXP:  {
+      IntegerVector vec2 = conv_vec<INTSXP, INTSXP, unsigned short>(vec);
+      REPLACE_VEC(unsigned short, vec2)
+    }
+    case REALSXP: {
+      IntegerVector vec2 = conv_vec<REALSXP, INTSXP, unsigned short>(vec);
+      REPLACE_VEC(unsigned short, vec2)
+    }
+    default: stop("This R type is not supported.");
+    }
   case 4:
-    REPLACE_VEC(int,            as<IntegerVector>(vec))
+    switch(TYPEOF(vec)) {
+    case RAWSXP:  REPLACE_VEC(int, as<RawVector>(vec))
+    case LGLSXP:  REPLACE_VEC(int, as<LogicalVector>(vec))
+    case INTSXP:  REPLACE_VEC(int, as<IntegerVector>(vec))
+    case REALSXP: {
+      IntegerVector vec2 = conv_vec<REALSXP, INTSXP, int>(vec);
+      REPLACE_VEC(int, vec2)
+    }
+    default: stop("This R type is not supported.");
+    }
   case 8:
-    REPLACE_VEC(double,         as<NumericVector>(vec))
+    switch(TYPEOF(vec)) {
+    case RAWSXP:  REPLACE_VEC(double, as<RawVector>(vec))
+    case LGLSXP:  REPLACE_VEC(double, as<LogicalVector>(vec))
+    case INTSXP:  REPLACE_VEC(double, as<IntegerVector>(vec))
+    case REALSXP: REPLACE_VEC(double, as<NumericVector>(vec))
+    default: stop("This R type is not supported.");
+    }
   default:
     throw Rcpp::exception(ERROR_TYPE);
   }

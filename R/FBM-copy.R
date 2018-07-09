@@ -50,12 +50,6 @@ big_copy <- function(X, ind.row = rows_along(X),
     save = save
   )
 
-  # Warn only once and don't check arguments
-  warn_downcast(from = X, to = res)
-  opt.save <- options(bigstatsr.typecast.warning = FALSE,
-                      bigstatsr.check.args = FALSE)
-  on.exit(options(opt.save), add = TRUE)
-
   # Don't write in parallel
   big_apply(X, a.FUN = function(X, ind, X2, ind.row, ind.col) {
     X2[, ind] <- X[ind.row, ind.col[ind]]

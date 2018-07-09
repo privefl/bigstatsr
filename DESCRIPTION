@@ -23,36 +23,34 @@ License: GPL-3
 Language: en-US
 LazyData: TRUE
 ByteCompile: TRUE
-Depends: 
-  R (>= 3.3.0)
+Depends: R (>= 3.3.0)
 Imports: 
-  cowplot,
-  data.table,
-  doParallel,
-  foreach, 
-  ggplot2 (>= 3.0.0),
-  glue,
-  graphics,
-  methods,
-  parallel, 
-  Rcpp, 
-  RSpectra, 
-  stats,
-  utils
+    cowplot,
+    data.table,
+    doParallel,
+    foreach,
+    ggplot2 (>= 3.0.0),
+    graphics,
+    methods,
+    parallel,
+    Rcpp,
+    RSpectra,
+    stats,
+    utils
 LinkingTo: 
-  BH,
-  Rcpp,
-  RcppArmadillo
-Suggests:
-  spelling, 
-  biglasso, 
-  bigmemory,
-  covr, 
-  glmnet,
-  grid,
-  LiblineaR,
-  ModelMetrics,
-  testthat
+    BH,
+    Rcpp,
+    RcppArmadillo
+Suggests: 
+    spelling,
+    biglasso,
+    bigmemory,
+    covr,
+    glmnet,
+    grid,
+    ModelMetrics,
+    testthat,
+    RcppEigen
 RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 URL: https://privefl.github.io/bigstatsr

@@ -83,8 +83,9 @@ FBM_RC <- methods::setRefClass(
 
     show = function(typeBM) {
       if (missing(typeBM)) typeBM <- names(.self$type)
-      print(glue::glue("A Filebacked Big Matrix of type '{typeBM}'",
-                       " with {.self$nrow} rows and {.self$ncol} columns."))
+      cat(sprintf(
+        "A Filebacked Big Matrix of type '%s' with %s rows and %s columns.\n",
+        typeBM, .self$nrow, .self$ncol))
       invisible(.self)
     }
   )
