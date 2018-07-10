@@ -10,6 +10,71 @@ using std::size_t;
 
 /******************************************************************************/
 
+#define DISPATCH_REPLACE(REPLACE, VEC) {                                       \
+                                                                               \
+  XPtr<FBM> xpBM(xpbm);                                                        \
+                                                                               \
+  switch(xpBM->matrix_type()) {                                                \
+  case 1:                                                                      \
+    switch(TYPEOF(VEC)) {                                                      \
+    case RAWSXP:  REPLACE(unsigned char, as<RawVector>(VEC))                   \
+    case LGLSXP:  {                                                            \
+      RawVector vec2 = conv_vec<LGLSXP, RAWSXP, unsigned char>(VEC);           \
+      REPLACE(unsigned char, vec2)                                             \
+    }                                                                          \
+    case INTSXP:  {                                                            \
+      RawVector vec2 = conv_vec<INTSXP, RAWSXP, unsigned char>(VEC);           \
+      REPLACE(unsigned char, vec2)                                             \
+    }                                                                          \
+    case REALSXP: {                                                            \
+      RawVector vec2 = conv_vec<REALSXP, RAWSXP, unsigned char>(VEC);          \
+      REPLACE(unsigned char, vec2)                                             \
+    }                                                                          \
+    default: stop("This R type is not supported.");                            \
+    }                                                                          \
+  case 2:                                                                      \
+    switch(TYPEOF(VEC)) {                                                      \
+    case RAWSXP:  REPLACE(unsigned short, as<RawVector>(VEC))                  \
+    case LGLSXP:  {                                                            \
+      IntegerVector vec2 = conv_vec<LGLSXP, INTSXP, unsigned short>(VEC);      \
+      REPLACE(unsigned short, vec2)                                            \
+    }                                                                          \
+    case INTSXP:  {                                                            \
+      IntegerVector vec2 = conv_vec<INTSXP, INTSXP, unsigned short>(VEC);      \
+      REPLACE(unsigned short, vec2)                                            \
+    }                                                                          \
+    case REALSXP: {                                                            \
+      IntegerVector vec2 = conv_vec<REALSXP, INTSXP, unsigned short>(VEC);     \
+      REPLACE(unsigned short, vec2)                                            \
+    }                                                                          \
+    default: stop("This R type is not supported.");                            \
+    }                                                                          \
+  case 4:                                                                      \
+    switch(TYPEOF(VEC)) {                                                      \
+    case RAWSXP:  REPLACE(int, as<RawVector>(VEC))                             \
+    case LGLSXP:  REPLACE(int, as<LogicalVector>(VEC))                         \
+    case INTSXP:  REPLACE(int, as<IntegerVector>(VEC))                         \
+    case REALSXP: {                                                            \
+      IntegerVector vec2 = conv_vec_dbl2int(VEC);                              \
+      REPLACE(int, vec2)                                                       \
+    }                                                                          \
+    default: stop("This R type is not supported.");                            \
+    }                                                                          \
+  case 8:                                                                      \
+    switch(TYPEOF(VEC)) {                                                      \
+    case RAWSXP:  REPLACE(double, as<RawVector>(VEC))                          \
+    case LGLSXP:  REPLACE(double, as<NumericVector>(VEC))                      \
+    case INTSXP:  REPLACE(double, as<NumericVector>(VEC))                      \
+    case REALSXP: REPLACE(double, as<NumericVector>(VEC))                      \
+    default: stop("This R type is not supported.");                            \
+    }                                                                          \
+  default:                                                                     \
+    throw Rcpp::exception(ERROR_TYPE);                                         \
+  }                                                                            \
+}
+
+/******************************************************************************/
+
 bool do_warn_downcast() {
 
   Environment base("package:base");
@@ -79,7 +144,7 @@ IntegerVector conv_vec_dbl2int(NumericVector nv) {
 
     for (; i < n; i++) {
       res[i] = nv[i];
-      if (res[i] != nv[i] && res[i] != NA_INTEGER) {
+      if (res[i] != nv[i] && !R_IsNA(nv[i])) {
         warning("%s (%s -> %s)\n  %s",
                 "At least one value changed", nv[i], res[i],
                 "while converting from R type 'double' to C type 'integer'.");
@@ -102,8 +167,8 @@ void replaceVecOne(C macc, T val) {
     macc[k] = val;
 }
 
-#define REPLACE_VEC_ONE(TYPE) {                                                \
-return replaceVecOne(VecBMAcc<TYPE>(xpBM, elemInd - 1), as<TYPE>(val));        \
+#define REPLACE_VEC_ONE(BM_TYPE, VEC) {                                        \
+return replaceVecOne(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC[0]);            \
 }
 
 // [[Rcpp::export]]
@@ -111,10 +176,7 @@ void replaceVecOne(SEXP xpbm,
                    const NumericVector& elemInd,
                    SEXP val) {
 
-  XPtr<FBM> xpBM(xpbm);
-  int type = xpBM->matrix_type();
-
-  DISPATCH_TYPE(REPLACE_VEC_ONE)
+  DISPATCH_REPLACE(REPLACE_VEC_ONE, val)
 }
 
 /******************************************************************************/
@@ -127,7 +189,7 @@ void replace_vec(C macc, const Vector<RTYPE>& vec) {
 }
 
 #define REPLACE_VEC(BM_TYPE, VEC) {                                            \
-return replace_vec(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC);                  \
+return replace_vec(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC);                 \
 }
 
 // [[Rcpp::export]]
@@ -135,66 +197,7 @@ void replaceVec(SEXP xpbm,
                 const NumericVector& elemInd,
                 SEXP vec) {
 
-  XPtr<FBM> xpBM(xpbm);
-
-  switch(xpBM->matrix_type()) {
-  case 1:
-    switch(TYPEOF(vec)) {
-    case RAWSXP:  REPLACE_VEC(unsigned char, as<RawVector>(vec))
-    case LGLSXP:  {
-      RawVector vec2 = conv_vec<LGLSXP, RAWSXP, unsigned char>(vec);
-      REPLACE_VEC(unsigned char, vec2)
-    }
-    case INTSXP:  {
-      RawVector vec2 = conv_vec<INTSXP, RAWSXP, unsigned char>(vec);
-      REPLACE_VEC(unsigned char, vec2)
-    }
-    case REALSXP: {
-      RawVector vec2 = conv_vec<REALSXP, RAWSXP, unsigned char>(vec);
-      REPLACE_VEC(unsigned char, vec2)
-    }
-    default: stop("This R type is not supported.");
-    }
-  case 2:
-    switch(TYPEOF(vec)) {
-    case RAWSXP:  REPLACE_VEC(unsigned short, as<RawVector>(vec))
-    case LGLSXP:  {
-      IntegerVector vec2 = conv_vec<LGLSXP, INTSXP, unsigned short>(vec);
-      REPLACE_VEC(unsigned short, vec2)
-    }
-    case INTSXP:  {
-      IntegerVector vec2 = conv_vec<INTSXP, INTSXP, unsigned short>(vec);
-      REPLACE_VEC(unsigned short, vec2)
-    }
-    case REALSXP: {
-      IntegerVector vec2 = conv_vec<REALSXP, INTSXP, unsigned short>(vec);
-      REPLACE_VEC(unsigned short, vec2)
-    }
-    default: stop("This R type is not supported.");
-    }
-  case 4:
-    switch(TYPEOF(vec)) {
-    case RAWSXP:  REPLACE_VEC(int, as<RawVector>(vec))
-    case LGLSXP:  REPLACE_VEC(int, as<LogicalVector>(vec))
-    case INTSXP:  REPLACE_VEC(int, as<IntegerVector>(vec))
-    case REALSXP: {
-      IntegerVector vec2 = conv_vec_dbl2int(vec);
-      REPLACE_VEC(int, vec2)
-    }
-    default: stop("This R type is not supported.");
-    }
-  case 8:
-    switch(TYPEOF(vec)) {
-    case RAWSXP:  REPLACE_VEC(double, as<RawVector>(vec))
-    // int -> double for handling NA by Rcpp
-    case LGLSXP:  REPLACE_VEC(double, as<NumericVector>(vec))
-    case INTSXP:  REPLACE_VEC(double, as<NumericVector>(vec))
-    case REALSXP: REPLACE_VEC(double, as<NumericVector>(vec))
-    default: stop("This R type is not supported.");
-    }
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
-  }
+  DISPATCH_REPLACE(REPLACE_VEC, vec)
 }
 
 /******************************************************************************/
@@ -207,9 +210,8 @@ void replaceMatOne(C macc, T val) {
       macc(i, j) = val;
 }
 
-#define REPLACE_MAT_ONE(TYPE) {                                                \
-return replaceMatOne(SubBMAcc<TYPE>(xpBM, rowInd - 1, colInd - 1),             \
-                     as<TYPE>(val));                                           \
+#define REPLACE_MAT_ONE(BM_TYPE, VEC) {                                        \
+return replaceMatOne(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), VEC[0]); \
 }
 
 // [[Rcpp::export]]
@@ -218,10 +220,7 @@ void replaceMatOne(SEXP xpbm,
                    const IntegerVector& colInd,
                    SEXP val) {
 
-  XPtr<FBM> xpBM(xpbm);
-  int type = xpBM->matrix_type();
-
-  DISPATCH_TYPE(REPLACE_MAT_ONE)
+  DISPATCH_REPLACE(REPLACE_MAT_ONE, val)
 }
 
 /******************************************************************************/
@@ -236,8 +235,8 @@ void replace_mat(SubBMAcc<T> macc, const Vector<RTYPE>& vec) {
       macc(i, j) = mat(i, j);
 }
 
-#define REPLACE_MAT(BM_TYPE, MAT) {                                             \
-return replace_mat(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), MAT);       \
+#define REPLACE_MAT(BM_TYPE, MAT) {                                            \
+return replace_mat(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), MAT);      \
 }
 
 // [[Rcpp::export]]
@@ -246,66 +245,7 @@ void replaceMat(SEXP xpbm,
                 const IntegerVector& colInd,
                 SEXP mat) {
 
-  XPtr<FBM> xpBM(xpbm);
-
-  switch(xpBM->matrix_type()) {
-  case 1:
-    switch(TYPEOF(mat)) {
-    case RAWSXP:  REPLACE_MAT(unsigned char, as<RawVector>(mat))
-    case LGLSXP:  {
-      RawVector mat2 = conv_vec<LGLSXP, RAWSXP, unsigned char>(mat);
-      REPLACE_MAT(unsigned char, mat2)
-    }
-    case INTSXP:  {
-      RawVector mat2 = conv_vec<INTSXP, RAWSXP, unsigned char>(mat);
-      REPLACE_MAT(unsigned char, mat2)
-    }
-    case REALSXP: {
-      RawVector mat2 = conv_vec<REALSXP, RAWSXP, unsigned char>(mat);
-      REPLACE_MAT(unsigned char, mat2)
-    }
-    default: stop("This R type is not supported.");
-    }
-  case 2:
-    switch(TYPEOF(mat)) {
-    case RAWSXP:  REPLACE_MAT(unsigned short, as<RawVector>(mat))
-    case LGLSXP:  {
-      IntegerVector mat2 = conv_vec<LGLSXP, INTSXP, unsigned short>(mat);
-      REPLACE_MAT(unsigned short, mat2)
-    }
-    case INTSXP:  {
-      IntegerVector mat2 = conv_vec<INTSXP, INTSXP, unsigned short>(mat);
-      REPLACE_MAT(unsigned short, mat2)
-    }
-    case REALSXP: {
-      IntegerVector mat2 = conv_vec<REALSXP, INTSXP, unsigned short>(mat);
-      REPLACE_MAT(unsigned short, mat2)
-    }
-    default: stop("This R type is not supported.");
-    }
-  case 4:
-    switch(TYPEOF(mat)) {
-    case RAWSXP:  REPLACE_MAT(int, as<RawVector>(mat))
-    case LGLSXP:  REPLACE_MAT(int, as<LogicalVector>(mat))
-    case INTSXP:  REPLACE_MAT(int, as<IntegerVector>(mat))
-    case REALSXP: {
-      IntegerVector mat2 = conv_vec_dbl2int(mat);
-      REPLACE_MAT(int, mat2)
-    }
-    default: stop("This R type is not supported.");
-    }
-  case 8:
-    switch(TYPEOF(mat)) {
-    case RAWSXP:  REPLACE_MAT(double, as<RawVector>(mat))
-    // int -> double for handling NA by Rcpp
-    case LGLSXP:  REPLACE_MAT(double, as<NumericVector>(mat))
-    case INTSXP:  REPLACE_MAT(double, as<NumericVector>(mat))
-    case REALSXP: REPLACE_MAT(double, as<NumericVector>(mat))
-    default: stop("This R type is not supported.");
-    }
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
-  }
+  DISPATCH_REPLACE(REPLACE_MAT, mat)
 }
 
 /******************************************************************************/

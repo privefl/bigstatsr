@@ -62,7 +62,7 @@ test_that("Copy with conversion", {
   options(bigstatsr.downcast.warning = TRUE)
 
   X <- big_copy(x0)
-  expect_warning(X[1, 1] <- NA)
+  expect_identical(X[1, 1] <- NA, NA)
   expect_identical(X[1, 1], NA_real_)
   expect_warning(X2 <- big_copy(X, type = "integer"))
   expect_identical(X2[1, 1], NA_integer_)

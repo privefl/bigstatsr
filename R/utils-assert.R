@@ -1,5 +1,24 @@
 ################################################################################
 
+#' Temporarily disable downcast warning
+#'
+#' @param expr The expression to evaluate without downcast warning.
+#'
+#' @return The result of the evaluated expression.
+#' @export
+#'
+#' @examples
+#'
+without_downcast_warning <- function(expr) {
+
+  opt.save <- options(bigstatsr.downcast.warning = FALSE)
+  on.exit(options(opt.save), add = TRUE)
+
+  eval.parent(substitute(expr))
+}
+
+################################################################################
+
 check_args <- function(...) {
 
   if (getOption("bigstatsr.check.args")) {
