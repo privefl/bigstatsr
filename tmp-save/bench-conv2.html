@@ -131,7 +131,7 @@ $(document).ready(function () {
 <pre class="r"><code>library(bigstatsr)
 options(bigstatsr.downcast.warning = FALSE)
 
-N &lt;- M &lt;- 5000
+N &lt;- M &lt;- 4000
 x4 &lt;- matrix(rnorm(N * M, 100, 10), N)
 x3 &lt;- x2 &lt;- x1 &lt;- x4
 storage.mode(x1) &lt;- &quot;raw&quot;
@@ -150,16 +150,16 @@ foreach(X = list(X1, X2, X3, X4)) %:%
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1]  61 102 102 109
+## [1] 26 41 41 46
 ## 
 ## [[2]]
-## [1]  23 120 120 127
+## [1] 11 36 36 42
 ## 
 ## [[3]]
-## [1]  35  33  33 133
+## [1] 14 13 13 43
 ## 
 ## [[4]]
-## [1]  47 246 403  48</code></pre>
+## [1] 17 57 58 22</code></pre>
 
 
 

@@ -15,7 +15,7 @@ options(width = 110)
 library(bigstatsr)
 options(bigstatsr.downcast.warning = FALSE)
 
-N <- M <- 5000
+N <- M <- 4000
 x4 <- matrix(rnorm(N * M, 100, 10), N)
 x3 <- x2 <- x1 <- x4
 storage.mode(x1) <- "raw"
