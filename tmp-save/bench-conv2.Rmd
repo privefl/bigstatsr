@@ -13,10 +13,10 @@ options(width = 110)
 
 ```{r, warning=FALSE}
 library(bigstatsr)
-options(bigstatsr.downcast.warning = FALSE)
+library(foreach)
 
 N <- M <- 4000
-x4 <- matrix(rnorm(N * M, 100, 10), N)
+x4 <- matrix(round(rnorm(N * M, 100, 10), N))
 x3 <- x2 <- x1 <- x4
 storage.mode(x1) <- "raw"
 storage.mode(x2) <- "logical"
@@ -27,7 +27,14 @@ X3 <- big_copy(x4, type = "integer")
 X2 <- big_copy(x4, type = "unsigned short")
 X1 <- big_copy(x4, type = "unsigned char")
 
-library(foreach)
+options(bigstatsr.downcast.warning = FALSE)
+foreach(X = list(X1, X2, X3, X4)) %:% 
+  foreach(x = list(x1, x2, x3, x4), .combine = "c") %do% {
+    tmp <- microbenchmark::microbenchmark(X[] <- x)
+    round(median(tmp$time) / 1e6)
+  }
+
+options(bigstatsr.downcast.warning = TRUE)
 foreach(X = list(X1, X2, X3, X4)) %:% 
   foreach(x = list(x1, x2, x3, x4), .combine = "c") %do% {
     tmp <- microbenchmark::microbenchmark(X[] <- x)
