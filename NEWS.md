@@ -1,3 +1,7 @@
+## bigstatsr 0.5.0
+
+- There have been some changes regarding how conversion between types is checked. Before, you would get a warning for any possible loss of precision (without actually checking it). Now, any loss of precision due to conversion between types is reported as a warning, and only in this case. If you want to disable this feature, you can use `options(bigstatsr.downcast.warning = FALSE)`.
+
 ## bigstatsr 0.4.1
 
 - change `big_read` so that it is faster (corresponding vignette updated).

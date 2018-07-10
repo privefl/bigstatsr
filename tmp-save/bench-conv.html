@@ -129,10 +129,10 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(bigstatsr)
-options(bigstatsr.downcast.warning = FALSE)
+library(foreach)
 
-N &lt;- M &lt;- 5000
-x4 &lt;- matrix(rnorm(N * M, 100, 10), N)
+N &lt;- M &lt;- 4000
+x4 &lt;- matrix(round(rnorm(N * M, 100, 10), N))
 x3 &lt;- x2 &lt;- x1 &lt;- x4
 storage.mode(x1) &lt;- &quot;raw&quot;
 storage.mode(x2) &lt;- &quot;logical&quot;
@@ -143,23 +143,22 @@ X3 &lt;- big_copy(x4, type = &quot;integer&quot;)
 X2 &lt;- big_copy(x4, type = &quot;unsigned short&quot;)
 X1 &lt;- big_copy(x4, type = &quot;unsigned char&quot;)
 
-library(foreach)
 foreach(X = list(X1, X2, X3, X4)) %:% 
   foreach(x = list(x1, x2, x3, x4), .combine = &quot;c&quot;) %do% {
     tmp &lt;- microbenchmark::microbenchmark(X[] &lt;- x)
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1]  70 161 168 378
+## [1] 187 221 230 262
 ## 
 ## [[2]]
-## [1] 124 197 127 393
+## [1] 223 240 206 281
 ## 
 ## [[3]]
-## [1] 109 183 112 376
+## [1] 208 240 212 281
 ## 
 ## [[4]]
-## [1] 408 504 498 430</code></pre>
+## [1] 253 268 258 242</code></pre>
 
 
 

@@ -129,10 +129,10 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(bigstatsr)
-options(bigstatsr.downcast.warning = FALSE)
+library(foreach)
 
 N &lt;- M &lt;- 4000
-x4 &lt;- matrix(rnorm(N * M, 100, 10), N)
+x4 &lt;- matrix(round(rnorm(N * M, 100, 10), N))
 x3 &lt;- x2 &lt;- x1 &lt;- x4
 storage.mode(x1) &lt;- &quot;raw&quot;
 storage.mode(x2) &lt;- &quot;logical&quot;
@@ -143,23 +143,40 @@ X3 &lt;- big_copy(x4, type = &quot;integer&quot;)
 X2 &lt;- big_copy(x4, type = &quot;unsigned short&quot;)
 X1 &lt;- big_copy(x4, type = &quot;unsigned char&quot;)
 
-library(foreach)
+options(bigstatsr.downcast.warning = FALSE)
 foreach(X = list(X1, X2, X3, X4)) %:% 
   foreach(x = list(x1, x2, x3, x4), .combine = &quot;c&quot;) %do% {
     tmp &lt;- microbenchmark::microbenchmark(X[] &lt;- x)
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1] 26 41 41 46
+## [1] 186 203 210 214
 ## 
 ## [[2]]
-## [1] 11 36 36 42
+## [1] 183 224 224 230
 ## 
 ## [[3]]
-## [1] 14 13 13 43
+## [1] 182 193 190 233
 ## 
 ## [[4]]
-## [1] 17 57 58 22</code></pre>
+## [1] 192 246 245 193</code></pre>
+<pre class="r"><code>options(bigstatsr.downcast.warning = TRUE)
+foreach(X = list(X1, X2, X3, X4)) %:% 
+  foreach(x = list(x1, x2, x3, x4), .combine = &quot;c&quot;) %do% {
+    tmp &lt;- microbenchmark::microbenchmark(X[] &lt;- x)
+    round(median(tmp$time) / 1e6)
+  }</code></pre>
+<pre><code>## [[1]]
+## [1] 187 210 206 207
+## 
+## [[2]]
+## [1] 177 211 211 215
+## 
+## [[3]]
+## [1] 179 182 188 220
+## 
+## [[4]]
+## [1] 187 254 249 190</code></pre>
 
 
 
