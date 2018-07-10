@@ -2,7 +2,7 @@
 
 context("FBM_CONVERT")
 
-options(bigstatsr.downcast.warning = TRUE)
+opt.save <- options(bigstatsr.downcast.warning = TRUE)
 
 set.seed(SEED)
 
@@ -90,21 +90,27 @@ for (gen in c("scalar", "vector", "matrix")) {
   # To raw
   expect_warning(X <- FBM(10, 10, x2, type = "raw"),
                  get_text("integer", "unsigned char (raw)"), fixed = TRUE)
+  expect_warning(X[1:5] <- x2[1:5],
+                 get_text("integer", "unsigned char (raw)"), fixed = TRUE)
   expect_warning(X[2] <- NA_integer_,
                  get_text("integer", "unsigned char (raw)"), fixed = TRUE)
   expect_FBM(without_downcast_warning( FBM(10, 10, x2, type = "raw") ))
   # To ushort
   expect_warning(X <- FBM(10, 10, x2, type = "unsigned short"),
                  get_text("integer", "unsigned short"), fixed = TRUE)
+  expect_warning(X[1:5] <- x2[1:5],
+                 get_text("integer", "unsigned short"), fixed = TRUE)
   expect_warning(X[2] <- NA_integer_,
                  get_text("integer", "unsigned short"), fixed = TRUE)
   expect_FBM(without_downcast_warning( FBM(10, 10, x2, type = "unsigned short") ))
   # To int
   expect_FBM(X <- FBM(10, 10, x2, type = "integer"))
+  expect_identical(X[1:5] <- x2[1:5], x2[1:5])
   X[2] <- NA_integer_
   expect_identical(X[2], NA_integer_)
   # To double
   expect_FBM(X <- FBM(10, 10, x2, type = "double"))
+  expect_identical(X[1:5] <- x2[1:5], x2[1:5])
   X[2] <- NA_integer_
   expect_identical(X[2], NA_real_)
 
@@ -113,18 +119,22 @@ for (gen in c("scalar", "vector", "matrix")) {
   x3 <- to_gen(sample(c(TRUE, FALSE), 100, TRUE))
   # To raw
   expect_FBM(X <- FBM(10, 10, x3, type = "raw"))
+  expect_identical(X[1:5] <- na.omit(x3[1:5]), na.omit(x3[1:5]))
   expect_warning(X[2] <- NA,
                  get_text("logical", "unsigned char (raw)"), fixed = TRUE)
   # To ushort
   expect_FBM(X <- FBM(10, 10, x3, type = "unsigned short"))
+  expect_identical(X[1:5] <- na.omit(x3[1:5]), na.omit(x3[1:5]))
   expect_warning(X[2] <- NA,
                  get_text("logical", "unsigned short"), fixed = TRUE)
   # To int
   expect_FBM(X <- FBM(10, 10, x3, type = "integer"))
+  expect_identical(X[1:5] <- x3[1:5], x3[1:5])
   X[2] <- NA
   expect_identical(X[2], NA_integer_)
   # To double
   expect_FBM(X <- FBM(10, 10, x3, type = "double"))
+  expect_identical(X[1:5] <- x3[1:5], x3[1:5])
   X[2] <- NA
   expect_identical(X[2], NA_real_)
 
@@ -132,14 +142,18 @@ for (gen in c("scalar", "vector", "matrix")) {
   # From raw
   x4 <- to_gen(sample(as.raw(0:255), 100, TRUE))
   expect_FBM(X <- FBM(10, 10, x4, type = "raw"))
+  expect_identical(X[1:5] <- x4[1:5], x4[1:5])
   expect_FBM(X <- FBM(10, 10, x4, type = "unsigned short"))
+  expect_identical(X[1:5] <- x4[1:5], x4[1:5])
   expect_FBM(X <- FBM(10, 10, x4, type = "integer"))
+  expect_identical(X[1:5] <- x4[1:5], x4[1:5])
   expect_FBM(X <- FBM(10, 10, x4, type = "double"))
+  expect_identical(X[1:5] <- x4[1:5], x4[1:5])
 
 }
 
 ################################################################################
 
-options(bigstatsr.downcast.warning = FALSE)
+options(opt.save)
 
 ################################################################################
