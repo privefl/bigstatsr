@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-#'
+#' without_downcast_warning(FBM(10, 10, type = "integer", init = 1.5))
 without_downcast_warning <- function(expr) {
 
   opt.save <- options(bigstatsr.downcast.warning = FALSE)

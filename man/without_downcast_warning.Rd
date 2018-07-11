@@ -16,5 +16,5 @@ The result of the evaluated expression.
 Temporarily disable downcast warning
 }
 \examples{
-
+without_downcast_warning(FBM(10, 10, type = "integer", init = 1.5))
 }
