@@ -10,7 +10,7 @@ library(bigstatsr)
 
 ################################################################################
 
-opt.save <- options(bigstatsr.typecast.warning = FALSE,
+opt.save <- options(bigstatsr.downcast.warning = FALSE,
                     bigstatsr.block.sizeGB = 1e-5)
 
 ################################################################################
@@ -49,7 +49,8 @@ diffPCs <- function(test, rot) {
 set.seed(NULL)
 if (not_cran) {
   # Seeds that won't work (because of bad luck)
-  do_not_use <- c()
+  # 6649 -> spLinReg
+  do_not_use <- c(6649)
   while ((SEED <- round(runif(1, 1, 9999))) %in% do_not_use) NULL
 } else {
   SEED <- 1

@@ -1,0 +1,36 @@
+---
+title: "Benchmark conv (current)"
+author: "Florian Privé"
+date: "7 juillet 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+unlink(list.files(tempdir(), pattern = "\\.bk$", full.names = TRUE))
+options(width = 110)
+```
+
+```{r, warning=FALSE}
+library(bigstatsr)
+library(foreach)
+
+N <- M <- 4000
+x4 <- matrix(round(rnorm(N * M, 100, 10), N))
+x3 <- x2 <- x1 <- x4
+storage.mode(x1) <- "raw"
+storage.mode(x2) <- "logical"
+storage.mode(x3) <- "integer"
+
+X4 <- big_copy(x4, type = "double")
+X3 <- big_copy(x4, type = "integer")
+X2 <- big_copy(x4, type = "unsigned short")
+X1 <- big_copy(x4, type = "unsigned char")
+
+foreach(X = list(X1, X2, X3, X4)) %:% 
+  foreach(x = list(x1, x2, x3, x4), .combine = "c") %do% {
+    tmp <- microbenchmark::microbenchmark(X[] <- x)
+    round(median(tmp$time) / 1e6)
+  }
+```
+

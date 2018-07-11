@@ -83,8 +83,9 @@ FBM_RC <- methods::setRefClass(
 
     show = function(typeBM) {
       if (missing(typeBM)) typeBM <- names(.self$type)
-      print(glue::glue("A Filebacked Big Matrix of type '{typeBM}'",
-                       " with {.self$nrow} rows and {.self$ncol} columns."))
+      cat(sprintf(
+        "A Filebacked Big Matrix of type '%s' with %s rows and %s columns.\n",
+        typeBM, .self$nrow, .self$ncol))
       invisible(.self)
     }
   )
@@ -179,6 +180,7 @@ setMethod(
   '[<-', signature(x = "FBM"),
   Replace(
     replace_vector = function(x, i, value) {
+
       if (length(value) == 1) {
         replaceVecOne(x$address, i, value)
       } else if (length(value) == length(i)) {
@@ -189,17 +191,21 @@ setMethod(
     },
 
     replace_matrix = function(x, i, j, value) {
-      if (length(value) == 1) {
-        replaceMatOne(x$address, i, j, value)
-      } else {
-        .dim <- c(length(i), length(j))
+
+      if (length(value) == 1)                         ## scalar
+        return(replaceMatOne(x$address, i, j, value))
+
+      .dim <- c(length(i), length(j))
+      if (is.null(dim(value))) {                      ## vector
         if (length(value) == prod(.dim)) {
           dim(value) <- .dim
-          replaceMat(x$address, i, j, value)
-        } else {
-          stop2("'value' must be unique or of the dimension of 'x[i, j]'.")
+          return(replaceMat(x$address, i, j, value))
         }
+      } else if (identical(dim(value), .dim)) {       ## matrix
+        return(replaceMat(x$address, i, j, value))
       }
+
+      stop2("'value' must be unique or of the dimension of 'x[i, j]'.")
     }
   )
 )

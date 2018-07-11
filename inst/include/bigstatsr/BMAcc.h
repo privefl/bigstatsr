@@ -3,23 +3,6 @@
 
 /******************************************************************************/
 
-#if defined(_MSC_VER)
-
-#define FORCE_INLINE  __forceinline
-#define NEVER_INLINE  __declspec(noinline)
-
-//---------------------------------------
-// Other compilers (including GCC)
-
-#else //  defined(_MSC_VER)
-
-#define FORCE_INLINE inline __attribute__((always_inline))
-#define NEVER_INLINE __attribute__((noinline))
-
-#endif  //  !defined(_MSC_VER)
-
-/******************************************************************************/
-
 #include <bigstatsr/FBM.h>
 #include <bigstatsr/utils.h>
 
@@ -37,7 +20,7 @@ public:
     _ncol = xpBM->ncol();
   }
 
-  FORCE_INLINE T& operator()(size_t i, size_t j) {
+  inline T& operator()(size_t i, size_t j) {
     return _pMat[i + j * _nrow];
   }
 
@@ -71,7 +54,7 @@ public:
       _elem_ind = elem_ind2;
     }
 
-  FORCE_INLINE T& operator[](size_t k) {
+  inline T& operator[](size_t k) {
     // https://stackoverflow.com/a/7076312/6103040
     return this->_pMat[_elem_ind[k]];
   }
@@ -115,7 +98,7 @@ public:
       _col_ind = col_ind2;
     }
 
-  FORCE_INLINE T& operator()(size_t i, size_t j) {
+  inline T& operator()(size_t i, size_t j) {
     // https://stackoverflow.com/a/32087373/6103040
     return BMAcc<T>::operator()(_row_ind[i], _col_ind[j]);
     // https://stackoverflow.com/a/7076312/6103040

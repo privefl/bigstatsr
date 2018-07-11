@@ -6,7 +6,7 @@
     bigstatsr.cluster.type = "PSOCK",
     bigstatsr.check.args = TRUE,
     bigstatsr.block.sizeGB = 1,
-    bigstatsr.typecast.warning = TRUE
+    bigstatsr.downcast.warning = TRUE
   )
 }
 
@@ -18,7 +18,7 @@
     bigstatsr.cluster.type = NULL,
     bigstatsr.check.args = NULL,
     bigstatsr.block.sizeGB = NULL,
-    bigstatsr.typecast.warning = NULL
+    bigstatsr.downcast.warning = NULL
   )
 }
 

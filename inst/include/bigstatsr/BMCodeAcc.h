@@ -20,7 +20,7 @@ public:
       _code256 = code256;
     }
 
-  FORCE_INLINE double operator()(std::size_t i, std::size_t j) {
+  inline double operator()(std::size_t i, std::size_t j) {
     // https://stackoverflow.com/a/32087373/6103040
     return _code256[SubBMAcc<unsigned char>::operator()(i, j)];
   }
