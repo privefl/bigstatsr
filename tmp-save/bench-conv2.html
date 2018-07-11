@@ -150,16 +150,16 @@ foreach(X = list(X1, X2, X3, X4)) %:%
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1] 194 209 214 227
+## [1] 109 124 124 126
 ## 
 ## [[2]]
-## [1] 226 225 191 251
+## [1] 105 127 126 131
 ## 
 ## [[3]]
-## [1] 218 219 184 243
+## [1] 108 110 112 142
 ## 
 ## [[4]]
-## [1] 248 244 250 190</code></pre>
+## [1] 113 147 138 116</code></pre>
 <pre class="r"><code>options(bigstatsr.downcast.warning = TRUE)
 foreach(X = list(X1, X2, X3, X4)) %:% 
   foreach(x = list(x1, x2, x3, x4), .combine = &quot;c&quot;) %do% {
@@ -167,16 +167,16 @@ foreach(X = list(X1, X2, X3, X4)) %:%
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1] 187 204 207 225
+## [1] 112 132 132 142
 ## 
 ## [[2]]
-## [1] 213 209 189 231
+## [1] 114 168 134 135
 ## 
 ## [[3]]
-## [1] 200 201 183 224
+## [1] 109 114 120 147
 ## 
 ## [[4]]
-## [1] 249 241 238 188</code></pre>
+## [1] 116 153 154 131</code></pre>
 <pre class="r"><code>library(bigmemory)
 
 Y4 &lt;- as.big.matrix(x4, type = &quot;double&quot;)
@@ -190,16 +190,16 @@ foreach(X = list(Y1, Y2, Y3, Y4)) %:%
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1] 484 499 500 596
+## [1] 417 440 440 475
 ## 
 ## [[2]]
-## [1] 474 534 524 592
+## [1] 416 429 432 464
 ## 
 ## [[3]]
-## [1] 520 528 520 589
+## [1] 432 411 411 447
 ## 
 ## [[4]]
-## [1] 354 358 358 352</code></pre>
+## [1] 281 282 283 287</code></pre>
 
 
 
