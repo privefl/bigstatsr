@@ -17,6 +17,9 @@ Overall, there were no ERROR, 1 WARNING and 2 NOTEs:
   d:/RCompile/CRANpkg/lib/3.6/BH/include/boost/interprocess/detail/win32_api.hpp:178:13: warning: ISO C++ prohibits anonymous structs [-Wpedantic]
   d:/RCompile/CRANpkg/lib/3.6/BH/include/boost/interprocess/detail/win32_api.hpp:180:7: warning: ISO C++ prohibits anonymous structs [-Wpedantic]
   
+-> Package BH comes with these issues on 'r-devel-windows-ix86+x86_64' only. 
+   This is also the case for many other packages (e.g. package bigmemory).
+
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Florian Privé <florian.prive.21@gmail.com>'
 
@@ -28,7 +31,12 @@ CRAN repository db overrides:
   X-CRAN-Comment: Archived on 2018-02-02 as usage restrictions in
     README were incompatible with a FOSS licence.
     
--> I removed the Code of Conduct.    
+  -> I removed the Code of Conduct.    
+
+  It tried to write in the installed package's location.
+  
+  -> I've searched everywhere. To the best of my ability, I think this is fixed, but I've no way to be sure.
+
 
 * checking installed package size ... NOTE
 
