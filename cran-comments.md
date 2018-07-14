@@ -1,6 +1,8 @@
+__I am aware of the WARNING reported by win-builder. Please see below.__
+
 ## Test environments
 
-* local Linux (CentOS 7 1 Linux Mint), R 3.4.4 
+* local Linux (CentOS 7 & Linux Mint), R 3.4.4 
 * local Windows (10), R 3.4.4
 * Linux on Travis-CI (devel and release)
 * Mac on Travis-CI (release)

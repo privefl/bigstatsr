@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cross-product with a matrix — big_cprodMat • bigstatsr</title>
+<title>Number of lines — nlines • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Cross-product with a matrix — big_cprodMat" />
+<meta property="og:title" content="Number of lines — nlines" />
 
-<meta property="og:description" content="Cross-product between a Filebacked Big Matrix and a matrix." />
+<meta property="og:description" content="Get the number of lines of a file with system command wc -l." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,77 +125,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Cross-product with a matrix</h1>
+    <h1>Number of lines</h1>
     
-    <div class="hidden name"><code>big_cprodMat.Rd</code></div>
+    <div class="hidden name"><code>nlines.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Cross-product between a Filebacked Big Matrix and a matrix.</p>
+    <p>Get the number of lines of a file with system command <code>wc -l</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A.row</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
-  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>), <span class='no'>ncores</span>))</pre>
+    <pre class="usage"><span class='fu'>nlines</span>(<span class='no'>file</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
-    </tr>
-    <tr>
-      <th>A.row</th>
-      <td><p>A matrix with <code>length(ind.row)</code> rows.</p></td>
-    </tr>
-    <tr>
-      <th>ind.row</th>
-      <td><p>An optional vector of the row indices that are used.
-If not specified, all rows are used. <strong>Don't use negative indices.</strong></p></td>
-    </tr>
-    <tr>
-      <th>ind.col</th>
-      <td><p>An optional vector of the column indices that are used.
-If not specified, all columns are used. <strong>Don't use negative indices.</strong></p></td>
-    </tr>
-    <tr>
-      <th>ncores</th>
-      <td><p>Number of cores used. Default doesn't use parallelism.
-You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
-    </tr>
-    <tr>
-      <th>block.size</th>
-      <td><p>Maximum number of columns read at once.
-Default uses <a href='block_size.html'>block_size</a>.</p></td>
+      <th>file</th>
+      <td><p>Path of the file.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>\(X^T \cdot A\).</p>
+    <p>The number of lines as one integer.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>nrow</span>(<span class='no'>X</span>)
-<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>ncol</span>(<span class='no'>X</span>)
-<span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='no'>n</span>, <span class='fl'>10</span>); <span class='no'>A</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>A</span>))
-
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A</span>)
-<span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='no'>X</span>[], <span class='no'>A</span>)
-<span class='fu'>all.equal</span>(<span class='no'>test</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># subsetting</span>
-<span class='no'>ind.row</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>)
-<span class='no'>ind.col</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>m</span>, <span class='no'>m</span>/<span class='fl'>2</span>)
-
-<span class='fu'>tryCatch</span>(<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A</span>, <span class='no'>ind.row</span>, <span class='no'>ind.col</span>),
-         <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'>print</span>(<span class='no'>e</span>))</div><div class='output co'>#&gt; &lt;simpleError: Incompatibility between dimensions.&gt;</div><div class='input'><span class='co'># returns an error. You need to use the subset of A:</span>
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A</span>[<span class='no'>ind.row</span>, ], <span class='no'>ind.row</span>, <span class='no'>ind.col</span>)
-<span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'>crossprod</span>(<span class='no'>X</span>[<span class='no'>ind.row</span>, <span class='no'>ind.col</span>], <span class='no'>A</span>[<span class='no'>ind.row</span>, ])
-<span class='fu'>all.equal</span>(<span class='no'>test2</span>, <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>csv</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>"csv"</span>)
+<span class='fu'>write.csv</span>(<span class='no'>iris</span>, <span class='no'>csv</span>, <span class='kw'>quote</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>tryCatch</span>(<span class='no'>csv</span>, <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'>print</span>(<span class='no'>e</span>))</div><div class='output co'>#&gt; [1] "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpOKnYsP\\file2f8436923abcsv"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

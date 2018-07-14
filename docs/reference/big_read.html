@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -33,6 +35,7 @@
 <meta property="og:description" content="Read a file as a Filebacked Big Matrix and a data frame of meta information.
 For a mini-tutorial, please see this vignette." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -59,7 +62,7 @@ For a mini-tutorial, please see this vignette." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
       </span>
     </div>
 
@@ -135,10 +138,9 @@ For a mini-tutorial, please see <a href='https://goo.gl/91oNxU'>this vignette</a
     
     </div>
 
-    <pre class="usage"><span class='fu'>big_read</span>(<span class='no'>file</span>, <span class='no'>sep</span>, <span class='no'>header</span>, <span class='kw'>confirmed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>ind.skip</span> <span class='kw'>=</span> <span class='fu'>integer</span>(<span class='fl'>0</span>), <span class='kw'>ind.meta</span> <span class='kw'>=</span> <span class='fu'>integer</span>(<span class='fl'>0</span>), <span class='kw'>nlines</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nlines.block</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fun.con</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>f</span>) <span class='fu'>file</span>(<span class='no'>f</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='st'>"rt"</span>),
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_read</span>(<span class='no'>file</span>, <span class='no'>sep</span>, <span class='no'>header</span>, <span class='no'>nlines</span>, <span class='kw'>confirmed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ind.skip</span> <span class='kw'>=</span> <span class='fu'>integer</span>(<span class='fl'>0</span>), <span class='kw'>ind.meta</span> <span class='kw'>=</span> <span class='fu'>integer</span>(<span class='fl'>0</span>), <span class='kw'>nlines.block</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fun.con</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>f</span>) <span class='fu'>file</span>(<span class='no'>f</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='st'>"rt"</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,6 +157,11 @@ For a mini-tutorial, please see <a href='https://goo.gl/91oNxU'>this vignette</a
       <th>header</th>
       <td><p>A logical value indicating whether the file contains the names
 of the variables as its first line.</p></td>
+    </tr>
+    <tr>
+      <th>nlines</th>
+      <td><p>Number of lines of the file (including possible header).
+You can use <code><a href='nlines.html'>bigstatsr::nlines</a></code> or <code><a href='http://www.rdocumentation.org/packages/fpeek/topics/peek_count_lines'>fpeek::peek_count_lines</a></code> to get it.</p></td>
     </tr>
     <tr>
       <th>confirmed</th>
@@ -175,11 +182,6 @@ Default is <code>FALSE</code> and will ask you to confirm during execution.</p><
       <td><p>An integer vector specifying which columns should be part of
 the meta information. Non-numeric columns will automatically be added to
 meta information because they can't be stored in an FBM.</p></td>
-    </tr>
-    <tr>
-      <th>nlines</th>
-      <td><p>Number of lines of the file (including possible header).
-Default automatically gets this number thanks to a function of David Gohel.</p></td>
     </tr>
     <tr>
       <th>nlines.block</th>
@@ -235,7 +237,7 @@ the backingfile. Default is <code>FALSE</code>.</p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian Privé.</p>
+  <p>Developed by Florian PrivÃ©.</p>
 </div>
 
 <div class="pkgdown">

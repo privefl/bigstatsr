@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -33,6 +35,7 @@
 <meta property="og:description" content="This function implements a simple cache-oblivious algorithm for
 the transposition of a Filebacked Big Matrix." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -59,7 +62,7 @@ the transposition of a Filebacked Big Matrix." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
       </span>
     </div>
 
@@ -168,19 +171,21 @@ and type are automatically determined from the input Filebacked Big Matrix.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>10</span>, <span class='fl'>5</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>50</span>))
-<span class='no'>X</span>[]</div><div class='output co'>#&gt;             [,1]        [,2]        [,3]       [,4]       [,5]
-#&gt;  [1,] -1.6555447  0.09775037  1.57979582 -0.6236310 -0.1612075
-#&gt;  [2,]  0.6204612 -0.68720973  1.24904439  0.6463000 -0.4086414
-#&gt;  [3,] -0.1812787  0.86162590 -1.74189418 -0.4655076  1.2319580
-#&gt;  [4,]  0.2846432  1.58557144 -0.73720550  1.5346537  0.6260666
-#&gt;  [5,]  1.1215663 -0.81549299  1.27724577  1.1608034  1.2881813
-#&gt;  [6,] -0.4033763  0.46561675  1.15920510  0.7840603 -0.6066708
-#&gt;  [7,]  0.3632666 -1.46919721 -0.27238743 -0.6668816  0.4001965
-#&gt;  [8,] -1.2024052  1.71161610  1.35087625 -2.2213390 -0.7016278
-#&gt;  [9,] -1.0570538 -1.45108239 -0.86418153 -2.3504406  0.1666218
-#&gt; [10,]  0.7734351  0.53026708 -0.05273192  2.1559279 -0.7677546</div><div class='input'><span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; <span class='error'>Error in match.arg(type): 'arg' should be one of “double”, “integer”, “unsigned short”, “unsigned char”, “raw”</span></div><div class='input'><span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; <span class='error'>Error in identical(t(X[]), Xt[]): objet 'Xt' introuvable</span></div><div class='input'>
+<span class='no'>X</span>[]</div><div class='output co'>#&gt;             [,1]       [,2]       [,3]       [,4]        [,5]
+#&gt;  [1,]  0.3747244 -0.3310330 -1.3162452  0.4337021 -0.05056570
+#&gt;  [2,] -0.4252677 -0.9398293  0.9198037  1.0051592 -0.30581542
+#&gt;  [3,]  0.9510128 -0.2589326  0.3981302 -0.3901187  0.89367370
+#&gt;  [4,] -0.3892372  0.3943792 -0.4075286  0.3763703 -1.04729815
+#&gt;  [5,] -0.2843307 -0.8518571  1.3242586  0.2441649  1.97133739
+#&gt;  [6,]  0.8574098  2.6491669 -0.7012317 -1.4262573 -0.38363211
+#&gt;  [7,]  1.7196273  0.1560117 -0.5806143  1.7784293  1.65414530
+#&gt;  [8,]  0.2700549  1.1302073 -1.0010722  0.1344477  1.51221269
+#&gt;  [9,] -0.4221840 -2.2891240 -0.6681786  0.7655990  0.08296573
+#&gt; [10,] -1.1891133  0.7410012  0.9451850  0.9551367  0.56722091</div><div class='input'><span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
+<span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; <span class='error'>Error in match.arg(type): 'arg' should be one of “double”, “integer”, “unsigned short”, “unsigned char”, “raw”</span></div><div class='input'><span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; <span class='error'>Error in identical(t(X[]), Xt[]): objet 'Xt' introuvable</span></div><div class='input'>
+<span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
+<span class='fu'>identical</span>(<span class='fu'>t</span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -198,7 +203,7 @@ and type are automatically determined from the input Filebacked Big Matrix.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian Privé.</p>
+  <p>Developed by Florian PrivÃ©.</p>
 </div>
 
 <div class="pkgdown">
