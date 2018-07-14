@@ -37,7 +37,7 @@ test_that("can be used with a subset of samples", {
                                     ncores = test_cores())
       preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],
                        covar.row = covar[-ind, ])
-      expect_gt(AUC(preds, y[-ind]), 0.9)
+      expect_gt(AUC(preds, y[-ind]), 0.85)
 
       mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
