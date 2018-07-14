@@ -69,10 +69,6 @@ getXPtrFBM <- function(path, n, m, type) {
     .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
 }
 
-nlines_ <- function(filename) {
-    .Call(`_bigstatsr_nlines_`, filename)
-}
-
 pMatVec4 <- function(BM, x, rowInd, colInd) {
     .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
 }

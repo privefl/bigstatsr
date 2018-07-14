@@ -30,6 +30,7 @@ Imports:
     doParallel,
     foreach,
     ggplot2 (>= 3.0.0),
+    rlang (>= 0.2.1),
     graphics,
     methods,
     parallel,

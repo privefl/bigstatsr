@@ -1,6 +1,19 @@
 ################################################################################
 
-get_nline <- function(file) {
+#' Number of lines
+#'
+#' Get the number of lines of a file with system command `wc -l`.
+#'
+#' @param file Path of the file.
+#'
+#' @return The number of lines as one integer.
+#' @export
+#'
+#' @examples
+#' csv <- tempfile(fileext = "csv")
+#' write.csv(iris, csv, quote = FALSE, row.names = FALSE)
+#' tryCatch(csv, error = function(e) print(e))
+nlines <- function(file) {
   scan(text = system(paste("wc -l", file), intern = TRUE),
        what = 1L, n = 1, quiet = TRUE)
 }
@@ -26,7 +39,7 @@ get_nline <- function(file) {
 #'   the meta information. Non-numeric columns will automatically be added to
 #'   meta information because they can't be stored in an FBM.
 #' @param nlines Number of lines of the file (including possible header).
-#'   Default automatically gets this number thanks to a function of David Gohel.
+#'   You can use `bigstatsr::nlines` or `fpeek::peek_count_lines` to get it.
 #' @param nlines.block Number of lines to be read at once. Default automatically
 #'   gets this number based on `getOption("bigstatsr.block.sizeGB")`.
 #' @param fun.con Function to open a connection from a file.
@@ -44,11 +57,11 @@ get_nline <- function(file) {
 big_read <- function(file,
                      sep,
                      header,
+                     nlines,
                      confirmed = FALSE,
                      verbose = TRUE,
                      ind.skip = integer(0),
                      ind.meta = integer(0),
-                     nlines = NULL,
                      nlines.block = NULL,
                      fun.con = function(f) file(f, open = "rt"),
                      type = NULL,
@@ -58,9 +71,11 @@ big_read <- function(file,
   fread2 <- function(...) data.table::fread(..., data.table = FALSE)
 
   # Get #lines of the file
-  if (is.null(nlines)) {
-    nlines <- nlines_(file)
-    # message3("%s lines detected.", nlines)
+  if (missing(nlines)) {
+    stop2("%s (%s)\n  %s",
+          "Please provide the number of lines of 'file'",
+          "including a possible header",
+          "You can use `bigstatsr::nlines` or `fpeek::peek_count_lines`.")
   }
   n <- nlines - header
 

@@ -4,10 +4,9 @@
 \alias{big_read}
 \title{Read a file}
 \usage{
-big_read(file, sep, header, confirmed = FALSE, verbose = TRUE,
-  ind.skip = integer(0), ind.meta = integer(0), nlines = NULL,
-  nlines.block = NULL, fun.con = function(f) file(f, open = "rt"),
-  type = NULL, ...)
+big_read(file, sep, header, nlines, confirmed = FALSE, verbose = TRUE,
+  ind.skip = integer(0), ind.meta = integer(0), nlines.block = NULL,
+  fun.con = function(f) file(f, open = "rt"), type = NULL, ...)
 }
 \arguments{
 \item{file}{The path to the file to be read.}
@@ -16,6 +15,9 @@ big_read(file, sep, header, confirmed = FALSE, verbose = TRUE,
 
 \item{header}{A logical value indicating whether the file contains the names
 of the variables as its first line.}
+
+\item{nlines}{Number of lines of the file (including possible header).
+You can use \code{bigstatsr::nlines} or \code{fpeek::peek_count_lines} to get it.}
 
 \item{confirmed}{A logical value indicating whether you don't want to pause
 to confirm that everything has been parsed like you wanted.
@@ -28,9 +30,6 @@ Default is \code{FALSE} and will ask you to confirm during execution.}
 \item{ind.meta}{An integer vector specifying which columns should be part of
 the meta information. Non-numeric columns will automatically be added to
 meta information because they can't be stored in an FBM.}
-
-\item{nlines}{Number of lines of the file (including possible header).
-Default automatically gets this number thanks to a function of David Gohel.}
 
 \item{nlines.block}{Number of lines to be read at once. Default automatically
 gets this number based on \code{getOption("bigstatsr.block.sizeGB")}.}

@@ -33,7 +33,8 @@ test_that("read without dimnames", {
       skip <- sample(6:M, 50)
       tmp <- tempfile()
       save <- sample(c(TRUE, FALSE), 1)
-      test <- big_read(csv, sep = sep, header = header,
+      expect_error(big_read(csv, sep = sep, header = header))
+      test <- big_read(csv, sep = sep, header = header, nlines = N,
                        ind.meta = 1:5, ind.skip = skip,
                        confirmed = TRUE, verbose = FALSE,
                        backingfile = tmp, save = save)
@@ -65,7 +66,7 @@ test_that("read with dimnames", {
       data.table::fwrite(cbind.data.frame(iris, X[]), csv,
                          quote = FALSE, sep = sep, col.names = header)
 
-      test <- big_read(csv, sep = sep, header = header,
+      test <- big_read(csv, sep = sep, header = header, nlines = N + 1,
                        ind.meta = 1:5, ind.skip = 5:50, nlines.block = 40,
                        confirmed = TRUE, verbose = FALSE)
 
