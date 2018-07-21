@@ -17,10 +17,25 @@ system.time(
 ) # 4.9
 
 tmp <- tempfile()
-system.time({
-  system(sprintf("awk 'NR%%20000==1{x=\"%s\"++i;}{print > x}' %s",
-                 tmp, normalizePath(csv2)))
-}) # 1.4
+if (Sys.info()[["sysname"]] == "Windows") {
+
+  # https://sourceforge.net/projects/gnuwin32/
+  awk <- shortPathName("C:/Program Files (x86)/GnuWin32/bin/awk.exe") # Windows
+  cmd <- sprintf("%s \"NR%%%d==1{x=\"\"\"%s\"\"\"++i;}{print > x}\" %s",
+                 awk, 20, gsub("\\\\", "\\\\\\\\", tmp), normalizePath(csv))
+
+} else {
+
+  cmd <- sprintf("awk 'NR%%%d==1{x=\"%s\"++i;}{print > x}' %s",
+                 tmp, 20, normalizePath(csv))
+
+}
+system(cmd)
+readLines(paste0(tmp, 1), 1)
+
+cmd <- sprintf("%s \"NR%%%d==1{x=\"\"\"%s\"\"\"++i;}{print > x}\" %s",
+               awk, 20000, gsub("\\\\", "\\\\\\\\", tmp), normalizePath(csv2))
+system.time(system(cmd)) # 1.4
 # readLines(paste0(tmp, 1))
 
 
@@ -37,10 +52,8 @@ system.time(
   df3 <- readr::read_csv(csv3)
 ) # 6
 
-tmp <- tempfile()
-system.time({
-  system(sprintf("awk 'NR%%2==1{x=\"%s\"++i;}{print > x}' %s",
-                 tmp, normalizePath(csv3)))
-}) # 1.4
-readLines(paste0(tmp, 1))
+cmd <- sprintf("%s \"NR%%%d==1{x=\"\"\"%s\"\"\"++i;}{print > x}\" %s",
+               awk, 2, gsub("\\\\", "\\\\\\\\", tmp), normalizePath(csv3))
+system.time(system(cmd)) # 1.4
+# readLines(paste0(tmp, 1))
 
