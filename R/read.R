@@ -92,7 +92,7 @@ big_read <- function(file,
   top_verif <- fread2(file, nrows = 1, sep = sep, header = header)
   p.all <- ncol(top_verif)
   ind.keep <- setdiff(seq_len(p.all), ind.skip)
-  if (!identical(top_auto[1, ], top_verif[, ind.keep, drop = FALSE]))
+  if (!isTRUE(all.equal(top_auto[1, ], top_verif[, ind.keep, drop = FALSE])))
     stop2("There is a problem with either 'sep' or 'header'.")
 
 
@@ -134,7 +134,9 @@ big_read <- function(file,
 
   # Column types
   colclasses <- rep(list(NULL), p.all)
-  for (i in seq_along(ind.keep)) colclasses[ind.keep[i]] <- coltypes[i]
+  for (i in seq_along(ind.keep)) {
+    colclasses[ind.keep[i]] <- `if`(is.meta[i], coltypes[i], type)
+  }
 
   rm(top_auto, top_verif)
 
@@ -142,7 +144,7 @@ big_read <- function(file,
     df_part <- utils::read.csv(
       con, sep = sep, header = header && (ind[1] == 1), nrows = length(ind),
       colClasses = colclasses, stringsAsFactors = FALSE)
-    X[ind, ] <- as.matrix(df_part[in.fbm])
+    X[ind, ] <- do.call(cbind, df_part[in.fbm])
     stats::setNames(df_part[is.meta], colnames.meta)
   }, a.combine = "rbind", ind = seq_len(n), block.size = nlines.block)
 
