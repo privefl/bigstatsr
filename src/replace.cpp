@@ -13,8 +13,9 @@ using std::size_t;
 #define DISPATCH_REPLACE(REPLACE, VEC) {                                       \
                                                                                \
   XPtr<FBM> xpBM(xpbm);                                                        \
+  int fbm_type = xpBM->matrix_type();                                          \
                                                                                \
-  switch(xpBM->matrix_type()) {                                                \
+  switch(fbm_type) {                                                           \
   case 1:                                                                      \
     switch(TYPEOF(VEC)) {                                                      \
     case RAWSXP:  REPLACE(unsigned char, as<RawVector>(VEC))                   \

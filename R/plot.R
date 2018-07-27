@@ -7,6 +7,7 @@
 #' @param size.rel Relative size. Default is `1`.
 #'
 #' @import ggplot2
+#' @import rlang
 #'
 #' @export
 #'
