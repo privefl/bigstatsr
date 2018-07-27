@@ -185,7 +185,8 @@ void replaceVecOne(SEXP xpbm,
 template <class C, int RTYPE>
 void replace_vec(C macc, const Vector<RTYPE>& vec) {
 
-  for (size_t k = 0; k < macc.nelem(); k++)
+  size_t K = macc.nelem();
+  for (size_t k = 0; k < K; k++)
     macc[k] = vec[k];
 }
 
@@ -206,8 +207,9 @@ void replaceVec(SEXP xpbm,
 template <class C, typename T>
 void replaceMatOne(C macc, T val) {
 
-  for (size_t j = 0; j < macc.ncol(); j++)
-    for (size_t i = 0; i < macc.nrow(); i++)
+  size_t i, j, n = macc.nrow(), m = macc.ncol();
+  for (j = 0; j < m; j++)
+    for (i = 0; i < n; i++)
       macc(i, j) = val;
 }
 
@@ -231,8 +233,9 @@ void replace_mat(SubBMAcc<T> macc, const Vector<RTYPE>& vec) {
 
   Matrix<RTYPE> mat(vec);
 
-  for (size_t j = 0; j < macc.ncol(); j++)
-    for (size_t i = 0; i < macc.nrow(); i++)
+  size_t i, j, n = macc.nrow(), m = macc.ncol();
+  for (j = 0; j < m; j++)
+    for (i = 0; i < n; i++)
       macc(i, j) = mat(i, j);
 }
 
