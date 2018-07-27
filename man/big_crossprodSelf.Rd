@@ -4,8 +4,8 @@
 \alias{big_crossprodSelf}
 \title{Crossprod}
 \usage{
-big_crossprodSelf(X, fun.scaling = big_scale(center = FALSE, scale = FALSE),
-  ind.row = rows_along(X), ind.col = cols_along(X),
+big_crossprodSelf(X, fun.scaling = big_scale(center = FALSE, scale =
+  FALSE), ind.row = rows_along(X), ind.col = cols_along(X),
   block.size = block_size(nrow(X)))
 }
 \arguments{

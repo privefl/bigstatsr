@@ -4,9 +4,9 @@
 \alias{COPY_biglasso_part}
 \title{Train one model}
 \usage{
-COPY_biglasso_part(X, y.train, ind.train, ind.col, covar.train, family, lambda,
-  center, scale, resid, alpha, eps, max.iter, dfmax, warn, ind.val, covar.val,
-  y.val, n.abort, nlam.min, b0, base.train, base.val)
+COPY_biglasso_part(X, y.train, ind.train, ind.col, covar.train, family,
+  lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn, ind.val,
+  covar.val, y.val, n.abort, nlam.min, b0, base.train, base.val)
 }
 \value{
 A named list with following variables:

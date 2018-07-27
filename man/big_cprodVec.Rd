@@ -4,7 +4,8 @@
 \alias{big_cprodVec}
 \title{Cross-product with a vector}
 \usage{
-big_cprodVec(X, y.row, ind.row = rows_along(X), ind.col = cols_along(X))
+big_cprodVec(X, y.row, ind.row = rows_along(X),
+  ind.col = cols_along(X))
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

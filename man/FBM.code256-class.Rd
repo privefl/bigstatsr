@@ -46,10 +46,6 @@ A reference class for storing and accessing up to 256 arbitrary different
 values using a Filebacked Big Matrix of type \code{unsigned char}. Compared to a
 \link[=FBM-class]{Filebacked Big Matrix}, it adds a slot \code{code} which is used as
 a lookup table of size 256.
-
-Wrapper constructor for class \code{FBM.code256}.
-
-Converter from class \code{FBM} to \code{FBM.code256}.
 }
 
 \examples{

@@ -4,8 +4,8 @@
 \alias{big_spLinReg}
 \title{Sparse linear regression}
 \usage{
-big_spLinReg(X, y.train, ind.train = rows_along(X), ind.col = cols_along(X),
-  covar.train = NULL, ncores = 1, ...)
+big_spLinReg(X, y.train, ind.train = rows_along(X),
+  ind.col = cols_along(X), covar.train = NULL, ncores = 1, ...)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
