@@ -154,6 +154,58 @@ for (gen in c("scalar", "vector", "matrix")) {
 
 ################################################################################
 
+test_that("Missing values transfer from int to double", {
+
+  for (na in list(NA, NA_integer_, NA_real_)) {
+    a <- matrix(na, 7, 11)
+    A <- big_copy(a, type = "double")
+    A[] <- a
+    expect_true(all(is.na(A[])))
+    A[] <- as.vector(a)
+    expect_true(all(is.na(A[])))
+    A[] <- a[1]
+    expect_true(all(is.na(A[])))
+    A[1:5] <- a[1:5]
+    expect_true(all(is.na(A[1:5])))
+    A[2] <- a[2]
+    expect_identical(A[2], NA_real_)
+  }
+})
+
+################################################################################
+
+test_that("No copy is made", {
+
+  options(bigstatsr.downcast.warning = FALSE)
+
+  N <- M <- 2000
+  size <- N * M * 8 / 1024^2
+  x4 <- matrix(round(rnorm(N * M, 100, 10)), N)
+  x3 <- x2 <- x1 <- x4
+  storage.mode(x1) <- "raw"
+  storage.mode(x2) <- "logical"
+  storage.mode(x3) <- "integer"
+
+  X4 <- big_copy(x4, type = "double")
+  X3 <- big_copy(x4, type = "integer")
+  X2 <- big_copy(x4, type = "unsigned short")
+  X1 <- big_copy(x4, type = "unsigned char")
+
+  tmp <- gc(reset = TRUE)
+  x <- x3 + 0
+  expect_gt((gc() - tmp)[2, 6], size / 10)
+
+  for (X in list(X1, X2, X3, X4)) {
+    for (x in list(x1, x2, x3, x4)) {
+      tmp <- gc(reset = TRUE)
+      X[] <- x
+      expect_lt((gc() - tmp)[2, 6], size / 10)
+    }
+  }
+})
+
+################################################################################
+
 options(opt.save)
 
 ################################################################################

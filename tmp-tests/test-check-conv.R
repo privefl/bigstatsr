@@ -1,6 +1,7 @@
 library(bigstatsr)
+options(bigstatsr.downcast.warning = TRUE)
 
-N <- M <- 1000
+N <- M <- 2000
 mat <- matrix(runif(N * M, 0, 256), N, M)
 storage.mode(mat) <- "integer"
 
@@ -15,19 +16,20 @@ microbenchmark::microbenchmark(
   RAW_WARN = X[] <- mat2,
   INT_WARN = X[] <- mat,
   RAW_NOWARN = without_downcast_warning(X[] <- mat2),
-  INT_NOWARN = without_downcast_warning(X[] <- mat)
+  INT_NOWARN = without_downcast_warning(X[] <- mat),
+  times = 200
 )
 ## BEFORE:
 # Unit: milliseconds
-#       expr      min       lq     mean   median       uq      max neval cld
-#   RAW_WARN 1.645171 1.689536 1.798087 1.761217 1.878090 2.351379   100 a
-#   INT_WARN 2.720210 2.851652 3.026906 2.973326 3.096490 4.667994   100   c
-# RAW_NOWARN 1.631928 1.717844 1.819296 1.763369 1.865840 2.712264   100 a
-# INT_NOWARN 2.389786 2.562447 2.730060 2.681970 2.824006 3.902190   100  b
+#       expr       min        lq      mean    median        uq      max neval
+#   RAW_WARN  8.850176   9.56644  9.705273  9.651982  9.732185 14.95322   200
+#   INT_WARN 16.952247  18.15335 18.999498 18.551330 18.729151 33.46362   200
+# RAW_NOWARN  9.053073   9.60809  9.791535  9.680127  9.812488 14.17877   200
+# INT_NOWARN 14.892180  16.54560 17.046054 16.682986 16.825069 29.61774   200
 ## AFTER:
 # Unit: milliseconds
-#       expr      min       lq     mean   median       uq      max neval cld
-#   RAW_WARN 1.644839 1.751615 1.891251 1.871634 1.990991 2.407664   100 a
-#   INT_WARN 2.863901 3.057091 3.476101 3.193499 3.360367 9.744881   100   c
-# RAW_NOWARN 1.649144 1.747807 1.875154 1.850279 1.988674 2.317609   100 a
-# INT_NOWARN 2.500368 2.702994 2.950564 2.830627 2.973822 7.222661   100  b
+#       expr       min        lq      mean    median        uq      max neval
+#   RAW_WARN  8.249141  8.539110 10.091688  8.828015 10.613616 15.80058   200
+#   INT_WARN 11.808361 11.913297 13.804105 12.465170 13.976114 22.31180   200
+# RAW_NOWARN  8.245795  8.548852  9.809506  8.794139  9.856534 15.98896   200
+# INT_NOWARN  8.514903  8.602085  9.776280  8.880168  9.370276 15.32295   200
