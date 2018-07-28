@@ -1,10 +1,10 @@
 library(bigstatsr)
 
 mtcars <- datasets::mtcars
-mtcars <- mtcars[rep(1:32, 500), rep(1:11, 1000)]
+mtcars <- mtcars[rep(1:32, 500), rep(1:11, 500)]
 # X <- FBM(nrow(mtcars), ncol(mtcars), init = 0,
 #          backingfile = "tmp-data/mtcars-big2", save = TRUE)
-X <- big_attach("tmp-data/mtcars-big2.rds")
+X <- big_attach("tmp-data/mtcars-big.rds")
 
 fill_df1 <- compiler::cmpfun(function(X, df) {
   for (j in cols_along(X)) {
@@ -28,10 +28,18 @@ tmp <- gc(reset = TRUE)
 system.time(df2FBM(X, mtcars, rows_along(X), cols_along(X))) # 1.7 sec  // 2.3
 gc() - tmp  # 0 Mb
 
+
+Rcpp::sourceCpp('tmp-tests/test-col-acc.cpp')
+tmp <- gc(reset = TRUE)
+system.time(col_acc(X, mtcars)) # 1.7 sec  // 2.3
+gc() - tmp  # 0 Mb
+
+
 microbenchmark::microbenchmark(
   LOOP = fill_df1(X, mtcars),
   AS_MAT = X[] <- as.matrix(mtcars),
-  RCPP = df2FBM(X, mtcars, rows_along(X), cols_along(X)),
+  RCPP_MAT = df2FBM(X, mtcars, rows_along(X), cols_along(X)),
+  RCPP_COL = col_acc(X, mtcars),
   times = 10
 )
 ## Laptop 500:
