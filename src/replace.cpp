@@ -213,7 +213,7 @@ NumericVector check_conv_dbl2int(NumericVector nv) {
 /******************************************************************************/
 
 template <typename BM_TYPE, typename T>
-void replaceVecOne(VecBMAcc<BM_TYPE> macc, T val) {
+void replace_vec_one(VecBMAcc<BM_TYPE> macc, T val) {
 
   size_t K = macc.nelem();
   for (size_t k = 0; k < K; k++)
@@ -221,7 +221,7 @@ void replaceVecOne(VecBMAcc<BM_TYPE> macc, T val) {
 }
 
 #define REPLACE_VEC_ONE(BM_TYPE, VEC) {                                        \
-return replaceVecOne(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC[0]);            \
+return replace_vec_one(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC[0]);          \
 }
 
 // [[Rcpp::export]]
@@ -265,7 +265,7 @@ void replaceVec(SEXP xpbm,
 /******************************************************************************/
 
 template <typename BM_TYPE, typename T>
-void replaceMatOne(SubBMAcc<BM_TYPE> macc, T val) {
+void replace_mat_one(SubBMAcc<BM_TYPE> macc, T val) {
 
   size_t i, j, n = macc.nrow(), m = macc.ncol();
   for (j = 0; j < m; j++)
@@ -273,8 +273,8 @@ void replaceMatOne(SubBMAcc<BM_TYPE> macc, T val) {
       macc(i, j) = val;
 }
 
-#define REPLACE_MAT_ONE(BM_TYPE, VEC) {                                        \
-return replaceMatOne(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), VEC[0]); \
+#define REPLACE_MAT_ONE(BM_TYPE, VEC) {                                         \
+return replace_mat_one(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), VEC[0]);\
 }
 
 // [[Rcpp::export]]
