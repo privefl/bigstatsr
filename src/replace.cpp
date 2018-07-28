@@ -24,8 +24,8 @@ using std::size_t;
       REPLACE(unsigned char, vec2)                                             \
     }                                                                          \
     case INTSXP:  {                                                            \
-      RawVector vec2 = conv_vec<INTSXP, RAWSXP, unsigned char>(VEC);           \
-      REPLACE(unsigned char, vec2)                                             \
+      check_conv<INTSXP, unsigned char>(VEC); Rcout << "OK" << std::endl;                                  \
+      REPLACE(unsigned char, as<IntegerVector>(VEC))                           \
     }                                                                          \
     case REALSXP: {                                                            \
       RawVector vec2 = conv_vec<REALSXP, RAWSXP, unsigned char>(VEC);          \
@@ -109,6 +109,26 @@ std::string type2name() {
 }
 
 /******************************************************************************/
+
+template <int RTYPE_IN, typename CTYPE>
+void check_conv(Vector<RTYPE_IN> nv) {
+
+  if (do_warn_downcast()) {
+
+    int n = nv.size();
+    CTYPE test;
+
+    for (int i = 0; i < n; i++) {
+      test = CTYPE(nv[i]);
+      if (test != nv[i]) {
+        warning("%s (%s -> %s)\n  %s from R type '%s' to C type '%s'.",
+                "At least one value changed", nv[i], double(test),
+                "while converting", Rf_type2char(RTYPE_IN), type2name<CTYPE>());
+        break;
+      }
+    }
+  }
+}
 
 template <int RTYPE_IN, int RTYPE_OUT, typename CTYPE>
 Vector<RTYPE_OUT> conv_vec(Vector<RTYPE_IN> nv) {
