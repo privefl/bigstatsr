@@ -165,7 +165,13 @@ test_that("Missing values transfer from int to double", {
     expect_true(all(is.na(A[])))
     A[] <- a[1]
     expect_true(all(is.na(A[])))
+    A[] <- matrix(a[1], 1, 1)
+    expect_true(all(is.na(A[])))
     A[1:5] <- a[1:5]
+    expect_true(all(is.na(A[1:5])))
+    A[1:5] <- a[5]
+    expect_true(all(is.na(A[1:5])))
+    A[1:5] <- matrix(a[5], 1, 1)
     expect_true(all(is.na(A[1:5])))
     A[2] <- a[2]
     expect_identical(A[2], NA_real_)
@@ -175,6 +181,8 @@ test_that("Missing values transfer from int to double", {
 ################################################################################
 
 test_that("No copy is made", {
+
+  # skip_on_os("mac")
 
   options(bigstatsr.downcast.warning = FALSE)
 

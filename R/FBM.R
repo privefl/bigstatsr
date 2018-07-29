@@ -182,7 +182,7 @@ setMethod(
     replace_vector = function(x, i, value) {
 
       if (length(value) == 1) {
-        replaceVecOne(x$address, i, value)
+        replaceVecOne(x$address, i, value[1])
       } else if (length(value) == length(i)) {
         replaceVec(x$address, i, value)
       } else {
@@ -193,7 +193,7 @@ setMethod(
     replace_matrix = function(x, i, j, value) {
 
       if (length(value) == 1)                         ## scalar
-        return(replaceMatOne(x$address, i, j, value))
+        return(replaceMatOne(x$address, i, j, value[1]))
 
       .dim <- c(length(i), length(j))
       if (is.null(dim(value))) {                      ## vector

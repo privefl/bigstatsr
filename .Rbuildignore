@@ -22,3 +22,4 @@
 ^appveyor\.yml$
 ^cran-comments\.md$
 ^bigstatsr\.png$
+^cran-errors\.txt$
