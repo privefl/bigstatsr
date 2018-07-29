@@ -220,14 +220,18 @@ void replace_vec_one(VecBMAcc<BM_TYPE> macc, T val) {
     macc[k] = val;
 }
 
+// https://stackoverflow.com/a/1726777/6103040
 #define REPLACE_VEC_ONE(BM_TYPE, VEC) {                                        \
-return replace_vec_one(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC[0]);          \
+return replace_vec_one(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1),                   \
+                       VEC[static_cast<size_t>(0)]);                           \
 }
 
 // [[Rcpp::export]]
 void replaceVecOne(SEXP xpbm,
                    const NumericVector& elemInd,
                    SEXP val) {
+
+  myassert(!Rf_isMatrix(val), ERROR_REPORT);
 
   DISPATCH_REPLACE(REPLACE_VEC_ONE, val)
 }
@@ -273,8 +277,10 @@ void replace_mat_one(SubBMAcc<BM_TYPE> macc, T val) {
       macc(i, j) = val;
 }
 
-#define REPLACE_MAT_ONE(BM_TYPE, VEC) {                                         \
-return replace_mat_one(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), VEC[0]);\
+// https://stackoverflow.com/a/1726777/6103040
+#define REPLACE_MAT_ONE(BM_TYPE, VEC) {                                        \
+return replace_mat_one(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1),        \
+                       VEC[static_cast<size_t>(0)]);                           \
 }
 
 // [[Rcpp::export]]
@@ -282,6 +288,8 @@ void replaceMatOne(SEXP xpbm,
                    const IntegerVector& rowInd,
                    const IntegerVector& colInd,
                    SEXP val) {
+
+  myassert(!Rf_isMatrix(val), ERROR_REPORT);
 
   DISPATCH_REPLACE(REPLACE_MAT_ONE, val)
 }

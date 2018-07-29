@@ -53,10 +53,6 @@ GET_ERROR_BOUNDS <- function() {
     .Call(`_bigstatsr_GET_ERROR_BOUNDS`)
 }
 
-GET_ERROR_USHORT <- function() {
-    .Call(`_bigstatsr_GET_ERROR_USHORT`)
-}
-
 extractVec <- function(xpbm, elemInd) {
     .Call(`_bigstatsr_extractVec`, xpbm, elemInd)
 }

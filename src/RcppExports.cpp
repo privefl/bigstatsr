@@ -204,16 +204,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// GET_ERROR_USHORT
-const char* const GET_ERROR_USHORT();
-RcppExport SEXP _bigstatsr_GET_ERROR_USHORT() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(GET_ERROR_USHORT());
-    return rcpp_result_gen;
-END_RCPP
-}
 // extractVec
 RObject extractVec(RObject xpbm, const NumericVector& elemInd);
 RcppExport SEXP _bigstatsr_extractVec(SEXP xpbmSEXP, SEXP elemIndSEXP) {
@@ -439,7 +429,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_GET_ERROR_TYPE", (DL_FUNC) &_bigstatsr_GET_ERROR_TYPE, 0},
     {"_bigstatsr_GET_ERROR_DIM", (DL_FUNC) &_bigstatsr_GET_ERROR_DIM, 0},
     {"_bigstatsr_GET_ERROR_BOUNDS", (DL_FUNC) &_bigstatsr_GET_ERROR_BOUNDS, 0},
-    {"_bigstatsr_GET_ERROR_USHORT", (DL_FUNC) &_bigstatsr_GET_ERROR_USHORT, 0},
     {"_bigstatsr_extractVec", (DL_FUNC) &_bigstatsr_extractVec, 2},
     {"_bigstatsr_extractMat", (DL_FUNC) &_bigstatsr_extractMat, 3},
     {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 4},
