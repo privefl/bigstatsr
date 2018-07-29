@@ -311,10 +311,9 @@ void replace_mat(SubBMAcc<BM_TYPE> macc, const Vector<RTYPE>& vec) {
   Matrix<RTYPE> mat(vec);
 
   size_t i, j, n = macc.nrow(), m = macc.ncol();
-  int i2, j2;
-  for (j = 0, j2 = 0; j < m; j++, j2++)
-    for (i = 0, i2 = 0; i < n; i++, i2++)
-      macc(i, j) = mat(i2, j2);
+  for (j = 0; j < m; j++)
+    for (i = 0; i < n; i++)
+      macc(i, j) = mat(i, j);
 }
 
 #define REPLACE_MAT(BM_TYPE, MAT) {                                            \
