@@ -344,7 +344,7 @@ void replaceDF(SEXP xpbm,
   XPtr<FBM> xpBM(xpbm);
   int fbm_type = xpBM->matrix_type();
 
-  size_t n = xpBM->nrow(), m = xpBM->ncol();
+  size_t n = rowInd.size(), m = colInd.size();
   IntegerVector row_ind = rowInd - 1;
   IntegerVector col_ind(1);
 

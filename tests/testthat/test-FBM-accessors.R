@@ -14,6 +14,7 @@ test_extract <- function(call) {
 }
 
 test_replace <- function(call) {
+
   call <- deparse(substitute(call))
 
   assign <- sprintf("%s <- %s",

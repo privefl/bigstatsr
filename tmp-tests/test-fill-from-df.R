@@ -47,8 +47,9 @@ gc() - tmp  # 0 Mb
 microbenchmark::microbenchmark(
   LOOP = fill_df1(X, mtcars),
   AS_MAT = X[] <- as.matrix(mtcars),
-  RCPP_MAT = df2FBM(X, mtcars, rows_along(X), cols_along(X)),
-  RCPP_COL = col_acc(X, mtcars),
+  RCPP_MAT = X[] <- mtcars,
+  # RCPP_MAT = df2FBM(X, mtcars, rows_along(X), cols_along(X)),
+  # RCPP_COL = col_acc(X, mtcars),
   times = 10
 )
 ## Laptop 500:

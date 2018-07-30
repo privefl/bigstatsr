@@ -192,17 +192,26 @@ setMethod(
 
     replace_matrix = function(x, i, j, value) {
 
-      if (length(value) == 1)                         ## scalar
-        return(replaceMatOne(x$address, i, j, value[1]))
-
       .dim <- c(length(i), length(j))
-      if (is.null(dim(value))) {                      ## vector
-        if (length(value) == prod(.dim)) {
-          dim(value) <- .dim
+      if (is.data.frame(value)) {
+
+        if (identical(dim(value), .dim)) {              ## data.frame
+          return(replaceDF(x$address, i, j, value))
+        }
+
+      } else {
+
+        if (length(value) == 1)                         ## scalar
+          return(replaceMatOne(x$address, i, j, value[1]))
+
+        if (is.null(dim(value))) {                      ## vector
+          if (length(value) == prod(.dim)) {
+            dim(value) <- .dim
+            return(replaceMat(x$address, i, j, value))
+          }
+        } else if (identical(dim(value), .dim)) {       ## matrix
           return(replaceMat(x$address, i, j, value))
         }
-      } else if (identical(dim(value), .dim)) {       ## matrix
-        return(replaceMat(x$address, i, j, value))
       }
 
       stop2("'value' must be unique or of the dimension of 'x[i, j]'.")
