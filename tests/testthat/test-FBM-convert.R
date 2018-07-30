@@ -203,11 +203,13 @@ test_that("No copy is made", {
   x <- x3 + 0
   expect_gt((gc() - tmp)[2, 6], size / 10)
 
+  print(size)
   for (X in list(X1, X2, X3, X4)) {
+    print(typeof(X))
     for (x in list(x1, x2, x3, x4)) {
       tmp <- gc(reset = TRUE)
       X[] <- x
-      expect_lt((gc() - tmp)[2, 6], size / 10)
+      expect_lt(print(gc() - tmp)[2, 6], size / 10)
     }
   }
 })
