@@ -203,13 +203,16 @@ test_that("No copy is made", {
   x <- x3 + 0
   expect_gt((gc() - tmp)[2, 6], size / 10)
 
-  print(size)
+  # print(size)
   for (X in list(X1, X2, X3, X4)) {
-    print(typeof(X))
+    # print(typeof(X))
     for (x in list(x1, x2, x3, x4)) {
       tmp <- gc(reset = TRUE)
       X[] <- x
-      expect_lt(print(gc() - tmp)[2, 6], size / 10)
+      diff <- gc() - tmp
+      mb <- tail(diff["Vcells", ], 1)
+      stopifnot(names(mb) == "(Mb)")
+      expect_lt(mb, size / 10)
     }
   }
 })
@@ -219,3 +222,4 @@ test_that("No copy is made", {
 options(opt.save)
 
 ################################################################################
+
