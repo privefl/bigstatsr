@@ -79,12 +79,10 @@ test_that("Some types won't work", {
   iris <- datasets::iris
 
   iris$Species <- as.character(iris$Species)
-  expect_error(big_copy(iris, type = "double"),
-               "R type 'character' is not supported.")
+  expect_error(as_FBM(iris), "R type 'character' is not supported.")
 
   iris[[5]] <- list(NULL)
-  expect_error(big_copy(iris, type = "double"),
-               "R type 'list' is not supported.")
+  expect_error(as_FBM(iris), "R type 'list' is not supported.")
 })
 
 ################################################################################

@@ -5,11 +5,15 @@
 \alias{FBM-class}
 \alias{FBM_RC}
 \alias{FBM}
+\alias{as_FBM}
 \title{Class FBM}
 \usage{
 FBM(nrow, ncol, type = c("double", "integer", "unsigned short",
   "unsigned char", "raw"), init = NULL, backingfile = tempfile(),
   create_bk = TRUE, save = FALSE)
+
+as_FBM(x, type = c("double", "integer", "unsigned short",
+  "unsigned char", "raw"), backingfile = tempfile(), save = FALSE)
 }
 \arguments{
 \item{nrow}{Number of rows.}
@@ -43,11 +47,15 @@ extension ".bk"). For example, this could be used to convert a filebacked
 
 \item{save}{Whether to save the result object in an ".rds" file alongside
 the backingfile. Default is \code{FALSE}.}
+
+\item{x}{A matrix or an data frame (2-dimensional data).}
 }
 \description{
 A reference class for storing and accessing matrix-like data stored in files
 on disk. This is very similar to Filebacked Big Matrices provided by the
 \strong{bigmemory} package. Yet, the implementation is much more lighter.
+
+Convert a matrix (or a data frame) to an FBM.
 }
 
 \examples{
@@ -63,4 +71,11 @@ X[, c(TRUE, FALSE)]
 X[cbind(1:10, 1:10)] <- NA_real_
 X[]
 
+X <- FBM(150, 5)
+X[] <- iris   ## you can replace with a df (factors -> integers)
+X2 <- as_FBM(iris)
+identical(X[], X2[])
+}
+\seealso{
+\link{big_copy}
 }

@@ -135,6 +135,36 @@ FBM <- function(nrow, ncol,
   do.call(methods::new, args = c(Class = "FBM", as.list(environment())))
 }
 
+#' Convert to FBM
+#'
+#' Convert a matrix (or a data frame) to an FBM.
+#'
+#' @param x A matrix or an data frame (2-dimensional data).
+#'
+#' @rdname FBM-class
+#' @export
+#'
+#' @seealso [big_copy]
+#'
+#' @examples
+#' X <- FBM(150, 5)
+#' X[] <- iris   ## you can replace with a df (factors -> integers)
+#' X2 <- as_FBM(iris)
+#' identical(X[], X2[])
+as_FBM <- function(x, type = c("double", "integer", "unsigned short",
+                               "unsigned char", "raw"),
+                   backingfile = tempfile(),
+                   save = FALSE) {
+
+  if (is.matrix(x) || is.data.frame(x)) {
+    FBM(nrow = nrow(x), ncol = ncol(x), init = x,
+        type = type, backingfile = backingfile, save = save)
+  } else {
+    stop2("'as_FBM' is not implemented for class '%s'. %s",
+          class(x), "Feel free to open an issue.")
+  }
+}
+
 ################################################################################
 
 #' Methods for the FBM class

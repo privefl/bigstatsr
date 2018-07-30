@@ -43,14 +43,14 @@ LinkingTo:
     RcppArmadillo
 Suggests: 
     biglasso,
-    bigmemory,
+    bigmemory (>= 4.5.33),
     covr,
     glmnet,
     grid,
     ModelMetrics,
     RcppEigen,
     RhpcBLASctl,
-    spelling,
+    spelling (>= 1.2),
     testthat
 RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
