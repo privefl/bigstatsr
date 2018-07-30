@@ -213,7 +213,7 @@ NumericVector check_conv_dbl2int(NumericVector nv) {
 template <typename BM_TYPE, typename T>
 void replace_vec_one(VecBMAcc<BM_TYPE> macc, T val) {
 
-  size_t K = macc.nelem();
+  size_t K = macc.size();
   for (size_t k = 0; k < K; k++)
     macc[k] = val;
 }
@@ -240,7 +240,7 @@ void replaceVecOne(SEXP xpbm,
 template <typename BM_TYPE, class C>
 void replace_vec(VecBMAcc<BM_TYPE> macc, C vec) {
 
-  size_t K = macc.nelem();
+  size_t K = macc.size();
   for (size_t k = 0; k < K; k++)
     macc[k] = vec[k];
 }

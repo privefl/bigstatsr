@@ -59,7 +59,8 @@ public:
     return this->_pMat[_elem_ind[k]];
   }
 
-  size_t nelem() const { return _elem_ind.size(); }
+  size_t size() const { return _elem_ind.size(); }
+  size_t nelem() const { return this->size(); }
 
 protected:
   std::vector<size_t> _elem_ind;
