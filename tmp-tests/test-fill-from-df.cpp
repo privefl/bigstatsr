@@ -1,8 +1,6 @@
 // [[Rcpp::depends(BH, bigstatsr)]]
 #include <bigstatsr/BMAcc.h>
 
-// [[Rcpp::plugins(unwindProtect)]]
-
 // [[Rcpp::export]]
 void df2FBM(Environment X, DataFrame x,
             const IntegerVector& ind_row,
@@ -15,6 +13,7 @@ void df2FBM(Environment X, DataFrame x,
   NumericVector col(n);
 
   for (j = 0; j < m; j++) {
+    // Rcout << TYPEOF(x[j]) << std::endl;
     col = as<NumericVector>(x[j]);
     for (i = 0; i < n; i++) {
       macc(i, j) = col[i];

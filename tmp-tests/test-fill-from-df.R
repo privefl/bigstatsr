@@ -5,6 +5,7 @@ mtcars <- mtcars[rep(1:32, 500), rep(1:11, 500)]
 # X <- FBM(nrow(mtcars), ncol(mtcars), init = 0,
 #          backingfile = "tmp-data/mtcars-big2", save = TRUE)
 X <- big_attach("tmp-data/mtcars-big.rds")
+stopifnot(identical(dim(X), dim(mtcars)))
 
 fill_df1 <- compiler::cmpfun(function(X, df) {
   for (j in cols_along(X)) {
@@ -26,6 +27,14 @@ Rcpp::sourceCpp('tmp-tests/test-fill-from-df.cpp')
 
 tmp <- gc(reset = TRUE)
 system.time(df2FBM(X, mtcars, rows_along(X), cols_along(X))) # 1.7 sec  // 2.3
+gc() - tmp  # 0 Mb
+
+
+Rcpp::sourceCpp('src/replace.cpp')
+
+# X[] <- 0
+tmp <- gc(reset = TRUE)
+system.time(replaceDF(X$address, rows_along(X), cols_along(X), mtcars)) # 1.7 sec  // 2.3
 gc() - tmp  # 0 Mb
 
 

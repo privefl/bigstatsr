@@ -89,6 +89,10 @@ replaceMat <- function(xpbm, rowInd, colInd, mat) {
     invisible(.Call(`_bigstatsr_replaceMat`, xpbm, rowInd, colInd, mat))
 }
 
+replaceDF <- function(xpbm, rowInd, colInd, df) {
+    invisible(.Call(`_bigstatsr_replaceDF`, xpbm, rowInd, colInd, df))
+}
+
 transpose3 <- function(BM, BM2) {
     invisible(.Call(`_bigstatsr_transpose3`, BM, BM2))
 }

@@ -169,6 +169,8 @@ test_that("Missing values transfer from int to double", {
     expect_true(all(is.na(A[])))
     A[1:5] <- a[1:5]
     expect_true(all(is.na(A[1:5])))
+    A[1:5] <- matrix(a[1:5], 5, 1)
+    expect_true(all(is.na(A[1:5])))
     A[1:5] <- a[5]
     expect_true(all(is.na(A[1:5])))
     A[1:5] <- matrix(a[5], 1, 1)
