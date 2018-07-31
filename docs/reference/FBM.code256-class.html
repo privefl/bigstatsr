@@ -35,9 +35,7 @@
 <meta property="og:description" content="A reference class for storing and accessing up to 256 arbitrary different
 values using a Filebacked Big Matrix of type unsigned char. Compared to a
 Filebacked Big Matrix, it adds a slot code which is used as
-a lookup table of size 256.
-Wrapper constructor for class FBM.code256.
-Converter from class FBM to FBM.code256." />
+a lookup table of size 256." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +64,7 @@ Converter from class FBM to FBM.code256." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -141,8 +139,6 @@ Converter from class FBM to FBM.code256." />
 values using a Filebacked Big Matrix of type <code>unsigned char</code>. Compared to a
 <a href='FBM-class.html'>Filebacked Big Matrix</a>, it adds a slot <code>code</code> which is used as
 a lookup table of size 256.</p>
-<p>Wrapper constructor for class <code>FBM.code256</code>.</p>
-<p>Converter from class <code>FBM</code> to <code>FBM.code256</code>.</p>
     
     </div>
 
@@ -199,44 +195,44 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
     <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"raw"</span>)
 <span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fu'>as.raw</span>(<span class='fl'>0</span>:<span class='fl'>3</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'>length</span>(<span class='no'>X</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>X</span>[]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#&gt;  [1,]   02   01   02   01   00   01   03   01   03    02
-#&gt;  [2,]   03   00   03   00   02   00   03   01   03    02
-#&gt;  [3,]   01   00   02   01   00   02   02   01   02    02
-#&gt;  [4,]   01   03   03   01   03   02   03   03   01    00
-#&gt;  [5,]   01   03   03   00   02   00   02   02   02    00
-#&gt;  [6,]   02   01   00   00   01   00   01   01   00    01
-#&gt;  [7,]   01   01   00   02   01   02   03   01   02    00
-#&gt;  [8,]   01   03   01   00   01   02   01   03   02    01
-#&gt;  [9,]   03   03   03   02   00   01   03   03   01    01
-#&gt; [10,]   00   03   01   02   01   01   01   02   00    01</div><div class='input'>
+#&gt;  [1,]   00   03   03   02   03   03   03   03   03    01
+#&gt;  [2,]   00   01   03   03   03   03   02   02   01    02
+#&gt;  [3,]   02   02   00   01   00   02   02   01   02    03
+#&gt;  [4,]   01   00   03   01   03   02   03   02   03    01
+#&gt;  [5,]   03   01   01   03   02   01   03   01   03    01
+#&gt;  [6,]   00   01   01   03   02   01   02   01   02    00
+#&gt;  [7,]   01   02   00   00   02   02   02   00   00    01
+#&gt;  [8,]   02   00   02   02   03   00   01   02   03    01
+#&gt;  [9,]   02   03   03   01   01   03   00   00   00    03
+#&gt; [10,]   00   01   03   01   01   03   01   00   02    01</div><div class='input'>
 <span class='no'>code</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fl'>NA_real_</span>, <span class='fl'>256</span>)
 <span class='no'>code</span>[<span class='fl'>1</span>:<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)
 
 <span class='no'>X.code</span> <span class='kw'>&lt;-</span> <span class='fu'>add_code256</span>(<span class='no'>X</span>, <span class='no'>code</span>)
 <span class='no'>X.code</span>[]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#&gt;  [1,]    5    3    5    3    1    3   NA    3   NA     5
-#&gt;  [2,]   NA    1   NA    1    5    1   NA    3   NA     5
-#&gt;  [3,]    3    1    5    3    1    5    5    3    5     5
-#&gt;  [4,]    3   NA   NA    3   NA    5   NA   NA    3     1
-#&gt;  [5,]    3   NA   NA    1    5    1    5    5    5     1
-#&gt;  [6,]    5    3    1    1    3    1    3    3    1     3
-#&gt;  [7,]    3    3    1    5    3    5   NA    3    5     1
-#&gt;  [8,]    3   NA    3    1    3    5    3   NA    5     3
-#&gt;  [9,]   NA   NA   NA    5    1    3   NA   NA    3     3
-#&gt; [10,]    1   NA    3    5    3    3    3    5    1     3</div><div class='input'>
+#&gt;  [1,]    1   NA   NA    5   NA   NA   NA   NA   NA     3
+#&gt;  [2,]    1    3   NA   NA   NA   NA    5    5    3     5
+#&gt;  [3,]    5    5    1    3    1    5    5    3    5    NA
+#&gt;  [4,]    3    1   NA    3   NA    5   NA    5   NA     3
+#&gt;  [5,]   NA    3    3   NA    5    3   NA    3   NA     3
+#&gt;  [6,]    1    3    3   NA    5    3    5    3    5     1
+#&gt;  [7,]    3    5    1    1    5    5    5    1    1     3
+#&gt;  [8,]    5    1    5    5   NA    1    3    5   NA     3
+#&gt;  [9,]    5   NA   NA    3    3   NA    1    1    1    NA
+#&gt; [10,]    1    3   NA    3    3   NA    3    1    5     3</div><div class='input'>
 <span class='co'># Or directly</span>
 <span class='no'>X.code2</span> <span class='kw'>&lt;-</span> <span class='fu'>FBM.code256</span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='no'>code</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>as.raw</span>(<span class='fl'>0</span>:<span class='fl'>3</span>), <span class='fl'>100</span>, <span class='fl'>TRUE</span>))
 <span class='no'>X.code2</span>[]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#&gt;  [1,]    5    3   NA    5    3    1    3   NA    3     1
-#&gt;  [2,]    3    3    1    5    1    1    5   NA   NA    NA
-#&gt;  [3,]   NA    1   NA   NA    1   NA   NA    3    3     5
-#&gt;  [4,]    1    3    1    3    3    3    1    5    3     3
-#&gt;  [5,]    5   NA    1   NA    1    5    1    5    5     1
-#&gt;  [6,]    5   NA    3   NA   NA   NA    3    3    1     1
-#&gt;  [7,]   NA    1    5    5   NA    1   NA    3    5    NA
-#&gt;  [8,]    1    1   NA    3   NA    3   NA    5    1     3
-#&gt;  [9,]    1    3    1   NA    1    5    5    5    1     5
-#&gt; [10,]    3    5   NA    1    5    1    5    1    3     1</div><div class='input'>
+#&gt;  [1,]    5   NA    5    3    5   NA    3    3    3    NA
+#&gt;  [2,]    5    3    1   NA    3    5    3    5    5     5
+#&gt;  [3,]    5    1    1    3   NA    1   NA    5    1    NA
+#&gt;  [4,]    3    5   NA   NA   NA    3    5    5   NA     5
+#&gt;  [5,]   NA    3    3    5   NA    1   NA    1    5     1
+#&gt;  [6,]    3   NA    3    5    5   NA    1    5    1     1
+#&gt;  [7,]    5    5    5    3   NA    5    3    1    1    NA
+#&gt;  [8,]    3    5    1    5    1    3    3    1    5     3
+#&gt;  [9,]    1   NA    5    1    1   NA    5   NA    5    NA
+#&gt; [10,]   NA    3    1    3   NA    3   NA    1    1     5</div><div class='input'>
 <span class='co'># Copy the FBM with another code</span>
 <span class='no'>X.code3</span> <span class='kw'>&lt;-</span> <span class='no'>X.code</span>$<span class='fu'>copy</span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>256</span>))
 <span class='fu'>stopifnot</span>(<span class='fu'>all.equal</span>(<span class='no'>X.code</span>$<span class='no'>code256</span>, <span class='no'>code</span>))</div></pre>
@@ -254,7 +250,7 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">

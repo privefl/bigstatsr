@@ -64,7 +64,7 @@ memory-efficient. Thus, it can be used on very large big.matrices." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -143,8 +143,8 @@ memory-efficient. Thus, it can be used on very large big.matrices.</p>
     </div>
 
     <pre class="usage"><span class='fu'>big_randomSVD</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
-  <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+  <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -239,8 +239,8 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 #&gt;  $ d     : num [1:10] 172.5 117.6 89.6 87.5 87.2 ...
 #&gt;  $ u     : num [1:258, 1:10] -0.1015 -0.0914 -0.0951 -0.0798 -0.0901 ...
 #&gt;  $ v     : num [1:4542, 1:10] 0.00304 -0.00274 0.02779 -0.01381 0.00599 ...
-#&gt;  $ niter : int 9
-#&gt;  $ nops  : int 162
+#&gt;  $ niter : int 8
+#&gt;  $ nops  : int 150
 #&gt;  $ center: num [1:4542] 1.32 1.6 1.56 1.69 1.05 ...
 #&gt;  $ scale : num [1:4542] 0.684 0.572 0.616 0.511 0.692 ...
 #&gt;  - attr(*, "class")= chr "big_SVD"</div><div class='input'>
@@ -278,7 +278,7 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">

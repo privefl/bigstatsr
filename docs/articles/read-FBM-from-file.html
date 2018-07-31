@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -104,158 +104,86 @@
 
     
     
-<p>In this vignette, you will learn how to read a Filebacked Big Matrix from a text file. We will see how to use function <code>big_read</code> through examples. <strong>This function is far from perfect, any help improving it would be appreciated.</strong></p>
-<div id="first-example" class="section level2">
+<p>In this vignette, you learn how to read a Filebacked Big Matrix from a text file. <a href="https://github.com/privefl/bigreadr">Package {bigreadr}</a> is required.</p>
+<div id="data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#first-example" class="anchor"></a>First example</h2>
-<div id="store-a-fake-file" class="section level3">
-<h3 class="hasAnchor">
-<a href="#store-a-fake-file" class="anchor"></a>Store a fake file</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">10</span> 
-M &lt;-<span class="st"> </span><span class="dv">5</span>
-(x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N <span class="op">*</span><span class="st"> </span>M), <span class="dt">nrow =</span> N, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span><span class="op">:</span>N], LETTERS[<span class="dv">1</span><span class="op">:</span>M])))</code></pre></div>
-<pre><code>##             A             B           C           D           E
-## a  0.05887017  0.2656568667  0.82393331  1.52654938 -0.65363690
-## b  0.34677146  0.2082056070  0.88516085  0.00818630 -1.80185888
-## c -1.16734268  0.0007157479 -0.40783642 -1.15988401 -0.17855526
-## d -0.18294023 -0.1014765326 -1.18559245 -1.42919828  0.61320100
-## e  0.21081855  1.8379407880 -1.97785898  0.12980871  0.76620288
-## f  0.14593439  1.7811509300  0.07685871  0.05233622 -0.14666300
-## g  0.75954634  0.6627975208  0.41186633 -0.99220754  0.03188975
-## h  1.47438610  0.1536897986  1.48911619  0.49038143  0.38533253
-## i -0.54834531  1.3100560986 -0.28023753  1.19920351  1.02177725
-## j  0.26374667  1.8122623897 -0.11410391 -0.35802990 -0.05521063</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csv &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">".csv"</span>)
-data.table<span class="op">::</span><span class="kw">fwrite</span>(<span class="kw">cbind.data.frame</span>(<span class="dt">L =</span> letters[<span class="dv">1</span><span class="op">:</span>N], x), csv, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">sep =</span> <span class="st">" "</span>)</code></pre></div>
+<a href="#data" class="anchor"></a>Data</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(bigstatsr)
+<span class="kw">library</span>(bigreadr)
+
+## LONG CSV
+df &lt;-<span class="st"> </span>datasets<span class="op">::</span>mtcars
+csv &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/bigreadr/topics/fwrite2">fwrite2</a></span>(df[<span class="kw">rep</span>(<span class="kw">seq_len</span>(<span class="kw">nrow</span>(df)), <span class="dv">500000</span>), ], 
+               <span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">".csv"</span>), 
+               <span class="dt">row.names =</span> <span class="ot">TRUE</span>)
+<span class="kw">format</span>(<span class="kw">file.size</span>(csv), <span class="dt">big.mark =</span> <span class="st">","</span>)</code></pre></div>
+<pre><code>## [1] "932,944,462"</code></pre>
 </div>
-<div id="get-some-intuition-on-the-file-format" class="section level3">
-<h3 class="hasAnchor">
-<a href="#get-some-intuition-on-the-file-format" class="anchor"></a>Get some intuition on the file format</h3>
-<p>I think it is always a good idea to print the first lines of the file you are interested in reading.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">readLines</span>(csv, <span class="dv">3</span>), <span class="dv">0</span>, <span class="dv">60</span>)</code></pre></div>
-<pre><code>## [1] "L A B C D E"                                                 
-## [2] "a 0.0588701729282513 0.265656866663851 0.823933313777675 1.5"
-## [3] "b 0.346771462419214 0.208205607035974 0.885160853182653 0.00"</code></pre>
-<p>What you can see with these first 3 lines:</p>
+<div id="check-file-content" class="section level2">
+<h2 class="hasAnchor">
+<a href="#check-file-content" class="anchor"></a>Check file content</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(n &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/bigreadr/topics/nlines">nlines</a></span>(csv))</code></pre></div>
+<pre><code>## [1] 16000001</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(first_rows &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/bigreadr/topics/fread2">fread2</a></span>(csv, <span class="dt">nrows =</span> <span class="dv">5</span>))</code></pre></div>
+<pre><code>##                  V1  mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## 1         Mazda RX4 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## 2     Mazda RX4 Wag 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## 3        Datsun 710 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## 4    Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## 5 Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(first_rows, typeof)</code></pre></div>
+<pre><code>##          V1         mpg         cyl        disp          hp        drat 
+## "character"    "double"   "integer"   "integer"   "integer"    "double" 
+##          wt        qsec          vs          am        gear        carb 
+##    "double"    "double"   "integer"   "integer"   "integer"   "integer"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncol</span>(first_rows)</code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p>What you can see with these first lines:</p>
 <ul>
-<li>the first line of the file stores some names (header),</li>
-<li>the first element of all following lines stores also some names,</li>
-<li>the elements are separated by a space,</li>
-<li>the elements are doubles.</li>
+<li>there are some column names (header -&gt; <code>nrow = nlines - 1</code>),</li>
+<li>each line has 12 elements,</li>
+<li>the first element of each line stores some row names,</li>
+<li>and the other elements seems to be all numeric.</li>
 </ul>
 </div>
-<div id="read-the-file" class="section level3">
-<h3 class="hasAnchor">
-<a href="#read-the-file" class="anchor"></a>Read the file</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># See how the options corresponds to what we have seen </span>
-<span class="co"># when reading the first 3 lines of the file</span>
-test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">" "</span>, 
-                 <span class="dt">nlines =</span> N <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">confirmed =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Will use blocks of 10 lines</code></pre>
-<pre><code>## Will add 1 more columns to meta information.</code></pre>
-<pre><code>## Will create a 10 x 5 FBM of type 'double'.</code></pre>
-<pre><code>## Will create a 10 x 1 df of meta information.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(test)</code></pre></div>
-<pre><code>## List of 3
-##  $ FBM     :Reference class 'FBM' [package "bigstatsr"] with 6 fields
-##   ..$ extptr     :&lt;externalptr&gt; 
-##   ..$ nrow       : int 10
-##   ..$ ncol       : int 5
-##   ..$ type       : Named int 8
-##   .. ..- attr(*, "names")= chr "double"
-##   ..$ backingfile: chr "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpEHa2AA\\file5cc4af43687.bk"
-##   ..$ address    :&lt;externalptr&gt; 
-##   ..and 17 methods, of which 3 are  possibly relevant:
-##   ..  initialize, save, show#envRefClass
-##  $ colnames: chr [1:5] "A" "B" "C" "D" ...
-##  $ meta    :'data.frame':    10 obs. of  1 variable:
-##   ..$ L: chr [1:10] "a" "b" "c" "d" ...</code></pre>
-</div>
-<div id="understand-the-resulting-object" class="section level3">
-<h3 class="hasAnchor">
-<a href="#understand-the-resulting-object" class="anchor"></a>Understand the resulting object</h3>
-<p>There are at least 2 things to note:</p>
-<ol style="list-style-type: decimal">
+<div id="read-those-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#read-those-data" class="anchor"></a>Read those data</h2>
+<ul>
 <li>
-<p>where are the names?</p>
-<ul>
-<li><p>rownames are stored in <code>$meta</code> information</p></li>
-<li><p>colnames are stored in <code>$colnames</code></p></li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(rownames &lt;-<span class="st"> </span>test<span class="op">$</span>meta<span class="op">$</span>L)</code></pre></div>
-<pre><code>##  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(colnames &lt;-<span class="st"> </span>test<span class="op">$</span>colnames)</code></pre></div>
-<pre><code>## [1] "A" "B" "C" "D" "E"</code></pre>
+<p>Read all numeric columns in an FBM</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">select =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">12</span>, <span class="dt">nrow =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<pre><code>## Will read the file in 2 parts.</code></pre>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |===================================                              |  55%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(test)</code></pre></div>
+<pre><code>## [1] 16000000       11</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rbind</span>(csv, test<span class="op">$</span>backingfile)</code></pre></div>
+<pre><code>##     [,1]                                 
+## csv "/tmp/RtmpswZJUb/file616ec8f4c7c.csv"
+##     "/tmp/RtmpswZJUb/file616ec8f4c7c.bk"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(test, <span class="st">"fbm_names"</span>)</code></pre></div>
+<pre><code>##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
+## [11] "carb"</code></pre>
 </li>
 <li>
-<p>the resulting matrix is stored in <code>$FBM</code>. If you want this FBM to be used in another session later, <strong>make sure to specify the <code>backingfile</code> and <code>save = TRUE</code></strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(test<span class="op">$</span>FBM)</code></pre></div>
-<pre><code>## Reference class 'FBM' [package "bigstatsr"] with 6 fields
-##  $ extptr     :&lt;externalptr&gt; 
-##  $ nrow       : int 10
-##  $ ncol       : int 5
-##  $ type       : Named int 8
-##   ..- attr(*, "names")= chr "double"
-##  $ backingfile: chr "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpEHa2AA\\file5cc4af43687.bk"
-##  $ address    :&lt;externalptr&gt; 
-##  and 17 methods, of which 3 are  possibly relevant:
-##    initialize, save, show#envRefClass</code></pre>
+<p>Read other non-numeric data afterwards</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">meta &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/bigreadr/topics/fread2">fread2</a></span>(csv, <span class="dt">select =</span> <span class="dv">1</span>)
+<span class="kw">head</span>(meta)</code></pre></div>
+<pre><code>##                  V1
+## 1         Mazda RX4
+## 2     Mazda RX4 Wag
+## 3        Datsun 710
+## 4    Hornet 4 Drive
+## 5 Hornet Sportabout
+## 6           Valiant</code></pre>
 </li>
-</ol>
-</div>
-</div>
-<div id="second-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#second-example" class="anchor"></a>Second example</h2>
-<div id="a-larger-dataset" class="section level3">
-<h3 class="hasAnchor">
-<a href="#a-larger-dataset" class="anchor"></a>A larger dataset</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">big_iris &lt;-<span class="st"> </span><span class="kw">do.call</span>(<span class="st">"rbind"</span>, <span class="kw">rep</span>(<span class="kw">list</span>(iris), <span class="dv">1000</span>))
-<span class="kw">dim</span>(big_iris)</code></pre></div>
-<pre><code>## [1] 150000      5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csv &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">".csv"</span>)
-data.table<span class="op">::</span><span class="kw">fwrite</span>(big_iris, csv, <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
-</div>
-<div id="get-some-intuition-on-the-file-format-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#get-some-intuition-on-the-file-format-1" class="anchor"></a>Get some intuition on the file format</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">readLines</span>(csv, <span class="dv">5</span>)</code></pre></div>
-<pre><code>## [1] "Sepal.Length,Sepal.Width,Petal.Length,Petal.Width,Species"
-## [2] "5.1,3.5,1.4,0.2,setosa"                                   
-## [3] "4.9,3,1.4,0.2,setosa"                                     
-## [4] "4.7,3.2,1.3,0.2,setosa"                                   
-## [5] "4.6,3.1,1.5,0.2,setosa"</code></pre>
-<p>What you can see with these first 2 lines:</p>
-<ul>
-<li>there is a header,</li>
-<li>the first 4 columns seems numeric but not the last one,</li>
-<li>the elements are separated by commas.</li>
 </ul>
-</div>
-<div id="read-the-matrix" class="section level3">
-<h3 class="hasAnchor">
-<a href="#read-the-matrix" class="anchor"></a>Read the matrix</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">","</span>, 
-                     <span class="dt">nlines =</span> <span class="dv">150000</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">confirmed =</span> <span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>## Will use blocks of 150000 lines</code></pre>
-<pre><code>## Will add 1 more columns to meta information.</code></pre>
-<pre><code>## Will create a 150000 x 4 FBM of type 'double'.</code></pre>
-<pre><code>## Will create a 150000 x 1 df of meta information.</code></pre>
-<pre><code>## List of 3
-##  $ FBM     :Reference class 'FBM' [package "bigstatsr"] with 6 fields
-##   ..$ extptr     :&lt;externalptr&gt; 
-##   ..$ nrow       : int 150000
-##   ..$ ncol       : int 4
-##   ..$ type       : Named int 8
-##   .. ..- attr(*, "names")= chr "double"
-##   ..$ backingfile: chr "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpEHa2AA\\file5cc548c78cf.bk"
-##   ..$ address    :&lt;externalptr&gt; 
-##   ..and 17 methods, of which 3 are  possibly relevant:
-##   ..  initialize, save, show#envRefClass
-##  $ colnames: chr [1:4] "Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"
-##  $ meta    :'data.frame':    150000 obs. of  1 variable:
-##   ..$ Species: chr [1:150000] "setosa" "setosa" "setosa" "setosa" ...</code></pre>
-</div>
 </div>
   </div>
 
@@ -264,8 +192,9 @@ data.table<span class="op">::</span><span class="kw">fwrite</span>(big_iris, csv
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#first-example">First example</a></li>
-      <li><a href="#second-example">Second example</a></li>
+<li><a href="#data">Data</a></li>
+      <li><a href="#check-file-content">Check file content</a></li>
+      <li><a href="#read-those-data">Read those data</a></li>
       </ul>
 </div>
       </div>
@@ -274,7 +203,7 @@ data.table<span class="op">::</span><span class="kw">fwrite</span>(big_iris, csv
 
 
       <footer><div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">

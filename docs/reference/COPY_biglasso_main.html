@@ -63,7 +63,7 @@ for the regularization parameter lambda." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -142,10 +142,10 @@ for the regularization parameter lambda.</p>
 
     <pre class="usage"><span class='fu'>COPY_biglasso_main</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='no'>ind.train</span>, <span class='no'>ind.col</span>, <span class='no'>covar.train</span>,
   <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"gaussian"</span>, <span class='st'>"binomial"</span>), <span class='kw'>alphas</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>ind.sets</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>rep_len</span>(<span class='fl'>1</span>:<span class='no'>K</span>, <span class='no'>n</span>)), <span class='kw'>nlambda</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>lambda.min</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>n</span> <span class='kw'>&gt;</span>
-  <span class='no'>p</span>) <span class='fl'>1e-04</span> <span class='kw'>else</span> <span class='fl'>0.001</span>, <span class='kw'>nlam.min</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>n.abort</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>base.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>eps</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>max.iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>dfmax</span> <span class='kw'>=</span> <span class='fl'>50000</span>, <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>return.all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+  <span class='kw'>ind.sets</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>rep_len</span>(<span class='fl'>1</span>:<span class='no'>K</span>, <span class='no'>n</span>)), <span class='kw'>nlambda</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>lambda.min</span> <span class='kw'>=</span> <span class='kw'>if</span>
+  (<span class='no'>n</span> <span class='kw'>&gt;</span> <span class='no'>p</span>) <span class='fl'>1e-04</span> <span class='kw'>else</span> <span class='fl'>0.001</span>, <span class='kw'>nlam.min</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>n.abort</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>base.train</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>eps</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>max.iter</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>dfmax</span> <span class='kw'>=</span> <span class='fl'>50000</span>,
+  <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return.all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -245,7 +245,7 @@ $$\frac{1}{2n}\textrm{RSS} + \textrm{penalty},$$ for logistic regression
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">

@@ -62,7 +62,7 @@ and possibly its 95% confidence interval." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -202,7 +202,7 @@ one being greater than the other.</p>
   <span class='no'>val.min</span> <span class='kw'>&lt;-</span> <span class='fu'>min</span>(<span class='no'>target</span>)
   <span class='no'>q</span> <span class='kw'>&lt;-</span> <span class='fu'>quantile</span>(<span class='no'>pred</span>[<span class='no'>target</span> <span class='kw'>==</span> <span class='no'>val.min</span>], <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fl'>1</span> - <span class='no'>p</span>)
   <span class='no'>ind</span> <span class='kw'>&lt;-</span> (<span class='no'>target</span> <span class='kw'>!=</span> <span class='no'>val.min</span>) <span class='kw'>|</span> (<span class='no'>pred</span> <span class='kw'>&gt;</span> <span class='no'>q</span>)
-  <span class='kw pkg'>bigstatsr</span><span class='kw ns'>::</span><span class='fu'>AUC</span>(<span class='no'>pred</span>[<span class='no'>ind</span>], <span class='no'>target</span>[<span class='no'>ind</span>]) * <span class='no'>p</span>
+  <span class='kw pkg'>bigstatsr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/bigstatsr/topics/AUC'>AUC</a></span>(<span class='no'>pred</span>[<span class='no'>ind</span>], <span class='no'>target</span>[<span class='no'>ind</span>]) * <span class='no'>p</span>
 }
 <span class='fu'>pAUC</span>(<span class='no'>x</span>, <span class='no'>y</span>)</div><div class='output co'>#&gt; [1] 0.00962963</div><div class='input'><span class='fu'>pAUC</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='fl'>0.2</span>)</div><div class='output co'>#&gt; [1] 0.05802469</div></pre>
   </div>
@@ -225,7 +225,7 @@ one being greater than the other.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">

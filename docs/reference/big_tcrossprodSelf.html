@@ -62,7 +62,7 @@ after applying a particular scaling to it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -138,8 +138,8 @@ after applying a particular scaling to it.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
-  <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
+    <pre class="usage"><span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span>
+  <span class='fl'>FALSE</span>), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'>nrow</span>(<span class='no'>X</span>)))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -202,7 +202,7 @@ in order to accelerate these block matrix computations.</p>
 <span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_tcrossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='no'>big_noscale</span>)
 <span class='fu'>class</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] "FBM"
 #&gt; attr(,"package")
-#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 517 517</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "C:\\Users\\Florian\\AppData\\Local\\Temp\\RtmpOKnYsP\\file2f8469c7099.bk"</div><div class='input'>
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'>dim</span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 517 517</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpBXRpyP/file5e8155bc319e.bk"</div><div class='input'>
 <span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'>tcrossprod</span>(<span class='no'>X</span>[])
 <span class='fu'>all.equal</span>(<span class='no'>K</span>[], <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data</span>
@@ -232,7 +232,7 @@ in order to accelerate these block matrix computations.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">
