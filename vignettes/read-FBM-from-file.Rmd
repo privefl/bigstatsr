@@ -7,102 +7,52 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this vignette, you learn how to read a Filebacked Big Matrix from a text file. [Package {bigreadr}](https://github.com/privefl/bigreadr) is required.
+
+## Data
+
+```{r}
 library(bigstatsr)
+library(bigreadr)
+
+## LONG CSV
+df <- datasets::mtcars
+csv <- fwrite2(df[rep(seq_len(nrow(df)), 500000), ], 
+               tempfile(fileext = ".csv"), 
+               row.names = TRUE)
+format(file.size(csv), big.mark = ",")
 ```
 
-In this vignette, you will learn how to read a Filebacked Big Matrix from a text file. 
-We will see how to use function `big_read` through examples. **This function is far from perfect, any help improving it would be appreciated.**
-
-## First example
-
-### Store a fake file
+## Check file content
 
 ```{r}
-N <- 10 
-M <- 5
-(x <- matrix(rnorm(N * M), nrow = N, dimnames = list(letters[1:N], LETTERS[1:M])))
-csv <- tempfile(fileext = ".csv")
-data.table::fwrite(cbind.data.frame(L = letters[1:N], x), csv, quote = FALSE, sep = " ")
+(n <- nlines(csv))
+(first_rows <- fread2(csv, nrows = 5))
+sapply(first_rows, typeof)
+ncol(first_rows)
 ```
 
-### Get some intuition on the file format
+What you can see with these first lines:
 
-I think it is always a good idea to print the first lines of the file you are interested in reading.
-```{r}
-substr(readLines(csv, 3), 0, 60)
-```
+- there are some column names (header -> `nrow = nlines - 1`),
+- each line has 12 elements,
+- the first element of each line stores some row names,
+- and the other elements seems to be all numeric.
 
-What you can see with these first 3 lines:
+## Read those data
 
-- the first line of the file stores some names (header),
-- the first element of all following lines stores also some names,
-- the elements are separated by a space, 
-- the elements are doubles.
-
-### Read the file
-
-```{r}
-# See how the options corresponds to what we have seen 
-# when reading the first 3 lines of the file
-test <- big_read(csv, header = TRUE, sep = " ", 
-                 nlines = N + 1, confirmed = TRUE)
-```
-
-```{r}
-str(test)
-```
-
-### Understand the resulting object
-
-There are at least 2 things to note:
-
-1. where are the names?
-  
-    - rownames are stored in `$meta` information
-    
-    - colnames are stored in `$colnames`
-
+- Read all numeric columns in an FBM
     ```{r}
-    (rownames <- test$meta$L)
-    (colnames <- test$colnames)
+    test <- big_read(csv, select = 2:12, nrow = n - 1)
+    dim(test)
+    rbind(csv, test$backingfile)
+    attr(test, "fbm_names")
     ```
 
-    
-2. the resulting matrix is stored in `$FBM`. If you want this FBM to be used in another session later, **make sure to specify the `backingfile` and `save = TRUE`**.
-
+- Read other non-numeric data afterwards
     ```{r}
-    str(test$FBM)
+    meta <- fread2(csv, select = 1)
+    head(meta)
     ```
-
-## Second example
-
-### A larger dataset
-
-```{r}
-big_iris <- do.call("rbind", rep(list(iris), 1000))
-dim(big_iris)
-```
-
-```{r}
-csv <- tempfile(fileext = ".csv")
-data.table::fwrite(big_iris, csv, quote = FALSE)
-```
-
-### Get some intuition on the file format
-
-```{r}
-readLines(csv, 5)
-```
-
-What you can see with these first 2 lines:
-
-- there is a header,
-- the first 4 columns seems numeric but not the last one,
-- the elements are separated by commas.
-
-### Read the matrix
-
-```{r}
-str(test <- big_read(csv, header = TRUE, sep = ",", 
-                     nlines = 150000 + 1, confirmed = TRUE))
-```

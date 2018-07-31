@@ -53,7 +53,7 @@ the backingfile. Default is \code{FALSE}.}
 \description{
 A reference class for storing and accessing matrix-like data stored in files
 on disk. This is very similar to Filebacked Big Matrices provided by the
-\strong{bigmemory} package. Yet, the implementation is much more lighter.
+\strong{bigmemory} package. Yet, the implementation is lighter.
 
 Convert a matrix (or a data frame) to an FBM.
 }

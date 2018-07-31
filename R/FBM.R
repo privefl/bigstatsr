@@ -4,7 +4,7 @@
 #'
 #' A reference class for storing and accessing matrix-like data stored in files
 #' on disk. This is very similar to Filebacked Big Matrices provided by the
-#' **bigmemory** package. Yet, the implementation is much more lighter.
+#' **bigmemory** package. Yet, the implementation is lighter.
 #'
 #' @examples
 #' X <- FBM(10, 10)

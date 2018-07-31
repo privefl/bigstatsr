@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 0.5.0
-Date: 2018-07-10
+Version: 0.6.0
+Date: 2018-07-31
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 
@@ -26,7 +26,6 @@ ByteCompile: TRUE
 Depends: R (>= 3.3.0)
 Imports: 
     cowplot,
-    data.table,
     doParallel,
     foreach,
     ggplot2 (>= 3.0.0),
@@ -51,7 +50,9 @@ Suggests:
     RcppEigen,
     RhpcBLASctl,
     spelling (>= 1.2),
-    testthat
+    testthat,
+    bigreadr (>= 0.1.1)
+Remotes: privefl/bigreadr
 RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
 URL: https://privefl.github.io/bigstatsr
