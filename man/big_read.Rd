@@ -4,63 +4,52 @@
 \alias{big_read}
 \title{Read a file}
 \usage{
-big_read(file, sep, header, nlines, confirmed = FALSE, verbose = TRUE,
-  ind.skip = integer(0), ind.meta = integer(0), nlines.block = NULL,
-  fun.con = function(f) file(f, open = "rt"), type = NULL, ...)
+big_read(file, select, nrow, type = c("double", "integer",
+  "unsigned short", "unsigned char", "raw"),
+  backingfile = drop_ext(file), nb_parts = NULL, skip = 0,
+  progress = TRUE, ...)
 }
 \arguments{
-\item{file}{The path to the file to be read.}
+\item{file}{Path to file that you want to read.}
 
-\item{sep}{The field separator character.}
+\item{select}{Indices of columns to read (sorted).
+The length of \code{select} will be the number of columns of the resulting FBM.}
 
-\item{header}{A logical value indicating whether the file contains the names
-of the variables as its first line.}
+\item{nrow}{Number of rows of the resulting FBM.
+This is basically (nlines - skip - header).}
 
-\item{nlines}{Number of lines of the file (including possible header).
-You can use \code{bigstatsr::nlines} or \code{fpeek::peek_count_lines} to get it.}
-
-\item{confirmed}{A logical value indicating whether you don't want to pause
-to confirm that everything has been parsed like you wanted.
-Default is \code{FALSE} and will ask you to confirm during execution.}
-
-\item{verbose}{Be verbose? Default is \code{TRUE}.}
-
-\item{ind.skip}{An integer vector specifying which columns to skip.}
-
-\item{ind.meta}{An integer vector specifying which columns should be part of
-the meta information. Non-numeric columns will automatically be added to
-meta information because they can't be stored in an FBM.}
-
-\item{nlines.block}{Number of lines to be read at once. Default automatically
-gets this number based on \code{getOption("bigstatsr.block.sizeGB")}.}
-
-\item{fun.con}{Function to open a connection from a file.}
-
-\item{type}{Type of the resulting Filebacked Big Matrix.
-Default is automatically guessing between \code{"integer"} and \code{"double"}.}
-
-\item{...}{Arguments passed on to \code{FBM}
-\describe{
-  \item{backingfile}{Path to the file storing the Big Matrix on disk.
-An extension ".bk" will be automatically added. Default stores in the
-temporary directory.}
-  \item{create_bk}{Create a backingfile (the default) or use an existing one
-(which should be named by the \code{backingfile} parameter and have an
-extension ".bk"). For example, this could be used to convert a filebacked
-\code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}.}
-  \item{save}{Whether to save the result object in an ".rds" file alongside
-the backingfile. Default is \code{FALSE}.}
+\item{type}{Type of the Filebacked Big Matrix (default is \code{double}). Either
+\itemize{
+\item \code{"double"}
+\item \code{"integer"}
+\item \code{"unsigned short"}: can store integer values from 0 to 65535.
+It has vocation to become the basis for a \code{FBM.code65536} class for
+accessing strings.
+\item \code{"raw"} or \code{"unsigned char"}: can store integer values from 0 to 255.
+It is the basis for the \link[=FBM.code256-class]{FBM.code256} class for
+accessing 256 arbitrary different numeric values.
+It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
 }}
+
+\item{backingfile}{Path to the file storing the Big Matrix on disk.
+An extension ".bk" will be automatically added.
+Default uses \code{file} without its extension.}
+
+\item{nb_parts}{Number of parts in which to split reading.
+Parts are referring to blocks of selected columns.
+Default use global option \code{bigstatsr.block.sizeGB} to set a good value.}
+
+\item{skip}{Number of lines to skip at the beginning of \code{file}.}
+
+\item{progress}{Show progress? Default is \code{TRUE}.}
+
+\item{...}{More arguments to be passed to \link[data.table:fread]{data.table::fread}.}
 }
 \value{
-A list with 3 elements:
-\itemize{
-\item A Filebacked Big Matrix.
-\item A vector of colnames.
-\item A data frame of meta information (e.g. non-numeric variables such as rownames)
-}
+A Filebacked Big Matrix of type '<type>' with <nrow> rows
+and <length(select)> columns.
 }
 \description{
-Read a file as a Filebacked Big Matrix and a data frame of meta information.
+Read a file as a Filebacked Big Matrix by using package {bigreadr}.
 For a mini-tutorial, please see \href{https://goo.gl/91oNxU}{this vignette}.
 }

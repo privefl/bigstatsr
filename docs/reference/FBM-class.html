@@ -34,8 +34,8 @@
 
 <meta property="og:description" content="A reference class for storing and accessing matrix-like data stored in files
 on disk. This is very similar to Filebacked Big Matrices provided by the
-bigmemory package. Yet, the implementation is much more lighter.
-Wrapper constructor for class FBM." />
+bigmemory package. Yet, the implementation is lighter.
+Convert a matrix (or a data frame) to an FBM." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -64,7 +64,7 @@ Wrapper constructor for class FBM." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -137,14 +137,17 @@ Wrapper constructor for class FBM." />
     
     <p>A reference class for storing and accessing matrix-like data stored in files
 on disk. This is very similar to Filebacked Big Matrices provided by the
-<strong>bigmemory</strong> package. Yet, the implementation is much more lighter.</p>
-<p>Wrapper constructor for class <code>FBM</code>.</p>
+<strong>bigmemory</strong> package. Yet, the implementation is lighter.</p>
+<p>Convert a matrix (or a data frame) to an FBM.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>FBM</span>(<span class='no'>nrow</span>, <span class='no'>ncol</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"double"</span>, <span class='st'>"integer"</span>, <span class='st'>"unsigned short"</span>,
   <span class='st'>"unsigned char"</span>, <span class='st'>"raw"</span>), <span class='kw'>init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>tempfile</span>(),
-  <span class='kw'>create_bk</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>create_bk</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>as_FBM</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"double"</span>, <span class='st'>"integer"</span>, <span class='st'>"unsigned short"</span>,
+  <span class='st'>"unsigned char"</span>, <span class='st'>"raw"</span>), <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>tempfile</span>(), <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,23 +197,31 @@ extension ".bk"). For example, this could be used to convert a filebacked
       <td><p>Whether to save the result object in an ".rds" file alongside
 the backingfile. Default is <code>FALSE</code>.</p></td>
     </tr>
+    <tr>
+      <th>x</th>
+      <td><p>A matrix or an data frame (2-dimensional data).</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='big_copy.html'>big_copy</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>FBM</span>(<span class='fl'>10</span>, <span class='fl'>10</span>)
 <span class='fu'>typeof</span>(<span class='no'>X</span>)</div><div class='output co'>#&gt; [1] "double"</div><div class='input'><span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>X</span>))
-<span class='no'>X</span>[, <span class='fl'>1</span>:<span class='fl'>6</span>]</div><div class='output co'>#&gt;               [,1]       [,2]       [,3]        [,4]        [,5]         [,6]
-#&gt;  [1,] -1.791337818 -0.8432650  1.1651380  1.13199575  1.35224643  0.929763401
-#&gt;  [2,] -3.045363930 -0.6840283 -0.2783777 -0.02443501  0.78862870 -1.290008417
-#&gt;  [3,] -0.097388392  0.8459935 -0.5468960 -0.89638534 -2.24788016 -0.570331658
-#&gt;  [4,] -1.296783557 -0.6240430 -0.2793260 -0.39005692  0.04787734  0.961281650
-#&gt;  [5,]  0.191180067  0.8847433  0.2120864 -1.07864812  0.88008117 -0.212036108
-#&gt;  [6,]  0.811118929  0.2261341  0.1821841  0.96456971 -1.01640210 -0.533410636
-#&gt;  [7,] -0.735002273 -0.5610931 -1.2074401  0.75619792 -0.15845325  0.002205478
-#&gt;  [8,] -0.104626876 -0.5480882  1.5545471 -0.27871042 -2.25195394 -0.346823573
-#&gt;  [9,] -0.695506182  0.3304972 -1.7377733 -1.05027468 -0.22329538 -0.485861799
-#&gt; [10,]  0.003144412 -0.7534743 -0.3793331 -1.11388494 -0.76745061  0.216737308</div><div class='input'><span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
+<span class='no'>X</span>[, <span class='fl'>1</span>:<span class='fl'>6</span>]</div><div class='output co'>#&gt;              [,1]        [,2]        [,3]        [,4]       [,5]        [,6]
+#&gt;  [1,]  1.04106093 -0.71617421  0.16912717 -0.70257240  0.2195934 -0.26112976
+#&gt;  [2,]  0.52821969 -1.15940397  1.76904716 -1.01322840  0.9114683 -0.39821783
+#&gt;  [3,] -0.67322334 -0.86386085 -0.39869117  0.03383893 -1.0396207 -0.90108979
+#&gt;  [4,]  0.05597672  0.03909524  2.08205060  0.37254100 -2.4759738  0.08500260
+#&gt;  [5,]  0.83425396 -0.63883378  0.56966661  0.07009365 -0.7310125  0.30512830
+#&gt;  [6,]  0.48882704 -0.72197894  0.29858759  0.05378260 -0.1428284 -0.04228224
+#&gt;  [7,] -1.58335580  2.00290074  0.90501827 -0.47646816 -0.5425438  1.02368660
+#&gt;  [8,]  0.62073626  1.45422163 -1.99365285  0.20150012 -0.1125554  0.37465879
+#&gt;  [9,] -0.39274253 -0.83954784  0.05911866 -0.11305926 -0.1833031  0.12900758
+#&gt; [10,]  1.12504158 -0.12140872 -0.29240017  0.98190298  2.5502731  0.37789519</div><div class='input'><span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
 <span class='no'>X</span>[, <span class='fl'>1</span>]</div><div class='output co'>#&gt;  [1]  1  2  3  4  5  6  7  8  9 10</div><div class='input'><span class='no'>X</span>[<span class='fl'>1</span>, ]  <span class='co'># not recommended for large matrices</span></div><div class='output co'>#&gt;  [1]  1 11 21 31 41 51 61 71 81 91</div><div class='input'><span class='no'>X</span>[, -<span class='fl'>1</span>]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9]
 #&gt;  [1,]   11   21   31   41   51   61   71   81   91
 #&gt;  [2,]   12   22   32   42   52   62   72   82   92
@@ -243,13 +254,18 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
 #&gt;  [8,]    8   18   28   38   48   58   68   NA   88    98
 #&gt;  [9,]    9   19   29   39   49   59   69   79   NA    99
 #&gt; [10,]   10   20   30   40   50   60   70   80   90    NA</div><div class='input'>
-</div></pre>
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'>FBM</span>(<span class='fl'>150</span>, <span class='fl'>5</span>)
+<span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='no'>iris</span>   <span class='co'>## you can replace with a df (factors -&gt; integers)</span>
+<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>as_FBM</span>(<span class='no'>iris</span>)
+<span class='fu'>identical</span>(<span class='no'>X</span>[], <span class='no'>X2</span>[])</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -258,7 +274,7 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">

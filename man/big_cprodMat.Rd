@@ -4,8 +4,9 @@
 \alias{big_cprodMat}
 \title{Cross-product with a matrix}
 \usage{
-big_cprodMat(X, A.row, ind.row = rows_along(X), ind.col = cols_along(X),
-  ncores = 1, block.size = block_size(nrow(X), ncores))
+big_cprodMat(X, A.row, ind.row = rows_along(X),
+  ind.col = cols_along(X), ncores = 1,
+  block.size = block_size(nrow(X), ncores))
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

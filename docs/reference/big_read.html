@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Read a file — big_read" />
 
-<meta property="og:description" content="Read a file as a Filebacked Big Matrix and a data frame of meta information.
+<meta property="og:description" content="Read a file as a Filebacked Big Matrix by using package bigreadr.
 For a mini-tutorial, please see this vignette." />
 <meta name="twitter:card" content="summary" />
 
@@ -62,7 +62,7 @@ For a mini-tutorial, please see this vignette." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -133,94 +133,77 @@ For a mini-tutorial, please see this vignette." />
 
     <div class="ref-description">
     
-    <p>Read a file as a Filebacked Big Matrix and a data frame of meta information.
+    <p>Read a file as a Filebacked Big Matrix by using package bigreadr.
 For a mini-tutorial, please see <a href='https://goo.gl/91oNxU'>this vignette</a>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>big_read</span>(<span class='no'>file</span>, <span class='no'>sep</span>, <span class='no'>header</span>, <span class='no'>nlines</span>, <span class='kw'>confirmed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>ind.skip</span> <span class='kw'>=</span> <span class='fu'>integer</span>(<span class='fl'>0</span>), <span class='kw'>ind.meta</span> <span class='kw'>=</span> <span class='fu'>integer</span>(<span class='fl'>0</span>), <span class='kw'>nlines.block</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fun.con</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>f</span>) <span class='fu'>file</span>(<span class='no'>f</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='st'>"rt"</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_read</span>(<span class='no'>file</span>, <span class='no'>select</span>, <span class='no'>nrow</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"double"</span>, <span class='st'>"integer"</span>,
+  <span class='st'>"unsigned short"</span>, <span class='st'>"unsigned char"</span>, <span class='st'>"raw"</span>),
+  <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>drop_ext</span>(<span class='no'>file</span>), <span class='kw'>nb_parts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>The path to the file to be read.</p></td>
+      <td><p>Path to file that you want to read.</p></td>
     </tr>
     <tr>
-      <th>sep</th>
-      <td><p>The field separator character.</p></td>
+      <th>select</th>
+      <td><p>Indices of columns to read (sorted).
+The length of <code>select</code> will be the number of columns of the resulting FBM.</p></td>
     </tr>
     <tr>
-      <th>header</th>
-      <td><p>A logical value indicating whether the file contains the names
-of the variables as its first line.</p></td>
-    </tr>
-    <tr>
-      <th>nlines</th>
-      <td><p>Number of lines of the file (including possible header).
-You can use <code><a href='nlines.html'>bigstatsr::nlines</a></code> or <code><a href='http://www.rdocumentation.org/packages/fpeek/topics/peek_count_lines'>fpeek::peek_count_lines</a></code> to get it.</p></td>
-    </tr>
-    <tr>
-      <th>confirmed</th>
-      <td><p>A logical value indicating whether you don't want to pause
-to confirm that everything has been parsed like you wanted.
-Default is <code>FALSE</code> and will ask you to confirm during execution.</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Be verbose? Default is <code>TRUE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>ind.skip</th>
-      <td><p>An integer vector specifying which columns to skip.</p></td>
-    </tr>
-    <tr>
-      <th>ind.meta</th>
-      <td><p>An integer vector specifying which columns should be part of
-the meta information. Non-numeric columns will automatically be added to
-meta information because they can't be stored in an FBM.</p></td>
-    </tr>
-    <tr>
-      <th>nlines.block</th>
-      <td><p>Number of lines to be read at once. Default automatically
-gets this number based on <code>getOption("bigstatsr.block.sizeGB")</code>.</p></td>
-    </tr>
-    <tr>
-      <th>fun.con</th>
-      <td><p>Function to open a connection from a file.</p></td>
+      <th>nrow</th>
+      <td><p>Number of rows of the resulting FBM.
+This is basically (nlines - skip - header).</p></td>
     </tr>
     <tr>
       <th>type</th>
-      <td><p>Type of the resulting Filebacked Big Matrix.
-Default is automatically guessing between <code>"integer"</code> and <code>"double"</code>.</p></td>
+      <td><p>Type of the Filebacked Big Matrix (default is <code>double</code>). Either</p><ul>
+<li><p><code>"double"</code></p></li>
+<li><p><code>"integer"</code></p></li>
+<li><p><code>"unsigned short"</code>: can store integer values from 0 to 65535.
+It has vocation to become the basis for a <code>FBM.code65536</code> class for
+accessing strings.</p></li>
+<li><p><code>"raw"</code> or <code>"unsigned char"</code>: can store integer values from 0 to 255.
+It is the basis for the <a href='FBM.code256-class.html'>FBM.code256</a> class for
+accessing 256 arbitrary different numeric values.
+It is used in <a href='https://goo.gl/pHCCmo'>package bigsnpr</a>.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>backingfile</th>
+      <td><p>Path to the file storing the Big Matrix on disk.
+An extension ".bk" will be automatically added.
+Default uses <code>file</code> without its extension.</p></td>
+    </tr>
+    <tr>
+      <th>nb_parts</th>
+      <td><p>Number of parts in which to split reading.
+Parts are referring to blocks of selected columns.
+Default use global option <code>bigstatsr.block.sizeGB</code> to set a good value.</p></td>
+    </tr>
+    <tr>
+      <th>skip</th>
+      <td><p>Number of lines to skip at the beginning of <code>file</code>.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Show progress? Default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments passed on to <code>FBM</code></p><dl class='dl-horizontal'>
-  <dt>backingfile</dt><dd><p>Path to the file storing the Big Matrix on disk.
-An extension ".bk" will be automatically added. Default stores in the
-temporary directory.</p></dd>
-  <dt>create_bk</dt><dd><p>Create a backingfile (the default) or use an existing one
-(which should be named by the <code>backingfile</code> parameter and have an
-extension ".bk"). For example, this could be used to convert a filebacked
-<code>big.matrix</code> from package <strong>bigmemory</strong> to a <a href='FBM-class.html'>FBM</a>.</p></dd>
-  <dt>save</dt><dd><p>Whether to save the result object in an ".rds" file alongside
-the backingfile. Default is <code>FALSE</code>.</p></dd>
-</dl></td>
+      <td><p>More arguments to be passed to <a href='http://www.rdocumentation.org/packages/data.table/topics/fread'>data.table::fread</a>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with 3 elements:</p><ul>
-<li><p>A Filebacked Big Matrix.</p></li>
-<li><p>A vector of colnames.</p></li>
-<li><p>A data frame of meta information (e.g. non-numeric variables such as rownames)</p></li>
-</ul>
-
+    <p>A Filebacked Big Matrix of type '&lt;type&gt;' with &lt;nrow&gt; rows
+and &lt;length(select)&gt; columns.</p>
     
 
   </div>
@@ -237,7 +220,7 @@ the backingfile. Default is <code>FALSE</code>.</p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">

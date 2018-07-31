@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Sparse logistic regression — big_spLogReg" />
 
-<meta property="og:description" content="Sparse logistic regression" />
+<meta property="og:description" content="Fit lasso penalized linear regression path for a Filebacked Big Matrix.
+Covariates can be added to correct for confounders." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -61,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
       </span>
     </div>
 
@@ -132,7 +133,8 @@
 
     <div class="ref-description">
     
-    <p>Sparse logistic regression</p>
+    <p>Fit lasso penalized linear regression path for a Filebacked Big Matrix.
+Covariates can be added to correct for confounders.</p>
     
     </div>
 
@@ -255,7 +257,7 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='http://www.rdocumentation.org/packages/glmnet/topics/glmnet'>glmnet</a> <a href='http://www.rdocumentation.org/packages/biglasso/topics/biglasso'>biglasso</a></p></div>
+    <div class='dont-index'><p>glmnet biglasso</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -275,9 +277,10 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
                      <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ])
 
 <span class='no'>preds</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ])
-<span class='fu'>library</span>(<span class='no'>ggplot2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: le package 'ggplot2' a été compilé avec la version R 3.4.4</span></div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>preds</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>as.logical</span>(<span class='no'>y01</span>[<span class='no'>ind.test</span>]), <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"density"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fu'>I</span>(<span class='fl'>0.4</span>)) +
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/qplot'>qplot</a></span>(<span class='no'>preds</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>as.logical</span>(<span class='no'>y01</span>[<span class='no'>ind.test</span>]), <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"density"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fu'>I</span>(<span class='fl'>0.4</span>)) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"Case?"</span>) +
-  <span class='fu'><a href='theme_bigstatsr.html'>theme_bigstatsr</a></span>()</div><div class='img'><img src='big_spLogReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>AUC</span>(<span class='no'>preds</span>, <span class='no'>y01</span>[<span class='no'>ind.test</span>])</div><div class='output co'>#&gt; [1] 0.9384127</div></pre>
+  <span class='fu'><a href='theme_bigstatsr.html'>theme_bigstatsr</a></span>()</div><div class='img'><img src='big_spLogReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='AUC.html'>AUC</a></span>(<span class='no'>preds</span>, <span class='no'>y01</span>[<span class='no'>ind.test</span>])</div><div class='output co'>#&gt; [1] 0.9384127</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -300,7 +303,7 @@ arXiv preprint arXiv:1701.05936. <a href='https://arxiv.org/abs/1701.05936'>http
 
       <footer>
       <div class="copyright">
-  <p>Developed by Florian PrivÃ©.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">

@@ -1,155 +1,80 @@
 ################################################################################
 
-#' Number of lines
-#'
-#' Get the number of lines of a file with system command `wc -l`.
-#'
-#' @param file Path of the file.
-#'
-#' @return The number of lines as one integer.
-#' @export
-#'
-#' @examples
-#' csv <- tempfile(fileext = "csv")
-#' write.csv(iris, csv, quote = FALSE, row.names = FALSE)
-#' tryCatch(csv, error = function(e) print(e))
-nlines <- function(file) {
-  scan(text = system(paste("wc -l", file), intern = TRUE),
-       what = 1L, n = 1, quiet = TRUE)
-}
-
-################################################################################
+drop_ext <- function(file) tools::file_path_sans_ext(file)
 
 #' Read a file
 #'
-#' Read a file as a Filebacked Big Matrix and a data frame of meta information.
+#' Read a file as a Filebacked Big Matrix by using package {bigreadr}.
 #' For a mini-tutorial, please see [this vignette](https://goo.gl/91oNxU).
 #'
-#' @inheritParams bigstatsr-package
-#' @param file The path to the file to be read.
-#' @param sep The field separator character.
-#' @param header A logical value indicating whether the file contains the names
-#'   of the variables as its first line.
-#' @param confirmed A logical value indicating whether you don't want to pause
-#'   to confirm that everything has been parsed like you wanted.
-#'   Default is `FALSE` and will ask you to confirm during execution.
-#' @param verbose Be verbose? Default is `TRUE`.
-#' @param ind.skip An integer vector specifying which columns to skip.
-#' @param ind.meta An integer vector specifying which columns should be part of
-#'   the meta information. Non-numeric columns will automatically be added to
-#'   meta information because they can't be stored in an FBM.
-#' @param nlines Number of lines of the file (including possible header).
-#'   You can use `bigstatsr::nlines` or `fpeek::peek_count_lines` to get it.
-#' @param nlines.block Number of lines to be read at once. Default automatically
-#'   gets this number based on `getOption("bigstatsr.block.sizeGB")`.
-#' @param fun.con Function to open a connection from a file.
-#' @param type Type of the resulting Filebacked Big Matrix.
-#'   Default is automatically guessing between `"integer"` and `"double"`.
-#' @inheritDotParams FBM -nrow -ncol -type -init
+#' @param select Indices of columns to read (sorted).
+#'   The length of `select` will be the number of columns of the resulting FBM.
+#' @param nrow Number of rows of the resulting FBM.
+#'   This is basically (nlines - skip - header).
+#' @param backingfile Path to the file storing the Big Matrix on disk.
+#'   An extension ".bk" will be automatically added.
+#'   Default uses `file` without its extension.
+#' @param nb_parts Number of parts in which to split reading.
+#'   Parts are referring to blocks of selected columns.
+#'   Default use global option `bigstatsr.block.sizeGB` to set a good value.
+#' @inheritParams bigreadr::big_fread2
+#' @inheritParams FBM
+#' @param progress Show progress? Default is `TRUE`.
+#' @param ... More arguments to be passed to [data.table::fread].
 #'
-#' @return A list with 3 elements:
-#' - A Filebacked Big Matrix.
-#' - A vector of colnames.
-#' - A data frame of meta information (e.g. non-numeric variables such as rownames)
+#' @return A Filebacked Big Matrix of type '<type>' with <nrow> rows
+#'   and <length(select)> columns.
 #'
 #' @export
 #'
-big_read <- function(file,
-                     sep,
-                     header,
-                     nlines,
-                     confirmed = FALSE,
-                     verbose = TRUE,
-                     ind.skip = integer(0),
-                     ind.meta = integer(0),
-                     nlines.block = NULL,
-                     fun.con = function(f) file(f, open = "rt"),
-                     type = NULL,
+big_read <- function(file, select, nrow,
+                     type = c("double", "integer", "unsigned short",
+                              "unsigned char", "raw"),
+                     backingfile = drop_ext(file),
+                     nb_parts = NULL,
+                     skip = 0,
+                     progress = TRUE,
                      ...) {
 
-  message3 <- function(...) if (verbose) message2(...)
-  fread2 <- function(...) data.table::fread(..., data.table = FALSE)
+  assert_exist(file)
+  assert_int(select); assert_pos(select)
+  if (is.unsorted(select, strictly = TRUE))
+    stop2("Argument 'select' should be sorted.")
 
-  # Get #lines of the file
-  if (missing(nlines)) {
-    stop2("%s (%s)\n  %s",
-          "Please provide the number of lines of 'file'",
-          "including a possible header",
-          "You can use `bigstatsr::nlines` or `fpeek::peek_count_lines`.")
-  }
-  n <- nlines - header
+  # Need package {bigreadr}
+  if (!requireNamespace("bigreadr", quietly = TRUE) ||
+      utils::packageVersion("bigreadr") < package_version("0.1.1"))
+    stop2("Please install package {bigreadr} (>= 0.1.1).")
 
-  # Size of the blocks
-  if (is.null(nlines.block)) {
-    size.max <- getOption("bigstatsr.block.sizeGB") * 1024^3 / 2
-    nlines.block <- min(max(1, floor(size.max / file.size(file) * n)), n)
-    message3("Will use blocks of %s lines", nlines.block)
+  # Number of parts
+  if (is.null(nb_parts)) {
+    nb_parts <- ceiling(
+      file.size(file) / (getOption("bigstatsr.block.sizeGB") * 2^29))
+    if (progress) message2("Will read the file in %d parts.", nb_parts)
   }
 
-  # Guess from data.table::fread()
-  top_auto <- fread2(file, nrows = nlines.block, drop = ind.skip)
-  # Verify sep & header
-  top_verif <- fread2(file, nrows = 1, sep = sep, header = header)
-  p.all <- ncol(top_verif)
-  ind.keep <- setdiff(seq_len(p.all), ind.skip)
-  if (!isTRUE(all.equal(top_auto[1, ], top_verif[, ind.keep, drop = FALSE])))
-    stop2("There is a problem with either 'sep' or 'header'.")
+  # Resulting FBM
+  X <- FBM(nrow = nrow, ncol = length(select), type = type, init = NULL,
+           backingfile = backingfile, create_bk = TRUE, save = TRUE)
 
-
-  # Meta -> df  &  numeric -> FBM
-  coltypes <- unname(sapply(top_auto, typeof))
-  coltypes.num <- ALL.TYPES[coltypes]
-  is.meta <- is.na(coltypes.num)
-  ind.nonum <- ind.keep[is.meta]
-  ind.meta.keep <- stats::na.omit(match(ind.meta, ind.keep))
-  is.meta[ind.meta.keep] <- TRUE
-  in.fbm <- !is.meta
-  ind.meta.all <- ind.keep[is.meta]
-  meta_diff <- setdiff(ind.meta.all, ind.meta)
-  if (length(meta_diff) > 0) {
-    message3(sprintf("Will add %s more columns to meta information.", length(meta_diff)))
+  if (progress) {
+    pb <- utils::txtProgressBar(min = 0, max = length(select), style = 3)
+    on.exit(close(pb), add = TRUE)
   }
 
-  p <- sum(in.fbm)
-  colnames.fbm <- `if`(header, names(top_auto)[in.fbm], NULL)
-  colnames.meta <- names(top_auto)[is.meta]
-  stopifnot((p + length(ind.meta.all) + length(ind.skip)) == p.all)
-
-  # Prepare the resulting Filebacked Big Matrix
-  if (is.null(type)) {
-    type <- `if`(any(coltypes[in.fbm] == "double"), "double", "integer")
-  }
-  message3("Will create a %s x %s FBM of type '%s'.", n, p, type)
-  message3("Will create a %s x %s df of meta information.", n, length(ind.meta.all))
-
-  if (!confirmed && interactive()) {
-    readline(prompt = "Press [enter] to continue or [esc] to exit")
-  }
-
-  res <- FBM(nrow = n, ncol = p, type = type, init = NULL, ...)
-
-  # Open connexion
-  con <- fun.con(file)
-  on.exit(close(con), add = TRUE)
-
-  # Column types
-  colclasses <- rep(list(NULL), p.all)
-  for (i in seq_along(ind.keep)) {
-    colclasses[ind.keep[i]] <- `if`(is.meta[i], coltypes[i], type)
-  }
-
-  rm(top_auto, top_verif)
-
-  meta_df <- big_apply(res, a.FUN = function(X, ind) {
-    df_part <- utils::read.csv(
-      con, sep = sep, header = header && (ind[1] == 1), nrows = length(ind),
-      colClasses = colclasses, stringsAsFactors = FALSE)
-    X[ind, ] <- do.call(cbind, df_part[in.fbm])
-    stats::setNames(df_part[is.meta], colnames.meta)
-  }, a.combine = "rbind", ind = seq_len(n), block.size = nlines.block)
+  # Read and fill by parts
+  offset <- 0
+  colnames <- bigreadr::big_fread2(
+    file, nb_parts, skip = skip, select = select, .transform = function(df) {
+      ind <- cols_along(df)
+      X[, offset + ind] <- df
+      offset <<- offset + length(ind)
+      if (progress) utils::setTxtProgressBar(pb, offset)
+      names(df)
+    }, .combine = unlist, showProgress = FALSE)
 
   # Returns
-  list(FBM = res, colnames = colnames.fbm, meta = meta_df)
+  structure(X, fbm_names = colnames)
 }
 
 ################################################################################

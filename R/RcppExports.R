@@ -53,10 +53,6 @@ GET_ERROR_BOUNDS <- function() {
     .Call(`_bigstatsr_GET_ERROR_BOUNDS`)
 }
 
-GET_ERROR_USHORT <- function() {
-    .Call(`_bigstatsr_GET_ERROR_USHORT`)
-}
-
 extractVec <- function(xpbm, elemInd) {
     .Call(`_bigstatsr_extractVec`, xpbm, elemInd)
 }
@@ -91,6 +87,10 @@ replaceMatOne <- function(xpbm, rowInd, colInd, val) {
 
 replaceMat <- function(xpbm, rowInd, colInd, mat) {
     invisible(.Call(`_bigstatsr_replaceMat`, xpbm, rowInd, colInd, mat))
+}
+
+replaceDF <- function(xpbm, rowInd, colInd, df) {
+    invisible(.Call(`_bigstatsr_replaceDF`, xpbm, rowInd, colInd, df))
 }
 
 transpose3 <- function(BM, BM2) {

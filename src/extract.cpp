@@ -12,7 +12,7 @@ using std::size_t;
 template <typename T, int RTYPE>
 Vector<RTYPE> extractVec(VecBMAcc<T> macc) {
 
-  size_t K = macc.nelem();
+  size_t K = macc.size();
 
   Vector<RTYPE> res(K);
 

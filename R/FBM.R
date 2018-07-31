@@ -4,7 +4,7 @@
 #'
 #' A reference class for storing and accessing matrix-like data stored in files
 #' on disk. This is very similar to Filebacked Big Matrices provided by the
-#' **bigmemory** package. Yet, the implementation is much more lighter.
+#' **bigmemory** package. Yet, the implementation is lighter.
 #'
 #' @examples
 #' X <- FBM(10, 10)
@@ -135,6 +135,36 @@ FBM <- function(nrow, ncol,
   do.call(methods::new, args = c(Class = "FBM", as.list(environment())))
 }
 
+#' Convert to FBM
+#'
+#' Convert a matrix (or a data frame) to an FBM.
+#'
+#' @param x A matrix or an data frame (2-dimensional data).
+#'
+#' @rdname FBM-class
+#' @export
+#'
+#' @seealso [big_copy]
+#'
+#' @examples
+#' X <- FBM(150, 5)
+#' X[] <- iris   ## you can replace with a df (factors -> integers)
+#' X2 <- as_FBM(iris)
+#' identical(X[], X2[])
+as_FBM <- function(x, type = c("double", "integer", "unsigned short",
+                               "unsigned char", "raw"),
+                   backingfile = tempfile(),
+                   save = FALSE) {
+
+  if (is.matrix(x) || is.data.frame(x)) {
+    FBM(nrow = nrow(x), ncol = ncol(x), init = x,
+        type = type, backingfile = backingfile, save = save)
+  } else {
+    stop2("'as_FBM' is not implemented for class '%s'. %s",
+          class(x), "Feel free to open an issue.")
+  }
+}
+
 ################################################################################
 
 #' Methods for the FBM class
@@ -182,7 +212,7 @@ setMethod(
     replace_vector = function(x, i, value) {
 
       if (length(value) == 1) {
-        replaceVecOne(x$address, i, value)
+        replaceVecOne(x$address, i, value[1])
       } else if (length(value) == length(i)) {
         replaceVec(x$address, i, value)
       } else {
@@ -192,17 +222,26 @@ setMethod(
 
     replace_matrix = function(x, i, j, value) {
 
-      if (length(value) == 1)                         ## scalar
-        return(replaceMatOne(x$address, i, j, value))
-
       .dim <- c(length(i), length(j))
-      if (is.null(dim(value))) {                      ## vector
-        if (length(value) == prod(.dim)) {
-          dim(value) <- .dim
+      if (is.data.frame(value)) {
+
+        if (identical(dim(value), .dim)) {              ## data.frame
+          return(replaceDF(x$address, i, j, value))
+        }
+
+      } else {
+
+        if (length(value) == 1)                         ## scalar
+          return(replaceMatOne(x$address, i, j, value[1]))
+
+        if (is.null(dim(value))) {                      ## vector
+          if (length(value) == prod(.dim)) {
+            dim(value) <- .dim
+            return(replaceMat(x$address, i, j, value))
+          }
+        } else if (identical(dim(value), .dim)) {       ## matrix
           return(replaceMat(x$address, i, j, value))
         }
-      } else if (identical(dim(value), .dim)) {       ## matrix
-        return(replaceMat(x$address, i, j, value))
       }
 
       stop2("'value' must be unique or of the dimension of 'x[i, j]'.")

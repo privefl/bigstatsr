@@ -131,8 +131,8 @@ $(document).ready(function () {
 <pre class="r"><code>library(bigstatsr)
 library(foreach)
 
-N &lt;- M &lt;- 4000
-x4 &lt;- matrix(round(rnorm(N * M, 100, 10), N))
+N &lt;- M &lt;- 2000
+x4 &lt;- matrix(round(rnorm(N * M, 100, 10)), N)
 x3 &lt;- x2 &lt;- x1 &lt;- x4
 storage.mode(x1) &lt;- &quot;raw&quot;
 storage.mode(x2) &lt;- &quot;logical&quot;
@@ -150,16 +150,16 @@ foreach(X = list(X1, X2, X3, X4)) %:%
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1] 109 124 124 126
+## [1] 10 10 10 10
 ## 
 ## [[2]]
-## [1] 105 127 126 131
+## [1] 4 5 5 6
 ## 
 ## [[3]]
-## [1] 108 110 112 142
+## [1] 6 6 6 7
 ## 
 ## [[4]]
-## [1] 113 147 138 116</code></pre>
+## [1]  8  8  9 10</code></pre>
 <pre class="r"><code>options(bigstatsr.downcast.warning = TRUE)
 foreach(X = list(X1, X2, X3, X4)) %:% 
   foreach(x = list(x1, x2, x3, x4), .combine = &quot;c&quot;) %do% {
@@ -167,16 +167,16 @@ foreach(X = list(X1, X2, X3, X4)) %:%
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1] 112 132 132 142
+## [1]  9 13 13 17
 ## 
 ## [[2]]
-## [1] 114 168 134 135
+## [1]  4  8  8 14
 ## 
 ## [[3]]
-## [1] 109 114 120 147
+## [1]  6  6  6 14
 ## 
 ## [[4]]
-## [1] 116 153 154 131</code></pre>
+## [1] 8 8 8 8</code></pre>
 <pre class="r"><code>library(bigmemory)
 
 Y4 &lt;- as.big.matrix(x4, type = &quot;double&quot;)
@@ -186,20 +186,20 @@ Y1 &lt;- as.big.matrix(x4, type = &quot;char&quot;)
 
 foreach(X = list(Y1, Y2, Y3, Y4)) %:% 
   foreach(x = list(x1, x2, x3, x4), .combine = &quot;c&quot;) %do% {
-    tmp &lt;- microbenchmark::microbenchmark(X[] &lt;- x)
+    tmp &lt;- microbenchmark::microbenchmark(X[] &lt;- x, times = 10)
     round(median(tmp$time) / 1e6)
   }</code></pre>
 <pre><code>## [[1]]
-## [1] 417 440 440 475
+## [1] 126 102 114 157
 ## 
 ## [[2]]
-## [1] 416 429 432 464
+## [1] 104 113 167 162
 ## 
 ## [[3]]
-## [1] 432 411 411 447
+## [1] 114 117 109 163
 ## 
 ## [[4]]
-## [1] 281 282 283 287</code></pre>
+## [1] 80 79 82 82</code></pre>
 
 
 

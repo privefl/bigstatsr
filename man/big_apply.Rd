@@ -4,8 +4,8 @@
 \alias{big_apply}
 \title{Split-Apply-Combine}
 \usage{
-big_apply(X, a.FUN, a.combine = NULL, ind = cols_along(X), ncores = 1,
-  block.size = block_size(nrow(X), ncores), ...)
+big_apply(X, a.FUN, a.combine = NULL, ind = cols_along(X),
+  ncores = 1, block.size = block_size(nrow(X), ncores), ...)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
