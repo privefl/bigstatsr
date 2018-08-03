@@ -29,10 +29,6 @@ mycount2 <- function(BM, rowInd, colInd, codeInd) {
     .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
 }
 
-createFile <- function(fileName, nrow, ncol, type) {
-    invisible(.Call(`_bigstatsr_createFile`, fileName, nrow, ncol, type))
-}
-
 decodeMat <- function(source, code) {
     .Call(`_bigstatsr_decodeMat`, source, code)
 }
@@ -61,16 +57,8 @@ extractMat <- function(xpbm, rowInd, colInd) {
     .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
 }
 
-getXPtrFBM <- function(path, n, m, type) {
-    .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
-}
-
-pMatVec4 <- function(BM, x, rowInd, colInd) {
-    .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
-}
-
-cpMatVec4 <- function(BM, x, rowInd, colInd) {
-    .Call(`_bigstatsr_cpMatVec4`, BM, x, rowInd, colInd)
+createFile <- function(fileName, nrow, ncol, type) {
+    invisible(.Call(`_bigstatsr_createFile`, fileName, nrow, ncol, type))
 }
 
 replaceVecOne <- function(xpbm, elemInd, val) {
@@ -91,6 +79,18 @@ replaceMat <- function(xpbm, rowInd, colInd, mat) {
 
 replaceDF <- function(xpbm, rowInd, colInd, df) {
     invisible(.Call(`_bigstatsr_replaceDF`, xpbm, rowInd, colInd, df))
+}
+
+getXPtrFBM <- function(path, n, m, type) {
+    .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
+}
+
+pMatVec4 <- function(BM, x, rowInd, colInd) {
+    .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
+}
+
+cpMatVec4 <- function(BM, x, rowInd, colInd) {
+    .Call(`_bigstatsr_cpMatVec4`, BM, x, rowInd, colInd)
 }
 
 transpose3 <- function(BM, BM2) {
