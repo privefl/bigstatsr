@@ -47,19 +47,13 @@ FBM.code256_RC <- methods::setRefClass(
   ),
 
   methods = list(
-    initialize = function(..., code = rep(NA_real_, 256)) {
-
-      # if (length(code) != 256)
-      #   stop2("'code' has to be of length 256")
+    initialize = function(..., code) {
       .self$code256 <- code
-
-      callSuper(type = "unsigned char", ...)
-      # super$initialize(nrow, ncol, "unsigned char",  # raw (int in [0:255])
-      #                  init, backingfile = tempfile(), save)
+      callSuper(...)
     },
 
     copy = function(code = .self$code256) {
-      add_code256(.self, code = code, save = FALSE)
+      add_code256(.self, code = code)
     },
 
     as.FBM = function() {
@@ -68,9 +62,8 @@ FBM.code256_RC <- methods::setRefClass(
         ncol = .self$ncol,
         type = "unsigned char",
         init = NULL,
-        backingfile = sub("\\.bk$", "", .self$backingfile),
-        create_bk = FALSE,
-        save = FALSE
+        backingfile = sub_bk(.self$backingfile),
+        create_bk = FALSE
       )
     },
 
@@ -84,17 +77,24 @@ FBM.code256_RC <- methods::setRefClass(
 
 #' Wrapper constructor for class `FBM.code256`.
 #'
-#' @inheritDotParams FBM -nrow -ncol -type
+#' @inheritParams FBM
 #'
 #' @rdname FBM.code256-class
 #'
 #' @export
 #'
-FBM.code256 <- function(nrow, ncol, code, ...) {
+FBM.code256 <- function(nrow, ncol,
+                        code = rep(NA_real_, 256),
+                        init = NULL,
+                        backingfile = tempfile(),
+                        create_bk = TRUE) {
+
+  if (length(code) != 256)
+    stop("'code' must be of length 256.")
 
   do.call(methods::new, args = c(Class = "FBM.code256",
-                                 as.list(environment()),
-                                 list(...)))
+                                 type = "unsigned char",
+                                 as.list(environment())))
 }
 
 #' Converter from class `FBM` to `FBM.code256`.
@@ -103,20 +103,18 @@ FBM.code256 <- function(nrow, ncol, code, ...) {
 #'
 #' @export
 #'
-add_code256 <- function(x, code, save = FALSE) {
+add_code256 <- function(x, code) {
 
   if (x$type != 1)
-    stop2("'x' must be of type 'unsigned char'")
-  # if (length(code) != 256) stop("'code' must be of length 256.")
+    stop2("'x' must be of type 'raw' (unsigned char)")
 
   FBM.code256(
     nrow = x$nrow,
     ncol = x$ncol,
     code = code,
     init = NULL,
-    backingfile = sub("\\.bk$", "", x$backingfile),
-    create_bk = FALSE,
-    save = save
+    backingfile = sub_bk(x$backingfile),
+    create_bk = FALSE
   )
 }
 

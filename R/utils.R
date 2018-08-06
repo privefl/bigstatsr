@@ -8,13 +8,6 @@ globalVariables("ic") # for foreach
 
 ################################################################################
 
-printf <- function(...) cat(sprintf(...))
-message2 <- function(...) message(sprintf(...))
-warning2 <- function(...) warning(sprintf(...), call. = FALSE)
-stop2 <- function(...) stop(sprintf(...), call. = FALSE)
-
-################################################################################
-
 #' Determine a correct value for the block.size parameter
 #'
 #' It determines the value of `block.size` such that a matrix of doubles of

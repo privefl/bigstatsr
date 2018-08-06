@@ -10,9 +10,9 @@
 #'
 #' @examples
 #' # tmpFBM
-#' X <- FBM(10, 10, save = TRUE)
+#' X <- FBM(10, 10)$save()
 #'
-#' rdsfile <- sub("\\.bk$", ".rds", X$backingfile)
+#' rdsfile <- sub_bk(X$backingfile, ".rds")
 #' X2 <- big_attach(rdsfile)
 #'
 #' all.equal(X[], X2[])

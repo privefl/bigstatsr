@@ -184,8 +184,6 @@ test_that("Missing values transfer from int to double", {
 
 test_that("No copy is made", {
 
-  # skip_on_os("mac")
-
   options(bigstatsr.downcast.warning = FALSE)
 
   N <- M <- 2000

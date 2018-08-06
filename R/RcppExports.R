@@ -61,6 +61,10 @@ createFile <- function(fileName, nrow, ncol, type) {
     invisible(.Call(`_bigstatsr_createFile`, fileName, nrow, ncol, type))
 }
 
+addColumns <- function(fileName, nrow, ncol_add, type) {
+    invisible(.Call(`_bigstatsr_addColumns`, fileName, nrow, ncol_add, type))
+}
+
 replaceVecOne <- function(xpbm, elemInd, val) {
     invisible(.Call(`_bigstatsr_replaceVecOne`, xpbm, elemInd, val))
 }

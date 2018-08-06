@@ -217,15 +217,28 @@ BEGIN_RCPP
 END_RCPP
 }
 // createFile
-void createFile(std::string fileName, int nrow, int ncol, int type);
+void createFile(std::string fileName, std::size_t nrow, std::size_t ncol, int type);
 RcppExport SEXP _bigstatsr_createFile(SEXP fileNameSEXP, SEXP nrowSEXP, SEXP ncolSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type fileName(fileNameSEXP);
-    Rcpp::traits::input_parameter< int >::type nrow(nrowSEXP);
-    Rcpp::traits::input_parameter< int >::type ncol(ncolSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nrow(nrowSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type ncol(ncolSEXP);
     Rcpp::traits::input_parameter< int >::type type(typeSEXP);
     createFile(fileName, nrow, ncol, type);
+    return R_NilValue;
+END_RCPP
+}
+// addColumns
+void addColumns(std::string fileName, std::size_t nrow, std::size_t ncol_add, int type);
+RcppExport SEXP _bigstatsr_addColumns(SEXP fileNameSEXP, SEXP nrowSEXP, SEXP ncol_addSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type fileName(fileNameSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nrow(nrowSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type ncol_add(ncol_addSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    addColumns(fileName, nrow, ncol_add, type);
     return R_NilValue;
 END_RCPP
 }
@@ -293,14 +306,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // getXPtrFBM
-SEXP getXPtrFBM(std::string path, int n, int m, int type);
+SEXP getXPtrFBM(std::string path, size_t n, size_t m, int type);
 RcppExport SEXP _bigstatsr_getXPtrFBM(SEXP pathSEXP, SEXP nSEXP, SEXP mSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< size_t >::type n(nSEXP);
+    Rcpp::traits::input_parameter< size_t >::type m(mSEXP);
     Rcpp::traits::input_parameter< int >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(getXPtrFBM(path, n, m, type));
     return rcpp_result_gen;
@@ -444,6 +457,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_extractVec", (DL_FUNC) &_bigstatsr_extractVec, 2},
     {"_bigstatsr_extractMat", (DL_FUNC) &_bigstatsr_extractMat, 3},
     {"_bigstatsr_createFile", (DL_FUNC) &_bigstatsr_createFile, 4},
+    {"_bigstatsr_addColumns", (DL_FUNC) &_bigstatsr_addColumns, 4},
     {"_bigstatsr_replaceVecOne", (DL_FUNC) &_bigstatsr_replaceVecOne, 3},
     {"_bigstatsr_replaceVec", (DL_FUNC) &_bigstatsr_replaceVec, 3},
     {"_bigstatsr_replaceMatOne", (DL_FUNC) &_bigstatsr_replaceMatOne, 4},

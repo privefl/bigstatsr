@@ -1,5 +1,12 @@
 ################################################################################
 
+printf <- function(...) cat(sprintf(...))
+message2 <- function(...) message(sprintf(...))
+warning2 <- function(...) warning(sprintf(...), call. = FALSE)
+stop2 <- function(...) stop(sprintf(...), call. = FALSE)
+
+################################################################################
+
 #' Temporarily disable downcast warning
 #'
 #' @param expr The expression to evaluate without downcast warning.
@@ -100,7 +107,7 @@ assert_lengths <- function(...) {
 
 # INTEGERS
 assert_int <- function(x) {
-  if (any(x != as.integer(x)))
+  if (any(x != trunc(x)))
     stop2("'%s' should contain only integers.", deparse(substitute(x)))
 }
 
