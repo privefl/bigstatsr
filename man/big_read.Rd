@@ -4,10 +4,10 @@
 \alias{big_read}
 \title{Read a file}
 \usage{
-big_read(file, select, nrow, type = c("double", "integer",
-  "unsigned short", "unsigned char", "raw"),
-  backingfile = drop_ext(file), nb_parts = NULL, skip = 0,
-  progress = TRUE, ...)
+big_read(file, select, nb_parts = NULL, filter = NULL,
+  type = c("double", "integer", "unsigned short", "unsigned char",
+  "raw"), backingfile = drop_ext(file), skip = 0, progress = TRUE,
+  ...)
 }
 \arguments{
 \item{file}{Path to file that you want to read.}
@@ -15,8 +15,11 @@ big_read(file, select, nrow, type = c("double", "integer",
 \item{select}{Indices of columns to read (sorted).
 The length of \code{select} will be the number of columns of the resulting FBM.}
 
-\item{nrow}{Number of rows of the resulting FBM.
-This is basically (nlines - skip - header).}
+\item{nb_parts}{Number of parts in which to split reading.
+Parts are referring to blocks of selected columns.
+Default use global option \code{bigstatsr.block.sizeGB} to set a good value.}
+
+\item{filter}{Vector used to subset the rows of each data frame.}
 
 \item{type}{Type of the Filebacked Big Matrix (default is \code{double}). Either
 \itemize{
@@ -34,10 +37,6 @@ It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
 \item{backingfile}{Path to the file storing the Big Matrix on disk.
 An extension ".bk" will be automatically added.
 Default uses \code{file} without its extension.}
-
-\item{nb_parts}{Number of parts in which to split reading.
-Parts are referring to blocks of selected columns.
-Default use global option \code{bigstatsr.block.sizeGB} to set a good value.}
 
 \item{skip}{Number of lines to skip at the beginning of \code{file}.}
 

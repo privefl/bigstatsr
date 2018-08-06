@@ -14,7 +14,7 @@ SEPS <- c(" ", ",", ";", "|", "\t")
 
 ################################################################################
 
-test_that("read without dimnames", {
+test_that("read with or without dimnames", {
 
   for (header in c(FALSE, TRUE)) {
 
@@ -29,7 +29,7 @@ test_that("read without dimnames", {
         bigreadr::fwrite2(cbind.data.frame(mtcars, X[]), csv,
                           sep = sep, col.names = header)
 
-        expect_error(big_read(csv, select = rev(seq_len(M)), nrow = N),
+        expect_error(big_read(csv, select = rev(seq_len(M))),
                      "Argument 'select' should be sorted.", fixed = TRUE)
 
 
@@ -39,7 +39,7 @@ test_that("read without dimnames", {
         header2 <- header && (skip == 0)
 
         tmp <- tempfile()
-        test <- big_read(csv, select = 5:50, nrow = N - skip2, type = t, skip = skip,
+        test <- big_read(csv, select = 5:50, type = t, skip = skip,
                          backingfile = tmp, progress = FALSE)
 
         expect_true(typeof(test) == t)
@@ -57,6 +57,43 @@ test_that("read without dimnames", {
     }
 
   }
+})
+
+################################################################################
+
+test_that("read with filtering", {
+
+    for (t in c("integer", "double")) {
+
+      N <- nrow(mtcars)
+      x <- matrix(rnorm(N * M, mean = 100, sd = 5), N, M)
+      X <- big_copy(x, type = t)
+
+      filter0 <- (mtcars$cyl == 4)
+
+      for (sep in SEPS) {
+
+        filter <- sample(list(filter0, which(filter0), -which(!filter0)))[[1]]
+
+        bigreadr::fwrite2(cbind.data.frame(mtcars, X[]), csv,
+                          sep = sep, col.names = TRUE)
+
+        tmp <- tempfile()
+        test <- big_read(csv, select = 5:50, type = t,
+                         backingfile = tmp, progress = FALSE, filter = filter)
+
+        expect_true(typeof(test) == t)
+        expect_equal(test$backingfile, normalizePath(paste0(tmp, ".bk")))
+        expect_true(file.exists(paste0(tmp, ".rds")))
+        mat <- as.matrix(mtcars); storage.mode(mat) <- t
+        expect_equal(test[, 1:7], mat[filter, 5:11],
+                     check.attributes = FALSE)
+        expect_equal(test[, 8:46], X[filter, 1:39])
+        expect_identical(attr(test, "fbm_names"), c(names(mtcars[5:11]), 1:39))
+      }
+
+    }
+
 })
 
 ################################################################################

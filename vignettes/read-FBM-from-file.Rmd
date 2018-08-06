@@ -28,7 +28,7 @@ format(file.size(csv), big.mark = ",")
 ## Check file content
 
 ```{r}
-(n <- nlines(csv))
+nlines(csv)
 (first_rows <- fread2(csv, nrows = 5))
 sapply(first_rows, typeof)
 ncol(first_rows)
@@ -36,7 +36,7 @@ ncol(first_rows)
 
 What you can see with these first lines:
 
-- there are some column names (header -> `nrow = nlines - 1`),
+- there are some column names (header),
 - each line has 12 elements,
 - the first element of each line stores some row names,
 - and the other elements seems to be all numeric.
@@ -45,8 +45,7 @@ What you can see with these first lines:
 
 - Read all numeric columns in an FBM
     ```{r}
-    test <- big_read(csv, select = 2:12, nrow = n - 1)
-    dim(test)
+    (test <- big_read(csv, select = 2:12))
     rbind(csv, test$backingfile)
     attr(test, "fbm_names")
     ```
@@ -56,3 +55,13 @@ What you can see with these first lines:
     meta <- fread2(csv, select = 1)
     head(meta)
     ```
+
+## Read filtered data
+
+```{r}
+## Get the filter data
+filter <- fread2(csv, select = "cyl")[[1]] == 4
+## Read only rows corresponding to 'filter'
+(test2 <- big_read(csv, select = 2:12, filter = filter,
+                   backingfile = tempfile()))
+```
