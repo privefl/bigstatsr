@@ -8,9 +8,10 @@
 \alias{add_code256}
 \title{Class FBM.code256}
 \usage{
-FBM.code256(nrow, ncol, code, ...)
+FBM.code256(nrow, ncol, code = rep(NA_real_, 256), init = NULL,
+  backingfile = tempfile(), create_bk = TRUE)
 
-add_code256(x, code, save = FALSE)
+add_code256(x, code)
 }
 \arguments{
 \item{nrow}{Number of rows.}
@@ -21,25 +22,19 @@ add_code256(x, code, save = FALSE)
 You should construct it with \code{rep(NA_real_, 256)} and then replace the values
 which are of interest for you.}
 
-\item{...}{Arguments passed on to \code{FBM}
-\describe{
-  \item{init}{Either a single value (e.g. \code{0}) or as many value as the number
+\item{init}{Either a single value (e.g. \code{0}) or as many value as the number
 of elements of the FBM. \strong{Default doesn't initialize the matrix.}}
-  \item{backingfile}{Path to the file storing the Big Matrix on disk.
+
+\item{backingfile}{Path to the file storing the Big Matrix on disk.
 An extension ".bk" will be automatically added. Default stores in the
 temporary directory.}
-  \item{create_bk}{Create a backingfile (the default) or use an existing one
+
+\item{create_bk}{Create a backingfile (the default) or use an existing one
 (which should be named by the \code{backingfile} parameter and have an
 extension ".bk"). For example, this could be used to convert a filebacked
 \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}.}
-  \item{save}{Whether to save the result object in an ".rds" file alongside
-the backingfile. Default is \code{FALSE}.}
-}}
 
 \item{x}{A \link[=FBM-class]{FBM}.}
-
-\item{save}{Whether to save the result object in an ".rds" file alongside
-the backingfile. Default is \code{FALSE}.}
 }
 \description{
 A reference class for storing and accessing up to 256 arbitrary different

@@ -1,3 +1,15 @@
+## bigstatsr 0.6.1
+
+- `big_read` now has a `filter` argument to filter rows, and argument `nrow` has been removed because it is now determined when reading the first block of data.
+
+- Removed the `save` argument from `FBM` (and others); now, you must use `FBM(...)$save()` instead of `FBM(..., save = TRUE)`.
+
+## bigstatsr 0.6.0
+
+- You can now fill an FBM using a data frame. Note that factors will be used as integers.
+
+- [Package {bigreadr}](https://github.com/privefl/bigreadr) has been developed and is now used by `big_read`.
+
 ## bigstatsr 0.5.0
 
 - There have been some changes regarding how conversion between types is checked. Before, you would get a warning for any possible loss of precision (without actually checking it). Now, any loss of precision due to conversion between types is reported as a warning, and only in this case. If you want to disable this feature, you can use `options(bigstatsr.downcast.warning = FALSE)`.

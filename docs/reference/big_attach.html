@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.1</span>
       </span>
     </div>
 
@@ -156,9 +156,9 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># tmpFBM</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>10</span>, <span class='fl'>10</span>)$<span class='fu'>save</span>()
 
-<span class='no'>rdsfile</span> <span class='kw'>&lt;-</span> <span class='fu'>sub</span>(<span class='st'>"\\.bk$"</span>, <span class='st'>".rds"</span>, <span class='no'>X</span>$<span class='no'>backingfile</span>)
+<span class='no'>rdsfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sub_bk.html'>sub_bk</a></span>(<span class='no'>X</span>$<span class='no'>backingfile</span>, <span class='st'>".rds"</span>)
 <span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_attach</span>(<span class='no'>rdsfile</span>)
 
 <span class='fu'>all.equal</span>(<span class='no'>X</span>[], <span class='no'>X2</span>[])</div><div class='output co'>#&gt; [1] TRUE</div></pre>

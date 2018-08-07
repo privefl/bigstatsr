@@ -66,11 +66,13 @@ reference:
       - big_counts
       - big_read
       - big_transpose
+      - big_parallelize
+      - big_apply
       - block_size
       - plus
-      - big_apply
-      - big_parallelize
       - nb_cores
+      - without_downcast_warning
+      - sub_bk
   - title: "Matrix operations"
     contents:
       - big_cor

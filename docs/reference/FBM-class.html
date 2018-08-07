@@ -64,7 +64,7 @@ Convert a matrix (or a data frame) to an FBM." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.1</span>
       </span>
     </div>
 
@@ -144,10 +144,10 @@ on disk. This is very similar to Filebacked Big Matrices provided by the
 
     <pre class="usage"><span class='fu'>FBM</span>(<span class='no'>nrow</span>, <span class='no'>ncol</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"double"</span>, <span class='st'>"integer"</span>, <span class='st'>"unsigned short"</span>,
   <span class='st'>"unsigned char"</span>, <span class='st'>"raw"</span>), <span class='kw'>init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>tempfile</span>(),
-  <span class='kw'>create_bk</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>create_bk</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>as_FBM</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"double"</span>, <span class='st'>"integer"</span>, <span class='st'>"unsigned short"</span>,
-  <span class='st'>"unsigned char"</span>, <span class='st'>"raw"</span>), <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>tempfile</span>(), <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='st'>"unsigned char"</span>, <span class='st'>"raw"</span>), <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>tempfile</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,15 +193,30 @@ extension ".bk"). For example, this could be used to convert a filebacked
 <code>big.matrix</code> from package <strong>bigmemory</strong> to a FBM.</p></td>
     </tr>
     <tr>
-      <th>save</th>
-      <td><p>Whether to save the result object in an ".rds" file alongside
-the backingfile. Default is <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
       <th>x</th>
       <td><p>A matrix or an data frame (2-dimensional data).</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>An FBM object has many field:</p><ul>
+<li><p><code>$address</code>: address of the external pointer containing the underlying
+C++ object, to be used as a <code>XPtr&lt;FBM&gt;</code> in C++ code</p></li>
+<li><p><code>$extptr</code>: use <code>$address</code> instead</p></li>
+<li><p><code>$nrow</code></p></li>
+<li><p><code>$ncol</code></p></li>
+<li><p><code>$type</code></p></li>
+<li><p><code>$backingfile</code> or <code>$bk</code>: File with extension 'bk' that stores the numeric
+data of the FBM</p></li>
+<li><p><code>$rds</code>: 'rds' file (that may not exist) corresponding to the 'bk' file</p></li>
+<li><p><code>$is_saved</code>: whether this object stored in <code>$rds</code>?</p></li>
+</ul>
+    <p>And two methods:</p><ul>
+<li><p><code>$save()</code>: Save the FBM object in <code>$rds</code>. Returns the FBM.</p></li>
+<li><p><code>add_columns(&lt;ncol_add&gt;)</code>: Add some columns to the FBM by appending the
+backingfile with some data. Returns the FBM invisibly.</p></li>
+</ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -264,6 +279,8 @@ the backingfile. Default is <code>FALSE</code>.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

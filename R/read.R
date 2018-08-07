@@ -2,6 +2,8 @@
 
 drop_ext <- function(file) tools::file_path_sans_ext(file)
 
+################################################################################
+
 #' Read a file
 #'
 #' Read a file as a Filebacked Big Matrix by using package {bigreadr}.
@@ -9,8 +11,7 @@ drop_ext <- function(file) tools::file_path_sans_ext(file)
 #'
 #' @param select Indices of columns to read (sorted).
 #'   The length of `select` will be the number of columns of the resulting FBM.
-#' @param nrow Number of rows of the resulting FBM.
-#'   This is basically (nlines - skip - header).
+#' @param filter Vector used to subset the rows of each data frame.
 #' @param backingfile Path to the file storing the Big Matrix on disk.
 #'   An extension ".bk" will be automatically added.
 #'   Default uses `file` without its extension.
@@ -27,11 +28,12 @@ drop_ext <- function(file) tools::file_path_sans_ext(file)
 #'
 #' @export
 #'
-big_read <- function(file, select, nrow,
+big_read <- function(file, select,
+                     nb_parts = NULL,
+                     filter = NULL,
                      type = c("double", "integer", "unsigned short",
                               "unsigned char", "raw"),
                      backingfile = drop_ext(file),
-                     nb_parts = NULL,
                      skip = 0,
                      progress = TRUE,
                      ...) {
@@ -53,23 +55,32 @@ big_read <- function(file, select, nrow,
     if (progress) message2("Will read the file in %d parts.", nb_parts)
   }
 
-  # Resulting FBM
-  X <- FBM(nrow = nrow, ncol = length(select), type = type, init = NULL,
-           backingfile = backingfile, create_bk = TRUE, save = TRUE)
-
   if (progress) {
     pb <- utils::txtProgressBar(min = 0, max = length(select), style = 3)
     on.exit(close(pb), add = TRUE)
   }
 
   # Read and fill by parts
+  X <- NULL
   offset <- 0
   colnames <- bigreadr::big_fread2(
     file, nb_parts, skip = skip, select = select, .transform = function(df) {
+
+      # Filter rows
+      if (!is.null(filter)) df <- df[filter, , drop = FALSE]
+      # Initialize FBM on first round
+      if (offset == 0) {
+        # Resulting FBM
+        if (is.null(nrow(df))) print(filter)
+        X <<- FBM(nrow(df), length(select), type = type, init = NULL,
+                  backingfile = backingfile, create_bk = TRUE)$save()
+      }
+      # Fill part of the FBM
       ind <- cols_along(df)
       X[, offset + ind] <- df
       offset <<- offset + length(ind)
       if (progress) utils::setTxtProgressBar(pb, offset)
+      # Return colnames
       names(df)
     }, .combine = unlist, showProgress = FALSE)
 

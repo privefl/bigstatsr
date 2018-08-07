@@ -31,14 +31,13 @@ big_copy <- function(X, ind.row = rows_along(X),
                      ind.col = cols_along(X),
                      type = typeof(X),
                      backingfile = tempfile(),
-                     save = FALSE,
                      block.size = block_size(length(ind.row))) {
 
   if (inherits(X, "FBM.code256")) {
     args <- as.list(environment())
     args$X <- X$as.FBM()
     res <- do.call(big_copy, args)
-    return(add_code256(res, code = X$code256, save = save))
+    return(add_code256(res, code = X$code256))
   }
 
   res <- FBM(
@@ -46,8 +45,7 @@ big_copy <- function(X, ind.row = rows_along(X),
     ncol = length(ind.col),
     init = NULL,
     type = type,
-    backingfile = backingfile,
-    save = save
+    backingfile = backingfile
   )
 
   # Don't write in parallel

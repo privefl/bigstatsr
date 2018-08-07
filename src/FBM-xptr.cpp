@@ -30,7 +30,7 @@ FBM::FBM(std::string path, size_t n, size_t m, int type)
 /******************************************************************************/
 
 // [[Rcpp::export]]
-SEXP getXPtrFBM(std::string path, int n, int m, int type) {
+SEXP getXPtrFBM(std::string path, size_t n, size_t m, int type) {
 
   // http://gallery.rcpp.org/articles/intro-to-exceptions/
   try {
@@ -46,13 +46,5 @@ SEXP getXPtrFBM(std::string path, int n, int m, int type) {
 
   return R_NilValue;
 }
-
-/******************************************************************************/
-
-// // [[Rcpp::export]]
-// void freeFBM(SEXP sexp) {
-//   XPtr<FBM> xpBM(sexp);
-//   delete(xpBM);
-// }
 
 /******************************************************************************/

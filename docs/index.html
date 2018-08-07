@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.1</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(bigstatsr)
 
 <span class="co"># Create the data on disk</span>
-X &lt;-<span class="st"> </span><span class="kw"><a href="reference/FBM-class.html">FBM</a></span>(<span class="fl">5e3</span>, <span class="fl">10e3</span>, <span class="dt">backingfile =</span> <span class="st">"test"</span>, <span class="dt">save =</span> <span class="ot">TRUE</span>)
+X &lt;-<span class="st"> </span><span class="kw"><a href="reference/FBM-class.html">FBM</a></span>(<span class="fl">5e3</span>, <span class="fl">10e3</span>, <span class="dt">backingfile =</span> <span class="st">"test"</span>)<span class="op">$</span><span class="kw">save</span>()
 <span class="co"># If you open a new session you can do</span>
 X &lt;-<span class="st"> </span><span class="kw"><a href="reference/big_attach.html">big_attach</a></span>(<span class="st">"test.rds"</span>)
 

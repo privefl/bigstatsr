@@ -33,4 +33,8 @@ iris <- datasets::iris
 iris$Species <- as.character(iris$Species)
 iris <- iris[rep(1:150, 2000), rep(1:5, 200)]
 test(iris)
+
+# iris$Species <- as.character(iris$Species)
+# iris <- iris[rep(1:150, 100), rep(1:5, 100)]
+# bigstatsr::as_FBM(iris)
 */

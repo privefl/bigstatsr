@@ -5,7 +5,7 @@
 \title{Copy a Filebacked Big Matrix}
 \usage{
 big_copy(X, ind.row = rows_along(X), ind.col = cols_along(X),
-  type = typeof(X), backingfile = tempfile(), save = FALSE,
+  type = typeof(X), backingfile = tempfile(),
   block.size = block_size(length(ind.row)))
 }
 \arguments{
@@ -33,9 +33,6 @@ It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
 \item{backingfile}{Path to the file storing the Big Matrix on disk.
 An extension ".bk" will be automatically added. Default stores in the
 temporary directory.}
-
-\item{save}{Whether to save the result object in an ".rds" file alongside
-the backingfile. Default is \code{FALSE}.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
