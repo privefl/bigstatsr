@@ -62,7 +62,7 @@ the transposition of a Filebacked Big Matrix." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.1</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@ the transposition of a Filebacked Big Matrix.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>big_transpose</span>(<span class='no'>X</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_transpose</span>(<span class='no'>X</span>, <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>tempfile</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,18 +148,10 @@ the transposition of a Filebacked Big Matrix.</p>
       <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to <code>FBM</code></p><dl class='dl-horizontal'>
-  <dt>backingfile</dt><dd><p>Path to the file storing the Big Matrix on disk.
+      <th>backingfile</th>
+      <td><p>Path to the file storing the Big Matrix on disk.
 An extension ".bk" will be automatically added. Default stores in the
-temporary directory.</p></dd>
-  <dt>create_bk</dt><dd><p>Create a backingfile (the default) or use an existing one
-(which should be named by the <code>backingfile</code> parameter and have an
-extension ".bk"). For example, this could be used to convert a filebacked
-<code>big.matrix</code> from package <strong>bigmemory</strong> to a <a href='FBM-class.html'>FBM</a>.</p></dd>
-  <dt>save</dt><dd><p>Whether to save the result object in an ".rds" file alongside
-the backingfile. Default is <code>FALSE</code>.</p></dd>
-</dl></td>
+temporary directory.</p></td>
     </tr>
     </table>
     

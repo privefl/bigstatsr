@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.1</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ csv &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 <div id="check-file-content" class="section level2">
 <h2 class="hasAnchor">
 <a href="#check-file-content" class="anchor"></a>Check file content</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(n &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/bigreadr/topics/nlines">nlines</a></span>(csv))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/bigreadr/topics/nlines">nlines</a></span>(csv)</code></pre></div>
 <pre><code>## [1] 16000001</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(first_rows &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/bigreadr/topics/fread2">fread2</a></span>(csv, <span class="dt">nrows =</span> <span class="dv">5</span>))</code></pre></div>
 <pre><code>##                  V1  mpg cyl disp  hp drat    wt  qsec vs am gear carb
@@ -140,7 +140,7 @@ csv &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 <pre><code>## [1] 12</code></pre>
 <p>What you can see with these first lines:</p>
 <ul>
-<li>there are some column names (header -&gt; <code>nrow = nlines - 1</code>),</li>
+<li>there are some column names (header),</li>
 <li>each line has 12 elements,</li>
 <li>the first element of each line stores some row names,</li>
 <li>and the other elements seems to be all numeric.</li>
@@ -152,7 +152,7 @@ csv &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 <ul>
 <li>
 <p>Read all numeric columns in an FBM</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">select =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">12</span>, <span class="dt">nrow =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">select =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">12</span>))</code></pre></div>
 <pre><code>## Will read the file in 2 parts.</code></pre>
 <pre><code>## 
   |                                                                       
@@ -161,12 +161,11 @@ csv &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
   |===================================                              |  55%
   |                                                                       
   |=================================================================| 100%</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(test)</code></pre></div>
-<pre><code>## [1] 16000000       11</code></pre>
+<pre><code>## A Filebacked Big Matrix of type 'double' with 16000000 rows and 11 columns.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rbind</span>(csv, test<span class="op">$</span>backingfile)</code></pre></div>
-<pre><code>##     [,1]                                 
-## csv "/tmp/RtmpswZJUb/file616ec8f4c7c.csv"
-##     "/tmp/RtmpswZJUb/file616ec8f4c7c.bk"</code></pre>
+<pre><code>##     [,1]                                  
+## csv "/tmp/RtmpNyCvWi/file15166538d3f1.csv"
+##     "/tmp/RtmpNyCvWi/file15166538d3f1.bk"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(test, <span class="st">"fbm_names"</span>)</code></pre></div>
 <pre><code>##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
 ## [11] "carb"</code></pre>
@@ -185,6 +184,24 @@ csv &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 </li>
 </ul>
 </div>
+<div id="read-filtered-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#read-filtered-data" class="anchor"></a>Read filtered data</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Get the filter data
+filter &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/bigreadr/topics/fread2">fread2</a></span>(csv, <span class="dt">select =</span> <span class="st">"cyl"</span>)[[<span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span><span class="dv">4</span>
+## Read only rows corresponding to 'filter'
+(test2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">select =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">12</span>, <span class="dt">filter =</span> filter,
+                   <span class="dt">backingfile =</span> <span class="kw">tempfile</span>()))</code></pre></div>
+<pre><code>## Will read the file in 2 parts.</code></pre>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |===================================                              |  55%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<pre><code>## A Filebacked Big Matrix of type 'double' with 5500000 rows and 11 columns.</code></pre>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -195,6 +212,7 @@ csv &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 <li><a href="#data">Data</a></li>
       <li><a href="#check-file-content">Check file content</a></li>
       <li><a href="#read-those-data">Read those data</a></li>
+      <li><a href="#read-filtered-data">Read filtered data</a></li>
       </ul>
 </div>
       </div>
