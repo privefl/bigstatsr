@@ -140,14 +140,6 @@ assert_multiple <- function(x) {
 
 ################################################################################
 
-# TYPEOF
-assert_type <- function(x, type)  {
-  if (typeof(x) != type)
-    stop2("'%s' is not of type '%s'.", deparse(substitute(x)), type)
-}
-
-################################################################################
-
 # CLASS
 assert_class <- function(x, class)  {
   if (!inherits(x, class))
@@ -187,16 +179,6 @@ assert_exist <- function(file) {
 assert_noexist <- function(file) {
   if (file.exists(file))
     stop2("File '%s' already exists.", file)
-}
-
-################################################################################
-
-# EXTENSION
-assert_ext <- function(file, ext) {
-  ext.file <- tools::file_ext(file)
-  if (ext.file != ext)
-    stop2("Extension '.%s' not supported, requires '.%s' instead.",
-          ext.file, ext)
 }
 
 ################################################################################
