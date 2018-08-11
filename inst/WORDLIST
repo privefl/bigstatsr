@@ -10,6 +10,7 @@ backingfile
 Bien
 biglasso
 bigmemory
+bigreadr
 bigsnpr
 biobank
 bioinformatics
@@ -37,6 +38,7 @@ Filebacked
 FlashPCA
 foreach
 frac
+fread
 ggplot
 GigaBytes
 Gohel
@@ -55,6 +57,7 @@ Mei
 multiplot
 nb
 newcommand
+nrow
 parApply
 parallelization
 parallelize

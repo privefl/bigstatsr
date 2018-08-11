@@ -15,9 +15,9 @@ big_read(file, select, nb_parts = NULL, filter = NULL,
 \item{select}{Indices of columns to read (sorted).
 The length of \code{select} will be the number of columns of the resulting FBM.}
 
-\item{nb_parts}{Number of parts in which to split reading.
+\item{nb_parts}{Number of parts in which to split reading (and transforming).
 Parts are referring to blocks of selected columns.
-Default use global option \code{bigstatsr.block.sizeGB} to set a good value.}
+Default use global option \code{bigreadr.part.size} to set a good value.}
 
 \item{filter}{Vector used to subset the rows of each data frame.}
 

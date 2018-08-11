@@ -3,7 +3,7 @@ Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
 Version: 0.6.1
-Date: 2018-08-06
+Date: 2018-08-11
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 
@@ -24,7 +24,8 @@ Language: en-US
 LazyData: TRUE
 ByteCompile: TRUE
 Depends: R (>= 3.3.0)
-Imports: 
+Imports:
+    bigreadr (>= 0.1.2),
     cowplot,
     doParallel,
     foreach,
@@ -50,8 +51,7 @@ Suggests:
     RcppEigen,
     RhpcBLASctl,
     spelling (>= 1.2),
-    testthat,
-    bigreadr (>= 0.1.1)
+    testthat
 Remotes: privefl/bigreadr
 RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
