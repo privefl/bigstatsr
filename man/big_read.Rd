@@ -4,20 +4,15 @@
 \alias{big_read}
 \title{Read a file}
 \usage{
-big_read(file, select, nb_parts = NULL, filter = NULL,
-  type = c("double", "integer", "unsigned short", "unsigned char",
-  "raw"), backingfile = drop_ext(file), skip = 0, progress = TRUE,
-  ...)
+big_read(file, select, filter = NULL, type = c("double", "integer",
+  "unsigned short", "unsigned char", "raw"),
+  backingfile = drop_ext(file), ...)
 }
 \arguments{
-\item{file}{Path to file that you want to read.}
+\item{file}{File to read.}
 
 \item{select}{Indices of columns to read (sorted).
 The length of \code{select} will be the number of columns of the resulting FBM.}
-
-\item{nb_parts}{Number of parts in which to split reading (and transforming).
-Parts are referring to blocks of selected columns.
-Default use global option \code{bigreadr.part.size} to set a good value.}
 
 \item{filter}{Vector used to subset the rows of each data frame.}
 
@@ -38,11 +33,16 @@ It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
 An extension ".bk" will be automatically added.
 Default uses \code{file} without its extension.}
 
-\item{skip}{Number of lines to skip at the beginning of \code{file}.}
-
-\item{progress}{Show progress? Default is \code{TRUE}.}
-
-\item{...}{More arguments to be passed to \link[data.table:fread]{data.table::fread}.}
+\item{...}{Arguments passed on to \code{bigreadr::big_fread2}
+\describe{
+  \item{nb_parts}{Number of parts in which to split reading (and transforming).
+Parts are referring to blocks of selected columns.
+Default uses \code{part_size} to set a good value.}
+  \item{skip}{Number of lines to skip at the beginning of \code{file}.}
+  \item{progress}{Show progress? Default is \code{FALSE}.}
+  \item{part_size}{Size of the parts if \code{nb_parts} is not supplied.
+Default is \code{500 * 1024^2} (500 MB).}
+}}
 }
 \value{
 A Filebacked Big Matrix of type '<type>' with <nrow> rows
