@@ -68,7 +68,7 @@ big_read <- function(file, select, filter = NULL,
 #' @param file File to write to.
 #' @param every_nrow Number of rows to write at once.
 #' @param ... Other arguments to be passed to [data.table::fwrite],
-#'   excepted `x`, `file`, `append`, `col.names` and `showProgress`.
+#'   excepted `x`, `file`, `append`, `row.names`, `col.names` and `showProgress`.
 #' @param progress Show progress? Default is `FALSE`.
 #'
 #' @return Input parameter `file`, invisibly.
@@ -96,7 +96,7 @@ big_write <- function(X, file, every_nrow,
     part <- as.data.frame(X[ind, ind.col, drop = FALSE])
     bigreadr::fwrite2(part, file, ...,
                       append = (already_written != 0),
-                      col.names = FALSE,
+                      row.names = FALSE, col.names = FALSE,
                       showProgress = FALSE)
 
     already_written <<- already_written + length(ind)

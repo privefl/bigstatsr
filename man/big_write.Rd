@@ -15,7 +15,7 @@ big_write(X, file, every_nrow, ..., ind.row = rows_along(X),
 \item{every_nrow}{Number of rows to write at once.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fwrite]{data.table::fwrite},
-excepted \code{x}, \code{file}, \code{append}, \code{col.names} and \code{showProgress}.}
+excepted \code{x}, \code{file}, \code{append}, \code{row.names}, \code{col.names} and \code{showProgress}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
