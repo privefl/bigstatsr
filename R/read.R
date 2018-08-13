@@ -59,3 +59,53 @@ big_read <- function(file, select, filter = NULL,
 }
 
 ################################################################################
+
+#' Write a file
+#'
+#' Write a file from a Filebacked Big Matrix (by parts).
+#'
+#' @inheritParams bigstatsr-package
+#' @param file File to write to.
+#' @param every_nrow Number of rows to write at once.
+#' @param ... Other arguments to be passed to [data.table::fwrite],
+#'   excepted `x`, `file`, `append`, `col.names` and `showProgress`.
+#' @param progress Show progress? Default is `FALSE`.
+#'
+#' @return Input parameter `file`, invisibly.
+#' @export
+#'
+#' @examples
+#' X <- big_attachExtdata()
+#' csv <- big_write(X, tempfile(), every_nrow = 100, progress = interactive())
+big_write <- function(X, file, every_nrow,
+                      ...,
+                      ind.row = rows_along(X),
+                      ind.col = cols_along(X),
+                      progress = FALSE) {
+
+  assert_noexist(file)
+
+  if (progress) {
+    pb <- utils::txtProgressBar(min = 0, max = length(ind.row), style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
+
+  already_written <- 0
+  big_apply(X, a.FUN = function(X, ind) {
+
+    part <- as.data.frame(X[ind, ind.col, drop = FALSE])
+    bigreadr::fwrite2(part, file, ...,
+                      append = (already_written != 0),
+                      col.names = FALSE,
+                      showProgress = FALSE)
+
+    already_written <<- already_written + length(ind)
+    if (progress) utils::setTxtProgressBar(pb, already_written)
+
+    NULL
+  }, ind = ind.row, block.size = every_nrow)
+
+  invisible(file)
+}
+
+################################################################################

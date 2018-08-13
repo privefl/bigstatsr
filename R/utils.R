@@ -36,7 +36,12 @@ block_size <- function(n, ncores = 1) {
 
 CutBySize <- function(m, block.size, nb = ceiling(m / block.size)) {
 
-  if (nb > m) nb <- m
+  if (nb > m) {
+    nb <- m
+  } else if (nb == 0) {  ## block.size = Inf
+    nb <- 1
+  }
+  assert_pos(nb)
   int <- m / nb
 
   upper <- round(1:nb * int)

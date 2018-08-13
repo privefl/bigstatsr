@@ -97,3 +97,32 @@ test_that("read with filtering", {
 })
 
 ################################################################################
+
+test_that("big_write() works", {
+
+  X <- big_attachExtdata()
+
+  for (sep in SEPS) {
+
+    for (nrows in c(100, Inf)) {
+
+      csv <- big_write(X, tempfile(), every_nrow = nrows, sep = sep)
+      test <- bigreadr::fread2(csv)
+      expect_identical(substr(readLines(csv, 1), 0, 3), sprintf("2%s2", sep))
+      expect_equal(bigreadr::nlines(csv), nrow(X))
+      expect_equal(dim(test), dim(X))
+      expect_equal(test, as.data.frame(X[]))
+
+      ind.row <- sample(rows_along(X), 100)
+      ind.col <- sample(cols_along(X), 200)
+      csv <- big_write(X, tempfile(), every_nrow = nrows, sep = sep,
+                       ind.row = ind.row, ind.col = ind.col)
+      test <- bigreadr::fread2(csv)
+      expect_equal(bigreadr::nlines(csv), length(ind.row))
+      expect_equal(dim(test), dim(X2 <- X[ind.row, ind.col]))
+      expect_equal(test, as.data.frame(X2))
+    }
+  }
+})
+
+################################################################################

@@ -39,6 +39,7 @@ FlashPCA
 foreach
 frac
 fread
+fwrite
 ggplot
 GigaBytes
 Gohel

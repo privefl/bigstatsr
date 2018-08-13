@@ -1,3 +1,7 @@
+## bigstatsr 0.6.2
+
+- `big_write` added.
+
 ## bigstatsr 0.6.1
 
 - `big_read` now has a `filter` argument to filter rows, and argument `nrow` has been removed because it is now determined when reading the first block of data.

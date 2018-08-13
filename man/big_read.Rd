@@ -45,8 +45,7 @@ Default is \code{500 * 1024^2} (500 MB).}
 }}
 }
 \value{
-A Filebacked Big Matrix of type '<type>' with <nrow> rows
-and <length(select)> columns.
+A Filebacked Big Matrix of type '<type>' with <length(select)> columns.
 }
 \description{
 Read a file as a Filebacked Big Matrix by using package {bigreadr}.
