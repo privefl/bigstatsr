@@ -48,6 +48,15 @@ reference:
     contents:
       - big_SVD
       - big_randomSVD
+  - title: "Matrix operations"
+    contents:
+      - big_cor
+      - big_crossprodSelf
+      - big_tcrossprodSelf
+      - big_prodVec
+      - big_prodMat
+      - big_cprodVec
+      - big_cprodMat
   - title: "Plot and predict methods"
     contents:
       - theme_bigstatsr
@@ -65,6 +74,7 @@ reference:
       - big_scale
       - big_counts
       - big_read
+      - big_write
       - big_transpose
       - big_parallelize
       - big_apply
@@ -73,12 +83,3 @@ reference:
       - nb_cores
       - without_downcast_warning
       - sub_bk
-  - title: "Matrix operations"
-    contents:
-      - big_cor
-      - big_crossprodSelf
-      - big_tcrossprodSelf
-      - big_prodVec
-      - big_prodMat
-      - big_cprodVec
-      - big_cprodMat

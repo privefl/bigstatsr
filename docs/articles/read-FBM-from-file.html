@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.2</span>
       </span>
     </div>
 
@@ -153,19 +153,11 @@ csv &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 <li>
 <p>Read all numeric columns in an FBM</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(test &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">select =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">12</span>))</code></pre></div>
-<pre><code>## Will read the file in 2 parts.</code></pre>
-<pre><code>## 
-  |                                                                       
-  |                                                                 |   0%
-  |                                                                       
-  |===================================                              |  55%
-  |                                                                       
-  |=================================================================| 100%</code></pre>
 <pre><code>## A Filebacked Big Matrix of type 'double' with 16000000 rows and 11 columns.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rbind</span>(csv, test<span class="op">$</span>backingfile)</code></pre></div>
 <pre><code>##     [,1]                                  
-## csv "/tmp/RtmpNyCvWi/file15166538d3f1.csv"
-##     "/tmp/RtmpNyCvWi/file15166538d3f1.bk"</code></pre>
+## csv "/tmp/RtmpQJEhEA/file1067611cef1d.csv"
+##     "/tmp/RtmpQJEhEA/file1067611cef1d.bk"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(test, <span class="st">"fbm_names"</span>)</code></pre></div>
 <pre><code>##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
 ## [11] "carb"</code></pre>
@@ -192,14 +184,6 @@ filter &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocum
 ## Read only rows corresponding to 'filter'
 (test2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_read.html">big_read</a></span>(csv, <span class="dt">select =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">12</span>, <span class="dt">filter =</span> filter,
                    <span class="dt">backingfile =</span> <span class="kw">tempfile</span>()))</code></pre></div>
-<pre><code>## Will read the file in 2 parts.</code></pre>
-<pre><code>## 
-  |                                                                       
-  |                                                                 |   0%
-  |                                                                       
-  |===================================                              |  55%
-  |                                                                       
-  |=================================================================| 100%</code></pre>
 <pre><code>## A Filebacked Big Matrix of type 'double' with 5500000 rows and 11 columns.</code></pre>
 </div>
   </div>

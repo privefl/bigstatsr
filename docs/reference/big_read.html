@@ -62,7 +62,7 @@ For a mini-tutorial, please see this vignette." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.2</span>
       </span>
     </div>
 
@@ -138,28 +138,21 @@ For a mini-tutorial, please see <a href='https://goo.gl/91oNxU'>this vignette</a
     
     </div>
 
-    <pre class="usage"><span class='fu'>big_read</span>(<span class='no'>file</span>, <span class='no'>select</span>, <span class='kw'>nb_parts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"double"</span>, <span class='st'>"integer"</span>, <span class='st'>"unsigned short"</span>, <span class='st'>"unsigned char"</span>,
-  <span class='st'>"raw"</span>), <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>drop_ext</span>(<span class='no'>file</span>), <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_read</span>(<span class='no'>file</span>, <span class='no'>select</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"double"</span>, <span class='st'>"integer"</span>,
+  <span class='st'>"unsigned short"</span>, <span class='st'>"unsigned char"</span>, <span class='st'>"raw"</span>),
+  <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'>drop_ext</span>(<span class='no'>file</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>Path to file that you want to read.</p></td>
+      <td><p>File to read.</p></td>
     </tr>
     <tr>
       <th>select</th>
       <td><p>Indices of columns to read (sorted).
 The length of <code>select</code> will be the number of columns of the resulting FBM.</p></td>
-    </tr>
-    <tr>
-      <th>nb_parts</th>
-      <td><p>Number of parts in which to split reading.
-Parts are referring to blocks of selected columns.
-Default use global option <code>bigstatsr.block.sizeGB</code> to set a good value.</p></td>
     </tr>
     <tr>
       <th>filter</th>
@@ -186,23 +179,22 @@ An extension ".bk" will be automatically added.
 Default uses <code>file</code> without its extension.</p></td>
     </tr>
     <tr>
-      <th>skip</th>
-      <td><p>Number of lines to skip at the beginning of <code>file</code>.</p></td>
-    </tr>
-    <tr>
-      <th>progress</th>
-      <td><p>Show progress? Default is <code>TRUE</code>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>More arguments to be passed to <a href='http://www.rdocumentation.org/packages/data.table/topics/fread'>data.table::fread</a>.</p></td>
+      <td><p>Arguments passed on to <code><a href='http://www.rdocumentation.org/packages/bigreadr/topics/big_fread2'>bigreadr::big_fread2</a></code></p><dl class='dl-horizontal'>
+  <dt>nb_parts</dt><dd><p>Number of parts in which to split reading (and transforming).
+Parts are referring to blocks of selected columns.
+Default uses <code>part_size</code> to set a good value.</p></dd>
+  <dt>skip</dt><dd><p>Number of lines to skip at the beginning of <code>file</code>.</p></dd>
+  <dt>progress</dt><dd><p>Show progress? Default is <code>FALSE</code>.</p></dd>
+  <dt>part_size</dt><dd><p>Size of the parts if <code>nb_parts</code> is not supplied.
+Default is <code>500 * 1024^2</code> (500 MB).</p></dd>
+</dl></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A Filebacked Big Matrix of type '&lt;type&gt;' with &lt;nrow&gt; rows
-and &lt;length(select)&gt; columns.</p>
+    <p>A Filebacked Big Matrix of type '&lt;type&gt;' with &lt;length(select)&gt; columns.</p>
     
 
   </div>

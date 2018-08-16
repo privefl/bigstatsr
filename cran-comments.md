@@ -2,7 +2,7 @@ __I am aware of the WARNING reported by win-builder. Please see below.__
 
 ## Test environments
 
-* local Linux (CentOS 7 & Linux Mint), R 3.4.4 
+* local Linux (CentOS 7 & Linux Mint), R 3.5.0
 * local Windows (10), R 3.4.4
 * Linux on Travis-CI (devel and release)
 * Mac on Travis-CI (release)
@@ -20,7 +20,7 @@ Overall, there were no ERROR, 1 WARNING and 2 NOTEs:
   d:/RCompile/CRANpkg/lib/3.6/BH/include/boost/interprocess/detail/win32_api.hpp:180:7: warning: ISO C++ prohibits anonymous structs [-Wpedantic]
   
 -> Package BH comes with these issues on 'r-devel-windows-ix86+x86_64' only. 
-   This is also the case for many other packages (e.g. package bigmemory).
+   This is also the case for many other packages (e.g. package bigmemory) and should be fixed in the next version of package BH.
 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Florian Privé <florian.prive.21@gmail.com>'

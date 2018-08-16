@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Train one model — COPY_biglasso_part • bigstatsr</title>
+<title>Write a file — big_write • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Train one model — COPY_biglasso_part" />
+<meta property="og:title" content="Write a file — big_write" />
 
-<meta property="og:description" content="Train one model" />
+<meta property="og:description" content="Write a file from a Filebacked Big Matrix (by parts)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,63 +125,74 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Train one model</h1>
+    <h1>Write a file</h1>
     
-    <div class="hidden name"><code>COPY_biglasso_part.Rd</code></div>
+    <div class="hidden name"><code>big_write.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Train one model</p>
+    <p>Write a file from a Filebacked Big Matrix (by parts).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>COPY_biglasso_part</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='no'>ind.train</span>, <span class='no'>ind.col</span>, <span class='no'>covar.train</span>, <span class='no'>family</span>,
-  <span class='no'>lambda</span>, <span class='no'>center</span>, <span class='no'>scale</span>, <span class='no'>resid</span>, <span class='no'>alpha</span>, <span class='no'>eps</span>, <span class='no'>max.iter</span>, <span class='no'>dfmax</span>, <span class='no'>warn</span>, <span class='no'>ind.val</span>,
-  <span class='no'>covar.val</span>, <span class='no'>y.val</span>, <span class='no'>n.abort</span>, <span class='no'>nlam.min</span>, <span class='no'>b0</span>, <span class='no'>base.train</span>, <span class='no'>base.val</span>)</pre>
-        
+    <pre class="usage"><span class='fu'>big_write</span>(<span class='no'>X</span>, <span class='no'>file</span>, <span class='no'>every_nrow</span>, <span class='no'>...</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>File to write to.</p></td>
+    </tr>
+    <tr>
+      <th>every_nrow</th>
+      <td><p>Number of rows to write at once.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments to be passed to <a href='http://www.rdocumentation.org/packages/data.table/topics/fwrite'>data.table::fwrite</a>,
+excepted <code>x</code>, <code>file</code>, <code>append</code>, <code>row.names</code>, <code>col.names</code> and <code>showProgress</code>.</p></td>
+    </tr>
+    <tr>
+      <th>ind.row</th>
+      <td><p>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don't use negative indices.</strong></p></td>
+    </tr>
+    <tr>
+      <th>ind.col</th>
+      <td><p>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don't use negative indices.</strong></p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Show progress? Default is <code>FALSE</code>.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named list with following variables:</p>
-<dt>intercept</dt><dd><p>A vector of intercepts, corresponding to each lambda.</p></dd>
-<dt>beta</dt><dd><p>The vector of coefficients that minimized the loss on the
-validation set.</p></dd>
-<dt>iter</dt><dd><p>A vector of length <code>nlambda</code> containing the number of
-iterations until convergence at each value of <code>lambda</code>.</p></dd>
-<dt>lambda</dt><dd><p>The sequence of regularization parameter values in the path.</p></dd>
-<dt>family</dt><dd><p>Either <code>"gaussian"</code> or <code>"binomial"</code> depending on the
-function used.</p></dd>
-<dt>alpha</dt><dd><p>Input parameter.</p></dd>
-<dt>loss</dt><dd><p>A vector containing either the residual sum of squares
-(for linear models) or negative log-likelihood (for logistic models)
-of the fitted model at each value of <code>lambda</code>.</p></dd>
-<dt>loss.val</dt><dd><p>A vector containing the loss for the corresponding
-validation set.</p></dd>
-<dt>n</dt><dd><p>The number of observations used in the model fitting. It's equal
-to <code>length(row.idx)</code>.</p></dd>
-<dt>p</dt><dd><p>The number of dimensions (including covariables,
-but not the intercept).</p></dd>
-<dt>center</dt><dd><p>The sample mean vector of the variables, i.e., column mean
-of the sub-matrix of <code>X</code> used for model fitting.</p></dd>
-<dt>scale</dt><dd><p>The sample standard deviation of the variables, i.e.,
-column standard deviation of the sub-matrix of <code>X</code> used for model
-fitting.</p></dd>
-<dt>y</dt><dd><p>The response vector used in the model fitting. Depending on
-<code>row.idx</code>, it could be a subset of the raw input of the response vector
-y.</p></dd>
-<dt>col.idx</dt><dd><p>The indices of features that have 'scale' value greater
-than <code>1e-6</code>. Features with 'scale' less than 1e-6 are removed from
-model fitting.</p></dd>
-
+    <p>Input parameter <code>file</code>, invisibly.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='no'>csv</span> <span class='kw'>&lt;-</span> <span class='fu'>big_write</span>(<span class='no'>X</span>, <span class='fu'>tempfile</span>(), <span class='kw'>every_nrow</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fu'>interactive</span>())</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

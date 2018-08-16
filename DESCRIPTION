@@ -52,7 +52,6 @@ Suggests:
     RhpcBLASctl,
     spelling (>= 1.2),
     testthat
-Remotes: privefl/bigreadr
 RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
 URL: https://privefl.github.io/bigstatsr
