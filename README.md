@@ -61,6 +61,8 @@ Learn more with this
 
 As inputs, package {bigstatsr} uses [Filebacked Big Matrices (FBM)](https://privefl.github.io/bigstatsr/reference/FBM-class.html).
 
+To operate on data frames stored on disk, see [package {bigdfr}](https://github.com/privefl/bigdfr).
+
 To memory-map character text files, see [package {mmapcharr}](https://github.com/privefl/mmapcharr).
 
 ## Bug report / Help
