@@ -100,26 +100,43 @@ case 4:                                                                        \
   }                                                                            \
   default: stop("R type '%s' is not supported.", Rf_type2char(r_type));        \
   }                                                                            \
+case 6:                                                                        \
+  switch(r_type) {                                                             \
+  case RAWSXP:  REPLACE(float, as<RawVector>(VEC))                             \
+  case LGLSXP:  {                                                              \
+    LogicalVector vec2 = check_conv<LGLSXP,  float>(VEC);                      \
+    REPLACE(float, vec2)                                                       \
+  }                                                                            \
+  case INTSXP:  {                                                              \
+    IntegerVector vec2 = check_conv<INTSXP,  float>(VEC);                      \
+    REPLACE(float, vec2)                                                       \
+  }                                                                            \
+  case REALSXP: {                                                              \
+    NumericVector vec2 = check_conv<REALSXP, float>(VEC);                      \
+    REPLACE(float, vec2)                                                       \
+  }                                                                            \
+  default: stop("R type '%s' is not supported.", Rf_type2char(r_type));        \
+  }                                                                            \
 case 8:                                                                        \
   switch(r_type) {                                                             \
   case RAWSXP:  REPLACE(double, as<RawVector>(VEC))                            \
   case LGLSXP: {                                                               \
     if (Rf_isMatrix(VEC)) {                                                    \
-    Int2NumMatrix<LGLSXP> vec2(VEC);                                           \
-    REPLACE(double, vec2)                                                      \
-  } else {                                                                     \
-    Int2NumVector<LGLSXP> vec2(VEC);                                           \
-    REPLACE(double, vec2)                                                      \
-  }                                                                            \
+      Int2NumMatrix<LGLSXP> vec2(VEC);                                         \
+      REPLACE(double, vec2)                                                    \
+    } else {                                                                   \
+      Int2NumVector<LGLSXP> vec2(VEC);                                         \
+      REPLACE(double, vec2)                                                    \
+    }                                                                          \
   }                                                                            \
   case INTSXP: {                                                               \
     if (Rf_isMatrix(VEC)) {                                                    \
-    Int2NumMatrix<INTSXP> vec2(VEC);                                           \
-    REPLACE(double, vec2)                                                      \
-  } else {                                                                     \
-    Int2NumVector<INTSXP> vec2(VEC);                                           \
-    REPLACE(double, vec2)                                                      \
-  }                                                                            \
+      Int2NumMatrix<INTSXP> vec2(VEC);                                         \
+      REPLACE(double, vec2)                                                    \
+    } else {                                                                   \
+      Int2NumVector<INTSXP> vec2(VEC);                                         \
+      REPLACE(double, vec2)                                                    \
+    }                                                                          \
   }                                                                            \
   case REALSXP: REPLACE(double, as<NumericVector>(VEC))                        \
   default: stop("R type '%s' is not supported.", Rf_type2char(r_type));        \
@@ -149,8 +166,15 @@ bool do_warn_downcast() {
 template<typename CTYPE>
 std::string type2name() {
 
-  double x = CTYPE(1.5);
-  if (x == 1.5) return "double";
+  double x = CTYPE(0.5);
+  if (x == 0.5) {
+    x = CTYPE(2147483647);
+    if (x == 2147483647) {
+      return "double";
+    } else {
+      return "float";
+    }
+  }
 
   int y = CTYPE(-1);
   if (y == -1) return "integer";

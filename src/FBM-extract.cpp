@@ -39,6 +39,8 @@ RObject extractVec(RObject xpbm,
     EXTRACT_VEC(unsigned short, INTSXP)
   case 4:
     EXTRACT_VEC(int,            INTSXP)
+  case 6:
+    EXTRACT_VEC(float,          REALSXP)
   case 8:
     EXTRACT_VEC(double,         REALSXP)
   default:
@@ -82,6 +84,8 @@ RObject extractMat(RObject xpbm,
     EXTRACT_MAT(unsigned short, INTSXP)
   case 4:
     EXTRACT_MAT(int,            INTSXP)
+  case 6:
+    EXTRACT_MAT(float,          REALSXP)
   case 8:
     EXTRACT_MAT(double,         REALSXP)
   default:

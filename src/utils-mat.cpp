@@ -39,7 +39,7 @@ void complete2(Environment BM) {
   size_t i, j;
 
   for (j = 0; j < m; j++)
-    for (i = j+1; i < m; i++)
+    for (i = j + 1; i < m; i++)
       K(i, j) = K(j, i);
 }
 

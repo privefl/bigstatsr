@@ -1,9 +1,9 @@
 ################################################################################
 
 # Global variables
-ALL.TYPES <- structure(c(1L, 1L, 2L, 4L, 8L),
+ALL.TYPES <- structure(c(1L, 1L, 2L, 4L, 6L, 8L),
                        names = c("raw", "unsigned char", "unsigned short",
-                                 "integer", "double"))
+                                 "integer", "float", "double"))
 globalVariables("ic") # for foreach
 
 ################################################################################
@@ -41,7 +41,7 @@ CutBySize <- function(m, block.size, nb = ceiling(m / block.size)) {
   } else if (nb == 0) {  ## block.size = Inf
     nb <- 1
   }
-  assert_pos(nb)
+  assert_pos(nb); assert_int(nb)
   int <- m / nb
 
   upper <- round(1:nb * int)

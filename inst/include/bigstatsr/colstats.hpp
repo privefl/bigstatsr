@@ -14,6 +14,7 @@ namespace bigstatsr {
 
 template <class C>
 ListOf<NumericVector> bigcolvars(C macc) {
+
   size_t n = macc.nrow();
   size_t m = macc.ncol();
 

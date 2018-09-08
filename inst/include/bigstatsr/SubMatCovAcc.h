@@ -32,6 +32,8 @@ using std::size_t;
       CALL(SUBMATCOVACC(double),         SUBMATCOVACC_VAL(double))             \
     case 4:                                                                    \
       CALL(SUBMATCOVACC(int),            SUBMATCOVACC_VAL(int))                \
+    case 6:                                                                    \
+      CALL(SUBMATCOVACC(float),          SUBMATCOVACC_VAL(float))              \
     case 1:                                                                    \
       CALL(SUBMATCOVACC(unsigned char),  SUBMATCOVACC_VAL(unsigned char))      \
     case 2:                                                                    \
@@ -56,6 +58,8 @@ using std::size_t;
       CALL(SUBMATCOVACC(double))                                               \
     case 4:                                                                    \
       CALL(SUBMATCOVACC(int))                                                  \
+    case 6:                                                                    \
+      CALL(SUBMATCOVACC(float))                                                \
     case 1:                                                                    \
       CALL(SUBMATCOVACC(unsigned char))                                        \
     case 2:                                                                    \

@@ -19,20 +19,20 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{type}{Type of the Filebacked Big Matrix (default is \code{double}). Either
 \itemize{
-\item \code{"double"}
+\item \code{"double"} (double precision -- 64 bits)
+\item \code{"float"} (single precision -- 32 bits)
 \item \code{"integer"}
 \item \code{"unsigned short"}: can store integer values from 0 to 65535.
-It has vocation to become the basis for a \code{FBM.code65536} class for
-accessing strings.
+It has vocation to become the basis for a \code{FBM.code65536}.
 \item \code{"raw"} or \code{"unsigned char"}: can store integer values from 0 to 255.
-It is the basis for the \link[=FBM.code256-class]{FBM.code256} class for
-accessing 256 arbitrary different numeric values.
+It is the basis for class \link[=FBM.code256-class]{FBM.code256} in order to
+access 256 arbitrary different numeric values.
 It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
 }}
 
 \item{backingfile}{Path to the file storing the Big Matrix on disk.
-An extension ".bk" will be automatically added. Default stores in the
-temporary directory.}
+\strong{An extension ".bk" will be automatically added.}
+Default stores in the temporary directory.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}

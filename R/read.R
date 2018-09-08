@@ -24,8 +24,8 @@ drop_ext <- function(file) tools::file_path_sans_ext(file)
 #' @export
 #'
 big_read <- function(file, select, filter = NULL,
-                     type = c("double", "integer", "unsigned short",
-                              "unsigned char", "raw"),
+                     type = c("double", "float", "integer",
+                              "unsigned short", "unsigned char", "raw"),
                      backingfile = drop_ext(file),
                      ...) {
 
