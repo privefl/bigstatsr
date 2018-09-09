@@ -213,6 +213,12 @@ NumericVector check_conv_dbl2flt(NumericVector nv) {
                 "while converting from R type 'double' to C type 'float'.");
         break;
       }
+      if (test == NA_FLOAT) {
+        warning("%s (%s -> %s)\n  %s",
+                "At least one value changed", nv[i], "NA",
+                "while converting from R type 'double' to FBM type 'float'.");
+        break;
+      }
     }
   }
 

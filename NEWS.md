@@ -1,3 +1,7 @@
+## bigstatsr 0.7.0
+
+- Type `float` added.
+
 ## bigstatsr 0.6.2
 
 - `big_write` added.
@@ -16,7 +20,7 @@
 
 ## bigstatsr 0.5.0
 
-- There have been some changes regarding how conversion between types is checked. Before, you would get a warning for any possible loss of precision (without actually checking it). Now, any loss of precision due to conversion between types is reported as a warning, and only in this case. If you want to disable this feature, you can use `options(bigstatsr.downcast.warning = FALSE)`.
+- There have been some changes regarding how conversion between types is checked. Before, you would get a warning for any possible loss of precision (without actually checking it). Now, any loss of precision due to conversion between types is reported as a warning, and only in this case. If you want to disable this feature, you can use `options(bigstatsr.downcast.warning = FALSE)`, or you can use `without_downcast_warning()` to disable this warning for one call.
 
 ## bigstatsr 0.4.1
 
@@ -40,7 +44,7 @@
 
 ## bigstatsr 0.3.3
 
-- Before, this package used only the "PSOCK" type of cluster, which has some significant overhead. Now, it uses the "FORK" type on non-Windows systems. You can change this with `options(bigstatsr.cluster.type = "PSOCK")`.
+- Before, this package used only the "PSOCK" type of cluster, which has some significant overhead. Now, it uses the "FORK" type on non-Windows systems. You can change this with `options(bigstatsr.cluster.type = "PSOCK")`. Uses "PSOCK" in 0.4.0.
 
 ## bigstatsr 0.3.2
 

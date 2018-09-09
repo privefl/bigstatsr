@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.0</span>
       </span>
     </div>
 
@@ -126,6 +126,13 @@
       
     </div>
 
+    <div id="bigstatsr-0-7-0" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-7-0" class="anchor"></a>bigstatsr 0.7.0</h2>
+<ul>
+<li>Type <code>float</code> added.</li>
+</ul>
+</div>
     <div id="bigstatsr-0-6-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-6-2" class="anchor"></a>bigstatsr 0.6.2</h2>
@@ -154,7 +161,7 @@
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-5-0" class="anchor"></a>bigstatsr 0.5.0</h2>
 <ul>
-<li>There have been some changes regarding how conversion between types is checked. Before, you would get a warning for any possible loss of precision (without actually checking it). Now, any loss of precision due to conversion between types is reported as a warning, and only in this case. If you want to disable this feature, you can use <code>options(bigstatsr.downcast.warning = FALSE)</code>.</li>
+<li>There have been some changes regarding how conversion between types is checked. Before, you would get a warning for any possible loss of precision (without actually checking it). Now, any loss of precision due to conversion between types is reported as a warning, and only in this case. If you want to disable this feature, you can use <code>options(bigstatsr.downcast.warning = FALSE)</code>, or you can use <code><a href="../reference/without_downcast_warning.html">without_downcast_warning()</a></code> to disable this warning for one call.</li>
 </ul>
 </div>
     <div id="bigstatsr-0-4-1" class="section level2">
@@ -186,7 +193,7 @@
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-3-3" class="anchor"></a>bigstatsr 0.3.3</h2>
 <ul>
-<li>Before, this package used only the “PSOCK” type of cluster, which has some significant overhead. Now, it uses the “FORK” type on non-Windows systems. You can change this with <code>options(bigstatsr.cluster.type = "PSOCK")</code>.</li>
+<li>Before, this package used only the “PSOCK” type of cluster, which has some significant overhead. Now, it uses the “FORK” type on non-Windows systems. You can change this with <code>options(bigstatsr.cluster.type = "PSOCK")</code>. Uses “PSOCK” in 0.4.0.</li>
 </ul>
 </div>
     <div id="bigstatsr-0-3-2" class="section level2">
@@ -245,6 +252,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bigstatsr-0-7-0">0.7.0</a></li>
         <li><a href="#bigstatsr-0-6-2">0.6.2</a></li>
         <li><a href="#bigstatsr-0-6-1">0.6.1</a></li>
         <li><a href="#bigstatsr-0-6-0">0.6.0</a></li>

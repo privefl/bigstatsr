@@ -78,6 +78,10 @@ for (gen in c("scalar", "vector", "matrix")) {
   expect_warning(X[2] <- NaN,
                  get_text("double", "integer"), fixed = TRUE)
   expect_FBM(without_downcast_warning( FBM(10, 10, x1, type = "integer") ))
+  # To float
+  expect_warning(X <- FBM(10, 10, x1, type = "float"))
+  X[2] <- NA_real_
+  expect_identical(X[2], NA_real_)
   # To double
   expect_FBM(X <- FBM(10, 10, x1, type = "double"))
   expect_identical(X[1:5] <- x1[1:5], x1[1:5])
@@ -108,6 +112,11 @@ for (gen in c("scalar", "vector", "matrix")) {
   expect_identical(X[1:5] <- x2[1:5], x2[1:5])
   X[2] <- NA_integer_
   expect_identical(X[2], NA_integer_)
+  # To float
+  expect_FBM(X <- FBM(10, 10, x2, type = "float"))
+  expect_identical(X[1:5] <- x2[1:5], x2[1:5])
+  X[2] <- NA_integer_
+  expect_identical(X[2], NA_real_)
   # To double
   expect_FBM(X <- FBM(10, 10, x2, type = "double"))
   expect_identical(X[1:5] <- x2[1:5], x2[1:5])
@@ -132,6 +141,11 @@ for (gen in c("scalar", "vector", "matrix")) {
   expect_identical(X[1:5] <- x3[1:5], x3[1:5])
   X[2] <- NA
   expect_identical(X[2], NA_integer_)
+  # To float
+  expect_FBM(X <- FBM(10, 10, x3, type = "float"))
+  expect_identical(X[1:5] <- x3[1:5], x3[1:5])
+  X[2] <- NA
+  expect_identical(X[2], NA_real_)
   # To double
   expect_FBM(X <- FBM(10, 10, x3, type = "double"))
   expect_identical(X[1:5] <- x3[1:5], x3[1:5])
@@ -147,6 +161,8 @@ for (gen in c("scalar", "vector", "matrix")) {
   expect_identical(X[1:5] <- x4[1:5], x4[1:5])
   expect_FBM(X <- FBM(10, 10, x4, type = "integer"))
   expect_identical(X[1:5] <- x4[1:5], x4[1:5])
+  expect_FBM(X <- FBM(10, 10, x4, type = "float"))
+  expect_identical(X[1:5] <- x4[1:5], x4[1:5])
   expect_FBM(X <- FBM(10, 10, x4, type = "double"))
   expect_identical(X[1:5] <- x4[1:5], x4[1:5])
 
@@ -156,28 +172,53 @@ for (gen in c("scalar", "vector", "matrix")) {
 
 test_that("Missing values transfer from int to double", {
 
-  for (na in list(NA, NA_integer_, NA_real_)) {
-    a <- matrix(na, 7, 11)
-    A <- big_copy(a, type = "double")
-    A[] <- a
-    expect_true(all(is.na(A[])))
-    A[] <- as.vector(a)
-    expect_true(all(is.na(A[])))
-    A[] <- a[1]
-    expect_true(all(is.na(A[])))
-    A[] <- matrix(a[1], 1, 1)
-    expect_true(all(is.na(A[])))
-    A[1:5] <- a[1:5]
-    expect_true(all(is.na(A[1:5])))
-    A[1:5] <- matrix(a[1:5], 5, 1)
-    expect_true(all(is.na(A[1:5])))
-    A[1:5] <- a[5]
-    expect_true(all(is.na(A[1:5])))
-    A[1:5] <- matrix(a[5], 1, 1)
-    expect_true(all(is.na(A[1:5])))
-    A[2] <- a[2]
-    expect_identical(A[2], NA_real_)
+  for (t in c("float", "double")) {
+
+    for (na in list(NA, NA_integer_, NA_real_)) {
+      a <- matrix(na, 7, 11)
+      A <- as_FBM(a, type = "double")
+      A[] <- a
+      expect_true(all(is.na(A[])))
+      A[] <- as.vector(a)
+      expect_true(all(is.na(A[])))
+      A[] <- a[1]
+      expect_true(all(is.na(A[])))
+      A[] <- matrix(a[1], 1, 1)
+      expect_true(all(is.na(A[])))
+      A[1:5] <- a[1:5]
+      expect_true(all(is.na(A[1:5])))
+      A[1:5] <- matrix(a[1:5], 5, 1)
+      expect_true(all(is.na(A[1:5])))
+      A[1:5] <- a[5]
+      expect_true(all(is.na(A[1:5])))
+      A[1:5] <- matrix(a[5], 1, 1)
+      expect_true(all(is.na(A[1:5])))
+      A[2] <- a[2]
+      expect_identical(A[2], NA_real_)
+    }
+
   }
+
+})
+
+################################################################################
+
+test_that("Special values are handled for floats", {
+
+  expect_identical(expect_warning(FBM(1, 1, "float", 2^-126), "NA")[], NA_real_)
+
+  expect_warning(FBM(1, 1, "float", 1.175494e-38)[])
+  expect_warning(FBM(1, 1, "float", 1.1754943e-38)[])
+  expect_warning(FBM(1, 1, "float", 0.51))
+  expect_identical(FBM(1, 1, "float", 0.5)[], 0.5)
+  expect_identical(FBM(1, 1, "float", 2^-149)[], 2^-149)
+
+  expect_identical(FBM(1, 1, "float", NA)[], NA_real_)
+  expect_identical(FBM(1, 1, "float", NA_integer_)[], NA_real_)
+  expect_identical(FBM(1, 1, "float", NA_real_)[], NA_real_)
+  expect_identical(FBM(1, 1, "float", Inf)[], Inf)
+  expect_identical(FBM(1, 1, "float", -Inf)[], -Inf)
+  expect_identical(FBM(1, 1, "float", NaN)[], NaN)
 })
 
 ################################################################################
@@ -194,7 +235,8 @@ test_that("No copy is made", {
   storage.mode(x2) <- "logical"
   storage.mode(x3) <- "integer"
 
-  X4 <- big_copy(x4, type = "double")
+  X5 <- big_copy(x4, type = "double")
+  X4 <- big_copy(x4, type = "float")
   X3 <- big_copy(x4, type = "integer")
   X2 <- big_copy(x4, type = "unsigned short")
   X1 <- big_copy(x4, type = "unsigned char")
@@ -204,7 +246,7 @@ test_that("No copy is made", {
   expect_gt((gc() - tmp)[2, 6], size / 10)
 
   # print(size)
-  for (X in list(X1, X2, X3, X4)) {
+  for (X in list(X1, X2, X3, X4, X5)) {
     # print(typeof(X))
     for (x in list(x1, x2, x3, x4)) {
       tmp <- gc(reset = TRUE)

@@ -21,7 +21,7 @@ test_cores <- function() `if`(not_cran, sample(2, size = 1), 1)
 
 ################################################################################
 
-TEST.TYPES <- c("raw", "unsigned short", "integer", "double")
+TEST.TYPES <- c("raw", "unsigned short", "integer", "float", "double")
 
 asFBMcode <- function(x) {
   x <- round(x)
