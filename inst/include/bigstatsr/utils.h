@@ -3,6 +3,9 @@
 
 #include <Rcpp.h>
 
+#define NA_FLOAT FLT_MIN
+#define MIN_FLOAT (2 * NA_FLOAT)
+
 const char* const ERROR_TYPE =
   "Unknown type detected for Filebacked Big Matrix.";
 const char* const ERROR_DIM =

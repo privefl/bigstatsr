@@ -1,57 +1,44 @@
 /******************************************************************************/
 
 #include <bigstatsr/BMAcc.h>
-#include <bigstatsr/utils.h>
-#include <bigstatsr/types.h>
-#include <Rcpp.h>
 
 using namespace Rcpp;
 using std::size_t;
 
 /******************************************************************************/
 
-// Class for reading integers (and logicals) as doubles
-template <int RTYPE>
-class Int2NumVector : public Vector<RTYPE> {
-public:
-  Int2NumVector(SEXP x) : Vector<RTYPE>(x) {}
+inline float int2flt(int x) {
+  return (x == NA_INTEGER) ? NA_FLOAT : x;
+}
 
-  inline double operator[](size_t k) {
-    double x_k = Vector<RTYPE>::operator[](k);
-    if (x_k == NA_INTEGER) x_k = NA_REAL;
-    return x_k;
+inline float dbl2flt(double x) {
+  if (x > 0) { // not NA
+    return (x < MIN_FLOAT) ? 0 : x;
+  } else {
+    return R_IsNA(x) ? NA_FLOAT : x;
   }
-};
+}
 
-template <int RTYPE>
-class Int2NumMatrix : public Matrix<RTYPE> {
-public:
-  Int2NumMatrix(SEXP x) : Matrix<RTYPE>(x) {}
+inline double int2dbl(int x) {
+  return (x == NA_INTEGER) ? NA_REAL : x;
+}
 
-  inline double operator()(size_t i, size_t j) {
-    double x_ij = Matrix<RTYPE>::operator()(i, j);
-    if (x_ij == NA_INTEGER) x_ij = NA_REAL;
-    return x_ij;
-  }
-
-  inline double operator[](size_t k) {
-    double x_k = Matrix<RTYPE>::operator[](k);
-    if (x_k == NA_INTEGER) x_k = NA_REAL;
-    return x_k;
-  }
-};
+template<typename T_IN, typename T_OUT>
+inline T_OUT identity(T_IN x) {
+  return x;
+}
 
 /******************************************************************************/
 
-#define DISPATCH_REPLACE(REPLACE, VEC) {                                       \
+#define DISPATCH_REPLACE(REPLACE, VEC, REPLACE_CONV) {                         \
                                                                                \
-XPtr<FBM> xpBM(xpbm);                                                          \
-int fbm_type = xpBM->matrix_type();                                            \
+  XPtr<FBM> xpBM(xpbm);                                                        \
+  int fbm_type = xpBM->matrix_type();                                          \
                                                                                \
-DISPATCH_REPLACE2(REPLACE, VEC)                                                \
+  DISPATCH_REPLACE2(REPLACE, VEC, REPLACE_CONV)                                \
 }
 
-#define DISPATCH_REPLACE2(REPLACE, VEC) {                                      \
+#define DISPATCH_REPLACE2(REPLACE, VEC, REPLACE_CONV) {                        \
                                                                                \
 int r_type = TYPEOF(VEC);                                                      \
 switch(fbm_type) {                                                             \
@@ -74,12 +61,12 @@ case 1:                                                                        \
   }                                                                            \
 case 2:                                                                        \
   switch(r_type) {                                                             \
-  case RAWSXP:  REPLACE(unsigned short, as<RawVector>(VEC))                    \
-  case LGLSXP:  {                                                              \
+  case RAWSXP: REPLACE(unsigned short, as<RawVector>(VEC))                     \
+  case LGLSXP: {                                                               \
     LogicalVector vec2 = check_conv<LGLSXP,  unsigned short>(VEC);             \
     REPLACE(unsigned short, vec2)                                              \
   }                                                                            \
-  case INTSXP:  {                                                              \
+  case INTSXP: {                                                               \
     IntegerVector vec2 = check_conv<INTSXP,  unsigned short>(VEC);             \
     REPLACE(unsigned short, vec2)                                              \
   }                                                                            \
@@ -91,9 +78,9 @@ case 2:                                                                        \
   }                                                                            \
 case 4:                                                                        \
   switch(r_type) {                                                             \
-  case RAWSXP:  REPLACE(int, as<RawVector>(VEC))                               \
-  case LGLSXP:  REPLACE(int, as<LogicalVector>(VEC))                           \
-  case INTSXP:  REPLACE(int, as<IntegerVector>(VEC))                           \
+  case RAWSXP: REPLACE(int, as<RawVector>(VEC))                                \
+  case LGLSXP: REPLACE(int, as<LogicalVector>(VEC))                            \
+  case INTSXP: REPLACE(int, as<IntegerVector>(VEC))                            \
   case REALSXP: {                                                              \
     NumericVector vec2 = check_conv_dbl2int(VEC);                              \
     REPLACE(int, vec2)                                                         \
@@ -102,42 +89,23 @@ case 4:                                                                        \
   }                                                                            \
 case 6:                                                                        \
   switch(r_type) {                                                             \
-  case RAWSXP:  REPLACE(float, as<RawVector>(VEC))                             \
-  case LGLSXP:  {                                                              \
-    LogicalVector vec2 = check_conv<LGLSXP,  float>(VEC);                      \
-    REPLACE(float, vec2)                                                       \
-  }                                                                            \
-  case INTSXP:  {                                                              \
+  case RAWSXP: REPLACE(float, as<RawVector>(VEC))                              \
+  case LGLSXP: REPLACE_CONV(float, as<LogicalVector>(VEC), int2flt)            \
+  case INTSXP: {                                                               \
     IntegerVector vec2 = check_conv<INTSXP,  float>(VEC);                      \
-    REPLACE(float, vec2)                                                       \
+    REPLACE_CONV(float, vec2, int2flt)                                         \
   }                                                                            \
   case REALSXP: {                                                              \
     NumericVector vec2 = check_conv<REALSXP, float>(VEC);                      \
-    REPLACE(float, vec2)                                                       \
+    REPLACE_CONV(float, vec2, dbl2flt)                                         \
   }                                                                            \
   default: stop("R type '%s' is not supported.", Rf_type2char(r_type));        \
   }                                                                            \
 case 8:                                                                        \
   switch(r_type) {                                                             \
-  case RAWSXP:  REPLACE(double, as<RawVector>(VEC))                            \
-  case LGLSXP: {                                                               \
-    if (Rf_isMatrix(VEC)) {                                                    \
-      Int2NumMatrix<LGLSXP> vec2(VEC);                                         \
-      REPLACE(double, vec2)                                                    \
-    } else {                                                                   \
-      Int2NumVector<LGLSXP> vec2(VEC);                                         \
-      REPLACE(double, vec2)                                                    \
-    }                                                                          \
-  }                                                                            \
-  case INTSXP: {                                                               \
-    if (Rf_isMatrix(VEC)) {                                                    \
-      Int2NumMatrix<INTSXP> vec2(VEC);                                         \
-      REPLACE(double, vec2)                                                    \
-    } else {                                                                   \
-      Int2NumVector<INTSXP> vec2(VEC);                                         \
-      REPLACE(double, vec2)                                                    \
-    }                                                                          \
-  }                                                                            \
+  case RAWSXP: REPLACE(double, as<RawVector>(VEC))                             \
+  case LGLSXP: REPLACE_CONV(double, as<LogicalVector>(VEC), int2dbl)           \
+  case INTSXP: REPLACE_CONV(double, as<IntegerVector>(VEC), int2dbl)           \
   case REALSXP: REPLACE(double, as<NumericVector>(VEC))                        \
   default: stop("R type '%s' is not supported.", Rf_type2char(r_type));        \
   }                                                                            \
@@ -234,18 +202,22 @@ NumericVector check_conv_dbl2int(NumericVector nv) {
 
 /******************************************************************************/
 
-template <typename BM_TYPE, typename T>
-void replace_vec_one(VecBMAcc<BM_TYPE> macc, T val) {
+template <typename BM_TYPE, typename CTYPE>
+void replace_vec_one(VecBMAcc<BM_TYPE> macc, CTYPE val,
+                     BM_TYPE (*conv)(CTYPE) = identity) {
 
+  BM_TYPE val_conv = conv(val);
   size_t K = macc.size();
   for (size_t k = 0; k < K; k++)
-    macc[k] = val;
+    macc[k] = val_conv;
 }
 
-// https://stackoverflow.com/a/1726777/6103040
 #define REPLACE_VEC_ONE(BM_TYPE, VEC) {                                        \
-return replace_vec_one(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1),                   \
-                       VEC[static_cast<size_t>(0)]);                           \
+return replace_vec_one(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC[0]);          \
+}
+
+#define REPLACE_VEC_ONE_CONV(BM_TYPE, VEC, CONV) {                             \
+return replace_vec_one(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC[0], CONV);    \
 }
 
 // [[Rcpp::export]]
@@ -255,14 +227,13 @@ void replaceVecOne(SEXP xpbm,
 
   myassert(!Rf_isMatrix(val), ERROR_REPORT);
 
-  DISPATCH_REPLACE(REPLACE_VEC_ONE, val)
+  DISPATCH_REPLACE(REPLACE_VEC_ONE, val, REPLACE_VEC_ONE_CONV)
 }
 
 /******************************************************************************/
 
-// C can be Vector<RTYPE>, Int2NumVector<RTYPE> or Int2NumMatrix<RTYPE>
-template <typename BM_TYPE, class C>
-void replace_vec(VecBMAcc<BM_TYPE> macc, C vec) {
+template <typename BM_TYPE, int RTYPE>
+void replace_vec(VecBMAcc<BM_TYPE> macc, Vector<RTYPE> vec) {
 
   size_t K = macc.size();
   for (size_t k = 0; k < K; k++)
@@ -273,29 +244,47 @@ void replace_vec(VecBMAcc<BM_TYPE> macc, C vec) {
 return replace_vec(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC);                 \
 }
 
+template <typename BM_TYPE, int RTYPE, typename CTYPE>
+void replace_vec_conv(VecBMAcc<BM_TYPE> macc, Vector<RTYPE> vec,
+                      BM_TYPE (*conv)(CTYPE)) {
+
+  size_t K = macc.size();
+  for (size_t k = 0; k < K; k++)
+    macc[k] = conv(vec[k]);
+}
+
+#define REPLACE_VEC_CONV(BM_TYPE, VEC, CONV) {                                 \
+return replace_vec_conv(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC, CONV);      \
+}
+
 // [[Rcpp::export]]
 void replaceVec(SEXP xpbm,
                 const NumericVector& elemInd,
                 SEXP vec) {
 
-  DISPATCH_REPLACE(REPLACE_VEC, vec)
+  DISPATCH_REPLACE(REPLACE_VEC, vec, REPLACE_VEC_CONV)
 }
 
 /******************************************************************************/
 
-template <typename BM_TYPE, typename T>
-void replace_mat_one(SubBMAcc<BM_TYPE> macc, T val) {
+template <typename BM_TYPE, typename CTYPE>
+void replace_mat_one(SubBMAcc<BM_TYPE> macc, CTYPE val,
+                     BM_TYPE (*conv)(CTYPE) = identity) {
 
+  BM_TYPE val_conv = conv(val);
   size_t i, j, n = macc.nrow(), m = macc.ncol();
   for (j = 0; j < m; j++)
     for (i = 0; i < n; i++)
-      macc(i, j) = val;
+      macc(i, j) = val_conv;
 }
 
-// https://stackoverflow.com/a/1726777/6103040
 #define REPLACE_MAT_ONE(BM_TYPE, VEC) {                                        \
-return replace_mat_one(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1),        \
-                       VEC[static_cast<size_t>(0)]);                           \
+return replace_mat_one(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), VEC[0]); \
+}
+
+#define REPLACE_MAT_ONE_CONV(BM_TYPE, VEC, CONV) {                             \
+  SubBMAcc<BM_TYPE> macc(xpBM, rowInd - 1, colInd - 1);                        \
+  return replace_mat_one(macc, VEC[0], CONV);                                  \
 }
 
 // [[Rcpp::export]]
@@ -306,22 +295,14 @@ void replaceMatOne(SEXP xpbm,
 
   myassert(!Rf_isMatrix(val), ERROR_REPORT);
 
-  DISPATCH_REPLACE(REPLACE_MAT_ONE, val)
+  DISPATCH_REPLACE(REPLACE_MAT_ONE, val, REPLACE_MAT_ONE_CONV)
 }
 
 /******************************************************************************/
 
-template <int RTYPE>
-void replace_mat(SubBMAcc<double> macc, Int2NumMatrix<RTYPE>& mat) {
-
-  size_t i, j, n = macc.nrow(), m = macc.ncol();
-  for (j = 0; j < m; j++)
-    for (i = 0; i < n; i++)
-      macc(i, j) = mat(i, j);
-}
-
 template <typename BM_TYPE, int RTYPE>
-void replace_mat(SubBMAcc<BM_TYPE> macc, const Vector<RTYPE>& vec) {
+void replace_mat(SubBMAcc<BM_TYPE> macc,
+                 const Vector<RTYPE>& vec) {
 
   Matrix<RTYPE> mat(vec);
 
@@ -332,7 +313,25 @@ void replace_mat(SubBMAcc<BM_TYPE> macc, const Vector<RTYPE>& vec) {
 }
 
 #define REPLACE_MAT(BM_TYPE, MAT) {                                            \
-return replace_mat(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), MAT);      \
+  return replace_mat(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), MAT);    \
+}
+
+template <typename BM_TYPE, int RTYPE, typename CTYPE>
+void replace_mat_conv(SubBMAcc<BM_TYPE> macc,
+                      const Vector<RTYPE>& vec,
+                      BM_TYPE (*conv)(CTYPE)) {
+
+  Matrix<RTYPE> mat(vec);
+
+  size_t i, j, n = macc.nrow(), m = macc.ncol();
+  for (j = 0; j < m; j++)
+    for (i = 0; i < n; i++)
+      macc(i, j) = conv(mat(i, j));
+}
+
+#define REPLACE_MAT_CONV(BM_TYPE, MAT, CONV) {                                 \
+  SubBMAcc<BM_TYPE> macc(xpBM, rowInd - 1, colInd - 1);                        \
+  return replace_mat_conv(macc, MAT, CONV);                                    \
 }
 
 // [[Rcpp::export]]
@@ -341,14 +340,13 @@ void replaceMat(SEXP xpbm,
                 const IntegerVector& colInd,
                 SEXP mat) {
 
-  DISPATCH_REPLACE(REPLACE_MAT, mat)
+  DISPATCH_REPLACE(REPLACE_MAT, mat, REPLACE_MAT_CONV)
 }
 
 /******************************************************************************/
 
-// C can be Vector<RTYPE> or Int2NumVector<RTYPE>
-template <typename BM_TYPE, class C>
-void replace_col(SubBMAcc<BM_TYPE> macc_j, size_t n, C vec) {
+template <typename BM_TYPE, int RTYPE>
+void replace_col(SubBMAcc<BM_TYPE> macc_j, size_t n, Vector<RTYPE> vec) {
 
   for (size_t i = 0; i < n; i++)
     macc_j(i, 0) = vec[i];
@@ -356,6 +354,19 @@ void replace_col(SubBMAcc<BM_TYPE> macc_j, size_t n, C vec) {
 
 #define REPLACE_COL(BM_TYPE, VEC) {                                            \
 replace_col(SubBMAcc<BM_TYPE>(xpBM, row_ind, col_ind), n, VEC);                \
+continue;                                                                      \
+}
+
+template <typename BM_TYPE, int RTYPE, typename CTYPE>
+void replace_col_conv(SubBMAcc<BM_TYPE> macc_j, size_t n, Vector<RTYPE> vec,
+                      BM_TYPE (*conv)(CTYPE)) {
+
+  for (size_t i = 0; i < n; i++)
+    macc_j(i, 0) = conv(vec[i]);
+}
+
+#define REPLACE_COL_CONV(BM_TYPE, VEC, CONV) {                                 \
+replace_col_conv(SubBMAcc<BM_TYPE>(xpBM, row_ind, col_ind), n, VEC, CONV);     \
 continue;                                                                      \
 }
 
@@ -375,7 +386,7 @@ void replaceDF(SEXP xpbm,
   for (size_t j = 0; j < m; j++) {
     SEXP col = df[j];
     col_ind[0] = colInd[j] - 1;
-    DISPATCH_REPLACE2(REPLACE_COL, col)
+    DISPATCH_REPLACE2(REPLACE_COL, col, REPLACE_COL_CONV)
   }
 }
 

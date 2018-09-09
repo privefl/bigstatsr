@@ -74,7 +74,7 @@ fbm[1, 1]
 ```{r}
 BM2FBM <- function(bm) {
   FBM(nrow = nrow(bm), ncol = ncol(bm), type = typeof(bm),
-      backingfile = file.path(dir.name(bm), sub("\\.bk$", "", file.name(bm))),
+      backingfile = file.path(dir.name(bm), sub_bk(file.name(bm))),
       create_bk = FALSE)
 }
 
@@ -97,15 +97,16 @@ Package **bigmemory** handles many types:
 - double (double precision floating-point numbers)
 - complex
 
-For now, package **bigstatsr** handles less types:
+For now, package **bigstatsr** handles the following types:
 
 - unsigned char
 - unsigned short
 - integer
+- float
 - double
 
 Additionally, the unsigned char type is used in the `FBM.code256` format, which instead of accessing integer values ranging from 0 to 255, it uses some code to access 256 arbitrary different values. I make a lot of use of this format in my other R package **bigsnpr** in order to store genotype dosages.
-I have been thinking of using the unsigned short type to make a `FBM.code65536` in order to store 65536 different values. I would use it to store some strings in order to implement a "big.data.frame" feature (with no more than 65536 strings in it, unfortunately). Yet, as I'm not needing this right now, I haven't implemented it yet and I'm not sure I will.
+<!-- I have been thinking of using the unsigned short type to make a `FBM.code65536` in order to store 65536 different values. I would use it to store some strings in order to implement a "big.data.frame" feature (with no more than 65536 strings in it, unfortunately). Yet, as I'm not needing this right now, I haven't implemented it yet and I'm not sure I will. -->
 
 ## Class
 
@@ -117,7 +118,7 @@ knitr::include_graphics("https://i.stack.imgur.com/CZsnH.png")
 ```
 
 
-For FBMs, I use the nice idea of the package [**bigmemoryExtras**](https://github.com/phaverty/bigmemoryExtras). Basically, I use a Reference Class (RC) object with active binding. In this object, I store the external pointer *and* the information needed to create the pointer to the C++ object. The active binding makes this automatic so that the user never need to use `attach.big.matrix()` or `describe()` anymore (and no more session crash!). 
+For FBMs, I use the nice idea of package [**bigmemoryExtras**](https://github.com/phaverty/bigmemoryExtras). Basically, I use a Reference Class (RC) object with active binding. In this object, I store the external pointer *and* the information needed to create the pointer to the C++ object. The active binding makes this automatic so that the user never need to use `attach.big.matrix()` or `describe()` anymore (and no more session crash!). 
 
 What this also means is that you can now serialize a FBM (for example, saving it in an rds file with `saveRDS()` or using it in a parallel algorithm). For instance, with a standard `big.matrix` object, you'll need to pass the descriptor object in paralell algorithms:
 
