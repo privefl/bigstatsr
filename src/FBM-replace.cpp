@@ -7,16 +7,14 @@ using std::size_t;
 
 /******************************************************************************/
 
+#define NA_FLOAT FLT_MIN
+
 inline float int2flt(int x) {
   return (x == NA_INTEGER) ? NA_FLOAT : x;
 }
 
 inline float dbl2flt(double x) {
-  if (x > 0) { // not NA
-    return (x < MIN_FLOAT) ? 0 : x;
-  } else {
-    return R_IsNA(x) ? NA_FLOAT : x;
-  }
+  return R_IsNA(x) ? NA_FLOAT : x;
 }
 
 inline double int2dbl(int x) {
@@ -96,7 +94,7 @@ case 6:                                                                        \
     REPLACE_CONV(float, vec2, int2flt)                                         \
   }                                                                            \
   case REALSXP: {                                                              \
-    NumericVector vec2 = check_conv<REALSXP, float>(VEC);                      \
+    NumericVector vec2 = check_conv_dbl2flt(VEC);                              \
     REPLACE_CONV(float, vec2, dbl2flt)                                         \
   }                                                                            \
   default: stop("R type '%s' is not supported.", Rf_type2char(r_type));        \
@@ -192,6 +190,27 @@ NumericVector check_conv_dbl2int(NumericVector nv) {
         warning("%s (%s -> %s)\n  %s",
                 "At least one value changed", nv[i], test,
                 "while converting from R type 'double' to C type 'integer'.");
+        break;
+      }
+    }
+  }
+
+  return nv;
+}
+
+NumericVector check_conv_dbl2flt(NumericVector nv) {
+
+  if (do_warn_downcast()) {
+
+    size_t n = nv.size();
+    float test;
+
+    for (size_t i = 0; i < n; i++) {
+      test = nv[i];
+      if (test != nv[i] && !std::isnan(test)) {
+        warning("%s (%s -> %s)\n  %s",
+                "At least one value changed", nv[i], test,
+                "while converting from R type 'double' to C type 'float'.");
         break;
       }
     }
