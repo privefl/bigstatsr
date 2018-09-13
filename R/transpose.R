@@ -32,9 +32,7 @@ big_transpose <- function(X, backingfile = tempfile()) {
 
   transpose3(res, X)
 
-  `if`(inherits(X, "FBM.code256"),
-       add_code256(res, code = X$code256),
-       res)
+  `if`(inherits(X, "FBM.code256"), add_code256(res, code = X$code256), res)
 }
 
 ################################################################################

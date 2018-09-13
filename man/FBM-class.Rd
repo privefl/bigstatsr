@@ -8,11 +8,11 @@
 \alias{as_FBM}
 \title{Class FBM}
 \usage{
-FBM(nrow, ncol, type = c("double", "integer", "unsigned short",
+FBM(nrow, ncol, type = c("double", "float", "integer", "unsigned short",
   "unsigned char", "raw"), init = NULL, backingfile = tempfile(),
   create_bk = TRUE)
 
-as_FBM(x, type = c("double", "integer", "unsigned short",
+as_FBM(x, type = c("double", "float", "integer", "unsigned short",
   "unsigned char", "raw"), backingfile = tempfile())
 }
 \arguments{
@@ -22,14 +22,14 @@ as_FBM(x, type = c("double", "integer", "unsigned short",
 
 \item{type}{Type of the Filebacked Big Matrix (default is \code{double}). Either
 \itemize{
-\item \code{"double"}
+\item \code{"double"} (double precision -- 64 bits)
+\item \code{"float"} (single precision -- 32 bits)
 \item \code{"integer"}
 \item \code{"unsigned short"}: can store integer values from 0 to 65535.
-It has vocation to become the basis for a \code{FBM.code65536} class for
-accessing strings.
+It has vocation to become the basis for a \code{FBM.code65536}.
 \item \code{"raw"} or \code{"unsigned char"}: can store integer values from 0 to 255.
-It is the basis for the \link[=FBM.code256-class]{FBM.code256} class for
-accessing 256 arbitrary different numeric values.
+It is the basis for class \link[=FBM.code256-class]{FBM.code256} in order to
+access 256 arbitrary different numeric values.
 It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
 }}
 
@@ -37,13 +37,14 @@ It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
 of elements of the FBM. \strong{Default doesn't initialize the matrix.}}
 
 \item{backingfile}{Path to the file storing the Big Matrix on disk.
-An extension ".bk" will be automatically added. Default stores in the
-temporary directory.}
+\strong{An extension ".bk" will be automatically added.}
+Default stores in the temporary directory.}
 
-\item{create_bk}{Create a backingfile (the default) or use an existing one
-(which should be named by the \code{backingfile} parameter and have an
-extension ".bk"). For example, this could be used to convert a filebacked
-\code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}.}
+\item{create_bk}{Whether to create a backingfile (the default) or use an
+existing one (which should be named by the \code{backingfile} parameter and have
+an extension ".bk"). For example, this could be used to convert a
+filebacked \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}
+(see \href{https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html}{the corresponding vignette}).}
 
 \item{x}{A matrix or an data frame (2-dimensional data).}
 }

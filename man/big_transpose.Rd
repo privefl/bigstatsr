@@ -10,8 +10,8 @@ big_transpose(X, backingfile = tempfile())
 \item{X}{A \link[=FBM-class]{FBM}.}
 
 \item{backingfile}{Path to the file storing the Big Matrix on disk.
-An extension ".bk" will be automatically added. Default stores in the
-temporary directory.}
+\strong{An extension ".bk" will be automatically added.}
+Default stores in the temporary directory.}
 }
 \value{
 The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions

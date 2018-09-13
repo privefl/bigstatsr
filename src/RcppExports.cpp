@@ -191,6 +191,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// conv_NA_float
+NumericVector& conv_NA_float(NumericVector& source);
+RcppExport SEXP _bigstatsr_conv_NA_float(SEXP sourceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector& >::type source(sourceSEXP);
+    rcpp_result_gen = Rcpp::wrap(conv_NA_float(source));
+    return rcpp_result_gen;
+END_RCPP
+}
 // extractVec
 RObject extractVec(RObject xpbm, const NumericVector& elemInd);
 RcppExport SEXP _bigstatsr_extractVec(SEXP xpbmSEXP, SEXP elemIndSEXP) {
@@ -454,6 +465,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_GET_ERROR_TYPE", (DL_FUNC) &_bigstatsr_GET_ERROR_TYPE, 0},
     {"_bigstatsr_GET_ERROR_DIM", (DL_FUNC) &_bigstatsr_GET_ERROR_DIM, 0},
     {"_bigstatsr_GET_ERROR_BOUNDS", (DL_FUNC) &_bigstatsr_GET_ERROR_BOUNDS, 0},
+    {"_bigstatsr_conv_NA_float", (DL_FUNC) &_bigstatsr_conv_NA_float, 1},
     {"_bigstatsr_extractVec", (DL_FUNC) &_bigstatsr_extractVec, 2},
     {"_bigstatsr_extractMat", (DL_FUNC) &_bigstatsr_extractMat, 3},
     {"_bigstatsr_createFile", (DL_FUNC) &_bigstatsr_createFile, 4},

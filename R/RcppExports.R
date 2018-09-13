@@ -49,6 +49,10 @@ GET_ERROR_BOUNDS <- function() {
     .Call(`_bigstatsr_GET_ERROR_BOUNDS`)
 }
 
+conv_NA_float <- function(source) {
+    .Call(`_bigstatsr_conv_NA_float`, source)
+}
+
 extractVec <- function(xpbm, elemInd) {
     .Call(`_bigstatsr_extractVec`, xpbm, elemInd)
 }

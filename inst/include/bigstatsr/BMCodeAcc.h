@@ -36,11 +36,11 @@ protected:
 
 #define DISPATCH_SUBMATACC(CALL) {                                             \
                                                                                \
-  XPtr<FBM> xpBM = BM["address"];                                               \
+  XPtr<FBM> xpBM = BM["address"];                                              \
   IntegerVector rows = rowInd - 1;                                             \
   IntegerVector cols = colInd - 1;                                             \
                                                                                \
-  if (BM.exists("code256")) {                                                   \
+  if (BM.exists("code256")) {                                                  \
     CALL(RAWSUBMATACC);                                                        \
   } else {                                                                     \
     switch(xpBM->matrix_type()) {                                              \
@@ -48,6 +48,8 @@ protected:
       CALL(SUBMATACC(double))                                                  \
     case 4:                                                                    \
       CALL(SUBMATACC(int))                                                     \
+    case 6:                                                                    \
+      CALL(SUBMATACC(float))                                                   \
     case 1:                                                                    \
       CALL(SUBMATACC(unsigned char))                                           \
     case 2:                                                                    \

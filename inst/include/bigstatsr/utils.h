@@ -3,6 +3,7 @@
 
 #include <Rcpp.h>
 
+
 const char* const ERROR_TYPE =
   "Unknown type detected for Filebacked Big Matrix.";
 const char* const ERROR_DIM =

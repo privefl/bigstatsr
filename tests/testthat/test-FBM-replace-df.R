@@ -14,7 +14,7 @@ test_replace <- function(call) {
                     sub("^mat", "X", call),
                     sub("^mat", "x", call))
   eval(parse(text = assign), parent.frame())
-  check <- "expect_equal(X[], transf(x), check.attributes = FALSE)"
+  check <- "expect_equal(X[], transf(x), check.attributes = FALSE, tol = 1e-6)"
   eval(parse(text = check), parent.frame())
 }
 
@@ -27,7 +27,7 @@ test_that("Replace works with data frames", {
 
   transf <- function(df) {
     mat <- as.matrix(df)
-    if (t != "double") storage.mode(mat) <- "integer"
+    if (!t %in% c("double", "float")) storage.mode(mat) <- "integer"
     mat
   }
 

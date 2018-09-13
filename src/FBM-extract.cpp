@@ -1,11 +1,24 @@
 /******************************************************************************/
 
 #include <bigstatsr/BMAcc.h>
-#include <bigstatsr/utils.h>
-#include <Rcpp.h>
 
 using namespace Rcpp;
 using std::size_t;
+
+/******************************************************************************/
+
+#define NA_FLOAT FLT_MIN
+
+// [[Rcpp::export]]
+NumericVector& conv_NA_float(NumericVector& source) {
+
+  size_t n = source.size();
+  for (size_t i = 0; i < n; i++) {
+    if (source[i] == NA_FLOAT) source[i] = NA_REAL;
+  }
+
+  return source;
+}
 
 /******************************************************************************/
 
@@ -41,6 +54,11 @@ RObject extractVec(RObject xpbm,
     EXTRACT_VEC(int,            INTSXP)
   case 8:
     EXTRACT_VEC(double,         REALSXP)
+  case 6: {
+      VecBMAcc<float> macc(xpBM, elemInd - 1);
+      NumericVector res = extractVec<float, REALSXP>(macc);
+      return conv_NA_float(res);
+    }
   default:
     throw Rcpp::exception(ERROR_TYPE);
   }
@@ -84,6 +102,11 @@ RObject extractMat(RObject xpbm,
     EXTRACT_MAT(int,            INTSXP)
   case 8:
     EXTRACT_MAT(double,         REALSXP)
+  case 6: {
+      SubBMAcc<float> macc(xpBM, rowInd - 1, colInd - 1);
+      NumericMatrix res = extractMat<float, REALSXP>(macc);
+      return conv_NA_float(res);
+    }
   default:
     throw Rcpp::exception(ERROR_TYPE);
   }

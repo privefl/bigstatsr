@@ -4,8 +4,8 @@
 \alias{big_read}
 \title{Read a file}
 \usage{
-big_read(file, select, filter = NULL, type = c("double", "integer",
-  "unsigned short", "unsigned char", "raw"),
+big_read(file, select, filter = NULL, type = c("double", "float",
+  "integer", "unsigned short", "unsigned char", "raw"),
   backingfile = drop_ext(file), ...)
 }
 \arguments{
@@ -18,14 +18,14 @@ The length of \code{select} will be the number of columns of the resulting FBM.}
 
 \item{type}{Type of the Filebacked Big Matrix (default is \code{double}). Either
 \itemize{
-\item \code{"double"}
+\item \code{"double"} (double precision -- 64 bits)
+\item \code{"float"} (single precision -- 32 bits)
 \item \code{"integer"}
 \item \code{"unsigned short"}: can store integer values from 0 to 65535.
-It has vocation to become the basis for a \code{FBM.code65536} class for
-accessing strings.
+It has vocation to become the basis for a \code{FBM.code65536}.
 \item \code{"raw"} or \code{"unsigned char"}: can store integer values from 0 to 255.
-It is the basis for the \link[=FBM.code256-class]{FBM.code256} class for
-accessing 256 arbitrary different numeric values.
+It is the basis for class \link[=FBM.code256-class]{FBM.code256} in order to
+access 256 arbitrary different numeric values.
 It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
 }}
 

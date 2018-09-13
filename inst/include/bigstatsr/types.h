@@ -9,6 +9,8 @@
     CALL(double)                                                               \
   case 4:                                                                      \
     CALL(int)                                                                  \
+  case 6:                                                                      \
+    CALL(float)                                                                \
   case 1:                                                                      \
     CALL(unsigned char)                                                        \
   case 2:                                                                      \

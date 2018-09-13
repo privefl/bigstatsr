@@ -15,7 +15,7 @@ IntegerMatrix mycount1(Environment BM,
                        const IntegerVector& codeInd) {
 
   XPtr<FBM> xpBM = BM["address"];
-  SubBMAcc<unsigned char> macc(xpBM, rowInd-1, colInd-1);
+  SubBMAcc<unsigned char> macc(xpBM, rowInd - 1, colInd - 1);
 
   size_t n = macc.nrow();
   size_t m = macc.ncol();
@@ -45,7 +45,7 @@ IntegerMatrix mycount2(Environment BM,
                        const IntegerVector& codeInd) {
 
   XPtr<FBM> xpBM = BM["address"];
-  SubBMAcc<unsigned char> macc(xpBM, rowInd-1, colInd-1);
+  SubBMAcc<unsigned char> macc(xpBM, rowInd - 1, colInd - 1);
 
   size_t n = macc.nrow();
   size_t m = macc.ncol();
