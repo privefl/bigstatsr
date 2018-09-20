@@ -63,7 +63,7 @@ MY_THEME <- function(p, coeff = 1) {
 #' to get more familiar with the package **ggplot2**.
 #'
 #' @export
-#' @import ggplot2 grid
+#' @import ggplot2
 #' @importFrom graphics plot
 #'
 #' @example examples/example-plot-bigSVD.R

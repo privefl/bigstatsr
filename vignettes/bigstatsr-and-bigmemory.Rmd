@@ -10,23 +10,23 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 
 
-I'm a fan of package **bigmemory**. It's by far the most convenient solution I found for analyzing large genomic data in R on my computer. I've been using it for almost two years now and have also contributed some features. 
+I'm a fan of package {bigmemory}. It's by far the most convenient solution I found for analyzing large genomic data in R on my computer. I've been using it since early 2016 and have also contributed some features. 
 
-At first, package **bigstatsr** was using the `big.matrix` objects of package **bigmemory**. Yet, at some point, I felt the need to become independent of package **bigmemory**. As package **bigstatsr** will be a central tool of all my thesis work, I need to add whatever feature I want whenever I want to. Thus, I reimplemented an object very similar to the filebacked `big.matrix` object, called "FBM" (Filebacked Big Matrix, very original) in this package. These two formats are so similar that you can easily convert (without copying the data) between the two objects.
+At first, package {bigstatsr} was using the `big.matrix` objects of package {bigmemory}. Yet, at some point, I felt the need to become independent of package {bigmemory}. As package {bigstatsr} will be a central tool of all my thesis work, I need to add whatever feature I want whenever I want to. Thus, I reimplemented an object very similar to the filebacked `big.matrix` object, called "FBM" (Filebacked Big Matrix, very original) in this package. These two formats are so similar that you can easily convert (without copying the data) between the two objects.
 
-In this vignette, I explain the main differences between my package **bigstatsr** and the packages of the *bigmemory* family.
+In this vignette, I explain the main differences between my package {bigstatsr} and the packages of the *bigmemory* family.
 
 ## Formats and types
 
 ### Format
 
-Package **bigmemory** provides 3 types of `big.matrix` objects:
+Package {bigmemory} provides 3 types of `big.matrix` objects:
 
 - a "RAM" `big.matrix`, which is not shared between processes and use directly random access memory,
 - a shared `big.matrix`, which uses some shared memory (still a mystery for me),
 - a filebacked `big.matrix` (so, shared between processes), which stores the data on disk and access it via memory-mapping.
 
-I placed a lot of interest for shared matrices (filebacked or not). Yet, I encountered memory limitations with the shared `big.matrix` (non-filebacked). So, at some point, I was using only filebacked `big.matrix` objects. So, in bigstatsr, you will found only the `FBM` format, which is very similar to the filebacked `big.matrix` format. To prove it, let us convert from one to the other (without copying the backingfile).
+I placed a lot of interest for shared matrices (filebacked or not). Yet, I encountered memory limitations with the shared `big.matrix` (non-filebacked). So, at some point, I was using only filebacked `big.matrix` objects. So, in {bigstatsr}, you will found only the `FBM` format, which is very similar to the filebacked `big.matrix` format. To prove it, let us convert from one to the other (without copying the backingfile).
 
 ```{r}
 library(bigmemory)
@@ -34,35 +34,13 @@ library(bigstatsr)
 ```
 
 ```{r}
-FBM2BM <- function(fbm) {
-  
-  new_desc <- new("big.matrix.descriptor",
-                  description = list(
-                    sharedType = "FileBacked",
-                    filename   = basename(fbm$backingfile),
-                    dirname    = bigmemory:::format_path(dirname(fbm$backingfile)),
-                    totalRows  = as.double(nrow(fbm)),
-                    totalCols  = as.double(ncol(fbm)),
-                    rowOffset  = c(0, nrow(fbm)),
-                    colOffset  = c(0, ncol(fbm)),
-                    nrow       = as.double(nrow(fbm)),
-                    ncol       = as.double(ncol(fbm)),
-                    rowNames   = NULL,
-                    colNames   = NULL,
-                    type       = typeof(fbm),
-                    separated  = FALSE
-                  ))
-  
-  attach.big.matrix(new_desc)
-}
-
 # Create a temporary FBM
 fbm <- FBM(10, 10)
 fbm$backingfile
 fbm[]
 
 # Convert it to a big.matrix
-bm <- FBM2BM(fbm)
+bm <- fbm$bm()
 # Same backingfile
 paste0(dir.name(bm), file.name(bm))
 # Changing values of one changes the value of the other
@@ -87,7 +65,7 @@ fbm2[]
 
 ### Types
 
-Package **bigmemory** handles many types:
+Package {bigmemory} handles many types:
 
 - unsigned char (1-byte unsigned integer)
 - char (1-byte signed integer)
@@ -97,7 +75,7 @@ Package **bigmemory** handles many types:
 - double (double precision floating-point numbers)
 - complex
 
-For now, package **bigstatsr** handles the following types:
+For now, package {bigstatsr} handles the following types:
 
 - unsigned char
 - unsigned short
@@ -105,7 +83,7 @@ For now, package **bigstatsr** handles the following types:
 - float
 - double
 
-Additionally, the unsigned char type is used in the `FBM.code256` format, which instead of accessing integer values ranging from 0 to 255, it uses some code to access 256 arbitrary different values. I make a lot of use of this format in my other R package **bigsnpr** in order to store genotype dosages.
+Additionally, the unsigned char type is used in the `FBM.code256` format, which instead of accessing integer values ranging from 0 to 255, it uses some code to access 256 arbitrary different values. I make a lot of use of this format in my other R package {bigsnpr} in order to store genotype dosages.
 <!-- I have been thinking of using the unsigned short type to make a `FBM.code65536` in order to store 65536 different values. I would use it to store some strings in order to implement a "big.data.frame" feature (with no more than 65536 strings in it, unfortunately). Yet, as I'm not needing this right now, I haven't implemented it yet and I'm not sure I will. -->
 
 ## Class
@@ -124,7 +102,7 @@ What this also means is that you can now serialize a FBM (for example, saving it
 
 ```{r}
 X <- FBM(10, 10); X[] <- rnorm(length(X))
-bm <- FBM2BM(X)
+bm <- X$bm()
 ```
 
 ```{r}
@@ -221,7 +199,7 @@ NumericVector colsums_fbm(Environment fbm) {
 colsums_fbm(X)
 ```
 
-So, the main difference is that **bigmemory** uses `macc[j][i]` whereas `FBM` objects use the same accessor in C++ as standard Rcpp matrices, `macc(i, j)`. So, it is easier to adapt existing Rcpp algorithms to be used for `FBM` objects, e.g. using templates. Note that there is also a sub-FBM accessor, so that you can also use the same algorithms on a subset of the FBM object. For example:
+So, the main difference is that {bigmemory} uses `macc[j][i]` whereas `FBM` objects use the same accessor in C++ as standard Rcpp matrices, `macc(i, j)`. So, it is easier to adapt existing Rcpp algorithms to be used for `FBM` objects, e.g. using templates. Note that there is also a sub-FBM accessor, so that you can also use the same algorithms on a subset of the FBM object. For example:
 
 ```{Rcpp}
 // [[Rcpp::depends(BH, bigstatsr)]]
@@ -298,7 +276,7 @@ system.time(
 all.equal(test1, true)
 ```
 
-The **biganalytics** strategy is to make a loop, which is slow because there are a lot of elements to loop through. Package **bigstatsr** uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results. 
+The {biganalytics} strategy is to make a loop, which is slow because there are a lot of elements to loop through. Package {bigstatsr} uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results. 
 
 ```{r, out.width="70%", echo=FALSE}
 knitr::include_graphics("https://privefl.github.io/useR-2017/split-apply-combine.svg")
@@ -339,12 +317,20 @@ library(bigalgebra)
 system.time(
   test <- m %*% a
 )
+stopifnot(identical(test[], true))
 
 m2 <- big_copy(m)
 # Function built on top of big_apply
 system.time(
   test2 <- big_prodMat(m2, a)
 )
+stopifnot(identical(test2, true))
+
+# You could use {bigalgebra} if you don't need subsetting
+system.time(
+  test3 <- m2$bm() %*% a
+)
+stopifnot(identical(test3[], true))
 ```
 
 Making functions (not operators) makes it possible to use subsetting.

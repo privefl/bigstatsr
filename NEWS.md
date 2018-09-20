@@ -1,3 +1,7 @@
+## bigstatsr 0.7.1
+
+- `$bm()` and `$bm.desc()` have been added in order to get an `FBM` as a `filebacked.big.matrix`. This enables using {bigmemory} functions.
+
 ## bigstatsr 0.7.0
 
 - Type `float` added.

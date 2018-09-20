@@ -40,10 +40,12 @@ sub_bk <- function(path, replacement = "") {
 #'   - `$rds`: 'rds' file (that may not exist) corresponding to the 'bk' file
 #'   - `$is_saved`: whether this object stored in `$rds`?
 #'
-#' And two methods:
+#' And some methods:
 #'   - `$save()`: Save the FBM object in `$rds`. Returns the FBM.
 #'   - `add_columns(<ncol_add>)`: Add some columns to the FBM by appending the
 #'     backingfile with some data. Returns the FBM invisibly.
+#'   - `$bm()`: Get this object as a `filebacked.big.matrix`.
+#'   - `$bm.desc()`: Get this object as a `filebacked.big.matrix` descriptor.
 #'
 #' @examples
 #' X <- FBM(10, 10)
@@ -145,6 +147,37 @@ FBM_RC <- methods::setRefClass(
         "A Filebacked Big Matrix of type '%s' with %s rows and %s columns.\n",
         typeBM, .self$nrow, .self$ncol))
       invisible(.self)
+    },
+
+    bm.desc = function() {
+
+      if (!requireNamespace("bigmemory", quietly = TRUE))
+        stop2("Please install package {bigmemory}.")
+
+      dirname <- sub(file.path("", "$"), "", dirname(.self$backingfile))
+      n <- .self$nrow + 0
+      m <- .self$ncol + 0
+
+      new("big.matrix.descriptor",
+          description = list(
+            sharedType = "FileBacked",
+            filename   = basename(.self$backingfile),
+            dirname    = paste0(dirname, .Platform$file.sep),
+            totalRows  = n,
+            totalCols  = m,
+            rowOffset  = c(0, n),
+            colOffset  = c(0, m),
+            nrow       = n,
+            ncol       = m,
+            rowNames   = NULL,
+            colNames   = NULL,
+            type       = typeof(.self),
+            separated  = FALSE
+          ))
+    },
+    bm = function() {
+      desc <- .self$bm.desc()
+      bigmemory::attach.big.matrix(desc)
     }
   )
 )

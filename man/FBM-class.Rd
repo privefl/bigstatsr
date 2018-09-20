@@ -70,11 +70,13 @@ data of the FBM
 \item \code{$is_saved}: whether this object stored in \code{$rds}?
 }
 
-And two methods:
+And some methods:
 \itemize{
 \item \code{$save()}: Save the FBM object in \code{$rds}. Returns the FBM.
 \item \code{add_columns(<ncol_add>)}: Add some columns to the FBM by appending the
 backingfile with some data. Returns the FBM invisibly.
+\item \code{$bm()}: Get this object as a \code{filebacked.big.matrix}.
+\item \code{$bm.desc()}: Get this object as a \code{filebacked.big.matrix} descriptor.
 }
 }
 

@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.6.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.1</span>
       </span>
     </div>
 
@@ -104,50 +104,28 @@
 
     
     
-<p>I’m a fan of package <strong>bigmemory</strong>. It’s by far the most convenient solution I found for analyzing large genomic data in R on my computer. I’ve been using it for almost two years now and have also contributed some features.</p>
-<p>At first, package <strong>bigstatsr</strong> was using the <code>big.matrix</code> objects of package <strong>bigmemory</strong>. Yet, at some point, I felt the need to become independent of package <strong>bigmemory</strong>. As package <strong>bigstatsr</strong> will be a central tool of all my thesis work, I need to add whatever feature I want whenever I want to. Thus, I reimplemented an object very similar to the filebacked <code>big.matrix</code> object, called “FBM” (Filebacked Big Matrix, very original) in this package. These two formats are so similar that you can easily convert (without copying the data) between the two objects.</p>
-<p>In this vignette, I explain the main differences between my package <strong>bigstatsr</strong> and the packages of the <em>bigmemory</em> family.</p>
+<p>I’m a fan of package {bigmemory}. It’s by far the most convenient solution I found for analyzing large genomic data in R on my computer. I’ve been using it since early 2016 and have also contributed some features.</p>
+<p>At first, package {bigstatsr} was using the <code>big.matrix</code> objects of package {bigmemory}. Yet, at some point, I felt the need to become independent of package {bigmemory}. As package {bigstatsr} will be a central tool of all my thesis work, I need to add whatever feature I want whenever I want to. Thus, I reimplemented an object very similar to the filebacked <code>big.matrix</code> object, called “FBM” (Filebacked Big Matrix, very original) in this package. These two formats are so similar that you can easily convert (without copying the data) between the two objects.</p>
+<p>In this vignette, I explain the main differences between my package {bigstatsr} and the packages of the <em>bigmemory</em> family.</p>
 <div id="formats-and-types" class="section level2">
 <h2 class="hasAnchor">
 <a href="#formats-and-types" class="anchor"></a>Formats and types</h2>
 <div id="format" class="section level3">
 <h3 class="hasAnchor">
 <a href="#format" class="anchor"></a>Format</h3>
-<p>Package <strong>bigmemory</strong> provides 3 types of <code>big.matrix</code> objects:</p>
+<p>Package {bigmemory} provides 3 types of <code>big.matrix</code> objects:</p>
 <ul>
 <li>a “RAM” <code>big.matrix</code>, which is not shared between processes and use directly random access memory,</li>
 <li>a shared <code>big.matrix</code>, which uses some shared memory (still a mystery for me),</li>
 <li>a filebacked <code>big.matrix</code> (so, shared between processes), which stores the data on disk and access it via memory-mapping.</li>
 </ul>
-<p>I placed a lot of interest for shared matrices (filebacked or not). Yet, I encountered memory limitations with the shared <code>big.matrix</code> (non-filebacked). So, at some point, I was using only filebacked <code>big.matrix</code> objects. So, in bigstatsr, you will found only the <code>FBM</code> format, which is very similar to the filebacked <code>big.matrix</code> format. To prove it, let us convert from one to the other (without copying the backingfile).</p>
+<p>I placed a lot of interest for shared matrices (filebacked or not). Yet, I encountered memory limitations with the shared <code>big.matrix</code> (non-filebacked). So, at some point, I was using only filebacked <code>big.matrix</code> objects. So, in {bigstatsr}, you will found only the <code>FBM</code> format, which is very similar to the filebacked <code>big.matrix</code> format. To prove it, let us convert from one to the other (without copying the backingfile).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(bigmemory)
 <span class="kw">library</span>(bigstatsr)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">FBM2BM &lt;-<span class="st"> </span><span class="cf">function</span>(fbm) {
-  
-  new_desc &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">"big.matrix.descriptor"</span>,
-                  <span class="dt">description =</span> <span class="kw">list</span>(
-                    <span class="dt">sharedType =</span> <span class="st">"FileBacked"</span>,
-                    <span class="dt">filename   =</span> <span class="kw">basename</span>(fbm<span class="op">$</span>backingfile),
-                    <span class="dt">dirname    =</span> bigmemory<span class="op">:::</span><span class="kw">format_path</span>(<span class="kw">dirname</span>(fbm<span class="op">$</span>backingfile)),
-                    <span class="dt">totalRows  =</span> <span class="kw">as.double</span>(<span class="kw">nrow</span>(fbm)),
-                    <span class="dt">totalCols  =</span> <span class="kw">as.double</span>(<span class="kw">ncol</span>(fbm)),
-                    <span class="dt">rowOffset  =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(fbm)),
-                    <span class="dt">colOffset  =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">ncol</span>(fbm)),
-                    <span class="dt">nrow       =</span> <span class="kw">as.double</span>(<span class="kw">nrow</span>(fbm)),
-                    <span class="dt">ncol       =</span> <span class="kw">as.double</span>(<span class="kw">ncol</span>(fbm)),
-                    <span class="dt">rowNames   =</span> <span class="ot">NULL</span>,
-                    <span class="dt">colNames   =</span> <span class="ot">NULL</span>,
-                    <span class="dt">type       =</span> <span class="kw">typeof</span>(fbm),
-                    <span class="dt">separated  =</span> <span class="ot">FALSE</span>
-                  ))
-  
-  <span class="kw"><a href="http://www.rdocumentation.org/packages/bigmemory/topics/attach.big.matrix">attach.big.matrix</a></span>(new_desc)
-}
-
-<span class="co"># Create a temporary FBM</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a temporary FBM</span>
 fbm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/FBM-class.html">FBM</a></span>(<span class="dv">10</span>, <span class="dv">10</span>)
 fbm<span class="op">$</span>backingfile</code></pre></div>
-<pre><code>## [1] "/tmp/Rtmpb3ZCMJ/file125718dfe2ef.bk"</code></pre>
+<pre><code>## [1] "/tmp/Rtmp3FyttK/file78df48ff1d28.bk"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fbm[]</code></pre></div>
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 ##  [1,]    0    0    0    0    0    0    0    0    0     0
@@ -161,10 +139,10 @@ fbm<span class="op">$</span>backingfile</code></pre></div>
 ##  [9,]    0    0    0    0    0    0    0    0    0     0
 ## [10,]    0    0    0    0    0    0    0    0    0     0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Convert it to a big.matrix</span>
-bm &lt;-<span class="st"> </span><span class="kw">FBM2BM</span>(fbm)
+bm &lt;-<span class="st"> </span>fbm<span class="op">$</span><span class="kw">bm</span>()
 <span class="co"># Same backingfile</span>
 <span class="kw">paste0</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix">dir.name</a></span>(bm), <span class="kw"><a href="http://www.rdocumentation.org/packages/bigmemory/topics/big.matrix">file.name</a></span>(bm))</code></pre></div>
-<pre><code>## [1] "/tmp/Rtmpb3ZCMJ/file125718dfe2ef.bk"</code></pre>
+<pre><code>## [1] "/tmp/Rtmp3FyttK/file78df48ff1d28.bk"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Changing values of one changes the value of the other</span>
 bm[]</code></pre></div>
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
@@ -206,7 +184,7 @@ fbm2[]</code></pre></div>
 <div id="types" class="section level3">
 <h3 class="hasAnchor">
 <a href="#types" class="anchor"></a>Types</h3>
-<p>Package <strong>bigmemory</strong> handles many types:</p>
+<p>Package {bigmemory} handles many types:</p>
 <ul>
 <li>unsigned char (1-byte unsigned integer)</li>
 <li>char (1-byte signed integer)</li>
@@ -216,7 +194,7 @@ fbm2[]</code></pre></div>
 <li>double (double precision floating-point numbers)</li>
 <li>complex</li>
 </ul>
-<p>For now, package <strong>bigstatsr</strong> handles the following types:</p>
+<p>For now, package {bigstatsr} handles the following types:</p>
 <ul>
 <li>unsigned char</li>
 <li>unsigned short</li>
@@ -224,7 +202,7 @@ fbm2[]</code></pre></div>
 <li>float</li>
 <li>double</li>
 </ul>
-<p>Additionally, the unsigned char type is used in the <code>FBM.code256</code> format, which instead of accessing integer values ranging from 0 to 255, it uses some code to access 256 arbitrary different values. I make a lot of use of this format in my other R package <strong>bigsnpr</strong> in order to store genotype dosages. <!-- I have been thinking of using the unsigned short type to make a `FBM.code65536` in order to store 65536 different values. I would use it to store some strings in order to implement a "big.data.frame" feature (with no more than 65536 strings in it, unfortunately). Yet, as I'm not needing this right now, I haven't implemented it yet and I'm not sure I will. --></p>
+<p>Additionally, the unsigned char type is used in the <code>FBM.code256</code> format, which instead of accessing integer values ranging from 0 to 255, it uses some code to access 256 arbitrary different values. I make a lot of use of this format in my other R package {bigsnpr} in order to store genotype dosages. <!-- I have been thinking of using the unsigned short type to make a `FBM.code65536` in order to store 65536 different values. I would use it to store some strings in order to implement a "big.data.frame" feature (with no more than 65536 strings in it, unfortunately). Yet, as I'm not needing this right now, I haven't implemented it yet and I'm not sure I will. --></p>
 </div>
 </div>
 <div id="class" class="section level2">
@@ -235,7 +213,7 @@ fbm2[]</code></pre></div>
 <p>For FBMs, I use the nice idea of package <a href="https://github.com/phaverty/bigmemoryExtras"><strong>bigmemoryExtras</strong></a>. Basically, I use a Reference Class (RC) object with active binding. In this object, I store the external pointer <em>and</em> the information needed to create the pointer to the C++ object. The active binding makes this automatic so that the user never need to use <code><a href="http://www.rdocumentation.org/packages/bigmemory/topics/attach.big.matrix">attach.big.matrix()</a></code> or <code><a href="http://www.rdocumentation.org/packages/bigmemory/topics/attach.big.matrix">describe()</a></code> anymore (and no more session crash!).</p>
 <p>What this also means is that you can now serialize a FBM (for example, saving it in an rds file with <code>saveRDS()</code> or using it in a parallel algorithm). For instance, with a standard <code>big.matrix</code> object, you’ll need to pass the descriptor object in paralell algorithms:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/FBM-class.html">FBM</a></span>(<span class="dv">10</span>, <span class="dv">10</span>); X[] &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">length</span>(X))
-bm &lt;-<span class="st"> </span><span class="kw">FBM2BM</span>(X)</code></pre></div>
+bm &lt;-<span class="st"> </span>X<span class="op">$</span><span class="kw">bm</span>()</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(foreach)
 cl &lt;-<span class="st"> </span>parallel<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/parallel/topics/makeCluster">makeCluster</a></span>(<span class="dv">2</span>)
 doParallel<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/doParallel/topics/registerDoParallel">registerDoParallel</a></span>(cl)
@@ -255,14 +233,14 @@ bm.desc &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocu
   x &lt;-<span class="st"> </span>bigmemory<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/bigmemory/topics/attach.big.matrix">attach.big.matrix</a></span>(bm.desc)
   <span class="kw">sum</span>(x[, j])
 }</code></pre></div>
-<pre><code>##  [1]  6.55665962 -5.41985198 -4.31609509  0.04378482 -1.39907463
-##  [6] -0.62771112 -4.12186371 -2.36327743 -0.27567128 -1.49553425</code></pre>
+<pre><code>##  [1] -0.1416489  0.7355574 -2.0858679 -0.4226507 -3.1507446 -1.8896729
+##  [7]  2.7883123 -1.1986463 -2.8636521 -3.1650497</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You can directly pass FBMs, the address will be reattached automatically</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/foreach/topics/foreach">foreach</a></span>(<span class="dt">j =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">.combine =</span> <span class="st">'c'</span>) <span class="op">%dopar%</span><span class="st"> </span>{
   <span class="kw">sum</span>(X[, j])
 }</code></pre></div>
-<pre><code>##  [1]  6.55665962 -5.41985198 -4.31609509  0.04378482 -1.39907463
-##  [6] -0.62771112 -4.12186371 -2.36327743 -0.27567128 -1.49553425</code></pre>
+<pre><code>##  [1] -0.1416489  0.7355574 -2.0858679 -0.4226507 -3.1507446 -1.8896729
+##  [7]  2.7883123 -1.1986463 -2.8636521 -3.1650497</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">parallel<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/parallel/topics/makeCluster">stopCluster</a></span>(cl)</code></pre></div>
 </div>
 <div id="c-accessors" class="section level2">
@@ -293,8 +271,8 @@ NumericVector colsums_bm(SEXP pBigMat) {
   <span class="cf">return</span> res;
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_bm</span>(bm<span class="op">@</span>address)</code></pre></div>
-<pre><code>##  [1]  6.55665962 -5.41985198 -4.31609509  0.04378482 -1.39907463
-##  [6] -0.62771112 -4.12186371 -2.36327743 -0.27567128 -1.49553425</code></pre>
+<pre><code>##  [1] -0.1416489  0.7355574 -2.0858679 -0.4226507 -3.1507446 -1.8896729
+##  [7]  2.7883123 -1.1986463 -2.8636521 -3.1650497</code></pre>
 <p>Now, let us do it for an <code>FBM</code>.</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// [[Rcpp::depends(BH, bigstatsr)]]</span>
 <span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span>
@@ -318,9 +296,9 @@ NumericVector colsums_fbm(Environment fbm) {
   <span class="cf">return</span> res;
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_fbm</span>(X)</code></pre></div>
-<pre><code>##  [1]  6.55665962 -5.41985198 -4.31609509  0.04378482 -1.39907463
-##  [6] -0.62771112 -4.12186371 -2.36327743 -0.27567128 -1.49553425</code></pre>
-<p>So, the main difference is that <strong>bigmemory</strong> uses <code>macc[j][i]</code> whereas <code>FBM</code> objects use the same accessor in C++ as standard Rcpp matrices, <code>macc(i, j)</code>. So, it is easier to adapt existing Rcpp algorithms to be used for <code>FBM</code> objects, e.g. using templates. Note that there is also a sub-FBM accessor, so that you can also use the same algorithms on a subset of the FBM object. For example:</p>
+<pre><code>##  [1] -0.1416489  0.7355574 -2.0858679 -0.4226507 -3.1507446 -1.8896729
+##  [7]  2.7883123 -1.1986463 -2.8636521 -3.1650497</code></pre>
+<p>So, the main difference is that {bigmemory} uses <code>macc[j][i]</code> whereas <code>FBM</code> objects use the same accessor in C++ as standard Rcpp matrices, <code>macc(i, j)</code>. So, it is easier to adapt existing Rcpp algorithms to be used for <code>FBM</code> objects, e.g. using templates. Note that there is also a sub-FBM accessor, so that you can also use the same algorithms on a subset of the FBM object. For example:</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// [[Rcpp::depends(BH, bigstatsr)]]</span>
 <span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span>
 
@@ -368,13 +346,13 @@ NumericVector colsums_fbm2_sub(Environment fbm,
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mat &lt;-<span class="st"> </span>X[]) </code></pre></div>
 <pre><code>## [1] "matrix"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_matrix</span>(mat)</code></pre></div>
-<pre><code>##  [1]  6.55665962 -5.41985198 -4.31609509  0.04378482 -1.39907463
-##  [6] -0.62771112 -4.12186371 -2.36327743 -0.27567128 -1.49553425</code></pre>
+<pre><code>##  [1] -0.1416489  0.7355574 -2.0858679 -0.4226507 -3.1507446 -1.8896729
+##  [7]  2.7883123 -1.1986463 -2.8636521 -3.1650497</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_fbm2</span>(X)</code></pre></div>
-<pre><code>##  [1]  6.55665962 -5.41985198 -4.31609509  0.04378482 -1.39907463
-##  [6] -0.62771112 -4.12186371 -2.36327743 -0.27567128 -1.49553425</code></pre>
+<pre><code>##  [1] -0.1416489  0.7355574 -2.0858679 -0.4226507 -3.1507446 -1.8896729
+##  [7]  2.7883123 -1.1986463 -2.8636521 -3.1650497</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_fbm2_sub</span>(X, <span class="kw"><a href="../reference/seq-dim.html">rows_along</a></span>(X), <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)</code></pre></div>
-<pre><code>## [1]  6.55665962 -5.41985198 -4.31609509  0.04378482 -1.39907463 -0.62771112</code></pre>
+<pre><code>## [1] -0.1416489  0.7355574 -2.0858679 -0.4226507 -3.1507446 -1.8896729</code></pre>
 </div>
 <div id="apply-an-r-function" class="section level2">
 <h2 class="hasAnchor">
@@ -388,7 +366,7 @@ m &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentat
   true &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">rowSums</span>(m[]<span class="op">^</span><span class="dv">2</span>))
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.040       0.032       0.072</code></pre>
+##       0.032       0.037       0.069</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using package biganalytics (of the bigmemory family)</span>
 <span class="kw">system.time</span>(
   test1 &lt;-<span class="st"> </span>biganalytics<span class="op">::</span><span class="kw">apply</span>(m, <span class="dv">1</span>, <span class="cf">function</span>(x) {
@@ -396,10 +374,10 @@ m &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentat
   })
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       3.704       0.019       3.729</code></pre>
+##       3.500       0.020       3.524</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(test1, true)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>The <strong>biganalytics</strong> strategy is to make a loop, which is slow because there are a lot of elements to loop through. Package <strong>bigstatsr</strong> uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results.</p>
+<p>The {biganalytics} strategy is to make a loop, which is slow because there are a lot of elements to loop through. Package {bigstatsr} uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results.</p>
 <p><img src="https://privefl.github.io/useR-2017/split-apply-combine.svg" width="70%" style="display: block; margin: auto;"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_copy.html">big_copy</a></span>(m)
 <span class="co"># Here, I split the rows, which is NOT the default</span>
@@ -409,7 +387,7 @@ m &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentat
   }, <span class="dt">a.combine =</span> <span class="st">'c'</span>, <span class="dt">ind =</span> <span class="kw"><a href="../reference/seq-dim.html">rows_along</a></span>(m2), <span class="dt">block.size =</span> <span class="dv">1000</span>)
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.141       0.013       0.154</code></pre>
+##       0.116       0.019       0.135</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(test2, true)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Here, I split the columns (the default)</span>
@@ -419,7 +397,7 @@ m &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentat
   }, <span class="dt">a.combine =</span> <span class="st">'plus'</span>, <span class="dt">block.size =</span> <span class="dv">10</span>)
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.067       0.004       0.071</code></pre>
+##       0.060       0.001       0.061</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">sqrt</span>(test3), true)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
@@ -434,20 +412,31 @@ a &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">
   true &lt;-<span class="st"> </span>m[] <span class="op">%*%</span><span class="st"> </span>a
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.194       0.068       0.262</code></pre>
+##       0.138       0.071       0.210</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(bigalgebra)
 <span class="kw">system.time</span>(
   test &lt;-<span class="st"> </span>m <span class="op">%*%</span><span class="st"> </span>a
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.118       0.001       0.121</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_copy.html">big_copy</a></span>(m)
+##       0.077       0.001       0.079</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">identical</span>(test[], true))
+
+m2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_copy.html">big_copy</a></span>(m)
 <span class="co"># Function built on top of big_apply</span>
 <span class="kw">system.time</span>(
   test2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_prodMat.html">big_prodMat</a></span>(m2, a)
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.252       0.095       0.352</code></pre>
+##       0.189       0.063       0.253</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">identical</span>(test2, true))
+
+<span class="co"># You could use {bigalgebra} if you don't need subsetting</span>
+<span class="kw">system.time</span>(
+  test3 &lt;-<span class="st"> </span>m2<span class="op">$</span><span class="kw">bm</span>() <span class="op">%*%</span><span class="st"> </span>a
+)</code></pre></div>
+<pre><code>## utilisateur     système      écoulé 
+##       0.108       0.050       0.158</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">identical</span>(test3[], true))</code></pre></div>
 <p>Making functions (not operators) makes it possible to use subsetting.</p>
 </div>
   </div>
