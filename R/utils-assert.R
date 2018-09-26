@@ -107,8 +107,13 @@ assert_lengths <- function(...) {
 
 # INTEGERS
 assert_int <- function(x) {
-  if (!is.null(x) && any(x != trunc(x)))
-    stop2("'%s' should contain only integers.", deparse(substitute(x)))
+  if (!is.null(x)) {
+    var_name <- deparse(substitute(x))
+    is_int <- tryCatch(all(x == trunc(x)), error = function(e) {
+      stop2("'%s' should be numeric.", var_name)
+    })
+    if (!is_int) stop2("'%s' should contain only integers.", var_name)
+  }
 }
 
 ################################################################################

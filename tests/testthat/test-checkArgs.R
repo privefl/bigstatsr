@@ -16,7 +16,8 @@ test_that("checking of BM (desc) arguments", {
   expect_null( (function(X) check_args())(X))
   expect_null( (function(X) check_args())(X.code))
   # X.code
-  expect_error((function(X.code) check_args())(X))
+  expect_error((function(X.code) check_args())(X),
+               "'X.code' is not of class 'FBM.code256'")
   expect_null( (function(X.code) check_args())(X.code))
 })
 
@@ -32,23 +33,27 @@ ind4 <- seq(1, 10, by = 0.8)
 
 test_that("checking of vector arguments", {
   # y01.train
-  expect_error((function(y01.train) check_args())(y))
+  expect_error((function(y01.train) check_args())(y),
+               "'y01.train' should be composed only of 0s and 1s")
   expect_null( (function(y01.train) check_args())(y01))
   # ind.train
   expect_null( (function(ind.train) check_args())(ind1))
-  expect_error((function(ind.train) check_args())(ind2))
-  expect_error((function(ind.train) check_args())(ind3))
-  expect_error((function(ind.train) check_args())(ind4))
+  expect_error((function(ind.train) check_args())(ind2), "only positive")
+  expect_error((function(ind.train) check_args())(ind3), "only positive")
+  expect_error((function(ind.train) check_args())(ind4), "only integers")
+  expect_error((function(ind.train) check_args())(c("a", "b")), "be numeric")
   # ind.row
   expect_null( (function(ind.row) check_args())(ind1))
-  expect_error((function(ind.row) check_args())(ind2))
-  expect_error((function(ind.row) check_args())(ind3))
-  expect_error((function(ind.row) check_args())(ind4))
+  expect_error((function(ind.row) check_args())(ind2), "only positive")
+  expect_error((function(ind.row) check_args())(ind3), "only positive")
+  expect_error((function(ind.row) check_args())(ind4), "only integers")
+  expect_error((function(ind.row) check_args())(c("a", "b")), "be numeric")
   # ind.col
   expect_null( (function(ind.col) check_args())(ind1))
-  expect_error((function(ind.col) check_args())(ind2))
-  expect_error((function(ind.col) check_args())(ind3))
-  expect_error((function(ind.col) check_args())(ind4))
+  expect_error((function(ind.col) check_args())(ind2), "only positive")
+  expect_error((function(ind.col) check_args())(ind3), "only positive")
+  expect_error((function(ind.col) check_args())(ind4), "only integers")
+  expect_error((function(ind.col) check_args())(c("a", "b")), "be numeric")
 })
 
 ################################################################################
