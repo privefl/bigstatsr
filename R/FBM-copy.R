@@ -33,7 +33,7 @@ big_copy <- function(X, ind.row = rows_along(X),
                      backingfile = tempfile(),
                      block.size = block_size(length(ind.row))) {
 
-  if (inherits(X, "FBM.code256")) {
+  if (inherits(X, "FBM.code256") && type == "unsigned char") {
     args <- as.list(environment())
     args$X <- X$as.FBM()
     res <- do.call(big_copy, args)

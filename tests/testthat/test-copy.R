@@ -15,6 +15,7 @@ test_that("Copy of same type", {
   for (t in c(TEST.TYPES, "FBM.code256")) {
 
     if (t == "FBM.code256") {
+
       X <- big_copy(x0, type = "raw")
       X[] <- as.raw(0:255)
       X <- add_code256(X, code = as.vector(x0))
@@ -33,7 +34,15 @@ test_that("Copy of same type", {
       expect_s4_class(X3, "FBM.code256")
       expect_false(X3$backingfile == X$backingfile)
       expect_equal(X3[], X[ind, ind])
+
+      X2 <- big_copy(X, type = "double")
+      expect_s4_class(X2, "FBM")
+      expect_failure(expect_s4_class(X2, "FBM.code256"))
+      expect_false(X2$backingfile == X$backingfile)
+      expect_equal(X2[], X[])
+
     } else {
+
       X <- big_copy(x0, type = t)
       expect_s4_class(X, "FBM")
 
