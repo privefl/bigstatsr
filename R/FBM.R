@@ -157,7 +157,7 @@ FBM_RC <- methods::setRefClass(
       dirname <- sub(file.path("", "$"), "", dirname(.self$backingfile))
       n <- .self$nrow + 0
       m <- .self$ncol + 0
-      type <- typeof(.self)
+      FBM_type <- typeof(.self)
 
       new("big.matrix.descriptor",
           description = list(
@@ -172,7 +172,7 @@ FBM_RC <- methods::setRefClass(
             ncol       = m,
             rowNames   = NULL,
             colNames   = NULL,
-            type       = `if`(type == "unsigned char", "raw", type),
+            type       = `if`(FBM_type == "unsigned char", "raw", FBM_type),
             separated  = FALSE
           ))
     },
