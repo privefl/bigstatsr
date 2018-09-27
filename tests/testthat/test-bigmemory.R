@@ -4,10 +4,10 @@ context("BIGMEMORY")
 
 ################################################################################
 
-for (t in c("integer", "float", "double")) {
+for (t in c("raw", "integer", "float", "double")) {
 
   X <- FBM(10, 10, type = t)
-  X[1] <- NA
+  if (t != "raw") X[1] <- NA
 
   # Conversion works
   expect_s4_class(X$bm.desc(), "big.matrix.descriptor")
