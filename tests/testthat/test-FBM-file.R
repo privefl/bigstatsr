@@ -9,6 +9,8 @@ test_that("$save() works", {
   expect_false(X$is_saved)
   X$save()
   expect_true(X$is_saved)
+  X <- big_attach(X$rds)
+  expect_true(X$is_saved)
 })
 
 ################################################################################
