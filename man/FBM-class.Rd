@@ -67,7 +67,7 @@ C++ object, to be used as a \code{XPtr<FBM>} in C++ code
 \item \code{$backingfile} or \code{$bk}: File with extension 'bk' that stores the numeric
 data of the FBM
 \item \code{$rds}: 'rds' file (that may not exist) corresponding to the 'bk' file
-\item \code{$is_saved}: whether this object stored in \code{$rds}?
+\item \code{$is_saved}: whether this object is stored in \code{$rds}?
 }
 
 And some methods:

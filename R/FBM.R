@@ -38,7 +38,7 @@ sub_bk <- function(path, replacement = "") {
 #'   - `$backingfile` or `$bk`: File with extension 'bk' that stores the numeric
 #'     data of the FBM
 #'   - `$rds`: 'rds' file (that may not exist) corresponding to the 'bk' file
-#'   - `$is_saved`: whether this object stored in `$rds`?
+#'   - `$is_saved`: whether this object is stored in `$rds`?
 #'
 #' And some methods:
 #'   - `$save()`: Save the FBM object in `$rds`. Returns the FBM.
@@ -72,7 +72,6 @@ FBM_RC <- methods::setRefClass(
     ncol = "numeric",
     type = "integer",
     backingfile = "character",
-    is_saved = "logical",
 
     #### Active bindings
     # Same idea as in package phaverty/bigmemoryExtras
@@ -87,7 +86,8 @@ FBM_RC <- methods::setRefClass(
     },
 
     bk = function() .self$backingfile,
-    rds = function() sub_bk(.self$bk, ".rds")
+    rds = function() sub_bk(.self$bk, ".rds"),
+    is_saved = function() file.exists(.self$rds)
   ),
 
   methods = list(
@@ -106,7 +106,6 @@ FBM_RC <- methods::setRefClass(
       }
 
       .self$backingfile <- normalizePath(bkfile)
-      .self$is_saved    <- FALSE
       .self$nrow        <- nrow
       .self$ncol        <- ncol
       .self$type        <- ALL.TYPES[type]  # keep int and string
@@ -120,7 +119,6 @@ FBM_RC <- methods::setRefClass(
 
     save = function() {
       saveRDS(.self, .self$rds)
-      .self$is_saved <- TRUE
       .self
     },
 
