@@ -231,11 +231,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
   if (nlambda < 2) stop("nlambda must be at least 2")
 
-  if (any(is.na(y.train)))
-    stop(paste("Missing data (NA's) detected. Take actions",
-               "(e.g., removing cases, removing features, imputation)",
-               "to eliminate missing data before fitting the model."))
-
   if (class(y.train) != "numeric")
     tryCatch(y.train <- as.numeric(y.train), error = function(e)
       stop("y.train must numeric or able to be coerced to numeric"))
@@ -244,7 +239,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
   l.ind.sets <- split(seq_along(ind.sets), factor(ind.sets, levels = 1:K))
   if (family == "binomial") {
-    y.train <- transform_levels(y.train)
     tmp <- sapply(l.ind.sets, function(ind) {
       null_pred(y.train[-ind], base.train[-ind])
     })
@@ -252,7 +246,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     assert_lengths(b0, 1:K)
     y_null.train <- tmp[2, ]
   } else {
-    assert_multiple(y.train)
     y.train <- y.train - base.train
     y_null.train <- sapply(l.ind.sets, function(ind) mean(y.train[-ind]))
   }

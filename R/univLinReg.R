@@ -35,7 +35,7 @@ big_univLinReg <- function(X, y.train,
                            thr.eigval = 1e-4,
                            ncores = 1) {
 
-  check_args(y.train = "assert_multiple(y.train)")
+  check_args()
 
   n <- length(ind.train)
   covar.train <- cbind(rep(1, n), covar.train)

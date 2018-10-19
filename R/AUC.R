@@ -29,10 +29,10 @@
 #' set.seed(1)
 #'
 #' AUC(c(0, 0), 0:1) # Equality of scores
-#' AUC(c(0.2, 0.1, 1), c(-1, -1, 1)) # Perfect AUC
+#' AUC(c(0.2, 0.1, 1), c(0, 0, 1)) # Perfect AUC
 #' x <- rnorm(100)
 #' z <- rnorm(length(x), x, abs(x))
-#' y <- sign(z)
+#' y <- as.numeric(z > 0)
 #' print(AUC(x, y))
 #' print(AUCBoot(x, y))
 #'
@@ -65,10 +65,10 @@ round2 <- function(x, digits = NULL) `if`(is.null(digits), x, round(x, digits))
 AUC <- function(pred, target, digits = NULL) {
 
   assert_lengths(pred, target)
+  assert_noNA(pred)
+  assert_01(target)
 
-  y <- as.logical(transform_levels(target))
-
-  round2(AUC2(pred, y), digits)
+  round2(AUC2(pred, as.logical(target)), digits)
 }
 
 ################################################################################
@@ -79,9 +79,11 @@ AUC <- function(pred, target, digits = NULL) {
 AUCBoot <- function(pred, target, nboot = 1e4, seed = NA, digits = NULL) {
 
   assert_lengths(pred, target)
+  assert_noNA(pred)
+  assert_01(target)
 
-  y <- as.logical(transform_levels(target))
-  n <- length(y)
+  y <- as.logical(target)
+  n <- length(target)
 
   if (!is.na(seed)) {
     # http://stackoverflow.com/a/14324316/6103040

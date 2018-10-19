@@ -37,6 +37,7 @@ check_args <- function(...) {
         X            = "assert_class(X, 'FBM'); assert_noNA(X)",
         X.code       =
           "assert_class(X.code, 'FBM.code256'); assert_noNA(X.code)",
+        y.train      = "assert_nona(y.train); assert_multiple(y.train)",
         y01.train    = "assert_01(y01.train)",
         ind.train    = "assert_int(ind.train); assert_pos(ind.train)",
         ind.row      = "assert_int(ind.row);   assert_pos(ind.row)",
@@ -44,9 +45,9 @@ check_args <- function(...) {
         ncores       = "assert_cores(ncores)",
         fun.scaling  = "assert_args(fun.scaling, c('ind.row', 'ind.col'))",
         covar.train  =
-          "if (!is.null(covar.train)) assert_class(covar.train, 'matrix')",
+          "assert_class_or_null(covar.train, 'matrix'); assert_nona(covar.train)",
         covar.row    =
-          "if (!is.null(covar.row)) assert_class(covar.row, 'matrix')"
+          "assert_class_or_null(covar.row,   'matrix'); assert_nona(covar.row)"
       )
     )
 
@@ -59,8 +60,13 @@ check_args <- function(...) {
 
 # MISSING VALUES
 assert_noNA <- function(x) {
-  lim <- min(1000, length(x))
-  if (sum(is.na(x[seq_len(lim)])))
+  lim <- min(1e6, length(x))
+  if (anyNA(x[seq_len(lim)]))
+    stop2("You can't have missing values in '%s'.", deparse(substitute(x)))
+}
+
+assert_nona <- function(x) {
+  if (anyNA(x))
     stop2("You can't have missing values in '%s'.", deparse(substitute(x)))
 }
 
@@ -107,20 +113,22 @@ assert_lengths <- function(...) {
 
 # INTEGERS
 assert_int <- function(x) {
-  if (!is.null(x)) {
+  if (!is.null(x) && !is.integer(x)) {
     var_name <- deparse(substitute(x))
-    is_int <- tryCatch(all(x == trunc(x)), error = function(e) {
+    no_int <- tryCatch(which(x != trunc(x)), error = function(e) {
       stop2("'%s' should be numeric.", var_name)
     })
-    if (!is_int) stop2("'%s' should contain only integers.", var_name)
+    if (length(no_int) > 0)
+      stop2("'%s' should contain only integers.", var_name)
   }
 }
 
 ################################################################################
 
 # POSITIVE INDICES
-assert_pos <- function(x)  {
-  if (!all(x > 0))
+assert_pos <- function(x) {
+  all_pos <- isTRUE(all(x > 0))
+  if (!all_pos)
     stop2("'%s' should have only positive values.", deparse(substitute(x)))
 }
 
@@ -128,8 +136,9 @@ assert_pos <- function(x)  {
 
 # 0s AND 1s
 assert_01 <- function(x)  {
-  if (!all(x %in% 0:1))
-    stop2("'%s' should be composed only of 0s and 1s.", deparse(substitute(x)))
+  all_01 <- isTRUE(all.equal(sort(unique(x), na.last = TRUE), 0:1))
+  if (!all_01)
+    stop2("'%s' should be composed of 0s and 1s.", deparse(substitute(x)))
 }
 
 assert_multiple <- function(x) {
@@ -149,6 +158,11 @@ assert_multiple <- function(x) {
 assert_class <- function(x, class)  {
   if (!inherits(x, class))
     stop2("'%s' is not of class '%s'.", deparse(substitute(x)), class)
+}
+
+assert_class_or_null <- function(x, class)  {
+  if (!is.null(x) && !inherits(x, class))
+    stop2("'%s' is not 'NULL' or of class '%s'.", deparse(substitute(x)), class)
 }
 
 ################################################################################

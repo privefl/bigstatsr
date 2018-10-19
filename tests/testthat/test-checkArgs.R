@@ -30,29 +30,33 @@ ind1 <- 1:10
 ind2 <- -c(1:10)
 ind3 <- -10:10
 ind4 <- seq(1, 10, by = 0.8)
+ind5 <- ind1; ind5[10] <- NA
 
 test_that("checking of vector arguments", {
   # y01.train
   expect_error((function(y01.train) check_args())(y),
-               "'y01.train' should be composed only of 0s and 1s")
+               "'y01.train' should be composed of 0s and 1s")
   expect_null( (function(y01.train) check_args())(y01))
   # ind.train
   expect_null( (function(ind.train) check_args())(ind1))
   expect_error((function(ind.train) check_args())(ind2), "only positive")
   expect_error((function(ind.train) check_args())(ind3), "only positive")
   expect_error((function(ind.train) check_args())(ind4), "only integers")
+  expect_error((function(ind.train) check_args())(ind5), "only positive")
   expect_error((function(ind.train) check_args())(c("a", "b")), "be numeric")
   # ind.row
   expect_null( (function(ind.row) check_args())(ind1))
   expect_error((function(ind.row) check_args())(ind2), "only positive")
   expect_error((function(ind.row) check_args())(ind3), "only positive")
   expect_error((function(ind.row) check_args())(ind4), "only integers")
+  expect_error((function(ind.row) check_args())(ind5), "only positive")
   expect_error((function(ind.row) check_args())(c("a", "b")), "be numeric")
   # ind.col
   expect_null( (function(ind.col) check_args())(ind1))
   expect_error((function(ind.col) check_args())(ind2), "only positive")
   expect_error((function(ind.col) check_args())(ind3), "only positive")
   expect_error((function(ind.col) check_args())(ind4), "only integers")
+  expect_error((function(ind.col) check_args())(ind5), "only positive")
   expect_error((function(ind.col) check_args())(c("a", "b")), "be numeric")
 })
 
@@ -78,6 +82,7 @@ test_that("checking of function arguments", {
 ncores <- getOption("bigstatsr.ncores.max")
 covar1 <- NULL
 covar2 <- matrix(0, 10, 2)
+covar3 <- covar2; covar3[10] <- NA
 
 test_that("checking of other arguments", {
   # ncores
@@ -91,11 +96,13 @@ test_that("checking of other arguments", {
   # covar.train
   expect_null( (function(covar.train) check_args())(covar1))
   expect_null( (function(covar.train) check_args())(covar2))
-  expect_error((function(covar.train) check_args())(ind1))
+  expect_error((function(covar.train) check_args())(covar3), "missing values")
+  expect_error((function(covar.train) check_args())(ind1), "class 'matrix'")
   # covar.row
   expect_null( (function(covar.row) check_args())(covar1))
   expect_null( (function(covar.row) check_args())(covar2))
-  expect_error((function(covar.row) check_args())(ind1))
+  expect_error((function(covar.row) check_args())(covar3), "missing values")
+  expect_error((function(covar.row) check_args())(ind1), "class 'matrix'")
 })
 
 ################################################################################

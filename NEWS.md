@@ -1,3 +1,9 @@
+## bigstatsr 0.7.3
+
+- Check of missing values for input vectors (indices and targets) and matrices (covariables).
+
+- `AUC()` is now stricter: it accepts only 0s and 1s for `target`.
+
 ## bigstatsr 0.7.1
 
 - `$bm()` and `$bm.desc()` have been added in order to get an `FBM` as a `filebacked.big.matrix`. This enables using {bigmemory} functions.

@@ -14,7 +14,10 @@ x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 set <- sample(M, size = m)
 eff <- rnorm(m)
 s <- drop(scale(x[, set]) %*% eff) / m
-y <- as.numeric((s + rnorm(N) / 10) > 0)
+y0 <- s + rnorm(N) / 10
+y <- as.numeric(y0 > 0)
+y2 <- y; y2[] <- 0
+y3 <- y; y3[10] <- NA
 
 covar0 <- matrix(rnorm(N * 3), N)
 lcovar <- list(NULL, covar0)
@@ -27,6 +30,13 @@ test_that("can be used with a subset of samples", {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in sample(lcovar, 1)) {
+
+      expect_error(big_spLogReg(X, y0, covar.train = covar, ncores = test_cores()),
+                   "'y01.train' should be composed of 0s and 1s.", fixed = TRUE)
+      expect_error(big_spLogReg(X, y2, covar.train = covar, ncores = test_cores()),
+                   "'y01.train' should be composed of 0s and 1s.", fixed = TRUE)
+      expect_error(big_spLogReg(X, y3, covar.train = covar, ncores = test_cores()),
+                   "'y01.train' should be composed of 0s and 1s.", fixed = TRUE)
 
       ind <- sample(N, N / 2)
 

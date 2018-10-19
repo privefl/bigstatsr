@@ -43,10 +43,10 @@ one being greater than the other.
 set.seed(1)
 
 AUC(c(0, 0), 0:1) # Equality of scores
-AUC(c(0.2, 0.1, 1), c(-1, -1, 1)) # Perfect AUC
+AUC(c(0.2, 0.1, 1), c(0, 0, 1)) # Perfect AUC
 x <- rnorm(100)
 z <- rnorm(length(x), x, abs(x))
-y <- sign(z)
+y <- as.numeric(z > 0)
 print(AUC(x, y))
 print(AUCBoot(x, y))
 

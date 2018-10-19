@@ -17,6 +17,7 @@ s <- drop(scale(x[, set]) %*% eff) / m
 y <- s + rnorm(N) / 10
 y2 <- (y > 0)
 y3 <- y; y3[] <- 0
+y4 <- y; y4[10] <- NA
 
 covar0 <- matrix(rnorm(N * 3), N)
 lcovar <- list(NULL, covar0)
@@ -30,10 +31,12 @@ test_that("can be used with a subset of samples", {
 
     for (covar in sample(lcovar, 1)) {
 
-      expect_error(big_spLinReg(X, y3, covar.train = covar, ncores = test_cores()),
-                   "'y.train' should be composed of different values.", fixed = TRUE)
       expect_warning(big_spLinReg(X, y2, covar.train = covar, ncores = test_cores()),
                      "'y.train' is composed of only two different levels.", fixed = TRUE)
+      expect_error(big_spLinReg(X, y3, covar.train = covar, ncores = test_cores()),
+                   "'y.train' should be composed of different values.", fixed = TRUE)
+      expect_error(big_spLinReg(X, y4, covar.train = covar, ncores = test_cores()),
+                   "You can't have missing values in 'y.train'.", fixed = TRUE)
 
       ind <- sample(N, N / 2)
       alphas <- c(runif(1, min = 0.01, max = 1), 1)
