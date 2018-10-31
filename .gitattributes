@@ -1,2 +1,2 @@
-docs/* linguist-documentation
-man/* linguist-documentation
+docs/* linguist-detectable=false
+man/* linguist-detectable=false
