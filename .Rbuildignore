@@ -11,6 +11,7 @@
 ^tmp-docs$
 ^tmp-results$
 ^tmp-data$
+^tmp-SO$
 ^vignettes$
 ^docs$
 ^_pkgdown\.yml$

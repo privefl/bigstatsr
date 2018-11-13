@@ -11,7 +11,7 @@ set.seed(SEED)
 to_gen <- function(x) {
 
   if (gen == "scalar") {
-    x[1]
+    `if`(typeof(x) == "double", x[1]^2, x[1])
   } else if (gen == "vector") {
     x
   } else {
