@@ -7,37 +7,63 @@ X[1:5, 1:5]
 y <- bcTCGA$y
 hist(y)
 
-ind.train <- sample(nrow(X), 400)
-ind.test  <- setdiff(1:nrow(X), ind.train)
+timing <- function(expr) system.time(expr)[3]
 
-library(glmnet)
-mod_all <- glmnet(X[ind.train, ], y[ind.train])
-preds <- predict(mod_all, X[ind.test, ])
-rmse <- colMeans(sweep(preds, 1, y[ind.test], '-')^2)
+RMSE <- function(pred, y.test) {
+  stopifnot(length(pred) == length(y.test))
+  mean((pred - y.test)^2)
+}
 
-mod_cv <- cv.glmnet(X[ind.train, ], y[ind.train])
-lambdas <- c(mod_cv$lambda.1se, mod_cv$lambda.min)
+set.seed(1)
+res_all <- replicate(200, simplify = FALSE, {
 
-plot(mod_all$lambda, rmse, pch = 20,
-     log = "x", ylim = c(0, max(rmse)))
-points(mod_cv$lambda, mod_cv$cvm, pch = 20, col = 4)
-abline(v = lambdas, col = 2:3)
+  ind.train <- sample(nrow(X), 400)
+  ind.test  <- setdiff(1:nrow(X), ind.train)
 
-preds_1se <- predict(mod_cv, X[ind.test, ], s = "lambda.1se")
-preds_min <- predict(mod_cv, X[ind.test, ], s = "lambda.min")
+  library(glmnet)
+  t_all <- timing(mod_all <- glmnet(X[ind.train, ], y[ind.train]))
+  preds_all <- predict(mod_all, X[ind.test, ])
+  rmse_all <- apply(preds_all, 2, RMSE, y[ind.test])
 
-(rmse_2 <- colMeans(sweep(preds_2, 1, y[ind.test], '-')^2))
-abline(h = rmse_2, col = 2:3)
+  t_cv <- timing(mod_cv <- cv.glmnet(X[ind.train, ], y[ind.train]))
+  preds_1se <- predict(mod_cv, X[ind.test, ], s = "lambda.1se")
+  rmse_1se <- RMSE(preds_1se, y[ind.test])
+  preds_min <- predict(mod_cv, X[ind.test, ], s = "lambda.min")
+  rmse_min <- RMSE(preds_min, y[ind.test])
 
-library(bigstatsr)
-X2 <- as_FBM(X)
-mod <- big_spLinReg(X2, y[ind.train], ind.train)
-preds_CMSA <- predict(mod, X2, ind.test)
-(rmse_CMSA <- mean((preds_CMSA - y[ind.test])^2))
-abline(h = rmse_CMSA, col = 5)
+  library(bigstatsr)
+  t_CMSA <- timing({
+    X2 <- as_FBM(X)
+    mod_CMSA <- big_spLinReg(X2, y[ind.train], ind.train)
+  })
+  preds_CMSA <- predict(mod_CMSA, X2, ind.test)
+  rmse_CMSA <- RMSE(preds_CMSA, y[ind.test])
 
-cor(cbind(preds_1se, preds_min, preds_CMSA))
+  library(glmnetUtils)
+  ALPHA <- c(1, 0.5, 0.1)
+  t_cva <- timing(mod_cva <- cva.glmnet(X[ind.train, ], y[ind.train], alpha = ALPHA))
+  alpha <- ALPHA[which.min(sapply(mod_cva$modlist, function(mod) min(mod$cvm)))]
+  rmse_cva <- RMSE(predict(mod_cva, X[ind.test, ], alpha = alpha), y[ind.test])
 
-library(glmnetUtils)
-mod_cva <- cva.glmnet(X[ind.train, ], y[ind.train])
-plot(mod_cva)
+  t_CMSA2 <- timing({
+    X2 <- as_FBM(X)
+    mod_CMSA2 <- big_spLinReg(X2, y[ind.train], ind.train, alphas = ALPHA)
+  })
+  preds_CMSA2 <- predict(mod_CMSA2, X2, ind.test)
+  rmse_CMSA2 <- RMSE(preds_CMSA2, y[ind.test])
+
+  tibble::tribble(
+    ~method,        ~timing,  ~rmse,
+    "glmnet_best",  t_all,    min(rmse_all),
+    "glmnet_min",   t_cv,     rmse_1se,
+    "glmnet_1se",   t_cv,     rmse_min,
+    "CMSA",         t_CMSA,   rmse_CMSA,
+    "glmnet_cva",   t_cva,    rmse_cva,
+    "CMSA2",        t_CMSA2,  rmse_CMSA2
+  )
+
+})
+
+res <- do.call(rbind, res_all)
+res$run_number <- rep(seq_along(res_all), each = 6)
+res
