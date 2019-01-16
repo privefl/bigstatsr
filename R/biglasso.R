@@ -366,7 +366,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #' (e.g. using `predict` followed by `rowMeans`).
 #'
 #' @inheritParams bigstatsr-package
-#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family
+#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family -base.train -alphas -nlambda -nlam.min -n.abort -dfmax
 #'
 #' @return Return an object of class `big_sp_best_list` (a list of K elements),
 #'   which has a method `predict` that can compute K vectors of predictions,
@@ -392,13 +392,21 @@ big_spLinReg <- function(X, y.train,
                          ind.train = rows_along(X),
                          ind.col = cols_along(X),
                          covar.train = NULL,
+                         base.train = NULL,
+                         alphas = 1,
+                         nlambda = 200,
+                         nlam.min = 50,
+                         n.abort = 10,
+                         dfmax = 50e3,
                          ncores = 1,
                          ...) {
 
   check_args()
 
-  COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
-                     family = "gaussian", ncores = ncores, ...)
+  args <- c(as.list(environment()), list(...))
+  args[["family"]] <- "gaussian"
+
+  do.call(COPY_biglasso_main, args)
 }
 
 ################################################################################
@@ -406,7 +414,7 @@ big_spLinReg <- function(X, y.train,
 #' Sparse logistic regression
 #'
 #' @inheritParams bigstatsr-package
-#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family
+#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family -base.train -alphas -nlambda -nlam.min -n.abort -dfmax
 #'
 #' @inherit big_spLinReg return description details seealso references
 #'
@@ -417,13 +425,23 @@ big_spLogReg <- function(X, y01.train,
                          ind.train = rows_along(X),
                          ind.col = cols_along(X),
                          covar.train = NULL,
+                         base.train = NULL,
+                         alphas = 1,
+                         nlambda = 200,
+                         nlam.min = 50,
+                         n.abort = 10,
+                         dfmax = 50e3,
                          ncores = 1,
                          ...) {
 
   check_args()
 
-  COPY_biglasso_main(X, y01.train, ind.train, ind.col, covar.train,
-                     family = "binomial", ncores = ncores, ...)
+  args <- c(as.list(environment()), list(...))
+  args[["y.train"]]   <- y01.train
+  args[["y01.train"]] <- NULL
+  args[["family"]]    <- "binomial"
+
+  do.call(COPY_biglasso_main, args)
 }
 
 ################################################################################
