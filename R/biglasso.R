@@ -84,7 +84,7 @@ null_pred <- function(y, base) {
 #'
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
-                               eps, max.iter, dfmax, warn,
+                               eps, max.iter, dfmax,
                                ind.val, covar.val, y.val, n.abort, nlam.min,
                                b0, base.train, base.val) {
 
@@ -100,7 +100,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
     res <- COPY_cdfit_gaussian_hsr(
       X, y.train - y.train.mean, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
+      lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
       ind.val, covar.val, y.val - y.train.mean, n.abort, nlam.min)
 
     a <- y.train.mean
@@ -108,12 +108,13 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     loss <- res[[2]]
     iter <- res[[3]]
     loss.val <- res[[4]]
+    mess <- res[[5]]
 
   } else if (family == "binomial") {
 
     res <- COPY_cdfit_binomial_hsr(
       X, y.train, base.train, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, b0, eps, max.iter, dfmax, warn,
+      lambda, center, scale, resid, alpha, b0, eps, max.iter, dfmax,
       ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
 
     a <- res[[1]]
@@ -121,6 +122,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     loss <- res[[3]]
     iter <- res[[4]]
     loss.val <- res[[5]]
+    mess <- res[[6]]
 
   } else {
     stop("Current version only supports Gaussian or Binominal response!")
@@ -133,7 +135,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   loss <- loss[ind] / length(ind.train)
   loss.val <- loss.val[ind] / length(ind.val)
 
-  if (warn && any(iter >= max.iter))
+  if (any(iter >= max.iter))
     warning("Algorithm failed to converge for some values of lambda")
 
   ## Unstandardize coefficients:
@@ -150,6 +152,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     alpha = alpha,
     loss = loss,
     loss.val = loss.val,
+    message = mess,
     ind.train = ind.train,
     ind.col = ind.col
   ), class = "big_sp")
@@ -187,8 +190,6 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param dfmax Upper bound for the number of nonzero coefficients. Default is
 #' `50e3` because, for large data sets, computational burden may be
 #' heavy for models with a large number of nonzero coefficients.
-#' @param warn Return warning messages for failures to converge and model
-#' saturation? Default is `FALSE`.
 #' @param K Number of sets used in the Cross-Model Selection and Averaging
 #'   (CMSA) procedure. Default is `10`.
 #' @param ind.sets Integer vectors of values between `1` and `K` specifying
@@ -216,7 +217,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                eps = 1e-5,
                                max.iter = 1000,
                                dfmax = 50e3,
-                               warn = FALSE,
                                return.all = FALSE,
                                ncores = 1) {
 
@@ -300,7 +300,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.train = ind.train[!in.val],
       ind.col = ind.col[keep],
       covar.train = covar.train[!in.val, , drop = FALSE],
-      family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
+      family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
       ind.val = ind.train[in.val],
       covar.val = covar.train[in.val, , drop = FALSE],
       y.val = y.train[in.val],

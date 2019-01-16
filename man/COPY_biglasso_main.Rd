@@ -9,7 +9,7 @@ COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   ind.sets = sample(rep_len(1:K, n)), nlambda = 200, lambda.min = if
   (n > p) 1e-04 else 0.001, nlam.min = 50, n.abort = 10,
   base.train = NULL, eps = 1e-05, max.iter = 1000, dfmax = 50000,
-  warn = FALSE, return.all = FALSE, ncores = 1)
+  return.all = FALSE, ncores = 1)
 }
 \arguments{
 \item{family}{Either "gaussian" (linear) or "binomial" (logistic).}
@@ -49,9 +49,6 @@ Default value is \code{1e-5}.}
 \item{dfmax}{Upper bound for the number of nonzero coefficients. Default is
 \code{50e3} because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.}
-
-\item{warn}{Return warning messages for failures to converge and model
-saturation? Default is \code{FALSE}.}
 
 \item{return.all}{Whether to return coefficients for all alpha and lambda
 values. Default is \code{FALSE} and returns only coefficients which maximize

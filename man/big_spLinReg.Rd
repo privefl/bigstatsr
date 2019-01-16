@@ -38,8 +38,6 @@ The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
 Default value is \code{1e-5}.}
   \item{max.iter}{Maximum number of iterations. Default is \code{1000}.}
-  \item{warn}{Return warning messages for failures to converge and model
-saturation? Default is \code{FALSE}.}
   \item{K}{Number of sets used in the Cross-Model Selection and Averaging
 (CMSA) procedure. Default is \code{10}.}
   \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
