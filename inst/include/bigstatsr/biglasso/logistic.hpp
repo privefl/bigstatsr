@@ -222,15 +222,13 @@ List COPY_cdfit_binomial_hsr(C macc,
     metric = -Rcpp::sum((1 - y_val) * log(1 - pred_val) + y_val * log(pred_val));
     // Rcout << metric << std::endl;
     metrics[l] = metric;
-    if (metric < 0.99 * metric_min) {
+    if (metric < metric_min) {
       beta0_max = beta0_old;
       std::copy(beta_old.begin(), beta_old.end(), beta_max.begin());
       metric_min = metric;
       no_change = 0;
     }
-    if (metric > 0.995 * metrics[l - 1]) {
-      no_change++;
-    }
+    if (metric > metrics[l - 1]) no_change++;
 
     if (l >= nlam_min && no_change >= n_abort) {
       return List::create(beta0_max, beta_max, Dev, iter, metrics,

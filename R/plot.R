@@ -209,6 +209,43 @@ plot.mhtest <- function(x, type = c("hist", "Manhattan", "Q-Q", "Volcano"),
 
 ################################################################################
 
+#' Plot method
+#'
+#' Plot method for class `big_sp_list`.
+#'
+#' @param x An object of class `big_sp_list`.
+#' @param coeff Relative size of text. Default is `1`.
+#' @param ... Not used.
+#'
+#' @inherit plot.big_SVD return
+#'
+#' @export
+#' @import ggplot2 foreach
+#' @importFrom graphics plot
+#'
+plot.big_sp_list <- function(x, coeff = 1, ...) {
+
+  assert_nodots()
+
+  info <- foreach(mods = x, .combine = "rbind") %do% {
+    foreach(k = seq_along(mods), .combine = "rbind") %do% {
+      mod <- mods[[k]]
+      loss <- mod$loss.val
+      cbind.data.frame(set = k, alpha = mod$alpha, message = mod$message,
+                       loss_index = seq_along(loss), loss = loss)
+    }
+  }
+
+  ggplot(info) +
+    theme_bigstatsr(size.rel = coeff) +
+    geom_point(aes(loss_index, loss, color = as.factor(set))) +
+    facet_wrap(~alpha) +
+    scale_colour_discrete(guide = FALSE) +
+    labs(x = "Index", y = "Loss for each validation set")
+}
+
+################################################################################
+
 #' Plotly text
 #'
 #' Convert a data.frame to plotly text

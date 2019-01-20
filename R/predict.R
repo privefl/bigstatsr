@@ -15,9 +15,7 @@
 #'
 #' @seealso [big_spLinReg] and [big_spLogReg].
 #'
-predict.big_sp <- function(object, X,
-                           ind.row = rows_along(X),
-                           ind.col = object$ind.col,
+predict.big_sp <- function(object, X, ind.row, ind.col,
                            covar.row = NULL,
                            ...) {
 
@@ -52,9 +50,9 @@ predict.big_sp <- function(object, X,
 
 #' Predict method
 #'
-#' Predict method for class `big_sp_best_list`.
+#' Predict method for class `big_sp_list`.
 #'
-#' @param object Object of class `big_sp_best_list`.
+#' @param object Object of class `big_sp_list`.
 #' @inheritParams bigstatsr-package
 #' @param ... Not used.
 #' @param proba Whether to return probabilities?
@@ -66,34 +64,22 @@ predict.big_sp <- function(object, X,
 #'
 #' @seealso [big_spLinReg] and [big_spLogReg].
 #'
-predict.big_sp_best_list <- function(object, X,
-                                     ind.row = rows_along(X),
-                                     ind.col = attr(object, "ind.col"),
-                                     covar.row = NULL,
-                                     proba = (attr(object, "family") == "binomial"),
-                                     ...) {
+predict.big_sp_list <- function(object, X,
+                                ind.row = rows_along(X),
+                                ind.col = attr(object, "ind.col"),
+                                covar.row = NULL,
+                                proba = (attr(object, "family") == "binomial"),
+                                ...) {
 
   assert_nodots()
   check_args()
 
-  K_scores <- sapply(object, function(obj) {
+  summ_best <- summary(object, best.only = TRUE)
+  obj.big_sp <- structure(
+    list(intercept = summ_best$intercept, beta = summ_best$beta[[1]]),
+    class = "big_sp")
 
-    beta.X <- obj$beta.X
-    ind.nozero <- which(beta.X != 0)
-
-    scores <- big_prodVec(X, beta.X[ind.nozero],
-                          ind.row = ind.row,
-                          ind.col = ind.col[ind.nozero]) +
-      obj$intercept
-
-    if (!is.null(covar.row))
-      scores <- scores + drop(covar.row %*% obj$beta.covar)
-
-    scores
-  })
-
-  one_score <- rowMeans(K_scores)
-  names(one_score) <- ind.row
+  one_score <- predict(obj.big_sp, X, ind.row, ind.col, covar.row)
   `if`(proba, 1 / (1 + exp(-one_score)), one_score)
 }
 

@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 0.7.3
-Date: 2018-10-19
+Version: 0.8.0
+Date: 2019-01-20
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 
@@ -36,6 +36,7 @@ Imports:
     Rcpp,
     RSpectra,
     stats,
+    tibble,
     utils
 LinkingTo: 
     BH,
@@ -77,6 +78,7 @@ Collate:
     'randomSVD.R'
     'read.R'
     'scaling.R'
+    'summary.R'
     'tcrossprodSelf.R'
     'transpose.R'
     'univLinReg.R'

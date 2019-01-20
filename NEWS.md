@@ -1,3 +1,7 @@
+## bigstatsr 0.8.0
+
+- Parameters `warn` and `return.all` of `big_spLinReg()` and `big_spLogReg()` are deprecated; now always return the maximum information. Now provide two methods (`summary` and `plot`) to get a quick assessment of the fitted models.
+
 ## bigstatsr 0.7.3
 
 - Check of missing values for input vectors (indices and targets) and matrices (covariables).

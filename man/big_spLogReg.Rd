@@ -26,6 +26,30 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
+\item{base.train}{Vector of base predictions. Model will be learned starting
+from these predictions. This can be useful if you want to previously fit
+a model with large-effect variables that you don't want to penalize.
+\strong{Don't forget to add those predictions when you use \code{predict}
+and make sure you don't use \code{proba = TRUE} when you do so.}}
+
+\item{alphas}{The elastic-net mixing parameter that controls the relative
+contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
+defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
+\code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
+(\code{1e-4}) and \code{1} is the elastic-net penalty. Default is \code{1}. \strong{You can
+pass multiple values, and only one will be used (optimized by grid-search).}}
+
+\item{nlambda}{The number of lambda values. Default is \code{200}.}
+
+\item{nlam.min}{Minimum number of lambda values to investigate. Default is \code{50}.}
+
+\item{n.abort}{Number of lambda values for which prediction on the validation
+set must decrease before stopping. Default is \code{10}.}
+
+\item{dfmax}{Upper bound for the number of nonzero coefficients. Default is
+\code{50e3} because, for large data sets, computational burden may be
+heavy for models with a large number of nonzero coefficients.}
+
 \item{ncores}{Number of cores used. Default doesn't use parallelism.
 You may use \link{nb_cores}.}
 
@@ -43,16 +67,14 @@ Default value is \code{1e-5}.}
 (CMSA) procedure. Default is \code{10}.}
   \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
 which set each index of the training set is in. Default randomly assigns
-these values.}
-  \item{return.all}{Whether to return coefficients for all alpha and lambda
-values. Default is \code{FALSE} and returns only coefficients which maximize
-prediction on the validation sets.}
+these values but it can be useful to set this vector for reproducibility.}
+  \item{warn}{Deprecated. Now return the reason of completion as \code{$message}.}
+  \item{return.all}{Deprecated. Now always return all models.}
 }}
 }
 \value{
-Return an object of class \code{big_sp_best_list} (a list of K elements),
-which has a method \code{predict} that can compute K vectors of predictions,
-which could be combined with e.g. \code{rowMeans}. See details.
+Return an object of class \code{big_sp_list} (a list of \code{length(alphas)}
+x \code{K}) that has 3 methods \code{predict}, \code{summary} and \code{plot}.
 }
 \description{
 Fit lasso penalized linear regression path for a Filebacked Big Matrix.
@@ -91,21 +113,31 @@ set.seed(2)
 N <- 230
 M <- 730
 X <- FBM(N, M, init = rnorm(N * M, sd = 5))
-y01 <- as.numeric((rowSums(X[, 1:5]) + 2 * rnorm(N)) > 0)
+y01 <- as.numeric((rowSums(X[, 1:10]) + 2 * rnorm(N)) > 0)
 covar <- matrix(rnorm(N * 3), N)
 
 ind.train <- sort(sample(nrow(X), 150))
 ind.test <- setdiff(rows_along(X), ind.train)
 
+# fitting model for multiple lambdas and alphas
 test <- big_spLogReg(X, y01[ind.train], ind.train = ind.train,
-                     covar.train = covar[ind.train, ])
+                     covar.train = covar[ind.train, ],
+                     alphas = c(1, 0.5, 0.1, 0.01))
 
-preds <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ])
+# peek at the models
+plot(test)
+summary(test)
+
+# prediction for other data -> only the best alpha is used
+summary(test, best.only = TRUE)
+pred <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ])
+AUC(pred, y01[ind.test])
 library(ggplot2)
-qplot(preds, fill = as.logical(y01[ind.test]), geom = "density", alpha = I(0.4)) +
+qplot(pred, fill = as.logical(y01[ind.test]),
+      geom = "density", alpha = I(0.4)) +
   labs(fill = "Case?") +
-  theme_bigstatsr()
-AUC(preds, y01[ind.test])
+  theme_bigstatsr() +
+  theme(legend.position = c(0.52, 0.8))
 }
 \references{
 Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,

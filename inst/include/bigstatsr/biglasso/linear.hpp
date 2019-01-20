@@ -142,14 +142,12 @@ List COPY_cdfit_gaussian_hsr(C macc,
     metric = COPY_gLoss(pred_val - y_val);
     // Rcout << metric << std::endl;
     metrics[l] = metric;
-    if (metric < 0.99 * metric_min) {
+    if (metric < metric_min) {
       std::copy(beta_old.begin(), beta_old.end(), beta_max.begin());
       metric_min = metric;
       no_change = 0;
     }
-    if (metric > 0.995 * metrics[l - 1]) {
-      no_change++;
-    }
+    if (metric > metrics[l - 1]) no_change++;
 
     if (l >= nlam_min && no_change >= n_abort) {
       return List::create(beta_max, loss, iter, metrics, "No more improvement");

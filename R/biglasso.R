@@ -129,14 +129,14 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   }
 
   ## Eliminate saturated lambda values, if any
-  ind <- !is.na(iter)
+  ind <- !is.na(loss.val)
   iter <- iter[ind]
   lambda <- lambda[ind]
   loss <- loss[ind] / length(ind.train)
   loss.val <- loss.val[ind] / length(ind.val)
 
   if (any(iter >= max.iter))
-    warning("Algorithm failed to converge for some values of lambda")
+    warning2("Algorithm failed to converge for some values of lambda")
 
   ## Unstandardize coefficients:
   bb <- b / scale
@@ -148,13 +148,11 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     beta = bb,
     iter = iter,
     lambda = lambda,
-    family = family,
     alpha = alpha,
     loss = loss,
     loss.val = loss.val,
     message = mess,
-    ind.train = ind.train,
-    ind.col = ind.col
+    ind.train = ind.train
   ), class = "big_sp")
 }
 
@@ -194,13 +192,17 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #'   (CMSA) procedure. Default is `10`.
 #' @param ind.sets Integer vectors of values between `1` and `K` specifying
 #'   which set each index of the training set is in. Default randomly assigns
-#'   these values.
-#' @param return.all Whether to return coefficients for all alpha and lambda
-#'   values. Default is `FALSE` and returns only coefficients which maximize
-#'   prediction on the validation sets.
+#'   these values but it can be useful to set this vector for reproducibility.
+#' @param warn Deprecated. Now return the reason of completion as `$message`.
+#' @param return.all Deprecated. Now always return all models.
 #' @param nlam.min Minimum number of lambda values to investigate. Default is `50`.
 #' @param n.abort Number of lambda values for which prediction on the validation
 #'   set must decrease before stopping. Default is `10`.
+#' @param base.train Vector of base predictions. Model will be learned starting
+#'   from these predictions. This can be useful if you want to previously fit
+#'   a model with large-effect variables that you don't want to penalize.
+#'   **Don't forget to add those predictions when you use `predict`
+#'   and make sure you don't use `proba = TRUE` when you do so.**
 #'
 #' @keywords internal
 #'
@@ -218,7 +220,11 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                max.iter = 1000,
                                dfmax = 50e3,
                                return.all = FALSE,
+                               warn = FALSE,
                                ncores = 1) {
+
+  if (!missing(warn)) warning2("Parameter 'warn' is deprecated.")
+  if (!missing(return.all)) warning2("Parameter 'return.all' is deprecated.")
 
   family <- match.arg(family)
 
@@ -312,28 +318,13 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     )
   }
 
-  if (return.all) return(cross.res)
-
-  # Choose the best alpha (for the best lambdas)
-  ind.min <- which.min(
-    sapply(cross.res, function(l) {
-      mean(sapply(l, function(x) min(x$loss.val, na.rm = TRUE)))
-    })
-  )
-
   structure(
-    lapply(cross.res[[ind.min]], function(x) {
-      ind <- seq_along(x$ind.col)
-      list(
-        intercept  = x$intercept,
-        beta.X     = x$beta[ind],
-        beta.covar = x$beta[-ind]
-      )
-    }),
-    class = "big_sp_best_list",
-    ind.col = ind.col[keep],
+    cross.res,
+    class = "big_sp_list",
     family = family,
-    alpha = alphas[ind.min]
+    alphas = alphas,
+    ind.col = ind.col[keep],
+    ind.sets = ind.sets
   )
 }
 
@@ -366,11 +357,11 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #' (e.g. using `predict` followed by `rowMeans`).
 #'
 #' @inheritParams bigstatsr-package
+#' @inheritParams COPY_biglasso_main
 #' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family -base.train -alphas -nlambda -nlam.min -n.abort -dfmax
 #'
-#' @return Return an object of class `big_sp_best_list` (a list of K elements),
-#'   which has a method `predict` that can compute K vectors of predictions,
-#'   which could be combined with e.g. `rowMeans`. See details.
+#' @return Return an object of class `big_sp_list` (a list of `length(alphas)`
+#'   x `K`) that has 3 methods `predict`, `summary` and `plot`.
 #'
 #' @example examples/example-spLinReg.R
 #'
@@ -414,6 +405,7 @@ big_spLinReg <- function(X, y.train,
 #' Sparse logistic regression
 #'
 #' @inheritParams bigstatsr-package
+#' @inheritParams COPY_biglasso_main
 #' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family -base.train -alphas -nlambda -nlam.min -n.abort -dfmax
 #'
 #' @inherit big_spLinReg return description details seealso references
