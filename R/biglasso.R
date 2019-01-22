@@ -227,6 +227,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   if (!missing(return.all)) warning2("Parameter 'return.all' is deprecated.")
 
   family <- match.arg(family)
+  dfmax <- min(dfmax, .Machine$integer.max - 10L)
 
   n <- length(ind.train)
   if (is.null(covar.train)) covar.train <- matrix(0, n, 0)

@@ -43,7 +43,7 @@ test_that("can be used with a subset of samples", {
       alphas <- c(runif(1, min = 0.01, max = 1), 1)
 
       mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar,
-                                    alphas = alphas,
+                                    alphas = alphas, dfmax = Inf,
                                     ncores = test_cores())
       preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],
                        covar.row = covar[-ind, ])
