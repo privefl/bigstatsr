@@ -11,6 +11,8 @@ navbar:
       menu:
       - text: "Introduction to package bigstatsr"
         href: https://privefl.github.io/R-presentation/bigstatsr.html
+      - text: "Exercise"
+        href: https://privefl.github.io/bigsnpr/articles/exo.html
       - text: "Packages bigstatsr and bigmemory"
         href: articles/bigstatsr-and-bigmemory.html
       - text: "Operations with scaling"
