@@ -27,6 +27,7 @@ lcovar <- list(NULL, covar0)
 test_that("can be used with a subset of samples", {
 
   for (t in TEST.TYPES) {
+
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in sample(lcovar, 1)) {
@@ -42,11 +43,13 @@ test_that("can be used with a subset of samples", {
       alphas <- c(runif(1, min = 0.01, max = 1), 1)
 
       mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar,
-                                    alphas = alphas,
+                                    alphas = alphas, dfmax = Inf,
                                     ncores = test_cores())
       preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],
                        covar.row = covar[-ind, ])
       expect_gt(cor(preds, y[-ind]), 0.75)
+
+      expect_s3_class(plot(mod.bigstatsr), "ggplot")
 
       mod.bigstatsr2 <- big_spLinReg(X, y[ind], ind.train = ind,
                                      covar.train = covar[ind, ],
@@ -68,6 +71,7 @@ test_that("can be used with a subset of samples", {
 test_that("can be used with a subset of variables", {
 
   for (t in TEST.TYPES) {
+
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in sample(lcovar, 1)) {
@@ -92,18 +96,21 @@ test_that("can be used with a subset of variables", {
 
 ################################################################################
 
-test_that("parameter 'return.all' works and loss computation is correct", {
+test_that("parameter 'return.all' is deprecated and loss is correct", {
 
   for (t in TEST.TYPES) {
+
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in sample(lcovar, 1)) {
 
       alpha <- runif(1, min = 0.01, max = 1)
 
-      mod.bigstatsr4 <- big_spLinReg(X, y, covar.train = covar,
-                                     alphas = alpha,
-                                     return.all = TRUE,
+      expect_warning(
+        big_spLinReg(X, y, covar.train = covar, alphas = alpha,
+                     return.all = TRUE, ncores = test_cores()))
+
+      mod.bigstatsr4 <- big_spLinReg(X, y, covar.train = covar, alphas = alpha,
                                      ncores = test_cores())
 
       expect_length(mod.bigstatsr4, 1)
@@ -113,7 +120,9 @@ test_that("parameter 'return.all' works and loss computation is correct", {
       lapply(flatten, function(obj) {
         ind.val <- setdiff(rows_along(X), obj$ind.train)
         y.val <- y[ind.val]
-        preds <- predict(obj, X, ind.row = ind.val, covar.row = covar[ind.val, ])
+        preds <- predict(obj, X, ind.row = ind.val,
+                         ind.col = attr(mod.bigstatsr4, "ind.col"),
+                         covar.row = covar[ind.val, ])
         loss.val <- mean((y.val - preds)^2)  ## MSE
         diff <- abs(loss.val - obj$loss.val)
         expect_true(any(diff < 1e-8))
@@ -127,6 +136,7 @@ test_that("parameter 'return.all' works and loss computation is correct", {
 test_that("Use a base predictor", {
 
   for (t in TEST.TYPES) {
+
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
     for (covar in sample(lcovar, 1)) {
@@ -143,16 +153,22 @@ test_that("Use a base predictor", {
       preds <- predict(mod.bigstatsr, X, covar.row = covar)
       expect_gt(cor(preds[-ind], y[-ind]), 0.6)
 
+      expect_equal(nrow(summary(mod.bigstatsr)), length(alphas))
+
       mod.bigstatsr2 <- big_spLinReg(X, y[ind], ind.train = ind,
                                      base.train = rep(10, length(ind)),
                                      covar.train = covar[ind, ],
                                      alphas = alphas,
                                      ind.sets = ind.sets,
                                      ncores = test_cores())
-      expect_equal(sapply(mod.bigstatsr2, function(x) x$intercept) + 10,
-                   sapply(mod.bigstatsr, function(x) x$intercept))
-      expect_equal(sapply(mod.bigstatsr2, function(x) x$beta.X),
-                   sapply(mod.bigstatsr, function(x) x$beta.X))
+      expect_equal(sapply(unlist(mod.bigstatsr2, recursive = FALSE),
+                          function(x) x$intercept) + 10,
+                   sapply(unlist(mod.bigstatsr, recursive = FALSE),
+                          function(x) x$intercept))
+      expect_equal(sapply(unlist(mod.bigstatsr2, recursive = FALSE),
+                          function(x) x$beta.X),
+                   sapply(unlist(mod.bigstatsr, recursive = FALSE),
+                          function(x) x$beta.X))
 
       mod.bigstatsr3 <- big_spLinReg(X, y[ind], ind.train = ind,
                                      base.train = preds[ind] / 2,

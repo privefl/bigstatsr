@@ -37,7 +37,6 @@ List COPY_cdfit_gaussian_hsr(C macc,
                              double eps,
                              int max_iter,
                              int dfmax,
-                             bool warn,
                              C macc_val,
                              const NumericVector& y_val,
                              int n_abort,
@@ -78,7 +77,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) >= dfmax) {
-      return List::create(beta_max, loss, iter, metrics);
+      return List::create(beta_max, loss, iter, metrics, "Too many variables");
     }
 
     lam_l = lambda[l];
@@ -143,22 +142,19 @@ List COPY_cdfit_gaussian_hsr(C macc,
     metric = COPY_gLoss(pred_val - y_val);
     // Rcout << metric << std::endl;
     metrics[l] = metric;
-    if (metric < 0.99 * metric_min) {
+    if (metric < metric_min) {
       std::copy(beta_old.begin(), beta_old.end(), beta_max.begin());
       metric_min = metric;
       no_change = 0;
     }
-    if (metric > 0.995 * metrics[l - 1]) {
-      no_change++;
-    }
+    if (metric > metrics[l - 1]) no_change++;
 
     if (l >= nlam_min && no_change >= n_abort) {
-      if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
-      return List::create(beta_max, loss, iter, metrics);
+      return List::create(beta_max, loss, iter, metrics, "No more improvement");
     }
   }
 
-  return List::create(beta_max, loss, iter, metrics);
+  return List::create(beta_max, loss, iter, metrics, "Complete path");
 }
 
 } }

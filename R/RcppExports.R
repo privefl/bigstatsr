@@ -5,50 +5,6 @@ auc_sorted <- function(x, y) {
     .Call(`_bigstatsr_auc_sorted`, x, y)
 }
 
-COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, warn, row_idx_val, covar_val, y_val, n_abort, nlam_min) {
-    .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, warn, row_idx_val, covar_val, y_val, n_abort, nlam_min)
-}
-
-COPY_cdfit_binomial_hsr <- function(BM, y, base, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, b0, eps, max_iter, dfmax, warn, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min) {
-    .Call(`_bigstatsr_COPY_cdfit_binomial_hsr`, BM, y, base, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, b0, eps, max_iter, dfmax, warn, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min)
-}
-
-bigsummaries <- function(BM, row_idx, col_idx, covar, y, which_set, K) {
-    .Call(`_bigstatsr_bigsummaries`, BM, row_idx, col_idx, covar, y, which_set, K)
-}
-
-bigcolvars <- function(BM, rowInd, colInd) {
-    .Call(`_bigstatsr_bigcolvars`, BM, rowInd, colInd)
-}
-
-mycount1 <- function(BM, rowInd, colInd, codeInd) {
-    .Call(`_bigstatsr_mycount1`, BM, rowInd, colInd, codeInd)
-}
-
-mycount2 <- function(BM, rowInd, colInd, codeInd) {
-    .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
-}
-
-decodeMat <- function(source, code) {
-    .Call(`_bigstatsr_decodeMat`, source, code)
-}
-
-decodeVec <- function(source, code) {
-    .Call(`_bigstatsr_decodeVec`, source, code)
-}
-
-GET_ERROR_TYPE <- function() {
-    .Call(`_bigstatsr_GET_ERROR_TYPE`)
-}
-
-GET_ERROR_DIM <- function() {
-    .Call(`_bigstatsr_GET_ERROR_DIM`)
-}
-
-GET_ERROR_BOUNDS <- function() {
-    .Call(`_bigstatsr_GET_ERROR_BOUNDS`)
-}
-
 conv_NA_float <- function(source) {
     .Call(`_bigstatsr_conv_NA_float`, source)
 }
@@ -91,6 +47,50 @@ replaceDF <- function(xpbm, rowInd, colInd, df) {
 
 getXPtrFBM <- function(path, n, m, type) {
     .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
+}
+
+COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, n_abort, nlam_min) {
+    .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, n_abort, nlam_min)
+}
+
+COPY_cdfit_binomial_hsr <- function(BM, y, base, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, b0, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min) {
+    .Call(`_bigstatsr_COPY_cdfit_binomial_hsr`, BM, y, base, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, b0, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min)
+}
+
+bigsummaries <- function(BM, row_idx, col_idx, covar, y, which_set, K) {
+    .Call(`_bigstatsr_bigsummaries`, BM, row_idx, col_idx, covar, y, which_set, K)
+}
+
+bigcolvars <- function(BM, rowInd, colInd) {
+    .Call(`_bigstatsr_bigcolvars`, BM, rowInd, colInd)
+}
+
+mycount1 <- function(BM, rowInd, colInd, codeInd) {
+    .Call(`_bigstatsr_mycount1`, BM, rowInd, colInd, codeInd)
+}
+
+mycount2 <- function(BM, rowInd, colInd, codeInd) {
+    .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
+}
+
+decodeMat <- function(source, code) {
+    .Call(`_bigstatsr_decodeMat`, source, code)
+}
+
+decodeVec <- function(source, code) {
+    .Call(`_bigstatsr_decodeVec`, source, code)
+}
+
+GET_ERROR_TYPE <- function() {
+    .Call(`_bigstatsr_GET_ERROR_TYPE`)
+}
+
+GET_ERROR_DIM <- function() {
+    .Call(`_bigstatsr_GET_ERROR_DIM`)
+}
+
+GET_ERROR_BOUNDS <- function() {
+    .Call(`_bigstatsr_GET_ERROR_BOUNDS`)
 }
 
 pMatVec4 <- function(BM, x, rowInd, colInd) {

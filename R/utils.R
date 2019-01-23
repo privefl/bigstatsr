@@ -4,7 +4,7 @@
 ALL.TYPES <- structure(c(1L, 1L, 2L, 4L, 6L, 8L),
                        names = c("raw", "unsigned char", "unsigned short",
                                  "integer", "float", "double"))
-globalVariables("ic") # for foreach
+globalVariables(c("ic", "mods", "k", "loss_index", "set"))
 
 ################################################################################
 

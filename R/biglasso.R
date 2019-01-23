@@ -84,7 +84,7 @@ null_pred <- function(y, base) {
 #'
 COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
-                               eps, max.iter, dfmax, warn,
+                               eps, max.iter, dfmax,
                                ind.val, covar.val, y.val, n.abort, nlam.min,
                                b0, base.train, base.val) {
 
@@ -100,7 +100,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
     res <- COPY_cdfit_gaussian_hsr(
       X, y.train - y.train.mean, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
+      lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
       ind.val, covar.val, y.val - y.train.mean, n.abort, nlam.min)
 
     a <- y.train.mean
@@ -108,12 +108,13 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     loss <- res[[2]]
     iter <- res[[3]]
     loss.val <- res[[4]]
+    mess <- res[[5]]
 
   } else if (family == "binomial") {
 
     res <- COPY_cdfit_binomial_hsr(
       X, y.train, base.train, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, b0, eps, max.iter, dfmax, warn,
+      lambda, center, scale, resid, alpha, b0, eps, max.iter, dfmax,
       ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
 
     a <- res[[1]]
@@ -121,20 +122,21 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     loss <- res[[3]]
     iter <- res[[4]]
     loss.val <- res[[5]]
+    mess <- res[[6]]
 
   } else {
     stop("Current version only supports Gaussian or Binominal response!")
   }
 
   ## Eliminate saturated lambda values, if any
-  ind <- !is.na(iter)
+  ind <- !is.na(loss.val)
   iter <- iter[ind]
   lambda <- lambda[ind]
   loss <- loss[ind] / length(ind.train)
   loss.val <- loss.val[ind] / length(ind.val)
 
-  if (warn && any(iter >= max.iter))
-    warning("Algorithm failed to converge for some values of lambda")
+  if (any(iter >= max.iter))
+    warning2("Algorithm failed to converge for some values of lambda")
 
   ## Unstandardize coefficients:
   bb <- b / scale
@@ -146,12 +148,11 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     beta = bb,
     iter = iter,
     lambda = lambda,
-    family = family,
     alpha = alpha,
     loss = loss,
     loss.val = loss.val,
-    ind.train = ind.train,
-    ind.col = ind.col
+    message = mess,
+    ind.train = ind.train
   ), class = "big_sp")
 }
 
@@ -187,19 +188,21 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param dfmax Upper bound for the number of nonzero coefficients. Default is
 #' `50e3` because, for large data sets, computational burden may be
 #' heavy for models with a large number of nonzero coefficients.
-#' @param warn Return warning messages for failures to converge and model
-#' saturation? Default is `FALSE`.
 #' @param K Number of sets used in the Cross-Model Selection and Averaging
 #'   (CMSA) procedure. Default is `10`.
 #' @param ind.sets Integer vectors of values between `1` and `K` specifying
 #'   which set each index of the training set is in. Default randomly assigns
-#'   these values.
-#' @param return.all Whether to return coefficients for all alpha and lambda
-#'   values. Default is `FALSE` and returns only coefficients which maximize
-#'   prediction on the validation sets.
+#'   these values but it can be useful to set this vector for reproducibility.
+#' @param warn Deprecated. Now return the reason of completion as `$message`.
+#' @param return.all Deprecated. Now always return all models.
 #' @param nlam.min Minimum number of lambda values to investigate. Default is `50`.
 #' @param n.abort Number of lambda values for which prediction on the validation
 #'   set must decrease before stopping. Default is `10`.
+#' @param base.train Vector of base predictions. Model will be learned starting
+#'   from these predictions. This can be useful if you want to previously fit
+#'   a model with large-effect variables that you don't want to penalize.
+#'   **Don't forget to add those predictions when you use `predict`
+#'   and make sure you don't use `proba = TRUE` when you do so.**
 #'
 #' @keywords internal
 #'
@@ -216,11 +219,15 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                eps = 1e-5,
                                max.iter = 1000,
                                dfmax = 50e3,
-                               warn = FALSE,
                                return.all = FALSE,
+                               warn = FALSE,
                                ncores = 1) {
 
+  if (!missing(warn)) warning2("Parameter 'warn' is deprecated.")
+  if (!missing(return.all)) warning2("Parameter 'return.all' is deprecated.")
+
   family <- match.arg(family)
+  dfmax <- min(dfmax, .Machine$integer.max - 10L)
 
   n <- length(ind.train)
   if (is.null(covar.train)) covar.train <- matrix(0, n, 0)
@@ -300,7 +307,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.train = ind.train[!in.val],
       ind.col = ind.col[keep],
       covar.train = covar.train[!in.val, , drop = FALSE],
-      family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax, warn,
+      family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
       ind.val = ind.train[in.val],
       covar.val = covar.train[in.val, , drop = FALSE],
       y.val = y.train[in.val],
@@ -312,28 +319,13 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     )
   }
 
-  if (return.all) return(cross.res)
-
-  # Choose the best alpha (for the best lambdas)
-  ind.min <- which.min(
-    sapply(cross.res, function(l) {
-      mean(sapply(l, function(x) min(x$loss.val, na.rm = TRUE)))
-    })
-  )
-
   structure(
-    lapply(cross.res[[ind.min]], function(x) {
-      ind <- seq_along(x$ind.col)
-      list(
-        intercept  = x$intercept,
-        beta.X     = x$beta[ind],
-        beta.covar = x$beta[-ind]
-      )
-    }),
-    class = "big_sp_best_list",
-    ind.col = ind.col[keep],
+    cross.res,
+    class = "big_sp_list",
     family = family,
-    alpha = alphas[ind.min]
+    alphas = alphas,
+    ind.col = ind.col[keep],
+    ind.sets = ind.sets
   )
 }
 
@@ -366,11 +358,11 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #' (e.g. using `predict` followed by `rowMeans`).
 #'
 #' @inheritParams bigstatsr-package
-#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family
+#' @inheritParams COPY_biglasso_main
+#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family -base.train -alphas -nlambda -nlam.min -n.abort -dfmax
 #'
-#' @return Return an object of class `big_sp_best_list` (a list of K elements),
-#'   which has a method `predict` that can compute K vectors of predictions,
-#'   which could be combined with e.g. `rowMeans`. See details.
+#' @return Return an object of class `big_sp_list` (a list of `length(alphas)`
+#'   x `K`) that has 3 methods `predict`, `summary` and `plot`.
 #'
 #' @example examples/example-spLinReg.R
 #'
@@ -392,13 +384,21 @@ big_spLinReg <- function(X, y.train,
                          ind.train = rows_along(X),
                          ind.col = cols_along(X),
                          covar.train = NULL,
+                         base.train = NULL,
+                         alphas = 1,
+                         nlambda = 200,
+                         nlam.min = 50,
+                         n.abort = 10,
+                         dfmax = 50e3,
                          ncores = 1,
                          ...) {
 
   check_args()
 
-  COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
-                     family = "gaussian", ncores = ncores, ...)
+  args <- c(as.list(environment()), list(...))
+  args[["family"]] <- "gaussian"
+
+  do.call(COPY_biglasso_main, args)
 }
 
 ################################################################################
@@ -406,7 +406,8 @@ big_spLinReg <- function(X, y.train,
 #' Sparse logistic regression
 #'
 #' @inheritParams bigstatsr-package
-#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family
+#' @inheritParams COPY_biglasso_main
+#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family -base.train -alphas -nlambda -nlam.min -n.abort -dfmax
 #'
 #' @inherit big_spLinReg return description details seealso references
 #'
@@ -417,13 +418,23 @@ big_spLogReg <- function(X, y01.train,
                          ind.train = rows_along(X),
                          ind.col = cols_along(X),
                          covar.train = NULL,
+                         base.train = NULL,
+                         alphas = 1,
+                         nlambda = 200,
+                         nlam.min = 50,
+                         n.abort = 10,
+                         dfmax = 50e3,
                          ncores = 1,
                          ...) {
 
   check_args()
 
-  COPY_biglasso_main(X, y01.train, ind.train, ind.col, covar.train,
-                     family = "binomial", ncores = ncores, ...)
+  args <- c(as.list(environment()), list(...))
+  args[["y.train"]]   <- y01.train
+  args[["y01.train"]] <- NULL
+  args[["family"]]    <- "binomial"
+
+  do.call(COPY_biglasso_main, args)
 }
 
 ################################################################################

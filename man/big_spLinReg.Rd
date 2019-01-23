@@ -5,7 +5,9 @@
 \title{Sparse linear regression}
 \usage{
 big_spLinReg(X, y.train, ind.train = rows_along(X),
-  ind.col = cols_along(X), covar.train = NULL, ncores = 1, ...)
+  ind.col = cols_along(X), covar.train = NULL, base.train = NULL,
+  alphas = 1, nlambda = 200, nlam.min = 50, n.abort = 10,
+  dfmax = 50000, ncores = 1, ...)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -23,48 +25,55 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{ncores}{Number of cores used. Default doesn't use parallelism.
-You may use \link{nb_cores}.}
+\item{base.train}{Vector of base predictions. Model will be learned starting
+from these predictions. This can be useful if you want to previously fit
+a model with large-effect variables that you don't want to penalize.
+\strong{Don't forget to add those predictions when you use \code{predict}
+and make sure you don't use \code{proba = TRUE} when you do so.}}
 
-\item{...}{Arguments passed on to \code{COPY_biglasso_main}
-\describe{
-  \item{alphas}{The elastic-net mixing parameter that controls the relative
+\item{alphas}{The elastic-net mixing parameter that controls the relative
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 \code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
 (\code{1e-4}) and \code{1} is the elastic-net penalty. Default is \code{1}. \strong{You can
 pass multiple values, and only one will be used (optimized by grid-search).}}
+
+\item{nlambda}{The number of lambda values. Default is \code{200}.}
+
+\item{nlam.min}{Minimum number of lambda values to investigate. Default is \code{50}.}
+
+\item{n.abort}{Number of lambda values for which prediction on the validation
+set must decrease before stopping. Default is \code{10}.}
+
+\item{dfmax}{Upper bound for the number of nonzero coefficients. Default is
+\code{50e3} because, for large data sets, computational burden may be
+heavy for models with a large number of nonzero coefficients.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
+
+\item{...}{Arguments passed on to \code{COPY_biglasso_main}
+\describe{
   \item{lambda.min}{The smallest value for lambda, \strong{as a fraction of
 lambda.max}. Default is \code{.0001} if the number of observations is larger than
 the number of variables and \code{.001} otherwise.}
-  \item{nlambda}{The number of lambda values. Default is \code{200}.}
   \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
 Default value is \code{1e-5}.}
   \item{max.iter}{Maximum number of iterations. Default is \code{1000}.}
-  \item{dfmax}{Upper bound for the number of nonzero coefficients. Default is
-\code{50e3} because, for large data sets, computational burden may be
-heavy for models with a large number of nonzero coefficients.}
-  \item{warn}{Return warning messages for failures to converge and model
-saturation? Default is \code{FALSE}.}
   \item{K}{Number of sets used in the Cross-Model Selection and Averaging
 (CMSA) procedure. Default is \code{10}.}
   \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
 which set each index of the training set is in. Default randomly assigns
-these values.}
-  \item{return.all}{Whether to return coefficients for all alpha and lambda
-values. Default is \code{FALSE} and returns only coefficients which maximize
-prediction on the validation sets.}
-  \item{nlam.min}{Minimum number of lambda values to investigate. Default is \code{50}.}
-  \item{n.abort}{Number of lambda values for which prediction on the validation
-set must decrease before stopping. Default is \code{10}.}
+these values but it can be useful to set this vector for reproducibility.}
+  \item{warn}{Deprecated. Now return the reason of completion as \code{$message}.}
+  \item{return.all}{Deprecated. Now always return all models.}
 }}
 }
 \value{
-Return an object of class \code{big_sp_best_list} (a list of K elements),
-which has a method \code{predict} that can compute K vectors of predictions,
-which could be combined with e.g. \code{rowMeans}. See details.
+Return an object of class \code{big_sp_list} (a list of \code{length(alphas)}
+x \code{K}) that has 3 methods \code{predict}, \code{summary} and \code{plot}.
 }
 \description{
 Fit lasso penalized linear regression path for a Filebacked Big Matrix.
@@ -103,17 +112,24 @@ set.seed(1)
 N <- 230
 M <- 730
 X <- FBM(N, M, init = rnorm(N * M, sd = 5))
-y <- rowSums(X[, 1:5]) + rnorm(N)
+y <- rowSums(X[, 1:10]) + rnorm(N)
 covar <- matrix(rnorm(N * 3), N)
 
 ind.train <- sort(sample(nrow(X), 150))
 ind.test <- setdiff(rows_along(X), ind.train)
 
+# fitting model for multiple lambdas and alphas
 test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
-                     covar.train = covar[ind.train, ])
+                     covar.train = covar[ind.train, ],
+                     alphas = c(1, 0.5, 0.1, 0.01))
+# peek at the models
+plot(test)
+summary(test)
 
-preds <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ])
-plot(preds, y[ind.test], pch = 20); abline(0, 1, col = "red")
+# prediction for other data -> only the best alpha is used
+summary(test, best.only = TRUE)
+pred <- predict(test, X, ind.row = ind.test, covar.row = covar[ind.test, ])
+plot(pred, y[ind.test], pch = 20); abline(0, 1, col = "red")
 }
 \references{
 Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,

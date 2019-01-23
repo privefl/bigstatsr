@@ -42,7 +42,6 @@ List COPY_cdfit_binomial_hsr(C macc,
                              double eps,
                              int max_iter,
                              int dfmax,
-                             bool warn,
                              C macc_val,
                              const NumericVector& y_val,
                              const NumericVector& base_val,
@@ -102,7 +101,8 @@ List COPY_cdfit_binomial_hsr(C macc,
 
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) >= dfmax) {
-      return List::create(beta0_max, beta_max, Dev, iter, metrics);
+      return List::create(beta0_max, beta_max, Dev, iter, metrics,
+                          "Too many variables");
     }
 
     lam_l = lambda[l];
@@ -143,8 +143,8 @@ List COPY_cdfit_binomial_hsr(C macc,
         }
 
         if (dev_l / nullDev < .01) {
-          if (warn) warning("Model saturated; exiting...");
-          return List::create(beta0_max, beta_max, Dev, iter, metrics);
+          return List::create(beta0_max, beta_max, Dev, iter, metrics,
+                              "Model saturated");
         }
         Dev[l] = dev_l;
 
@@ -222,23 +222,21 @@ List COPY_cdfit_binomial_hsr(C macc,
     metric = -Rcpp::sum((1 - y_val) * log(1 - pred_val) + y_val * log(pred_val));
     // Rcout << metric << std::endl;
     metrics[l] = metric;
-    if (metric < 0.99 * metric_min) {
+    if (metric < metric_min) {
       beta0_max = beta0_old;
       std::copy(beta_old.begin(), beta_old.end(), beta_max.begin());
       metric_min = metric;
       no_change = 0;
     }
-    if (metric > 0.995 * metrics[l - 1]) {
-      no_change++;
-    }
+    if (metric > metrics[l - 1]) no_change++;
 
     if (l >= nlam_min && no_change >= n_abort) {
-      if (warn) Rcout << "Model doesn't improve anymore; exiting..." << std::endl;
-      return List::create(beta0_max, beta_max, Dev, iter, metrics);
+      return List::create(beta0_max, beta_max, Dev, iter, metrics,
+                          "No more improvement");
     }
   }
 
-  return List::create(beta0_max, beta_max, Dev, iter, metrics);
+  return List::create(beta0_max, beta_max, Dev, iter, metrics, "Complete path");
 }
 
 } }

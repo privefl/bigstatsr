@@ -10,7 +10,7 @@ plus(...)
 \item{...}{Multiple arguments to be added together}
 }
 \value{
-\code{Reduce('+', list(...))}
+\code{ Reduce('+', list(...))}
 }
 \description{
 Add multiple arguments

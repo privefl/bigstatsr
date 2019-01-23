@@ -9,7 +9,7 @@ COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   ind.sets = sample(rep_len(1:K, n)), nlambda = 200, lambda.min = if
   (n > p) 1e-04 else 0.001, nlam.min = 50, n.abort = 10,
   base.train = NULL, eps = 1e-05, max.iter = 1000, dfmax = 50000,
-  warn = FALSE, return.all = FALSE, ncores = 1)
+  return.all = FALSE, warn = FALSE, ncores = 1)
 }
 \arguments{
 \item{family}{Either "gaussian" (linear) or "binomial" (logistic).}
@@ -26,7 +26,7 @@ pass multiple values, and only one will be used (optimized by grid-search).}}
 
 \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
 which set each index of the training set is in. Default randomly assigns
-these values.}
+these values but it can be useful to set this vector for reproducibility.}
 
 \item{nlambda}{The number of lambda values. Default is \code{200}.}
 
@@ -39,6 +39,12 @@ the number of variables and \code{.001} otherwise.}
 \item{n.abort}{Number of lambda values for which prediction on the validation
 set must decrease before stopping. Default is \code{10}.}
 
+\item{base.train}{Vector of base predictions. Model will be learned starting
+from these predictions. This can be useful if you want to previously fit
+a model with large-effect variables that you don't want to penalize.
+\strong{Don't forget to add those predictions when you use \code{predict}
+and make sure you don't use \code{proba = TRUE} when you do so.}}
+
 \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
@@ -50,12 +56,9 @@ Default value is \code{1e-5}.}
 \code{50e3} because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.}
 
-\item{warn}{Return warning messages for failures to converge and model
-saturation? Default is \code{FALSE}.}
+\item{return.all}{Deprecated. Now always return all models.}
 
-\item{return.all}{Whether to return coefficients for all alpha and lambda
-values. Default is \code{FALSE} and returns only coefficients which maximize
-prediction on the validation sets.}
+\item{warn}{Deprecated. Now return the reason of completion as \code{$message}.}
 }
 \description{
 Fit solution paths for linear or logistic regression models penalized by
