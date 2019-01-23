@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Methods for the FBM class — FBM-methods • bigstatsr</title>
+<title>Predict method — predict.big_sp_list • bigstatsr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,9 @@
 
 
 
-<meta property="og:title" content="Methods for the FBM class — FBM-methods" />
+<meta property="og:title" content="Predict method — predict.big_sp_list" />
 
-<meta property="og:description" content="Methods for the FBM class
-Accessor methods for class FBM. You can use positive and negative indices,
-logical indices (that are recycled) and also a matrix of indices (but only
-positive ones).
-Dimension and type methods for class FBM." />
+<meta property="og:description" content="Predict method for class big_sp_list." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -131,69 +127,66 @@ Dimension and type methods for class FBM." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Methods for the FBM class</h1>
+    <h1>Predict method</h1>
     
-    <div class="hidden name"><code>FBM-methods.Rd</code></div>
+    <div class="hidden name"><code>predict.big_sp_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Methods for the FBM class</p>
-<p>Accessor methods for class <code>FBM</code>. You can use positive and negative indices,
-logical indices (that are recycled) and also a matrix of indices (but only
-positive ones).</p>
-<p>Dimension and type methods for class <code>FBM</code>.</p>
+    <p>Predict method for class <code>big_sp_list</code>.</p>
     
     </div>
 
-    <pre class="usage"># S4 method for FBM,ANY,ANY,ANY
-[(x, i, j, ..., drop = TRUE)
-
-# S4 method for FBM,ANY,ANY,ANY
-[(x, i, j, ...) <- value
-
-# S4 method for FBM
-dim(x)
-
-# S4 method for FBM
-length(x)
-
-# S4 method for FBM
-typeof(x)</pre>
+    <pre class="usage"><span class='co'># S3 method for big_sp_list</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>object</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>object</span>, <span class='st'>"ind.col"</span>), <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>proba</span> <span class='kw'>=</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>object</span>, <span class='st'>"family"</span>) <span class='kw'>==</span> <span class='st'>"binomial"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a> object.</p></td>
+      <th>object</th>
+      <td><p>Object of class <code>big_sp_list</code>.</p></td>
     </tr>
     <tr>
-      <th>i</th>
-      <td><p>A vector of indices (or nothing). You can use positive and negative
-indices, logical indices (that are recycled) and also a matrix of indices
-(but only positive ones).</p></td>
+      <th>X</th>
+      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
-      <th>j</th>
-      <td><p>A vector of indices (or nothing). You can use positive and negative
-indices, logical indices (that are recycled).</p></td>
+      <th>ind.row</th>
+      <td><p>An optional vector of the row indices that are used.
+If not specified, all rows are used. <strong>Don't use negative indices.</strong></p></td>
+    </tr>
+    <tr>
+      <th>ind.col</th>
+      <td><p>An optional vector of the column indices that are used.
+If not specified, all columns are used. <strong>Don't use negative indices.</strong></p></td>
+    </tr>
+    <tr>
+      <th>covar.row</th>
+      <td><p>Matrix of covariables to be added in each model to correct
+for confounders (e.g. the scores of PCA), corresponding to <code>ind.row</code>.
+Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</p></td>
+    </tr>
+    <tr>
+      <th>proba</th>
+      <td><p>Whether to return probabilities?</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Not used. Just to make <a href='https://www.rdocumentation.org/packages/base/topics/nargs'>nargs</a> works.</p></td>
-    </tr>
-    <tr>
-      <th>drop</th>
-      <td><p>Whether to delete the dimensions of a matrix which have
-one dimension equals to 1.</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>The values to replace. Should be of length 1 or of the same
-length of the subset to replace.</p></td>
+      <td><p>Not used.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A vector of scores, corresponding to <code>ind.row</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='big_spLinReg.html'>big_spLinReg</a> and <a href='big_spLogReg.html'>big_spLogReg</a>.</p></div>
     
 
   </div>
@@ -201,7 +194,11 @@ length of the subset to replace.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

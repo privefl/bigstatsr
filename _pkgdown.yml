@@ -63,7 +63,9 @@ reference:
       - plot.mhtest
       - predict.mhtest
       - predict.big_sp
-      - predict.big_sp_best_list
+      - predict.big_sp_list
+      - summary.big_sp_list
+      - plot.big_sp_list
       - plot.big_SVD
       - predict.big_SVD
       - asPlotlyText
