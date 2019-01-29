@@ -15,11 +15,6 @@ namespace bigstatsr {
 // Based on equations (4.4), (4.5) and (4.6) from Sikorska, K. (2014).
 // Computationally fast approaches to genome-wide association studies.
 
-arma::vec UUty(const arma::mat& U, const arma::vec& y) {
-  // printf("address: %p\n", &Ut);
-  return U * (U.t() * y);
-}
-
 template <class C>
 ListOf<NumericVector> univLinReg5(C macc,
                                   const arma::mat& U,
@@ -31,10 +26,10 @@ ListOf<NumericVector> univLinReg5(C macc,
   myassert(U.n_rows == n, ERROR_DIM);
   myassert(y.n_elem == n, ERROR_DIM);
 
-  arma::vec x(n), x2(n);
-  arma::vec y2 = y - UUty(U, y);
+  arma::vec x(n), x2(K);
+  arma::vec y2 = y - U * (U.t() * y);
   double y2_sumSq = dot(y2, y2);
-  double beta, x_tmp, x_diff, x2_sumSq, beta_num, beta_deno, RSS;
+  double beta, beta_num, beta_deno, RSS;
   size_t i, j;
 
   NumericVector betas(m), var(m);
@@ -43,18 +38,16 @@ ListOf<NumericVector> univLinReg5(C macc,
     for (i = 0; i < n; i++) {
       x[i] = macc(i, j);
     }
-    x2 = UUty(U, x);
+    x2 = U.t() * x;
 
-    beta_num = beta_deno = x2_sumSq = 0;
+    beta_num = beta_deno = 0;
     for (i = 0; i < n; i++) {
-      x_tmp = x[i];
-      x_diff = x_tmp - x2[i];
-      beta_num += x_tmp * y2[i];
-      beta_deno += x_tmp * x_diff;
-      x2_sumSq += x_diff * x_diff;
+      beta_num  += x[i] * y2[i];
+      beta_deno += x[i] * x[i];
     }
+    beta_deno -= dot(x2, x2);
     beta = beta_num / beta_deno;
-    RSS = y2_sumSq - beta * beta * x2_sumSq;
+    RSS = y2_sumSq - beta_num * beta ;
     betas[j] = beta;
     var[j] = RSS / (beta_deno * (n - K - 1));
   }
