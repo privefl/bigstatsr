@@ -62,6 +62,14 @@ test_that("can be used with a subset of samples", {
 
       expect_error(predict(mod.bigstatsr2, X, covar.row = covar, abc = 2),
                    "Argument 'abc' not used.")
+
+      flatten <- unlist(mod.bigstatsr2, recursive = FALSE)
+      expect_true(all(sapply(flatten, class) == "big_sp"))
+      lapply(flatten, function(obj) {
+        expect_false(is.null(nb_active <- obj$nb_active))
+        expect_false(is.unsorted(nb_active))
+        expect_true(all(nb_active >= obj$nb_var))
+      })
     }
   }
 })

@@ -1,3 +1,7 @@
+## bigstatsr 0.8.3
+
+Now also returns the number of non-zero variables (`$nb_var`) and the number of active variables (`$nb_active`) for each step of the regularization paths of `big_spLinReg()` and `big_spLogReg()`.
+
 ## bigstatsr 0.8.0
 
 - Parameters `warn` and `return.all` of `big_spLinReg()` and `big_spLogReg()` are deprecated; now always return the maximum information. Now provide two methods (`summary` and `plot`) to get a quick assessment of the fitted models.
@@ -62,7 +66,7 @@
 
 ## bigstatsr 0.3.2
 
-- you can now provide multiple $\alpha$ values (as a numeric vector) in `big_spLinReg` and `big_spLogReg`. One will be choosed by grid-search.
+- you can now provide multiple $\alpha$ values (as a numeric vector) in `big_spLinReg` and `big_spLogReg`. One will be chosen by grid-search.
 
 ## bigstatsr 0.3.1
 
@@ -78,7 +82,7 @@
 
 ## bigstatsr 0.2.4
 
-- **Integrate Cross-Model Selection and Averagind (CMSA) directly in `big_spLinReg` and `big_spLogReg`, a procedure that automatically chooses the value of the $\lambda$ hyper-parameter.**
+- **Integrate Cross-Model Selection and Averaging (CMSA) directly in `big_spLinReg` and `big_spLogReg`, a procedure that automatically chooses the value of the $\lambda$ hyper-parameter.**
 
 - **Speed up `big_spLinReg` and `big_spLogReg` ([issue #12](https://github.com/privefl/bigstatsr/issues/12))**
 

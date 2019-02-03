@@ -60,6 +60,8 @@ List COPY_cdfit_binomial_hsr(C macc,
 
   NumericVector Dev(L, NA_REAL);
   IntegerVector iter(L, NA_INTEGER);
+  IntegerVector nb_active(L, NA_INTEGER);
+  IntegerVector nb_var(L, NA_INTEGER);
   double beta0_max = beta0_old;
 
   NumericVector beta_max(p);
@@ -92,7 +94,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     metric_min -= y_val[i] * log(pi) + (1 - y_val[i]) * log(1 - pi);
   }
   metrics[0] = metric_min;
-  iter[0] = 0;
+  nb_var[0] = nb_active[0] = iter[0] = 0;
 
   // Path
   for (int l = 1; l < L; l++) {
@@ -102,17 +104,15 @@ List COPY_cdfit_binomial_hsr(C macc,
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) >= dfmax) {
       return List::create(beta0_max, beta_max, Dev, iter, metrics,
-                          "Too many variables");
+                          "Too many variables", nb_var, nb_active);
     }
 
     lam_l = lambda[l];
     l1 = lam_l * alpha;
     l2 = lam_l - l1;
     // strong set
-    cutoff = 2 * lam_l - lambda[l - 1];
-    for (j = 0; j < p; j++) {
-      in_S[j] = (fabs(z[j]) > (cutoff * alpha));
-    }
+    cutoff = (2 * lam_l - lambda[l - 1]) * alpha;
+    in_S = (abs(z) > cutoff);
 
     // Approx: no check of rest set
     iter[l] = 0;
@@ -144,7 +144,7 @@ List COPY_cdfit_binomial_hsr(C macc,
 
         if (dev_l / nullDev < .01) {
           return List::create(beta0_max, beta_max, Dev, iter, metrics,
-                              "Model saturated");
+                              "Model saturated", nb_var, nb_active);
         }
         Dev[l] = dev_l;
 
@@ -213,6 +213,9 @@ List COPY_cdfit_binomial_hsr(C macc,
       if (violations == 0) break;
     }
 
+    nb_var[l]    = Rcpp::sum(beta_old != 0);
+    nb_active[l] = Rcpp::sum(in_A);
+
     // Get prediction from beta_old
     // pred = predict(macc, beta_old, scale);
     // NumericVector blabla = pred + beta_old - eta;
@@ -232,11 +235,12 @@ List COPY_cdfit_binomial_hsr(C macc,
 
     if (l >= nlam_min && no_change >= n_abort) {
       return List::create(beta0_max, beta_max, Dev, iter, metrics,
-                          "No more improvement");
+                          "No more improvement", nb_var, nb_active);
     }
   }
 
-  return List::create(beta0_max, beta_max, Dev, iter, metrics, "Complete path");
+  return List::create(beta0_max, beta_max, Dev, iter, metrics,
+                      "Complete path", nb_var, nb_active);
 }
 
 } }

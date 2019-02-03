@@ -2,7 +2,7 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 0.8.2
+Version: 0.8.3
 Date: 2019-02-03
 Authors@R: c(
   person("Florian", "Privé", 

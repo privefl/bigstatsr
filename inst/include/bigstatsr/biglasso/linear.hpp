@@ -57,6 +57,8 @@ List COPY_cdfit_gaussian_hsr(C macc,
   NumericVector beta_max(p);
   NumericVector loss(L, NA_REAL);
   NumericVector metrics(L, NA_REAL);
+  IntegerVector nb_active(L, NA_INTEGER);
+  IntegerVector nb_var(L, NA_INTEGER);
 
   double l1, l2, lam_l, cutoff, shift;
   double max_update, update, thresh, shift_scaled, cpsum;
@@ -65,7 +67,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
   double sumResid = Rcpp::sum(r);
-  iter[0] = 0;
+  nb_var[0] = nb_active[0] = iter[0] = 0;
   loss[0] = COPY_gLoss(r);
   thresh = eps * loss[0] / n;
   metrics[0] = metric_min = COPY_gLoss(y_val);
@@ -77,17 +79,16 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
     // Check dfmax
     if (Rcpp::sum(beta_old != 0) >= dfmax) {
-      return List::create(beta_max, loss, iter, metrics, "Too many variables");
+      return List::create(beta_max, loss, iter, metrics,
+                          "Too many variables", nb_var, nb_active);
     }
 
     lam_l = lambda[l];
     l1 = lam_l * alpha;
     l2 = lam_l - l1;
     // strong set
-    cutoff = 2 * lam_l - lambda[l-1];
-    for (j = 0; j < p; j++) {
-      in_S[j] = (fabs(z[j]) > (cutoff * alpha));
-    }
+    cutoff = (2 * lam_l - lambda[l - 1]) * alpha;
+    in_S = (abs(z) > cutoff);
 
     // Approx: no check of rest set
     iter[l] = 0;
@@ -137,6 +138,8 @@ List COPY_cdfit_gaussian_hsr(C macc,
     }
 
     loss[l] = COPY_gLoss(r);
+    nb_var[l]    = Rcpp::sum(beta_old != 0);
+    nb_active[l] = Rcpp::sum(in_A);
 
     pred_val = predict(macc_val, beta_old, center, scale);
     metric = COPY_gLoss(pred_val - y_val);
@@ -150,11 +153,13 @@ List COPY_cdfit_gaussian_hsr(C macc,
     if (metric > metrics[l - 1]) no_change++;
 
     if (l >= nlam_min && no_change >= n_abort) {
-      return List::create(beta_max, loss, iter, metrics, "No more improvement");
+      return List::create(beta_max, loss, iter, metrics,
+                          "No more improvement", nb_var, nb_active);
     }
   }
 
-  return List::create(beta_max, loss, iter, metrics, "Complete path");
+  return List::create(beta_max, loss, iter, metrics,
+                      "Complete path", nb_var, nb_active);
 }
 
 } }

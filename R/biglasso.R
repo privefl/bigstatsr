@@ -109,6 +109,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     iter <- res[[3]]
     loss.val <- res[[4]]
     mess <- res[[5]]
+    nb_var <- res[[6]]
+    nb_active <- res[[7]]
 
   } else if (family == "binomial") {
 
@@ -123,6 +125,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     iter <- res[[4]]
     loss.val <- res[[5]]
     mess <- res[[6]]
+    nb_var <- res[[7]]
+    nb_active <- res[[8]]
 
   } else {
     stop("Current version only supports Gaussian or Binominal response!")
@@ -134,6 +138,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   lambda <- lambda[ind]
   loss <- loss[ind] / length(ind.train)
   loss.val <- loss.val[ind] / length(ind.val)
+  nb_var <- nb_var[ind]
+  nb_active <- nb_active[ind]
 
   if (any(iter >= max.iter))
     warning2("Algorithm failed to converge for some values of lambda")
@@ -152,6 +158,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     loss = loss,
     loss.val = loss.val,
     message = mess,
+    nb_var = nb_var,
+    nb_active = nb_active,
     ind.train = ind.train
   ), class = "big_sp")
 }
