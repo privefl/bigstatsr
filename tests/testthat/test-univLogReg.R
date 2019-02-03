@@ -6,7 +6,7 @@ set.seed(SEED)
 
 ################################################################################
 
-TOL <- 1e-4
+TOL <- 1e-6
 
 # Simulating some data
 N <- 73
@@ -34,6 +34,7 @@ getGLM <- function(X, y, covar, ind = NULL) {
 ################################################################################
 
 test_that("numerical problems", {
+  skip_on_appveyor(); skip_on_travis()
   X <- big_copy(x, type = "double")
   covar <- cbind(covar0, x[, 1:5])
   expect_message(
