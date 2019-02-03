@@ -41,27 +41,33 @@ List IRLS(C macc,
       covar(i, 0) = macc(i, j);
     }
 
-    c = 1;
-    coeffs = solve(covar.t() * (covar.each_col() % w0), covar.t() * z0);
+    try {
 
-    do {
-      c++;
+      c = 1;
+      coeffs = solve(covar.t() * (covar.each_col() % w0), covar.t() * z0);
+      do {
+        c++;
 
-      Xb = covar * coeffs;
-      p = 1 / (1 + exp(-Xb));
-      w = p % (1 - p);
+        Xb = covar * coeffs;
+        p = 1 / (1 + exp(-Xb));
+        w = p % (1 - p);
 
-      cprod = covar.t() * (covar.each_col() % w);
-      shift = solve(cprod, covar.t() * (y - p));
-      coeffs += shift;
+        cprod = covar.t() * (covar.each_col() % w);
+        shift = solve(cprod, covar.t() * (y - p));
+        coeffs += shift;
 
-      diff = max(abs(shift) / (abs(shift) + abs(coeffs)));
-    } while (diff > tol && c < maxiter);
+        diff = max(abs(shift) / (abs(shift) + abs(coeffs)));
+      } while (diff > tol && c < maxiter);
 
-    beta[j] = coeffs(0);
-    cprod_inv = inv(cprod);
-    var[j] = cprod_inv(0, 0);
-    niter[j] = c;
+      niter[j] = c;
+      cprod_inv = inv(cprod);
+      beta[j] = coeffs(0);
+      var[j] = cprod_inv(0, 0);
+
+    } catch (...) {
+      beta[j] = NA_REAL;
+      var[j]  = NA_REAL;
+    }
   }
 
   return List::create(_["estim"]   = beta,

@@ -33,6 +33,25 @@ getGLM <- function(X, y, covar, ind = NULL) {
 
 ################################################################################
 
+test_that("numerical problems", {
+  X <- big_copy(x, type = "double")
+  covar <- cbind(covar0, x[, 1:5])
+  expect_message(
+    mod <- big_univLogReg(X, y, covar.train = covar, ncores = test_cores()),
+    "For 5 columns")
+  mod$p.value <- predict(mod, log10 = FALSE)
+  mat <- as.matrix(mod[, -3])
+  dimnames(mat) <- NULL
+  expect_equal(mat, getGLM(X, y, covar), tolerance = TOL)
+
+  covar2 <- cbind(covar, x[, 1])
+  expect_error(
+    big_univLogReg(X, y, covar.train = covar2, ncores = test_cores()),
+    "'covar.train' is singular.", fixed = TRUE)
+})
+
+################################################################################
+
 test_that("equality with glm with all data", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))

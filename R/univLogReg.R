@@ -7,10 +7,11 @@ univLogReg_sub <- function(X, ind, covar.train, y01.train, z0, w0,
               ind.train, ind, tol, maxiter)
 
   # Using `glm` if not converged
-  indNoConv <- which(res$niter >= maxiter | is.nan(res$estim))
+  indNoConv <- which(res$niter >= maxiter | is.na(res$estim))
   res$niter[indNoConv] <- NA
   for (j in indNoConv) {
-    mod <- stats::glm(y01.train ~ X[ind.train, ind[j]] + covar.train[, -1] - 1,
+    covar.train[, 1] <- X[ind.train, ind[j]]
+    mod <- stats::glm(y01.train ~ covar.train - 1,
                       family = "binomial",
                       control = list(epsilon = tol, maxit = 100))
     coeffs <- `if`(mod$converged, summary(mod)$coefficients[1, 1:2], c(NA, NA))
@@ -70,6 +71,7 @@ big_univLogReg <- function(X, y01.train,
 
   # precompute some estimation with only the covariables (and the intercept)
   mod0 <- stats::glm(y01.train ~ covar.train[, -1] - 1, family = "binomial")
+  if (anyNA(mod0$coefficients)) stop2("'covar.train' is singular.")
   p0 <- mod0$fitted
   w0 <- p0 * (1 - p0)
   z0 <- log(p0 / (1 - p0)) * w0 + (y01.train - p0)
