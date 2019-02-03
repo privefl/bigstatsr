@@ -8,6 +8,7 @@
 # bigstatsr
 
 R package {bigstatsr} provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format `big.matrix` provided by [R package {bigmemory}](https://github.com/kaneplusplus/bigmemory), which is **no longer used** by this package (see [the corresponding vignette](https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html)).
+As inputs, package {bigstatsr} uses [Filebacked Big Matrices (FBM)](https://privefl.github.io/bigstatsr/reference/FBM-class.html).
 
 <img src="https://raw.githubusercontent.com/privefl/bigstatsr/master/bigstatsr.png" width="130" align="right">
 
@@ -57,14 +58,6 @@ unlink(paste0("test", c(".bk", ".rds")))
 Learn more with this 
 [introduction to package {bigstatsr}](https://privefl.github.io/R-presentation/bigstatsr.html).
 
-## Input format
-
-As inputs, package {bigstatsr} uses [Filebacked Big Matrices (FBM)](https://privefl.github.io/bigstatsr/reference/FBM-class.html).
-
-To operate on data frames stored on disk, see [package {bigdfr}](https://github.com/privefl/bigdfr).
-
-To memory-map character text files, see [package {mmapcharr}](https://github.com/privefl/mmapcharr).
-
 ## Bug report / Help
 
 Please open an issue if you find a bug.
@@ -72,9 +65,9 @@ If you want help using {bigstatsr}, please post on Stack Overflow with the tag *
 
 ## Use cases
 
-### Parallelisation
+### Parallelization
 
-Package {bigstatsr} uses package {foreach} for its parallelization tasks. Learn more on parallelism with {foreach} with [this tuto](https://privefl.github.io/blog/a-guide-to-parallelism-in-r/).
+Package {bigstatsr} uses package {foreach} for its parallelization tasks. Learn more on parallelism with {foreach} with [this tutorial](https://privefl.github.io/blog/a-guide-to-parallelism-in-r/).
 
 - [Permute matrix columns in parallel](https://stackoverflow.com/q/48832010/6103040)
 
@@ -82,7 +75,7 @@ Package {bigstatsr} uses package {foreach} for its parallelization tasks. Learn 
 
 ### Large datasets
 
-- [Computing the null space of a bigmatrix](https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/) (works if one dimension is not too large)
+- [Computing the null space of a big matrix](https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/) (works if one dimension is not too large)
 
 - [Rowwise matrix multiplication](https://stackoverflow.com/q/48879643/6103040)
 

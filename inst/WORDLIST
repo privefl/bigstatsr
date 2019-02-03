@@ -1,6 +1,7 @@
 â
 advisor
 al
+AppVeyor
 Arnoldi
 arXiv
 Aschard
@@ -67,6 +68,7 @@ Plotly
 pre
 preprint
 PrivÃ
+PSOCK
 Qiu
 randomSVD
 rds
@@ -74,6 +76,7 @@ rdsfile
 Recogn
 reproducibility
 Rokhlin
+rowwise
 RSpectra
 scalable
 semismooth
