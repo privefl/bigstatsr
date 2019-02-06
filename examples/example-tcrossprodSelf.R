@@ -1,19 +1,24 @@
-X <- big_attachExtdata()
-
-# Comparing with tcrossprod
-big_noscale <- big_scale(center = FALSE)
-K <- big_tcrossprodSelf(X, fun.scaling = big_noscale)
-class(K)
-dim(K)
-K$backingfile
-
+X <- FBM(13, 17, init = rnorm(221))
 true <- tcrossprod(X[])
-all.equal(K[], true)
 
-# Using only half of the data
+# No scaling
+K1 <- tcrossprod(X)
+class(K1)
+stopifnot(all.equal(K1, true))
+
+K2 <- big_tcrossprodSelf(X)
+class(K2)
+K2$backingfile
+stopifnot(all.equal(K2[], true))
+
+microbenchmark::microbenchmark(
+  tcrossprod(X[]), tcrossprod(X), big_tcrossprodSelf(X)
+)
+
+# big_tcrossprodSelf() provides some scaling and subsetting
+# Example using only half of the data:
 n <- nrow(X)
 ind <- sort(sample(n, n/2))
-K2 <- big_tcrossprodSelf(X, fun.scaling = big_noscale, ind.row = ind)
-
-true2 <- tcrossprod(X[ind, ])
-all.equal(K2[], true2)
+K3 <- big_tcrossprodSelf(X, fun.scaling = big_scale(), ind.row = ind)
+true2 <- tcrossprod(scale(X[ind, ]))
+stopifnot(all.equal(K3[], true2))

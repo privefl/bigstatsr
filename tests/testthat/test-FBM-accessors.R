@@ -56,10 +56,11 @@ for (t in c(TEST.TYPES, "FBM.code256")) {
   }
 
   test_that("same dimensions", {
-    expect_equal(nrow(X), nrow(x))
-    expect_equal(ncol(X), ncol(x))
-    expect_equal(dim(X), dim(x))
+    expect_equal(nrow(X),   nrow(x))
+    expect_equal(ncol(X),   ncol(x))
+    expect_equal(dim(X),    dim(x))
     expect_equal(length(X), length(x))
+    expect_equal(diag(X),   diag(x))
   })
 
   test_that("same accessing", {

@@ -16,6 +16,27 @@ x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 for (t in TEST.TYPES) {
   X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
+  test_that("standard matrix operations work", {
+    A.col <- matrix(rnorm(N * M), M, N)
+    A.row <- matrix(rnorm(N * M), N, M)
+    if (t == "double") {
+      expect_equal(X %*% A.col,          X[] %*% A.col)
+      expect_equal(t(A.row) %*% X,       t(A.row) %*% X[])
+      expect_equal(crossprod(X, A.row),  crossprod(X[], A.row))
+      expect_equal(tcrossprod(X, A.row), tcrossprod(X[], A.row))
+      expect_equal(crossprod(A.row, X),  crossprod(A.row, X[]))
+      expect_equal(tcrossprod(A.row, X), tcrossprod(A.row, X[]))
+    } else {
+      ERR <- "for 'double' FBMs only"
+      expect_error(X %*% A.col, ERR)
+      expect_error(t(A.row) %*% X, ERR)
+      expect_error(crossprod(X, A.row), ERR)
+      expect_error(tcrossprod(X, A.row), ERR)
+      expect_error(crossprod(A.row, X), ERR)
+      expect_error(tcrossprod(A.row, X), ERR)
+    }
+  })
+
   test_that("equality with %*%", {
     replicate(20, {
       n <- sample(N, size = 1)

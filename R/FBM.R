@@ -354,3 +354,14 @@ setMethod("length", signature(x = "FBM"), function(x) prod(dim(x)))
 setMethod("typeof", signature(x = "FBM"), function(x) names(x$type))
 
 ################################################################################
+
+#' @rdname FBM-methods
+#' @export
+setMethod("diag", signature(x = "FBM"), function(x) {
+  d <- min(dim(x))
+  dseq <- seq_len(d)
+  ind <- cbind(dseq, dseq)
+  x[ind]
+})
+
+################################################################################
