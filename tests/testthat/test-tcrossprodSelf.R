@@ -19,6 +19,12 @@ test_that("equality with tcrossprod", {
 
     K <- big_tcrossprodSelf(X, block.size = 10)
     expect_equal(K[], tcrossprod(X[]))
+
+    if (t == "double") {
+      expect_equal(tcrossprod(X), tcrossprod(X[]))
+    } else {
+      expect_error(tcrossprod(X), "for 'double' FBMs only")
+    }
   }
 })
 
