@@ -28,6 +28,10 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
+
+\item{x}{A 'double' FBM.}
+
+\item{y}{Missing.}
 }
 \value{
 A temporary \link[=FBM-class]{FBM}, with the following two attributes:
@@ -50,26 +54,29 @@ in order to accelerate these block matrix computations.
 
 \examples{
 X <- FBM(13, 17, init = rnorm(221))
-
-# Comparing with tcrossprod
-big_noscale <- big_scale(center = FALSE)
-K <- big_crossprodSelf(X, fun.scaling = big_noscale)
-class(K)
-dim(K)
-K$backingfile
-
 true <- crossprod(X[])
-all.equal(K[], true)
 
-# Using only half of the data
+# No scaling
+K1 <- crossprod(X)
+class(K1)
+stopifnot(all.equal(K1, true))
+
+K2 <- big_crossprodSelf(X)
+class(K2)
+K2$backingfile
+stopifnot(all.equal(K2[], true))
+
+microbenchmark::microbenchmark(
+  crossprod(X[]), crossprod(X), big_crossprodSelf(X)
+)
+
+# big_crossprodSelf() provides some scaling and subsetting
+# Example using only half of the data:
 n <- nrow(X)
 ind <- sort(sample(n, n/2))
-K2 <- big_crossprodSelf(X, fun.scaling = big_noscale, ind.row = ind)
-
-true2 <- crossprod(X[ind, ])
-all.equal(K2[], true2)
-
-
+K3 <- big_crossprodSelf(X, fun.scaling = big_scale(), ind.row = ind)
+true2 <- crossprod(scale(X[ind, ]))
+stopifnot(all.equal(K3[], true2))
 }
 \seealso{
 \link{crossprod}

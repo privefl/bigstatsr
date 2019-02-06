@@ -96,6 +96,8 @@ big_cor <- function(X,
 ################################################################################
 
 #' @export
+#' @param x A 'double' FBM.
+#' @param y Missing.
 #' @rdname big_crossprodSelf
 setMethod("crossprod", signature(x = "FBM", y = "missing"),
           function(x, y) crossprod_FBM(x))

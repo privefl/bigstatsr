@@ -37,6 +37,10 @@ You may use \link{nb_cores}.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
+
+\item{x}{A 'double' FBM or a matrix.}
+
+\item{y}{A 'double' FBM or a matrix.}
 }
 \value{
 \eqn{X^T \cdot A}.
@@ -53,6 +57,9 @@ A <- matrix(0, n, 10); A[] <- rnorm(length(A))
 test <- big_cprodMat(X, A)
 true <- crossprod(X[], A)
 all.equal(test, true)
+
+X2 <- big_copy(X, type = "double")
+all.equal(crossprod(X2, A), true)
 
 # subsetting
 ind.row <- sample(n, n/2)

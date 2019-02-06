@@ -20,6 +20,9 @@
 #' true <- X[] %*% A
 #' all.equal(test, true)
 #'
+#' X2 <- big_copy(X, type = "double")
+#' all.equal(X2 %*% A, true)
+#'
 #' # subsetting
 #' ind.row <- sample(n, n/2)
 #' ind.col <- sample(m, m/2)
@@ -55,6 +58,8 @@ big_prodMat <- function(X, A.col,
 ################################################################################
 
 #' @export
+#' @param x A 'double' FBM or a matrix.
+#' @param y A 'double' FBM or a matrix.
 #' @rdname big_prodMat
 setMethod("%*%", signature(x = "FBM", y = "matrix"),
           function(x, y) prod_FBM_mat(x, y))
@@ -86,6 +91,9 @@ setMethod("%*%", signature(x = "matrix", y = "FBM"),
 #' test <- big_cprodMat(X, A)
 #' true <- crossprod(X[], A)
 #' all.equal(test, true)
+#'
+#' X2 <- big_copy(X, type = "double")
+#' all.equal(crossprod(X2, A), true)
 #'
 #' # subsetting
 #' ind.row <- sample(n, n/2)
@@ -122,6 +130,8 @@ big_cprodMat <- function(X, A.row,
 ################################################################################
 
 #' @export
+#' @param x A 'double' FBM or a matrix.
+#' @param y A 'double' FBM or a matrix.
 #' @rdname big_cprodMat
 setMethod("crossprod",  signature(x = "FBM", y = "matrix"),
           function(x, y) crossprod_FBM_mat(x, y))

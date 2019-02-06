@@ -30,6 +30,10 @@ You may use \link{nb_cores}.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
+
+\item{x}{A 'double' FBM or a matrix.}
+
+\item{y}{A 'double' FBM or a matrix.}
 }
 \value{
 \eqn{X \cdot A}.
@@ -46,6 +50,9 @@ A <- matrix(0, m, 10); A[] <- rnorm(length(A))
 test <- big_prodMat(X, A)
 true <- X[] \%*\% A
 all.equal(test, true)
+
+X2 <- big_copy(X, type = "double")
+all.equal(X2 \%*\% A, true)
 
 # subsetting
 ind.row <- sample(n, n/2)

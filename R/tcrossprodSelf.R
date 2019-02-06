@@ -54,6 +54,8 @@ big_tcrossprodSelf <- function(
 ################################################################################
 
 #' @export
+#' @param x A 'double' FBM.
+#' @param y Missing.
 #' @rdname big_tcrossprodSelf
 setMethod("tcrossprod", signature(x = "FBM", y = "missing"),
           function(x, y) tcrossprod_FBM(x))
