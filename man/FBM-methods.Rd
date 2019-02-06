@@ -8,6 +8,7 @@
 \alias{dim,FBM-method}
 \alias{length,FBM-method}
 \alias{typeof,FBM-method}
+\alias{diag,FBM-method}
 \title{Methods for the FBM class}
 \usage{
 \S4method{[}{FBM,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
@@ -19,6 +20,8 @@
 \S4method{length}{FBM}(x)
 
 \S4method{typeof}{FBM}(x)
+
+\S4method{diag}{FBM}(x)
 }
 \arguments{
 \item{x}{A \link[=FBM-class]{FBM} object.}
