@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 0.8.3
-Date: 2019-02-03
+Version: 0.8.4
+Date: 2019-02-06
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 
@@ -48,6 +48,7 @@ Suggests:
     bigmemory (>= 4.5.33),
     covr,
     glmnet,
+    microbenchmark,
     ModelMetrics,
     RcppEigen,
     RhpcBLASctl,
@@ -72,7 +73,8 @@ Collate:
     'colstats.R'
     'counts.R'
     'crossprodSelf.R'
-    'mult.R'
+    'mult-mat.R'
+    'mult-vec.R'
     'plot.R'
     'predict.R'
     'randomSVD.R'

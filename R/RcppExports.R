@@ -49,6 +49,38 @@ getXPtrFBM <- function(path, n, m, type) {
     .Call(`_bigstatsr_getXPtrFBM`, path, n, m, type)
 }
 
+prod_FBM_mat <- function(BM, A) {
+    .Call(`_bigstatsr_prod_FBM_mat`, BM, A)
+}
+
+prod_mat_FBM <- function(A, BM) {
+    .Call(`_bigstatsr_prod_mat_FBM`, A, BM)
+}
+
+crossprod_FBM <- function(BM) {
+    .Call(`_bigstatsr_crossprod_FBM`, BM)
+}
+
+crossprod_FBM_mat <- function(BM, A) {
+    .Call(`_bigstatsr_crossprod_FBM_mat`, BM, A)
+}
+
+crossprod_mat_FBM <- function(A, BM) {
+    .Call(`_bigstatsr_crossprod_mat_FBM`, A, BM)
+}
+
+tcrossprod_FBM <- function(BM) {
+    .Call(`_bigstatsr_tcrossprod_FBM`, BM)
+}
+
+tcrossprod_FBM_mat <- function(BM, A) {
+    .Call(`_bigstatsr_tcrossprod_FBM_mat`, BM, A)
+}
+
+tcrossprod_mat_FBM <- function(A, BM) {
+    .Call(`_bigstatsr_tcrossprod_mat_FBM`, A, BM)
+}
+
 COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, n_abort, nlam_min) {
     .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, n_abort, nlam_min)
 }

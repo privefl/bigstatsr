@@ -157,6 +157,100 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// prod_FBM_mat
+arma::mat prod_FBM_mat(Rcpp::Environment BM, const arma::mat& A);
+RcppExport SEXP _bigstatsr_prod_FBM_mat(SEXP BMSEXP, SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(prod_FBM_mat(BM, A));
+    return rcpp_result_gen;
+END_RCPP
+}
+// prod_mat_FBM
+arma::mat prod_mat_FBM(const arma::mat& A, Rcpp::Environment BM);
+RcppExport SEXP _bigstatsr_prod_mat_FBM(SEXP ASEXP, SEXP BMSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type BM(BMSEXP);
+    rcpp_result_gen = Rcpp::wrap(prod_mat_FBM(A, BM));
+    return rcpp_result_gen;
+END_RCPP
+}
+// crossprod_FBM
+arma::mat crossprod_FBM(Rcpp::Environment BM);
+RcppExport SEXP _bigstatsr_crossprod_FBM(SEXP BMSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type BM(BMSEXP);
+    rcpp_result_gen = Rcpp::wrap(crossprod_FBM(BM));
+    return rcpp_result_gen;
+END_RCPP
+}
+// crossprod_FBM_mat
+arma::mat crossprod_FBM_mat(Rcpp::Environment BM, const arma::mat& A);
+RcppExport SEXP _bigstatsr_crossprod_FBM_mat(SEXP BMSEXP, SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(crossprod_FBM_mat(BM, A));
+    return rcpp_result_gen;
+END_RCPP
+}
+// crossprod_mat_FBM
+arma::mat crossprod_mat_FBM(const arma::mat& A, Rcpp::Environment BM);
+RcppExport SEXP _bigstatsr_crossprod_mat_FBM(SEXP ASEXP, SEXP BMSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type BM(BMSEXP);
+    rcpp_result_gen = Rcpp::wrap(crossprod_mat_FBM(A, BM));
+    return rcpp_result_gen;
+END_RCPP
+}
+// tcrossprod_FBM
+arma::mat tcrossprod_FBM(Rcpp::Environment BM);
+RcppExport SEXP _bigstatsr_tcrossprod_FBM(SEXP BMSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type BM(BMSEXP);
+    rcpp_result_gen = Rcpp::wrap(tcrossprod_FBM(BM));
+    return rcpp_result_gen;
+END_RCPP
+}
+// tcrossprod_FBM_mat
+arma::mat tcrossprod_FBM_mat(Rcpp::Environment BM, const arma::mat& A);
+RcppExport SEXP _bigstatsr_tcrossprod_FBM_mat(SEXP BMSEXP, SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(tcrossprod_FBM_mat(BM, A));
+    return rcpp_result_gen;
+END_RCPP
+}
+// tcrossprod_mat_FBM
+arma::mat tcrossprod_mat_FBM(const arma::mat& A, Rcpp::Environment BM);
+RcppExport SEXP _bigstatsr_tcrossprod_mat_FBM(SEXP ASEXP, SEXP BMSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type BM(BMSEXP);
+    rcpp_result_gen = Rcpp::wrap(tcrossprod_mat_FBM(A, BM));
+    return rcpp_result_gen;
+END_RCPP
+}
 // COPY_cdfit_gaussian_hsr
 List COPY_cdfit_gaussian_hsr(Environment BM, const NumericVector& y, const IntegerVector& row_idx, const IntegerVector& col_idx, const NumericMatrix& covar, const NumericVector& lambda, const NumericVector& center, const NumericVector& scale, NumericVector& resid, double alpha, double eps, int max_iter, int dfmax, const IntegerVector& row_idx_val, const NumericMatrix& covar_val, const NumericVector& y_val, int n_abort, int nlam_min);
 RcppExport SEXP _bigstatsr_COPY_cdfit_gaussian_hsr(SEXP BMSEXP, SEXP ySEXP, SEXP row_idxSEXP, SEXP col_idxSEXP, SEXP covarSEXP, SEXP lambdaSEXP, SEXP centerSEXP, SEXP scaleSEXP, SEXP residSEXP, SEXP alphaSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP dfmaxSEXP, SEXP row_idx_valSEXP, SEXP covar_valSEXP, SEXP y_valSEXP, SEXP n_abortSEXP, SEXP nlam_minSEXP) {
@@ -463,6 +557,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_replaceMat", (DL_FUNC) &_bigstatsr_replaceMat, 4},
     {"_bigstatsr_replaceDF", (DL_FUNC) &_bigstatsr_replaceDF, 4},
     {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 4},
+    {"_bigstatsr_prod_FBM_mat", (DL_FUNC) &_bigstatsr_prod_FBM_mat, 2},
+    {"_bigstatsr_prod_mat_FBM", (DL_FUNC) &_bigstatsr_prod_mat_FBM, 2},
+    {"_bigstatsr_crossprod_FBM", (DL_FUNC) &_bigstatsr_crossprod_FBM, 1},
+    {"_bigstatsr_crossprod_FBM_mat", (DL_FUNC) &_bigstatsr_crossprod_FBM_mat, 2},
+    {"_bigstatsr_crossprod_mat_FBM", (DL_FUNC) &_bigstatsr_crossprod_mat_FBM, 2},
+    {"_bigstatsr_tcrossprod_FBM", (DL_FUNC) &_bigstatsr_tcrossprod_FBM, 1},
+    {"_bigstatsr_tcrossprod_FBM_mat", (DL_FUNC) &_bigstatsr_tcrossprod_FBM_mat, 2},
+    {"_bigstatsr_tcrossprod_mat_FBM", (DL_FUNC) &_bigstatsr_tcrossprod_mat_FBM, 2},
     {"_bigstatsr_COPY_cdfit_gaussian_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_gaussian_hsr, 18},
     {"_bigstatsr_COPY_cdfit_binomial_hsr", (DL_FUNC) &_bigstatsr_COPY_cdfit_binomial_hsr, 21},
     {"_bigstatsr_bigsummaries", (DL_FUNC) &_bigstatsr_bigsummaries, 7},
