@@ -66,9 +66,9 @@ test_that("can be used with a subset of samples", {
       flatten <- unlist(mod.bigstatsr2, recursive = FALSE)
       expect_true(all(sapply(flatten, class) == "big_sp"))
       lapply(flatten, function(obj) {
-        expect_false(is.null(nb_active <- obj$nb_active))
-        expect_false(is.unsorted(nb_active))
-        expect_true(all(nb_active >= obj$nb_var))
+        expect_false(is.null(nb_candidate <- obj$nb_candidate))
+        expect_false(is.unsorted(nb_candidate))
+        expect_true(all(nb_candidate >= obj$nb_active))
       })
     }
   }

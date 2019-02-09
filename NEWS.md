@@ -4,7 +4,7 @@ Add `%*%`, `crossprod` and `tcrossprod` operations for 'double' FBMs.
 
 ## bigstatsr 0.8.3
 
-Now also returns the number of non-zero variables (`$nb_var`) and the number of active variables (`$nb_active`) for each step of the regularization paths of `big_spLinReg()` and `big_spLogReg()`.
+Now also returns the number of non-zero variables (`$nb_active`) and the number of candidate variables (`$nb_candidate`) for each step of the regularization paths of `big_spLinReg()` and `big_spLogReg()`.
 
 ## bigstatsr 0.8.0
 
