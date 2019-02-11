@@ -78,7 +78,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     // Rcout << "Iteration n°" << l << std::endl;
 
     // Check dfmax
-    if (Rcpp::sum(beta_old != 0) >= dfmax) {
+    if (nb_active[l - 1] >= dfmax) {
       return List::create(beta_max, loss, iter, metrics, "Too many variables",
                           nb_active, nb_candidate);
     }
@@ -132,8 +132,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
       // Scan for violations in strong set
       violations = COPY_check_strong_set(
-        in_A, in_S, z, macc, center, scale, beta_old,
-        lam_l, sumResid, alpha, r, n, p);
+        in_A, in_S, z, macc, center, scale, beta_old, l1, l2, r, sumResid);
       if (violations == 0) break;
     }
 

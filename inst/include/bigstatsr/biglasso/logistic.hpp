@@ -102,7 +102,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     // Rcout << l << std::endl; //DEBUG
 
     // Check dfmax
-    if (Rcpp::sum(beta_old != 0) >= dfmax) {
+    if (nb_active[l - 1] >= dfmax) {
       return List::create(beta0_max, beta_max, Dev, iter, metrics,
                           "Too many variables", nb_active, nb_candidate);
     }
@@ -210,9 +210,7 @@ List COPY_cdfit_binomial_hsr(C macc,
       // Scan for violations in strong set
       // Rcout << (Rcpp::sum(s) == sum_s) << std::endl;
       violations = COPY_check_strong_set(
-        in_A, in_S, z, macc, center, scale, beta_old,
-        lam_l, sum_s, alpha, s, n, p
-      );
+        in_A, in_S, z, macc, center, scale, beta_old, l1, l2, s, sum_s);
       if (violations == 0) break;
     }
 
