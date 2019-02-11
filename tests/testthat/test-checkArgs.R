@@ -25,7 +25,7 @@ test_that("checking of BM (desc) arguments", {
 
 # defining some objects
 y <- rnorm(10)
-y01 <- sample(0:1, size = 10, replace = TRUE)
+y01 <- sample(0:1, size = 100, replace = TRUE)
 ind1 <- 1:10
 ind2 <- -c(1:10)
 ind3 <- -10:10
