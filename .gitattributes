@@ -1,2 +1,2 @@
-/NEWS.md merge=union
-/.Rbuildignore merge=union
+docs/reference/** linguist-vendored
+man/** linguist-vendored
