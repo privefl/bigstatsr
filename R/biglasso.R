@@ -48,29 +48,18 @@ null_pred <- function(y, base) {
 #'   \item{iter}{A vector of length `nlambda` containing the number of
 #'     iterations until convergence at each value of `lambda`.}
 #'   \item{lambda}{The sequence of regularization parameter values in the path.}
-#'   \item{family}{Either `"gaussian"` or `"binomial"` depending on the
-#'     function used.}
 #'   \item{alpha}{Input parameter.}
 #'   \item{loss}{A vector containing either the residual sum of squares
 #'     (for linear models) or negative log-likelihood (for logistic models)
 #'     of the fitted model at each value of `lambda`.}
 #'   \item{loss.val}{A vector containing the loss for the corresponding
 #'     validation set.}
-#'   \item{n}{The number of observations used in the model fitting. It's equal
-#'     to `length(row.idx)`.}
-#'   \item{p}{The number of dimensions (including covariables,
-#'     but not the intercept).}
-#'   \item{center}{The sample mean vector of the variables, i.e., column mean
-#'     of the sub-matrix of `X` used for model fitting.}
-#'   \item{scale}{The sample standard deviation of the variables, i.e.,
-#'     column standard deviation of the sub-matrix of `X` used for model
-#'     fitting.}
-#'   \item{y}{The response vector used in the model fitting. Depending on
-#'     `row.idx`, it could be a subset of the raw input of the response vector
-#'     y.}
-#'   \item{col.idx}{The indices of features that have 'scale' value greater
-#'     than `1e-6`. Features with 'scale' less than 1e-6 are removed from
-#'     model fitting.}
+#'   \item{message}{Reason the fitting has stopped.}
+#'   \item{nb_active}{The number of active (non-zero) variables along the
+#'     regularization path.}
+#'   \item{nb_candidate}{The number of candidate variables (used in the gradient
+#'     descent) along the regularization path.}
+#'   \item{ind.train}{Indices of training set.}
 #'
 #' @keywords internal
 #'
@@ -88,21 +77,12 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   ## fit model
   if (family == "gaussian") {
 
-    y.train.mean <- mean(y.train)
+    a <- y.train.mean <- mean(y.train)
 
     res <- COPY_cdfit_gaussian_hsr(
       X, y.train - y.train.mean, ind.train, ind.col, covar.train,
       lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
       ind.val, covar.val, y.val - y.train.mean, n.abort, nlam.min)
-
-    a <- y.train.mean
-    b <- res[[1]]
-    loss <- res[[2]]
-    iter <- res[[3]]
-    loss.val <- res[[4]]
-    mess <- res[[5]]
-    nb_active <- res[[6]]
-    nb_candidate <- res[[7]]
 
   } else if (family == "binomial") {
 
@@ -112,28 +92,24 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
       ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
 
     a <- res[[1]]
-    b <- res[[2]]
-    loss <- res[[3]]
-    iter <- res[[4]]
-    loss.val <- res[[5]]
-    mess <- res[[6]]
-    nb_active <- res[[7]]
-    nb_candidate <- res[[8]]
+    res <- res[-1]
 
   } else {
     stop("Current version only supports Gaussian or Binominal response!")
   }
 
+  b <- res[[1]]
+  loss <- res[[2]]
+  iter <- res[[3]]
+  loss.val <- res[[4]]
+  mess <- res[[5]]
+  nb_active <- res[[6]]
+  nb_candidate <- res[[7]]
+
   ## Eliminate saturated lambda values, if any
   ind <- !is.na(loss.val)
-  iter <- iter[ind]
-  lambda <- lambda[ind]
-  loss <- loss[ind] / length(ind.train)
-  loss.val <- loss.val[ind] / length(ind.val)
-  nb_active <- nb_active[ind]
-  nb_candidate <- nb_candidate[ind]
 
-  if (any(iter >= max.iter))
+  if (isTRUE(any(iter >= max.iter)))
     warning2("Algorithm failed to converge for some values of lambda")
 
   ## Unstandardize coefficients:
@@ -144,14 +120,14 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   structure(list(
     intercept = aa,
     beta = bb,
-    iter = iter,
-    lambda = lambda,
+    iter = iter[ind],
+    lambda = lambda[ind],
     alpha = alpha,
-    loss = loss,
-    loss.val = loss.val,
+    loss = loss[ind] / length(ind.train),
+    loss.val = loss.val[ind] / length(ind.val),
     message = mess,
-    nb_active = nb_active,
-    nb_candidate = nb_candidate,
+    nb_active = nb_active[ind],
+    nb_candidate = nb_candidate[ind],
     ind.train = ind.train
   ), class = "big_sp")
 }
