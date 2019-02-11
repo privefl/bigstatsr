@@ -23,9 +23,9 @@ using namespace bigstatsr::biglassoUtils;
 /******************************************************************************/
 
 // Weighted sum
-double COPY_wsum(const NumericVector &r, const NumericVector &w) {
-  return std::inner_product(r.begin(), r.end(), w.begin(), 0.0);
-}
+// double COPY_wsum(const NumericVector &r, const NumericVector &w) {
+//   return std::inner_product(r.begin(), r.end(), w.begin(), 0.0);
+// }
 
 
 // Coordinate descent for logistic models
@@ -196,7 +196,9 @@ List COPY_cdfit_binomial_hsr(C macc,
                 eta[i] += si;
               }
               // update temp result w * r, used for computing xwr;
-              sumWResid = COPY_wsum(r, w);
+              // Rcout << (COPY_wsum(r, w) - sumWResid) << std::endl;
+              sumWResid += shift_scaled * (cj * sum_w - sum_wx);
+              // Rcout << (shift_scaled * (cj * sum_w - sum_wx)) << std::endl;
               // update beta_old
               beta_old[j] += shift;
             }

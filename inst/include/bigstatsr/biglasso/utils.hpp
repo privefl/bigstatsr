@@ -66,11 +66,13 @@ NumericVector predict(C macc,
 /******************************************************************************/
 
 inline double COPY_lasso(double z, double l1, double l2, double v) {
-  double s = 0;
-  if (z > 0) s = 1;
-  else if (z < 0) s = -1;
-  if (fabs(z) <= l1) return(0);
-  else return(s * (fabs(z) - l1) / (v * (1 + l2)));
+  if (z > 0) {
+    double num = z - l1;
+    return (num > 0) ? num / (v * (1 + l2)) : 0;
+  } else {
+    double num = z + l1;
+    return (num < 0) ? num / (v * (1 + l2)) : 0;
+  }
 }
 
 /******************************************************************************/
