@@ -38,7 +38,6 @@ List COPY_cdfit_binomial_hsr(C macc,
                              const NumericVector& scale,
                              NumericVector& z,
                              double alpha,
-                             double beta0_old,
                              double eps,
                              int max_iter,
                              int dfmax,
@@ -62,7 +61,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   IntegerVector iter(L, NA_INTEGER);
   IntegerVector nb_candidate(L, NA_INTEGER);
   IntegerVector nb_active(L, NA_INTEGER);
-  double beta0_max = beta0_old;
+  double beta0_max = 0, beta0_old = 0;
 
   NumericVector beta_max(p);
   NumericVector beta_old(p); // Betas from previous iteration
@@ -80,7 +79,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   // compute metric for training set
   double nullDev = 0;
   for (i = 0; i < n; i++) {
-    eta[i] = beta0_old + base[i];  // prediction from null model
+    eta[i] = base[i];  // prediction from null model
     pi = 1 / (1 + exp(-eta[i]));
     nullDev -= y[i] * log(pi) + (1 - y[i]) * log(1 - pi);
   }
@@ -90,7 +89,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   // compute metric for validation set
   metric_min = 0;
   for (i = 0; i < n_val; i++) {
-    pi = 1 / (1 + exp(-(beta0_old + base_val[i])));
+    pi = 1 / (1 + exp(-base_val[i]));
     metric_min -= y_val[i] * log(pi) + (1 - y_val[i]) * log(1 - pi);
   }
   metrics[0] = metric_min;

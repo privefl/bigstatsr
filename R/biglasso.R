@@ -1,37 +1,36 @@
 ################################################################################
 
-summaries <- function(X, y.train, y_null.train, ind.train, ind.col,
-                      covar.train = matrix(0, length(ind.train), 0),
-                      ind.sets, K) {
+null_pred <- function(var0, y, base, family) {
 
-  assert_lengths(ind.train, ind.sets)
-  assert_lengths(y_null.train, 1:K)
+  stats::glm.fit(var0, y, offset = base, intercept = FALSE, singular.ok = FALSE,
+                 family = switch(family,
+                                 gaussian = stats::gaussian(),
+                                 binomial = stats::binomial()))
+}
 
-  tmp <- bigsummaries(X, ind.train, ind.col, covar.train, y.train, ind.sets, K)
+################################################################################
 
-  all <- colSums(tmp)
-  SUM_X  <- sweep(-matrix(tmp[, , 1], K), 2, all[, 1], '+')
-  SUM_XX <- sweep(-matrix(tmp[, , 2], K), 2, all[, 2], '+')
-  SUM_XY <- sweep(-matrix(tmp[, , 3], K), 2, all[, 3], '+')
+summaries <- function(X, y_diff.train, ind.train, ind.col, ind.sets, K,
+                      covar.train = matrix(0, length(ind.train), 0)) {
+
+  summ <- bigsummaries(X, ind.train, ind.col, covar.train, y_diff.train,
+                       ind.sets, K)
+
+  all <- colSums(summ)
+  SUM_X  <- sweep(-matrix(summ[, , 1], K), 2, all[, 1], '+')
+  SUM_XX <- sweep(-matrix(summ[, , 2], K), 2, all[, 2], '+')
+  SUM_XY <- sweep(-matrix(summ[, , 3], K), 2, all[, 3], '+')
+  SUM_Y <- tapply(seq_along(ind.sets), factor(ind.sets, levels = 1:K),
+                  function(ind) sum(y_diff.train[-ind]))
 
   n.sets      <- length(ind.train) - table(ind.sets)
   center.sets <- sweep(SUM_X, 1, n.sets, '/')
   scale.sets  <- sqrt(sweep(SUM_XX, 1, n.sets, '/') - center.sets^2)
   keep        <- (colSums(scale.sets > 1e-6) == K)
-  resid.sets  <- (SUM_XY - sweep(SUM_X, 1, y_null.train, '*')) /
+  resid.sets  <- (SUM_XY - sweep(center.sets, 1, SUM_Y, '*')) /
     sweep(scale.sets, 1, n.sets, '*')
 
   list(keep = keep, center = center.sets, scale = scale.sets, resid = resid.sets)
-}
-
-################################################################################
-
-null_pred <- function(y, base) {
-
-  fit <- stats::glm.fit(rep(1, length(y)), y, offset = base, intercept = FALSE,
-                        family = stats::binomial())
-
-  c(fit$coefficients, mean(fit$fitted.values))
 }
 
 ################################################################################
@@ -67,7 +66,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
                                eps, max.iter, dfmax,
                                ind.val, covar.val, y.val, n.abort, nlam.min,
-                               b0, base.train, base.val) {
+                               base.train, base.val) {
 
   assert_lengths(y.train, base.train, ind.train, rows_along(covar.train))
   assert_lengths(y.val, base.val, ind.val, rows_along(covar.val))
@@ -77,18 +76,19 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
   ## fit model
   if (family == "gaussian") {
 
+    y.train <- y.train - base.train
     a <- y.train.mean <- mean(y.train)
 
     res <- COPY_cdfit_gaussian_hsr(
       X, y.train - y.train.mean, ind.train, ind.col, covar.train,
       lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
-      ind.val, covar.val, y.val - y.train.mean, n.abort, nlam.min)
+      ind.val, covar.val, y.val - base.val - y.train.mean, n.abort, nlam.min)
 
   } else if (family == "binomial") {
 
     res <- COPY_cdfit_binomial_hsr(
       X, y.train, base.train, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, b0, eps, max.iter, dfmax,
+      lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
       ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
 
     a <- res[[1]]
@@ -192,6 +192,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                nlam.min = 50,
                                n.abort = 10,
                                base.train = NULL,
+                               pf.X = rep(1, p1),
+                               pf.covar = rep(1, p2),
                                eps = 1e-5,
                                max.iter = 1000,
                                dfmax = 50e3,
@@ -207,8 +209,12 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
   n <- length(ind.train)
   if (is.null(covar.train)) covar.train <- matrix(0, n, 0)
-  assert_lengths(y.train, ind.train, rows_along(covar.train), ind.sets)
-  p <- length(ind.col) + ncol(covar.train)
+  if (is.null(base.train))   base.train <- rep(0, n)
+  assert_lengths(y.train, ind.train, rows_along(covar.train), base.train, ind.sets)
+
+  p1 <- length(ind.col); p2 <- ncol(covar.train); p <- p1 + p2
+  assert_lengths(pf.X, ind.col)
+  assert_lengths(pf.covar, cols_along(covar.train))
 
   if (any(alphas < 1e-4 | alphas > 1)) stop("alpha must be between 1e-4 and 1.")
 
@@ -218,33 +224,37 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     tryCatch(y.train <- as.numeric(y.train), error = function(e)
       stop("y.train must numeric or able to be coerced to numeric"))
 
-  if (is.null(base.train)) base.train <- rep(0, n)
 
-  l.ind.sets <- split(seq_along(ind.sets), factor(ind.sets, levels = 1:K))
-  if (family == "binomial") {
-    tmp <- sapply(l.ind.sets, function(ind) {
-      null_pred(y.train[-ind], base.train[-ind])
-    })
-    b0 <- tmp[1, ]
-    assert_lengths(b0, 1:K)
-    y_null.train <- tmp[2, ]
-  } else {
-    y.train <- y.train - base.train
-    y_null.train <- sapply(l.ind.sets, function(ind) mean(y.train[-ind]))
-  }
+  # variables that are not penalized + base prediction
+  assert_all(c(pf.X, pf.covar) >= 0)
+  ind0.X <- which(pf.X == 0)
+  ind0.covar <- which(pf.covar == 0)
+  var0.train <- cbind(
+    1,
+    X[ind.train, ind.col[ind0.X], drop = FALSE],
+    covar.train[, ind0.covar, drop = FALSE]
+  )
+  fit <- null_pred(var0.train, y.train, base.train, family)
+  y_diff.train <- y.train - fit$fitted.values
+  base.train <- base.train + fit$linear.predictors
+  beta0 <- fit$coef[1]
+  beta <- rep(0, p)
+  beta[ind0.X] <- head(fit$coef[-1], length(ind0.X))
+  beta[p1 + ind0.covar] <- tail(fit$coef, length(ind0.covar))
+
 
   # Get summaries
   ## Get also for covariables
-  summaries.covar <- summaries(X, y.train, y_null.train, ind.train, integer(0),
-                               covar.train, ind.sets, K)
+  summaries.covar <- summaries(X, y_diff.train, ind.train, integer(0),
+                               ind.sets, K, covar.train)
   if (!all(summaries.covar$keep))
     stop("Please use covariables with some variation.")
 
   ## Parallelize over columns
-  list_summaries <-
-    big_parallelize(X, p.FUN = function(X, ind, y.train, ind.train, ind.sets, K) {
-      summaries(X, y.train, y_null.train, ind.train, ind, ind.sets = ind.sets, K = K)
-    }, ncores = ncores, ind = ind.col, y.train = y.train,
+  list_summaries <- big_parallelize(
+    X, p.FUN = function(X, ind, y_diff.train, ind.train, ind.sets, K) {
+      summaries(X, y_diff.train, ind.train, ind, ind.sets, K)
+    }, ncores = ncores, ind = ind.col, y_diff.train = y_diff.train,
     ind.train = ind.train, ind.sets = ind.sets, K = K)
 
   keep <- do.call('c', lapply(list_summaries, function(x) x[["keep"]]))
@@ -278,7 +288,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     lambda <- exp(
       seq(log(lambda.max), log(lambda.max * lambda.min), length.out = nlambda))
 
-    COPY_biglasso_part(
+    res <- COPY_biglasso_part(
       X, y.train = y.train[!in.val],
       ind.train = ind.train[!in.val],
       ind.col = ind.col[keep],
@@ -288,11 +298,14 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       covar.val = covar.train[in.val, , drop = FALSE],
       y.val = y.train[in.val],
       n.abort, nlam.min,
-      ## used only for binomial:
-      b0 = b0[ic],
+      # base fitting
       base.train = base.train[!in.val],
       base.val = base.train[in.val]
     )
+    # Add first solution
+    res$intercept <-  res$intercept + beta0
+    res$beta <- res$beta + beta
+    res
   }
 
   structure(
