@@ -28,18 +28,10 @@ summaries <- function(X, y.train, y_null.train, ind.train, ind.col,
 
 null_pred <- function(y, base) {
 
-  ind0 <- which(y == 0)
-  ind1 <- which(y == 1)
-  x <- base
+  fit <- stats::glm.fit(rep(1, length(y)), y, offset = base, intercept = FALSE,
+                        family = stats::binomial())
 
-  f <- function(b0) {
-    sum(1 / (1 + exp(b0 + base[ind1]))) -
-      sum(1 / (1 + exp(-(b0 + base[ind0]))))
-  }
-  b0 <- stats::uniroot(f, c(-20, 20), check.conv = TRUE,
-                       tol = .Machine$double.eps)$root
-
-  c(b0, mean(1 / (1 + exp(-(b0 + x)))))
+  c(fit$coefficients, mean(fit$fitted.values))
 }
 
 ################################################################################
