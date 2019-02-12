@@ -61,6 +61,8 @@ seq2 <- function(lims) {
 
 getAvailMem <- function(format = TRUE) {
 
+  .Deprecated("memuse::Sys.meminfo()")
+
   gc()
 
   if (Sys.info()[["sysname"]] == "Windows") {
