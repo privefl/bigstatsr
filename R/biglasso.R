@@ -2,10 +2,12 @@
 
 null_pred <- function(var0, y, base, family) {
 
-  stats::glm.fit(var0, y, offset = base, intercept = FALSE, singular.ok = FALSE,
-                 family = switch(family,
-                                 gaussian = stats::gaussian(),
-                                 binomial = stats::binomial()))
+  fit <- stats::glm.fit(var0, y, offset = base, intercept = FALSE,
+                        family = switch(family,
+                                        gaussian = stats::gaussian(),
+                                        binomial = stats::binomial()))
+
+  `if`(anyNA(fit$coefficients), stop2("Problem is singular."), fit)
 }
 
 ################################################################################
@@ -236,7 +238,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   )
   fit <- null_pred(var0.train, y.train, base.train, family)
   y_diff.train <- y.train - fit$fitted.values
-  base.train <- base.train + fit$linear.predictors
+  base.train <- fit$linear.predictors
   beta0 <- fit$coef[1]
   beta <- rep(0, p)
   beta[ind0.X] <- head(fit$coef[-1], length(ind0.X))
