@@ -65,6 +65,16 @@ NumericVector predict(C macc,
 
 /******************************************************************************/
 
+inline double COPY_lasso(double z, double l1, double l2) {
+  if (z > 0) {
+    double num = z - l1;
+    return (num > 0) ? num / (1 + l2) : 0;
+  } else {
+    double num = z + l1;
+    return (num < 0) ? num / (1 + l2) : 0;
+  }
+}
+
 inline double COPY_lasso(double z, double l1, double l2, double v) {
   if (z > 0) {
     double num = z - l1;
@@ -85,6 +95,7 @@ size_t COPY_check_strong_set(LogicalVector& in_A,
                              C macc,
                              const NumericVector& center,
                              const NumericVector& scale,
+                             const NumericVector& pf,
                              const NumericVector& beta_old,
                              double l1, double l2,
                              const NumericVector& r,
@@ -102,7 +113,7 @@ size_t COPY_check_strong_set(LogicalVector& in_A,
       }
       z[j] = (cpsum - center[j] * sumResid) / (scale[j] * n);
 
-      if (fabs(z[j] - beta_old[j] * l2) > l1) {
+      if (fabs(z[j] - beta_old[j] * l2 * pf[j]) > (l1 * pf[j])) {
         in_A[j] = true;
         violations++;
       }

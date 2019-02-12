@@ -68,7 +68,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
                                eps, max.iter, dfmax,
                                ind.val, covar.val, y.val, n.abort, nlam.min,
-                               base.train, base.val) {
+                               base.train, base.val, pf) {
 
   assert_lengths(y.train, base.train, ind.train, rows_along(covar.train))
   assert_lengths(y.val, base.val, ind.val, rows_along(covar.val))
@@ -83,14 +83,14 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 
     res <- COPY_cdfit_gaussian_hsr(
       X, y.train - y.train.mean, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
+      lambda, center, scale, pf, resid, alpha, eps, max.iter, dfmax,
       ind.val, covar.val, y.val - base.val - y.train.mean, n.abort, nlam.min)
 
   } else if (family == "binomial") {
 
     res <- COPY_cdfit_binomial_hsr(
       X, y.train, base.train, ind.train, ind.col, covar.train,
-      lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
+      lambda, center, scale, pf, resid, alpha, eps, max.iter, dfmax,
       ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
 
     a <- res[[1]]
@@ -170,7 +170,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #'   (CMSA) procedure. Default is `10`.
 #' @param ind.sets Integer vectors of values between `1` and `K` specifying
 #'   which set each index of the training set is in. Default randomly assigns
-#'   these values but it can be useful to set this vector for reproducibility.
+#'   these values but it can be useful to set this vector for reproducibility,
+#'   or if you want to refine the grid-search over `alphas` using the same sets.
 #' @param warn Deprecated. Now return the reason of completion as `$message`.
 #' @param return.all Deprecated. Now always return all models.
 #' @param nlam.min Minimum number of lambda values to investigate. Default is `50`.
@@ -181,6 +182,12 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #'   a model with large-effect variables that you don't want to penalize.
 #'   **Don't forget to add those predictions when you use `predict`
 #'   and make sure you don't use `proba = TRUE` when you do so.**
+#' @param pf.X A multiplicative factor for the penalty applied to each coefficient.
+#'   If supplied, `pf.X` must be a numeric vector of the same length as `ind.col`.
+#'   Default is all `1`. The purpose of `pf.X` is to apply differential
+#'   penalization if some coefficients are thought to be more likely than others
+#'   to be in the model. Setting SOME to 0 allows to have unpenalized coefficients.
+#' @param pf.covar Same as `pf.X`, but for `covar.train`.
 #'
 #' @keywords internal
 #'
@@ -188,14 +195,14 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                family = c("gaussian", "binomial"),
                                alphas = 1,
                                K = 10,
-                               ind.sets = sample(rep_len(1:K, n)),
+                               ind.sets = NULL,
                                nlambda = 200,
                                lambda.min = `if`(n > p, .0001, .001),
                                nlam.min = 50,
                                n.abort = 10,
                                base.train = NULL,
-                               pf.X = rep(1, p1),
-                               pf.covar = rep(1, p2),
+                               pf.X = NULL,
+                               pf.covar = NULL,
                                eps = 1e-5,
                                max.iter = 1000,
                                dfmax = 50e3,
@@ -212,10 +219,13 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   n <- length(ind.train)
   if (is.null(covar.train)) covar.train <- matrix(0, n, 0)
   if (is.null(base.train))   base.train <- rep(0, n)
+  if (is.null(ind.sets))       ind.sets <- sample(rep_len(1:K, n))
   assert_lengths(y.train, ind.train, rows_along(covar.train), base.train, ind.sets)
 
   p1 <- length(ind.col); p2 <- ncol(covar.train); p <- p1 + p2
-  assert_lengths(pf.X, ind.col)
+  if (is.null(pf.X))     pf.X     <- rep(1, p1)
+  if (is.null(pf.covar)) pf.covar <- rep(1, p2)
+  assert_lengths(pf.X,     ind.col)
   assert_lengths(pf.covar, cols_along(covar.train))
 
   if (any(alphas < 1e-4 | alphas > 1)) stop("alpha must be between 1e-4 and 1.")
@@ -228,7 +238,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
 
   # variables that are not penalized + base prediction
-  assert_all(c(pf.X, pf.covar) >= 0)
+  pf <- c(pf.X, pf.covar); assert_all(pf >= 0)
   ind0.X <- which(pf.X == 0)
   ind0.covar <- which(pf.covar == 0)
   var0.train <- cbind(
@@ -260,6 +270,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     ind.train = ind.train, ind.sets = ind.sets, K = K)
 
   keep <- do.call('c', lapply(list_summaries, function(x) x[["keep"]]))
+  pf.keep <- pf[keep]
 
 
   ## fit models
@@ -286,7 +297,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     scale  <- c(scale,  summaries.covar[["scale"]][ic, ])
     resid  <- c(resid,  summaries.covar[["resid"]][ic, ])
     ## Compute lambdas of the path
-    lambda.max <- max(abs(resid)) / alpha
+    lambda.max <- max(abs(resid / pf.keep)[pf.keep != 0]) / alpha
     lambda <- exp(
       seq(log(lambda.max), log(lambda.max * lambda.min), length.out = nlambda))
 
@@ -302,7 +313,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       n.abort, nlam.min,
       # base fitting
       base.train = base.train[!in.val],
-      base.val = base.train[in.val]
+      base.val = base.train[in.val],
+      pf.keep
     )
     # Add first solution
     res$intercept <-  res$intercept + beta0
@@ -316,7 +328,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     family = family,
     alphas = alphas,
     ind.col = ind.col[keep],
-    ind.sets = ind.sets
+    ind.sets = ind.sets,
+    pf = pf.keep
   )
 }
 
@@ -350,7 +363,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritParams COPY_biglasso_main
-#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family -base.train -alphas -nlambda -nlam.min -n.abort -dfmax
+#' @inheritDotParams COPY_biglasso_main lambda.min eps max.iter warn return.all
 #'
 #' @return Return an object of class `big_sp_list` (a list of `length(alphas)`
 #'   x `K`) that has 3 methods `predict`, `summary` and `plot`.
@@ -376,7 +389,11 @@ big_spLinReg <- function(X, y.train,
                          ind.col = cols_along(X),
                          covar.train = NULL,
                          base.train = NULL,
+                         pf.X = NULL,
+                         pf.covar = NULL,
                          alphas = 1,
+                         K = 10,
+                         ind.sets = NULL,
                          nlambda = 200,
                          nlam.min = 50,
                          n.abort = 10,
@@ -398,7 +415,7 @@ big_spLinReg <- function(X, y.train,
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritParams COPY_biglasso_main
-#' @inheritDotParams COPY_biglasso_main -X -y.train -ind.train -covar.train -family -base.train -alphas -nlambda -nlam.min -n.abort -dfmax
+#' @inheritDotParams COPY_biglasso_main lambda.min eps max.iter warn return.all
 #'
 #' @inherit big_spLinReg return description details seealso references
 #'
@@ -410,7 +427,11 @@ big_spLogReg <- function(X, y01.train,
                          ind.col = cols_along(X),
                          covar.train = NULL,
                          base.train = NULL,
+                         pf.X = NULL,
+                         pf.covar = NULL,
                          alphas = 1,
+                         K = 10,
+                         ind.sets = NULL,
                          nlambda = 200,
                          nlam.min = 50,
                          n.abort = 10,

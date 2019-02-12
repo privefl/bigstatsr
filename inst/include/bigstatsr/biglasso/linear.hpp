@@ -32,6 +32,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
                              const NumericVector& lambda,
                              const NumericVector& center,
                              const NumericVector& scale,
+                             const NumericVector& pf,
                              NumericVector& z,
                              double alpha,
                              double eps,
@@ -89,7 +90,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     l2 = lam_l - l1;
     // strong set
     cutoff = (2 * lam_l - lambda[l - 1]) * alpha;
-    in_S = (abs(z) > cutoff);
+    in_S = (abs(z) > (pf * cutoff));
 
     // Approx: no check of rest set
     iter[l] = 0;
@@ -110,7 +111,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
             // cpsum = (cpsum - center[j] * sumResid) / scale[j];
             z[j] = cpsum / (scale[j] * n) + beta_old[j];
 
-            shift = COPY_lasso(z[j], l1, l2, 1.0) - beta_old[j];
+            shift = COPY_lasso(z[j], l1 * pf[j], l2 * pf[j]) - beta_old[j];
             if (shift != 0) {
               // compute objective update for checking convergence
               update = shift * shift;
@@ -134,7 +135,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
       // Scan for violations in strong set
       violations = COPY_check_strong_set(
-        in_A, in_S, z, macc, center, scale, beta_old, l1, l2, r, 0.0);
+        in_A, in_S, z, macc, center, scale, pf, beta_old, l1, l2, r, 0.0);
       if (violations == 0) break;
     }
 

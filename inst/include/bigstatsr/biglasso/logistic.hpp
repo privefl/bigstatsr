@@ -36,6 +36,7 @@ List COPY_cdfit_binomial_hsr(C macc,
                              const NumericVector& lambda,
                              const NumericVector& center,
                              const NumericVector& scale,
+                             const NumericVector& pf,
                              NumericVector& z,
                              double alpha,
                              double eps,
@@ -111,7 +112,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     l2 = lam_l - l1;
     // strong set
     cutoff = (2 * lam_l - lambda[l - 1]) * alpha;
-    in_S = (abs(z) > cutoff);
+    in_S = (abs(z) > (pf * cutoff));
 
     // Approx: no check of rest set
     iter[l] = 0;
@@ -181,7 +182,7 @@ List COPY_cdfit_binomial_hsr(C macc,
             v = (sum_wx_sq - 2 * cj * sum_wx + cj * cj * sum_w) / (sj * sj * n);
             u = xwr / n + v * beta_old[j];
 
-            shift = COPY_lasso(u, l1, l2, v) - beta_old[j];
+            shift = COPY_lasso(u, l1 * pf[j], l2 * pf[j], v) - beta_old[j];
             if (shift != 0) {
               // update change of objective function
               update = shift * shift * v;
@@ -209,7 +210,7 @@ List COPY_cdfit_binomial_hsr(C macc,
       // Scan for violations in strong set
       // Rcout << (Rcpp::sum(s) == sum_s) << std::endl;
       violations = COPY_check_strong_set(
-        in_A, in_S, z, macc, center, scale, beta_old, l1, l2, s, sum_s);
+        in_A, in_S, z, macc, center, scale, pf, beta_old, l1, l2, s, sum_s);
       if (violations == 0) break;
     }
 

@@ -6,7 +6,7 @@
 \usage{
 COPY_biglasso_part(X, y.train, ind.train, ind.col, covar.train, family,
   lambda, center, scale, resid, alpha, eps, max.iter, dfmax, ind.val,
-  covar.val, y.val, n.abort, nlam.min, base.train, base.val)
+  covar.val, y.val, n.abort, nlam.min, base.train, base.val, pf)
 }
 \value{
 A named list with following variables:

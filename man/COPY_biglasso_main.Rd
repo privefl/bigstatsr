@@ -6,11 +6,10 @@
 \usage{
 COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
   family = c("gaussian", "binomial"), alphas = 1, K = 10,
-  ind.sets = sample(rep_len(1:K, n)), nlambda = 200, lambda.min = if
-  (n > p) 1e-04 else 0.001, nlam.min = 50, n.abort = 10,
-  base.train = NULL, pf.X = rep(1, p1), pf.covar = rep(1, p2),
-  eps = 1e-05, max.iter = 1000, dfmax = 50000, return.all = FALSE,
-  warn = FALSE, ncores = 1)
+  ind.sets = NULL, nlambda = 200, lambda.min = if (n > p) 1e-04 else
+  0.001, nlam.min = 50, n.abort = 10, base.train = NULL,
+  pf.X = NULL, pf.covar = NULL, eps = 1e-05, max.iter = 1000,
+  dfmax = 50000, return.all = FALSE, warn = FALSE, ncores = 1)
 }
 \arguments{
 \item{family}{Either "gaussian" (linear) or "binomial" (logistic).}
@@ -27,7 +26,8 @@ pass multiple values, and only one will be used (optimized by grid-search).}}
 
 \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
 which set each index of the training set is in. Default randomly assigns
-these values but it can be useful to set this vector for reproducibility.}
+these values but it can be useful to set this vector for reproducibility,
+or if you want to refine the grid-search over \code{alphas} using the same sets.}
 
 \item{nlambda}{The number of lambda values. Default is \code{200}.}
 
@@ -45,6 +45,14 @@ from these predictions. This can be useful if you want to previously fit
 a model with large-effect variables that you don't want to penalize.
 \strong{Don't forget to add those predictions when you use \code{predict}
 and make sure you don't use \code{proba = TRUE} when you do so.}}
+
+\item{pf.X}{A multiplicative factor for the penalty applied to each coefficient.
+If supplied, \code{pf.X} must be a numeric vector of the same length as \code{ind.col}.
+Default is all \code{1}. The purpose of \code{pf.X} is to apply differential
+penalization if some coefficients are thought to be more likely than others
+to be in the model. Setting SOME to 0 allows to have unpenalized coefficients.}
+
+\item{pf.covar}{Same as \code{pf.X}, but for \code{covar.train}.}
 
 \item{eps}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
