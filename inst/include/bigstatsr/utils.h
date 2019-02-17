@@ -1,8 +1,13 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+/******************************************************************************/
+
+#include <mio/mmap.hpp>
+#include <RcppArmadillo.h>
 #include <Rcpp.h>
 
+/******************************************************************************/
 
 const char* const ERROR_TYPE =
   "Unknown type detected for Filebacked Big Matrix.";
@@ -15,8 +20,12 @@ const char* const ERROR_BOUNDS =
 const char* const ERROR_REPORT =
   "Please report this issue that shoud not have happened.";
 
+/******************************************************************************/
+
 inline void myassert(bool cond, const char *msg) {
   if (!cond) throw Rcpp::exception(msg);
 }
+
+/******************************************************************************/
 
 #endif // UTILS_H

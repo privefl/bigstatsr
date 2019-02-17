@@ -39,9 +39,10 @@ Imports:
     tibble,
     utils
 LinkingTo: 
-    BH,
+    rmio,
     Rcpp,
     RcppArmadillo
+Remotes: privefl/rmio
 Suggests: 
     bigalgebra,
     biglasso,

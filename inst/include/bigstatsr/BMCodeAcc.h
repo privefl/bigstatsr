@@ -12,7 +12,7 @@ using namespace Rcpp;
 
 class SubBMCode256Acc : public SubBMAcc<unsigned char> {
 public:
-  SubBMCode256Acc(const FBM * xpBM,
+  SubBMCode256Acc(FBM * xpBM,
                   const IntegerVector& row_ind,
                   const IntegerVector& col_ind,
                   const NumericVector& code256)

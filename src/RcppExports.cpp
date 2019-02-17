@@ -144,14 +144,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // getXPtrFBM
-SEXP getXPtrFBM(std::string path, size_t n, size_t m, int type);
+SEXP getXPtrFBM(std::string path, std::size_t n, std::size_t m, int type);
 RcppExport SEXP _bigstatsr_getXPtrFBM(SEXP pathSEXP, SEXP nSEXP, SEXP mSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
-    Rcpp::traits::input_parameter< size_t >::type n(nSEXP);
-    Rcpp::traits::input_parameter< size_t >::type m(mSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type n(nSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type m(mSEXP);
     Rcpp::traits::input_parameter< int >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(getXPtrFBM(path, n, m, type));
     return rcpp_result_gen;

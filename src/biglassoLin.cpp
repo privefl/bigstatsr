@@ -1,6 +1,5 @@
 /******************************************************************************/
 
-#include <RcppArmadillo.h>
 #include <bigstatsr/SubMatCovAcc.h>
 #include <bigstatsr/biglasso/linear.hpp>
 
