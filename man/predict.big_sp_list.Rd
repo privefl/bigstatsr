@@ -6,7 +6,7 @@
 \usage{
 \method{predict}{big_sp_list}(object, X, ind.row = rows_along(X),
   ind.col = attr(object, "ind.col"), covar.row = NULL,
-  proba = (attr(object, "family") == "binomial"), ...)
+  proba = (attr(object, "family") == "binomial"), base.row = NULL, ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp_list}.}
@@ -24,6 +24,8 @@ for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
 \item{proba}{Whether to return probabilities?}
+
+\item{base.row}{Vector of base predictions, corresponding to \code{ind.row}.}
 
 \item{...}{Not used.}
 }

@@ -221,6 +221,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   if (is.null(base.train))   base.train <- rep(0, n)
   if (is.null(ind.sets))       ind.sets <- sample(rep_len(1:K, n))
   assert_lengths(y.train, ind.train, rows_along(covar.train), base.train, ind.sets)
+  base.train0 <- base.train
 
   p1 <- length(ind.col); p2 <- ncol(covar.train); p <- p1 + p2
   if (is.null(pf.X))     pf.X     <- rep(1, p1)
@@ -329,7 +330,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     alphas = alphas,
     ind.col = ind.col[keep],
     ind.sets = ind.sets,
-    pf = pf.keep
+    pf = pf.keep,
+    base = base.train0
   )
 }
 

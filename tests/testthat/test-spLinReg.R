@@ -45,6 +45,12 @@ test_that("can be used with a subset of samples", {
       mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar,
                                     alphas = alphas, dfmax = Inf,
                                     ncores = test_cores())
+      if (is.null(covar)) {
+        expect_length(predict(mod.bigstatsr, X, ind.row = (1:N)[-ind]), N / 2)
+      } else {
+        expect_error(predict(mod.bigstatsr, X, ind.row = (1:N)[-ind]),
+                     "You forgot to provide 'covar.row' in predict().")
+      }
       preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],
                        covar.row = covar[-ind, ])
       expect_gt(cor(preds, y[-ind]), 0.75)
@@ -217,7 +223,9 @@ test_that("Use a base predictor", {
                                      alphas = alphas,
                                      ind.sets = ind.sets,
                                      ncores = test_cores())
-      preds3 <- predict(mod.bigstatsr3, X, covar.row = covar)
+      expect_error(predict(mod.bigstatsr3, X, covar.row = covar),
+                   "You forgot to provide 'base.row' in predict().")
+      preds3 <- predict(mod.bigstatsr3, X, covar.row = covar, base.row = rep(0, N))
       expect_equal(preds3, preds / 2, tolerance = 0.1)
     }
   }
