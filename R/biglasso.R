@@ -318,7 +318,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     )
     # Add first solution
     res$intercept <-  res$intercept + beta0
-    res$beta <- res$beta + beta
+    res$beta <- res$beta + beta[keep]
     res
   }
 
