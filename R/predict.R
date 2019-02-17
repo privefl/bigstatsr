@@ -102,6 +102,21 @@ predict.big_sp_list <- function(object, X,
 
 ################################################################################
 
+#' @export
+`[.big_sp_list` <- function(x, i, ...) {
+
+  assert_nodots()
+
+  attr <- attributes(x)
+  attr$alphas <- attr$alphas[i]
+
+  r <- NextMethod("[")
+  mostattributes(r) <- attr
+  r
+}
+
+################################################################################
+
 #' Predict method
 #'
 #' Predict method for class `mhtest`.

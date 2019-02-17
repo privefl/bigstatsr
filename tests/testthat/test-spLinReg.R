@@ -46,9 +46,9 @@ test_that("can be used with a subset of samples", {
                                     alphas = alphas, dfmax = Inf,
                                     ncores = test_cores())
       if (is.null(covar)) {
-        expect_length(predict(mod.bigstatsr, X, ind.row = (1:N)[-ind]), N / 2)
+        expect_length(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]), N / 2)
       } else {
-        expect_error(predict(mod.bigstatsr, X, ind.row = (1:N)[-ind]),
+        expect_error(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]),
                      "You forgot to provide 'covar.row' in predict().")
       }
       preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],

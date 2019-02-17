@@ -252,8 +252,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   base.train <- fit$linear.predictors
   beta0 <- fit$coef[1]
   beta <- rep(0, p)
-  beta[ind0.X] <- head(fit$coef[-1], length(ind0.X))
-  beta[p1 + ind0.covar] <- tail(fit$coef, length(ind0.covar))
+  beta[ind0.X] <- utils::head(fit$coef[-1], length(ind0.X))
+  beta[p1 + ind0.covar] <- utils::tail(fit$coef, length(ind0.covar))
 
 
   # Get summaries
