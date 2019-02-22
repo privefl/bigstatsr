@@ -1,3 +1,13 @@
+## bigstatsr 0.9.0
+
+- Use *mio* instead of *boost* for memory-mapping.
+
+- Add a parameter `base.row` to `predict.big_sp_list()` and automatically detect if needed (as well as for `covar.row`).
+
+- Possibility to subset a `big_sp_list` without losing attributes, so that one can access one model (corresponding to one alpha) even if it is not the 'best'.
+
+- Add parameters `pf.X` and `pf.covar` in `big_sp***Reg()` to provide different penalization for each variable (possibly no penalization at all). 
+
 ## bigstatsr 0.8.4
 
 Add `%*%`, `crossprod` and `tcrossprod` operations for 'double' FBMs.
