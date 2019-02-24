@@ -42,7 +42,6 @@ LinkingTo:
     rmio,
     Rcpp,
     RcppArmadillo
-Remotes: privefl/rmio
 Suggests: 
     bigalgebra,
     biglasso,
