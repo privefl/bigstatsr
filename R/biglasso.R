@@ -239,7 +239,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
 
   # variables that are not penalized + base prediction
-  pf <- c(pf.X, pf.covar); assert_all(pf >= 0)
+  assert_all(c(pf.X, pf.covar) >= 0)
   ind0.X <- which(pf.X == 0)
   ind0.covar <- which(pf.covar == 0)
   var0.train <- cbind(
@@ -251,9 +251,10 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   y_diff.train <- y.train - fit$fitted.values
   base.train <- fit$linear.predictors
   beta0 <- fit$coef[1]
-  beta <- rep(0, p)
-  beta[ind0.X] <- utils::head(fit$coef[-1], length(ind0.X))
-  beta[p1 + ind0.covar] <- utils::tail(fit$coef, length(ind0.covar))
+  beta.X <- rep(0, p1)
+  beta.X[ind0.X] <- utils::head(fit$coef[-1], length(ind0.X))
+  beta.covar <- rep(0, p2)
+  beta.covar[ind0.covar] <- utils::tail(fit$coef, length(ind0.covar))
 
 
   # Get summaries
@@ -271,7 +272,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     ind.train = ind.train, ind.sets = ind.sets, K = K)
 
   keep <- do.call('c', lapply(list_summaries, function(x) x[["keep"]]))
-  pf.keep <- pf[keep]
+  pf.keep <- c(pf.X[keep], pf.covar)
 
 
   ## fit models
@@ -318,10 +319,15 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       pf.keep
     )
     # Add first solution
-    res$intercept <-  res$intercept + beta0
-    res$beta <- res$beta + beta[keep]
+    res$intercept <- res$intercept + beta0
+    res$beta <- res$beta + c(beta.X[keep], beta.covar)
     res
   }
+
+  nb_novar <- sum(!keep)
+  if (nb_novar > 0)
+    warning2("%d variable%s with low/no variation %s been removed.", nb_novar,
+             `if`(nb_novar == 1, "", "s"), `if`(nb_novar == 1, "has", "have"))
 
   structure(
     cross.res,
