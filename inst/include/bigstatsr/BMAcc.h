@@ -4,7 +4,6 @@
 /******************************************************************************/
 
 #include <bigstatsr/FBM.h>
-#include <bigstatsr/utils.h>
 
 using namespace Rcpp;
 using std::size_t;
@@ -14,7 +13,7 @@ using std::size_t;
 template <typename T>
 class BMAcc {
 public:
-  BMAcc(const FBM * xpBM) {
+  BMAcc(FBM * xpBM) {
     _pMat = static_cast<T*>(xpBM->matrix());
     _nrow = xpBM->nrow();
     _ncol = xpBM->ncol();
@@ -38,7 +37,7 @@ protected:
 template <typename T>
 class VecBMAcc : public BMAcc<T> {
 public:
-  VecBMAcc(const FBM * xpBM,
+  VecBMAcc(FBM * xpBM,
            const NumericVector& elem_ind)
     : BMAcc<T>(xpBM) {
 
@@ -71,7 +70,7 @@ protected:
 template <typename T>
 class SubBMAcc : public BMAcc<T> {
 public:
-  SubBMAcc(const FBM * xpBM,
+  SubBMAcc(FBM * xpBM,
            const IntegerVector& row_ind,
            const IntegerVector& col_ind)
     : BMAcc<T>(xpBM) {

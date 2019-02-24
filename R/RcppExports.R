@@ -81,12 +81,12 @@ tcrossprod_mat_FBM <- function(A, BM) {
     .Call(`_bigstatsr_tcrossprod_mat_FBM`, A, BM)
 }
 
-COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, n_abort, nlam_min) {
-    .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, n_abort, nlam_min)
+COPY_cdfit_gaussian_hsr <- function(BM, y, row_idx, col_idx, covar, lambda, center, scale, pf, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, n_abort, nlam_min) {
+    .Call(`_bigstatsr_COPY_cdfit_gaussian_hsr`, BM, y, row_idx, col_idx, covar, lambda, center, scale, pf, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, n_abort, nlam_min)
 }
 
-COPY_cdfit_binomial_hsr <- function(BM, y, base, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, b0, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min) {
-    .Call(`_bigstatsr_COPY_cdfit_binomial_hsr`, BM, y, base, row_idx, col_idx, covar, lambda, center, scale, resid, alpha, b0, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min)
+COPY_cdfit_binomial_hsr <- function(BM, y, base, row_idx, col_idx, covar, lambda, center, scale, pf, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min) {
+    .Call(`_bigstatsr_COPY_cdfit_binomial_hsr`, BM, y, base, row_idx, col_idx, covar, lambda, center, scale, pf, resid, alpha, eps, max_iter, dfmax, row_idx_val, covar_val, y_val, base_val, n_abort, nlam_min)
 }
 
 bigsummaries <- function(BM, row_idx, col_idx, covar, y, which_set, K) {

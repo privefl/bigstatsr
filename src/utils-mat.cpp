@@ -1,7 +1,6 @@
 /******************************************************************************/
 
 #include <bigstatsr/BMAcc.h>
-#include <Rcpp.h>
 
 using namespace Rcpp;
 using std::size_t;

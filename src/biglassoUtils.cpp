@@ -1,7 +1,7 @@
 /******************************************************************************/
 
-#include <bigstatsr/biglasso/utils.hpp>
 #include <bigstatsr/SubMatCovAcc.h>
+#include <bigstatsr/biglasso/utils.hpp>
 
 /******************************************************************************/
 

@@ -32,6 +32,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
                              const NumericVector& lambda,
                              const NumericVector& center,
                              const NumericVector& scale,
+                             const NumericVector& pf,
                              NumericVector& z,
                              double alpha,
                              double eps,
@@ -66,7 +67,8 @@ List COPY_cdfit_gaussian_hsr(C macc,
   LogicalVector in_A(p); // ever-active set
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
-  double sumResid = Rcpp::sum(r);
+  // double sumResid = Rcpp::sum(r);  // always 0..
+  // Rcout << Rcpp::sum(r) << std::endl;
   nb_active[0] = nb_candidate[0] = iter[0] = 0;
   loss[0] = COPY_gLoss(r);
   thresh = eps * loss[0] / n;
@@ -78,7 +80,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     // Rcout << "Iteration n°" << l << std::endl;
 
     // Check dfmax
-    if (Rcpp::sum(beta_old != 0) >= dfmax) {
+    if (nb_active[l - 1] >= dfmax) {
       return List::create(beta_max, loss, iter, metrics, "Too many variables",
                           nb_active, nb_candidate);
     }
@@ -88,7 +90,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
     l2 = lam_l - l1;
     // strong set
     cutoff = (2 * lam_l - lambda[l - 1]) * alpha;
-    in_S = (abs(z) > cutoff);
+    in_S = (abs(z) > (pf * cutoff));
 
     // Approx: no check of rest set
     iter[l] = 0;
@@ -106,10 +108,10 @@ List COPY_cdfit_gaussian_hsr(C macc,
             for (i = 0; i < n; i++) {
               cpsum += macc(i, j) * r[i];
             }
-            cpsum = (cpsum - center[j] * sumResid) / scale[j];
-            z[j] = cpsum / n + beta_old[j];
+            // cpsum = (cpsum - center[j] * sumResid) / scale[j];
+            z[j] = cpsum / (scale[j] * n) + beta_old[j];
 
-            shift = COPY_lasso(z[j], l1, l2, 1.0) - beta_old[j];
+            shift = COPY_lasso(z[j], l1 * pf[j], l2 * pf[j]) - beta_old[j];
             if (shift != 0) {
               // compute objective update for checking convergence
               update = shift * shift;
@@ -117,11 +119,12 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
               // update r (residuals)
               shift_scaled = shift / scale[j];
-              sumResid = 0;
+              // sumResid = 0;
               for (i = 0; i < n; i++) {
                 r[i] -= shift_scaled * (macc(i, j) - center[j]);
-                sumResid += r[i];
+                // sumResid += r[i];
               }
+              // Rcout << sumResid << std::endl;
               beta_old[j] += shift; // update beta_old
             }
           }
@@ -132,8 +135,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
       // Scan for violations in strong set
       violations = COPY_check_strong_set(
-        in_A, in_S, z, macc, center, scale, beta_old,
-        lam_l, sumResid, alpha, r, n, p);
+        in_A, in_S, z, macc, center, scale, pf, beta_old, l1, l2, r, 0.0);
       if (violations == 0) break;
     }
 

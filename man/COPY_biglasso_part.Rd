@@ -6,7 +6,7 @@
 \usage{
 COPY_biglasso_part(X, y.train, ind.train, ind.col, covar.train, family,
   lambda, center, scale, resid, alpha, eps, max.iter, dfmax, ind.val,
-  covar.val, y.val, n.abort, nlam.min, b0, base.train, base.val)
+  covar.val, y.val, n.abort, nlam.min, base.train, base.val, pf)
 }
 \value{
 A named list with following variables:
@@ -16,29 +16,18 @@ validation set.}
 \item{iter}{A vector of length \code{nlambda} containing the number of
 iterations until convergence at each value of \code{lambda}.}
 \item{lambda}{The sequence of regularization parameter values in the path.}
-\item{family}{Either \code{"gaussian"} or \code{"binomial"} depending on the
-function used.}
 \item{alpha}{Input parameter.}
 \item{loss}{A vector containing either the residual sum of squares
 (for linear models) or negative log-likelihood (for logistic models)
 of the fitted model at each value of \code{lambda}.}
 \item{loss.val}{A vector containing the loss for the corresponding
 validation set.}
-\item{n}{The number of observations used in the model fitting. It's equal
-to \code{length(row.idx)}.}
-\item{p}{The number of dimensions (including covariables,
-but not the intercept).}
-\item{center}{The sample mean vector of the variables, i.e., column mean
-of the sub-matrix of \code{X} used for model fitting.}
-\item{scale}{The sample standard deviation of the variables, i.e.,
-column standard deviation of the sub-matrix of \code{X} used for model
-fitting.}
-\item{y}{The response vector used in the model fitting. Depending on
-\code{row.idx}, it could be a subset of the raw input of the response vector
-y.}
-\item{col.idx}{The indices of features that have 'scale' value greater
-than \code{1e-6}. Features with 'scale' less than 1e-6 are removed from
-model fitting.}
+\item{message}{Reason the fitting has stopped.}
+\item{nb_active}{The number of active (non-zero) variables along the
+regularization path.}
+\item{nb_candidate}{The number of candidate variables (used in the gradient
+descent) along the regularization path.}
+\item{ind.train}{Indices of training set.}
 }
 \description{
 Train one model

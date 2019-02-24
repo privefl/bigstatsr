@@ -76,7 +76,7 @@ using std::size_t;
 template<typename T>
 class SubMatCovAcc : public SubBMAcc<T> {
 public:
-  SubMatCovAcc(const FBM * xpBM,
+  SubMatCovAcc(FBM * xpBM,
                const IntegerVector& row_ind,
                const IntegerVector& col_ind,
                const NumericMatrix& covar)
@@ -118,7 +118,7 @@ protected:
 
 class RawSubMatCovAcc : public SubMatCovAcc<unsigned char> {
 public:
-  RawSubMatCovAcc(const FBM * xpBM,
+  RawSubMatCovAcc(FBM * xpBM,
                   const IntegerVector& row_ind,
                   const IntegerVector& col_ind,
                   const NumericMatrix& covar,

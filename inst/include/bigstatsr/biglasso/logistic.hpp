@@ -23,9 +23,9 @@ using namespace bigstatsr::biglassoUtils;
 /******************************************************************************/
 
 // Weighted sum
-double COPY_wsum(const NumericVector &r, const NumericVector &w) {
-  return std::inner_product(r.begin(), r.end(), w.begin(), 0.0);
-}
+// double COPY_wsum(const NumericVector &r, const NumericVector &w) {
+//   return std::inner_product(r.begin(), r.end(), w.begin(), 0.0);
+// }
 
 
 // Coordinate descent for logistic models
@@ -36,9 +36,9 @@ List COPY_cdfit_binomial_hsr(C macc,
                              const NumericVector& lambda,
                              const NumericVector& center,
                              const NumericVector& scale,
+                             const NumericVector& pf,
                              NumericVector& z,
                              double alpha,
-                             double beta0_old,
                              double eps,
                              int max_iter,
                              int dfmax,
@@ -62,7 +62,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   IntegerVector iter(L, NA_INTEGER);
   IntegerVector nb_candidate(L, NA_INTEGER);
   IntegerVector nb_active(L, NA_INTEGER);
-  double beta0_max = beta0_old;
+  double beta0_max = 0, beta0_old = 0;
 
   NumericVector beta_max(p);
   NumericVector beta_old(p); // Betas from previous iteration
@@ -80,7 +80,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   // compute metric for training set
   double nullDev = 0;
   for (i = 0; i < n; i++) {
-    eta[i] = beta0_old + base[i];  // prediction from null model
+    eta[i] = base[i];  // prediction from null model
     pi = 1 / (1 + exp(-eta[i]));
     nullDev -= y[i] * log(pi) + (1 - y[i]) * log(1 - pi);
   }
@@ -90,7 +90,7 @@ List COPY_cdfit_binomial_hsr(C macc,
   // compute metric for validation set
   metric_min = 0;
   for (i = 0; i < n_val; i++) {
-    pi = 1 / (1 + exp(-(beta0_old + base_val[i])));
+    pi = 1 / (1 + exp(-base_val[i]));
     metric_min -= y_val[i] * log(pi) + (1 - y_val[i]) * log(1 - pi);
   }
   metrics[0] = metric_min;
@@ -102,7 +102,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     // Rcout << l << std::endl; //DEBUG
 
     // Check dfmax
-    if (Rcpp::sum(beta_old != 0) >= dfmax) {
+    if (nb_active[l - 1] >= dfmax) {
       return List::create(beta0_max, beta_max, Dev, iter, metrics,
                           "Too many variables", nb_active, nb_candidate);
     }
@@ -112,7 +112,7 @@ List COPY_cdfit_binomial_hsr(C macc,
     l2 = lam_l - l1;
     // strong set
     cutoff = (2 * lam_l - lambda[l - 1]) * alpha;
-    in_S = (abs(z) > cutoff);
+    in_S = (abs(z) > (pf * cutoff));
 
     // Approx: no check of rest set
     iter[l] = 0;
@@ -182,7 +182,7 @@ List COPY_cdfit_binomial_hsr(C macc,
             v = (sum_wx_sq - 2 * cj * sum_wx + cj * cj * sum_w) / (sj * sj * n);
             u = xwr / n + v * beta_old[j];
 
-            shift = COPY_lasso(u, l1, l2, v) - beta_old[j];
+            shift = COPY_lasso(u, l1 * pf[j], l2 * pf[j], v) - beta_old[j];
             if (shift != 0) {
               // update change of objective function
               update = shift * shift * v;
@@ -196,7 +196,9 @@ List COPY_cdfit_binomial_hsr(C macc,
                 eta[i] += si;
               }
               // update temp result w * r, used for computing xwr;
-              sumWResid = COPY_wsum(r, w);
+              // Rcout << (COPY_wsum(r, w) - sumWResid) << std::endl;
+              sumWResid += shift_scaled * (cj * sum_w - sum_wx);
+              // Rcout << (shift_scaled * (cj * sum_w - sum_wx)) << std::endl;
               // update beta_old
               beta_old[j] += shift;
             }
@@ -208,9 +210,7 @@ List COPY_cdfit_binomial_hsr(C macc,
       // Scan for violations in strong set
       // Rcout << (Rcpp::sum(s) == sum_s) << std::endl;
       violations = COPY_check_strong_set(
-        in_A, in_S, z, macc, center, scale, beta_old,
-        lam_l, sum_s, alpha, s, n, p
-      );
+        in_A, in_S, z, macc, center, scale, pf, beta_old, l1, l2, s, sum_s);
       if (violations == 0) break;
     }
 

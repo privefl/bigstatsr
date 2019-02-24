@@ -45,6 +45,12 @@ test_that("can be used with a subset of samples", {
       mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar,
                                     alphas = alphas, dfmax = Inf,
                                     ncores = test_cores())
+      if (is.null(covar)) {
+        expect_length(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]), N / 2)
+      } else {
+        expect_error(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]),
+                     "You forgot to provide 'covar.row' in predict().")
+      }
       preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],
                        covar.row = covar[-ind, ])
       expect_gt(cor(preds, y[-ind]), 0.75)
@@ -75,19 +81,22 @@ test_that("can be used with a subset of samples", {
 
 ################################################################################
 
-test_that("can be used with a subset of variables", {
+test_that("can be used with a subset of variables (and penalty factors work)", {
 
   for (t in TEST.TYPES) {
 
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
+    ind.col <- cols_along(X)[-set]
+    ind.novar <- sample(ind.col, 10); X[, ind.novar] <- 100
+    set2 <- match(set, (1:M)[-ind.novar])
+
     for (covar in sample(lcovar, 1)) {
 
       ind <- sample(N, N / 2)
-      ind.col <- cols_along(X)[-set]
-
       alpha <- runif(1, min = 0.1, max = 1)
 
+      # Test that prediction is bad when removing the explanatory variables
       mod.bigstatsr3 <- big_spLinReg(X, y[ind], ind.train = ind,
                                      ind.col = ind.col,
                                      covar.train = covar[ind, ],
@@ -95,8 +104,39 @@ test_that("can be used with a subset of variables", {
                                      ncores = test_cores())
       preds3 <- predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
                         covar.row = covar[-ind, ])
-      # Test that prediction is bad when removing the first variables
       if (any(diff(preds3) != 0)) expect_lt(cor(preds3, y[-ind]), 0.2)
+
+      # Test prediction with different penalizations of the explanatory variables
+      mod.bigstatsr4 <- big_spLinReg(X, y[ind], ind.train = ind,
+                                     covar.train = covar[ind, ],
+                                     alphas = alpha,
+                                     ncores = test_cores())
+      expect_equal(length(attr(mod.bigstatsr4, "ind.col")), M - 10)
+      expect_lte(length(mod.bigstatsr4[[c(1, 1)]]$beta), M - 10 + ncol(covar0))
+      preds4 <- predict(mod.bigstatsr4, X, ind.row = (1:N)[-ind],
+                        covar.row = covar[-ind, ])
+      cor0 <- cor(preds4, y[-ind])
+
+      pf <- rep(1, ncol(X)); pf[set] <- 10
+      mod.bigstatsr5 <- big_spLinReg(X, y[ind], ind.train = ind,
+                                     covar.train = covar[ind, ],
+                                     alphas = alpha, pf.X = pf,
+                                     ncores = test_cores())
+      preds5 <- predict(mod.bigstatsr5, X, ind.row = (1:N)[-ind],
+                        covar.row = covar[-ind, ])
+
+      pf[set] <- 0
+      mod.bigstatsr6 <- big_spLinReg(X, y[ind], ind.train = ind,
+                                     covar.train = covar[ind, ],
+                                     alphas = alpha, pf.X = pf,
+                                     ncores = test_cores())
+      lapply(unlist(mod.bigstatsr6, recursive = FALSE),
+             function(mod) expect_true(all(mod$beta[set2] != 0)))
+      preds6 <- predict(mod.bigstatsr6, X, ind.row = (1:N)[-ind],
+                        covar.row = covar[-ind, ])
+
+      expect_gt(cor(preds6, y[-ind]), cor0)
+      if (any(diff(preds5) != 0)) expect_lt(cor(preds5, y[-ind]), cor0)
     }
   }
 })
@@ -183,7 +223,9 @@ test_that("Use a base predictor", {
                                      alphas = alphas,
                                      ind.sets = ind.sets,
                                      ncores = test_cores())
-      preds3 <- predict(mod.bigstatsr3, X, covar.row = covar)
+      expect_error(predict(mod.bigstatsr3, X, covar.row = covar),
+                   "You forgot to provide 'base.row' in predict().")
+      preds3 <- predict(mod.bigstatsr3, X, covar.row = covar, base.row = rep(0, N))
       expect_equal(preds3, preds / 2, tolerance = 0.1)
     }
   }

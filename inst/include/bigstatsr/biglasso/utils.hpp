@@ -65,12 +65,24 @@ NumericVector predict(C macc,
 
 /******************************************************************************/
 
+inline double COPY_lasso(double z, double l1, double l2) {
+  if (z > 0) {
+    double num = z - l1;
+    return (num > 0) ? num / (1 + l2) : 0;
+  } else {
+    double num = z + l1;
+    return (num < 0) ? num / (1 + l2) : 0;
+  }
+}
+
 inline double COPY_lasso(double z, double l1, double l2, double v) {
-  double s = 0;
-  if (z > 0) s = 1;
-  else if (z < 0) s = -1;
-  if (fabs(z) <= l1) return(0);
-  else return(s * (fabs(z) - l1) / (v * (1 + l2)));
+  if (z > 0) {
+    double num = z - l1;
+    return (num > 0) ? num / (v * (1 + l2)) : 0;
+  } else {
+    double num = z + l1;
+    return (num < 0) ? num / (v * (1 + l2)) : 0;
+  }
 }
 
 /******************************************************************************/
@@ -83,27 +95,25 @@ size_t COPY_check_strong_set(LogicalVector& in_A,
                              C macc,
                              const NumericVector& center,
                              const NumericVector& scale,
+                             const NumericVector& pf,
                              const NumericVector& beta_old,
-                             double lambda,
-                             double sumResid,
-                             double alpha,
+                             double l1, double l2,
                              const NumericVector& r,
-                             size_t n, size_t p) {
+                             double sumResid) {
 
-  double sum, l1, l2;
+  size_t n = macc.nrow();
+  size_t p = macc.ncol();
   size_t i, j, violations = 0;
 
   for (j = 0; j < p; j++) {
     if (in_S[j] && !in_A[j]) {
-      sum = 0;
+      double cpsum = 0;
       for (i = 0; i < n; i++) {
-        sum += macc(i, j) * r[i];
+        cpsum += macc(i, j) * r[i];
       }
-      z[j] = (sum - center[j] * sumResid) / (scale[j] * n);
+      z[j] = (cpsum - center[j] * sumResid) / (scale[j] * n);
 
-      l1 = lambda * alpha;
-      l2 = lambda - l1;
-      if (fabs(z[j] - beta_old[j] * l2) > l1) {
+      if (fabs(z[j] - beta_old[j] * l2 * pf[j]) > (l1 * pf[j])) {
         in_A[j] = true;
         violations++;
       }

@@ -56,6 +56,7 @@ predict.big_sp <- function(object, X, ind.row, ind.col,
 #' @inheritParams bigstatsr-package
 #' @param ... Not used.
 #' @param proba Whether to return probabilities?
+#' @param base.row Vector of base predictions, corresponding to `ind.row`.
 #'
 #' @return A vector of scores, corresponding to `ind.row`.
 #'
@@ -69,18 +70,49 @@ predict.big_sp_list <- function(object, X,
                                 ind.col = attr(object, "ind.col"),
                                 covar.row = NULL,
                                 proba = (attr(object, "family") == "binomial"),
+                                base.row = NULL,
                                 ...) {
 
   assert_nodots()
   check_args()
+
+
+
+  if (is.null(base.row)) {
+    if (any(attr(object, "base") != 0)) {
+      stop2("You forgot to provide 'base.row' in predict().")
+    }
+    base.row <- rep(0, length(ind.row))
+  } else {
+    assert_lengths(base.row, ind.row)
+  }
+
+  covar_used <- (length(attr(object, "pf")) > length(attr(object, "ind.col")))
+  if (covar_used && is.null(covar.row))
+    stop2("You forgot to provide 'covar.row' in predict().")
 
   summ_best <- summary(object, best.only = TRUE)
   obj.big_sp <- structure(
     list(intercept = summ_best$intercept, beta = summ_best$beta[[1]]),
     class = "big_sp")
 
-  one_score <- predict(obj.big_sp, X, ind.row, ind.col, covar.row)
+  one_score <- base.row + predict(obj.big_sp, X, ind.row, ind.col, covar.row)
   `if`(proba, 1 / (1 + exp(-one_score)), one_score)
+}
+
+################################################################################
+
+#' @export
+`[.big_sp_list` <- function(x, i, ...) {
+
+  assert_nodots()
+
+  attr <- attributes(x)
+  attr$alphas <- attr$alphas[i]
+
+  r <- NextMethod("[")
+  mostattributes(r) <- attr
+  r
 }
 
 ################################################################################

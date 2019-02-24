@@ -6,7 +6,8 @@
 \usage{
 big_spLogReg(X, y01.train, ind.train = rows_along(X),
   ind.col = cols_along(X), covar.train = NULL, base.train = NULL,
-  alphas = 1, nlambda = 200, nlam.min = 50, n.abort = 10,
+  pf.X = NULL, pf.covar = NULL, alphas = 1, K = 10,
+  ind.sets = NULL, nlambda = 200, nlam.min = 50, n.abort = 10,
   dfmax = 50000, ncores = 1, ...)
 }
 \arguments{
@@ -32,12 +33,28 @@ a model with large-effect variables that you don't want to penalize.
 \strong{Don't forget to add those predictions when you use \code{predict}
 and make sure you don't use \code{proba = TRUE} when you do so.}}
 
+\item{pf.X}{A multiplicative factor for the penalty applied to each coefficient.
+If supplied, \code{pf.X} must be a numeric vector of the same length as \code{ind.col}.
+Default is all \code{1}. The purpose of \code{pf.X} is to apply differential
+penalization if some coefficients are thought to be more likely than others
+to be in the model. Setting SOME to 0 allows to have unpenalized coefficients.}
+
+\item{pf.covar}{Same as \code{pf.X}, but for \code{covar.train}.}
+
 \item{alphas}{The elastic-net mixing parameter that controls the relative
 contribution from the lasso (l1) and the ridge (l2) penalty. The penalty is
 defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 \code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
 (\code{1e-4}) and \code{1} is the elastic-net penalty. Default is \code{1}. \strong{You can
 pass multiple values, and only one will be used (optimized by grid-search).}}
+
+\item{K}{Number of sets used in the Cross-Model Selection and Averaging
+(CMSA) procedure. Default is \code{10}.}
+
+\item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
+which set each index of the training set is in. Default randomly assigns
+these values but it can be useful to set this vector for reproducibility,
+or if you want to refine the grid-search over \code{alphas} using the same sets.}
 
 \item{nlambda}{The number of lambda values. Default is \code{200}.}
 
@@ -63,11 +80,6 @@ The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
 Default value is \code{1e-5}.}
   \item{max.iter}{Maximum number of iterations. Default is \code{1000}.}
-  \item{K}{Number of sets used in the Cross-Model Selection and Averaging
-(CMSA) procedure. Default is \code{10}.}
-  \item{ind.sets}{Integer vectors of values between \code{1} and \code{K} specifying
-which set each index of the training set is in. Default randomly assigns
-these values but it can be useful to set this vector for reproducibility.}
   \item{warn}{Deprecated. Now return the reason of completion as \code{$message}.}
   \item{return.all}{Deprecated. Now always return all models.}
 }}

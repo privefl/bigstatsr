@@ -1,6 +1,5 @@
 /******************************************************************************/
 
-#include <RcppArmadillo.h>
 #include <bigstatsr/BMCodeAcc.h>
 #include <bigstatsr/univLinReg.hpp>
 

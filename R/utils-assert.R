@@ -168,7 +168,7 @@ assert_class_or_null <- function(x, class)  {
 ################################################################################
 
 # ALL SAME VALUE
-assert_all <- function(x, value) {
+assert_all <- function(x, value = TRUE) {
   if (any(x != value))
     stop2("At least one value of '%s' is different from '%s'",
           deparse(substitute(x)), value)
