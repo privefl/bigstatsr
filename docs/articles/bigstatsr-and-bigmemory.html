@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -48,6 +48,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+    </li>
+    <li>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -126,7 +129,7 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a temporary FBM</span>
 fbm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/FBM-class.html">FBM</a></span>(<span class="dv">10</span>, <span class="dv">10</span>)
 fbm<span class="op">$</span>backingfile</code></pre></div>
-<pre><code>## [1] "/tmp/Rtmpyklpea/file7ce61213c713.bk"</code></pre>
+<pre><code>## [1] "/tmp/RtmpJDAVc6/file367245e2574b.bk"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fbm[]</code></pre></div>
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 ##  [1,]    0    0    0    0    0    0    0    0    0     0
@@ -143,7 +146,7 @@ fbm<span class="op">$</span>backingfile</code></pre></div>
 bm &lt;-<span class="st"> </span>fbm<span class="op">$</span><span class="kw">bm</span>()
 <span class="co"># Same backingfile</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/bigmemory/topics/big.matrix">dir.name</a></span>(bm), <span class="kw"><a href="https://www.rdocumentation.org/packages/bigmemory/topics/big.matrix">file.name</a></span>(bm))</code></pre></div>
-<pre><code>## [1] "/tmp/Rtmpyklpea/file7ce61213c713.bk"</code></pre>
+<pre><code>## [1] "/tmp/RtmpJDAVc6/file367245e2574b.bk"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Changing values of one changes the value of the other</span>
 bm[]</code></pre></div>
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
@@ -234,14 +237,14 @@ bm.desc &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdoc
   x &lt;-<span class="st"> </span>bigmemory<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bigmemory/topics/attach.big.matrix">attach.big.matrix</a></span>(bm.desc)
   <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(x[, j])
 }</code></pre></div>
-<pre><code>##  [1] -1.0921905  0.2436263  3.9487023  0.4895762  4.9763379 -3.0891288
-##  [7] -0.7701421  0.9758767  1.3855232  4.7505132</code></pre>
+<pre><code>##  [1] -0.06263005  7.14838202 -2.49533062 -2.33419452  1.32512425
+##  [6]  5.39727113  9.90344128 -1.72688083 -4.81668778 -5.98699013</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You can directly pass FBMs, the address will be reattached automatically</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/foreach/topics/foreach">foreach</a></span>(<span class="dt">j =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">.combine =</span> <span class="st">'c'</span>) <span class="op">%dopar%</span><span class="st"> </span>{
   <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(X[, j])
 }</code></pre></div>
-<pre><code>##  [1] -1.0921905  0.2436263  3.9487023  0.4895762  4.9763379 -3.0891288
-##  [7] -0.7701421  0.9758767  1.3855232  4.7505132</code></pre>
+<pre><code>##  [1] -0.06263005  7.14838202 -2.49533062 -2.33419452  1.32512425
+##  [6]  5.39727113  9.90344128 -1.72688083 -4.81668778 -5.98699013</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">parallel<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/parallel/topics/makeCluster">stopCluster</a></span>(cl)</code></pre></div>
 </div>
 <div id="c-accessors" class="section level2">
@@ -272,10 +275,10 @@ NumericVector colsums_bm(SEXP pBigMat) {
   <span class="cf">return</span> res;
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_bm</span>(bm<span class="op">@</span>address)</code></pre></div>
-<pre><code>##  [1] -1.0921905  0.2436263  3.9487023  0.4895762  4.9763379 -3.0891288
-##  [7] -0.7701421  0.9758767  1.3855232  4.7505132</code></pre>
+<pre><code>##  [1] -0.06263005  7.14838202 -2.49533062 -2.33419452  1.32512425
+##  [6]  5.39727113  9.90344128 -1.72688083 -4.81668778 -5.98699013</code></pre>
 <p>Now, let us do it for an <code>FBM</code>.</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// [[Rcpp::depends(BH, bigstatsr)]]</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// [[Rcpp::depends(bigstatsr, rmio, RcppArmadillo)]]</span>
 <span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span>
 
 <span class="co">// [[Rcpp::export]]</span>
@@ -297,10 +300,10 @@ NumericVector colsums_fbm(Environment fbm) {
   <span class="cf">return</span> res;
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_fbm</span>(X)</code></pre></div>
-<pre><code>##  [1] -1.0921905  0.2436263  3.9487023  0.4895762  4.9763379 -3.0891288
-##  [7] -0.7701421  0.9758767  1.3855232  4.7505132</code></pre>
+<pre><code>##  [1] -0.06263005  7.14838202 -2.49533062 -2.33419452  1.32512425
+##  [6]  5.39727113  9.90344128 -1.72688083 -4.81668778 -5.98699013</code></pre>
 <p>So, the main difference is that {bigmemory} uses <code>macc[j][i]</code> whereas <code>FBM</code> objects use the same accessor in C++ as standard Rcpp matrices, <code>macc(i, j)</code>. So, it is easier to adapt existing Rcpp algorithms to be used for <code>FBM</code> objects, e.g. using templates. Note that there is also a sub-FBM accessor, so that you can also use the same algorithms on a subset of the FBM object. For example:</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// [[Rcpp::depends(BH, bigstatsr)]]</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// [[Rcpp::depends(bigstatsr, rmio, RcppArmadillo)]]</span>
 <span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span>
 
 <span class="kw">template</span> &lt;<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span> C&gt;
@@ -347,13 +350,13 @@ NumericVector colsums_fbm2_sub(Environment fbm,
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(mat &lt;-<span class="st"> </span>X[]) </code></pre></div>
 <pre><code>## [1] "matrix"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_matrix</span>(mat)</code></pre></div>
-<pre><code>##  [1] -1.0921905  0.2436263  3.9487023  0.4895762  4.9763379 -3.0891288
-##  [7] -0.7701421  0.9758767  1.3855232  4.7505132</code></pre>
+<pre><code>##  [1] -0.06263005  7.14838202 -2.49533062 -2.33419452  1.32512425
+##  [6]  5.39727113  9.90344128 -1.72688083 -4.81668778 -5.98699013</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_fbm2</span>(X)</code></pre></div>
-<pre><code>##  [1] -1.0921905  0.2436263  3.9487023  0.4895762  4.9763379 -3.0891288
-##  [7] -0.7701421  0.9758767  1.3855232  4.7505132</code></pre>
+<pre><code>##  [1] -0.06263005  7.14838202 -2.49533062 -2.33419452  1.32512425
+##  [6]  5.39727113  9.90344128 -1.72688083 -4.81668778 -5.98699013</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colsums_fbm2_sub</span>(X, <span class="kw"><a href="../reference/seq-dim.html">rows_along</a></span>(X), <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)</code></pre></div>
-<pre><code>## [1] -1.0921905  0.2436263  3.9487023  0.4895762  4.9763379 -3.0891288</code></pre>
+<pre><code>## [1] -0.06263005  7.14838202 -2.49533062 -2.33419452  1.32512425  5.39727113</code></pre>
 </div>
 <div id="apply-an-r-function" class="section level2">
 <h2 class="hasAnchor">
@@ -367,7 +370,7 @@ m &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumenta
   true &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colSums">rowSums</a></span>(m[]<span class="op">^</span><span class="dv">2</span>))
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.028       0.004       0.031</code></pre>
+##       0.042       0.036       0.079</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using package biganalytics (of the bigmemory family)</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(
   test1 &lt;-<span class="st"> </span>biganalytics<span class="op">::</span><span class="kw">apply</span>(m, <span class="dv">1</span>, <span class="cf">function</span>(x) {
@@ -375,7 +378,7 @@ m &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumenta
   })
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       3.460       0.004       3.469</code></pre>
+##       3.593       0.010       3.607</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(test1, true)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>The {biganalytics} strategy is to make a loop, which is slow because there are a lot of elements to loop through. Package {bigstatsr} uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results.</p>
@@ -388,7 +391,7 @@ m &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumenta
   }, <span class="dt">a.combine =</span> <span class="st">'c'</span>, <span class="dt">ind =</span> <span class="kw"><a href="../reference/seq-dim.html">rows_along</a></span>(m2), <span class="dt">block.size =</span> <span class="dv">1000</span>)
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.072       0.008       0.081</code></pre>
+##       0.120       0.030       0.178</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(test2, true)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Here, I split the columns (the default)</span>
@@ -398,7 +401,7 @@ m &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumenta
   }, <span class="dt">a.combine =</span> <span class="st">'plus'</span>, <span class="dt">block.size =</span> <span class="dv">10</span>)
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.044       0.000       0.044</code></pre>
+##       0.073       0.033       0.107</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(test3), true)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
@@ -413,13 +416,13 @@ a &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumenta
   true &lt;-<span class="st"> </span>m[] <span class="op">%*%</span><span class="st"> </span>a
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.088       0.012       0.102</code></pre>
+##       0.151       0.062       0.214</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(bigalgebra)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(
   test &lt;-<span class="st"> </span>m <span class="op">%*%</span><span class="st"> </span>a
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.052       0.000       0.052</code></pre>
+##       0.063       0.002       0.065</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(test[], true))
 
 m2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_copy.html">big_copy</a></span>(m)
@@ -428,16 +431,25 @@ m2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_copy
   test2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_prodMat.html">big_prodMat</a></span>(m2, a)
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.116       0.004       0.123</code></pre>
+##       0.211       0.088       0.298</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(test2, true))
 
-<span class="co"># You could use {bigalgebra} if you don't need subsetting</span>
+<span class="co"># Standard products (without subsetting or scaling)</span>
+<span class="co"># are implemented for 'double' FBMs</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(
-  test3 &lt;-<span class="st"> </span>m2<span class="op">$</span><span class="kw">bm</span>() <span class="op">%*%</span><span class="st"> </span>a
+  test3 &lt;-<span class="st"> </span>m2 <span class="op">%*%</span><span class="st"> </span>a
 )</code></pre></div>
 <pre><code>## utilisateur     système      écoulé 
-##       0.092       0.012       0.102</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(test3[], true))</code></pre></div>
+##       0.073       0.000       0.073</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(test3[], true))
+
+<span class="co"># Additionally, you could use {bigalgebra} if you don't need subsetting</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(
+  test4 &lt;-<span class="st"> </span>m2<span class="op">$</span><span class="kw">bm</span>() <span class="op">%*%</span><span class="st"> </span>a
+)</code></pre></div>
+<pre><code>## utilisateur     système      écoulé 
+##       0.102       0.053       0.155</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(test4[], true))</code></pre></div>
 <p>Making functions (not operators) makes it possible to use subsetting.</p>
 </div>
   </div>

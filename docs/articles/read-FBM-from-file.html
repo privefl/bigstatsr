@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -48,6 +48,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+    </li>
+    <li>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -157,8 +160,8 @@ csv &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumen
 <pre><code>## A Filebacked Big Matrix of type 'double' with 16000000 rows and 11 columns.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(csv, test<span class="op">$</span>backingfile)</code></pre></div>
 <pre><code>##     [,1]                                  
-## csv "/tmp/RtmpziMGKS/file7df819d48ecc.csv"
-##     "/tmp/RtmpziMGKS/file7df819d48ecc.bk"</code></pre>
+## csv "/tmp/Rtmp87BCVg/file3c102daba5a5.csv"
+##     "/tmp/Rtmp87BCVg/file3c102daba5a5.bk"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(test, <span class="st">"fbm_names"</span>)</code></pre></div>
 <pre><code>##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
 ## [11] "carb"</code></pre>

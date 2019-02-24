@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+    </li>
+    <li>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -140,7 +143,7 @@
 
     <pre class="usage"><span class='fu'>COPY_biglasso_part</span>(<span class='no'>X</span>, <span class='no'>y.train</span>, <span class='no'>ind.train</span>, <span class='no'>ind.col</span>, <span class='no'>covar.train</span>, <span class='no'>family</span>,
   <span class='no'>lambda</span>, <span class='no'>center</span>, <span class='no'>scale</span>, <span class='no'>resid</span>, <span class='no'>alpha</span>, <span class='no'>eps</span>, <span class='no'>max.iter</span>, <span class='no'>dfmax</span>, <span class='no'>ind.val</span>,
-  <span class='no'>covar.val</span>, <span class='no'>y.val</span>, <span class='no'>n.abort</span>, <span class='no'>nlam.min</span>, <span class='no'>b0</span>, <span class='no'>base.train</span>, <span class='no'>base.val</span>)</pre>
+  <span class='no'>covar.val</span>, <span class='no'>y.val</span>, <span class='no'>n.abort</span>, <span class='no'>nlam.min</span>, <span class='no'>base.train</span>, <span class='no'>base.val</span>, <span class='no'>pf</span>)</pre>
         
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -151,29 +154,18 @@ validation set.</p></dd>
 <dt>iter</dt><dd><p>A vector of length <code>nlambda</code> containing the number of
 iterations until convergence at each value of <code>lambda</code>.</p></dd>
 <dt>lambda</dt><dd><p>The sequence of regularization parameter values in the path.</p></dd>
-<dt>family</dt><dd><p>Either <code>"gaussian"</code> or <code>"binomial"</code> depending on the
-function used.</p></dd>
 <dt>alpha</dt><dd><p>Input parameter.</p></dd>
 <dt>loss</dt><dd><p>A vector containing either the residual sum of squares
 (for linear models) or negative log-likelihood (for logistic models)
 of the fitted model at each value of <code>lambda</code>.</p></dd>
 <dt>loss.val</dt><dd><p>A vector containing the loss for the corresponding
 validation set.</p></dd>
-<dt>n</dt><dd><p>The number of observations used in the model fitting. It's equal
-to <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(row.idx)</a></code>.</p></dd>
-<dt>p</dt><dd><p>The number of dimensions (including covariables,
-but not the intercept).</p></dd>
-<dt>center</dt><dd><p>The sample mean vector of the variables, i.e., column mean
-of the sub-matrix of <code>X</code> used for model fitting.</p></dd>
-<dt>scale</dt><dd><p>The sample standard deviation of the variables, i.e.,
-column standard deviation of the sub-matrix of <code>X</code> used for model
-fitting.</p></dd>
-<dt>y</dt><dd><p>The response vector used in the model fitting. Depending on
-<code>row.idx</code>, it could be a subset of the raw input of the response vector
-y.</p></dd>
-<dt>col.idx</dt><dd><p>The indices of features that have 'scale' value greater
-than <code>1e-6</code>. Features with 'scale' less than 1e-6 are removed from
-model fitting.</p></dd>
+<dt>message</dt><dd><p>Reason the fitting has stopped.</p></dd>
+<dt>nb_active</dt><dd><p>The number of active (non-zero) variables along the
+regularization path.</p></dd>
+<dt>nb_candidate</dt><dd><p>The number of candidate variables (used in the gradient
+descent) along the regularization path.</p></dd>
+<dt>ind.train</dt><dd><p>Indices of training set.</p></dd>
 
     
 

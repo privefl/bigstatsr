@@ -65,7 +65,7 @@ Covariates can be added to correct for confounders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -83,6 +83,9 @@ Covariates can be added to correct for confounders." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+    </li>
+    <li>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -219,7 +222,7 @@ This is also an object of class <code>mhtest</code>. See <code><a href='https://
 #&gt;     lpval &lt;- stats::pt(xtr, df = 515, lower.tail = FALSE, log.p = TRUE)
 #&gt;     (log(2) + lpval)/log(10)
 #&gt; }
-#&gt; &lt;environment: 0xc0e5698&gt;</div><div class='input'><span class='co'>## plot results</span>
+#&gt; &lt;environment: 0xb57a7d0&gt;</div><div class='input'><span class='co'>## plot results</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>test</span>)</div><div class='img'><img src='big_univLinReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='big_univLinReg-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## To get p-values associated with the test</span>
 <span class='no'>test</span>$<span class='no'>p.value</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>test</span>, <span class='kw'>log10</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  4 variables:

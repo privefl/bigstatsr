@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
 <div id="bigstatsr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#bigstatsr" class="anchor"></a>bigstatsr</h1></div>
-<p>R package {bigstatsr} provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format <code>big.matrix</code> provided by <a href="https://github.com/kaneplusplus/bigmemory">R package {bigmemory}</a>, which is <strong>no longer used</strong> by this package (see <a href="https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html">the corresponding vignette</a>).</p>
+<p>R package {bigstatsr} provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format <code>big.matrix</code> provided by <a href="https://github.com/kaneplusplus/bigmemory">R package {bigmemory}</a>, which is <strong>no longer used</strong> by this package (see <a href="https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html">the corresponding vignette</a>). As inputs, package {bigstatsr} uses <a href="https://privefl.github.io/bigstatsr/reference/FBM-class.html">Filebacked Big Matrices (FBM)</a>.</p>
 <p><img src="https://raw.githubusercontent.com/privefl/bigstatsr/master/bigstatsr.png" width="130" align="right"></p>
 <p><a href="https://privefl.github.io/bigstatsr/reference/index.html"><strong>LIST OF FEATURES</strong></a></p>
 <p><strong>Note that most of the algorithms of this package don’t handle missing values.</strong></p>
@@ -145,13 +145,6 @@ obj.svd &lt;-<span class="st"> </span><span class="kw"><a href="reference/big_ra
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlink">unlink</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"test"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">".bk"</span>, <span class="st">".rds"</span>)))</code></pre></div>
 <p>Learn more with this <a href="https://privefl.github.io/R-presentation/bigstatsr.html">introduction to package {bigstatsr}</a>.</p>
 </div>
-<div id="input-format" class="section level2">
-<h2 class="hasAnchor">
-<a href="#input-format" class="anchor"></a>Input format</h2>
-<p>As inputs, package {bigstatsr} uses <a href="https://privefl.github.io/bigstatsr/reference/FBM-class.html">Filebacked Big Matrices (FBM)</a>.</p>
-<p>To operate on data frames stored on disk, see <a href="https://github.com/privefl/bigdfr">package {bigdfr}</a>.</p>
-<p>To memory-map character text files, see <a href="https://github.com/privefl/mmapcharr">package {mmapcharr}</a>.</p>
-</div>
 <div id="bug-report-help" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-report-help" class="anchor"></a>Bug report / Help</h2>
@@ -160,10 +153,10 @@ obj.svd &lt;-<span class="st"> </span><span class="kw"><a href="reference/big_ra
 <div id="use-cases" class="section level2">
 <h2 class="hasAnchor">
 <a href="#use-cases" class="anchor"></a>Use cases</h2>
-<div id="parallelisation" class="section level3">
+<div id="parallelization" class="section level3">
 <h3 class="hasAnchor">
-<a href="#parallelisation" class="anchor"></a>Parallelisation</h3>
-<p>Package {bigstatsr} uses package {foreach} for its parallelization tasks. Learn more on parallelism with {foreach} with <a href="https://privefl.github.io/blog/a-guide-to-parallelism-in-r/">this tuto</a>.</p>
+<a href="#parallelization" class="anchor"></a>Parallelization</h3>
+<p>Package {bigstatsr} uses package {foreach} for its parallelization tasks. Learn more on parallelism with {foreach} with <a href="https://privefl.github.io/blog/a-guide-to-parallelism-in-r/">this tutorial</a>.</p>
 <ul>
 <li><p><a href="https://stackoverflow.com/q/48832010/6103040">Permute matrix columns in parallel</a></p></li>
 <li><p><a href="https://stackoverflow.com/q/49056271/6103040">Parallelized search until found</a></p></li>
@@ -173,7 +166,7 @@ obj.svd &lt;-<span class="st"> </span><span class="kw"><a href="reference/big_ra
 <h3 class="hasAnchor">
 <a href="#large-datasets" class="anchor"></a>Large datasets</h3>
 <ul>
-<li><p><a href="https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/">Computing the null space of a bigmatrix</a> (works if one dimension is not too large)</p></li>
+<li><p><a href="https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/">Computing the null space of a big matrix</a> (works if one dimension is not too large)</p></li>
 <li><p><a href="https://stackoverflow.com/q/48879643/6103040">Rowwise matrix multiplication</a></p></li>
 <li><p><a href="https://stackoverflow.com/q/42111876/6103040">Operating with a big.matrix</a></p></li>
 </ul>

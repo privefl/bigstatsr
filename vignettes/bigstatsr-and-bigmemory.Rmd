@@ -172,7 +172,7 @@ colsums_bm(bm@address)
 Now, let us do it for an `FBM`.
 
 ```{Rcpp}
-// [[Rcpp::depends(BH, bigstatsr)]]
+// [[Rcpp::depends(bigstatsr, rmio, RcppArmadillo)]]
 #include <bigstatsr/BMAcc.h>
 
 // [[Rcpp::export]]
@@ -202,7 +202,7 @@ colsums_fbm(X)
 So, the main difference is that {bigmemory} uses `macc[j][i]` whereas `FBM` objects use the same accessor in C++ as standard Rcpp matrices, `macc(i, j)`. So, it is easier to adapt existing Rcpp algorithms to be used for `FBM` objects, e.g. using templates. Note that there is also a sub-FBM accessor, so that you can also use the same algorithms on a subset of the FBM object. For example:
 
 ```{Rcpp}
-// [[Rcpp::depends(BH, bigstatsr)]]
+// [[Rcpp::depends(bigstatsr, rmio, RcppArmadillo)]]
 #include <bigstatsr/BMAcc.h>
 
 template <class C>
@@ -326,11 +326,18 @@ system.time(
 )
 stopifnot(identical(test2, true))
 
-# You could use {bigalgebra} if you don't need subsetting
+# Standard products (without subsetting or scaling)
+# are implemented for 'double' FBMs
 system.time(
-  test3 <- m2$bm() %*% a
+  test3 <- m2 %*% a
 )
 stopifnot(identical(test3[], true))
+
+# Additionally, you could use {bigalgebra} if you don't need subsetting
+system.time(
+  test4 <- m2$bm() %*% a
+)
+stopifnot(identical(test4[], true))
 ```
 
 Making functions (not operators) makes it possible to use subsetting.

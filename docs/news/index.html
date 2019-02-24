@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -78,6 +78,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+    </li>
+    <li>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -128,6 +131,26 @@
       
     </div>
 
+    <div id="bigstatsr-0-9-0" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-9-0" class="anchor"></a>bigstatsr 0.9.0</h2>
+<ul>
+<li><p>Use <em>mio</em> instead of <em>boost</em> for memory-mapping.</p></li>
+<li><p>Add a parameter <code>base.row</code> to <code><a href="../reference/predict.big_sp_list.html">predict.big_sp_list()</a></code> and automatically detect if needed (as well as for <code>covar.row</code>).</p></li>
+<li><p>Possibility to subset a <code>big_sp_list</code> without losing attributes, so that one can access one model (corresponding to one alpha) even if it is not the ‘best’.</p></li>
+<li><p>Add parameters <code>pf.X</code> and <code>pf.covar</code> in <code>big_sp***Reg()</code> to provide different penalization for each variable (possibly no penalization at all).</p></li>
+</ul>
+</div>
+    <div id="bigstatsr-0-8-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-8-4" class="anchor"></a>bigstatsr 0.8.4</h2>
+<p>Add <code>%*%</code>, <code>crossprod</code> and <code>tcrossprod</code> operations for ‘double’ FBMs.</p>
+</div>
+    <div id="bigstatsr-0-8-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-0-8-3" class="anchor"></a>bigstatsr 0.8.3</h2>
+<p>Now also returns the number of non-zero variables (<code>$nb_active</code>) and the number of candidate variables (<code>$nb_candidate</code>) for each step of the regularization paths of <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>.</p>
+</div>
     <div id="bigstatsr-0-8-0" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-8-0" class="anchor"></a>bigstatsr 0.8.0</h2>
@@ -225,7 +248,7 @@
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-3-2" class="anchor"></a>bigstatsr 0.3.2</h2>
 <ul>
-<li>you can now provide multiple $\alpha$ values (as a numeric vector) in <code>big_spLinReg</code> and <code>big_spLogReg</code>. One will be choosed by grid-search.</li>
+<li>you can now provide multiple $\alpha$ values (as a numeric vector) in <code>big_spLinReg</code> and <code>big_spLogReg</code>. One will be chosen by grid-search.</li>
 </ul>
 </div>
     <div id="bigstatsr-0-3-1" class="section level2">
@@ -253,7 +276,7 @@
 <h2 class="hasAnchor">
 <a href="#bigstatsr-0-2-4" class="anchor"></a>bigstatsr 0.2.4</h2>
 <ul>
-<li><p><strong>Integrate Cross-Model Selection and Averagind (CMSA) directly in <code>big_spLinReg</code> and <code>big_spLogReg</code>, a procedure that automatically chooses the value of the $\lambda$ hyper-parameter.</strong></p></li>
+<li><p><strong>Integrate Cross-Model Selection and Averaging (CMSA) directly in <code>big_spLinReg</code> and <code>big_spLogReg</code>, a procedure that automatically chooses the value of the $\lambda$ hyper-parameter.</strong></p></li>
 <li><p><strong>Speed up <code>big_spLinReg</code> and <code>big_spLogReg</code> (<a href="https://github.com/privefl/bigstatsr/issues/12">issue #12</a>)</strong></p></li>
 </ul>
 </div>
@@ -277,6 +300,9 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#bigstatsr-0-9-0">0.9.0</a></li>
+        <li><a href="#bigstatsr-0-8-4">0.8.4</a></li>
+        <li><a href="#bigstatsr-0-8-3">0.8.3</a></li>
         <li><a href="#bigstatsr-0-8-0">0.8.0</a></li>
         <li><a href="#bigstatsr-0-7-3">0.7.3</a></li>
         <li><a href="#bigstatsr-0-7-1">0.7.1</a></li>

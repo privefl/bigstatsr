@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+    </li>
+    <li>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -140,7 +143,19 @@
 
     <pre class="usage"><span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A.row</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>X</span>), <span class='no'>ncores</span>))</pre>
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>X</span>), <span class='no'>ncores</span>))
+
+<span class='co'># S4 method for FBM,matrix</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/crossprod'>crossprod</a></span>(<span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S4 method for FBM,matrix</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/crossprod'>tcrossprod</a></span>(<span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S4 method for matrix,FBM</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/crossprod'>crossprod</a></span>(<span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S4 method for matrix,FBM</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/crossprod'>tcrossprod</a></span>(<span class='no'>x</span>, <span class='no'>y</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,6 +188,14 @@ You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
       <td><p>Maximum number of columns read at once.
 Default uses <a href='block_size.html'>block_size</a>.</p></td>
     </tr>
+    <tr>
+      <th>x</th>
+      <td><p>A 'double' FBM or a matrix.</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>A 'double' FBM or a matrix.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -189,6 +212,8 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cprodMat</span>(<span class='no'>X</span>, <span class='no'>A</span>)
 <span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/crossprod'>crossprod</a></span>(<span class='no'>X</span>[], <span class='no'>A</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/all.equal'>all.equal</a></span>(<span class='no'>test</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_copy.html'>big_copy</a></span>(<span class='no'>X</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"double"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/all.equal'>all.equal</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/crossprod'>crossprod</a></span>(<span class='no'>X2</span>, <span class='no'>A</span>), <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># subsetting</span>
 <span class='no'>ind.row</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>)
 <span class='no'>ind.col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='no'>m</span>, <span class='no'>m</span>/<span class='fl'>2</span>)

@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+    </li>
+    <li>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -141,7 +144,7 @@
     <pre class="usage"><span class='co'># S3 method for big_sp_list</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>object</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>object</span>, <span class='st'>"ind.col"</span>), <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>proba</span> <span class='kw'>=</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>object</span>, <span class='st'>"family"</span>) <span class='kw'>==</span> <span class='st'>"binomial"</span>), <span class='no'>...</span>)</pre>
+  <span class='kw'>proba</span> <span class='kw'>=</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>object</span>, <span class='st'>"family"</span>) <span class='kw'>==</span> <span class='st'>"binomial"</span>), <span class='kw'>base.row</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,6 +176,10 @@ Default is <code>NULL</code> and corresponds to only adding an intercept to each
     <tr>
       <th>proba</th>
       <td><p>Whether to return probabilities?</p></td>
+    </tr>
+    <tr>
+      <th>base.row</th>
+      <td><p>Vector of base predictions, corresponding to <code>ind.row</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
