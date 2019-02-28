@@ -48,6 +48,7 @@ Suggests:
     bigmemory (>= 4.5.33),
     covr,
     glmnet,
+    hexbin,
     microbenchmark,
     ModelMetrics,
     RcppEigen,
