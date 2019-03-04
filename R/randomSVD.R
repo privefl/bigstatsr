@@ -153,7 +153,7 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
 #' It proved to be faster than our implementation of the "blanczos" algorithm
 #' in Rokhlin, V., Szlam, A., & Tygert, M. (2010).
 #' A Randomized Algorithm for Principal Component Analysis.
-#' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100–1124.
+#' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100-1124.
 #' \url{https://doi.org/10.1137/080736417}.
 #'
 #' @inheritParams bigstatsr-package

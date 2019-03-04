@@ -148,7 +148,7 @@ Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,
 Simon, N., Taylor, J. and Tibshirani, R. J. (2012),
 Strong rules for discarding predictors in lasso-type problems.
 Journal of the Royal Statistical Society:
-Series B (Statistical Methodology), 74: 245–266.
+Series B (Statistical Methodology), 74: 245-266.
 \url{https://doi.org/10.1111/j.1467-9868.2011.01004.x}.
 
 Zeng, Y., and Breheny, P. (2016). The biglasso Package: A Memory- and
