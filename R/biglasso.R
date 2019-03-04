@@ -326,8 +326,9 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
   nb_novar <- sum(!keep)
   if (nb_novar > 0)
-    warning2("%d variable%s with low/no variation %s been removed.", nb_novar,
-             `if`(nb_novar == 1, "", "s"), `if`(nb_novar == 1, "has", "have"))
+    warning2("%d variable%s with low/no variation %s been removed.\n%s", nb_novar,
+             `if`(nb_novar == 1, "", "s"), `if`(nb_novar == 1, "has", "have"),
+             "Access remaining columns with 'attr(<object>, \"ind.col\")'.")
 
   structure(
     cross.res,
