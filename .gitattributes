@@ -1,2 +1,2 @@
-docs/reference/** linguist-vendored
-man/** linguist-vendored
+docs/* linguist-vendored
+man/* linguist-vendored
