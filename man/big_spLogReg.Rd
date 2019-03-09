@@ -29,9 +29,7 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 
 \item{base.train}{Vector of base predictions. Model will be learned starting
 from these predictions. This can be useful if you want to previously fit
-a model with large-effect variables that you don't want to penalize.
-\strong{Don't forget to add those predictions when you use \code{predict}
-and make sure you don't use \code{proba = TRUE} when you do so.}}
+a model with large-effect variables that you don't want to penalize.}
 
 \item{pf.X}{A multiplicative factor for the penalty applied to each coefficient.
 If supplied, \code{pf.X} must be a numeric vector of the same length as \code{ind.col}.

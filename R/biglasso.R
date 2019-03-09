@@ -180,8 +180,6 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param base.train Vector of base predictions. Model will be learned starting
 #'   from these predictions. This can be useful if you want to previously fit
 #'   a model with large-effect variables that you don't want to penalize.
-#'   **Don't forget to add those predictions when you use `predict`
-#'   and make sure you don't use `proba = TRUE` when you do so.**
 #' @param pf.X A multiplicative factor for the penalty applied to each coefficient.
 #'   If supplied, `pf.X` must be a numeric vector of the same length as `ind.col`.
 #'   Default is all `1`. The purpose of `pf.X` is to apply differential
