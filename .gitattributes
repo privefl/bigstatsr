@@ -1,2 +1,2 @@
-docs/* linguist-vendored
-man/* linguist-vendored
+*.html linguist-vendored
+*.Rd linguist-vendored
