@@ -47,7 +47,7 @@ public:
       std::vector<size_t> elem_ind2(n);
       for (k = 0; k < n; k++) {
         ind = static_cast<size_t>(elem_ind[k]);
-        myassert(ind < LIM, ERROR_BOUNDS);
+        myassert_bounds(ind, LIM);
         elem_ind2[k] = ind;
       }
       _elem_ind = elem_ind2;
@@ -82,7 +82,7 @@ public:
       std::vector<size_t> row_ind2(n);
       for (i = 0; i < n; i++) {
         ind = static_cast<size_t>(row_ind[i]);
-        myassert(ind < LIM_N, ERROR_BOUNDS);
+        myassert_bounds(ind, LIM_N);
         row_ind2[i] = ind;
       }
       _row_ind = row_ind2;
@@ -92,7 +92,7 @@ public:
       std::vector<size_t> col_ind2(m);
       for (j = 0; j < m; j++) {
         ind = static_cast<size_t>(col_ind[j]);
-        myassert(ind < LIM_M, ERROR_BOUNDS);
+        myassert_bounds(ind, LIM_M);
         col_ind2[j] = ind;
       }
       _col_ind = col_ind2;
