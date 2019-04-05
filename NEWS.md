@@ -1,6 +1,6 @@
 ## bigstatsr 0.9.3
 
-- Fix a bug in `big_univLogReg()` for variables with no variation. IRLS was not converging, so `glm()` was used instead. The problem is that `glm()` drops dimensions causing singularities so that Z-score of the first covariable (or intercept) was used instead of a missing value.
+- Fix a bug in `big_univLogReg()` for variables with no variation. IRLS was not converging, so `glm()` was used instead. The problem is that `glm()` drops dimensions causing singularities so that Z-score of the first covariate (or intercept) was used instead of a missing value.
 
 ## bigstatsr 0.9.0
 
