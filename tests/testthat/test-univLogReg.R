@@ -6,6 +6,13 @@ set.seed(SEED)
 
 ################################################################################
 
+# Bug when no variation -> glm drop variable and intercept is returned first...
+expect_warning(expect_message(
+  gwas <- big_univLogReg(FBM(4, 1, init = 0), c(0, 1, 1, 1))))
+expect_true(is.na(gwas$score))
+
+################################################################################
+
 TOL <- 1e-4
 
 # Simulating some data
@@ -34,16 +41,17 @@ getGLM <- function(X, y, covar, ind = NULL) {
 ################################################################################
 
 test_that("numerical problems", {
-  skip_on_appveyor(); skip_on_travis()
+  # skip_on_appveyor(); skip_on_travis()
   X <- big_copy(x, type = "double")
   covar <- cbind(covar0, x[, 1:5])
-  expect_message(
+  expect_warning(expect_message(
     mod <- big_univLogReg(X, y, covar.train = covar, ncores = test_cores()),
-    "For 5 columns")
+    "For 5 columns"),"For 5 columns")
   mod$p.value <- predict(mod, log10 = FALSE)
   mat <- as.matrix(mod[, -3])
   dimnames(mat) <- NULL
-  expect_equal(mat, getGLM(X, y, covar), tolerance = TOL)
+  expect_true(all(is.na(mat[1:5, ])))
+  expect_equal(mat[-(1:5), ], getGLM(X, y, covar)[-(1:5), ], tolerance = TOL)
 
   covar2 <- cbind(covar, x[, 1])
   expect_error(
