@@ -1,0 +1,101 @@
+---
+title: "Fitting penalized regressions"
+author: "Florian Privé"
+date: "May 22, 2019"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", out.width = "70%")
+```
+
+In R package {bigstatsr}, you can fit efficient penalized (linear and logistic) regressions using functions `big_spLinReg()` and `big_spLogReg()`. 
+Similar implementation of Cox regression is an area of future development. 
+
+You might want to look at the corresponding paper and cite it:
+
+Privé, Florian, Hugues Aschard, and Michael GB Blum. "Efficient implementation of penalized regression for genetic risk prediction." Genetics (2019). [[Open access](https://doi.org/10.1534/genetics.119.302019)]
+
+## Data
+
+To illustrate how to use `big_spLinReg()` and `big_spLogReg()`, let us use some simulated data:
+
+```{r}
+library(bigstatsr)
+set.seed(1)
+
+# simulating some data
+N <- 530
+M <- 730
+X <- FBM(N, M, init = rnorm(N * M, sd = 5))
+y <- rowSums(X[, 1:100]) + 20 * rnorm(N)
+covar <- matrix(rnorm(N * 3), N)
+
+ind.train <- sort(sample(nrow(X), 400))
+ind.test <- setdiff(rows_along(X), ind.train)
+```
+
+## Cross-Model Selection and Averaging (CMSA)
+
+Functions `big_spLinReg()` and `big_spLogReg()` automatically perform a procedure similar to cross-validation in order to choose hyper-parameters $\lambda$ and $\alpha$ of the elastic net regularization:
+
+```{r, echo=FALSE, fig.cap='Illustration of one turn of the Cross-Model Selection and Averaging (CMSA) procedure. First, this procedure separates the outer training set (blue *and* red) in K folds (e.g. 10 folds). Secondly, in turn, each fold is considered as an inner validation set (red) and the other (K - 1) folds form an inner training set (blue). A "regularization path" of models is trained on the inner training set and the corresponding predictions (scores) for the inner validation set are computed. The model that minimizes the loss on the inner validation set is selected.  Finally, the K resulting models are averaged. We also use this procedure to derive an early stopping criterion so that the algorithm does not need to evaluate the whole regularization paths, making this procedure much faster.'}
+knitr::include_graphics("https://raw.githubusercontent.com/privefl/paper2-PRS/master/figures/simple-CMSA.png")
+```
+
+### Sequences of hyper-parameters
+
+- The first (maximum) value of the lambda sequence ($\lambda_{max}$) is computed automatically and corresponds to enough regularization to have no variable entering the model. Then, a sequence of `nlambda` (200 by default) values is used, equally spaces on a log-scale between $\lambda_{max}$ and $\lambda_{max}$ * `lambda.min`.
+
+- A sequence of $\alpha$ can be defined by the user using `alphas` (default is `1`). We recommend to use a grid on a log-scale (e.g. `10^(-(0:4))`).
+
+### Stopping criterion for regularization path
+
+There are three main reasons for which regularization paths can end:
+
+- the current model include too many non-zero variables (`dfmax` equals `50e3` by default, you can use `Inf`)
+
+- the early stopping criterion is reached, which means that models are getting worse on the inner validation set; you can control this using `nlam.min` (the minimal number of $\lambda$ values to try before stopping) and `n.abort` (the number of $\lambda$ values for which the model is getting worse)
+
+- the 200  $\lambda$ values have been used; you might want to reduce `lambda.min`
+
+It is possible to fit the `K` folds and the sequence of `alphas` in parallel using parameter `ncores`.
+
+You *should* check why regularization paths stop. For this, you can use both methods `plot()` and `summary()`. Let us make an example below.
+
+```{r}
+mod <- big_spLinReg(X, y[ind.train], ind.train = ind.train, K = 4)
+summary(mod)
+summary(mod)$message
+```
+
+Here, `"No more improvement"` means that the early stopping criterion have been reached.
+We can see the validation loss getting worse at some point:
+
+```{r}
+plot(mod)
+```
+
+For small datasets, you might want to reduce the number of folds (`K`).
+For large datasets, you might want to decrease `n.abort` (i.e. stop the regularization path quickly) as it is much more smooth and fitting is more and more demanding as we advance along the regularization path (because more and more variables are used in the model).
+
+Use `predict()` to use the model for data in the test set:
+
+```{r}
+pred <- predict(mod, X, ind.test)
+plot(pred, y[ind.test], pch = 20); abline(0, 1, col = "red")
+```
+
+
+## Other parameters
+
+- You can add covariates as a standard R matrix using parameter `covar.train`; it will fit the model as if `X[ind.train, ]` and `covar.train` were `cbind`ed.
+
+- You can add an offset to your model using `base.train` (on the linear scale, do not provide probabilities!).
+
+- You can apply some multiplicative penalization factors (`pf.X` and `pf.covar`) to penalize variables differently (possibly no penalization for *some* variables using `0`).
+
+- Functions `big_spLinReg()` and `big_spLogReg()` are not deterministic because folds are chosen randomly. One way that should ensure reproducibility is to define your own folds using parameter `ind.sets`.
+

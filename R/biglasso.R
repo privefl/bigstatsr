@@ -390,6 +390,10 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #' Computation-Efficient Solver for Lasso Model Fitting with Big Data in R.
 #' arXiv preprint arXiv:1701.05936. \url{https://arxiv.org/abs/1701.05936}.
 #'
+#' Privé, F., Aschard, H., & Blum, M. G.B. (2019). Efficient implementation of
+#' penalized regression for genetic risk prediction. Genetics, genetics-302019.
+#' \url{https://doi.org/10.1534/genetics.119.302019}.
+#'
 #' @export
 big_spLinReg <- function(X, y.train,
                          ind.train = rows_along(X),
