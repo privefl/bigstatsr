@@ -24,8 +24,8 @@ List IRLS(C macc,
   size_t n = macc.nrow();
   size_t m = macc.ncol();
   size_t K = covar.n_cols;
-  myassert(covar.n_rows == n, ERROR_DIM);
-  myassert(y.n_elem == n, ERROR_DIM);
+  myassert_size(covar.n_rows, n);
+  myassert_size(y.n_elem, n);
 
   arma::mat cprod(K, K), cprod_inv(K, K);
   arma::vec Xb(n), p(n), w(n), coeffs(K), shift(K);

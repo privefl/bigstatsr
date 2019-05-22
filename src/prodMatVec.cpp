@@ -16,7 +16,7 @@ NumericVector pMatVec4(Environment BM,
                        const IntegerVector& rowInd,
                        const IntegerVector& colInd) {
 
-  myassert(colInd.size() == x.size(), ERROR_DIM);
+  myassert_size(colInd.size(), x.size());
 
   DISPATCH_SUBMATACC(CALL_PMATVEC4)
 }
@@ -32,7 +32,7 @@ NumericVector cpMatVec4(Environment BM,
                         const IntegerVector& rowInd,
                         const IntegerVector& colInd) {
 
-  myassert(rowInd.size() == x.size(), ERROR_DIM);
+  myassert_size(rowInd.size(), x.size());
 
   DISPATCH_SUBMATACC(CALL_CPMATVEC4)
 }

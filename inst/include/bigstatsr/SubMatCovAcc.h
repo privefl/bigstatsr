@@ -85,7 +85,7 @@ public:
     _ncolsub = col_ind.size();
 
     if (covar.nrow() != 0) {
-      myassert(row_ind.size() == covar.nrow(), ERROR_DIM);
+      myassert_size(row_ind.size(), covar.nrow());
       _ncoladd = covar.ncol();
       _covar = covar;
     }  else {

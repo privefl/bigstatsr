@@ -23,8 +23,8 @@ ListOf<NumericVector> univLinReg5(C macc,
   size_t n = macc.nrow();
   size_t m = macc.ncol();
   size_t K = U.n_cols;
-  myassert(U.n_rows == n, ERROR_DIM);
-  myassert(y.n_elem == n, ERROR_DIM);
+  myassert_size(U.n_rows, n);
+  myassert_size(y.n_elem, n);
 
   arma::vec x(n), x2(K);
   arma::vec y2 = y - U * (U.t() * y);
