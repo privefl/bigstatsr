@@ -23,6 +23,19 @@ x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 
 ###############################################################################
 
+svd1 <- big_SVD(as_FBM(x), big_scale(), ind.row = 1:40)
+svd2 <- big_randomSVD(as_FBM(x), big_scale(), ind.row = 1:40)
+expect_equal(diffPCs(svd1$u, svd2$u), 0, tolerance = TOL)
+expect_equal(diffPCs(svd1$v, svd2$v), 0, tolerance = TOL)
+
+svd3 <- big_SVD(as_FBM(x), big_scale(), ind.row = 1:40 + 7, ind.col = 1:30 + 3)
+svd4 <- big_randomSVD(as_FBM(x), big_scale(), ind.row = 1:40 + 7,
+                      ind.col = 1:30 + 3, tol = 1e-8)
+expect_equal(diffPCs(svd3$u, svd4$u), 0, tolerance = TOL)
+expect_equal(diffPCs(svd3$v, svd4$v), 0, tolerance = TOL)
+
+###############################################################################
+
 test_that("equality with prcomp", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))

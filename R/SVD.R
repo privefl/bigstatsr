@@ -98,7 +98,7 @@ big_SVD <- function(X,
 
   check_args()
 
-  if (ncol(X) > length(ind.row)) {
+  if (length(ind.col) > length(ind.row)) {
     # printf("(2)")
     res <- DualBigPCA(X, fun.scaling, ind.row, ind.col, block.size, k)
   } else {
