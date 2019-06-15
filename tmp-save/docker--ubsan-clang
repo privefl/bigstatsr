@@ -1,0 +1,7 @@
+sudo service docker start
+sudo docker pull wch1/r-debug
+sudo docker run --rm -p 8787:8787 wch1/r-debug
+sudo docker run --rm -ti rocker/r-devel-ubsan-clang /bin/bash
+
+git clone https://github.com/privefl/bigstatsr.git
+git checkout 732f78c1604caa1106296a14af24e199038f55fd

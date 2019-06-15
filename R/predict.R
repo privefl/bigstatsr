@@ -139,7 +139,7 @@ predict.mhtest <- function(object, scores = object$score, log10 = TRUE, ...) {
 
   assert_nodots()
   scores.trans <- attr(object, "transfo")(scores)
-  lpval <- attr(object, "predict")(scores.trans)
+  lpval        <- attr(object, "predict")(scores.trans)
 
   `if`(log10, lpval, 10^lpval)
 }
