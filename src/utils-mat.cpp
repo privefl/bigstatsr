@@ -26,6 +26,21 @@ NumericMatrix& scaling(NumericMatrix& source,
   return source;
 }
 
+// [[Rcpp::export]]
+NumericMatrix& centering(NumericMatrix& source,
+                         const NumericVector& mean) {
+
+  size_t n = source.rows();
+  size_t m = source.cols();
+  size_t i, j;
+
+  for (j = 0; j < m; j++)
+    for (i = 0; i < n; i++)
+      source(i, j) -= mean[j];
+
+  return source;
+}
+
 /******************************************************************************/
 
 // For a squared FBM
@@ -64,10 +79,10 @@ void incrSup2(Environment BM,
 // For a square FBM
 // [[Rcpp::export]]
 void scaleK(Environment BM,
-                      const NumericVector& sums,
-                      const NumericVector& mu,
-                      const NumericVector& delta,
-                      int nrow) {
+            const NumericVector& sums,
+            const NumericVector& mu,
+            const NumericVector& delta,
+            int nrow) {
 
   XPtr<FBM> xpBM = BM["address"];
   BMAcc<double> K(xpBM);

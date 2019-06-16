@@ -38,21 +38,33 @@ big_prodMat <- function(X, A.col,
                         ind.row = rows_along(X),
                         ind.col = cols_along(X),
                         ncores = 1,
-                        block.size = block_size(nrow(X), ncores)) {
+                        block.size = block_size(nrow(X), ncores),
+                        center = NULL,
+                        scale = NULL) {
 
   check_args()
-  # assert_class(A.col, 'matrix')  # not only (e.g. sparses matrices)
   assert_lengths(ind.col, rows_along(A.col))
+  # assert_class(A.col, 'matrix')  # not only (e.g. sparse matrices)
 
-  if (length(ind.row) > 0 && length(ind.col) > 0) {
-    big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
-      X[ind.row, ind.col[ind], drop = FALSE] %*% M[ind, , drop = FALSE]
-    }, a.combine = "plus", ind = seq_along(ind.col),
-    ncores = ncores, block.size = block.size,
-    M = A.col, ind.row = ind.row, ind.col = ind.col)
-  } else {
-    matrix(0, length(ind.row), ncol(A.col))
+  if (length(ind.row) == 0 || length(ind.col) == 0)
+    return(matrix(0, length(ind.row), ncol(A.col)))
+
+  if (!is.null(scale)) {
+    assert_lengths(scale, ind.col)
+    A.col <- A.col / as_vec(scale)
   }
+  if (!is.null(center)) {
+    assert_lengths(center, ind.col)
+    center2 <- crossprod(as_vec(center), A.col)
+  }
+
+  res <- big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
+    X[ind.row, ind.col[ind], drop = FALSE] %*% M[ind, , drop = FALSE]
+  }, a.combine = plus, ind = seq_along(ind.col),
+  ncores = ncores, block.size = block.size,
+  M = A.col, ind.row = ind.row, ind.col = ind.col)
+
+  `if`(is.null(center), res, centering(res, center2))
 }
 
 ################################################################################
@@ -110,21 +122,36 @@ big_cprodMat <- function(X, A.row,
                          ind.row = rows_along(X),
                          ind.col = cols_along(X),
                          ncores = 1,
-                         block.size = block_size(nrow(X), ncores)) {
+                         block.size = block_size(nrow(X), ncores),
+                         center = NULL,
+                         scale = NULL) {
 
   check_args()
-  # assert_class(A.row, 'matrix')  # not only (e.g. sparses matrices)
   assert_lengths(ind.row, rows_along(A.row))
+  # assert_class(A.row, 'matrix')  # not only (e.g. sparse matrices)
 
-  if (length(ind.row) > 0 && length(ind.col) > 0) {
-    big_apply(X, a.FUN = function(X, ind, M, ind.row) {
-      crossprod(X[ind.row, ind, drop = FALSE], M)
-    }, a.combine = "rbind", ind = ind.col,
-    ncores = ncores, block.size = block.size,
-    M = A.row, ind.row = ind.row)
-  } else {
-    matrix(0, length(ind.col), ncol(A.row))
+  if (length(ind.row) == 0 || length(ind.col) == 0)
+    return(matrix(0, length(ind.col), ncol(A.row)))
+
+  if (!is.null(scale)) {
+    assert_lengths(scale, ind.col)
+    scale <- as_vec(scale)
   }
+  if (!is.null(center)) {
+    assert_lengths(center, ind.col)
+    center <- as_vec(center)
+  }
+
+  res <- big_apply(X, a.FUN = function(X, ind, M, ind.row) {
+    crossprod(X[ind.row, ind, drop = FALSE], M)
+  }, a.combine = rbind, ind = ind.col,
+  ncores = ncores, block.size = block.size,
+  M = A.row, ind.row = ind.row)
+
+  if (!is.null(center)) res <- res - tcrossprod(center, colSums(A.row))
+  if (!is.null(scale))  res <- res / scale
+
+  res
 }
 
 ################################################################################

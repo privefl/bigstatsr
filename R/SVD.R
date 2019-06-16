@@ -18,10 +18,10 @@ DualBigPCA <- function(X, fun.scaling,
   u <- eig$vectors
   d <- sqrt(eig$values)
 
-  # crossprod with clever scaling -> see vignettes
-  v <- (big_cprodMat(X, u, ind.row, ind.col, block.size = block.size) -
-          tcrossprod(means, colSums(u))) / sds
-  v <- sweep(v, 2, d, "/")
+  # V = X^T U  D^-1
+  XtU <- big_cprodMat(X, u, ind.row, ind.col, block.size = block.size,
+                      center = means, scale = sds)
+  v <- sweep(XtU, 2, d, "/")
 
   list(d = d, u = u, v = v, center = means, scale = sds)
 }
@@ -46,10 +46,10 @@ PrimalBigPCA <- function(X, fun.scaling,
   v <- eig$vectors
   d <- sqrt(eig$values)
 
-  # multiplication with clever scaling -> see vignettes
-  v2 <- v / sds
-  u <- big_prodMat(X, v2, ind.row, ind.col, block.size = block.size)
-  u <- scaling(u, crossprod(means, v2), d)
+  # U = X V D^-1
+  XV <- big_prodMat(X, v, ind.row, ind.col, block.size = block.size,
+                    center = means, scale = sds)
+  u <- sweep(XV, 2, d, '/')
 
   list(d = d, u = u, v = v, center = means, scale = sds)
 }

@@ -149,6 +149,10 @@ scaling <- function(source, mean, sd) {
     .Call(`_bigstatsr_scaling`, source, mean, sd)
 }
 
+centering <- function(source, mean) {
+    .Call(`_bigstatsr_centering`, source, mean)
+}
+
 complete2 <- function(BM) {
     invisible(.Call(`_bigstatsr_complete2`, BM))
 }

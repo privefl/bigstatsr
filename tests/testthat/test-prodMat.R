@@ -49,6 +49,22 @@ for (t in TEST.TYPES) {
       A.row <- matrix(rnorm(n * m), n, m)
       expect_equal(big_cprodMat(X, A.row, ind.row, ind.col),
                    crossprod(X[ind.row, ind.col, drop = FALSE], A.row))
+
+      center <- rnorm(m); scale <- runif(m)
+      expect_equal(big_prodMat(X, A.col, ind.row, ind.col, center = center),
+                   scale(X[ind.row, ind.col, drop = FALSE],
+                         center = center, scale = FALSE) %*% A.col)
+      expect_equal(big_prodMat(X, A.col, ind.row, ind.col,
+                               center = center, scale = scale),
+                   scale(X[ind.row, ind.col, drop = FALSE],
+                         center = center, scale = scale) %*% A.col)
+      expect_equal(big_cprodMat(X, A.row, ind.row, ind.col, center = center),
+                   crossprod(scale(X[ind.row, ind.col, drop = FALSE],
+                                   center = center, scale = FALSE), A.row))
+      expect_equal(big_cprodMat(X, A.row, ind.row, ind.col,
+                                center = center, scale = scale),
+                   crossprod(scale(X[ind.row, ind.col, drop = FALSE],
+                                   center = center, scale = scale), A.row))
     })
   })
 
@@ -84,5 +100,26 @@ for (t in TEST.TYPES) {
                  crossprod(X[ind.row, ind.col, drop = FALSE], A.row))
   })
 }
+
+################################################################################
+
+test_that("OK with matrix as scaling", {
+
+  X <- FBM(2, 2, init = 1:4)
+  A <- matrix(1:4, 2)
+  center <- c(0, 0)
+  scale <- c(1, 1)
+
+  for (fun1 in list(identity, base::t, matrix)) {
+    for (fun2 in list(identity, base::t, matrix)) {
+      center2 <- fun1(center)
+      scale2  <- fun2(scale)
+      expect_equal(big_prodMat(X, A, center = center2, scale = scale2),
+                   X[] %*% A)
+      expect_equal(big_cprodMat(X, A, center = center2, scale = scale2),
+                   crossprod(X[], A))
+    }
+  }
+})
 
 ################################################################################

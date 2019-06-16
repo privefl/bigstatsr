@@ -28,6 +28,22 @@ for (t in TEST.TYPES) {
       y.row <- rnorm(n)
       expect_equal(big_cprodVec(X, y.row, ind.row, ind.col),
                    drop(crossprod(X[ind.row, ind.col, drop = FALSE], y.row)))
+
+      center <- rnorm(m); scale <- runif(m)
+      expect_equal(big_prodVec(X, y.col, ind.row, ind.col, center = center),
+                   drop(scale(X[ind.row, ind.col, drop = FALSE],
+                              center = center, scale = FALSE) %*% y.col))
+      expect_equal(big_prodVec(X, y.col, ind.row, ind.col,
+                               center = center, scale = scale),
+                   drop(scale(X[ind.row, ind.col, drop = FALSE],
+                              center = center, scale = scale) %*% y.col))
+      expect_equal(big_cprodVec(X, y.row, ind.row, ind.col, center = center),
+                   drop(crossprod(scale(X[ind.row, ind.col, drop = FALSE],
+                                        center = center, scale = FALSE), y.row)))
+      expect_equal(big_cprodVec(X, y.row, ind.row, ind.col,
+                                center = center, scale = scale),
+                   drop(crossprod(scale(X[ind.row, ind.col, drop = FALSE],
+                                        center = center, scale = scale), y.row)))
     })
   })
 

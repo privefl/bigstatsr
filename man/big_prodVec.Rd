@@ -4,7 +4,8 @@
 \alias{big_prodVec}
 \title{Product with a vector}
 \usage{
-big_prodVec(X, y.col, ind.row = rows_along(X), ind.col = cols_along(X))
+big_prodVec(X, y.col, ind.row = rows_along(X), ind.col = cols_along(X),
+  center = NULL, scale = NULL)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -16,6 +17,12 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
+
+\item{center}{Vector of same length of \code{ind.col} to substract from columns
+of \code{X}.}
+
+\item{scale}{Vector of same length of \code{ind.col} to divide from columns
+of \code{X}.}
 }
 \value{
 \eqn{X \cdot y}.

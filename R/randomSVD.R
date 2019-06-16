@@ -66,18 +66,16 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
       repeat {
         # Slaves wait for their master to give them orders
         while (calc[ic] == 0) Sys.sleep(TIME)
-        c <-  calc[ic]
+        c <- calc[ic]
         # Slaves do the hard work
         if (c == 1) {
-          # Compute A * x
-          x <- Atx[lo:up] / ms$scale
-          Ax[, ic] <- pMatVec4(X, x, ind.row, ind.col.part) -
-            drop(crossprod(x, ms$center))
+          # Compute A * x (part)
+          Ax[, ic] <- big_prodVec(X, Atx[lo:up], ind.row, ind.col.part,
+                                  center = ms$center, scale = ms$scale)
         } else if (c == 2) {
-          # Compute At * x
-          x <- Ax[, 1]
-          Atx[lo:up] <- (cpMatVec4(X, x, ind.row, ind.col.part) -
-                           sum(x) * ms$center) / ms$scale
+          # Compute At * x (part)
+          Atx[lo:up] <- big_cprodVec(X, Ax[, 1], ind.row, ind.col.part,
+                                     center = ms$center, scale = ms$scale)
         } else if (c == 3) {
           # End
           break
@@ -95,7 +93,7 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
   l <- do.call("c", res[-1])
   res <- res[[1]]
   s <- c(TRUE, FALSE)
-  res$center <- unlist(l[s], use.names = FALSE)
+  res$center <- unlist(l[s],  use.names = FALSE)
   res$scale  <- unlist(l[!s], use.names = FALSE)
 
   # Return
@@ -118,13 +116,12 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose) {
   # A
   A <- function(x, args) {
     printf("%d - computing A * x\n", it <<- it + 1)
-    x <- x / ms$scale
-    pMatVec4(X, x, ind.row, ind.col) - drop(crossprod(x, ms$center))
+    big_prodVec(X, x, ind.row, ind.col, center = ms$center, scale = ms$scale)
   }
   # Atrans
   Atrans <- function(x, args) {
     printf("%d - computing At * x\n", it <<- it + 1)
-    (cpMatVec4(X, x, ind.row, ind.col) - sum(x) * ms$center) / ms$scale
+    big_cprodVec(X, x, ind.row, ind.col, center = ms$center, scale = ms$scale)
   }
 
   res <- RSpectra::svds(A, k, nu = k, nv = k, opts = list(tol = tol),

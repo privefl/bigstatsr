@@ -8,7 +8,8 @@
 \title{Product with a matrix}
 \usage{
 big_prodMat(X, A.col, ind.row = rows_along(X), ind.col = cols_along(X),
-  ncores = 1, block.size = block_size(nrow(X), ncores))
+  ncores = 1, block.size = block_size(nrow(X), ncores),
+  center = NULL, scale = NULL)
 
 \S4method{\%*\%}{FBM,matrix}(x, y)
 
@@ -30,6 +31,12 @@ You may use \link{nb_cores}.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
+
+\item{center}{Vector of same length of \code{ind.col} to substract from columns
+of \code{X}.}
+
+\item{scale}{Vector of same length of \code{ind.col} to divide from columns
+of \code{X}.}
 
 \item{x}{A 'double' FBM or a matrix.}
 

@@ -7,6 +7,15 @@ stop2 <- function(...) stop(sprintf(...), call. = FALSE)
 
 ################################################################################
 
+as_vec <- function(x) {
+  x2 <- drop(x)
+  if (is.matrix(x2))
+    stop2("'%s' must a vector, not a matrix.", deparse(substitute(x)))
+  x2
+}
+
+################################################################################
+
 #' Temporarily disable downcast warning
 #'
 #' @param expr The expression to evaluate without downcast warning.

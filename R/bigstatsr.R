@@ -39,6 +39,11 @@
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.row`.
 #' Default is `NULL` and corresponds to only adding an intercept to each model.
 #'
+#' @param center Vector of same length of `ind.col` to substract from columns
+#'   of `X`.
+#' @param scale Vector of same length of `ind.col` to divide from columns
+#'   of `X`.
+#'
 #' @section Matrix parallelization:
 #'   Large matrix computations (crossprods) are made block-wise and won't
 #'   be parallelized in order to not have to reduce the size of these blocks.
