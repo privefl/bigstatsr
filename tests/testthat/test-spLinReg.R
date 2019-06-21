@@ -44,9 +44,13 @@ if (not_cran) {
         ind <- sample(N, N / 2)
         alphas <- c(runif(1, min = 0.01, max = 1), 1)
 
-        mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar,
-                                      alphas = alphas, dfmax = Inf,
+        mod.bigstatsr <- big_spLinReg(X, y, covar.train = covar, alphas = alphas,
+                                      dfmax = Inf, n.abort = Inf,
                                       ncores = test_cores())
+        lapply(mod.bigstatsr, function(mod) lapply(mod, function(fold) {
+          expect_length(fold$lambda, 200); NULL
+        }))
+
         if (is.null(covar)) {
           expect_length(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]), N / 2)
         } else {

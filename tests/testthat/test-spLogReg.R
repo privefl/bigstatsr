@@ -45,9 +45,13 @@ if (not_cran) {
 
         alphas <- c(runif(1, min = 0.1, max = 1), 1)
 
-        mod.bigstatsr <- big_spLogReg(X, y, covar.train = covar,
-                                      alphas = alphas, dfmax = Inf,
+        mod.bigstatsr <- big_spLogReg(X, y, covar.train = covar, alphas = alphas,
+                                      dfmax = Inf, nlam.min = Inf,
                                       ncores = test_cores())
+        lapply(mod.bigstatsr, function(mod) lapply(mod, function(fold) {
+          if (fold$message != "Model saturated") expect_length(fold$lambda, 200)
+        }))
+
         if (is.null(covar)) {
           expect_length(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]), N / 2)
         } else {
