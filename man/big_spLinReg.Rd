@@ -69,7 +69,7 @@ You may use \link{nb_cores}.}
 
 \item{...}{Arguments passed on to \code{COPY_biglasso_main}
 \describe{
-  \item{lambda.min}{The smallest value for lambda, \strong{as a fraction of
+  \item{lambda.min.ratio}{The smallest value for lambda, \strong{as a fraction of
 lambda.max}. Default is \code{.0001} if the number of observations is larger than
 the number of variables and \code{.001} otherwise.}
   \item{eps}{Convergence threshold for inner coordinate descent.

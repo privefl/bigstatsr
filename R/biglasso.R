@@ -154,7 +154,9 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' \code{alpha = 1} is the lasso penalty and \code{alpha} in between `0`
 #' (`1e-4`) and `1` is the elastic-net penalty. Default is `1`. **You can
 #' pass multiple values, and only one will be used (optimized by grid-search).**
-#' @param lambda.min The smallest value for lambda, **as a fraction of
+#' @param lambda.min This parameter has been renamed `lambda.min.ratio` and is
+#' now deprecated.
+#' @param lambda.min.ratio The smallest value for lambda, **as a fraction of
 #' lambda.max**. Default is `.0001` if the number of observations is larger than
 #' the number of variables and `.001` otherwise.
 #' @param nlambda The number of lambda values. Default is `200`.
@@ -195,7 +197,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                K = 10,
                                ind.sets = NULL,
                                nlambda = 200,
-                               lambda.min = `if`(n > p, .0001, .001),
+                               lambda.min.ratio = `if`(n > p, .0001, .001),
                                nlam.min = 50,
                                n.abort = 10,
                                base.train = NULL,
@@ -204,12 +206,17 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                eps = 1e-5,
                                max.iter = 1000,
                                dfmax = 50e3,
+                               lambda.min = `if`(n > p, .0001, .001),
                                return.all = FALSE,
                                warn = FALSE,
                                ncores = 1) {
 
   if (!missing(warn)) warning2("Parameter 'warn' is deprecated.")
   if (!missing(return.all)) warning2("Parameter 'return.all' is deprecated.")
+  if (!missing(lambda.min)) {
+    lambda.min.ratio <- lambda.min
+    warning2("Parameter 'lambda.min' has been renamed 'lambda.min.ratio'.")
+  }
 
   family <- match.arg(family)
 
@@ -303,7 +310,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     ## Compute lambdas of the path
     lambda.max <- max(abs(resid / pf.keep)[pf.keep != 0]) / alpha
     lambda <- exp(
-      seq(log(lambda.max), log(lambda.max * lambda.min), length.out = nlambda))
+      seq(log(lambda.max), log(lambda.max * lambda.min.ratio), length.out = nlambda))
 
     res <- COPY_biglasso_part(
       X, y.train = y.train[!in.val],
@@ -374,7 +381,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritParams COPY_biglasso_main
-#' @inheritDotParams COPY_biglasso_main lambda.min eps max.iter warn return.all
+#' @inheritDotParams COPY_biglasso_main lambda.min.ratio eps max.iter warn return.all
 #'
 #' @return Return an object of class `big_sp_list` (a list of `length(alphas)`
 #'   x `K`) that has 3 methods `predict`, `summary` and `plot`.
@@ -430,7 +437,7 @@ big_spLinReg <- function(X, y.train,
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritParams COPY_biglasso_main
-#' @inheritDotParams COPY_biglasso_main lambda.min eps max.iter warn return.all
+#' @inheritDotParams COPY_biglasso_main lambda.min.ratio eps max.iter warn return.all
 #'
 #' @inherit big_spLinReg return description details seealso references
 #'
