@@ -83,7 +83,10 @@ AUCBoot <- function(pred, target, nboot = 1e4, seed = NA, digits = NULL) {
   assert_01(target)
 
   y <- as.logical(target)
-  n <- length(target)
+
+  ord <- order(pred, y)
+  pred <- pred[ord]
+  y <- y[ord]
 
   if (!is.na(seed)) {
     # http://stackoverflow.com/a/14324316/6103040
@@ -92,10 +95,7 @@ AUCBoot <- function(pred, target, nboot = 1e4, seed = NA, digits = NULL) {
     set.seed(seed)
   }
 
-  repl <- replicate(nboot, {
-    ind <- sample(n, replace = TRUE)
-    AUC2(pred[ind], y[ind])
-  })
+  repl <- boot_auc_sorted_tab(pred, y, nboot)
 
   if (nbNA <- sum(is.na(repl)))
     warning2("%d/%d bootstrap replicates were mono-class.", nbNA, nboot)

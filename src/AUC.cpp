@@ -42,20 +42,15 @@ double auc_sorted(const NumericVector& x,
                   const LogicalVector& y) {
 
   int n = y.length();
-  double n_case = Rcpp::sum(y);
-  double n_control = n - n_case;
   double latest_control = R_NegInf;
-  double count_control = 0;
-  double count_control_equal = 0;
-  double total = 0;
+  double count_control = 0, count_control_equal = 0;
+  double add, total = 0;
 
   for (int i = 0; i < n; i++) {
     if (y[i]) {  // case
-      if (x[i] == latest_control) {
-        total += count_control - (count_control_equal + 1) / 2;
-      } else {
-        total += count_control;
-      }
+      add = count_control;
+      if (x[i] == latest_control) add -= (count_control_equal + 1) / 2;
+      total += add;
     } else {     // control
       count_control++;
       if (x[i] == latest_control) {
@@ -67,7 +62,73 @@ double auc_sorted(const NumericVector& x,
     }
   }
 
-  return total / (n_case * n_control);
+  return total / (count_control * (n - count_control));
+}
+
+/******************************************************************************/
+
+// x and y must be sorted with respect to the initial x AND y
+// w count the number of time each index is used in the boostrap sample
+// [[Rcpp::export]]
+double auc_sorted_tab(const NumericVector& x,
+                      const LogicalVector& y,
+                      const IntegerVector& w) {
+
+  int n = y.length();
+  double latest_control = R_NegInf;
+  double count_control = 0, count_control_equal = 0;
+  double add, total = 0;
+
+  for (int i = 0; i < n; i++) {
+    if (w[i]) {
+      if (y[i]) {  // case
+        add = count_control;
+        if (x[i] == latest_control) add -= (count_control_equal + 1) / 2;
+        total += w[i] * add;
+      } else {     // control
+        count_control += w[i];
+        if (x[i] == latest_control) {
+          count_control_equal += w[i];
+        } else {
+          latest_control = x[i];
+          count_control_equal = 0;
+        }
+      }
+    }
+  }
+
+  return total / (count_control * (n - count_control));
+}
+
+/******************************************************************************/
+
+// repl <- replicate(nboot, {
+//   w <- tabulate(sample(n, replace = TRUE), n)
+//   auc_sorted_tab(pred, y, w)
+// })
+// x and y must be sorted with respect to the initial x AND y
+// [[Rcpp::export]]
+NumericVector boot_auc_sorted_tab(const NumericVector& x,
+                                  const LogicalVector& y,
+                                  int n_boot) {
+
+  int n = y.length();
+  IntegerVector tab(n);
+  NumericVector res(n_boot);
+
+  for (int j = 0; j < n_boot; j++) {
+    // clear
+    for (int i = 0; i < n; i++) tab[i] = 0;
+    // fill with counts of bootstrap
+    for (int i = 0; i < n; i++) {
+      int k = n * unif_rand();
+      tab[k]++;
+    }
+    // compute AUC for bootstrap sample
+    res[j] = auc_sorted_tab(x, y, tab);
+  }
+
+  return res;
 }
 
 /******************************************************************************/

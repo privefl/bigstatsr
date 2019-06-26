@@ -5,6 +5,14 @@ auc_sorted <- function(x, y) {
     .Call(`_bigstatsr_auc_sorted`, x, y)
 }
 
+auc_sorted_tab <- function(x, y, w) {
+    .Call(`_bigstatsr_auc_sorted_tab`, x, y, w)
+}
+
+boot_auc_sorted_tab <- function(x, y, n_boot) {
+    .Call(`_bigstatsr_boot_auc_sorted_tab`, x, y, n_boot)
+}
+
 conv_NA_float <- function(source) {
     .Call(`_bigstatsr_conv_NA_float`, source)
 }

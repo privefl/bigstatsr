@@ -63,3 +63,15 @@ test_that("AUC() does not accept missing values", {
 })
 
 ################################################################################
+
+test_that("AUCBoot() seems okay", {
+  aucs <- AUCBoot(sample(5, 1e4, replace = TRUE),
+                  sample(0:1, 1e4, replace = TRUE))
+  expect_gt(aucs[2], 0.47)
+  expect_lt(aucs[3], 0.53)
+  aucs <- AUCBoot(rnorm(1e4), sample(0:1, 1e4, replace = TRUE))
+  expect_gt(aucs[2], 0.47)
+  expect_lt(aucs[3], 0.53)
+})
+
+################################################################################

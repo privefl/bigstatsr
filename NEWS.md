@@ -1,3 +1,7 @@
+## bigstatsr 0.9.6
+
+- `AUCBoot()` is now 6-7 times faster.
+
 ## bigstatsr 0.9.5
 
 - Add parameters `center` and `scale` to products.
