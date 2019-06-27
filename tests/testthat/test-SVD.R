@@ -6,7 +6,7 @@ set.seed(SEED)
 
 ################################################################################
 
-TOL <- 1e-4
+TOL <- 1e-3
 
 # function for sampling scaling
 sampleScale <- function() {
