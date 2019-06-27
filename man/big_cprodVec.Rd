@@ -18,7 +18,7 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{center}{Vector of same length of \code{ind.col} to substract from columns
+\item{center}{Vector of same length of \code{ind.col} to subtract from columns
 of \code{X}.}
 
 \item{scale}{Vector of same length of \code{ind.col} to divide from columns

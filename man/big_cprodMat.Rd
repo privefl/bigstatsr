@@ -39,7 +39,7 @@ You may use \link{nb_cores}.}
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
 
-\item{center}{Vector of same length of \code{ind.col} to substract from columns
+\item{center}{Vector of same length of \code{ind.col} to subtract from columns
 of \code{X}.}
 
 \item{scale}{Vector of same length of \code{ind.col} to divide from columns

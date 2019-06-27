@@ -44,7 +44,7 @@ Default is \code{NULL} and corresponds to only adding an intercept to each model
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.}
 
-\item{center}{Vector of same length of \code{ind.col} to substract from columns
+\item{center}{Vector of same length of \code{ind.col} to subtract from columns
 of \code{X}.}
 
 \item{scale}{Vector of same length of \code{ind.col} to divide from columns

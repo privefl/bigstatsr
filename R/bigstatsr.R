@@ -39,7 +39,7 @@
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.row`.
 #' Default is `NULL` and corresponds to only adding an intercept to each model.
 #'
-#' @param center Vector of same length of `ind.col` to substract from columns
+#' @param center Vector of same length of `ind.col` to subtract from columns
 #'   of `X`.
 #' @param scale Vector of same length of `ind.col` to divide from columns
 #'   of `X`.
