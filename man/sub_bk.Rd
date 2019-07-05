@@ -2,20 +2,23 @@
 % Please edit documentation in R/FBM.R
 \name{sub_bk}
 \alias{sub_bk}
-\title{Replace extension 'bk'}
+\title{Replace extension '.bk'}
 \usage{
-sub_bk(path, replacement = "")
+sub_bk(path, replacement = "", stop_if_not_ext = TRUE)
 }
 \arguments{
-\item{path}{String with extension 'bk'.}
+\item{path}{String with extension '.bk'.}
 
 \item{replacement}{Replacement of '.bk'. Default replaces by nothing.}
+
+\item{stop_if_not_ext}{If \code{replacement != ""}, whether to error if
+replacement is not an extension (starting with a '.').}
 }
 \value{
 String with extension '.bk' replaced by \code{replacement}.
 }
 \description{
-Replace extension 'bk'
+Replace extension '.bk'
 }
 \examples{
 path <- "toto.bk"

@@ -16,9 +16,11 @@ test_that("$save() works", {
 ################################################################################
 
 test_that("sub_bk() works", {
-  expect_identical(sub_bk("toto.bk"),         "toto")
+  expect_identical(sub_bk("toto.bk"), "toto")
   expect_identical(sub_bk("toto.bk", ".rds"), "toto.rds")
   expect_error(sub_bk("toto.bk2"), "Path 'toto.bk2' must have 'bk' extension.")
+  expect_error(sub_bk("toto.bk", "rds"), "extension starting with '.'")
+  expect_identical(sub_bk("toto.bk", "rds", stop_if_not_ext = FALSE), "totords")
 })
 
 ################################################################################
