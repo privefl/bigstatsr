@@ -1,3 +1,7 @@
+## bigstatsr 0.9.8
+
+- Use `coord_fixed()` when plotting PCA scores because it is good practice.
+
 ## bigstatsr 0.9.6
 
 - `AUCBoot()` is now 6-7 times faster.

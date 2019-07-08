@@ -104,6 +104,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
     ny <- scores[2]
 
     MY_THEME(qplot(x = sc[, nx], y = sc[, ny]), coeff = coeff) +
+      coord_fixed() +
       labs(title = "Scores of PCA", x = paste0("PC", nx), y = paste0("PC", ny))
 
   } else if (type == "loadings") {
