@@ -135,3 +135,14 @@ test_that("equality with prcomp with half of half of the data", {
 })
 
 ################################################################################
+
+expect_s3_class(p <- plot(svd1, type = "scores"), "ggplot")
+expect_length(p$layers, 1)
+expect_s3_class(p <- plot(svd1, type = "scores", scores = 3:4), "ggplot")
+expect_length(p$layers, 1)
+expect_s3_class(p <- plot(svd1, type = "scores", scores = 1:8), "ggplot")
+expect_length(p$layers, 4)
+expect_s3_class(p <- plot(svd1, type = "scores", scores = 1:9), "ggplot")
+expect_length(p$layers, 4)
+
+###############################################################################

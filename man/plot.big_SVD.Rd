@@ -21,7 +21,7 @@
 \item{nval}{Number of singular values to plot. Default plots all computed.}
 
 \item{scores}{Vector of indices of the two PCs to plot. Default plots the
-first 2 PCs.}
+first two PCs. If providing more than two, it produces many plots.}
 
 \item{loadings}{Indices of PC loadings to plot. Default plots the
 first vector of loadings.}
@@ -57,6 +57,8 @@ plot(svd, coeff = 1.5) # larger font for papers
 # scores plot
 plot(svd, type = "scores") # first 2 PCs
 plot(svd, type = "scores", scores = c(1, 3))
+plot(svd, type = "scores", scores = 1:10, cols = 3)
+plot(svd, type = "scores", scores = 1:9, cols = 3)
 ## add color (recall that this return a `ggplot2` object)
 class(obj <- plot(svd, type = "scores"))
 pop <- rep(c("POP1", "POP2", "POP3"), c(143, 167, 207))

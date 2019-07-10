@@ -3,7 +3,7 @@ Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
 Version: 0.9.8
-Date: 2019-07-08
+Date: 2019-07-10
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 

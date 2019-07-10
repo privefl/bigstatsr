@@ -48,7 +48,7 @@ MY_THEME <- function(p, coeff = 1) {
 #' - "loadings": plot of loadings associated with 1 Principal Component.
 #' @param nval Number of singular values to plot. Default plots all computed.
 #' @param scores Vector of indices of the two PCs to plot. Default plots the
-#' first 2 PCs.
+#' first two PCs. If providing more than two, it produces many plots.
 #' @param loadings Indices of PC loadings to plot. Default plots the
 #' first vector of loadings.
 #' @param cols If multiple vector of loadings are to be plotted, this defines
@@ -84,12 +84,11 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
   if (!missing(viridis))
     warning2("Argument 'viridis' is deprecated and will be removed.")
 
-  assert_lengths(nval, 1)
-  assert_lengths(scores, 1:2)
-
   type <- match.arg(type)
 
   if (type == "screeplot") {
+
+    assert_lengths(nval, 1)
 
     p <- MY_THEME(qplot(y = x$d[seq_len(nval)]), coeff = coeff) +
       geom_line() +
@@ -99,13 +98,36 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 
   } else if (type == "scores") {
 
-    sc <- predict(x)
-    nx <- scores[1]
-    ny <- scores[2]
+    if (is.list(scores)) {
 
-    MY_THEME(qplot(x = sc[, nx], y = sc[, ny]), coeff = coeff) +
-      coord_fixed() +
-      labs(title = "Scores of PCA", x = paste0("PC", nx), y = paste0("PC", ny))
+      all.p <- lapply(scores, function(scores.part) {
+        plot(x, type = "scores", scores = scores.part, coeff = coeff)
+      })
+
+      cowplot::plot_grid(plotlist = all.p, ncol = cols, scale = 0.95)
+
+    } else {
+
+      if (length(scores) > 2) {
+
+        n_plot <- floor(length(scores) / 2)
+        scores.list <- split(head(scores, 2 * n_plot),
+                             rep(seq_len(n_plot), each = 2))
+        plot(x, type = "scores", scores = scores.list, cols = cols, coeff = coeff)
+
+      } else {
+
+        sc <- predict(x)
+        nx <- scores[1]
+        ny <- scores[2]
+
+        MY_THEME(qplot(x = sc[, nx], y = sc[, ny]), coeff = coeff) +
+          coord_fixed() +
+          labs(title = "Scores of PCA", x = paste0("PC", nx), y = paste0("PC", ny))
+
+      }
+
+    }
 
   } else if (type == "loadings") {
 
@@ -117,7 +139,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
         p + geom_hex() + scale_fill_viridis_c()
       })
 
-      cowplot::plot_grid(plotlist = all.p, align = "hv", ncol = cols)
+      cowplot::plot_grid(plotlist = all.p, align = "hv", ncol = cols, scale = 0.95)
 
     } else {
 
