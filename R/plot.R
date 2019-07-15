@@ -35,6 +35,10 @@ MY_THEME <- function(p, coeff = 1) {
   p + theme_bigstatsr(size.rel = coeff)
 }
 
+#' @importFrom cowplot plot_grid
+#' @export
+cowplot::plot_grid
+
 ################################################################################
 
 #' Plot method
@@ -92,6 +96,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 
     p <- MY_THEME(qplot(y = x$d[seq_len(nval)]), coeff = coeff) +
       geom_line() +
+      scale_y_log10() +
       labs(title = "Scree Plot", x = "PC Index", y = "Singular Value")
 
     `if`(nval > 12, p, p + scale_x_discrete(limits = seq_len(nval)))
@@ -104,7 +109,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
         plot(x, type = "scores", scores = scores.part, coeff = coeff)
       })
 
-      cowplot::plot_grid(plotlist = all.p, ncol = cols, scale = 0.95)
+      plot_grid(plotlist = all.p, ncol = cols, scale = 0.95)
 
     } else {
 
@@ -139,7 +144,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
         p + geom_hex() + scale_fill_viridis_c()
       })
 
-      cowplot::plot_grid(plotlist = all.p, align = "hv", ncol = cols, scale = 0.95)
+      plot_grid(plotlist = all.p, align = "hv", ncol = cols, scale = 0.95)
 
     } else {
 

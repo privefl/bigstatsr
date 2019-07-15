@@ -1,6 +1,14 @@
-## bigstatsr 0.9.8
+## bigstatsr 0.9.9
 
-- Use `coord_fixed()` when plotting PCA scores because it is good practice.
+In `plot.big_SVD()`,
+
+  - Can now plot many PCA scores (more than two) at once.
+  
+  - Use `coord_fixed()` when plotting PCA scores because it is good practice.
+  
+  - Use log-scale in scree plot to better see small differences in singular values.
+  
+  - Reexport `cowplot::plot_grid()` to merge multiple ggplots.
 
 ## bigstatsr 0.9.6
 
