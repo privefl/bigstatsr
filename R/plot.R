@@ -55,7 +55,8 @@ cowplot::plot_grid
 #' first two PCs. If providing more than two, it produces many plots.
 #' @param loadings Indices of PC loadings to plot. Default plots the
 #' first vector of loadings.
-#' @param cols If multiple vector of loadings are to be plotted, this defines
+#' @param cols Deprecated. Use `ncol` instead.
+#' @param ncol If multiple vector of loadings are to be plotted, this defines
 #' the number of columns of the resulting multiplot.
 #' @param coeff Relative size of text. Default is `1`.
 #' @param viridis Deprecated argument.
@@ -78,15 +79,21 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
                          nval = length(x$d),
                          scores = c(1, 2),
                          loadings = 1,
-                         cols = 2,
+                         ncol = NULL,
                          coeff = 1,
                          viridis = TRUE,
+                         cols = 2,
                          ...) {
 
   assert_nodots()
 
   if (!missing(viridis))
     warning2("Argument 'viridis' is deprecated and will be removed.")
+  if (!missing(cols)) {
+    warning2("Argument 'cols' is deprecated and will be removed.%s",
+             "Please use parameter 'ncol' instead.")
+    ncol <- cols
+  }
 
   type <- match.arg(type)
 
@@ -109,7 +116,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
         plot(x, type = "scores", scores = scores.part, coeff = coeff)
       })
 
-      plot_grid(plotlist = all.p, ncol = cols, scale = 0.95)
+      plot_grid(plotlist = all.p, ncol = ncol, scale = 0.95)
 
     } else {
 
@@ -118,7 +125,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
         n_plot <- floor(length(scores) / 2)
         scores.list <- split(head(scores, 2 * n_plot),
                              rep(seq_len(n_plot), each = 2))
-        plot(x, type = "scores", scores = scores.list, cols = cols, coeff = coeff)
+        plot(x, type = "scores", scores = scores.list, ncol = ncol, coeff = coeff)
 
       } else {
 
@@ -144,7 +151,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
         p + geom_hex() + scale_fill_viridis_c()
       })
 
-      plot_grid(plotlist = all.p, align = "hv", ncol = cols, scale = 0.95)
+      plot_grid(plotlist = all.p, align = "hv", ncol = ncol, scale = 0.95)
 
     } else {
 

@@ -10,7 +10,7 @@ plot(svd, coeff = 1.5) # larger font for papers
 # scores plot
 plot(svd, type = "scores") # first 2 PCs
 plot(svd, type = "scores", scores = c(1, 3))
-plot(svd, type = "scores", scores = 1:10, cols = 3, coeff = 0.7)
+plot(svd, type = "scores", scores = 1:10, ncol = 3, coeff = 0.7)
 plot(svd, type = "scores", scores = 1:9, coeff = 0.7)
 ## add color (recall that this return a `ggplot2` object)
 class(obj <- plot(svd, type = "scores"))
