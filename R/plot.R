@@ -90,8 +90,8 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
   if (!missing(viridis))
     warning2("Argument 'viridis' is deprecated and will be removed.")
   if (!missing(cols)) {
-    warning2("Argument 'cols' is deprecated and will be removed.%s",
-             "Please use parameter 'ncol' instead.")
+    warning2("Argument 'cols' is deprecated and will be removed; %s",
+             "please use parameter 'ncol' instead.")
     ncol <- cols
   }
 
