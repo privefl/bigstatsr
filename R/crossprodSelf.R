@@ -29,14 +29,13 @@ big_crossprodSelf <- function(
   m <- length(ind.col)
   K <- FBM(m, m)
 
-  intervals <- CutBySize(m, block.size)
-  nb.block <- nrow(intervals)
-
   mu    <- numeric(m)
   delta <- numeric(m)
   sums  <- numeric(m)
 
-  for (j in seq_len(nb.block)) {
+  intervals <- CutBySize(m, block.size)
+
+  for (j in rows_along(intervals)) {
 
     ind1 <- seq2(intervals[j, ])
     tmp1 <- X[ind.row, ind.col[ind1]]

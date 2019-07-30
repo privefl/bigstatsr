@@ -30,13 +30,12 @@ big_tcrossprodSelf <- function(
   K <- FBM(n, n, init = 0)
   m <- length(ind.col)
 
-  intervals <- CutBySize(m, block.size)
-  nb.block <- nrow(intervals)
-
   means <- numeric(m)
   sds   <- numeric(m)
 
-  for (j in 1:nb.block) {
+  intervals <- CutBySize(m, block.size)
+
+  for (j in rows_along(intervals)) {
     ind <- seq2(intervals[j, ])
     ind.col.ind <- ind.col[ind]
     ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col.ind)
