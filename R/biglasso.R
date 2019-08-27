@@ -375,9 +375,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #'     - the vector of scores which maximizes log-likelihood is determined,
 #'     - the vector of coefficients corresponding to the previous vector of
 #'       scores is chosen.
-#' 3. The `K` resulting vectors of coefficients can then be combined into one
-#' vector (see [get_beta]) or you can just combine the predictions
-#' (e.g. using `predict` followed by `rowMeans`).
+#' 3. The `K` resulting vectors of coefficients are then averaged into one final
+#'    vector of coefficients.
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritParams COPY_biglasso_main

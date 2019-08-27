@@ -111,9 +111,8 @@ predictions (scores) for the inner validation set are computed,
 \item the vector of coefficients corresponding to the previous vector of
 scores is chosen.
 }
-\item The \code{K} resulting vectors of coefficients can then be combined into one
-vector (see \link{get_beta}) or you can just combine the predictions
-(e.g. using \code{predict} followed by \code{rowMeans}).
+\item The \code{K} resulting vectors of coefficients are then averaged into one final
+vector of coefficients.
 }
 }
 \examples{
