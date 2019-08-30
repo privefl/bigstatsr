@@ -20,8 +20,8 @@ As inputs, package {bigstatsr} uses [Filebacked Big Matrices (FBM)](https://priv
 ## Installation
 
 ```r
-# For the current development version
-devtools::install_github("privefl/bigstatsr")
+# For the latest version
+remotes::install_github("privefl/bigstatsr")
 ```
 
 ## Small example
@@ -58,12 +58,8 @@ unlink(paste0("test", c(".bk", ".rds")))
 Learn more with this 
 [introduction to package {bigstatsr}](https://privefl.github.io/R-presentation/bigstatsr.html).
 
-## Bug report / Help
 
-Please open an issue if you find a bug.
-If you want help using {bigstatsr}, please post on Stack Overflow with the tag *bigstatsr*. [How to make a great R reproducible example?](https://stackoverflow.com/q/5963269/6103040)
-
-## Use cases
+## Some use cases
 
 ### Parallelization
 
@@ -80,3 +76,24 @@ Package {bigstatsr} uses package {foreach} for its parallelization tasks. Learn 
 - [Rowwise matrix multiplication](https://stackoverflow.com/q/48879643/6103040)
 
 - [Operating with a big.matrix](https://stackoverflow.com/q/42111876/6103040)
+
+
+## Bug report / Help
+
+[How to make a great R reproducible example?](https://stackoverflow.com/q/5963269/6103040)
+
+Please open an issue if you find a bug.
+
+If you want help using {bigstatsr}, please open an issue as well or post on Stack Overflow with the tag *bigstatsr*. 
+
+I will always redirect you to GitHub issues if you email me, so that others can benefit from our discussion.
+
+
+## References
+
+- Privé, Florian, et al. "Efficient analysis of large-scale genome-wide data with two R packages: bigstatsr and bigsnpr." Bioinformatics 34.16 (2018): 2781-2787.
+
+- Privé, Florian, Hugues Aschard, and Michael GB Blum. "Efficient implementation of penalized regression for genetic risk prediction." Genetics 212.1 (2019): 65-74.
+
+<br>
+
