@@ -43,35 +43,44 @@ NumericMatrix& centering(NumericMatrix& source,
 
 /******************************************************************************/
 
-// For a squared FBM
+//' Increment an FBM
+//'
+//' @param BM An `FBM` of type double.
+//' @param source A matrix of same size as the `FBM` to increment.
+//'
+//' @return Returns nothing (`NULL`, invisibly).
+//'
+//' @export
+//'
+//' @examples
+//' X <- FBM(10, 10, init = 0)
+//' mat <- matrix(rnorm(100), 10, 10)
+//'
+//' big_increment(X, mat)
+//' all.equal(X[], mat)
+//'
+//' big_increment(X, mat)
+//' all.equal(X[], 2 * mat)
+//'
 // [[Rcpp::export]]
-void complete2(Environment BM) {
+void big_increment(Environment BM,
+                   const NumericMatrix& source) {
 
   XPtr<FBM> xpBM = BM["address"];
-  BMAcc<double> K(xpBM);
-  size_t m = K.ncol();
-  size_t i, j;
+  if (xpBM->matrix_type() != 8)
+    Rcpp::stop("'big_increment()' works with 'double' FBMs only.");
 
-  for (j = 0; j < m; j++)
-    for (i = j + 1; i < m; i++)
-      K(i, j) = K(j, i);
-}
+  BMAcc<double> macc(xpBM);
 
-/******************************************************************************/
+  size_t n = macc.nrow();
+  size_t m = macc.ncol();
 
-// For a square FBM
-// [[Rcpp::export]]
-void incrSup2(Environment BM,
-              const NumericMatrix& source) {
+  myassert_size(source.rows(), n);
+  myassert_size(source.cols(), m);
 
-  XPtr<FBM> xpBM = BM["address"];
-  BMAcc<double> K(xpBM);
-  size_t m = K.ncol();
-  size_t i, j;
-
-  for (j = 0; j < m; j++)
-    for (i = 0; i <= j; i++)
-      K(i, j) += source(i, j);
+  for (size_t j = 0; j < m; j++)
+    for (size_t i = 0; i < n; i++)
+      macc(i, j) += source(i, j);
 }
 
 /******************************************************************************/
@@ -86,11 +95,12 @@ void scaleK(Environment BM,
 
   XPtr<FBM> xpBM = BM["address"];
   BMAcc<double> K(xpBM);
-  size_t n = K.nrow();
-  size_t i, j;
 
-  for (j = 0; j < n; j++) {
-    for (i = 0; i < n; i++) {
+  size_t n = K.nrow();
+  myassert_size(K.ncol(), n);
+
+  for (size_t j = 0; j < n; j++) {
+    for (size_t i = 0; i < n; i++) {
       K(i, j) -= sums[i] * mu[j] + mu[i] * sums[j];
       K(i, j) += nrow * mu[i] * mu[j];
       K(i, j) /= delta(i) * delta(j);

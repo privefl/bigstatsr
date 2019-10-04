@@ -161,12 +161,27 @@ centering <- function(source, mean) {
     .Call(`_bigstatsr_centering`, source, mean)
 }
 
-complete2 <- function(BM) {
-    invisible(.Call(`_bigstatsr_complete2`, BM))
-}
-
-incrSup2 <- function(BM, source) {
-    invisible(.Call(`_bigstatsr_incrSup2`, BM, source))
+#' Increment an FBM
+#'
+#' @param BM An `FBM` of type double.
+#' @param source A matrix of same size as the `FBM` to increment.
+#'
+#' @return Returns nothing (`NULL`, invisibly).
+#'
+#' @export
+#'
+#' @examples
+#' X <- FBM(10, 10, init = 0)
+#' mat <- matrix(rnorm(100), 10, 10)
+#'
+#' big_increment(X, mat)
+#' all.equal(X[], mat)
+#'
+#' big_increment(X, mat)
+#' all.equal(X[], 2 * mat)
+#'
+big_increment <- function(BM, source) {
+    invisible(.Call(`_bigstatsr_big_increment`, BM, source))
 }
 
 scaleK <- function(BM, sums, mu, delta, nrow) {

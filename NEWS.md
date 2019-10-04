@@ -1,3 +1,7 @@
+## bigstatsr 0.9.10
+
+- Add `big_increment()`.
+
 ## bigstatsr 0.9.9
 
 In `plot.big_SVD()`,

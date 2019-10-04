@@ -547,24 +547,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// complete2
-void complete2(Environment BM);
-RcppExport SEXP _bigstatsr_complete2(SEXP BMSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
-    complete2(BM);
-    return R_NilValue;
-END_RCPP
-}
-// incrSup2
-void incrSup2(Environment BM, const NumericMatrix& source);
-RcppExport SEXP _bigstatsr_incrSup2(SEXP BMSEXP, SEXP sourceSEXP) {
+// big_increment
+void big_increment(Environment BM, const NumericMatrix& source);
+RcppExport SEXP _bigstatsr_big_increment(SEXP BMSEXP, SEXP sourceSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type source(sourceSEXP);
-    incrSup2(BM, source);
+    big_increment(BM, source);
     return R_NilValue;
 END_RCPP
 }
@@ -624,8 +614,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_IRLS", (DL_FUNC) &_bigstatsr_IRLS, 9},
     {"_bigstatsr_scaling", (DL_FUNC) &_bigstatsr_scaling, 3},
     {"_bigstatsr_centering", (DL_FUNC) &_bigstatsr_centering, 2},
-    {"_bigstatsr_complete2", (DL_FUNC) &_bigstatsr_complete2, 1},
-    {"_bigstatsr_incrSup2", (DL_FUNC) &_bigstatsr_incrSup2, 2},
+    {"_bigstatsr_big_increment", (DL_FUNC) &_bigstatsr_big_increment, 2},
     {"_bigstatsr_scaleK", (DL_FUNC) &_bigstatsr_scaleK, 5},
     {NULL, NULL, 0}
 };

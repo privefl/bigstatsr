@@ -42,11 +42,9 @@ big_tcrossprodSelf <- function(
     means[ind] <- ms$center
     sds[ind]   <- ms$scale
     tmp <- scaling(X[ind.row, ind.col.ind], ms$center, ms$scale)
-    incrSup2(K, tcrossprod(tmp))
+    big_increment(K, tcrossprod(tmp))
   }
 
-  # Complete the lower part of the symmetric matrix
-  complete2(K)
   structure(K, center = means, scale = sds)
 }
 

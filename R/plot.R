@@ -123,7 +123,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
       if (length(scores) > 2) {
 
         n_plot <- floor(length(scores) / 2)
-        scores.list <- split(head(scores, 2 * n_plot),
+        scores.list <- split(utils::head(scores, 2 * n_plot),
                              rep(seq_len(n_plot), each = 2))
         plot(x, type = "scores", scores = scores.list, ncol = ncol, coeff = coeff)
 
