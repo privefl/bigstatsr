@@ -102,3 +102,36 @@ rows_along <- function(x) seq_len(nrow(x))
 cols_along <- function(x) seq_len(ncol(x))
 
 ################################################################################
+
+#' Increment an FBM
+#'
+#' @param X An `FBM` (of type double) to increment.
+#' @param add A matrix of same dimensions as `X`. Or a vector of same size.
+#' @param use_lock Whether to use locks when incrementing. Default is `FALSE`.
+#'   This is useful when incrementing in parallel.
+#'
+#' @return Returns nothing (`NULL`, invisibly).
+#'
+#' @export
+#'
+#' @examples
+#' X <- FBM(10, 10, init = 0)
+#' mat <- matrix(rnorm(100), 10, 10)
+#'
+#' big_increment(X, mat)
+#' all.equal(X[], mat)
+#'
+#' big_increment(X, mat)
+#' all.equal(X[], 2 * mat)
+#'
+big_increment <- function(X, add, use_lock = FALSE) {
+
+  if (use_lock) {
+    locked <- flock::lock(X$backingfile)
+    on.exit(flock::unlock(locked), add = TRUE)
+  }
+
+  if (is.matrix(add)) incr_FBM_mat(X, add) else incr_FBM_vec(X, add)
+}
+
+################################################################################

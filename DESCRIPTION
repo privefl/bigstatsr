@@ -28,6 +28,7 @@ Imports:
     bigreadr (>= 0.1.3),
     cowplot,
     doParallel,
+    flock,
     foreach,
     ggplot2 (>= 3.0.0),
     graphics,

@@ -43,28 +43,9 @@ NumericMatrix& centering(NumericMatrix& source,
 
 /******************************************************************************/
 
-//' Increment an FBM
-//'
-//' @param BM An `FBM` of type double.
-//' @param source A matrix of same size as the `FBM` to increment.
-//'
-//' @return Returns nothing (`NULL`, invisibly).
-//'
-//' @export
-//'
-//' @examples
-//' X <- FBM(10, 10, init = 0)
-//' mat <- matrix(rnorm(100), 10, 10)
-//'
-//' big_increment(X, mat)
-//' all.equal(X[], mat)
-//'
-//' big_increment(X, mat)
-//' all.equal(X[], 2 * mat)
-//'
 // [[Rcpp::export]]
-void big_increment(Environment BM,
-                   const NumericMatrix& source) {
+void incr_FBM_mat(Environment BM,
+                  const NumericMatrix& mat) {
 
   XPtr<FBM> xpBM = BM["address"];
   if (xpBM->matrix_type() != 8)
@@ -75,12 +56,29 @@ void big_increment(Environment BM,
   size_t n = macc.nrow();
   size_t m = macc.ncol();
 
-  myassert_size(source.rows(), n);
-  myassert_size(source.cols(), m);
+  myassert_size(mat.rows(), n);
+  myassert_size(mat.cols(), m);
 
   for (size_t j = 0; j < m; j++)
     for (size_t i = 0; i < n; i++)
-      macc(i, j) += source(i, j);
+      macc(i, j) += mat(i, j);
+}
+
+// [[Rcpp::export]]
+void incr_FBM_vec(Environment BM,
+                  const NumericVector& vec) {
+
+  XPtr<FBM> xpBM = BM["address"];
+  if (xpBM->matrix_type() != 8)
+    Rcpp::stop("'big_increment()' works with 'double' FBMs only.");
+
+  BMAcc<double> macc(xpBM);
+
+  size_t n = macc.size();
+  myassert_size(vec.size(), n);
+
+  for (size_t i = 0; i < n; i++)
+    macc[i] += vec[i];
 }
 
 /******************************************************************************/

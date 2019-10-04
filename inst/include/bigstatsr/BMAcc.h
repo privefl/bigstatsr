@@ -23,8 +23,13 @@ public:
     return _pMat[i + j * _nrow];
   }
 
+  inline T& operator[](size_t k) {
+    return _pMat[k];
+  }
+
   size_t nrow() const { return _nrow; }
   size_t ncol() const { return _ncol; }
+  size_t size() const { return _nrow * _ncol; }
 
 protected:
   T* _pMat;
