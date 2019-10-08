@@ -25,15 +25,13 @@ LazyData: TRUE
 ByteCompile: TRUE
 Depends: R (>= 3.3)
 Imports:
+    bigparallelr,
     bigreadr (>= 0.1.3),
     cowplot,
-    doParallel,
-    flock,
     foreach,
     ggplot2 (>= 3.0.0),
     graphics,
     methods,
-    parallel,
     Rcpp,
     RSpectra,
     stats,
@@ -56,6 +54,7 @@ Suggests:
     RhpcBLASctl,
     spelling (>= 1.2),
     testthat
+Remotes: privefl/bigparallelr
 RoxygenNote: 6.1.0.9000
 Roxygen: list(markdown = TRUE)
 URL: https://privefl.github.io/bigstatsr
@@ -71,7 +70,7 @@ Collate:
     'SVD.R'
     'apply-parallelize.R'
     'biglasso.R'
-    'bigstatsr.R'
+    'bigstatsr-package.R'
     'colstats.R'
     'counts.R'
     'crossprodSelf.R'

@@ -127,8 +127,8 @@ cols_along <- function(x) seq_len(ncol(x))
 big_increment <- function(X, add, use_lock = FALSE) {
 
   if (use_lock) {
-    locked <- flock::lock(X$backingfile)
-    on.exit(flock::unlock(locked), add = TRUE)
+    locked <- bigparallelr::lock(X$backingfile)
+    on.exit(bigparallelr::unlock(locked), add = TRUE)
   }
 
   if (is.matrix(add)) incr_FBM_mat(X, add) else incr_FBM_vec(X, add)

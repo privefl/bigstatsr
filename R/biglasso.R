@@ -289,9 +289,9 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     registerDoSEQ()
   } else {
     cluster_type <- getOption("bigstatsr.cluster.type")
-    cl <- parallel::makeCluster(ncores, type = cluster_type)
-    doParallel::registerDoParallel(cl)
-    on.exit(parallel::stopCluster(cl), add = TRUE)
+    cl <- makeCluster(ncores, type = cluster_type)
+    registerDoParallel(cl)
+    on.exit(stopCluster(cl), add = TRUE)
   }
 
   alphas <- sort(alphas)
