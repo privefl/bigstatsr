@@ -1,9 +1,6 @@
 ################################################################################
 
-printf <- function(...) cat(sprintf(...))
-message2 <- function(...) message(sprintf(...))
-warning2 <- function(...) warning(sprintf(...), call. = FALSE)
-stop2 <- function(...) stop(sprintf(...), call. = FALSE)
+#' @importFrom bigassertr printf message2 warning2 stop2
 
 ################################################################################
 
@@ -32,6 +29,15 @@ without_downcast_warning <- function(expr) {
 
   eval.parent(substitute(expr))
 }
+
+################################################################################
+
+#' @importFrom bigassertr assert_args assert_nodots
+#' @importFrom bigassertr assert_int assert_pos assert_all assert_nona
+#' @importFrom bigassertr assert_01 assert_multiple assert_lengths
+#' @importFrom bigassertr assert_class assert_class_or_null
+#' @importFrom bigassertr assert_dir assert_exist assert_noexist
+#' @importFrom bigparallelr assert_cores
 
 ################################################################################
 
@@ -72,151 +78,6 @@ assert_noNA <- function(x) {
   lim <- min(1e6, length(x))
   if (anyNA(x[seq_len(lim)]))
     stop2("You can't have missing values in '%s'.", deparse(substitute(x)))
-}
-
-assert_nona <- function(x) {
-  if (anyNA(x))
-    stop2("You can't have missing values in '%s'.", deparse(substitute(x)))
-}
-
-################################################################################
-
-# ARGS
-assert_args <- function(f, args.name) {
-
-  if (!inherits(f, "function"))
-    stop2("'%s' is not a function.", deparse(substitute(f)))
-
-  if (!all(args.name %in% names(formals(f))))
-    stop2("'%s' should have argument%s named %s.",
-          deparse(substitute(f)),
-          `if`(length(args.name) > 1, "s", ""),
-          toString(args.name))
-}
-
-################################################################################
-
-# NUMBER OF CORES
-assert_cores <- function(ncores) {
-  if (ncores > getOption("bigstatsr.ncores.max")) {
-    stop2(paste0("You are trying to use more cores than allowed.",
-                 " We advise you to use `nb_cores()`.\n",
-                 "You can change this default value with",
-                 " `options(bigstatsr.ncores.max = Inf)`."))
-  }
-}
-
-################################################################################
-
-assert_lengths <- function(...) {
-  lengths <- lengths(list(...))
-  if (length(lengths) > 1) {
-    if (any(diff(lengths) != 0))
-      stop2(GET_ERROR_DIM())
-  } else {
-    stop2("You should check the lengths of at least two elements.")
-  }
-}
-
-################################################################################
-
-# INTEGERS
-assert_int <- function(x) {
-  if (!is.null(x) && !is.integer(x)) {
-    var_name <- deparse(substitute(x))
-    no_int <- tryCatch(which(x != trunc(x)), error = function(e) {
-      stop2("'%s' should be numeric.", var_name)
-    })
-    if (length(no_int) > 0)
-      stop2("'%s' should contain only integers.", var_name)
-  }
-}
-
-################################################################################
-
-# POSITIVE INDICES
-assert_pos <- function(x) {
-  all_pos <- isTRUE(all(x > 0))
-  if (!all_pos)
-    stop2("'%s' should have only positive values.", deparse(substitute(x)))
-}
-
-################################################################################
-
-# 0s AND 1s
-assert_01 <- function(x)  {
-  all_01 <- isTRUE(all.equal(sort(unique(x), na.last = TRUE), 0:1))
-  if (!all_01)
-    stop2("'%s' should be composed of 0s and 1s.", deparse(substitute(x)))
-}
-
-assert_multiple <- function(x) {
-
-  nuniq <- length(unique(x))
-
-  if (nuniq < 2) {
-    stop2("'%s' should be composed of different values.", deparse(substitute(x)))
-  } else if (nuniq == 2) {
-    warning2("'%s' is composed of only two different levels.", deparse(substitute(x)))
-  }
-}
-
-################################################################################
-
-# CLASS
-assert_class <- function(x, class)  {
-  if (!inherits(x, class))
-    stop2("'%s' is not of class '%s'.", deparse(substitute(x)), class)
-}
-
-assert_class_or_null <- function(x, class)  {
-  if (!is.null(x) && !inherits(x, class))
-    stop2("'%s' is not 'NULL' or of class '%s'.", deparse(substitute(x)), class)
-}
-
-################################################################################
-
-# ALL SAME VALUE
-assert_all <- function(x, value = TRUE) {
-  if (any(x != value))
-    stop2("At least one value of '%s' is different from '%s'",
-          deparse(substitute(x)), value)
-}
-
-################################################################################
-
-# DIRECTORY
-assert_dir <- function(dir.path) {
-  if (!dir.exists(dir.path)) {
-    if (dir.create(dir.path)) {
-      message2("Creating directory \"%s\" which didn't exist..", dir.path)
-    } else {
-      stop2("Problem creating directory \"%s\". Recursive path?", dir.path)
-    }
-  }
-}
-
-################################################################################
-
-# FILE EXISTS
-assert_exist <- function(file) {
-  if (!file.exists(file))
-    stop2("File '%s' doesn't exist.", file)
-}
-
-assert_noexist <- function(file) {
-  if (file.exists(file))
-    stop2("File '%s' already exists.", file)
-}
-
-################################################################################
-
-# ... not used
-assert_nodots <- function() {
-
-  list_dots <- eval(parse(text = "list(...)"), parent.frame())
-  if (!identical(list_dots, list()))
-    stop2("Argument '%s' not used.", names(list_dots[1]))
 }
 
 ################################################################################
