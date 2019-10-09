@@ -26,7 +26,7 @@ ByteCompile: TRUE
 Depends: R (>= 3.3)
 Imports:
     bigassertr,
-    bigparallelr,
+    bigparallelr (>= 0.1),
     bigreadr (>= 0.1.3),
     cowplot,
     foreach,
