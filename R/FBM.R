@@ -1,5 +1,16 @@
 ################################################################################
 
+ALL.TYPES <- c(
+  "raw"            = 1L,
+  "unsigned char"  = 1L,
+  "unsigned short" = 2L,
+  "integer"        = 4L,
+  "float"          = 6L,
+  "double"         = 8L
+)
+
+################################################################################
+
 #' Replace extension '.bk'
 #'
 #' @param path String with extension '.bk'.

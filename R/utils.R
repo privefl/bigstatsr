@@ -1,9 +1,6 @@
 ################################################################################
 
 # Global variables
-ALL.TYPES <- structure(c(1L, 1L, 2L, 4L, 6L, 8L),
-                       names = c("raw", "unsigned char", "unsigned short",
-                                 "integer", "float", "double"))
 globalVariables(c("ic", "mods", "k", "loss_index", "set"))
 
 ################################################################################
@@ -33,73 +30,24 @@ block_size <- function(n, ncores = 1) {
 }
 
 ################################################################################
+#### Splitting ####
 
 CutBySize <- function(m, block.size, nb = ceiling(m / block.size)) {
-
-  if (nb > m) {
-    nb <- m
-  } else if (nb == 0) {  ## block.size = Inf
-    nb <- 1
-  }
-  assert_pos(nb); assert_int(nb)
-  int <- m / nb
-
-  upper <- round(1:nb * int)
-  lower <- c(1, upper[-nb] + 1)
-  size <- c(upper[1], diff(upper))
-
-  cbind(lower, upper, size)
-}
-
-################################################################################
-
-seq2 <- function(lims) {
-  seq(lims[1], lims[2])
-}
-
-################################################################################
-
-getAvailMem <- function(format = TRUE) {
-
-  .Deprecated("memuse::Sys.meminfo()")
-
-  gc()
-
-  if (Sys.info()[["sysname"]] == "Windows") {
-    memfree <- 1024^2 * (utils::memory.limit() - utils::memory.size())
-  } else {
-    # http://stackoverflow.com/a/6457769/6103040
-    memfree <- 1024 * as.numeric(
-      system("awk '/MemFree/ {print $2}' /proc/meminfo", intern = TRUE))
-  }
-
-  `if`(format, format(structure(memfree, class = "object_size"),
-                      units = "auto"), memfree)
+  bigparallelr::split_len(m, nb_split = nb)
 }
 
 ################################################################################
 #### Sequence generation ####
 
-#' Sequence generation
-#'
-#' Similar to [seq_along], it creates sequences of size `nrow(x)` or `ncol(x)`.
-#'
-#' @param x Any object on which you can call `nrow` and `ncol`.
-#'
-#' @examples
-#' X <- big_attachExtdata()
-#' dim(X)
-#' str(rows_along(X))
-#' str(cols_along(X))
-#'
-#' @rdname seq-dim
-#' @keywords internal
-#' @export
-rows_along <- function(x) seq_len(nrow(x))
+seq2 <- bigparallelr::seq_range
 
-#' @rdname seq-dim
+#' @importFrom bigparallelr rows_along
 #' @export
-cols_along <- function(x) seq_len(ncol(x))
+bigparallelr::rows_along
+
+#' @importFrom bigparallelr cols_along
+#' @export
+bigparallelr::cols_along
 
 ################################################################################
 

@@ -49,6 +49,7 @@ Suggests:
     covr,
     glmnet,
     hexbin,
+    memuse,
     microbenchmark,
     ModelMetrics,
     RcppEigen,
@@ -73,7 +74,6 @@ Collate:
     'biglasso.R'
     'bigstatsr-package.R'
     'colstats.R'
-    'counts.R'
     'crossprodSelf.R'
     'mult-mat.R'
     'mult-vec.R'
