@@ -34,6 +34,7 @@ bigparallelr::nb_cores
 #'   combined with `do.call(p.combine, .)` if `p.combined` is given.
 #' @export
 #'
+#' @importFrom bigparallelr makeCluster stopCluster registerDoParallel
 #' @importFrom bigparallelr register_parallel
 #'
 #' @example examples/example-parallelize.R
@@ -130,19 +131,8 @@ big_apply <- function(X, a.FUN,
 
 ################################################################################
 
-#' Add
-#'
-#' Add multiple arguments
-#'
-#' @param ... Multiple arguments to be added together
-#'
-#' @return ` Reduce('+', list(...))`
+#' @importFrom bigparallelr plus
 #' @export
-#'
-#' @examples
-#' plus(1:3, 4:6, 1:3)
-plus <- function(...) {
-  Reduce('+', list(...))
-}
+bigparallelr::plus
 
 ################################################################################
