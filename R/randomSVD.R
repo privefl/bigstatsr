@@ -16,12 +16,10 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
 
   cluster_type <- getOption("bigstatsr.cluster.type")
   if (verbose) {
-    cl <- makeCluster(1 + ncores, type = cluster_type, outfile = "")
+    register_parallel(1 + ncores, type = cluster_type, outfile = "")
   } else {
-    cl <- makeCluster(1 + ncores, type = cluster_type)
+    register_parallel(1 + ncores, type = cluster_type)
   }
-  registerDoParallel(cl)
-  on.exit(stopCluster(cl), add = TRUE)
 
   res <- foreach(ic = 0:ncores) %dopar% {
 

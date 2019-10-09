@@ -285,14 +285,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
 
   ## fit models
-  if (ncores == 1) {
-    registerDoSEQ()
-  } else {
-    cluster_type <- getOption("bigstatsr.cluster.type")
-    cl <- makeCluster(ncores, type = cluster_type)
-    registerDoParallel(cl)
-    on.exit(stopCluster(cl), add = TRUE)
-  }
+  register_parallel(ncores, type = getOption("bigstatsr.cluster.type"))
 
   alphas <- sort(alphas)
   cross.res <- foreach(alpha = alphas) %:% foreach(ic = 1:K) %dopar% {

@@ -34,6 +34,8 @@ bigparallelr::nb_cores
 #'   combined with `do.call(p.combine, .)` if `p.combined` is given.
 #' @export
 #'
+#' @importFrom bigparallelr register_parallel
+#'
 #' @example examples/example-parallelize.R
 #' @seealso [big_apply]
 big_parallelize <- function(X, p.FUN,
@@ -46,14 +48,7 @@ big_parallelize <- function(X, p.FUN,
   assert_int(ind); assert_pos(ind)
   assert_cores(ncores)
 
-  if (ncores == 1) {
-    registerDoSEQ()
-  } else {
-    cluster_type <- getOption("bigstatsr.cluster.type")
-    cl <- makeCluster(ncores, type = cluster_type)
-    registerDoParallel(cl)
-    on.exit(stopCluster(cl), add = TRUE)
-  }
+  register_parallel(ncores, type = getOption("bigstatsr.cluster.type"))
 
   intervals <- CutBySize(length(ind), nb = ncores)
 
