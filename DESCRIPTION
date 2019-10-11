@@ -25,9 +25,9 @@ LazyData: TRUE
 ByteCompile: TRUE
 Depends: R (>= 3.3)
 Imports:
-    bigassertr,
+    bigassertr (>= 0.1),
     bigparallelr (>= 0.1),
-    bigreadr (>= 0.1.3),
+    bigreadr (>= 0.1.10),
     cowplot,
     foreach,
     ggplot2 (>= 3.0.0),
