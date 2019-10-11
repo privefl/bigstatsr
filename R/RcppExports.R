@@ -125,6 +125,10 @@ GET_ERROR_TYPE <- function() {
     .Call(`_bigstatsr_GET_ERROR_TYPE`)
 }
 
+GET_ERROR_DIM <- function() {
+    .Call(`_bigstatsr_GET_ERROR_DIM`)
+}
+
 GET_ERROR_BOUNDS <- function() {
     .Call(`_bigstatsr_GET_ERROR_BOUNDS`)
 }

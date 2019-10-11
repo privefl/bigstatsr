@@ -49,8 +49,8 @@ set.seed(NULL)
 if (not_cran) {
   # Seeds that won't work (because of bad luck)
   # 3544 -> spLinReg & spLogReg
-  # 6649 -> spLinReg
-  do_not_use <- c(3544, 6649)
+  # 4475, 6649 -> spLinReg
+  do_not_use <- c(3544, 4475, 6649)
   while ((SEED <- round(runif(1, 1, 9999))) %in% do_not_use) NULL
 } else {
   SEED <- 1

@@ -48,7 +48,7 @@ big_parallelize <- function(X, p.FUN,
                             ...) {
 
   bigparallelr::split_parapply(
-    p.FUN, ind, X = X, ...,
+    p.FUN, ind, X, ...,
     .combine = p.combine,
     ncores = ncores,
     opts_cluster = list(type = getOption("bigstatsr.cluster.type"))
