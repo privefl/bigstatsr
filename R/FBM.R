@@ -63,6 +63,9 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #'   - `$bm.desc()`: Get this object as a `filebacked.big.matrix` descriptor.
 #'
 #' @examples
+#' mat <- matrix(1:4, 2)
+#' X_from_mat <- as_FBM(mat)
+#'
 #' X <- FBM(10, 10)
 #' typeof(X)
 #' X[] <- rnorm(length(X))
