@@ -2,10 +2,14 @@
 % Please edit documentation in R/mult-vec.R
 \name{big_prodVec}
 \alias{big_prodVec}
+\alias{big_prodVec.FBM}
 \title{Product with a vector}
 \usage{
 big_prodVec(X, y.col, ind.row = rows_along(X), ind.col = cols_along(X),
   center = NULL, scale = NULL)
+
+\method{big_prodVec}{FBM}(X, y.col, ind.row = rows_along(X),
+  ind.col = cols_along(X), center = NULL, scale = NULL)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

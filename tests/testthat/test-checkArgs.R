@@ -43,21 +43,21 @@ test_that("checking of vector arguments", {
   expect_error((function(ind.train) check_args())(ind3), "only positive")
   expect_error((function(ind.train) check_args())(ind4), "only integers")
   expect_error((function(ind.train) check_args())(ind5), "only positive")
-  expect_error((function(ind.train) check_args())(c("a", "b")), "be numeric")
+  expect_error((function(ind.train) check_args())(c("a", "b")), "only integers")
   # ind.row
   expect_null( (function(ind.row) check_args())(ind1))
   expect_error((function(ind.row) check_args())(ind2), "only positive")
   expect_error((function(ind.row) check_args())(ind3), "only positive")
   expect_error((function(ind.row) check_args())(ind4), "only integers")
   expect_error((function(ind.row) check_args())(ind5), "only positive")
-  expect_error((function(ind.row) check_args())(c("a", "b")), "be numeric")
+  expect_error((function(ind.row) check_args())(c("a", "b")), "only integers")
   # ind.col
   expect_null( (function(ind.col) check_args())(ind1))
   expect_error((function(ind.col) check_args())(ind2), "only positive")
   expect_error((function(ind.col) check_args())(ind3), "only positive")
   expect_error((function(ind.col) check_args())(ind4), "only integers")
   expect_error((function(ind.col) check_args())(ind5), "only positive")
-  expect_error((function(ind.col) check_args())(c("a", "b")), "be numeric")
+  expect_error((function(ind.col) check_args())(c("a", "b")), "only integers")
 })
 
 ################################################################################
