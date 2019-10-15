@@ -2,13 +2,9 @@
 % Please edit documentation in R/mult-vec.R
 \name{big_cprodVec}
 \alias{big_cprodVec}
-\alias{big_cprodVec.FBM}
 \title{Cross-product with a vector}
 \usage{
 big_cprodVec(X, y.row, ind.row = rows_along(X),
-  ind.col = cols_along(X), center = NULL, scale = NULL)
-
-\method{big_cprodVec}{FBM}(X, y.row, ind.row = rows_along(X),
   ind.col = cols_along(X), center = NULL, scale = NULL)
 }
 \arguments{
