@@ -26,7 +26,7 @@ ByteCompile: TRUE
 Depends: R (>= 3.3)
 Imports:
     bigassertr (>= 0.1.1),
-    bigparallelr (>= 0.1.1),
+    bigparallelr (>= 0.1.2),
     bigreadr (>= 0.1.10),
     cowplot,
     foreach,
@@ -57,7 +57,7 @@ Suggests:
     spelling (>= 1.2),
     testthat
 Remotes: privefl/bigassertr, privefl/bigparallelr
-RoxygenNote: 6.1.0.9000
+RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 URL: https://privefl.github.io/bigstatsr
 BugReports: https://github.com/privefl/bigstatsr/issues
