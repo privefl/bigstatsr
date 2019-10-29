@@ -139,6 +139,9 @@ test_that("checking missing values", {
   expect_error((function(X.code) check_args())(X.code))
   expect_null((function(X.code) check_args(
     X.code = "assert_class(X.code, 'FBM.code256')"))(X.code))
+  expect_null(assert_noNA(FBM(1, 1, init = 0)))
+  expect_null(assert_noNA(FBM(1, 1, init = 1)))
+  expect_error(assert_noNA(FBM(1, 1, init = NA)), "You can't have missing values")
 })
 
 ################################################################################

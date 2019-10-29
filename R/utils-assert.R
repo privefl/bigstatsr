@@ -75,8 +75,9 @@ check_args <- function(...) {
 
 # MISSING VALUES
 assert_noNA <- function(x) {
-  lim <- min(1e6, length(x))
-  if (anyNA(x[seq_len(lim)]))
+  ind <- outer(0:100, sample(length(x), 5, replace = TRUE), "+")
+  ind <- sort(pmin(ind, length(x)))
+  if (anyNA(x[ind]))
     stop2("You can't have missing values in '%s'.", deparse(substitute(x)))
 }
 
