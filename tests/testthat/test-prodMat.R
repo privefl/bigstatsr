@@ -72,11 +72,9 @@ for (t in TEST.TYPES) {
     ind.row <- sample(N, size = 21)
     ind.col <- sample(M, size = 11)
     A.col <- matrix(1, 21, 11)
-    expect_error(big_prodMat(X, A.col, ind.row, ind.col),
-                 "Incompatibility between dimensions.")
+    expect_error(big_prodMat(X, A.col, ind.row, ind.col), GET_ERROR_DIM())
     A.row <- matrix(1, 11, 21)
-    expect_error(big_cprodMat(X, A.row, ind.row, ind.col),
-                 "Incompatibility between dimensions.")
+    expect_error(big_cprodMat(X, A.row, ind.row, ind.col), GET_ERROR_DIM())
   })
 
   test_that("OK with dimension 0 or 1", {

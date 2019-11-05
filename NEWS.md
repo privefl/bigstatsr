@@ -1,3 +1,11 @@
+## bigstatsr 1.0.0
+
+- Move some code to new packages {bigassertr} and {bigparallelr}.
+
+- `big_randomSVD()` gains arguments related to matrix-vector multiplication.
+
+- `assert_noNA()` is faster.
+
 ## bigstatsr 0.9.10
 
 - Add `big_increment()`.

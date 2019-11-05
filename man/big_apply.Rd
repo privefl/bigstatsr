@@ -77,5 +77,5 @@ body(big_cprodMat)
 body(big_prodMat)
 }
 \seealso{
-\link{big_parallelize}
+\link{big_parallelize} \link[bigparallelr:split_parapply]{bigparallelr::split_parapply}
 }

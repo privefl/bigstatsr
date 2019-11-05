@@ -81,6 +81,9 @@ backingfile with some data. Returns the FBM invisibly.
 }
 
 \examples{
+mat <- matrix(1:4, 2)
+X_from_mat <- as_FBM(mat)
+
 X <- FBM(10, 10)
 typeof(X)
 X[] <- rnorm(length(X))

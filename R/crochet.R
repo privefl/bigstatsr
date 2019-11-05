@@ -57,6 +57,8 @@ transform_i_only <- function(i, n, m) {
 #' @return A function in the form of `function(x, i, j, ..., drop = TRUE)` that
 #' is meant to be used as a method for `[` for a custom type.
 #'
+#' @keywords internal
+#'
 Extract <- function(extract_vector, extract_matrix) {
 
   function(x, i, j, ..., drop = TRUE) {
@@ -115,6 +117,8 @@ Extract <- function(extract_vector, extract_matrix) {
 #'
 #' @return A function in the form of `function(x, i, j, ..., value)` that is
 #' meant to be used as a method for `[<-` for a custom type.
+#'
+#' @keywords internal
 #'
 Replace <- function(replace_vector, replace_matrix) {
 

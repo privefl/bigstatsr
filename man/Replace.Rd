@@ -35,3 +35,4 @@ as the default method of those generics calls \code{dim} internally.
 
 \strong{This idea initially comes from \href{https://goo.gl/3RDNQG}{package crochet}.}
 }
+\keyword{internal}

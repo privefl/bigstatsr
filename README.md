@@ -58,6 +58,8 @@ unlink(paste0("test", c(".bk", ".rds")))
 Learn more with this 
 [introduction to package {bigstatsr}](https://privefl.github.io/R-presentation/bigstatsr.html).
 
+If you want to use Rcpp code, look at [this tutorial](https://privefl.github.io/R-presentation/Rcpp.html).
+
 
 ## Some use cases
 

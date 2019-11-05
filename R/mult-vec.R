@@ -37,6 +37,7 @@ big_prodVec <- function(X, y.col,
                         center = NULL,
                         scale = NULL) {
 
+  check_args()
   assert_lengths(y.col, ind.col)
 
   if (!is.null(scale)) {
@@ -92,6 +93,7 @@ big_cprodVec <- function(X, y.row,
                          center = NULL,
                          scale = NULL) {
 
+  check_args()
   assert_lengths(y.row, ind.row)
 
   if (!is.null(scale)) {

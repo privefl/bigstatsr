@@ -52,6 +52,12 @@ test_that("equality with other functions", {
     no_comb <- big_apply(X, function(x, ind) colMeans(x[, ind, drop = FALSE]),
                          ncores = test_cores(), block.size = size)
     expect_equal(do.call(c, no_comb), colmeans)
+
+    # big_parallelize()
+    no_comb2 <- big_parallelize(X, function(x, ind) {
+      colMeans(x[, ind, drop = FALSE])
+    }, ncores = test_cores())
+    expect_equal(unlist(no_comb2), colmeans)
   }
 })
 

@@ -88,5 +88,5 @@ part and finally combine the results.
 }
 }
 \seealso{
-\link{big_apply}
+\link{big_apply} \link[bigparallelr:split_parapply]{bigparallelr::split_parapply}
 }

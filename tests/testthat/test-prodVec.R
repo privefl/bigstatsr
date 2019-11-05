@@ -51,11 +51,9 @@ for (t in TEST.TYPES) {
     ind.row <- sample(N, size = 21)
     ind.col <- sample(M, size = 11)
     y.col <- rnorm(21)
-    expect_error(big_prodVec(X, y.col, ind.row, ind.col),
-                 "Incompatibility between dimensions.")
+    expect_error(big_prodVec(X, y.col, ind.row, ind.col), GET_ERROR_DIM())
     y.row <- rnorm(11)
-    expect_error(big_cprodVec(X, y.row, ind.row, ind.col),
-                 "Incompatibility between dimensions.")
+    expect_error(big_cprodVec(X, y.row, ind.row, ind.col), GET_ERROR_DIM())
   })
 }
 

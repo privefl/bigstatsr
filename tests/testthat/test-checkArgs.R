@@ -43,21 +43,21 @@ test_that("checking of vector arguments", {
   expect_error((function(ind.train) check_args())(ind3), "only positive")
   expect_error((function(ind.train) check_args())(ind4), "only integers")
   expect_error((function(ind.train) check_args())(ind5), "only positive")
-  expect_error((function(ind.train) check_args())(c("a", "b")), "be numeric")
+  expect_error((function(ind.train) check_args())(c("a", "b")), "only integers")
   # ind.row
   expect_null( (function(ind.row) check_args())(ind1))
   expect_error((function(ind.row) check_args())(ind2), "only positive")
   expect_error((function(ind.row) check_args())(ind3), "only positive")
   expect_error((function(ind.row) check_args())(ind4), "only integers")
   expect_error((function(ind.row) check_args())(ind5), "only positive")
-  expect_error((function(ind.row) check_args())(c("a", "b")), "be numeric")
+  expect_error((function(ind.row) check_args())(c("a", "b")), "only integers")
   # ind.col
   expect_null( (function(ind.col) check_args())(ind1))
   expect_error((function(ind.col) check_args())(ind2), "only positive")
   expect_error((function(ind.col) check_args())(ind3), "only positive")
   expect_error((function(ind.col) check_args())(ind4), "only integers")
   expect_error((function(ind.col) check_args())(ind5), "only positive")
-  expect_error((function(ind.col) check_args())(c("a", "b")), "be numeric")
+  expect_error((function(ind.col) check_args())(c("a", "b")), "only integers")
 })
 
 ################################################################################
@@ -139,6 +139,9 @@ test_that("checking missing values", {
   expect_error((function(X.code) check_args())(X.code))
   expect_null((function(X.code) check_args(
     X.code = "assert_class(X.code, 'FBM.code256')"))(X.code))
+  expect_null(assert_noNA(FBM(1, 1, init = 0)))
+  expect_null(assert_noNA(FBM(1, 1, init = 1)))
+  expect_error(assert_noNA(FBM(1, 1, init = NA)), "You can't have missing values")
 })
 
 ################################################################################
