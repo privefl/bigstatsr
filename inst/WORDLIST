@@ -9,8 +9,10 @@ asPlotlyText
 ASR
 backingfile
 Bien
+bigassertr
 biglasso
 bigmemory
+bigparallelr
 bigreadr
 bigsnpr
 biobank
@@ -49,6 +51,7 @@ Hastie
 https
 huberization
 Hugues
+incrementing
 indices
 Indices
 Inouye
@@ -73,6 +76,7 @@ PrivÃ
 PSOCK
 Qiu
 randomSVD
+Rcpp
 rds
 rdsfile
 Recogn
