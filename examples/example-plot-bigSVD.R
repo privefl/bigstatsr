@@ -27,5 +27,8 @@ plot(svd, type = "loadings", loadings = 2)
 ## all loadings
 plot(svd, type = "loadings", loadings = 1:4, coeff = 0.7)
 
+# Percentage of variance explained by the PCs
+# See https://github.com/privefl/bigstatsr/issues/83
+
 # dynamic plots, require the package **plotly**
 \dontrun{plotly::ggplotly(obj3)}
