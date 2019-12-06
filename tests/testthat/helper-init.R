@@ -11,7 +11,8 @@ library(bigstatsr)
 ################################################################################
 
 opt.save <- options(bigstatsr.downcast.warning = FALSE,
-                    bigstatsr.block.sizeGB = 1e-5)
+                    bigstatsr.block.sizeGB = 1e-5,
+                    bigstatsr.check.parallel.blas = FALSE)
 
 ################################################################################
 
