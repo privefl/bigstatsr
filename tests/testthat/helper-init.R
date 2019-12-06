@@ -7,6 +7,7 @@ Sys.unsetenv("R_TESTS")
 
 library(testthat)
 library(bigstatsr)
+library(bigparallelr)
 
 ################################################################################
 
