@@ -63,6 +63,7 @@ big_univLinReg <- function(X, y.train,
        lpval <- stats::pt(xtr, df = %d, lower.tail = FALSE, log.p = TRUE)
        (log(2) + lpval) / log(10)
      }", n - K - 1)))
+  environment(fun.pred) <- baseenv()
 
   structure(res,
             class = c("mhtest", "data.frame"),

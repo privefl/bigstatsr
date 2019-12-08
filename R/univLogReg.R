@@ -103,6 +103,7 @@ big_univLogReg <- function(X, y01.train,
     lpval <- stats::pnorm(xtr, lower.tail = FALSE, log.p = TRUE)
     (log(2) + lpval) / log(10)
   }
+  environment(fun.pred) <- baseenv()
 
   structure(res,
             class = c("mhtest", "data.frame"),
