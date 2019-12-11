@@ -10,7 +10,7 @@ univLogReg_sub <- function(X, ind, covar.train, y01.train, z0, w0,
 
   # Using `glm` if not converged
   score <- res$estim / res$std.err
-  indNoConv <- which(res$niter >= maxiter | is.na(score) | abs(score) < 1e-8)
+  indNoConv <- which(res$niter >= maxiter | is.na(score) | abs(score) < 1e-6)
   res$niter[indNoConv] <- NA
   for (j in indNoConv) {
     covar.train[, 1] <- X[ind.train, ind[j]]
