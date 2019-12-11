@@ -9,12 +9,12 @@ expect_identical(mat2[], 0)
 
 N <- round(runif(1, 100, 1000))
 
-cl <- bigparallelr::makeCluster(2)
-bigparallelr::registerDoParallel(cl)
+registerDoParallel(cl <- makeCluster(2))
+str(cl)
 test <- foreach(k = 1:N, .combine = 'c') %dopar% {
   bigstatsr::big_increment(mat2, k, use_lock = TRUE)
 }
-bigparallelr::stopCluster(cl)
+stopCluster(cl)
 
 expect_identical(test, NULL)
 expect_identical(mat2[], sum(1:N) + 0)
