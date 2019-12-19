@@ -10,8 +10,7 @@ plot(svd, coeff = 1.5) # larger font for papers
 # scores plot
 plot(svd, type = "scores") # first 2 PCs
 plot(svd, type = "scores", scores = c(1, 3))
-plot(svd, type = "scores", scores = 1:10, ncol = 3, coeff = 0.7)
-plot(svd, type = "scores", scores = 1:9, coeff = 0.7)
+plot(svd, type = "scores", scores = 1:4, ncol = 2, coeff = 0.7)
 ## add color (recall that this return a `ggplot2` object)
 class(obj <- plot(svd, type = "scores"))
 pop <- rep(c("POP1", "POP2", "POP3"), c(143, 167, 207))
@@ -25,7 +24,7 @@ obj3 + ggtitle("Yet another title") + xlab("with an other 'x' label")
 # loadings
 plot(svd, type = "loadings", loadings = 2)
 ## all loadings
-plot(svd, type = "loadings", loadings = 1:4, coeff = 0.7)
+plot(svd, type = "loadings", loadings = 1:2, coeff = 0.7, ncol = 1)
 
 # Percentage of variance explained by the PCs
 # See https://github.com/privefl/bigstatsr/issues/83
