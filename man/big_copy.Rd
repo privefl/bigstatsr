@@ -4,9 +4,14 @@
 \alias{big_copy}
 \title{Copy a Filebacked Big Matrix}
 \usage{
-big_copy(X, ind.row = rows_along(X), ind.col = cols_along(X),
-  type = typeof(X), backingfile = tempfile(),
-  block.size = block_size(length(ind.row)))
+big_copy(
+  X,
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  type = typeof(X),
+  backingfile = tempfile(),
+  block.size = block_size(length(ind.row))
+)
 }
 \arguments{
 \item{X}{Could be any matrix-like object.}
@@ -27,7 +32,7 @@ It has vocation to become the basis for a \code{FBM.code65536}.
 \item \code{"raw"} or \code{"unsigned char"}: can store integer values from 0 to 255.
 It is the basis for class \link[=FBM.code256-class]{FBM.code256} in order to
 access 256 arbitrary different numeric values.
-It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
+It is used in \href{https://goo.gl/pHCCmo}{package \strong{bigsnpr}}.
 }}
 
 \item{backingfile}{Path to the file storing the Big Matrix on disk.

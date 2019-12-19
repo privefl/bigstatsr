@@ -4,11 +4,25 @@
 \alias{big_spLinReg}
 \title{Sparse linear regression}
 \usage{
-big_spLinReg(X, y.train, ind.train = rows_along(X),
-  ind.col = cols_along(X), covar.train = NULL, base.train = NULL,
-  pf.X = NULL, pf.covar = NULL, alphas = 1, K = 10,
-  ind.sets = NULL, nlambda = 200, nlam.min = 50, n.abort = 10,
-  dfmax = 50000, ncores = 1, ...)
+big_spLinReg(
+  X,
+  y.train,
+  ind.train = rows_along(X),
+  ind.col = cols_along(X),
+  covar.train = NULL,
+  base.train = NULL,
+  pf.X = NULL,
+  pf.covar = NULL,
+  alphas = 1,
+  K = 10,
+  ind.sets = NULL,
+  nlambda = 200,
+  nlam.min = 50,
+  n.abort = 10,
+  dfmax = 50000,
+  ncores = 1,
+  ...
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}
@@ -67,19 +81,20 @@ heavy for models with a large number of nonzero coefficients.}
 \item{ncores}{Number of cores used. Default doesn't use parallelism.
 You may use \link{nb_cores}.}
 
-\item{...}{Arguments passed on to \code{COPY_biglasso_main}
-\describe{
-  \item{lambda.min.ratio}{The smallest value for lambda, \strong{as a fraction of
+\item{...}{
+  Arguments passed on to \code{\link[=COPY_biglasso_main]{COPY_biglasso_main}}
+  \describe{
+    \item{\code{lambda.min.ratio}}{The smallest value for lambda, \strong{as a fraction of
 lambda.max}. Default is \code{.0001} if the number of observations is larger than
 the number of variables and \code{.001} otherwise.}
-  \item{eps}{Convergence threshold for inner coordinate descent.
+    \item{\code{eps}}{Convergence threshold for inner coordinate descent.
 The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
 Default value is \code{1e-5}.}
-  \item{max.iter}{Maximum number of iterations. Default is \code{1000}.}
-  \item{warn}{Deprecated. Now return the reason of completion as \code{$message}.}
-  \item{return.all}{Deprecated. Now always return all models.}
-}}
+    \item{\code{max.iter}}{Maximum number of iterations. Default is \code{1000}.}
+    \item{\code{warn}}{Deprecated. Now return the reason of completion as \verb{$message}.}
+    \item{\code{return.all}}{Deprecated. Now always return all models.}
+  }}
 }
 \value{
 Return an object of class \code{big_sp_list} (a list of \code{length(alphas)}

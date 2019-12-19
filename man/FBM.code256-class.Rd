@@ -8,8 +8,14 @@
 \alias{add_code256}
 \title{Class FBM.code256}
 \usage{
-FBM.code256(nrow, ncol, code = rep(NA_real_, 256), init = NULL,
-  backingfile = tempfile(), create_bk = TRUE)
+FBM.code256(
+  nrow,
+  ncol,
+  code = rep(NA_real_, 256),
+  init = NULL,
+  backingfile = tempfile(),
+  create_bk = TRUE
+)
 
 add_code256(x, code)
 }
@@ -39,7 +45,7 @@ filebacked \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-cla
 }
 \description{
 A reference class for storing and accessing up to 256 arbitrary different
-values using a Filebacked Big Matrix of type \code{unsigned char}. Compared to a
+values using a Filebacked Big Matrix of type \verb{unsigned char}. Compared to a
 \link[=FBM-class]{Filebacked Big Matrix}, it adds a slot \code{code} which is used as
 a lookup table of size 256.
 }

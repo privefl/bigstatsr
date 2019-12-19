@@ -4,9 +4,15 @@
 \alias{big_univLinReg}
 \title{Column-wise linear regression}
 \usage{
-big_univLinReg(X, y.train, ind.train = rows_along(X),
-  ind.col = cols_along(X), covar.train = NULL, thr.eigval = 1e-04,
-  ncores = 1)
+big_univLinReg(
+  X,
+  y.train,
+  ind.train = rows_along(X),
+  ind.col = cols_along(X),
+  covar.train = NULL,
+  thr.eigval = 1e-04,
+  ncores = 1
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

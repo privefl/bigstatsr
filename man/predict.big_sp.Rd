@@ -4,8 +4,7 @@
 \alias{predict.big_sp}
 \title{Predict method}
 \usage{
-\method{predict}{big_sp}(object, X, ind.row, ind.col, covar.row = NULL,
-  ...)
+\method{predict}{big_sp}(object, X, ind.row, ind.col, covar.row = NULL, ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp}.}

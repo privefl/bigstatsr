@@ -4,8 +4,14 @@
 \alias{big_prodVec}
 \title{Product with a vector}
 \usage{
-big_prodVec(X, y.col, ind.row = rows_along(X), ind.col = cols_along(X),
-  center = NULL, scale = NULL)
+big_prodVec(
+  X,
+  y.col,
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  center = NULL,
+  scale = NULL
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

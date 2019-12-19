@@ -10,14 +10,14 @@
 \item{object}{An object of class \code{big_sp_list}.}
 
 \item{best.only}{Whether to return only one row corresponding to the best
-model? The best model is the one smallest \code{$validation_loss}.}
+model? The best model is the one smallest \verb{$validation_loss}.}
 
 \item{...}{Not used.}
 }
 \value{
-A tibble with, for each \code{$alpha}, a mean \code{$validation_loss}, a mean
-vector of coefficients \code{$beta}, the corresponding number of non-zero
-coefficients \code{$nb_var}, and the reasons of method completion \code{$message}.
+A tibble with, for each \verb{$alpha}, a mean \verb{$validation_loss}, a mean
+vector of coefficients \verb{$beta}, the corresponding number of non-zero
+coefficients \verb{$nb_var}, and the reasons of method completion \verb{$message}.
 }
 \description{
 Summary method for class \code{big_sp_list}.

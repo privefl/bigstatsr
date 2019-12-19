@@ -4,8 +4,15 @@
 \alias{big_write}
 \title{Write a file}
 \usage{
-big_write(X, file, every_nrow, ..., ind.row = rows_along(X),
-  ind.col = cols_along(X), progress = FALSE)
+big_write(
+  X,
+  file,
+  every_nrow,
+  ...,
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  progress = FALSE
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

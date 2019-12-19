@@ -4,8 +4,14 @@
 \alias{predict.big_SVD}
 \title{Scores of PCA}
 \usage{
-\method{predict}{big_SVD}(object, X = NULL, ind.row = rows_along(X),
-  ind.col = cols_along(X), block.size = block_size(nrow(X)), ...)
+\method{predict}{big_SVD}(
+  object,
+  X = NULL,
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  block.size = block_size(nrow(X)),
+  ...
+)
 }
 \arguments{
 \item{object}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}

@@ -4,8 +4,12 @@
 \alias{big_cor}
 \title{Correlation}
 \usage{
-big_cor(X, ind.row = rows_along(X), ind.col = cols_along(X),
-  block.size = block_size(nrow(X)))
+big_cor(
+  X,
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  block.size = block_size(nrow(X))
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

@@ -4,9 +4,16 @@
 \alias{big_univLogReg}
 \title{Column-wise logistic regression}
 \usage{
-big_univLogReg(X, y01.train, ind.train = rows_along(X),
-  ind.col = cols_along(X), covar.train = NULL, tol = 1e-08,
-  maxiter = 20, ncores = 1)
+big_univLogReg(
+  X,
+  y01.train,
+  ind.train = rows_along(X),
+  ind.col = cols_along(X),
+  covar.train = NULL,
+  tol = 1e-08,
+  maxiter = 20,
+  ncores = 1
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

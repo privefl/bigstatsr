@@ -4,8 +4,7 @@
 \alias{plot.mhtest}
 \title{Plot method}
 \usage{
-\method{plot}{mhtest}(x, type = c("hist", "Manhattan", "Q-Q", "Volcano"),
-  coeff = 1, ...)
+\method{plot}{mhtest}(x, type = c("hist", "Manhattan", "Q-Q", "Volcano"), coeff = 1, ...)
 }
 \arguments{
 \item{x}{An object of class \code{mhtest}.}

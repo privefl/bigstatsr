@@ -4,9 +4,14 @@
 \alias{big_SVD}
 \title{Partial SVD}
 \usage{
-big_SVD(X, fun.scaling = big_scale(center = FALSE, scale = FALSE),
-  ind.row = rows_along(X), ind.col = cols_along(X), k = 10,
-  block.size = block_size(nrow(X)))
+big_SVD(
+  X,
+  fun.scaling = big_scale(center = FALSE, scale = FALSE),
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  k = 10,
+  block.size = block_size(nrow(X))
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

@@ -4,8 +4,12 @@
 \alias{big_counts}
 \title{Counts}
 \usage{
-big_counts(X.code, ind.row = rows_along(X.code),
-  ind.col = cols_along(X.code), byrow = FALSE)
+big_counts(
+  X.code,
+  ind.row = rows_along(X.code),
+  ind.col = cols_along(X.code),
+  byrow = FALSE
+)
 }
 \arguments{
 \item{X.code}{A \link[=FBM.code256-class]{FBM.code256}.}

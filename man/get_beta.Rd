@@ -4,8 +4,7 @@
 \alias{get_beta}
 \title{Combine sets of coefficients}
 \usage{
-get_beta(betas, method = c("geometric-median", "mean-wise",
-  "median-wise"))
+get_beta(betas, method = c("geometric-median", "mean-wise", "median-wise"))
 }
 \arguments{
 \item{betas}{Matrix of coefficient vectors to be combined.}

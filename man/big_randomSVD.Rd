@@ -4,10 +4,18 @@
 \alias{big_randomSVD}
 \title{Randomized partial SVD}
 \usage{
-big_randomSVD(X, fun.scaling = big_scale(center = FALSE, scale = FALSE),
-  ind.row = rows_along(X), ind.col = cols_along(X), k = 10,
-  tol = 1e-04, verbose = FALSE, ncores = 1, fun.prod = big_prodVec,
-  fun.cprod = big_cprodVec)
+big_randomSVD(
+  X,
+  fun.scaling = big_scale(center = FALSE, scale = FALSE),
+  ind.row = rows_along(X),
+  ind.col = cols_along(X),
+  k = 10,
+  tol = 1e-04,
+  verbose = FALSE,
+  ncores = 1,
+  fun.prod = big_prodVec,
+  fun.cprod = big_cprodVec
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

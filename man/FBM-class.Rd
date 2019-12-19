@@ -8,12 +8,20 @@
 \alias{as_FBM}
 \title{Class FBM}
 \usage{
-FBM(nrow, ncol, type = c("double", "float", "integer", "unsigned short",
-  "unsigned char", "raw"), init = NULL, backingfile = tempfile(),
-  create_bk = TRUE)
+FBM(
+  nrow,
+  ncol,
+  type = c("double", "float", "integer", "unsigned short", "unsigned char", "raw"),
+  init = NULL,
+  backingfile = tempfile(),
+  create_bk = TRUE
+)
 
-as_FBM(x, type = c("double", "float", "integer", "unsigned short",
-  "unsigned char", "raw"), backingfile = tempfile())
+as_FBM(
+  x,
+  type = c("double", "float", "integer", "unsigned short", "unsigned char", "raw"),
+  backingfile = tempfile()
+)
 }
 \arguments{
 \item{nrow}{Number of rows.}
@@ -30,7 +38,7 @@ It has vocation to become the basis for a \code{FBM.code65536}.
 \item \code{"raw"} or \code{"unsigned char"}: can store integer values from 0 to 255.
 It is the basis for class \link[=FBM.code256-class]{FBM.code256} in order to
 access 256 arbitrary different numeric values.
-It is used in \href{https://goo.gl/pHCCmo}{package bigsnpr}.
+It is used in \href{https://goo.gl/pHCCmo}{package \strong{bigsnpr}}.
 }}
 
 \item{init}{Either a single value (e.g. \code{0}) or as many value as the number
@@ -58,25 +66,25 @@ Convert a matrix (or a data frame) to an FBM.
 \details{
 An FBM object has many field:
 \itemize{
-\item \code{$address}: address of the external pointer containing the underlying
-C++ object, to be used as a \code{XPtr<FBM>} in C++ code
-\item \code{$extptr}: use \code{$address} instead
-\item \code{$nrow}
-\item \code{$ncol}
-\item \code{$type}
-\item \code{$backingfile} or \code{$bk}: File with extension 'bk' that stores the numeric
+\item \verb{$address}: address of the external pointer containing the underlying
+C++ object, to be used as a \verb{XPtr<FBM>} in C++ code
+\item \verb{$extptr}: use \verb{$address} instead
+\item \verb{$nrow}
+\item \verb{$ncol}
+\item \verb{$type}
+\item \verb{$backingfile} or \verb{$bk}: File with extension 'bk' that stores the numeric
 data of the FBM
-\item \code{$rds}: 'rds' file (that may not exist) corresponding to the 'bk' file
-\item \code{$is_saved}: whether this object is stored in \code{$rds}?
+\item \verb{$rds}: 'rds' file (that may not exist) corresponding to the 'bk' file
+\item \verb{$is_saved}: whether this object is stored in \verb{$rds}?
 }
 
 And some methods:
 \itemize{
-\item \code{$save()}: Save the FBM object in \code{$rds}. Returns the FBM.
-\item \code{add_columns(<ncol_add>)}: Add some columns to the FBM by appending the
+\item \verb{$save()}: Save the FBM object in \verb{$rds}. Returns the FBM.
+\item \verb{add_columns(<ncol_add>)}: Add some columns to the FBM by appending the
 backingfile with some data. Returns the FBM invisibly.
-\item \code{$bm()}: Get this object as a \code{filebacked.big.matrix}.
-\item \code{$bm.desc()}: Get this object as a \code{filebacked.big.matrix} descriptor.
+\item \verb{$bm()}: Get this object as a \code{filebacked.big.matrix}.
+\item \verb{$bm.desc()}: Get this object as a \code{filebacked.big.matrix} descriptor.
 }
 }
 

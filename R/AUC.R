@@ -3,22 +3,22 @@
 #' AUC
 #'
 #' Compute the Area Under the ROC Curve (AUC) of a predictor
-#' and possibly its 95\% confidence interval.
+#' and possibly its 95% confidence interval.
 #'
 #' @details Other packages provide ways to compute the AUC (see this
 #' [answer](http://stats.stackexchange.com/a/146174/135793)).
 #' I chose to compute the AUC through its statistical definition as a
 #' probability: \deqn{P(score(x_{case}) > score(x_{control})).}
-#' Note that I consider equality between scores as a 50\%-probability of
+#' Note that I consider equality between scores as a 50%-probability of
 #' one being greater than the other.
 #'
-#' @return The AUC, a probability, and possibly its 2.5\% and 97.5\% quantiles
-#' (95\% CI).
+#' @return The AUC, a probability, and possibly its 2.5% and 97.5% quantiles
+#' (95% CI).
 #'
 #' @param pred Vector of predictions.
 #' @param target Vector of true labels (must have exactly two levels,
 #' no missing values).
-#' @param nboot Number of bootstrap samples used to evaluate the 95\% CI.
+#' @param nboot Number of bootstrap samples used to evaluate the 95% CI.
 #' Default is `1e4`.
 #' @param seed See [set.seed]. Use it for reproducibility.
 #' Default doesn't set any seed.

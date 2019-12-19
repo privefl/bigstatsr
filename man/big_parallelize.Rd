@@ -4,8 +4,14 @@
 \alias{big_parallelize}
 \title{Split-parApply-Combine}
 \usage{
-big_parallelize(X, p.FUN, p.combine = NULL, ind = cols_along(X),
-  ncores = nb_cores(), ...)
+big_parallelize(
+  X,
+  p.FUN,
+  p.combine = NULL,
+  ind = cols_along(X),
+  ncores = nb_cores(),
+  ...
+)
 }
 \arguments{
 \item{X}{A \link[=FBM-class]{FBM}.}

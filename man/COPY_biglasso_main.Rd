@@ -4,13 +4,31 @@
 \alias{COPY_biglasso_main}
 \title{Sparse regression path}
 \usage{
-COPY_biglasso_main(X, y.train, ind.train, ind.col, covar.train,
-  family = c("gaussian", "binomial"), alphas = 1, K = 10,
-  ind.sets = NULL, nlambda = 200, lambda.min.ratio = if (n > p) 1e-04
-  else 0.001, nlam.min = 50, n.abort = 10, base.train = NULL,
-  pf.X = NULL, pf.covar = NULL, eps = 1e-05, max.iter = 1000,
-  dfmax = 50000, lambda.min = if (n > p) 1e-04 else 0.001,
-  return.all = FALSE, warn = FALSE, ncores = 1)
+COPY_biglasso_main(
+  X,
+  y.train,
+  ind.train,
+  ind.col,
+  covar.train,
+  family = c("gaussian", "binomial"),
+  alphas = 1,
+  K = 10,
+  ind.sets = NULL,
+  nlambda = 200,
+  lambda.min.ratio = if (n > p) 1e-04 else 0.001,
+  nlam.min = 50,
+  n.abort = 10,
+  base.train = NULL,
+  pf.X = NULL,
+  pf.covar = NULL,
+  eps = 1e-05,
+  max.iter = 1000,
+  dfmax = 50000,
+  lambda.min = if (n > p) 1e-04 else 0.001,
+  return.all = FALSE,
+  warn = FALSE,
+  ncores = 1
+)
 }
 \arguments{
 \item{family}{Either "gaussian" (linear) or "binomial" (logistic).}
@@ -69,7 +87,7 @@ now deprecated.}
 
 \item{return.all}{Deprecated. Now always return all models.}
 
-\item{warn}{Deprecated. Now return the reason of completion as \code{$message}.}
+\item{warn}{Deprecated. Now return the reason of completion as \verb{$message}.}
 }
 \description{
 Fit solution paths for linear or logistic regression models penalized by

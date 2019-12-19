@@ -4,8 +4,7 @@
 \alias{predict.mhtest}
 \title{Predict method}
 \usage{
-\method{predict}{mhtest}(object, scores = object$score, log10 = TRUE,
-  ...)
+\method{predict}{mhtest}(object, scores = object$score, log10 = TRUE, ...)
 }
 \arguments{
 \item{object}{An object of class \code{mhtest} from you get the probability

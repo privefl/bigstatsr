@@ -15,7 +15,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{bigparallelr}{\code{\link[bigparallelr]{nb_cores}}, \code{\link[bigparallelr]{plus}}, \code{\link[bigparallelr]{rows_along}}, \code{\link[bigparallelr]{cols_along}}}
+  \item{bigparallelr}{\code{\link[bigparallelr]{cols_along}}, \code{\link[bigparallelr]{nb_cores}}, \code{\link[bigparallelr]{plus}}, \code{\link[bigparallelr]{rows_along}}}
 
   \item{cowplot}{\code{\link[cowplot]{plot_grid}}}
 }}
