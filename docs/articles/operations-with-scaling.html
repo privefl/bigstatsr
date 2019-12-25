@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to handle operations on a scaled Big Matrix? • bigstatsr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="How to handle operations on a scaled Big Matrix?">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -51,6 +52,9 @@
     </li>
     <li>
       <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
+    </li>
+    <li>
+      <a href="../articles/penalized-regressions.html">Fitting penalized regressions</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -93,6 +97,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -108,18 +113,19 @@
 
     
     
+
 <div id="main-problem" class="section level2">
 <h2 class="hasAnchor">
 <a href="#main-problem" class="anchor"></a>Main problem</h2>
-<p>The main of problem that we will try to solve in this document is computing the problem between a very large matrix <span class="math inline">\({{\boldsymbol{X}}}\)</span> (of size <span class="math inline">\(n \times m\)</span>) and a smaller one <span class="math inline">\({{\boldsymbol{M}}}\)</span>. <span class="math inline">\({\boldsymbol{\widetilde{X}}}\)</span> is a scaled version of <span class="math inline">\({{\boldsymbol{X}}}\)</span>, i.e. defined such that <span class="math inline">\(\widetilde{X}_{i,j} = \frac{X_{i,j}-\mu_j}{s_j}\)</span>. Usually, <span class="math inline">\({\boldsymbol{\mu}}\)</span> is the vector of column means (that you can get using the <span class="math inline">\({\texttt{R}}\)</span> command <code><a href="https://www.rdocumentation.org/packages/base/topics/colSums">colMeans(X)</a></code>) and <span class="math inline">\({\boldsymbol{s}}\)</span> is the vector of column standard deviations (that you can get using the <span class="math inline">\({\texttt{R}}\)</span> command <code><a href="https://www.rdocumentation.org/packages/base/topics/apply">apply(X, 2, sd)</a></code>). For now, we will make no such assumptions on <span class="math inline">\({\boldsymbol{\mu}}\)</span> and <span class="math inline">\({\boldsymbol{s}}\)</span>.</p>
+<p>The main of problem that we will try to solve in this document is computing the problem between a very large matrix <span class="math inline">\(\boldsymbol{X}\)</span> (of size <span class="math inline">\(n \times m\)</span>) and a smaller one <span class="math inline">\(\boldsymbol{M}\)</span>. <span class="math inline">\(\boldsymbol{\widetilde{X}}\)</span> is a scaled version of <span class="math inline">\(\boldsymbol{X}\)</span>, i.e. defined such that <span class="math inline">\(\widetilde{X}_{i,j} = \frac{X_{i,j}-\mu_j}{s_j}\)</span>. Usually, <span class="math inline">\(\boldsymbol{\mu}\)</span> is the vector of column means (that you can get using the <span class="math inline">\(\texttt{R}\)</span> command <code><a href="https://rdrr.io/r/base/colSums.html">colMeans(X)</a></code>) and <span class="math inline">\(\boldsymbol{s}\)</span> is the vector of column standard deviations (that you can get using the <span class="math inline">\(\texttt{R}\)</span> command <code><a href="https://rdrr.io/r/base/apply.html">apply(X, 2, sd)</a></code>). For now, we will make no such assumptions on <span class="math inline">\(\boldsymbol{\mu}\)</span> and <span class="math inline">\(\boldsymbol{s}\)</span>.</p>
 </div>
 <div id="rewriting-the-main-problem" class="section level2">
 <h2 class="hasAnchor">
 <a href="#rewriting-the-main-problem" class="anchor"></a>Rewriting the main problem</h2>
-<p>Let us denote <span class="math inline">\({{\boldsymbol{A}}}= \begin{bmatrix}  a_{11} &amp; a_{12} \\  a_{21} &amp; a_{22} \\  a_{31} &amp; a_{32} \end{bmatrix}\)</span> and <span class="math inline">\({{\boldsymbol{B}}}= \begin{bmatrix}  b_{11} &amp; b_{12} \\  b_{21} &amp; b_{22} \\  b_{31} &amp; b_{32} \end{bmatrix}\)</span>. Then <span class="math inline">\(\begin{bmatrix}  a_{11} - \mu_1 &amp; a_{12} - \mu_2 \\  a_{21} - \mu_1 &amp; a_{22} - \mu_2 \\  a_{31} - \mu_1 &amp; a_{32} - \mu_2 \end{bmatrix} = {{\boldsymbol{A}}}- \begin{bmatrix}  1 \\  1 \\  1 \end{bmatrix} \cdot \begin{bmatrix}  \mu_1 &amp; \mu_2 \end{bmatrix} = {{\boldsymbol{A}}}- {\boldsymbol{1}}_3 \cdot {\boldsymbol{\mu}}^T\)</span> and <span class="math inline">\(\begin{bmatrix}  b_{11} d_1 &amp; b_{12} d_2 \\  b_{21} d_1 &amp; b_{22} d_2 \\  b_{31} d_1 &amp; b_{32} d_2 \end{bmatrix} = {{\boldsymbol{B}}}\cdot \begin{bmatrix}  d_1 &amp; 0 \\  0 &amp; d_2 \end{bmatrix} = {{\boldsymbol{B}}}\cdot {\boldsymbol{\Delta}}\)</span>.</p>
-<p>Let us generalize: <span class="math inline">\({\boldsymbol{\widetilde{X}}} = ({{\boldsymbol{X}}}- {\boldsymbol{1}}_n \cdot {\boldsymbol{\mu}}^T) \cdot {\boldsymbol{\Delta_s}}\)</span> where <span class="math inline">\({\boldsymbol{\Delta_s}} = \begin{bmatrix}  1/s_1 &amp; 0 &amp; \cdots &amp; 0 \\  0 &amp; \ddots &amp; \ddots &amp; \vdots \\  \vdots &amp; \ddots &amp; \ddots &amp; 0 \\  0 &amp; \cdots &amp; 0 &amp; 1/s_{m} \end{bmatrix}\)</span>.</p>
-<p>So, <span class="math inline">\({\boldsymbol{\widetilde{X}}} \cdot {{\boldsymbol{M}}}= ({{\boldsymbol{X}}}- {\boldsymbol{1}}_n \cdot {\boldsymbol{\mu}}^T) \cdot {\boldsymbol{\Delta_s}} \cdot {{\boldsymbol{M}}}\)</span>. If we denote <span class="math inline">\({\boldsymbol{M_s}} = {\boldsymbol{\Delta_s}} \cdot {{\boldsymbol{M}}}\)</span>, then <span class="math inline">\({\boldsymbol{\widetilde{X}}} \cdot {{\boldsymbol{M}}}= {{\boldsymbol{X}}}\cdot {\boldsymbol{M_s}} - {\boldsymbol{1}}_n \cdot {\boldsymbol{\mu}}^T \cdot {\boldsymbol{M_s}}\)</span>, which doesn’t involve any explicit scaling of <span class="math inline">\({{\boldsymbol{X}}}\)</span>.</p>
-<p>Moreover, in the particular case where <span class="math inline">\({\boldsymbol{\mu}}^T = {\boldsymbol{1}}_n^T \cdot {{\boldsymbol{X}}}\)</span> is the vector of column means of <span class="math inline">\({{\boldsymbol{X}}}\)</span>, then <span class="math inline">\({\boldsymbol{\widetilde{X}}} \cdot {{\boldsymbol{M}}}= {\boldsymbol{C_n}} \cdot ({{\boldsymbol{X}}}\cdot {\boldsymbol{M_s}})\)</span> where <span class="math inline">\({\boldsymbol{C_n}} = {\boldsymbol{I_n}} - \frac{1}{n} {\boldsymbol{1}}_n \cdot {\boldsymbol{1}}_n^T\)</span> is the <a href="https://en.wikipedia.org/wiki/Centering_matrix">centering matrix</a>.</p>
+<p>Let us denote <span class="math inline">\(\boldsymbol{A}= \begin{bmatrix}  a_{11} &amp; a_{12} \\  a_{21} &amp; a_{22} \\  a_{31} &amp; a_{32} \end{bmatrix}\)</span> and <span class="math inline">\(\boldsymbol{B}= \begin{bmatrix}  b_{11} &amp; b_{12} \\  b_{21} &amp; b_{22} \\  b_{31} &amp; b_{32} \end{bmatrix}\)</span>. Then <span class="math inline">\(\begin{bmatrix}  a_{11} - \mu_1 &amp; a_{12} - \mu_2 \\  a_{21} - \mu_1 &amp; a_{22} - \mu_2 \\  a_{31} - \mu_1 &amp; a_{32} - \mu_2 \end{bmatrix} = \boldsymbol{A}- \begin{bmatrix}  1 \\  1 \\  1 \end{bmatrix} \cdot \begin{bmatrix}  \mu_1 &amp; \mu_2 \end{bmatrix} = \boldsymbol{A}- \boldsymbol{1}_3 \cdot \boldsymbol{\mu}^T\)</span> and <span class="math inline">\(\begin{bmatrix}  b_{11} d_1 &amp; b_{12} d_2 \\  b_{21} d_1 &amp; b_{22} d_2 \\  b_{31} d_1 &amp; b_{32} d_2 \end{bmatrix} = \boldsymbol{B}\cdot \begin{bmatrix}  d_1 &amp; 0 \\  0 &amp; d_2 \end{bmatrix} = \boldsymbol{B}\cdot \boldsymbol{\Delta}\)</span>.</p>
+<p>Let us generalize: <span class="math inline">\(\boldsymbol{\widetilde{X}} = (\boldsymbol{X}- \boldsymbol{1}_n \cdot \boldsymbol{\mu}^T) \cdot \boldsymbol{\Delta_s}\)</span> where <span class="math inline">\(\boldsymbol{\Delta_s} = \begin{bmatrix}  1/s_1 &amp; 0 &amp; \cdots &amp; 0 \\  0 &amp; \ddots &amp; \ddots &amp; \vdots \\  \vdots &amp; \ddots &amp; \ddots &amp; 0 \\  0 &amp; \cdots &amp; 0 &amp; 1/s_{m} \end{bmatrix}\)</span>.</p>
+<p>So, <span class="math inline">\(\boldsymbol{\widetilde{X}} \cdot \boldsymbol{M}= (\boldsymbol{X}- \boldsymbol{1}_n \cdot \boldsymbol{\mu}^T) \cdot \boldsymbol{\Delta_s} \cdot \boldsymbol{M}\)</span>. If we denote <span class="math inline">\(\boldsymbol{M_s} = \boldsymbol{\Delta_s} \cdot \boldsymbol{M}\)</span>, then <span class="math inline">\(\boldsymbol{\widetilde{X}} \cdot \boldsymbol{M}= \boldsymbol{X}\cdot \boldsymbol{M_s} - \boldsymbol{1}_n \cdot \boldsymbol{\mu}^T \cdot \boldsymbol{M_s}\)</span>, which doesn’t involve any explicit scaling of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<p>Moreover, in the particular case where <span class="math inline">\(\boldsymbol{\mu}^T = \boldsymbol{1}_n^T \cdot \boldsymbol{X}\)</span> is the vector of column means of <span class="math inline">\(\boldsymbol{X}\)</span>, then <span class="math inline">\(\boldsymbol{\widetilde{X}} \cdot \boldsymbol{M}= \boldsymbol{C_n} \cdot (\boldsymbol{X}\cdot \boldsymbol{M_s})\)</span> where <span class="math inline">\(\boldsymbol{C_n} = \boldsymbol{I_n} - \frac{1}{n} \boldsymbol{1}_n \cdot \boldsymbol{1}_n^T\)</span> is the <a href="https://en.wikipedia.org/wiki/Centering_matrix">centering matrix</a>.</p>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
@@ -130,35 +136,36 @@
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>Let use the <code>big_apply</code> function to implement the main problem we have treated in this document.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_attach.html">big_attachExtdata</a></span>()
-<span class="co"># simulate some data</span>
-M &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dv">0</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol</a></span>(X), <span class="dv">10</span>)
-M[] &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(M))</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Treating mu as any vector
-<span class="co"># get mu and s as the column means and column standard deviations</span>
-stats_scale &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_scale.html">big_scale</a></span>(<span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="ot">TRUE</span>)(X)
-
-<span class="co"># compute M_s</span>
-M_s &lt;-<span class="st"> </span>M <span class="op">/</span><span class="st"> </span>stats_scale<span class="op">$</span>scale
-<span class="co"># compute the product, without scaling X</span>
-XM_s &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_prodMat.html">big_prodMat</a></span>(X, M_s)
-<span class="co"># adjust the result</span>
-final &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sweep">sweep</a></span>(XM_s, <span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/crossprod">crossprod</a></span>(stats_scale<span class="op">$</span>center, M_s), <span class="st">'-'</span>)
-
-<span class="co"># verification</span>
-true &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>(X[]) <span class="op">%*%</span><span class="st"> </span>M
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(final, true)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_attach.html">big_attachExtdata</a></span>()</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># simulate some data</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">M &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dv">0</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(X), <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">M[] &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(M))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">### Treating mu as any vector</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># get mu and s as the column means and column standard deviations</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">stats_scale &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_scale.html">big_scale</a></span>(<span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="ot">TRUE</span>)(X)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># compute M_s</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">M_s &lt;-<span class="st"> </span>M <span class="op">/</span><span class="st"> </span>stats_scale<span class="op">$</span>scale</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># compute the product, without scaling X</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">XM_s &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_prodMat.html">big_prodMat</a></span>(X, M_s)</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co"># adjust the result</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">final &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sweep.html">sweep</a></span>(XM_s, <span class="dv">2</span>, <span class="kw"><a href="https://rdrr.io/r/base/crossprod.html">crossprod</a></span>(stats_scale<span class="op">$</span>center, M_s), <span class="st">'-'</span>)</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co"># verification</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">true &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>(X[]) <span class="op">%*%</span><span class="st"> </span>M</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(final, true)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Knowing that mu is the column means of X
-final2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sweep">sweep</a></span>(XM_s, <span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colSums">colMeans</a></span>(XM_s), <span class="st">'-'</span>)
-
-<span class="co"># verification</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(final2, final)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">### Knowing that mu is the column means of X</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">final2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sweep.html">sweep</a></span>(XM_s, <span class="dv">2</span>, <span class="kw"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span>(XM_s), <span class="st">'-'</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># verification</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(final2, final)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -174,17 +181,20 @@ final2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocu
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

@@ -82,6 +82,7 @@ reference:
       - big_read
       - big_write
       - big_transpose
+      - big_increment
       - big_parallelize
       - big_apply
       - block_size

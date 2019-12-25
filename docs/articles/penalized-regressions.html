@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fitting penalized regressions • bigstatsr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Fitting penalized regressions">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -51,6 +52,9 @@
     </li>
     <li>
       <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
+    </li>
+    <li>
+      <a href="../articles/penalized-regressions.html">Fitting penalized regressions</a>
     </li>
     <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
@@ -93,6 +97,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -115,17 +120,17 @@
 <h2 class="hasAnchor">
 <a href="#data" class="anchor"></a>Data</h2>
 <p>To illustrate how to use <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>, let us use some simulated data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(bigstatsr)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">1</span>)
-
-<span class="co"># simulating some data</span>
-N &lt;-<span class="st"> </span><span class="dv">530</span>
-M &lt;-<span class="st"> </span><span class="dv">730</span>
-X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/FBM-class.html">FBM</a></span>(N, M, <span class="dt">init =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(N <span class="op">*</span><span class="st"> </span>M, <span class="dt">sd =</span> <span class="dv">5</span>))
-y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colSums">rowSums</a></span>(X[, <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>]) <span class="op">+</span><span class="st"> </span><span class="dv">20</span> <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(N)
-
-ind.train &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sort">sort</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(X), <span class="dv">400</span>))
-ind.test &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sets">setdiff</a></span>(<span class="kw"><a href="../reference/seq-dim.html">rows_along</a></span>(X), ind.train)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(bigstatsr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># simulating some data</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">N &lt;-<span class="st"> </span><span class="dv">530</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">M &lt;-<span class="st"> </span><span class="dv">730</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/FBM-class.html">FBM</a></span>(N, M, <span class="dt">init =</span> <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(N <span class="op">*</span><span class="st"> </span>M, <span class="dt">sd =</span> <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">y &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(X[, <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>]) <span class="op">+</span><span class="st"> </span><span class="dv">20</span> <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(N)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">ind.train &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(X), <span class="dv">400</span>))</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">ind.test &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html">rows_along</a></span>(X), ind.train)</a></code></pre></div>
 </div>
 <div id="cross-model-selection-and-averaging-cmsa" class="section level2">
 <h2 class="hasAnchor">
@@ -154,24 +159,24 @@ Illustration of one turn of the Cross-Model Selection and Averaging (CMSA) proce
 <li><p>the <code>nlambda</code> <span class="math inline">\(\lambda\)</span> values have been used; you might want to reduce <code>lambda.min</code> to go further down the path</p></li>
 </ul>
 <p>It is possible to fit the <code>K</code> folds for each value of <code>alphas</code> in parallel using parameter <code>ncores</code>.</p>
-<p>You <em>should</em> check why regularization paths stop. For this, you can use both methods <code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary()</a></code>. Let us make an example below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_spLinReg.html">big_spLinReg</a></span>(X, y[ind.train], <span class="dt">ind.train =</span> ind.train, <span class="dt">K =</span> <span class="dv">4</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(mod)</code></pre></div>
+<p>You <em>should</em> check why regularization paths stop. For this, you can use both methods <code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>. Let us make an example below.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">mod &lt;-<span class="st"> </span><span class="kw"><a href="../reference/big_spLinReg.html">big_spLinReg</a></span>(X, y[ind.train], <span class="dt">ind.train =</span> ind.train, <span class="dt">K =</span> <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(mod)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 6
 ##   alpha validation_loss intercept beta        nb_var message  
 ##   &lt;dbl&gt;           &lt;dbl&gt;     &lt;dbl&gt; &lt;list&gt;       &lt;int&gt; &lt;list&gt;   
-## 1     1           1647.     -2.09 &lt;dbl [730]&gt;    355 &lt;chr [4]&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(mod)<span class="op">$</span>message</code></pre></div>
+## 1     1           1794.     -2.23 &lt;dbl [730]&gt;    369 &lt;chr [4]&gt;</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(mod)<span class="op">$</span>message</a></code></pre></div>
 <pre><code>## [[1]]
 ## [1] "No more improvement" "No more improvement" "No more improvement"
 ## [4] "No more improvement"</code></pre>
 <p>Here, <code>"No more improvement"</code> means that the early stopping criterion has been reached. We can see the validation loss getting worse at some point:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(mod)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mod)</a></code></pre></div>
 <p><img src="penalized-regressions_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>For small datasets, you might want to reduce the number of folds (<code>K</code> = 10 bu default). For large datasets, you might want to decrease <code>n.abort</code> (i.e. stop the regularization path quickly) as the path is usually much more smooth and fitting is more and more demanding as we advance along the regularization path (because more and more variables are used in the model).</p>
-<p>Use <code><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict()</a></code> to use the model for data in the test set:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pred &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>(mod, X, ind.test)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(pred, y[ind.test], <span class="dt">pch =</span> <span class="dv">20</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/abline">abline</a></span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">col =</span> <span class="st">"red"</span>)</code></pre></div>
+<p>Use <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> to use the model for data in the test set:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(mod, X, ind.test)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(pred, y[ind.test], <span class="dt">pch =</span> <span class="dv">20</span>); <span class="kw"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
 <p><img src="penalized-regressions_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -182,12 +187,20 @@ Illustration of one turn of the Cross-Model Selection and Averaging (CMSA) proce
 <li><p>You can add covariates as a standard R matrix using parameter <code>covar.train</code>; it will fit the model as if <code>X[ind.train, ]</code> and <code>covar.train</code> were <code>cbind</code>ed.</p></li>
 <li><p>You can add an offset to your model using <code>base.train</code> (on the linear scale, do not provide probabilities!).</p></li>
 <li><p>You can apply some multiplicative penalization factors (<code>pf.X</code> and <code>pf.covar</code>) to penalize variables differently (possibly no penalization for <em>some</em> variables using <code>0</code>).</p></li>
-<li><p>Functions <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code> are not deterministic because folds are chosen randomly. One way that should ensure reproducibility is to define your own folds using parameter <code>ind.sets</code> (using e.g. <code><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample(rep_len(1:K, length(ind.train)))</a></code>).</p></li>
+<li><p>Functions <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code> are not deterministic because folds are chosen randomly. One way that should ensure reproducibility is to define your own folds using parameter <code>ind.sets</code> (using e.g. <code><a href="https://rdrr.io/r/base/sample.html">sample(rep_len(1:K, length(ind.train)))</a></code>).</p></li>
 </ul>
+</div>
+<div id="time-and-memory-requirements-from-the-paper" class="section level2">
+<h2 class="hasAnchor">
+<a href="#time-and-memory-requirements-from-the-paper" class="anchor"></a>Time and memory requirements (from the paper)</h2>
+<p>The computation time of our PLR implementation mainly depends on the sample size and the number of candidate variables (variables that are included in the gradient descent). Indeed, the algorithm is composed of <strong>two steps</strong>: first, for each variable, the algorithm computes an univariate statistic that is used to decide if the variable is included in the model (for each value of <span class="math inline">\(\lambda\)</span>). This first step is very fast (if data can be quickly read from disk). Then, the algorithm iterates over a regularization path of decreasing values of <span class="math inline">\(\lambda\)</span>, which progressively enables variables to enter the model (see first figure). In the second step, the number of variables increases and computations stop when an early stopping criterion is reached (when prediction is getting worse on the corresponding validation set, see first figure).</p>
+<p>For outcomes that require lots of variables to predict, such as predicting height and when using huge datasets such as the UK Biobank, the algorithm might iterate over &gt;100,000 variables, which is computationally demanding. On the contrary, for outcomes that require only a few variables to predict, such as autoimmune diseases, the number of variables included in the model is much smaller so that fitting is very fast (only 13 min for 150K women of the UK Biobank for breast cancer).</p>
+<p><strong>Memory requirements are tightly linked to computation time.</strong> Indeed, variables are accessed in memory thanks to memory-mapping when they are used. When there is not enough memory left, the operating system (OS) frees some memory for new incoming variables. Yet, if too many variables are used in the gradient descent, the OS would regularly swap memory between disk and RAM, severely slowing down computations.</p>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -195,6 +208,7 @@ Illustration of one turn of the Cross-Model Selection and Averaging (CMSA) proce
 <li><a href="#data">Data</a></li>
       <li><a href="#cross-model-selection-and-averaging-cmsa">Cross-Model Selection and Averaging (CMSA)</a></li>
       <li><a href="#other-parameters">Other parameters</a></li>
+      <li><a href="#time-and-memory-requirements-from-the-paper">Time and memory requirements (from the paper)</a></li>
       </ul>
 </div>
       </div>
@@ -202,17 +216,20 @@ Illustration of one turn of the Cross-Model Selection and Averaging (CMSA) proce
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

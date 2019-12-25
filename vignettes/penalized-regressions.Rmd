@@ -98,3 +98,12 @@ plot(pred, y[ind.test], pch = 20); abline(0, 1, col = "red")
 
 - Functions `big_spLinReg()` and `big_spLogReg()` are not deterministic because folds are chosen randomly. One way that should ensure reproducibility is to define your own folds using parameter `ind.sets` (using e.g. `sample(rep_len(1:K, length(ind.train)))`).
 
+
+## Time and memory requirements (from the paper)
+
+The computation time of our PLR implementation mainly depends on the sample size and the number of candidate variables (variables that are included in the gradient descent). Indeed, the algorithm is composed of **two steps**: first, for each variable, the algorithm computes an univariate statistic that is used to decide if the variable is included in the model (for each value of $\lambda$). This first step is very fast (if data can be quickly read from disk). Then, the algorithm iterates over a regularization path of decreasing values of $\lambda$, which progressively enables variables to enter the model (see first figure). In the second step, the number of variables increases and computations stop when an early stopping criterion is reached (when prediction is getting worse on the corresponding validation set, see first figure).
+
+For outcomes that require lots of variables to predict, such as predicting height and when using huge datasets such as the UK Biobank, the algorithm might iterate over >100,000 variables, which is computationally demanding. On the contrary, for outcomes that require only a few variables to predict, such as autoimmune diseases, the number of variables included in the model is much smaller so that fitting is very fast (only 13 min for 150K women of the UK Biobank for breast cancer).
+
+**Memory requirements are tightly linked to computation time.** 
+Indeed, variables are accessed in memory thanks to memory-mapping when they are used. When there is not enough memory left, the operating system (OS) frees some memory for new incoming variables. Yet, if too many variables are used in the gradient descent, the OS would regularly swap memory between disk and RAM, severely slowing down computations. 

@@ -8,21 +8,25 @@
 
 <title>Randomized partial SVD — big_randomSVD • bigstatsr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,13 +34,14 @@
 
 
 
-<meta property="og:title" content="Randomized partial SVD — big_randomSVD" />
 
+<meta property="og:title" content="Randomized partial SVD — big_randomSVD" />
 <meta property="og:description" content="An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix based on the
 algorithm in RSpectra (by Yixuan Qiu and Jiali Mei).
 This algorithm is linear in time in all dimensions and is very
 memory-efficient. Thus, it can be used on very large big.matrices." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -48,6 +53,7 @@ memory-efficient. Thus, it can be used on very large big.matrices." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -66,7 +72,7 @@ memory-efficient. Thus, it can be used on very large big.matrices." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -89,6 +95,9 @@ memory-efficient. Thus, it can be used on very large big.matrices." />
       <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
+      <a href="../articles/penalized-regressions.html">Fitting penalized regressions</a>
+    </li>
+    <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
@@ -100,7 +109,6 @@ memory-efficient. Thus, it can be used on very large big.matrices." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
@@ -128,6 +136,7 @@ memory-efficient. Thus, it can be used on very large big.matrices." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -139,18 +148,25 @@ memory-efficient. Thus, it can be used on very large big.matrices." />
     </div>
 
     <div class="ref-description">
-    
     <p>An algorithm for partial SVD (or PCA) of a Filebacked Big Matrix based on the
 algorithm in RSpectra (by Yixuan Qiu and Jiali Mei).<br />
 This algorithm is linear in time in all dimensions and is very
 memory-efficient. Thus, it can be used on very large big.matrices.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>big_randomSVD</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
-  <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>big_randomSVD</span>(
+  <span class='no'>X</span>,
+  <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(<span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
+  <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
+  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
+  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>fun.prod</span> <span class='kw'>=</span> <span class='no'>big_prodVec</span>,
+  <span class='kw'>fun.cprod</span> <span class='kw'>=</span> <span class='no'>big_cprodVec</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -183,8 +199,7 @@ few singular vectors/values.</strong></p></td>
     </tr>
     <tr>
       <th>tol</th>
-      <td><p>Precision parameter of <a href='https://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a>.
-Default is <code>1e-4</code>.</p></td>
+      <td><p>Precision parameter of <a href='https://rdrr.io/pkg/RSpectra/man/svds.html'>svds</a>. Default is <code>1e-4</code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -193,10 +208,26 @@ Default is <code>1e-4</code>.</p></td>
     <tr>
       <th>ncores</th>
       <td><p>Number of cores used. Default doesn't use parallelism.
-You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
+You may use <a href='https://rdrr.io/pkg/bigparallelr/man/nb_cores.html'>nb_cores</a>.</p></td>
+    </tr>
+    <tr>
+      <th>fun.prod</th>
+      <td><p>Function that takes 6 arguments (in this order):</p><ul>
+<li><p>a matrix-like object <code>X</code>,</p></li>
+<li><p>a vector <code>x</code>,</p></li>
+<li><p>a vector of row indices <code>ind.row</code> of <code>X</code>,</p></li>
+<li><p>a vector of column indices <code>ind.col</code> of <code>X</code>,</p></li>
+<li><p>a vector of column centers (corresponding to <code>ind.col</code>),</p></li>
+<li><p>a vector of column scales (corresponding to <code>ind.col</code>),
+and compute the product of <code>X</code> (subsetted and scaled) with <code>x</code>.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>fun.cprod</th>
+      <td><p>Same as <code>fun.prod</code>, but for the <em>transpose</em> of <code>X</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A named list (an S3 class "big_SVD") of</p><ul>
@@ -211,7 +242,6 @@ You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
 
 <p>Note that to obtain the Principal Components, you must use
 <a href='predict.big_SVD.html'>predict</a> on the result. See examples.</p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>The idea of using this Implicitly Restarted Arnoldi Method algorithm
@@ -224,62 +254,57 @@ in Rokhlin, V., Szlam, A., &amp; Tygert, M. (2010).
 A Randomized Algorithm for Principal Component Analysis.
 SIAM Journal on Matrix Analysis and Applications, 31(3), 1100-1124.
 <a href='https://doi.org/10.1137/080736417'>https://doi.org/10.1137/080736417</a>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a></p></div>
-    
+    <div class='dont-index'><p><a href='https://rdrr.io/pkg/RSpectra/man/svds.html'>svds</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1</span>)
 
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
 <span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fl'>10</span>
 
 <span class='co'># Using only half of the data for "training"</span>
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>X</span>)
-<span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>X</span>)
+<span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_randomSVD</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='no'>K</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 7
-#&gt;  $ d     : num [1:10] 172.5 117.6 89.6 87.5 87.2 ...
-#&gt;  $ u     : num [1:258, 1:10] -0.1015 -0.0914 -0.0951 -0.0798 -0.0901 ...
-#&gt;  $ v     : num [1:4542, 1:10] 0.00304 -0.00274 0.02779 -0.01381 0.00599 ...
-#&gt;  $ niter : int 8
-#&gt;  $ nops  : int 150
-#&gt;  $ center: num [1:4542] 1.32 1.6 1.56 1.69 1.05 ...
-#&gt;  $ scale : num [1:4542] 0.684 0.572 0.616 0.511 0.692 ...
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; List of 7
+#&gt;  $ d     : num [1:10] 178.5 114.5 91 87.1 86.3 ...
+#&gt;  $ u     : num [1:258, 1:10] -0.1092 -0.0928 -0.0806 -0.0796 -0.1028 ...
+#&gt;  $ v     : num [1:4542, 1:10] 0.00607 0.00739 0.02921 -0.01283 0.01473 ...
+#&gt;  $ niter : int 9
+#&gt;  $ nops  : int 162
+#&gt;  $ center: num [1:4542] 1.34 1.63 1.51 1.64 1.09 ...
+#&gt;  $ scale : num [1:4542] 0.665 0.551 0.631 0.55 0.708 ...
 #&gt;  - attr(*, "class")= chr "big_SVD"</div><div class='input'>
-<span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/prcomp'>prcomp</a></span>(<span class='no'>X</span>[<span class='no'>ind</span>, ], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>pca</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/prcomp.html'>prcomp</a></span>(<span class='no'>X</span>[<span class='no'>ind</span>, ], <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># same scaling</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/all.equal'>all.equal</a></span>(<span class='no'>test</span>$<span class='no'>center</span>, <span class='no'>pca</span>$<span class='no'>center</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/all.equal'>all.equal</a></span>(<span class='no'>test</span>$<span class='no'>scale</span>,  <span class='no'>pca</span>$<span class='no'>scale</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>test</span>$<span class='no'>center</span>, <span class='no'>pca</span>$<span class='no'>center</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>test</span>$<span class='no'>scale</span>,  <span class='no'>pca</span>$<span class='no'>scale</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># use this function to predict scores</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "big_SVD"</div><div class='input'><span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>test</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "big_SVD"</div><div class='input'><span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>test</span>)
 <span class='co'># scores and loadings are the same or opposite</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>scores</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><div class='img'><img src='big_randomSVD-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>)</div><div class='img'><img src='big_randomSVD-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>scores</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>$<span class='no'>v</span>, <span class='no'>pca</span>$<span class='no'>rotation</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>$<span class='no'>u</span>)</div><div class='img'><img src='big_randomSVD-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>)</div><div class='img'><img src='big_randomSVD-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># projecting on new data</span>
-<span class='no'>ind2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sets'>setdiff</a></span>(<span class='fu'><a href='seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='no'>ind</span>)
-<span class='no'>scores.test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind2</span>)
-<span class='no'>scores.test3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>pca</span>, <span class='no'>X</span>[-<span class='no'>ind</span>, ])
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>ind2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='no'>ind</span>)
+<span class='no'>scores.test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind2</span>)
+<span class='no'>scores.test3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>pca</span>, <span class='no'>X</span>[-<span class='no'>ind</span>, ])
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>scores.test2</span>, <span class='no'>scores.test3</span>[, <span class='fl'>1</span>:<span class='no'>K</span>])</div><div class='img'><img src='big_randomSVD-5.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#note">Note</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -287,13 +312,16 @@ SIAM Journal on Matrix Analysis and Applications, 31(3), 1100-1124.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

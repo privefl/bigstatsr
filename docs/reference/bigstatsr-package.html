@@ -8,21 +8,25 @@
 
 <title>bigstatsr: Statistical Tools for Filebacked Big Matrices — bigstatsr-package • bigstatsr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,14 +34,15 @@
 
 
 
-<meta property="og:title" content="bigstatsr: Statistical Tools for Filebacked Big Matrices — bigstatsr-package" />
 
+<meta property="og:title" content="bigstatsr: Statistical Tools for Filebacked Big Matrices — bigstatsr-package" />
 <meta property="og:description" content="Easy-to-use, efficient, flexible and scalable statistical tools.
   Package bigstatsr provides and uses Filebacked Big Matrices via memory-mapping.
   It provides for instance matrix operations, Principal Component Analysis,
   sparse linear supervised models, utility functions and more
   &amp;lt;doi:10.1093/bioinformatics/bty185&amp;gt;." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -49,6 +54,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -67,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -90,6 +96,9 @@
       <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
+      <a href="../articles/penalized-regressions.html">Fitting penalized regressions</a>
+    </li>
+    <li>
       <a href="../articles/bigstatsr-and-bigmemory.html">Packages bigstatsr and bigmemory</a>
     </li>
     <li>
@@ -101,7 +110,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
@@ -129,6 +137,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -140,16 +149,14 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Easy-to-use, efficient, flexible and scalable statistical tools.
   Package bigstatsr provides and uses Filebacked Big Matrices via memory-mapping.
   It provides for instance matrix operations, Principal Component Analysis,
   sparse linear supervised models, utility functions and more
   &lt;doi:10.1093/bioinformatics/bty185&gt;.</p>
-    
     </div>
 
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -194,7 +201,7 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
     <tr>
       <th>ncores</th>
       <td><p>Number of cores used. Default doesn't use parallelism.
-You may use <a href='nb_cores.html'>nb_cores</a>.</p></td>
+You may use <a href='https://rdrr.io/pkg/bigparallelr/man/nb_cores.html'>nb_cores</a>.</p></td>
     </tr>
     <tr>
       <th>fun.scaling</th>
@@ -215,34 +222,43 @@ Default is <code>NULL</code> and corresponds to only adding an intercept to each
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.row</code>.
 Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</p></td>
     </tr>
+    <tr>
+      <th>center</th>
+      <td><p>Vector of same length of <code>ind.col</code> to subtract from columns
+of <code>X</code>.</p></td>
+    </tr>
+    <tr>
+      <th>scale</th>
+      <td><p>Vector of same length of <code>ind.col</code> to divide from columns
+of <code>X</code>.</p></td>
+    </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="matrix-parallelization"><a class="anchor" href="#matrix-parallelization"></a>Matrix parallelization</h2>
 
     
-    <p>Large matrix computations (crossprods) are made block-wise and won't
+
+<p>Large matrix computations (crossprods) are made block-wise and won't
 be parallelized in order to not have to reduce the size of these blocks.
 Instead, you may use <a href='https://mran.microsoft.com/open/'>Microsoft R Open</a>
 in order to accelerate these block matrix computations.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Useful links:</p><ul>
 <li><p><a href='https://privefl.github.io/bigstatsr'>https://privefl.github.io/bigstatsr</a></p></li>
 <li><p>Report bugs at <a href='https://github.com/privefl/bigstatsr/issues'>https://github.com/privefl/bigstatsr/issues</a></p></li>
-</ul></div>
-    
+</ul>
+
+</div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#matrix-parallelization">Matrix parallelization</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
     <h2>Author</h2>
     <p><strong>Maintainer</strong>: Florian Privé <a href='mailto:florian.prive.21@gmail.com'>florian.prive.21@gmail.com</a></p>
@@ -255,19 +271,23 @@ in order to accelerate these block matrix computations.</p>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
