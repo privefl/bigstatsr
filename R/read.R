@@ -19,7 +19,7 @@ drop_ext <- function(file) tools::file_path_sans_ext(file)
 #' @inheritDotParams bigreadr::big_fread2 -file -select -.transform -.combine
 #' @inheritParams FBM
 #'
-#' @return A Filebacked Big Matrix of type '<type>' with <length(select)> columns.
+#' @return A Filebacked Big Matrix of type `type` with `length(select)` columns.
 #'
 #' @export
 #'
