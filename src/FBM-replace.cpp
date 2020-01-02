@@ -7,8 +7,6 @@ using std::size_t;
 
 /******************************************************************************/
 
-#define NA_FLOAT FLT_MIN
-
 inline float int2flt(int x) {
   return (x == NA_INTEGER) ? NA_FLOAT : x;
 }

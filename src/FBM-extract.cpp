@@ -7,8 +7,6 @@ using std::size_t;
 
 /******************************************************************************/
 
-#define NA_FLOAT FLT_MIN
-
 // [[Rcpp::export]]
 NumericVector& conv_NA_float(NumericVector& source) {
 

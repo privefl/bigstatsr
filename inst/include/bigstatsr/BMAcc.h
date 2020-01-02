@@ -8,6 +8,8 @@
 using namespace Rcpp;
 using std::size_t;
 
+#define NA_FLOAT __FLT_MIN__
+
 /******************************************************************************/
 
 template <typename T>
