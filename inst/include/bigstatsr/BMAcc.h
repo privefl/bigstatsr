@@ -40,39 +40,6 @@ protected:
 /******************************************************************************/
 
 template <typename T>
-class VecBMAcc : public BMAcc<T> {
-public:
-  VecBMAcc(FBM * xpBM,
-           const NumericVector& elem_ind)
-    : BMAcc<T>(xpBM) {
-
-      size_t ind, k;
-      size_t LIM = xpBM->nrow() * xpBM->ncol();
-      size_t n = elem_ind.size();
-      std::vector<size_t> elem_ind2(n);
-      for (k = 0; k < n; k++) {
-        ind = static_cast<size_t>(elem_ind[k]);
-        myassert_bounds(ind, LIM);
-        elem_ind2[k] = ind;
-      }
-      _elem_ind = elem_ind2;
-    }
-
-  inline T& operator[](size_t k) {
-    // https://stackoverflow.com/a/7076312/6103040
-    return this->_pMat[_elem_ind[k]];
-  }
-
-  size_t size() const { return _elem_ind.size(); }
-  size_t nelem() const { return this->size(); }
-
-protected:
-  std::vector<size_t> _elem_ind;
-};
-
-/******************************************************************************/
-
-template <typename T>
 class SubBMAcc : public BMAcc<T> {
 public:
   SubBMAcc(FBM * xpBM,

@@ -228,21 +228,23 @@ NumericVector check_conv_dbl2flt(NumericVector nv) {
 /******************************************************************************/
 
 template <typename BM_TYPE, typename CTYPE>
-void replace_vec_one(VecBMAcc<BM_TYPE> macc, CTYPE val,
+void replace_vec_one(BMAcc<BM_TYPE> macc,
+                     const NumericVector& elemInd,
+                     CTYPE val,
                      BM_TYPE (*conv)(CTYPE) = identity) {
 
   BM_TYPE val_conv = conv(val);
-  size_t K = macc.size();
+  size_t K = elemInd.size();
   for (size_t k = 0; k < K; k++)
-    macc[k] = val_conv;
+    macc[elemInd[k] - 1] = val_conv;
 }
 
 #define REPLACE_VEC_ONE(BM_TYPE, VEC) {                                        \
-return replace_vec_one(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC[0]);          \
+return replace_vec_one(BMAcc<BM_TYPE>(xpBM), elemInd, VEC[0]);                 \
 }
 
 #define REPLACE_VEC_ONE_CONV(BM_TYPE, VEC, CONV) {                             \
-return replace_vec_one(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC[0], CONV);    \
+return replace_vec_one(BMAcc<BM_TYPE>(xpBM), elemInd, VEC[0], CONV);           \
 }
 
 // [[Rcpp::export]]
@@ -258,28 +260,32 @@ void replaceVecOne(SEXP xpbm,
 /******************************************************************************/
 
 template <typename BM_TYPE, int RTYPE>
-void replace_vec(VecBMAcc<BM_TYPE> macc, Vector<RTYPE> vec) {
+void replace_vec(BMAcc<BM_TYPE> macc,
+                 const NumericVector& elemInd,
+                 Vector<RTYPE> vec) {
 
-  size_t K = macc.size();
+  size_t K = elemInd.size();
   for (size_t k = 0; k < K; k++)
-    macc[k] = vec[k];
+    macc[elemInd[k] - 1] = vec[k];
 }
 
 #define REPLACE_VEC(BM_TYPE, VEC) {                                            \
-return replace_vec(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC);                 \
+return replace_vec(BMAcc<BM_TYPE>(xpBM), elemInd, VEC);                        \
 }
 
 template <typename BM_TYPE, int RTYPE, typename CTYPE>
-void replace_vec_conv(VecBMAcc<BM_TYPE> macc, Vector<RTYPE> vec,
+void replace_vec_conv(BMAcc<BM_TYPE> macc,
+                      const NumericVector& elemInd,
+                      Vector<RTYPE> vec,
                       BM_TYPE (*conv)(CTYPE)) {
 
-  size_t K = macc.size();
+  size_t K = elemInd.size();
   for (size_t k = 0; k < K; k++)
-    macc[k] = conv(vec[k]);
+    macc[elemInd[k] - 1] = conv(vec[k]);
 }
 
 #define REPLACE_VEC_CONV(BM_TYPE, VEC, CONV) {                                 \
-return replace_vec_conv(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1), VEC, CONV);      \
+return replace_vec_conv(BMAcc<BM_TYPE>(xpBM), elemInd, VEC, CONV);             \
 }
 
 // [[Rcpp::export]]
