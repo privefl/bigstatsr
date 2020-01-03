@@ -96,10 +96,12 @@ FBM_RC <- methods::setRefClass(
     ncol = "numeric",
     type = "integer",
     backingfile = "character",
+    is_read_only = "logical",
 
     #### Active bindings
     # Same idea as in package phaverty/bigmemoryExtras
     address = function() {
+
       if (identical(.self$extptr, NIL_PTR)) {
         .self$extptr <- getXPtrFBM(
           path = .self$bk,
@@ -108,9 +110,16 @@ FBM_RC <- methods::setRefClass(
           type = .self$type
         )
       }
+
       .self$extptr
     },
     address_rw = function() {
+
+      if (.self$is_read_only)
+        stop2("This FBM is read-only.")
+      if (file.access(.self$backingfile, 2) != 0)
+        stop2("You don't have write permissions for this FBM.")
+
       if (identical(.self$extptr_rw, NIL_PTR)) {
         .self$extptr_rw <- getXPtrFBM_RW(
           path = .self$bk,
@@ -119,6 +128,7 @@ FBM_RC <- methods::setRefClass(
           type = .self$type
         )
       }
+
       .self$extptr_rw
     },
 
@@ -142,10 +152,11 @@ FBM_RC <- methods::setRefClass(
         assert_exist(bkfile)
       }
 
-      .self$backingfile <- normalizePath(bkfile)
-      .self$nrow        <- nrow
-      .self$ncol        <- ncol
-      .self$type        <- ALL.TYPES[type]  # keep int and string
+      .self$backingfile  <- normalizePath(bkfile)
+      .self$nrow         <- nrow
+      .self$ncol         <- ncol
+      .self$type         <- ALL.TYPES[type]  # keep int and string
+      .self$is_read_only <- FALSE
 
       ## init pointers
       .self$extptr <- .self$extptr_rw <- NIL_PTR
@@ -182,8 +193,8 @@ FBM_RC <- methods::setRefClass(
     show = function(typeBM) {
       if (missing(typeBM)) typeBM <- names(.self$type)
       cat(sprintf(
-        "A Filebacked Big Matrix of type '%s' with %s rows and %s columns.\n",
-        typeBM, .self$nrow, .self$ncol))
+        "A %sFilebacked Big Matrix of type '%s' with %s rows and %s columns.\n",
+        `if`(.self$is_read_only, "read-only ", ""), typeBM, .self$nrow, .self$ncol))
       invisible(.self)
     },
 
