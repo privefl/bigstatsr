@@ -74,11 +74,11 @@ void incr_FBM_vec(Environment BM,
 
   BMAcc_RW<double> macc(xpBM);
 
-  size_t n = macc.size();
-  myassert_size(vec.size(), n);
+  size_t K = macc.size();
+  myassert_size(vec.size(), K);
 
-  for (size_t i = 0; i < n; i++)
-    macc[i] += vec[i];
+  for (size_t k = 0; k < K; k++)
+    macc[k] += vec[k];
 }
 
 /******************************************************************************/
