@@ -9,6 +9,8 @@ expect_identical(mat2[], 0)
 
 N <- round(runif(1, 100, 1000))
 
+################################################################################
+
 registerDoParallel(cl <- makeCluster(2, outfile = ""))
 test <- foreach(k = 1:N, .combine = 'c') %dopar% {
   print(mat2[])
@@ -16,6 +18,9 @@ test <- foreach(k = 1:N, .combine = 'c') %dopar% {
 }
 stopCluster(cl)
 
+################################################################################
+
+mat2[] <- 0
 registerDoParallel(cl <- makeCluster(2, outfile = ""))
 test <- foreach(k = 1:N, .combine = 'c') %dopar% {
   print(mat2[])

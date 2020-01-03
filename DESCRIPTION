@@ -40,7 +40,8 @@ Imports:
     utils
 LinkingTo: 
     Rcpp,
-    RcppArmadillo
+    RcppArmadillo,
+    rmio
 Suggests: 
     bigalgebra,
     biglasso,
