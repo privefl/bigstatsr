@@ -67,8 +67,11 @@ Convert a matrix (or a data frame) to an FBM.
 An FBM object has many field:
 \itemize{
 \item \verb{$address}: address of the external pointer containing the underlying
-C++ object, to be used as a \verb{XPtr<FBM>} in C++ code
+C++ object for read-only mapping, to be used as a \verb{XPtr<FBM>} in C++ code
 \item \verb{$extptr}: use \verb{$address} instead
+\item \verb{$address_rw}: address of the external pointer containing the underlying
+C++ object for read/write mapping, to be used as a \verb{XPtr<FBM_RW>} in C++ code
+\item \verb{$extptr_rw}: use \verb{$address_rw} instead
 \item \verb{$nrow}
 \item \verb{$ncol}
 \item \verb{$type}

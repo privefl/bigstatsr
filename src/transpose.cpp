@@ -11,7 +11,7 @@ using std::size_t;
 
 // recursive divide and conquer function
 template <typename T>
-void transpose3_rec(BMAcc<T> macc,
+void transpose3_rec(BMAcc_RW<T> macc,
                     BMAcc<T> macc2,
                     size_t i_min, size_t i_max,
                     size_t j_min, size_t j_max) {
@@ -37,19 +37,19 @@ void transpose3_rec(BMAcc<T> macc,
 }
 
 template <typename T>
-void transpose3(BMAcc<T> macc, BMAcc<T> macc2) {
+void transpose3(BMAcc_RW<T> macc, BMAcc<T> macc2) {
   transpose3_rec(macc, macc2, 0, macc.nrow(), 0, macc.ncol());
 }
 
 /******************************************************************************/
 
-#define TRANSPOSE(T) return transpose3(BMAcc<T>(xpBM), BMAcc<T>(xpBM2));
+#define TRANSPOSE(T) return transpose3(BMAcc_RW<T>(xpBM), BMAcc<T>(xpBM2));
 
 // Dispatch function for transpose3
 // [[Rcpp::export]]
 void transpose3(Environment BM, Environment BM2) {
 
-  XPtr<FBM> xpBM  = BM["address"];
+  XPtr<FBM_RW> xpBM = BM["address_rw"];
   XPtr<FBM> xpBM2 = BM2["address"];
 
   int type = xpBM->matrix_type();
