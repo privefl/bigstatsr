@@ -79,6 +79,7 @@ C++ object for read/write mapping, to be used as a \verb{XPtr<FBM_RW>} in C++ co
 data of the FBM
 \item \verb{$rds}: 'rds' file (that may not exist) corresponding to the 'bk' file
 \item \verb{$is_saved}: whether this object is stored in \verb{$rds}?
+\item \verb{$is_read_only}: whether it is (not) allowed to modify data?
 }
 
 And some methods:

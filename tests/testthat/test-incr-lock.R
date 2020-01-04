@@ -11,19 +11,8 @@ N <- round(runif(1, 100, 1000))
 
 ################################################################################
 
-registerDoParallel(cl <- makeCluster(2, outfile = ""))
+registerDoParallel(cl <- makeCluster(2))
 test <- foreach(k = 1:N, .combine = 'c') %dopar% {
-  print(mat2[])
-  bigstatsr::big_increment(mat2, k, use_lock = FALSE)
-}
-stopCluster(cl)
-
-################################################################################
-
-mat2[] <- 0
-registerDoParallel(cl <- makeCluster(2, outfile = ""))
-test <- foreach(k = 1:N, .combine = 'c') %dopar% {
-  print(mat2[])
   bigstatsr::big_increment(mat2, k, use_lock = TRUE)
 }
 stopCluster(cl)

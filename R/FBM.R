@@ -59,6 +59,7 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #'     data of the FBM
 #'   - `$rds`: 'rds' file (that may not exist) corresponding to the 'bk' file
 #'   - `$is_saved`: whether this object is stored in `$rds`?
+#'   - `$is_read_only`: whether it is (not) allowed to modify data?
 #'
 #' And some methods:
 #'   - `$save()`: Save the FBM object in `$rds`. Returns the FBM.
