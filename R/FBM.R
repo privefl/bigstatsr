@@ -9,6 +9,15 @@ ALL.TYPES <- c(
   "double"         = 8L
 )
 
+ALL.SIZES <- c(
+  "raw"            = 1L,
+  "unsigned char"  = 1L,
+  "unsigned short" = 2L,
+  "integer"        = 4L,
+  "float"          = 4L,
+  "double"         = 8L
+)
+
 NIL_PTR <- methods::new("externalptr")
 
 ################################################################################
@@ -48,13 +57,15 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #' An FBM object has many field:
 #'   - `$address`: address of the external pointer containing the underlying
 #'     C++ object for read-only mapping, to be used as a `XPtr<FBM>` in C++ code
-#'   - `$extptr`: use `$address` instead
+#'   - `$extptr`: (internal) use `$address` instead
 #'   - `$address_rw`: address of the external pointer containing the underlying
 #'     C++ object for read/write mapping, to be used as a `XPtr<FBM_RW>` in C++ code
-#'   - `$extptr_rw`: use `$address_rw` instead
-#'   - `$nrow`
-#'   - `$ncol`
-#'   - `$type`
+#'   - `$extptr_rw`: (internal) use `$address_rw` instead
+#'   - `$nrow`: number of rows
+#'   - `$ncol`: number of columns
+#'   - `$type`: (internal) use `type_size` or `type_chr` instead
+#'   - `$type_chr`: FBM type as character, e.g. "double"
+#'   - `$type_size`: size of FBM type in bytes (e.g. "double" is 8 and "float" is 4)
 #'   - `$backingfile` or `$bk`: File with extension 'bk' that stores the numeric
 #'     data of the FBM
 #'   - `$rds`: 'rds' file (that may not exist) corresponding to the 'bk' file
@@ -67,6 +78,7 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #'     backingfile with some data. Returns the FBM invisibly.
 #'   - `$bm()`: Get this object as a `filebacked.big.matrix`.
 #'   - `$bm.desc()`: Get this object as a `filebacked.big.matrix` descriptor.
+#'   - `$check_write_permissions()`: Error if the FBM is read-only.
 #'
 #' @examples
 #' mat <- matrix(1:4, 2)
@@ -116,10 +128,7 @@ FBM_RC <- methods::setRefClass(
     },
     address_rw = function() {
 
-      if (.self$is_read_only)
-        stop2("This FBM is read-only.")
-      if (file.access(.self$backingfile, 2) != 0)
-        stop2("You don't have write permissions for this FBM.")
+      .self$check_write_permissions()
 
       if (identical(.self$extptr_rw, NIL_PTR)) {
         .self$extptr_rw <- getXPtrFBM_RW(
@@ -135,11 +144,14 @@ FBM_RC <- methods::setRefClass(
 
     bk = function() .self$backingfile,
     rds = function() sub_bk(.self$bk, ".rds"),
-    is_saved = function() file.exists(.self$rds)
+    is_saved = function() file.exists(.self$rds),
+    type_chr = function() names(.self$type),
+    type_size = function() ALL.SIZES[[.self$type_chr]]
   ),
 
   methods = list(
-    initialize = function(nrow, ncol, type, init, backingfile, create_bk) {
+    initialize = function(nrow, ncol, type, init, backingfile, create_bk,
+                          is_read_only) {
 
       assert_int(nrow)
       assert_int(ncol)
@@ -157,12 +169,18 @@ FBM_RC <- methods::setRefClass(
       .self$nrow         <- nrow
       .self$ncol         <- ncol
       .self$type         <- ALL.TYPES[type]  # keep int and string
-      .self$is_read_only <- FALSE
+      .self$check_dimensions()
 
       ## init pointers
       .self$extptr <- .self$extptr_rw <- NIL_PTR
 
-      if (!is.null(init)) .self[] <- init
+      if (!is.null(init)) {
+        if (!create_bk) # can only init new FBMs
+          stop2("You can't use `init` when using `create_bk = FALSE`.")
+        .self$is_read_only <- FALSE
+        .self[] <- init
+      }
+      .self$is_read_only <- is_read_only
 
       .self
     },
@@ -173,6 +191,8 @@ FBM_RC <- methods::setRefClass(
     },
 
     add_columns = function(ncol_add, save_again = TRUE) {
+
+      .self$check_write_permissions()
 
       assert_int(ncol_add)
       size_before <- file.size(bkfile <- .self$bk)
@@ -204,6 +224,9 @@ FBM_RC <- methods::setRefClass(
       if (!requireNamespace("bigmemory", quietly = TRUE))
         stop2("Please install package {bigmemory}.")
 
+      if (.self$is_read_only)
+        warning2("/!\\ This FBM is supposed to be read-only /!\\")
+
       dirname <- sub(file.path("", "$"), "", dirname(.self$backingfile))
       n <- .self$nrow + 0
       m <- .self$ncol + 0
@@ -229,6 +252,18 @@ FBM_RC <- methods::setRefClass(
     bm = function() {
       desc <- .self$bm.desc()
       bigmemory::attach.big.matrix(desc)
+    },
+
+    check_write_permissions = function() {
+      if (.self$is_read_only)
+        stop2("This FBM is read-only.")
+      if (file.access(.self$backingfile, 2) != 0)
+        stop2("You don't have write permissions for this FBM.")
+    },
+    check_dimensions = function() {
+      size <- .self$nrow * .self$ncol
+      if (file.size(.self$backingfile) != (size * .self$type_size))
+        stop2("Inconsistency between size of backingfile and dimensions.")
     }
   )
 )
@@ -260,6 +295,7 @@ FBM_RC$lock("nrow", "type")
 #'   an extension ".bk"). For example, this could be used to convert a
 #'   filebacked `big.matrix` from package **bigmemory** to a [FBM][FBM-class]
 #'   (see [the corresponding vignette](https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html)).
+#' @param is_read_only Whether the FBM is read-only? Default is `FALSE`.
 #'
 #' @rdname FBM-class
 #'
@@ -270,7 +306,8 @@ FBM <- function(nrow, ncol,
                          "unsigned short", "unsigned char", "raw"),
                 init = NULL,
                 backingfile = tempfile(),
-                create_bk = TRUE) {
+                create_bk = TRUE,
+                is_read_only = FALSE) {
 
   type <- match.arg(type)
   do.call(methods::new, args = c(Class = "FBM", as.list(environment())))
@@ -294,14 +331,15 @@ FBM <- function(nrow, ncol,
 #' identical(X[], X2[])
 as_FBM <- function(x, type = c("double", "float", "integer",
                                "unsigned short", "unsigned char", "raw"),
-                   backingfile = tempfile()) {
+                   backingfile = tempfile(),
+                   is_read_only = FALSE) {
 
   if (is.matrix(x) || is.data.frame(x)) {
     FBM(nrow = nrow(x), ncol = ncol(x), init = x,
-        type = type, backingfile = backingfile)
+        type = type, backingfile = backingfile, is_read_only = is_read_only)
   } else {
-    stop2("'as_FBM()' is not implemented for class '%s'. %s",
-          class(x), "Feel free to open an issue.")
+    stop2("'as_FBM()' is not implemented for class '%s'.\n%s", class(x),
+          "Try to use 'big_copy()' instead. Otherwise, you can open an issue.")
   }
 }
 

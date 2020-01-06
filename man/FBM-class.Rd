@@ -14,13 +14,15 @@ FBM(
   type = c("double", "float", "integer", "unsigned short", "unsigned char", "raw"),
   init = NULL,
   backingfile = tempfile(),
-  create_bk = TRUE
+  create_bk = TRUE,
+  is_read_only = FALSE
 )
 
 as_FBM(
   x,
   type = c("double", "float", "integer", "unsigned short", "unsigned char", "raw"),
-  backingfile = tempfile()
+  backingfile = tempfile(),
+  is_read_only = FALSE
 )
 }
 \arguments{
@@ -54,6 +56,8 @@ an extension ".bk"). For example, this could be used to convert a
 filebacked \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}
 (see \href{https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html}{the corresponding vignette}).}
 
+\item{is_read_only}{Whether the FBM is read-only? Default is \code{FALSE}.}
+
 \item{x}{A matrix or an data frame (2-dimensional data).}
 }
 \description{
@@ -68,13 +72,15 @@ An FBM object has many field:
 \itemize{
 \item \verb{$address}: address of the external pointer containing the underlying
 C++ object for read-only mapping, to be used as a \verb{XPtr<FBM>} in C++ code
-\item \verb{$extptr}: use \verb{$address} instead
+\item \verb{$extptr}: (internal) use \verb{$address} instead
 \item \verb{$address_rw}: address of the external pointer containing the underlying
 C++ object for read/write mapping, to be used as a \verb{XPtr<FBM_RW>} in C++ code
-\item \verb{$extptr_rw}: use \verb{$address_rw} instead
-\item \verb{$nrow}
-\item \verb{$ncol}
-\item \verb{$type}
+\item \verb{$extptr_rw}: (internal) use \verb{$address_rw} instead
+\item \verb{$nrow}: number of rows
+\item \verb{$ncol}: number of columns
+\item \verb{$type}: (internal) use \code{type_size} or \code{type_chr} instead
+\item \verb{$type_chr}: FBM type as character, e.g. "double"
+\item \verb{$type_size}: size of FBM type in bytes (e.g. "double" is 8 and "float" is 4)
 \item \verb{$backingfile} or \verb{$bk}: File with extension 'bk' that stores the numeric
 data of the FBM
 \item \verb{$rds}: 'rds' file (that may not exist) corresponding to the 'bk' file
@@ -89,6 +95,7 @@ And some methods:
 backingfile with some data. Returns the FBM invisibly.
 \item \verb{$bm()}: Get this object as a \code{filebacked.big.matrix}.
 \item \verb{$bm.desc()}: Get this object as a \code{filebacked.big.matrix} descriptor.
+\item \verb{$check_write_permissions()}: Error if the FBM is read-only.
 }
 }
 

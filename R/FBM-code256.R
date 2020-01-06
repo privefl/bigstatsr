@@ -63,7 +63,8 @@ FBM.code256_RC <- methods::setRefClass(
         type = "unsigned char",
         init = NULL,
         backingfile = sub_bk(.self$backingfile),
-        create_bk = FALSE
+        create_bk = FALSE,
+        is_read_only = .self$is_read_only
       )
     },
 
@@ -87,7 +88,8 @@ FBM.code256 <- function(nrow, ncol,
                         code = rep(NA_real_, 256),
                         init = NULL,
                         backingfile = tempfile(),
-                        create_bk = TRUE) {
+                        create_bk = TRUE,
+                        is_read_only = FALSE) {
 
   if (length(code) != 256)
     stop("'code' must be of length 256.")
@@ -114,7 +116,8 @@ add_code256 <- function(x, code) {
     code = code,
     init = NULL,
     backingfile = sub_bk(x$backingfile),
-    create_bk = FALSE
+    create_bk = FALSE,
+    is_read_only = x$is_read_only
   )
 }
 
