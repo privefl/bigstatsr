@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 1.0.1
-Date: 2019-12-19
+Version: 1.1.0
+Date: 2020-01-07
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 
@@ -26,11 +26,11 @@ ByteCompile: TRUE
 Depends: R (>= 3.3)
 Imports:
     bigassertr (>= 0.1.1),
-    bigparallelr (>= 0.1.2),
+    bigparallelr (>= 0.2.2),
     bigreadr (>= 0.2),
     cowplot,
     foreach,
-    ggplot2 (>= 3.0.0),
+    ggplot2 (>= 3.0),
     graphics,
     methods,
     Rcpp,
