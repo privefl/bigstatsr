@@ -79,7 +79,7 @@ Collate:
     'plot.R'
     'predict.R'
     'randomSVD.R'
-    'read.R'
+    'read-write.R'
     'scaling.R'
     'summary.R'
     'tcrossprodSelf.R'
