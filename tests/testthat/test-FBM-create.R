@@ -43,7 +43,7 @@ test_that("Creating an FBM works", {
       expect_s4_class(X2, "FBM")
       expect_true(X2$backingfile == X$backingfile)
       expect_equal(X2$is_read_only, is_ro)
-      if (is_ro) expect_error(X3[1] <- 1, "This FBM is read-only.")
+      if (is_ro) expect_error(X2[1] <- 1, "This FBM is read-only.")
 
       X3 <- X$as.FBM()
       expect_equal(X3[], X2[])
