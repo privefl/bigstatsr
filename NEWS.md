@@ -1,3 +1,11 @@
+## bigstatsr 1.1.0
+
+- Make two different memory-mappings: one that is read-only (using `$address`) and one where it is possible to write (using `$address_rw`). This enables to use file permissions to prevent modifying data.
+
+- Also add a new field `$is_read_only` to be used to prevent modifying data (at least with `<-`) even when you have write permissions to it. Functions creating an FBM now gain a parameter `is_read_only`.
+
+- Make vector accessors (e.g. `X[1:10]`) faster.
+
 ## bigstatsr 1.0.0
 
 - Move some code to new packages {bigassertr} and {bigparallelr}.

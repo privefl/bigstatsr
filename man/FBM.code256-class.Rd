@@ -14,7 +14,8 @@ FBM.code256(
   code = rep(NA_real_, 256),
   init = NULL,
   backingfile = tempfile(),
-  create_bk = TRUE
+  create_bk = TRUE,
+  is_read_only = FALSE
 )
 
 add_code256(x, code)
@@ -40,6 +41,8 @@ existing one (which should be named by the \code{backingfile} parameter and have
 an extension ".bk"). For example, this could be used to convert a
 filebacked \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}
 (see \href{https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html}{the corresponding vignette}).}
+
+\item{is_read_only}{Whether the FBM is read-only? Default is \code{FALSE}.}
 
 \item{x}{A \link[=FBM-class]{FBM}.}
 }

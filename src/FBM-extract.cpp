@@ -7,8 +7,6 @@ using std::size_t;
 
 /******************************************************************************/
 
-#define NA_FLOAT FLT_MIN
-
 // [[Rcpp::export]]
 NumericVector& conv_NA_float(NumericVector& source) {
 
@@ -23,20 +21,20 @@ NumericVector& conv_NA_float(NumericVector& source) {
 /******************************************************************************/
 
 template <typename T, int RTYPE>
-Vector<RTYPE> extractVec(VecBMAcc<T> macc) {
+Vector<RTYPE> extractVec(BMAcc<T> macc, const NumericVector& elemInd) {
 
-  size_t K = macc.size();
+  size_t K = elemInd.size();
 
   Vector<RTYPE> res(K);
 
   for (size_t k = 0; k < K; k++)
-    res[k] = macc[k];
+    res[k] = macc[elemInd[k] - 1];
 
   return res;
 }
 
 #define EXTRACT_VEC(BM_TYPE, RTYPE) {                                          \
-  return extractVec<BM_TYPE, RTYPE>(VecBMAcc<BM_TYPE>(xpBM, elemInd - 1));     \
+  return extractVec<BM_TYPE, RTYPE>(BMAcc<BM_TYPE>(xpBM), elemInd);            \
 }
 
 // [[Rcpp::export]]
@@ -55,8 +53,8 @@ RObject extractVec(RObject xpbm,
   case 8:
     EXTRACT_VEC(double,         REALSXP)
   case 6: {
-      VecBMAcc<float> macc(xpBM, elemInd - 1);
-      NumericVector res = extractVec<float, REALSXP>(macc);
+      BMAcc<float> macc(xpBM);
+      NumericVector res = extractVec<float, REALSXP>(macc, elemInd);
       return conv_NA_float(res);
     }
   default:

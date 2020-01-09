@@ -10,7 +10,8 @@ big_copy(
   ind.col = cols_along(X),
   type = typeof(X),
   backingfile = tempfile(),
-  block.size = block_size(length(ind.row))
+  block.size = block_size(length(ind.row)),
+  is_read_only = FALSE
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ Default stores in the temporary directory.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
+
+\item{is_read_only}{Whether the FBM is read-only? Default is \code{FALSE}.}
 }
 \value{
 A copy of the \link[=FBM-class]{FBM}.

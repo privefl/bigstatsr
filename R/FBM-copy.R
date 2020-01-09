@@ -31,7 +31,8 @@ big_copy <- function(X, ind.row = rows_along(X),
                      ind.col = cols_along(X),
                      type = typeof(X),
                      backingfile = tempfile(),
-                     block.size = block_size(length(ind.row))) {
+                     block.size = block_size(length(ind.row)),
+                     is_read_only = FALSE) {
 
   if (inherits(X, "FBM.code256") && type == "unsigned char") {
     args <- as.list(environment())
@@ -45,7 +46,8 @@ big_copy <- function(X, ind.row = rows_along(X),
     ncol = length(ind.col),
     init = NULL,
     type = type,
-    backingfile = backingfile
+    backingfile = backingfile,
+    is_read_only = FALSE
   )
 
   # Don't write in parallel
@@ -55,6 +57,7 @@ big_copy <- function(X, ind.row = rows_along(X),
   }, a.combine = 'c', ind = seq_along(ind.col), block.size = block.size,
   X2 = res, ind.row = ind.row, ind.col = ind.col)
 
+  res$is_read_only <- is_read_only
   res
 }
 

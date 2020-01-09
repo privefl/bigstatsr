@@ -183,6 +183,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// getXPtrFBM_RW
+SEXP getXPtrFBM_RW(std::string path, std::size_t n, std::size_t m, int type);
+RcppExport SEXP _bigstatsr_getXPtrFBM_RW(SEXP pathSEXP, SEXP nSEXP, SEXP mSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type n(nSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type m(mSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(getXPtrFBM_RW(path, n, m, type));
+    return rcpp_result_gen;
+END_RCPP
+}
 // prod_FBM_mat
 arma::mat prod_FBM_mat(Rcpp::Environment BM, const arma::mat& A);
 RcppExport SEXP _bigstatsr_prod_FBM_mat(SEXP BMSEXP, SEXP ASEXP) {
@@ -599,6 +613,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_replaceMat", (DL_FUNC) &_bigstatsr_replaceMat, 4},
     {"_bigstatsr_replaceDF", (DL_FUNC) &_bigstatsr_replaceDF, 4},
     {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 4},
+    {"_bigstatsr_getXPtrFBM_RW", (DL_FUNC) &_bigstatsr_getXPtrFBM_RW, 4},
     {"_bigstatsr_prod_FBM_mat", (DL_FUNC) &_bigstatsr_prod_FBM_mat, 2},
     {"_bigstatsr_prod_mat_FBM", (DL_FUNC) &_bigstatsr_prod_mat_FBM, 2},
     {"_bigstatsr_crossprod_FBM", (DL_FUNC) &_bigstatsr_crossprod_FBM, 1},

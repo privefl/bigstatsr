@@ -22,6 +22,16 @@ for (t in c("raw", "integer", "float", "double")) {
     expect_is(X %*% A, "matrix")
     expect_s4_class(X2 %*% A, "big.matrix")
   }
+
+  # Permissions
+  X$is_read_only <- TRUE
+  expect_warning(X2 <- X$bm(), "This FBM is supposed to be read-only")
+  X2[1] <- 3
+  expect_equal(X2[1], 3)
+  X$is_read_only <- FALSE
+  Sys.chmod(X$bk, "0444")  ## make it read-only
+  expect_warning(X3 <- X$bm(), "big.matrix object could only be opened read-only.")
+  # X3[1] <- 4  ## would crash the session
 }
 
 ################################################################################

@@ -47,11 +47,11 @@ NumericMatrix& centering(NumericMatrix& source,
 void incr_FBM_mat(Environment BM,
                   const NumericMatrix& mat) {
 
-  XPtr<FBM> xpBM = BM["address"];
+  XPtr<FBM_RW> xpBM = BM["address_rw"];
   if (xpBM->matrix_type() != 8)
     Rcpp::stop("'big_increment()' works with 'double' FBMs only.");
 
-  BMAcc<double> macc(xpBM);
+  BMAcc_RW<double> macc(xpBM);
 
   size_t n = macc.nrow();
   size_t m = macc.ncol();
@@ -68,17 +68,17 @@ void incr_FBM_mat(Environment BM,
 void incr_FBM_vec(Environment BM,
                   const NumericVector& vec) {
 
-  XPtr<FBM> xpBM = BM["address"];
+  XPtr<FBM_RW> xpBM = BM["address_rw"];
   if (xpBM->matrix_type() != 8)
     Rcpp::stop("'big_increment()' works with 'double' FBMs only.");
 
-  BMAcc<double> macc(xpBM);
+  BMAcc_RW<double> macc(xpBM);
 
-  size_t n = macc.size();
-  myassert_size(vec.size(), n);
+  size_t K = macc.size();
+  myassert_size(vec.size(), K);
 
-  for (size_t i = 0; i < n; i++)
-    macc[i] += vec[i];
+  for (size_t k = 0; k < K; k++)
+    macc[k] += vec[k];
 }
 
 /******************************************************************************/
@@ -91,8 +91,8 @@ void scaleK(Environment BM,
             const NumericVector& delta,
             int nrow) {
 
-  XPtr<FBM> xpBM = BM["address"];
-  BMAcc<double> K(xpBM);
+  XPtr<FBM_RW> xpBM = BM["address_rw"];
+  BMAcc_RW<double> K(xpBM);
 
   size_t n = K.nrow();
   myassert_size(K.ncol(), n);
