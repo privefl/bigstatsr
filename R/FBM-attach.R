@@ -6,6 +6,34 @@ FBM_FIELDS <- c("extptr", "extptr_rw", "nrow", "ncol", "type", "backingfile",
 
 FBM_METHODS <- c("bm.desc", "bm", "add_columns", "save", "check_write_permissions")
 
+reconstruct_if_old <- function(fbm) {
+
+  obj.fields  <- names(fbm$getClass()@fieldClasses)
+  obj.methods <- names(fbm$getClass()@refMethods)
+
+  # In case it was generated from old versions
+  if (!all(FBM_FIELDS %in% obj.fields) || !all(FBM_METHODS %in% obj.methods)) {
+
+    message2("FBM from an old version? Reconstructing..")
+    new.fbm <- FBM(
+      nrow = fbm$nrow,
+      ncol = fbm$ncol,
+      type = names(fbm$type),
+      init = NULL,
+      backingfile = sub_bk(fbm$backingfile),
+      create_bk = FALSE,
+      is_read_only = `if`(exists("is_read_only", fbm), fbm$is_read_only, FALSE)
+    )
+
+    if (inherits(fbm, "FBM.code256"))
+      new.fbm <- add_code256(new.fbm, code = fbm$code256)
+
+    message2("You should `$save()` it again.")
+    new.fbm
+
+  } else fbm
+}
+
 ################################################################################
 
 #' Attach a Filebacked Big Matrix
@@ -34,27 +62,7 @@ big_attach <- function(rdsfile) {
   if (!file.exists(fbm$backingfile <- sub("\\.rds$", ".bk", rdsfile)))
     stop2("The backingfile associated with this FBM can't be found.")
 
-  # In case it was generated from old versions
-  obj.fields  <- names(fbm$getClass()@fieldClasses)
-  obj.methods <- names(fbm$getClass()@refMethods)
-  if (!all(FBM_FIELDS %in% obj.fields) || !all(FBM_METHODS %in% obj.methods)) {
-    message2("FBM from an old version? Reconstructing..")
-    new.fbm <- FBM(
-      nrow = fbm$nrow,
-      ncol = fbm$ncol,
-      type = names(fbm$type),
-      init = NULL,
-      backingfile = sub_bk(fbm$backingfile),
-      create_bk = FALSE,
-      is_read_only = `if`(exists("is_read_only", fbm), fbm$is_read_only, FALSE)
-    )
-    if (inherits(fbm, "FBM.code256"))
-      new.fbm <- add_code256(new.fbm, code = fbm$code256)
-    message2("You should `$save()` it again.")
-    new.fbm
-  } else {
-    fbm
-  }
+  reconstruct_if_old(fbm)
 }
 
 #' @rdname big_attach
