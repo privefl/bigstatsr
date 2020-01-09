@@ -6,7 +6,11 @@ FBM_FIELDS <- c("extptr", "extptr_rw", "nrow", "ncol", "type", "backingfile",
 
 FBM_METHODS <- c("bm.desc", "bm", "add_columns", "save", "check_write_permissions")
 
-reconstruct_if_old <- function(fbm) {
+################################################################################
+
+reconstruct_if_old <- function(fbm,
+                               msg1 = "FBM from an old version? Reconstructing..",
+                               msg2 = "You should `$save()` it again.") {
 
   obj.fields  <- names(fbm$getClass()@fieldClasses)
   obj.methods <- names(fbm$getClass()@refMethods)
@@ -14,7 +18,7 @@ reconstruct_if_old <- function(fbm) {
   # In case it was generated from old versions
   if (!all(FBM_FIELDS %in% obj.fields) || !all(FBM_METHODS %in% obj.methods)) {
 
-    message2("FBM from an old version? Reconstructing..")
+    message2(msg1)
     new.fbm <- FBM(
       nrow = fbm$nrow,
       ncol = fbm$ncol,
@@ -28,7 +32,7 @@ reconstruct_if_old <- function(fbm) {
     if (inherits(fbm, "FBM.code256"))
       new.fbm <- add_code256(new.fbm, code = fbm$code256)
 
-    message2("You should `$save()` it again.")
+    message2(msg2)
     new.fbm
 
   } else fbm
