@@ -261,7 +261,7 @@ FBM_RC <- methods::setRefClass(
         stop2("You don't have write permissions for this FBM.")
     },
     check_dimensions = function() {
-      size <- .self$nrow * .self$ncol
+      size <- .self$nrow * 1 * .self$ncol
       if (file.size(.self$backingfile) != (size * .self$type_size))
         stop2("Inconsistency between size of backingfile and dimensions.")
     }

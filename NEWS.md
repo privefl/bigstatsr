@@ -1,3 +1,7 @@
+## bigstatsr 1.1.1
+
+- Fix `In .self$nrow * .self$ncol : NAs produced by integer overflow`.
+
 ## bigstatsr 1.1.0
 
 - Make two different memory-mappings: one that is read-only (using `$address`) and one where it is possible to write (using `$address_rw`). This enables to use file permissions to prevent modifying data.
