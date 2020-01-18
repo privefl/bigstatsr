@@ -1,0 +1,29 @@
+service docker start
+docker pull wch1/r-debug
+
+docker run -v "/${PWD}":/home/bigstatsr --rm -ti --security-opt seccomp=unconfined wch1/r-debug
+docker run -v "/${PWD}":/home/bigstatsr --rm -ti --security-opt seccomp=unconfined bigstatsr-debug2
+
+apt-get install libgfortran-8-dev --yes
+
+RDcsan -e 'install.packages("RcppArmadillo")'
+RDcsan -e 'install.packages("RcppEigen")'
+RDcsan -e 'install.packages("RSpectra")'
+RDcsan -e 'install.packages("remotes")'
+RDcsan -e 'remotes::install_deps("home/bigstatsr", dependencies = TRUE)'
+
+RDcsan CMD INSTALL --preclean --install-tests home/bigstatsr
+RDcsan -e 'install.packages("devtools")'
+
+RDcsan -e 'devtools::test("home/bigstatsr", reporter = testthat::LocationReporter)' &> /home/test.out
+grep UndefinedBehaviorSanitizer* /home/test.out
+
+RDcsan -e 'devtools::test("home/bigstatsr", filter = "bigmemory", reporter = testthat::LocationReporter)' &> /home/test.out
+
+RDcsan -e 'devtools::check("home/bigstatsr")' &> /home/check.out
+grep UndefinedBehaviorSanitizer* /home/check.out
+
+
+docker ps
+docker commit
+docker images

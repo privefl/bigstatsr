@@ -39,8 +39,11 @@ test_that("addColums() works", {
   expect_error(X$add_columns(5), "This FBM is read-only.")
   X$is_read_only <- FALSE
   Sys.chmod(X$bk, "0444")  ## make it read-only
-  expect_error(X$add_columns(5), "You don't have write permissions for this FBM.")
-  expect_equal(dim(X), c(10, 15))
+  if (file.access(X$bk, 2) != 0) {
+    expect_error(X$add_columns(5),
+                 "You don't have write permissions for this FBM.")
+    expect_equal(dim(X), c(10, 15))
+  }
 })
 
 ################################################################################
@@ -61,8 +64,11 @@ test_that("addColums() works with FBM.code256", {
   expect_error(X$add_columns(5), "This FBM is read-only.")
   X$is_read_only <- FALSE
   Sys.chmod(X$bk, "0444")  ## make it read-only
-  expect_error(X$add_columns(5), "You don't have write permissions for this FBM.")
-  expect_equal(dim(X), c(10, 15))
+  if (file.access(X$bk, 2) != 0) {
+    expect_error(X$add_columns(5),
+                 "You don't have write permissions for this FBM.")
+    expect_equal(dim(X), c(10, 15))
+  }
 })
 
 ################################################################################

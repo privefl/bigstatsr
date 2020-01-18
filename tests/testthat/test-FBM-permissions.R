@@ -21,13 +21,13 @@ expect_error(X[] <- 2, "This FBM is read-only.")
 expect_true(all(X[] == 1))
 
 Sys.chmod(paste0(tmp, ".bk"), "0444")  ## make it read-only
-expect_identical(file.access(X$bk, 4), setNames(0L, X$bk))
-expect_identical(file.access(X$bk, 2), setNames(-1L, X$bk))
-X <- big_attach(paste0(tmp, ".rds"))
-expect_true(all(X[] == 1))
-expect_error(X[] <- 3, "You don't have write permissions for this FBM.")
-Sys.chmod(paste0(tmp, ".bk"), "0666")  ## make it writable again
-X[] <- 4
-expect_true(all(X[] == 4))
+if (file.access(X$bk, 2) != 0) {
+  X <- big_attach(paste0(tmp, ".rds"))
+  expect_true(all(X[] == 1))
+  expect_error(X[] <- 3, "You don't have write permissions for this FBM.")
+  Sys.chmod(paste0(tmp, ".bk"), "0666")  ## make it writable again
+  X[] <- 4
+  expect_true(all(X[] == 4))
+}
 
 ################################################################################

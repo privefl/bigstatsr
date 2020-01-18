@@ -44,7 +44,7 @@ expect_true(exists("XX"))
 
 test_that("Downcast warnings work", {
 
-  skip_on_cran()
+  skip_if_not(not_cran)
 
   get_text <- function(rtype, ctype) {
     sprintf("while converting from R type '%s' to C type '%s'.", rtype, ctype)

@@ -77,6 +77,9 @@ test_that("Copy of same type", {
 ################################################################################
 
 test_that("Copy with conversion", {
+
+  skip_if_not(not_cran)
+
   options(bigstatsr.downcast.warning = TRUE)
 
   X <- big_copy(x0)
