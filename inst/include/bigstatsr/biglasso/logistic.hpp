@@ -188,7 +188,7 @@ List COPY_cdfit_binomial_hsr(C macc,
               update = shift * shift * v;
               if (update > max_update) max_update = update;
 
-              // Update r & eta
+              // Update r and eta
               shift_scaled = shift / sj;
               for (i = 0; i < n; i++) {
                 si = shift_scaled * (macc(i, j) - cj);

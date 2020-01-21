@@ -16,12 +16,15 @@ RDcsan CMD INSTALL --preclean --install-tests home/bigstatsr
 RDcsan -e 'install.packages("devtools")'
 
 RDcsan -e 'devtools::test("home/bigstatsr", reporter = testthat::LocationReporter)' &> /home/test.out
-grep UndefinedBehaviorSanitizer* /home/test.out
+grep UndefinedBehaviorSanitizer /home/test.out
 
 RDcsan -e 'devtools::test("home/bigstatsr", filter = "bigmemory", reporter = testthat::LocationReporter)' &> /home/test.out
 
 RDcsan -e 'devtools::check("home/bigstatsr")' &> /home/check.out
-grep UndefinedBehaviorSanitizer* /home/check.out
+grep UndefinedBehaviorSanitizer /home/check.out
+
+RDcsan -e 'devtools::run_examples("home/bigstatsr")' &> /home/ex.out
+grep UndefinedBehaviorSanitizer /home/ex.out
 
 
 docker ps
