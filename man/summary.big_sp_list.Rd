@@ -4,13 +4,15 @@
 \alias{summary.big_sp_list}
 \title{Summary method}
 \usage{
-\method{summary}{big_sp_list}(object, best.only = FALSE, ...)
+\method{summary}{big_sp_list}(object, best.only = FALSE, sort = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class \code{big_sp_list}.}
 
 \item{best.only}{Whether to return only one row corresponding to the best
 model? The best model is the one smallest \verb{$validation_loss}.}
+
+\item{sort}{Whether to sort by \verb{$validation_loss}. Default is \code{FALSE}.}
 
 \item{...}{Not used.}
 }

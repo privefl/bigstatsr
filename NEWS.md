@@ -1,3 +1,9 @@
+## bigstatsr 1.1.3
+
+- Add a new column `$all_conv` to output of `summary()` for `big_spLinReg()` and `big_spLogReg()` to check whether all models have stopped because of "no more improvement". Also add a new parameter `sort` to `summary()`.
+
+- Now `warn` (enabled by default) if not all models have converged when using `big_spLinReg()` and `big_spLogReg()`.
+
 ## bigstatsr 1.1.1
 
 - Fix `In .self$nrow * .self$ncol : NAs produced by integer overflow`.

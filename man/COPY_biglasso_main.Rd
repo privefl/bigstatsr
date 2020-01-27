@@ -26,7 +26,7 @@ COPY_biglasso_main(
   dfmax = 50000,
   lambda.min = if (n > p) 1e-04 else 0.001,
   return.all = FALSE,
-  warn = FALSE,
+  warn = TRUE,
   ncores = 1
 )
 }
@@ -87,7 +87,8 @@ now deprecated.}
 
 \item{return.all}{Deprecated. Now always return all models.}
 
-\item{warn}{Deprecated. Now return the reason of completion as \verb{$message}.}
+\item{warn}{Whether to warn if some models may not have reached a minimum.
+Default is \code{TRUE}.}
 }
 \description{
 Fit solution paths for linear or logistic regression models penalized by

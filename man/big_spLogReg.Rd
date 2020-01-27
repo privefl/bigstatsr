@@ -20,6 +20,7 @@ big_spLogReg(
   nlam.min = 50,
   n.abort = 10,
   dfmax = 50000,
+  warn = TRUE,
   ncores = 1,
   ...
 )
@@ -79,6 +80,9 @@ set must decrease before stopping. Default is \code{10}.}
 \code{50e3} because, for large data sets, computational burden may be
 heavy for models with a large number of nonzero coefficients.}
 
+\item{warn}{Whether to warn if some models may not have reached a minimum.
+Default is \code{TRUE}.}
+
 \item{ncores}{Number of cores used. Default doesn't use parallelism.
 You may use \link{nb_cores}.}
 
@@ -93,7 +97,6 @@ The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than \code{eps} times the null deviance.
 Default value is \code{1e-5}.}
     \item{\code{max.iter}}{Maximum number of iterations. Default is \code{1000}.}
-    \item{\code{warn}}{Deprecated. Now return the reason of completion as \verb{$message}.}
     \item{\code{return.all}}{Deprecated. Now always return all models.}
   }}
 }
@@ -146,11 +149,12 @@ ind.test <- setdiff(rows_along(X), ind.train)
 # fitting model for multiple lambdas and alphas
 test <- big_spLogReg(X, y01[ind.train], ind.train = ind.train,
                      covar.train = covar[ind.train, ],
-                     alphas = c(1, 0.5, 0.1, 0.01))
+                     alphas = c(1, 0.5, 0.1, 0.01), warn = FALSE)
 
 # peek at the models
 plot(test)
-summary(test)
+summary(test, sort = TRUE)
+summary(test, sort = TRUE)$message
 
 # prediction for other data -> only the best alpha is used
 summary(test, best.only = TRUE)

@@ -174,7 +174,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #'   which set each index of the training set is in. Default randomly assigns
 #'   these values but it can be useful to set this vector for reproducibility,
 #'   or if you want to refine the grid-search over `alphas` using the same sets.
-#' @param warn Deprecated. Now return the reason of completion as `$message`.
+#' @param warn Whether to warn if some models may not have reached a minimum.
+#'   Default is `TRUE`.
 #' @param return.all Deprecated. Now always return all models.
 #' @param nlam.min Minimum number of lambda values to investigate. Default is `50`.
 #' @param n.abort Number of lambda values for which prediction on the validation
@@ -208,10 +209,9 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                dfmax = 50e3,
                                lambda.min = `if`(n > p, .0001, .001),
                                return.all = FALSE,
-                               warn = FALSE,
+                               warn = TRUE,
                                ncores = 1) {
 
-  if (!missing(warn)) warning2("Parameter 'warn' is deprecated.")
   if (!missing(return.all)) warning2("Parameter 'return.all' is deprecated.")
   if (!missing(lambda.min)) {
     lambda.min.ratio <- lambda.min
@@ -332,7 +332,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
              `if`(nb_novar == 1, "", "s"), `if`(nb_novar == 1, "has", "have"),
              "Access remaining columns with 'attr(<object>, \"ind.col\")'.")
 
-  structure(
+  res <- structure(
     cross.res,
     class = "big_sp_list",
     family = family,
@@ -342,6 +342,12 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     pf = pf.keep,
     base = base.train0
   )
+
+  if (warn && !all(summary(res)$all_conv))
+    warning2("Some models may not have reached a minimum; %s",
+             "check with summary() and plot().")
+
+  res
 }
 
 ################################################################################
@@ -373,7 +379,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritParams COPY_biglasso_main
-#' @inheritDotParams COPY_biglasso_main lambda.min.ratio eps max.iter warn return.all
+#' @inheritDotParams COPY_biglasso_main lambda.min.ratio eps max.iter return.all
 #'
 #' @return Return an object of class `big_sp_list` (a list of `length(alphas)`
 #'   x `K`) that has 3 methods `predict`, `summary` and `plot`.
@@ -412,6 +418,7 @@ big_spLinReg <- function(X, y.train,
                          nlam.min = 50,
                          n.abort = 10,
                          dfmax = 50e3,
+                         warn = TRUE,
                          ncores = 1,
                          ...) {
 
@@ -429,7 +436,7 @@ big_spLinReg <- function(X, y.train,
 #'
 #' @inheritParams bigstatsr-package
 #' @inheritParams COPY_biglasso_main
-#' @inheritDotParams COPY_biglasso_main lambda.min.ratio eps max.iter warn return.all
+#' @inheritDotParams COPY_biglasso_main lambda.min.ratio eps max.iter return.all
 #'
 #' @inherit big_spLinReg return description details seealso references
 #'
@@ -450,6 +457,7 @@ big_spLogReg <- function(X, y01.train,
                          nlam.min = 50,
                          n.abort = 10,
                          dfmax = 50e3,
+                         warn = TRUE,
                          ncores = 1,
                          ...) {
 

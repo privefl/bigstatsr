@@ -13,10 +13,12 @@ ind.test <- setdiff(rows_along(X), ind.train)
 # fitting model for multiple lambdas and alphas
 test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
                      covar.train = covar[ind.train, ],
-                     alphas = c(1, 0.5, 0.1, 0.01))
+                     alphas = c(1, 0.5, 0.1, 0.01), warn = FALSE)
+
 # peek at the models
 plot(test)
-summary(test)
+summary(test, sort = TRUE)
+summary(test, sort = TRUE)$message
 
 # prediction for other data -> only the best alpha is used
 summary(test, best.only = TRUE)
