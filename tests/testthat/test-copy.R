@@ -95,6 +95,7 @@ test_that("Copy with conversion", {
 ################################################################################
 
 test_that("Copy from big.matrix", {
+  skip_if_not_installed("bigmemory")
   X <- bigmemory::big.matrix(10, 10, shared = FALSE)
   X2 <- big_copy(X)
   expect_equal(X2[], X[])

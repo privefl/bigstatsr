@@ -6,6 +6,8 @@ context("BIGMEMORY")
 
 test_that("Conversion to big.matrix works", {
 
+  skip_if_not_installed("bigmemory")
+
   for (t in c("raw", "integer", "float", "double")) {
 
     X <- FBM(10, 10, type = t, init = 0)
@@ -17,14 +19,6 @@ test_that("Conversion to big.matrix works", {
     expect_identical(typeof(X2), typeof(X))
     if (t != "float" && not_cran)
       expect_equal(as.numeric(X2[1]), as.numeric(X[1]))
-
-    # Product works with BM and FBM (of type 'double')
-    library(bigalgebra)
-    A <- matrix(1, 10, 10)
-    if (t == "double") {
-      expect_is(X %*% A, "matrix")
-      expect_s4_class(X2 %*% A, "big.matrix")
-    }
 
     # Permissions
     X$is_read_only <- TRUE

@@ -30,7 +30,7 @@
 #'
 #' # Copy the FBM with another code
 #' X.code3 <- X.code$copy(code = rnorm(256))
-#' stopifnot(all.equal(X.code$code256, code))
+#' all.equal(X.code$code256, code)
 #'
 #' @include FBM.R
 #'

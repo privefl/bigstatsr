@@ -1,3 +1,7 @@
+## bigstatsr 1.1.4
+
+- Remove some 'Suggests' dependencies.
+
 ## bigstatsr 1.1.3
 
 - Add a new column `$all_conv` to output of `summary()` for `big_spLinReg()` and `big_spLogReg()` to check whether all models have stopped because of "no more improvement". Also add a new parameter `sort` to `summary()`.

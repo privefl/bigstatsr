@@ -259,7 +259,7 @@ test_that("No copy is made", {
       X[] <- x
       diff <- gc() - tmp
       mb <- tail(diff["Vcells", ], 1)
-      stopifnot(names(mb) == "(Mb)")
+      expect_true(names(mb) == "(Mb)")
       expect_lt(mb, size / 10)
     }
   }

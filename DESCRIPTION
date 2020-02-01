@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 1.1.3
-Date: 2020-01-23
+Version: 1.1.4
+Date: 2020-02-01
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 
@@ -43,16 +43,13 @@ LinkingTo:
     RcppArmadillo,
     rmio (>= 0.1.3)
 Suggests: 
-    bigalgebra,
     biglasso,
     bigmemory (>= 4.5.33),
     covr,
     glmnet,
     hexbin,
     memuse,
-    microbenchmark,
     ModelMetrics,
-    RcppEigen,
     RhpcBLASctl,
     spelling (>= 1.2),
     testthat
