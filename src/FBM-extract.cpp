@@ -79,9 +79,8 @@ Matrix<RTYPE> extractMat(SubBMAcc<T> macc) {
   return res;
 }
 
-#define EXTRACT_MAT(BM_TYPE, RTYPE) {                                          \
-  return extractMat<BM_TYPE, RTYPE>(SubBMAcc<BM_TYPE>(xpBM, rowInd - 1,        \
-                                                      colInd - 1));            \
+#define EXTRACT_MAT(BM_TYPE, RTYPE) {                                            \
+  return extractMat<BM_TYPE, RTYPE>(SubBMAcc<BM_TYPE>(xpBM, rowInd, colInd, 1)); \
 }
 
 // [[Rcpp::export]]
@@ -101,7 +100,7 @@ RObject extractMat(RObject xpbm,
   case 8:
     EXTRACT_MAT(double,         REALSXP)
   case 6: {
-      SubBMAcc<float> macc(xpBM, rowInd - 1, colInd - 1);
+      SubBMAcc<float> macc(xpBM, rowInd, colInd, 1);
       NumericMatrix res = extractMat<float, REALSXP>(macc);
       return conv_NA_float(res);
     }

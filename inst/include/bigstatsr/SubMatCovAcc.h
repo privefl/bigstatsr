@@ -10,19 +10,16 @@ using std::size_t;
 
 /******************************************************************************/
 
-#define SUBMATCOVACC(T)     SubMatCovAcc<T>(xpBM, rows,     cols, covar)
-#define SUBMATCOVACC_VAL(T) SubMatCovAcc<T>(xpBM, rows_val, cols, covar_val)
+#define SUBMATCOVACC(T)     SubMatCovAcc<T>(xpBM, row_idx,     col_idx, covar,     1)
+#define SUBMATCOVACC_VAL(T) SubMatCovAcc<T>(xpBM, row_idx_val, col_idx, covar_val, 1)
 
-#define RAWSUBMATCOVACC     RawSubMatCovAcc(xpBM, rows,     cols, covar,     BM["code256"])
-#define RAWSUBMATCOVACC_VAL RawSubMatCovAcc(xpBM, rows_val, cols, covar_val, BM["code256"])
+#define RAWSUBMATCOVACC     RawSubMatCovAcc(xpBM, row_idx,     col_idx, covar,     BM["code256"], 1)
+#define RAWSUBMATCOVACC_VAL RawSubMatCovAcc(xpBM, row_idx_val, col_idx, covar_val, BM["code256"], 1)
 
 
 #define DISPATCH_SUBMATCOVACC_VAL(CALL) {                                      \
                                                                                \
   XPtr<FBM> xpBM = BM["address"];                                              \
-  IntegerVector rows     = row_idx     - 1;                                    \
-  IntegerVector cols     = col_idx     - 1;                                    \
-  IntegerVector rows_val = row_idx_val - 1;                                    \
                                                                                \
   if (BM.exists("code256")) {                                                  \
     CALL(RAWSUBMATCOVACC, RAWSUBMATCOVACC_VAL);                                \
@@ -47,8 +44,6 @@ using std::size_t;
 #define DISPATCH_SUBMATCOVACC(CALL) {                                          \
                                                                                \
   XPtr<FBM> xpBM = BM["address"];                                              \
-  IntegerVector rows = row_idx - 1;                                            \
-  IntegerVector cols = col_idx - 1;                                            \
                                                                                \
   if (BM.exists("code256")) {                                                  \
     CALL(RAWSUBMATCOVACC);                                                     \
@@ -79,8 +74,9 @@ public:
   SubMatCovAcc(FBM * xpBM,
                const IntegerVector& row_ind,
                const IntegerVector& col_ind,
-               const NumericMatrix& covar)
-    : SubBMAcc<T>(xpBM, row_ind, col_ind) {
+               const NumericMatrix& covar,
+               int sub = 0)
+    : SubBMAcc<T>(xpBM, row_ind, col_ind, sub) {
 
     _ncolsub = col_ind.size();
 
@@ -122,8 +118,9 @@ public:
                   const IntegerVector& row_ind,
                   const IntegerVector& col_ind,
                   const NumericMatrix& covar,
-                  const NumericVector& code256)
-    : SubMatCovAcc<unsigned char>(xpBM, row_ind, col_ind, covar) {
+                  const NumericVector& code256,
+                  int sub = 0)
+    : SubMatCovAcc<unsigned char>(xpBM, row_ind, col_ind, covar, sub) {
       _code256 = code256;
     }
 

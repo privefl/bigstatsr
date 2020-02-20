@@ -308,11 +308,11 @@ void replace_mat_one(SubBMAcc_RW<BM_TYPE> macc, CTYPE val,
 }
 
 #define REPLACE_MAT_ONE(BM_TYPE, VEC) {                                        \
-return replace_mat_one(SubBMAcc_RW<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), VEC[0]); \
+return replace_mat_one(SubBMAcc_RW<BM_TYPE>(xpBM, rowInd, colInd, 1), VEC[0]); \
 }
 
 #define REPLACE_MAT_ONE_CONV(BM_TYPE, VEC, CONV) {                             \
-  SubBMAcc_RW<BM_TYPE> macc(xpBM, rowInd - 1, colInd - 1);                     \
+  SubBMAcc_RW<BM_TYPE> macc(xpBM, rowInd, colInd, 1);                          \
   return replace_mat_one(macc, VEC[0], CONV);                                  \
 }
 
@@ -342,7 +342,7 @@ void replace_mat(SubBMAcc_RW<BM_TYPE> macc,
 }
 
 #define REPLACE_MAT(BM_TYPE, MAT) {                                            \
-  return replace_mat(SubBMAcc_RW<BM_TYPE>(xpBM, rowInd - 1, colInd - 1), MAT); \
+  return replace_mat(SubBMAcc_RW<BM_TYPE>(xpBM, rowInd, colInd, 1), MAT);      \
 }
 
 template <typename BM_TYPE, int RTYPE, typename CTYPE>
@@ -359,7 +359,7 @@ void replace_mat_conv(SubBMAcc_RW<BM_TYPE> macc,
 }
 
 #define REPLACE_MAT_CONV(BM_TYPE, MAT, CONV) {                                 \
-  SubBMAcc_RW<BM_TYPE> macc(xpBM, rowInd - 1, colInd - 1);                     \
+  SubBMAcc_RW<BM_TYPE> macc(xpBM, rowInd, colInd, 1);                          \
   return replace_mat_conv(macc, MAT, CONV);                                    \
 }
 

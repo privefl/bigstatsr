@@ -15,8 +15,9 @@ public:
   SubBMCode256Acc(FBM * xpBM,
                   const IntegerVector& row_ind,
                   const IntegerVector& col_ind,
-                  const NumericVector& code256)
-    : SubBMAcc<unsigned char>(xpBM, row_ind, col_ind) {
+                  const NumericVector& code256,
+                  int sub = 0)
+    : SubBMAcc<unsigned char>(xpBM, row_ind, col_ind, sub) {
       _code256 = code256;
     }
 
@@ -31,14 +32,12 @@ protected:
 
 /******************************************************************************/
 
-#define SUBMATACC(T) SubBMAcc<T>(xpBM, rows, cols)
-#define RAWSUBMATACC SubBMCode256Acc(xpBM, rows, cols, BM["code256"])
+#define SUBMATACC(T) SubBMAcc<T>(xpBM, rowInd, colInd, 1)
+#define RAWSUBMATACC SubBMCode256Acc(xpBM, rowInd, colInd, BM["code256"], 1)
 
 #define DISPATCH_SUBMATACC(CALL) {                                             \
                                                                                \
   XPtr<FBM> xpBM = BM["address"];                                              \
-  IntegerVector rows = rowInd - 1;                                             \
-  IntegerVector cols = colInd - 1;                                             \
                                                                                \
   if (BM.exists("code256")) {                                                  \
     CALL(RAWSUBMATACC);                                                        \
