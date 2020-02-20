@@ -12,6 +12,24 @@ using std::size_t;
 
 /******************************************************************************/
 
+inline std::vector<size_t> vec_int_to_size(const IntegerVector& vec_ind,
+                                           size_t limit,
+                                           int sub = 0) {
+
+  int n = vec_ind.size();
+  std::vector<size_t> vec_ind2(n);
+
+  for (int i = 0; i < n; i++) {
+    size_t ind = static_cast<size_t>(vec_ind[i] - sub);
+    myassert_bounds(ind, limit);
+    vec_ind2[i] = ind;
+  }
+
+  return vec_ind2;
+}
+
+/******************************************************************************/
+
 template <typename T>
 class BMAcc_RW {
 public:
@@ -46,30 +64,11 @@ class SubBMAcc_RW : public BMAcc_RW<T> {
 public:
   SubBMAcc_RW(FBM_RW * xpBM,
               const IntegerVector& row_ind,
-              const IntegerVector& col_ind)
+              const IntegerVector& col_ind,
+              int sub = 0)
     : BMAcc_RW<T>(xpBM) {
-
-      size_t ind, i, j;
-
-      size_t LIM_N = xpBM->nrow();
-      size_t n = row_ind.size();
-      std::vector<size_t> row_ind2(n);
-      for (i = 0; i < n; i++) {
-        ind = static_cast<size_t>(row_ind[i]);
-        myassert_bounds(ind, LIM_N);
-        row_ind2[i] = ind;
-      }
-      _row_ind = row_ind2;
-
-      size_t LIM_M = xpBM->ncol();
-      size_t m = col_ind.size();
-      std::vector<size_t> col_ind2(m);
-      for (j = 0; j < m; j++) {
-        ind = static_cast<size_t>(col_ind[j]);
-        myassert_bounds(ind, LIM_M);
-        col_ind2[j] = ind;
-      }
-      _col_ind = col_ind2;
+      _row_ind = vec_int_to_size(row_ind, xpBM->nrow(), sub);
+      _col_ind = vec_int_to_size(col_ind, xpBM->ncol(), sub);
     }
 
   inline T& operator()(size_t i, size_t j) {
@@ -110,6 +109,23 @@ public:
   size_t ncol() const { return _ncol; }
   size_t size() const { return _nrow * _ncol; }
 
+  template <class C>
+  void extract_submat(C& to_fill,
+                      const IntegerVector& ind_row,
+                      const IntegerVector& ind_col,
+                      int sub = 0) {
+
+    std::vector<size_t> ind_row2 = vec_int_to_size(ind_row, _nrow, sub);
+    std::vector<size_t> ind_col2 = vec_int_to_size(ind_col, _ncol, sub);
+
+    int n = ind_row.size();
+    int m = ind_col.size();
+
+    for (int j = 0; j < m; j++)
+      for (int i = 0; i < n; i++)
+        to_fill(i, j) = this->operator()(ind_row2[i], ind_col2[j]);
+  }
+
 protected:
   const T* _pMat;
   size_t _nrow;
@@ -123,30 +139,11 @@ class SubBMAcc : public BMAcc<T> {
 public:
   SubBMAcc(FBM * xpBM,
            const IntegerVector& row_ind,
-           const IntegerVector& col_ind)
+           const IntegerVector& col_ind,
+           int sub = 0)
     : BMAcc<T>(xpBM) {
-
-      size_t ind, i, j;
-
-      size_t LIM_N = xpBM->nrow();
-      size_t n = row_ind.size();
-      std::vector<size_t> row_ind2(n);
-      for (i = 0; i < n; i++) {
-        ind = static_cast<size_t>(row_ind[i]);
-        myassert_bounds(ind, LIM_N);
-        row_ind2[i] = ind;
-      }
-      _row_ind = row_ind2;
-
-      size_t LIM_M = xpBM->ncol();
-      size_t m = col_ind.size();
-      std::vector<size_t> col_ind2(m);
-      for (j = 0; j < m; j++) {
-        ind = static_cast<size_t>(col_ind[j]);
-        myassert_bounds(ind, LIM_M);
-        col_ind2[j] = ind;
-      }
-      _col_ind = col_ind2;
+      _row_ind = vec_int_to_size(row_ind, xpBM->nrow(), sub);
+      _col_ind = vec_int_to_size(col_ind, xpBM->ncol(), sub);
     }
 
   inline T operator()(size_t i, size_t j) {
