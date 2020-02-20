@@ -58,11 +58,7 @@ big_prodMat <- function(X, A.col,
     center2 <- crossprod(as_vec(center), A.col)
   }
 
-  res <- big_apply(X, a.FUN = function(X, ind, M, ind.row, ind.col) {
-    X[ind.row, ind.col[ind], drop = FALSE] %*% M[ind, , drop = FALSE]
-  }, a.combine = plus, ind = seq_along(ind.col),
-  ncores = ncores, block.size = block.size,
-  M = A.col, ind.row = ind.row, ind.col = ind.col)
+  res <- prod_FBM_block_mat(X, A.col, ind.row, ind.col, block.size)
 
   `if`(is.null(center), res, centering(res, center2))
 }

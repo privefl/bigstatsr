@@ -109,19 +109,6 @@ public:
   size_t ncol() const { return _ncol; }
   size_t size() const { return _nrow * _ncol; }
 
-  template <class C>
-  void extract_submat(C& to_fill,
-                      const std::vector<size_t>& ind_row,
-                      const std::vector<size_t>& ind_col) {
-
-    int n = ind_row.size();
-    int m = ind_col.size();
-
-    for (int j = 0; j < m; j++)
-      for (int i = 0; i < n; i++)
-        to_fill(i, j) = this->operator()(ind_row[i], ind_col[j]);
-  }
-
 protected:
   const T* _pMat;
   size_t _nrow;

@@ -61,6 +61,10 @@ getXPtrFBM_RW <- function(path, n, m, type) {
     .Call(`_bigstatsr_getXPtrFBM_RW`, path, n, m, type)
 }
 
+prod_FBM_block_mat <- function(BM, Y, rowInd, colInd, max_size) {
+    .Call(`_bigstatsr_prod_FBM_block_mat`, BM, Y, rowInd, colInd, max_size)
+}
+
 prod_FBM_mat <- function(BM, A) {
     .Call(`_bigstatsr_prod_FBM_mat`, BM, A)
 }
