@@ -24,6 +24,8 @@ bench::mark(
   big_prodMat(X, M[ind2, ], ind.row = ind, ind.col = ind2),
   mult_sub_int_dbl(X, M[ind2, ], ind, ind2),
   mult_sub_int_dbl2(X, M[ind2, ], ind, ind2),
+  mult_sub_int_dbl3(X, M[ind2, ], ind, ind2, 99),
+  mult_sub_int_dbl3(X, M[ind2, ], ind, ind2, 999),
   mult_sub_int_dbl_arma(X, M[ind2, ], ind, ind2),
   iterations = 10
 )
@@ -36,8 +38,30 @@ bench::mark(
 
 #   expression                                                    min   median `itr/sec` mem_alloc `gc/sec` n_itr
 #   <bch:expr>                                               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl> <int>
-# 1 X[ind, ind2] %*% M[ind2, ]                               434.07ms 484.01ms     2.09      287MB     1.39     6
-# 2 big_prodMat(X, M[ind2, ], ind.row = ind, ind.col = ind2) 464.65ms 502.38ms     1.97      288MB     1.97     5
-# 3 mult_sub_int_dbl(X, M[ind2, ], ind, ind2)                972.06ms    1.13s     0.898     784KB     0       10
-# 4 mult_sub_int_dbl2(X, M[ind2, ], ind, ind2)               373.21ms 392.44ms     2.49      789KB     0       10
-# 5 mult_sub_int_dbl_arma(X, M[ind2, ], ind, ind2)              1.02s    1.11s     0.865     784KB     0       10
+# 1 X[ind, ind2] %*% M[ind2, ]                               427.97ms  478.6ms     2.13      287MB    0.911     7
+# 2 big_prodMat(X, M[ind2, ], ind.row = ind, ind.col = ind2) 477.85ms 660.01ms     1.45      288MB    0.969     6
+# 3 mult_sub_int_dbl(X, M[ind2, ], ind, ind2)                951.17ms    1.03s     0.924     784KB    0        10
+# 4 mult_sub_int_dbl2(X, M[ind2, ], ind, ind2)                378.9ms 582.56ms     1.80      789KB    0        10
+# 5 mult_sub_int_dbl3(X, M[ind2, ], ind, ind2, 99)           320.53ms    339ms     2.85      784KB    0        10
+# 6 mult_sub_int_dbl3(X, M[ind2, ], ind, ind2, 999)          354.05ms 402.02ms     2.35      784KB    0        10
+# 7 mult_sub_int_dbl_arma(X, M[ind2, ], ind, ind2)              1.25s    1.29s     0.773     789KB    0        10
+
+microbenchmark::microbenchmark(
+  X[ind, ind2] %*% M[ind2, ],
+  big_prodMat(X, M[ind2, ], ind.row = ind, ind.col = ind2),
+  mult_sub_int_dbl(X, M[ind2, ], ind, ind2),
+  mult_sub_int_dbl2(X, M[ind2, ], ind, ind2),
+  mult_sub_int_dbl3(X, M[ind2, ], ind, ind2, 99),
+  mult_sub_int_dbl3(X, M[ind2, ], ind, ind2, 999),
+  mult_sub_int_dbl_arma(X, M[ind2, ], ind, ind2),
+  times = 10
+)
+# Unit: milliseconds
+#                                                     expr       min        lq      mean    median        uq       max neval
+#                               X[ind, ind2] %*% M[ind2, ]  474.2421  539.7378  614.2124  599.2641  713.3924  770.9940    10
+# big_prodMat(X, M[ind2, ], ind.row = ind, ind.col = ind2)  451.8309  515.1636  613.8332  583.0536  616.8157 1004.6226    10
+#                mult_sub_int_dbl(X, M[ind2, ], ind, ind2) 1002.1308 1023.6569 1107.5483 1078.6188 1165.8623 1344.8747    10
+#               mult_sub_int_dbl2(X, M[ind2, ], ind, ind2)  396.9892  420.7113  589.1570  510.7337  753.4485  894.5825    10
+#           mult_sub_int_dbl3(X, M[ind2, ], ind, ind2, 99)  201.5534  229.9221  268.3901  253.8328  271.9938  474.5281    10
+#          mult_sub_int_dbl3(X, M[ind2, ], ind, ind2, 999)  284.2305  316.4634  384.4945  330.3973  349.6271  650.9986    10
+#           mult_sub_int_dbl_arma(X, M[ind2, ], ind, ind2)  976.6248 1028.2316 1094.5684 1098.5552 1135.8651 1197.4008    10

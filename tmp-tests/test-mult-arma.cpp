@@ -26,8 +26,11 @@ arma::mat mult_sub_int_dbl(Environment fbm,
   XPtr<FBM> xpBM = fbm["address"];
   BMAcc<int> macc(xpBM);
 
-  arma::Mat<int> x(rowInd.size(), colInd.size());
-  macc.extract_submat(x, rowInd, colInd, 1);
+  std::vector<size_t> ind_row = vec_int_to_size(rowInd, macc.nrow(), 1);
+  std::vector<size_t> ind_col = vec_int_to_size(colInd, macc.ncol(), 1);
+
+  arma::Mat<int> x(ind_row.size(), colInd.size());
+  macc.extract_submat(x, ind_row, ind_col);
 
   return x * y;
 }
@@ -41,15 +44,18 @@ arma::mat mult_sub_int_dbl2(Environment fbm,
   XPtr<FBM> xpBM = fbm["address"];
   BMAcc<int> macc(xpBM);
 
-  arma::Mat<double> x(rowInd.size(), colInd.size());
-  macc.extract_submat(x, rowInd, colInd, 1);
+  std::vector<size_t> ind_row = vec_int_to_size(rowInd, macc.nrow(), 1);
+  std::vector<size_t> ind_col = vec_int_to_size(colInd, macc.ncol(), 1);
+
+  arma::mat x(ind_row.size(), colInd.size());
+  macc.extract_submat(x, ind_row, ind_col);
 
   return x * y;
 }
 
-arma::urowvec vec_int_to_arma(const IntegerVector& vec_ind) {
+arma::uvec vec_int_to_arma(const IntegerVector& vec_ind) {
   int n = vec_ind.size();
-  arma::urowvec res(n);
+  arma::uvec res(n);
   for (int i = 0; i < n; i++) res[i] = vec_ind[i] - 1;
   return res;
 }
@@ -66,6 +72,42 @@ arma::mat mult_sub_int_dbl_arma(Environment fbm,
   return x.submat(vec_int_to_arma(rowInd), vec_int_to_arma(colInd)) * y;
 }
 
+// [[Rcpp::export]]
+arma::mat mult_sub_int_dbl3(Environment fbm,
+                            const arma::mat& y,
+                            const IntegerVector& rowInd,
+                            const IntegerVector& colInd,
+                            int max_size) {
+
+  XPtr<FBM> xpBM = fbm["address"];
+  BMAcc<int> macc(xpBM);
+
+  int n = rowInd.size();
+  int m = colInd.size();
+
+  arma::mat prod(n, y.n_cols, arma::fill::zeros);
+  arma::mat x(n, max_size);
+  std::vector<size_t> rows = vec_int_to_size(rowInd, macc.nrow(), 1);
+  std::vector<size_t> sub_cols(max_size);
+
+  for (int j = 0; j < m; ) {
+
+    int k;
+    for (k = 0; k < max_size && j < m; k++, j++) sub_cols[k] = colInd[j] - 1;
+
+    if (k < max_size) {  // last block might be shorter
+      sub_cols.resize(k);
+      macc.extract_submat(x, rows, sub_cols);
+      prod += x.head_cols(k) * y.rows(j - k, j - 1);
+    } else {
+      macc.extract_submat(x, rows, sub_cols);
+      prod += x * y.rows(j - max_size, j - 1);
+    }
+  }
+
+  return prod;
+}
+
 
 /*** R
 A <- matrix(1:4, 2)
@@ -80,6 +122,7 @@ mult_raw_dbl(C, B)
 X <- bigstatsr::FBM(10, 20, type = "integer", init = 1:200)
 mult_sub_int_dbl(X, B, 1:5, 1:2)
 mult_sub_int_dbl2(X, B, 1:5, 1:2)
+mult_sub_int_dbl3(X, B, 1:5, 1:2, 1)
 X[1:5, 1:2] %*% B
 mult_sub_int_dbl_arma(X, B, 1:5, 1:2)
 */

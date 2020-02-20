@@ -111,19 +111,15 @@ public:
 
   template <class C>
   void extract_submat(C& to_fill,
-                      const IntegerVector& ind_row,
-                      const IntegerVector& ind_col,
-                      int sub = 0) {
-
-    std::vector<size_t> ind_row2 = vec_int_to_size(ind_row, _nrow, sub);
-    std::vector<size_t> ind_col2 = vec_int_to_size(ind_col, _ncol, sub);
+                      const std::vector<size_t>& ind_row,
+                      const std::vector<size_t>& ind_col) {
 
     int n = ind_row.size();
     int m = ind_col.size();
 
     for (int j = 0; j < m; j++)
       for (int i = 0; i < n; i++)
-        to_fill(i, j) = this->operator()(ind_row2[i], ind_col2[j]);
+        to_fill(i, j) = this->operator()(ind_row[i], ind_col[j]);
   }
 
 protected:
