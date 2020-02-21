@@ -146,4 +146,49 @@ protected:
 
 /******************************************************************************/
 
+// For biglasso
+template<typename T>
+class SubMatCovAcc : public SubBMAcc<T> {
+public:
+  SubMatCovAcc(FBM * xpBM,
+               const IntegerVector& row_ind,
+               const IntegerVector& col_ind,
+               const NumericMatrix& covar,
+               int sub = 0)
+    : SubBMAcc<T>(xpBM, row_ind, col_ind, sub) {
+
+      _ncolsub = col_ind.size();
+
+      if (covar.nrow() != 0) {
+        myassert_size(row_ind.size(), covar.nrow());
+        _ncoladd = covar.ncol();
+        _covar = covar;
+      }  else {
+        _ncoladd = 0;
+      }
+    }
+
+  inline double operator() (size_t i, size_t j) {
+    int j2 = j - _ncolsub;
+    if (j2 < 0) {
+      // https://stackoverflow.com/a/32087373/6103040
+      return SubBMAcc<T>::operator()(i, j);
+      // https://stackoverflow.com/a/7076312/6103040
+      // return this->_pMat[_row_ind[i] + _col_ind[j] * this->_nrow];
+    } else {
+      return _covar(i, j2);
+    }
+  }
+
+  size_t nrow() const { return this->_row_ind.size(); }
+  size_t ncol() const { return _ncolsub + _ncoladd; }
+
+protected:
+  size_t _ncolsub;
+  size_t _ncoladd;
+  NumericMatrix _covar;
+};
+
+/******************************************************************************/
+
 #endif // BM_ACC_H
