@@ -30,7 +30,7 @@ if (not_cran) {
 
     for (t in TEST.TYPES) {
 
-      X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
+      X <- `if`(t == "raw", asFBMcode(x, TRUE), big_copy(x, type = t))
 
       for (covar in sample(lcovar, 1)) {
 
@@ -93,7 +93,7 @@ if (not_cran) {
 
     for (t in TEST.TYPES) {
 
-      X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
+      X <- `if`(t == "raw", asFBMcode(x, TRUE), big_copy(x, type = t))
 
       ind.col <- cols_along(X)[-set]
       ind.novar <- sample(ind.col, 10); X[, ind.novar] <- 100
@@ -171,7 +171,7 @@ if (not_cran) {
 
     for (t in TEST.TYPES) {
 
-      X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
+      X <- `if`(t == "raw", asFBMcode(x, TRUE), big_copy(x, type = t))
 
       for (covar in sample(lcovar, 1)) {
 
@@ -208,7 +208,7 @@ if (not_cran) {
 
     for (t in TEST.TYPES) {
 
-      X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
+      X <- `if`(t == "raw", asFBMcode(x, TRUE), big_copy(x, type = t))
 
       for (covar in sample(lcovar, 1)) {
 
@@ -293,6 +293,24 @@ test_that("Warns if not all converged", {
   expect_identical(test_summary2$alpha, ALPHAS)
   expect_identical(test_summary2$all_conv, c(TRUE, FALSE, FALSE, FALSE))
   expect_false(is.unsorted(test_summary2$validation_loss))
+})
+
+################################################################################
+
+test_that("code is used for FBM.code256", {
+
+  # simulating some data
+  N <- 230
+  M <- 730
+  X <- FBM.code256(N, M, init = rnorm(N * M, sd = 5), code = rnorm(256))
+  y <- rowSums(X[, 1:10]) + rnorm(N)
+  covar <- matrix(rnorm(N * 3), N)
+
+  test <- big_spLinReg(X, y, K = 5)
+
+  X2 <- X$copy(code = -X$code256)
+  test2 <- big_spLinReg(X2, y, K = 5)
+  expect_lt(cor(summary(test)$beta[[1]], summary(test2)$beta[[1]]), -0.9)
 })
 
 ################################################################################
