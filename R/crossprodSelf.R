@@ -47,9 +47,9 @@ big_crossprodSelf <- function(
 
     K[ind1, ind1] <- crossprod(tmp1)
 
-    lower <- tail(ind1, 1) + 1L
-    if (lower <= m) {
-      ind2 <- lower:m
+    next_lower <- intervals[j, "upper"] + 1L
+    if (next_lower <= m) {
+      ind2 <- next_lower:m
       K.part <- big_cprodMat(X, tmp1, ind.row, ind.col[ind2],
                              block.size = block.size) # TODO: add ncores
       K[ind2, ind1] <- K.part
