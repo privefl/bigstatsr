@@ -56,27 +56,27 @@ BEGIN_RCPP
 END_RCPP
 }
 // extractVec
-RObject extractVec(RObject xpbm, const NumericVector& elemInd);
-RcppExport SEXP _bigstatsr_extractVec(SEXP xpbmSEXP, SEXP elemIndSEXP) {
+RObject extractVec(Environment BM, const NumericVector& elemInd);
+RcppExport SEXP _bigstatsr_extractVec(SEXP BMSEXP, SEXP elemIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type elemInd(elemIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(extractVec(xpbm, elemInd));
+    rcpp_result_gen = Rcpp::wrap(extractVec(BM, elemInd));
     return rcpp_result_gen;
 END_RCPP
 }
 // extractMat
-RObject extractMat(RObject xpbm, const IntegerVector& rowInd, const IntegerVector& colInd);
-RcppExport SEXP _bigstatsr_extractMat(SEXP xpbmSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
+RObject extractMat(Environment BM, const IntegerVector& rowInd, const IntegerVector& colInd);
+RcppExport SEXP _bigstatsr_extractMat(SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< RObject >::type xpbm(xpbmSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(extractMat(xpbm, rowInd, colInd));
+    rcpp_result_gen = Rcpp::wrap(extractMat(BM, rowInd, colInd));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -455,30 +455,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// decodeMat
-NumericMatrix decodeMat(const RawMatrix& source, const NumericVector& code);
-RcppExport SEXP _bigstatsr_decodeMat(SEXP sourceSEXP, SEXP codeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const RawMatrix& >::type source(sourceSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type code(codeSEXP);
-    rcpp_result_gen = Rcpp::wrap(decodeMat(source, code));
-    return rcpp_result_gen;
-END_RCPP
-}
-// decodeVec
-NumericVector decodeVec(const RawVector& source, const NumericVector& code);
-RcppExport SEXP _bigstatsr_decodeVec(SEXP sourceSEXP, SEXP codeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const RawVector& >::type source(sourceSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type code(codeSEXP);
-    rcpp_result_gen = Rcpp::wrap(decodeVec(source, code));
-    return rcpp_result_gen;
-END_RCPP
-}
 // GET_ERROR_TYPE
 const char* const GET_ERROR_TYPE();
 RcppExport SEXP _bigstatsr_GET_ERROR_TYPE() {
@@ -664,8 +640,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_bigcolvars", (DL_FUNC) &_bigstatsr_bigcolvars, 3},
     {"_bigstatsr_mycount1", (DL_FUNC) &_bigstatsr_mycount1, 4},
     {"_bigstatsr_mycount2", (DL_FUNC) &_bigstatsr_mycount2, 4},
-    {"_bigstatsr_decodeMat", (DL_FUNC) &_bigstatsr_decodeMat, 2},
-    {"_bigstatsr_decodeVec", (DL_FUNC) &_bigstatsr_decodeVec, 2},
     {"_bigstatsr_GET_ERROR_TYPE", (DL_FUNC) &_bigstatsr_GET_ERROR_TYPE, 0},
     {"_bigstatsr_GET_ERROR_DIM", (DL_FUNC) &_bigstatsr_GET_ERROR_DIM, 0},
     {"_bigstatsr_GET_ERROR_BOUNDS", (DL_FUNC) &_bigstatsr_GET_ERROR_BOUNDS, 0},

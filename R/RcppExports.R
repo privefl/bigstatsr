@@ -17,12 +17,12 @@ conv_NA_float <- function(source) {
     .Call(`_bigstatsr_conv_NA_float`, source)
 }
 
-extractVec <- function(xpbm, elemInd) {
-    .Call(`_bigstatsr_extractVec`, xpbm, elemInd)
+extractVec <- function(BM, elemInd) {
+    .Call(`_bigstatsr_extractVec`, BM, elemInd)
 }
 
-extractMat <- function(xpbm, rowInd, colInd) {
-    .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
+extractMat <- function(BM, rowInd, colInd) {
+    .Call(`_bigstatsr_extractMat`, BM, rowInd, colInd)
 }
 
 createFile <- function(fileName, nrow, ncol, type) {
@@ -127,14 +127,6 @@ mycount1 <- function(BM, rowInd, colInd, codeInd) {
 
 mycount2 <- function(BM, rowInd, colInd, codeInd) {
     .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
-}
-
-decodeMat <- function(source, code) {
-    .Call(`_bigstatsr_decodeMat`, source, code)
-}
-
-decodeVec <- function(source, code) {
-    .Call(`_bigstatsr_decodeVec`, source, code)
 }
 
 GET_ERROR_TYPE <- function() {

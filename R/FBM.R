@@ -375,9 +375,8 @@ NULL
 setMethod(
   '[', signature(x = "FBM"),
   Extract(
-    extract_vector = function(x, i) extractVec(x$address, i),
-    extract_matrix = function(x, i, j) extractMat(x$address, i, j)
-  )
+    extract_vector = extractVec,
+    extract_matrix = extractMat)
 )
 
 #' @param value The values to replace. Should be of length 1 or of the same

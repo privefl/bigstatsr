@@ -1,6 +1,6 @@
 /******************************************************************************/
 
-#include <bigstatsr/BMAcc.h>
+#include <bigstatsr/BMCodeAcc.h>
 
 using namespace Rcpp;
 using std::size_t;
@@ -20,8 +20,8 @@ NumericVector& conv_NA_float(NumericVector& source) {
 
 /******************************************************************************/
 
-template <typename T, int RTYPE>
-Vector<RTYPE> extractVec(BMAcc<T> macc, const NumericVector& elemInd) {
+template <int RTYPE, class C>
+Vector<RTYPE> _extract_vec(C macc, const NumericVector& elemInd) {
 
   size_t K = elemInd.size();
 
@@ -34,38 +34,41 @@ Vector<RTYPE> extractVec(BMAcc<T> macc, const NumericVector& elemInd) {
 }
 
 #define EXTRACT_VEC(BM_TYPE, RTYPE) {                                          \
-  return extractVec<BM_TYPE, RTYPE>(BMAcc<BM_TYPE>(xpBM), elemInd);            \
+  return _extract_vec<RTYPE>(BMAcc<BM_TYPE>(xpBM), elemInd);                   \
 }
 
 // [[Rcpp::export]]
-RObject extractVec(RObject xpbm,
+RObject extractVec(Environment BM,
                    const NumericVector& elemInd) {
 
-  XPtr<FBM> xpBM(xpbm);
+  XPtr<FBM> xpBM = BM["address"];
 
-  switch(xpBM->matrix_type()) {
-  case 1:
-    EXTRACT_VEC(unsigned char,  RAWSXP)
-  case 2:
-    EXTRACT_VEC(unsigned short, INTSXP)
-  case 4:
-    EXTRACT_VEC(int,            INTSXP)
-  case 8:
-    EXTRACT_VEC(double,         REALSXP)
-  case 6: {
-      BMAcc<float> macc(xpBM);
-      NumericVector res = extractVec<float, REALSXP>(macc, elemInd);
-      return conv_NA_float(res);
+  if (BM.exists("code256")) {
+    return _extract_vec<REALSXP>(BMCode256Acc(xpBM, BM["code256"]), elemInd);
+  } else {
+    switch(xpBM->matrix_type()) {
+    case 1:
+      EXTRACT_VEC(unsigned char,  RAWSXP)
+    case 2:
+      EXTRACT_VEC(unsigned short, INTSXP)
+    case 4:
+      EXTRACT_VEC(int,            INTSXP)
+    case 8:
+      EXTRACT_VEC(double,         REALSXP)
+    case 6: {
+        NumericVector res = _extract_vec<REALSXP>(BMAcc<float>(xpBM), elemInd);
+        return conv_NA_float(res);
+      }
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
     }
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 
 /******************************************************************************/
 
-template <typename T, int RTYPE>
-Matrix<RTYPE> extractMat(SubBMAcc<T> macc) {
+template <int RTYPE, class C>
+Matrix<RTYPE> _extract_mat(C macc) {
 
   size_t n = macc.nrow();
   size_t m = macc.ncol();
@@ -79,33 +82,38 @@ Matrix<RTYPE> extractMat(SubBMAcc<T> macc) {
   return res;
 }
 
-#define EXTRACT_MAT(BM_TYPE, RTYPE) {                                            \
-  return extractMat<BM_TYPE, RTYPE>(SubBMAcc<BM_TYPE>(xpBM, rowInd, colInd, 1)); \
+#define EXTRACT_MAT(BM_TYPE, RTYPE) {                                          \
+  return _extract_mat<RTYPE>(SubBMAcc<BM_TYPE>(xpBM, rowInd, colInd, 1));      \
 }
 
 // [[Rcpp::export]]
-RObject extractMat(RObject xpbm,
+RObject extractMat(Environment BM,
                    const IntegerVector& rowInd,
                    const IntegerVector& colInd) {
 
-  XPtr<FBM> xpBM(xpbm);
+  XPtr<FBM> xpBM = BM["address"];
 
-  switch(xpBM->matrix_type()) {
-  case 1:
-    EXTRACT_MAT(unsigned char,  RAWSXP)
-  case 2:
-    EXTRACT_MAT(unsigned short, INTSXP)
-  case 4:
-    EXTRACT_MAT(int,            INTSXP)
-  case 8:
-    EXTRACT_MAT(double,         REALSXP)
-  case 6: {
-      SubBMAcc<float> macc(xpBM, rowInd, colInd, 1);
-      NumericMatrix res = extractMat<float, REALSXP>(macc);
-      return conv_NA_float(res);
+  if (BM.exists("code256")) {
+    return _extract_mat<REALSXP>(
+      SubBMCode256Acc(xpBM, rowInd, colInd, BM["code256"], 1));
+  } else {
+    switch(xpBM->matrix_type()) {
+    case 1:
+      EXTRACT_MAT(unsigned char,  RAWSXP)
+    case 2:
+      EXTRACT_MAT(unsigned short, INTSXP)
+    case 4:
+      EXTRACT_MAT(int,            INTSXP)
+    case 8:
+      EXTRACT_MAT(double,         REALSXP)
+    case 6: {
+        NumericMatrix res = _extract_mat<REALSXP>(
+          SubBMAcc<float>(xpBM, rowInd, colInd, 1));
+        return conv_NA_float(res);
+      }
+    default:
+      throw Rcpp::exception(ERROR_TYPE);
     }
-  default:
-    throw Rcpp::exception(ERROR_TYPE);
   }
 }
 

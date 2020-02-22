@@ -22,6 +22,11 @@ public:
     return _code256[BMAcc<unsigned char>::operator()(i, j)];
   }
 
+  inline double operator[](size_t k) {
+    // https://stackoverflow.com/a/32087373/6103040
+    return _code256[BMAcc<unsigned char>::operator[](k)];
+  }
+
 protected:
   NumericVector _code256;
 };
@@ -43,6 +48,8 @@ public:
     // https://stackoverflow.com/a/32087373/6103040
     return _code256[SubBMAcc<unsigned char>::operator()(i, j)];
   }
+
+  // WARNING: operator[] is not redefined
 
 protected:
   NumericVector _code256;

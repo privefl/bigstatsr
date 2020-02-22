@@ -68,6 +68,8 @@ for (t in c(TEST.TYPES, "FBM.code256")) {
     for (test_acc in TEST.ACCS) {
 
       test_acc(mat[])
+      test_acc(mat[1])
+      test_acc(mat[1:5])
       test_acc(mat[, , drop = FALSE])
       test_acc(mat[, , drop = TRUE])
       test_acc(mat[1, ])
