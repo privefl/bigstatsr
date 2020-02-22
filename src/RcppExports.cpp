@@ -582,19 +582,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// scaling
-NumericMatrix& scaling(NumericMatrix& source, const NumericVector& mean, const NumericVector& sd);
-RcppExport SEXP _bigstatsr_scaling(SEXP sourceSEXP, SEXP meanSEXP, SEXP sdSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix& >::type source(sourceSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type sd(sdSEXP);
-    rcpp_result_gen = Rcpp::wrap(scaling(source, mean, sd));
-    return rcpp_result_gen;
-END_RCPP
-}
 // centering
 NumericMatrix& centering(NumericMatrix& source, const NumericVector& mean);
 RcppExport SEXP _bigstatsr_centering(SEXP sourceSEXP, SEXP meanSEXP) {
@@ -687,7 +674,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_transpose3", (DL_FUNC) &_bigstatsr_transpose3, 2},
     {"_bigstatsr_univLinReg5", (DL_FUNC) &_bigstatsr_univLinReg5, 5},
     {"_bigstatsr_IRLS", (DL_FUNC) &_bigstatsr_IRLS, 9},
-    {"_bigstatsr_scaling", (DL_FUNC) &_bigstatsr_scaling, 3},
     {"_bigstatsr_centering", (DL_FUNC) &_bigstatsr_centering, 2},
     {"_bigstatsr_incr_FBM_mat", (DL_FUNC) &_bigstatsr_incr_FBM_mat, 2},
     {"_bigstatsr_incr_FBM_vec", (DL_FUNC) &_bigstatsr_incr_FBM_vec, 2},

@@ -8,25 +8,6 @@ using std::size_t;
 /******************************************************************************/
 
 // [[Rcpp::export]]
-NumericMatrix& scaling(NumericMatrix& source,
-                       const NumericVector& mean,
-                       const NumericVector& sd) {
-
-  size_t n = source.rows();
-  size_t m = source.cols();
-  size_t i, j;
-
-  for (j = 0; j < m; j++) {
-    for (i = 0; i < n; i++) {
-      source(i, j) -= mean[j];
-      source(i, j) /= sd[j];
-    }
-  }
-
-  return source;
-}
-
-// [[Rcpp::export]]
 NumericMatrix& centering(NumericMatrix& source,
                          const NumericVector& mean) {
 

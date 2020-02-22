@@ -169,10 +169,6 @@ IRLS <- function(BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter) {
     .Call(`_bigstatsr_IRLS`, BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter)
 }
 
-scaling <- function(source, mean, sd) {
-    .Call(`_bigstatsr_scaling`, source, mean, sd)
-}
-
 centering <- function(source, mean) {
     .Call(`_bigstatsr_centering`, source, mean)
 }
