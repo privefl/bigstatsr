@@ -46,11 +46,12 @@ big_crossprodSelf <- function(
     sums[ind1]  <- colSums(tmp1)
 
     K[ind1, ind1] <- crossprod(tmp1)
-    for (i in seq_len(j - 1)) {
-      ind2 <- seq2(intervals[i, ])
-      tmp2 <- X[ind.row, ind.col[ind2]]
 
-      K.part <- crossprod(tmp2, tmp1)
+    lower <- tail(ind1, 1) + 1L
+    if (lower <= m) {
+      ind2 <- lower:m
+      K.part <- big_cprodMat(X, tmp1, ind.row, ind.col[ind2],
+                             block.size = block.size) # TODO: add ncores
       K[ind2, ind1] <- K.part
       K[ind1, ind2] <- t(K.part)
     }

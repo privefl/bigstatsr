@@ -27,3 +27,4 @@ test3 <- big_tcrossprodSelf(G, ind.row = 1:5000)
 # (10000 x 15155) x (15155 x 10000)
 test4 <- big_crossprodSelf(G, ind.col = 1:10000)
 # Old: 630 sec / 3 GB R memory
+# New: 570 sec / 2 GB R memory
