@@ -37,16 +37,6 @@ test_that("equality with other functions", {
                             a.combine = "c", ncores = test_cores()))
     expect_equal(maxabs, max(abs(X[])))
 
-    # get the crossproduct between X and a matrix A
-    A <- matrix(0, N, 10)
-    A[] <- rnorm(length(A))
-    expect_equal(big_cprodMat(X, A, ncores = test_cores()), crossprod(X[], A))
-
-    # get the product between X and a matrix B
-    B <- matrix(0, M, 10)
-    B[] <- rnorm(length(B))
-    expect_equal(big_prodMat(X, B, ncores = test_cores()), X[] %*% B)
-
     # no combine
     size <- sample(c(1, sample(M, size = 1), M), 1)
     no_comb <- big_apply(X, function(x, ind) colMeans(x[, ind, drop = FALSE]),
