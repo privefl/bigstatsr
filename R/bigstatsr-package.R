@@ -35,9 +35,11 @@
 #' @param covar.train Matrix of covariables to be added in each model to correct
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.train`.
 #' Default is `NULL` and corresponds to only adding an intercept to each model.
+#' You can use [covar_from_df()] to convert from a data frame.
 #' @param covar.row Matrix of covariables to be added in each model to correct
 #' for confounders (e.g. the scores of PCA), corresponding to `ind.row`.
 #' Default is `NULL` and corresponds to only adding an intercept to each model.
+#' You can use [covar_from_df()] to convert from a data frame.
 #'
 #' @param center Vector of same length of `ind.col` to subtract from columns
 #'   of `X`.

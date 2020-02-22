@@ -38,11 +38,13 @@ Default doesn't use any scaling.}
 
 \item{covar.train}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.train}.
-Default is \code{NULL} and corresponds to only adding an intercept to each model.}
+Default is \code{NULL} and corresponds to only adding an intercept to each model.
+You can use \code{\link[=covar_from_df]{covar_from_df()}} to convert from a data frame.}
 
 \item{covar.row}{Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
-Default is \code{NULL} and corresponds to only adding an intercept to each model.}
+Default is \code{NULL} and corresponds to only adding an intercept to each model.
+You can use \code{\link[=covar_from_df]{covar_from_df()}} to convert from a data frame.}
 
 \item{center}{Vector of same length of \code{ind.col} to subtract from columns
 of \code{X}.}
