@@ -20,7 +20,8 @@ test2 <- big_cprodMat(G, B)
 
 # (5000 x 281122) x (281122 x 5000)
 test3 <- big_tcrossprodSelf(G, ind.row = 1:5000)
-# Old: 660 sec / 18 GB R memory
+# Old: 660-760 sec / 18 GB R memory
+# New: 870-720 sec / 0.4 GB R memory
 
 
 # (10000 x 15155) x (15155 x 10000)

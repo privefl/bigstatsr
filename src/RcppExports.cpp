@@ -197,6 +197,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// increment_scaled_tcrossprod
+void increment_scaled_tcrossprod(Environment K, arma::mat& part_temp, Environment BM, const IntegerVector& rowInd, const IntegerVector& colInd, const NumericVector& center, const NumericVector& scale);
+RcppExport SEXP _bigstatsr_increment_scaled_tcrossprod(SEXP KSEXP, SEXP part_tempSEXP, SEXP BMSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP centerSEXP, SEXP scaleSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type K(KSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type part_temp(part_tempSEXP);
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type center(centerSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type scale(scaleSEXP);
+    increment_scaled_tcrossprod(K, part_temp, BM, rowInd, colInd, center, scale);
+    return R_NilValue;
+END_RCPP
+}
 // prod_FBM_block_mat
 arma::mat prod_FBM_block_mat(Environment BM, const arma::mat& Y, const IntegerVector& rowInd, const IntegerVector& colInd, int max_size);
 RcppExport SEXP _bigstatsr_prod_FBM_block_mat(SEXP BMSEXP, SEXP YSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP max_sizeSEXP) {
@@ -209,6 +225,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
     Rcpp::traits::input_parameter< int >::type max_size(max_sizeSEXP);
     rcpp_result_gen = Rcpp::wrap(prod_FBM_block_mat(BM, Y, rowInd, colInd, max_size));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cprod_FBM_block_mat
+arma::mat cprod_FBM_block_mat(Environment BM, const arma::mat& Y, const IntegerVector& rowInd, const IntegerVector& colInd, int max_size);
+RcppExport SEXP _bigstatsr_cprod_FBM_block_mat(SEXP BMSEXP, SEXP YSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP max_sizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type BM(BMSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
+    Rcpp::traits::input_parameter< int >::type max_size(max_sizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cprod_FBM_block_mat(BM, Y, rowInd, colInd, max_size));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -629,7 +660,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_replaceDF", (DL_FUNC) &_bigstatsr_replaceDF, 4},
     {"_bigstatsr_getXPtrFBM", (DL_FUNC) &_bigstatsr_getXPtrFBM, 4},
     {"_bigstatsr_getXPtrFBM_RW", (DL_FUNC) &_bigstatsr_getXPtrFBM_RW, 4},
+    {"_bigstatsr_increment_scaled_tcrossprod", (DL_FUNC) &_bigstatsr_increment_scaled_tcrossprod, 7},
     {"_bigstatsr_prod_FBM_block_mat", (DL_FUNC) &_bigstatsr_prod_FBM_block_mat, 5},
+    {"_bigstatsr_cprod_FBM_block_mat", (DL_FUNC) &_bigstatsr_cprod_FBM_block_mat, 5},
     {"_bigstatsr_prod_FBM_mat", (DL_FUNC) &_bigstatsr_prod_FBM_mat, 2},
     {"_bigstatsr_prod_mat_FBM", (DL_FUNC) &_bigstatsr_prod_mat_FBM, 2},
     {"_bigstatsr_crossprod_FBM", (DL_FUNC) &_bigstatsr_crossprod_FBM, 1},

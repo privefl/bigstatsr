@@ -19,6 +19,8 @@ const char* const ERROR_BOUNDS =
 //   "Try to fill an 'unsigned short' with a value outside [0:65535].";
 const char* const ERROR_REPORT =
   "Please report this issue that shoud not have happened.";
+const char* const ERROR_BUG =
+  "This is a bug; please report it.";
 
 /******************************************************************************/
 

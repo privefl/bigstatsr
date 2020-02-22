@@ -61,8 +61,16 @@ getXPtrFBM_RW <- function(path, n, m, type) {
     .Call(`_bigstatsr_getXPtrFBM_RW`, path, n, m, type)
 }
 
+increment_scaled_tcrossprod <- function(K, part_temp, BM, rowInd, colInd, center, scale) {
+    invisible(.Call(`_bigstatsr_increment_scaled_tcrossprod`, K, part_temp, BM, rowInd, colInd, center, scale))
+}
+
 prod_FBM_block_mat <- function(BM, Y, rowInd, colInd, max_size) {
     .Call(`_bigstatsr_prod_FBM_block_mat`, BM, Y, rowInd, colInd, max_size)
+}
+
+cprod_FBM_block_mat <- function(BM, Y, rowInd, colInd, max_size) {
+    .Call(`_bigstatsr_cprod_FBM_block_mat`, BM, Y, rowInd, colInd, max_size)
 }
 
 prod_FBM_mat <- function(BM, A) {
