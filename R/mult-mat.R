@@ -7,6 +7,8 @@
 #' @inheritParams bigstatsr-package
 #' @param A.col A matrix with `length(ind.col)` rows.
 #'
+#' @inheritSection bigstatsr-package Matrix parallelization
+#'
 #' @return \eqn{X \cdot A}.
 #' @export
 #'
@@ -38,9 +40,13 @@ big_prodMat <- function(X, A.col,
                         ind.row = rows_along(X),
                         ind.col = cols_along(X),
                         ncores = 1,
-                        block.size = block_size(nrow(X), ncores),
+                        block.size = block_size(nrow(X)),
                         center = NULL,
                         scale = NULL) {
+
+  if (!missing(ncores))
+    warning2("Parameter 'ncores' is deprecated; please use '%s' instead.",
+             "bigparallelr::set_blas_ncores()")
 
   check_args()
   assert_lengths(ind.col, rows_along(A.col))
@@ -87,6 +93,8 @@ setMethod("%*%", signature(x = "matrix", y = "FBM"),
 #' @inheritParams bigstatsr-package
 #' @param A.row A matrix with `length(ind.row)` rows.
 #'
+#' @inheritSection bigstatsr-package Matrix parallelization
+#'
 #' @return \eqn{X^T \cdot A}.
 #' @export
 #'
@@ -118,9 +126,13 @@ big_cprodMat <- function(X, A.row,
                          ind.row = rows_along(X),
                          ind.col = cols_along(X),
                          ncores = 1,
-                         block.size = block_size(nrow(X), ncores),
+                         block.size = block_size(nrow(X)),
                          center = NULL,
                          scale = NULL) {
+
+  if (!missing(ncores))
+    warning2("Parameter 'ncores' is deprecated; please use '%s' instead.",
+             "bigparallelr::set_blas_ncores()")
 
   check_args()
   assert_lengths(ind.row, rows_along(A.row))

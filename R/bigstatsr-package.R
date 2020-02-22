@@ -45,10 +45,12 @@
 #'   of `X`.
 #'
 #' @section Matrix parallelization:
-#'   Large matrix computations (crossprods) are made block-wise and won't
-#'   be parallelized in order to not have to reduce the size of these blocks.
+#'   Large matrix computations are made block-wise and won't be parallelized
+#'   in order to not have to reduce the size of these blocks.
 #'   Instead, you may use [Microsoft R Open](https://mran.microsoft.com/open/)
-#'   in order to accelerate these block matrix computations.
+#'   or OpenBLAS in order to accelerate these block matrix computations.
+#'   You can also control the number of cores used with
+#'   `bigparallelr::set_blas_ncores()`.
 #'
 "_PACKAGE"
 

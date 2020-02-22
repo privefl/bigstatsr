@@ -14,7 +14,7 @@ big_cprodMat(
   ind.row = rows_along(X),
   ind.col = cols_along(X),
   ncores = 1,
-  block.size = block_size(nrow(X), ncores),
+  block.size = block_size(nrow(X)),
   center = NULL,
   scale = NULL
 )
@@ -60,6 +60,16 @@ of \code{X}.}
 \description{
 Cross-product between a Filebacked Big Matrix and a matrix.
 }
+\section{Matrix parallelization}{
+
+Large matrix computations are made block-wise and won't be parallelized
+in order to not have to reduce the size of these blocks.
+Instead, you may use \href{https://mran.microsoft.com/open/}{Microsoft R Open}
+or OpenBLAS in order to accelerate these block matrix computations.
+You can also control the number of cores used with
+\code{bigparallelr::set_blas_ncores()}.
+}
+
 \examples{
 X <- big_attachExtdata()
 n <- nrow(X)

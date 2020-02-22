@@ -6,6 +6,7 @@
 #' after applying a particular scaling to it.
 #'
 #' @inheritParams bigstatsr-package
+#'
 #' @inheritSection bigstatsr-package Matrix parallelization
 #'
 #' @return A temporary [FBM][FBM-class], with the following two attributes:
