@@ -138,11 +138,7 @@ big_cprodMat <- function(X, A.row,
     center <- as_vec(center)
   }
 
-  res <- big_apply(X, a.FUN = function(X, ind, M, ind.row) {
-    crossprod(X[ind.row, ind, drop = FALSE], M)
-  }, a.combine = rbind, ind = ind.col,
-  ncores = ncores, block.size = block.size,
-  M = A.row, ind.row = ind.row)
+  res <- cprod_FBM_block_mat(X, A.row, ind.row, ind.col, block.size)
 
   if (!is.null(center)) res <- res - tcrossprod(center, colSums(A.row))
   if (!is.null(scale))  res <- res / scale
