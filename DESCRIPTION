@@ -27,7 +27,6 @@ Depends: R (>= 3.3)
 Imports:
     bigassertr (>= 0.1.1),
     bigparallelr (>= 0.2.3),
-    bigreadr (>= 0.2),
     cowplot,
     foreach,
     ggplot2 (>= 3.0),
@@ -45,7 +44,9 @@ LinkingTo:
 Suggests: 
     biglasso,
     bigmemory (>= 4.5.33),
+    bigreadr (>= 0.2),
     covr,
+    data.table,
     glmnet,
     hexbin,
     memuse,

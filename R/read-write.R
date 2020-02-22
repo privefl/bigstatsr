@@ -29,6 +29,9 @@ big_read <- function(file, select, filter = NULL,
                      backingfile = drop_ext(file),
                      ...) {
 
+  if (!requireNamespace("bigreadr", quietly = TRUE))
+    stop2("Please install package {bigreadr}.")
+
   # Prepare reading
   X <- NULL
   offset <- 0
@@ -82,6 +85,9 @@ big_write <- function(X, file, every_nrow,
                       ind.row = rows_along(X),
                       ind.col = cols_along(X),
                       progress = FALSE) {
+
+  if (!requireNamespace("bigreadr", quietly = TRUE))
+    stop2("Please install package {bigreadr}.")
 
   assert_noexist(file)
 
