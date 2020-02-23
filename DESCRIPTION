@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 1.1.4
-Date: 2020-02-01
+Version: 1.2.0
+Date: 2020-02-23
 Authors@R: c(
   person("Florian", "Privé", 
          email = "florian.prive.21@gmail.com", 

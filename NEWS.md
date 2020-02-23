@@ -1,3 +1,9 @@
+## bigstatsr 1.2.0
+
+- Functions `big_(c)prodMat()` and `big_(t)crossprodSelf()` now use much less memory, and may be faster.
+
+- Add `covar_from_df()` to convert a data frame with factors/characters to a numeric matrix using one-hot encoding.
+
 ## bigstatsr 1.1.4
 
 - Remove some 'Suggests' dependencies.
