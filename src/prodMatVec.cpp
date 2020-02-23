@@ -1,6 +1,6 @@
 /******************************************************************************/
 
-#include <bigstatsr/BMCodeAcc.h>
+#include <bigstatsr/BMAcc-dispatcher.h>
 #include <bigstatsr/prodMatVec.hpp>
 
 using namespace Rcpp;

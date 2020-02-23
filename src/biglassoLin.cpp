@@ -1,6 +1,6 @@
 /******************************************************************************/
 
-#include <bigstatsr/SubMatCovAcc.h>
+#include <bigstatsr/BMAcc-dispatcher.h>
 #include <bigstatsr/biglasso/linear.hpp>
 
 using namespace Rcpp;

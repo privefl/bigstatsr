@@ -37,7 +37,6 @@ reference:
       - FBM-class
       - FBM-methods
       - FBM.code256-class
-      - FBM.code256-methods
       - big_copy
   - title: "Statistical models"
     desc: "Column-wise and sparse multivariate linear and logistic models."

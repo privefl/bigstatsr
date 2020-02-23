@@ -27,11 +27,15 @@ test_cores <- function() {
 
 TEST.TYPES <- c("raw", "unsigned short", "integer", "float", "double")
 
-asFBMcode <- function(x) {
+asFBMcode <- function(x, same_code = FALSE) {
   x <- round(x)
-  tmp <- unique(as.vector(x))
-  code <- rep(NA_real_, 256)
-  code[tmp + 1] <- tmp
+  if (same_code) {
+    tmp <- unique(as.vector(x))
+    code <- rep(NA_real_, 256)
+    code[tmp + 1] <- tmp
+  } else {
+    code <- rnorm(256)
+  }
   storage.mode(x) <- "raw"
   add_code256(big_copy(x, type = "raw"), code)
 }

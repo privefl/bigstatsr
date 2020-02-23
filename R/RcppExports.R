@@ -17,12 +17,12 @@ conv_NA_float <- function(source) {
     .Call(`_bigstatsr_conv_NA_float`, source)
 }
 
-extractVec <- function(xpbm, elemInd) {
-    .Call(`_bigstatsr_extractVec`, xpbm, elemInd)
+extractVec <- function(BM, elemInd) {
+    .Call(`_bigstatsr_extractVec`, BM, elemInd)
 }
 
-extractMat <- function(xpbm, rowInd, colInd) {
-    .Call(`_bigstatsr_extractMat`, xpbm, rowInd, colInd)
+extractMat <- function(BM, rowInd, colInd) {
+    .Call(`_bigstatsr_extractMat`, BM, rowInd, colInd)
 }
 
 createFile <- function(fileName, nrow, ncol, type) {
@@ -59,6 +59,18 @@ getXPtrFBM <- function(path, n, m, type) {
 
 getXPtrFBM_RW <- function(path, n, m, type) {
     .Call(`_bigstatsr_getXPtrFBM_RW`, path, n, m, type)
+}
+
+increment_scaled_tcrossprod <- function(K, part_temp, BM, rowInd, colInd, center, scale) {
+    invisible(.Call(`_bigstatsr_increment_scaled_tcrossprod`, K, part_temp, BM, rowInd, colInd, center, scale))
+}
+
+prod_FBM_block_mat <- function(BM, Y, rowInd, colInd, max_size) {
+    .Call(`_bigstatsr_prod_FBM_block_mat`, BM, Y, rowInd, colInd, max_size)
+}
+
+cprod_FBM_block_mat <- function(BM, Y, rowInd, colInd, max_size) {
+    .Call(`_bigstatsr_cprod_FBM_block_mat`, BM, Y, rowInd, colInd, max_size)
 }
 
 prod_FBM_mat <- function(BM, A) {
@@ -117,14 +129,6 @@ mycount2 <- function(BM, rowInd, colInd, codeInd) {
     .Call(`_bigstatsr_mycount2`, BM, rowInd, colInd, codeInd)
 }
 
-decodeMat <- function(source, code) {
-    .Call(`_bigstatsr_decodeMat`, source, code)
-}
-
-decodeVec <- function(source, code) {
-    .Call(`_bigstatsr_decodeVec`, source, code)
-}
-
 GET_ERROR_TYPE <- function() {
     .Call(`_bigstatsr_GET_ERROR_TYPE`)
 }
@@ -155,10 +159,6 @@ univLinReg5 <- function(BM, covar_U, y, rowInd, colInd) {
 
 IRLS <- function(BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter) {
     .Call(`_bigstatsr_IRLS`, BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter)
-}
-
-scaling <- function(source, mean, sd) {
-    .Call(`_bigstatsr_scaling`, source, mean, sd)
 }
 
 centering <- function(source, mean) {

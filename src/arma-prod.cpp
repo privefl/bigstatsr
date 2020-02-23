@@ -4,17 +4,6 @@
 
 /******************************************************************************/
 
-inline arma::mat FBM2arma(Rcpp::Environment BM) {
-
-  Rcpp::XPtr<FBM> xpBM = BM["address"];
-  myassert(xpBM->matrix_type() == 8,
-           "Mapping to arma::mat is available for 'double' FBMs only.");
-
-  return arma::mat((double*)xpBM->matrix(), xpBM->nrow(), xpBM->ncol(), false);
-}
-
-/******************************************************************************/
-
 // [[Rcpp::export]]
 arma::mat prod_FBM_mat(Rcpp::Environment BM, const arma::mat& A) {
   return FBM2arma(BM) * A;

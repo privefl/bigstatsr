@@ -12,6 +12,24 @@ using std::size_t;
 
 /******************************************************************************/
 
+inline std::vector<size_t> vec_int_to_size(const IntegerVector& vec_ind,
+                                           size_t limit,
+                                           int sub = 0) {
+
+  int n = vec_ind.size();
+  std::vector<size_t> vec_ind2(n);
+
+  for (int i = 0; i < n; i++) {
+    size_t ind = static_cast<size_t>(vec_ind[i] - sub);
+    myassert_bounds(ind, limit);
+    vec_ind2[i] = ind;
+  }
+
+  return vec_ind2;
+}
+
+/******************************************************************************/
+
 template <typename T>
 class BMAcc_RW {
 public:
@@ -46,30 +64,11 @@ class SubBMAcc_RW : public BMAcc_RW<T> {
 public:
   SubBMAcc_RW(FBM_RW * xpBM,
               const IntegerVector& row_ind,
-              const IntegerVector& col_ind)
+              const IntegerVector& col_ind,
+              int sub = 0)
     : BMAcc_RW<T>(xpBM) {
-
-      size_t ind, i, j;
-
-      size_t LIM_N = xpBM->nrow();
-      size_t n = row_ind.size();
-      std::vector<size_t> row_ind2(n);
-      for (i = 0; i < n; i++) {
-        ind = static_cast<size_t>(row_ind[i]);
-        myassert_bounds(ind, LIM_N);
-        row_ind2[i] = ind;
-      }
-      _row_ind = row_ind2;
-
-      size_t LIM_M = xpBM->ncol();
-      size_t m = col_ind.size();
-      std::vector<size_t> col_ind2(m);
-      for (j = 0; j < m; j++) {
-        ind = static_cast<size_t>(col_ind[j]);
-        myassert_bounds(ind, LIM_M);
-        col_ind2[j] = ind;
-      }
-      _col_ind = col_ind2;
+      _row_ind = vec_int_to_size(row_ind, xpBM->nrow(), sub);
+      _col_ind = vec_int_to_size(col_ind, xpBM->ncol(), sub);
     }
 
   inline T& operator()(size_t i, size_t j) {
@@ -123,30 +122,11 @@ class SubBMAcc : public BMAcc<T> {
 public:
   SubBMAcc(FBM * xpBM,
            const IntegerVector& row_ind,
-           const IntegerVector& col_ind)
+           const IntegerVector& col_ind,
+           int sub = 0)
     : BMAcc<T>(xpBM) {
-
-      size_t ind, i, j;
-
-      size_t LIM_N = xpBM->nrow();
-      size_t n = row_ind.size();
-      std::vector<size_t> row_ind2(n);
-      for (i = 0; i < n; i++) {
-        ind = static_cast<size_t>(row_ind[i]);
-        myassert_bounds(ind, LIM_N);
-        row_ind2[i] = ind;
-      }
-      _row_ind = row_ind2;
-
-      size_t LIM_M = xpBM->ncol();
-      size_t m = col_ind.size();
-      std::vector<size_t> col_ind2(m);
-      for (j = 0; j < m; j++) {
-        ind = static_cast<size_t>(col_ind[j]);
-        myassert_bounds(ind, LIM_M);
-        col_ind2[j] = ind;
-      }
-      _col_ind = col_ind2;
+      _row_ind = vec_int_to_size(row_ind, xpBM->nrow(), sub);
+      _col_ind = vec_int_to_size(col_ind, xpBM->ncol(), sub);
     }
 
   inline T operator()(size_t i, size_t j) {
@@ -162,6 +142,51 @@ public:
 protected:
   std::vector<size_t> _row_ind;
   std::vector<size_t> _col_ind;
+};
+
+/******************************************************************************/
+
+// For biglasso
+template<typename T>
+class SubMatCovAcc : public SubBMAcc<T> {
+public:
+  SubMatCovAcc(FBM * xpBM,
+               const IntegerVector& row_ind,
+               const IntegerVector& col_ind,
+               const NumericMatrix& covar,
+               int sub = 0)
+    : SubBMAcc<T>(xpBM, row_ind, col_ind, sub) {
+
+      _ncolsub = col_ind.size();
+
+      if (covar.nrow() != 0) {
+        myassert_size(row_ind.size(), covar.nrow());
+        _ncoladd = covar.ncol();
+        _covar = covar;
+      }  else {
+        _ncoladd = 0;
+      }
+    }
+
+  inline double operator() (size_t i, size_t j) {
+    int j2 = j - _ncolsub;
+    if (j2 < 0) {
+      // https://stackoverflow.com/a/32087373/6103040
+      return SubBMAcc<T>::operator()(i, j);
+      // https://stackoverflow.com/a/7076312/6103040
+      // return this->_pMat[_row_ind[i] + _col_ind[j] * this->_nrow];
+    } else {
+      return _covar(i, j2);
+    }
+  }
+
+  size_t nrow() const { return this->_row_ind.size(); }
+  size_t ncol() const { return _ncolsub + _ncoladd; }
+
+protected:
+  size_t _ncolsub;
+  size_t _ncoladd;
+  NumericMatrix _covar;
 };
 
 /******************************************************************************/

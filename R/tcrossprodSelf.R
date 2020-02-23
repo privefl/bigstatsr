@@ -6,6 +6,7 @@
 #' after applying a particular scaling to it.
 #'
 #' @inheritParams bigstatsr-package
+#'
 #' @inheritSection bigstatsr-package Matrix parallelization
 #'
 #' @return A temporary [FBM][FBM-class], with the following two attributes:
@@ -35,14 +36,17 @@ big_tcrossprodSelf <- function(
 
   intervals <- CutBySize(m, block.size)
 
+  X_part_temp <- matrix(0, n, max(intervals[, "size"]))
+
   for (j in rows_along(intervals)) {
     ind <- seq2(intervals[j, ])
     ind.col.ind <- ind.col[ind]
     ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col.ind)
     means[ind] <- ms$center
     sds[ind]   <- ms$scale
-    tmp <- scaling(X[ind.row, ind.col.ind], ms$center, ms$scale)
-    big_increment(K, tcrossprod(tmp))
+    increment_scaled_tcrossprod(K, X_part_temp, X,
+                                ind.row, ind.col.ind,
+                                ms$center, ms$scale)
   }
 
   structure(K, center = means, scale = sds)

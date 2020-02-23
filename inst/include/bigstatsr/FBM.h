@@ -58,4 +58,24 @@ private:
 
 /******************************************************************************/
 
+inline arma::mat FBM2arma(Rcpp::Environment BM) {
+
+  Rcpp::XPtr<FBM> xpBM = BM["address"];
+  myassert(xpBM->matrix_type() == 8,
+           "Mapping to arma::mat is available for 'double' FBMs only.");
+
+  return arma::mat((double*)xpBM->matrix(), xpBM->nrow(), xpBM->ncol(), false);
+}
+
+inline arma::mat FBM_RW2arma(Rcpp::Environment BM) {
+
+  Rcpp::XPtr<FBM_RW> xpBM = BM["address_rw"];
+  myassert(xpBM->matrix_type() == 8,
+           "Mapping to arma::mat is available for 'double' FBMs only.");
+
+  return arma::mat((double*)xpBM->matrix(), xpBM->nrow(), xpBM->ncol(), false);
+}
+
+/******************************************************************************/
+
 #endif // FBM_H

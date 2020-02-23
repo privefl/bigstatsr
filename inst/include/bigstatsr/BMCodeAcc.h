@@ -4,25 +4,27 @@
 /******************************************************************************/
 
 #include <bigstatsr/BMAcc.h>
-#include <bigstatsr/utils.h>
 
 using namespace Rcpp;
+using std::size_t;
 
 /******************************************************************************/
 
-class SubBMCode256Acc : public SubBMAcc<unsigned char> {
+class BMCode256Acc : public BMAcc<unsigned char> {
 public:
-  SubBMCode256Acc(FBM * xpBM,
-                  const IntegerVector& row_ind,
-                  const IntegerVector& col_ind,
-                  const NumericVector& code256)
-    : SubBMAcc<unsigned char>(xpBM, row_ind, col_ind) {
+  BMCode256Acc(FBM * xpBM, const NumericVector& code256)
+    : BMAcc<unsigned char>(xpBM) {
       _code256 = code256;
     }
 
-  inline double operator()(std::size_t i, std::size_t j) {
+  inline double operator()(size_t i, size_t j) {
     // https://stackoverflow.com/a/32087373/6103040
-    return _code256[SubBMAcc<unsigned char>::operator()(i, j)];
+    return _code256[BMAcc<unsigned char>::operator()(i, j)];
+  }
+
+  inline double operator[](size_t k) {
+    // https://stackoverflow.com/a/32087373/6103040
+    return _code256[BMAcc<unsigned char>::operator[](k)];
   }
 
 protected:
@@ -31,34 +33,56 @@ protected:
 
 /******************************************************************************/
 
-#define SUBMATACC(T) SubBMAcc<T>(xpBM, rows, cols)
-#define RAWSUBMATACC SubBMCode256Acc(xpBM, rows, cols, BM["code256"])
+class SubBMCode256Acc : public SubBMAcc<unsigned char> {
+public:
+  SubBMCode256Acc(FBM * xpBM,
+                  const IntegerVector& row_ind,
+                  const IntegerVector& col_ind,
+                  const NumericVector& code256,
+                  int sub = 0)
+    : SubBMAcc<unsigned char>(xpBM, row_ind, col_ind, sub) {
+      _code256 = code256;
+    }
 
-#define DISPATCH_SUBMATACC(CALL) {                                             \
-                                                                               \
-  XPtr<FBM> xpBM = BM["address"];                                              \
-  IntegerVector rows = rowInd - 1;                                             \
-  IntegerVector cols = colInd - 1;                                             \
-                                                                               \
-  if (BM.exists("code256")) {                                                  \
-    CALL(RAWSUBMATACC);                                                        \
-  } else {                                                                     \
-    switch(xpBM->matrix_type()) {                                              \
-    case 8:                                                                    \
-      CALL(SUBMATACC(double))                                                  \
-    case 4:                                                                    \
-      CALL(SUBMATACC(int))                                                     \
-    case 6:                                                                    \
-      CALL(SUBMATACC(float))                                                   \
-    case 1:                                                                    \
-      CALL(SUBMATACC(unsigned char))                                           \
-    case 2:                                                                    \
-      CALL(SUBMATACC(unsigned short))                                          \
-    default:                                                                   \
-      throw Rcpp::exception(ERROR_TYPE);                                       \
-    }                                                                          \
-  }                                                                            \
-}
+  inline double operator()(size_t i, size_t j) {
+    // https://stackoverflow.com/a/32087373/6103040
+    return _code256[SubBMAcc<unsigned char>::operator()(i, j)];
+  }
+
+  // WARNING: operator[] is not redefined
+
+protected:
+  NumericVector _code256;
+};
+
+/******************************************************************************/
+
+// For biglasso
+class RawSubMatCovAcc : public SubMatCovAcc<unsigned char> {
+public:
+  RawSubMatCovAcc(FBM * xpBM,
+                  const IntegerVector& row_ind,
+                  const IntegerVector& col_ind,
+                  const NumericMatrix& covar,
+                  const NumericVector& code256,
+                  int sub = 0)
+    : SubMatCovAcc<unsigned char>(xpBM, row_ind, col_ind, covar, sub) {
+      _code256 = code256;
+    }
+
+  inline double operator() (size_t i, size_t j) {
+    int j2 = j - this->_ncolsub;
+    if (j2 < 0) {
+      // https://stackoverflow.com/a/32087373/6103040
+      return _code256[SubMatCovAcc<unsigned char>::operator()(i, j)];;
+    } else {
+      return _covar(i, j2);
+    }
+  }
+
+protected:
+  NumericVector _code256;
+};
 
 /******************************************************************************/
 

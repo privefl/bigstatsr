@@ -123,36 +123,6 @@ add_code256 <- function(x, code) {
 
 ################################################################################
 
-#' Methods for the FBM.code256 class
-#'
-#' @name FBM.code256-methods
-#'
-#' @rdname FBM.code256-methods
-NULL
-
-#' Accessor method for class `FBM.code256`.
-#'
-#' @param x A [FBM.code256][FBM.code256-class].
-#' @inheritParams FBM-methods
-#'
-#' @rdname FBM.code256-methods
-#'
-#' @export
-#'
-setMethod(
-  '[', signature(x = "FBM.code256"),
-  Extract(
-    extract_vector = function(x, i) {
-      decodeVec(extractVec(x$address, i), x$code256)
-    },
-    extract_matrix = function(x, i, j) {
-      decodeMat(extractMat(x$address, i, j), x$code256)
-    }
-  )
-)
-
-################################################################################
-
 #' Counts
 #'
 #' Counts by columns (or rows) the number of each unique element of a
