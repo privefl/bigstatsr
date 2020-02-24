@@ -65,6 +65,7 @@ multiplot
 nb
 newcommand
 nrow
+OpenBLAS
 parApply
 parallelization
 parallelize

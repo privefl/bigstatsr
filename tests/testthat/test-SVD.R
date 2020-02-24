@@ -24,7 +24,7 @@ x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 ###############################################################################
 
 svd1 <- big_SVD(as_FBM(x), big_scale(), ind.row = 1:40)
-svd2 <- big_randomSVD(as_FBM(x), big_scale(), ind.row = 1:40)
+svd2 <- big_randomSVD(as_FBM(x), big_scale(), ind.row = 1:40, tol = 1e-5)
 expect_equal(diffPCs(svd1$u, svd2$u), 0, tolerance = TOL)
 expect_equal(diffPCs(svd1$v, svd2$v), 0, tolerance = TOL)
 
