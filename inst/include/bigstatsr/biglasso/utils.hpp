@@ -3,7 +3,7 @@
 
 /******************************************************************************/
 
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 
 using namespace Rcpp;
 using std::size_t;
@@ -14,27 +14,29 @@ namespace bigstatsr { namespace biglassoUtils {
 
 // summaries
 template <class C>
-NumericVector get_summaries(C macc,
-                            const NumericVector& y,
-                            const IntegerVector& which_set,
-                            int K) {
+ListOf<NumericMatrix> get_summaries(C macc,
+                                    const NumericVector& y,
+                                    const IntegerVector& which_set,
+                                    int K) {
 
   int n = macc.nrow();
   int m = macc.ncol();
 
-  arma::cube cubeArray(K, m, 3, arma::fill::zeros);
+  NumericMatrix sumX(K, m), sumXX(K, m), sumXY(K, m);
 
   for (int j = 0; j < m; j++) {
     for (int i = 0; i < n; i++) {
       double x = macc(i, j);
       int k = which_set[i];
-      cubeArray(k, j, 0) += x;
-      cubeArray(k, j, 1) += x * x;
-      cubeArray(k, j, 2) += x * y[i];
+      sumX (k, j) += x;
+      sumXX(k, j) += x * x;
+      sumXY(k, j) += x * y[i];
     }
   }
 
-  return wrap(cubeArray);
+  return List::create(_["sumX"]  = sumX,
+                      _["sumXX"] = sumXX,
+                      _["sumXY"] = sumXY);
 }
 
 /******************************************************************************/

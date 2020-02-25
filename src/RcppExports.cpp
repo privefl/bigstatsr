@@ -398,7 +398,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // bigsummaries
-NumericVector bigsummaries(Environment BM, const IntegerVector& row_idx, const IntegerVector& col_idx, const NumericMatrix& covar, const NumericVector& y, const IntegerVector& which_set, int K);
+ListOf<NumericMatrix> bigsummaries(Environment BM, const IntegerVector& row_idx, const IntegerVector& col_idx, const NumericMatrix& covar, const NumericVector& y, const IntegerVector& which_set, int K);
 RcppExport SEXP _bigstatsr_bigsummaries(SEXP BMSEXP, SEXP row_idxSEXP, SEXP col_idxSEXP, SEXP covarSEXP, SEXP ySEXP, SEXP which_setSEXP, SEXP KSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

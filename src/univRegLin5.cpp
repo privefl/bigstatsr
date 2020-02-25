@@ -1,7 +1,7 @@
 /******************************************************************************/
 
-#include <bigstatsr/BMAcc-dispatcher.h>
 #include <bigstatsr/univLinReg.hpp>
+#include <bigstatsr/BMAcc-dispatcher.h>
 
 using namespace Rcpp;
 

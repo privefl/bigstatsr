@@ -3,9 +3,26 @@
 
 /******************************************************************************/
 
-#include <mio/mmap.hpp>
-#include <RcppArmadillo.h>
 #include <Rcpp.h>
+
+/******************************************************************************/
+
+#define DISPATCH_TYPE(CALL) {                                                  \
+  switch(type) {                                                               \
+  case 8:                                                                      \
+    CALL(double)                                                               \
+  case 4:                                                                      \
+    CALL(int)                                                                  \
+  case 6:                                                                      \
+    CALL(float)                                                                \
+  case 1:                                                                      \
+    CALL(unsigned char)                                                        \
+  case 2:                                                                      \
+    CALL(unsigned short)                                                       \
+  default:                                                                     \
+    throw Rcpp::exception(ERROR_TYPE);                                         \
+  }                                                                            \
+}
 
 /******************************************************************************/
 

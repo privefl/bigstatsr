@@ -1,6 +1,18 @@
 /******************************************************************************/
 
+#include <bigstatsr/arma-strict-R-headers.h>
 #include <bigstatsr/FBM.h>
+
+/******************************************************************************/
+
+inline arma::mat FBM2arma(Rcpp::Environment BM) {
+
+  Rcpp::XPtr<FBM> xpBM = BM["address"];
+  myassert(xpBM->matrix_type() == 8,
+           "Mapping to arma::mat is available for 'double' FBMs only.");
+
+  return arma::mat((double*)xpBM->matrix(), xpBM->nrow(), xpBM->ncol(), false);
+}
 
 /******************************************************************************/
 

@@ -1,3 +1,7 @@
+## bigstatsr 1.2.1
+
+- It is now possible to use C++ FBM accessors without linking to {RcppArmadiilo}.
+
 ## bigstatsr 1.2.0
 
 - Functions `big_(c)prodMat()` and `big_(t)crossprodSelf()` now use much less memory, and may be faster.

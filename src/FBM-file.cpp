@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include <stdexcept>
-#include <bigstatsr/types.h>
+#include <bigstatsr/utils.h>
 
 #define ERROR_POS "Dimensions should be at least 1."
 

@@ -3,7 +3,8 @@
 
 /******************************************************************************/
 
-#include <RcppArmadillo.h>
+#include <bigstatsr/arma-strict-R-headers.h>
+#include <bigstatsr/utils.h>
 
 using namespace Rcpp;
 using std::size_t;
