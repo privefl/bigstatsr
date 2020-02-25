@@ -72,7 +72,7 @@ that is much smaller than the other. Otherwise use big_randomSVD." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -168,7 +168,7 @@ that is much smaller than the other. Otherwise use <a href='big_randomSVD.html'>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>fun.scaling</th>
@@ -222,6 +222,16 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
 <li><p>if both dimensions are large, use <a href='big_randomSVD.html'>big_randomSVD</a> instead.</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="matrix-parallelization"><a class="anchor" href="#matrix-parallelization"></a>Matrix parallelization</h2>
+
+    
+
+<p>Large matrix computations are made block-wise and won't be parallelized
+in order to not have to reduce the size of these blocks.
+Instead, you may use <a href='https://mran.microsoft.com/open/'>Microsoft R Open</a>
+or OpenBLAS in order to accelerate these block matrix computations.
+You can also control the number of cores used with
+<code><a href='https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html'>bigparallelr::set_blas_ncores()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://rdrr.io/r/stats/prcomp.html'>prcomp</a></p></div>
@@ -253,7 +263,7 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
 <span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='no'>test</span>$<span class='no'>u</span> <span class='kw'>%*%</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='no'>test</span>$<span class='no'>d</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "big_SVD"</div><div class='input'><span class='no'>scores2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>test</span>) <span class='co'># use this function to predict scores</span>
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>scores</span>, <span class='no'>scores2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>scores</span>)</div><div class='output co'>#&gt; [1] 258  10</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>pca</span>$<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 258 258</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>pca</span>$<span class='no'>sdev</span>)</div><div class='output co'>#&gt; [1] 3.023287e+00 3.008386e+00 2.990514e+00 2.984375e+00 2.965688e+00
-#&gt; [6] 7.635648e-15</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-3.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; [6] 1.130391e-14</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='big_SVD-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># projecting on new data</span>
 <span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sweep.html'>sweep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sweep.html'>sweep</a></span>(<span class='no'>X</span>[-<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>center</span>, <span class='st'>'-'</span>), <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>scale</span>, <span class='st'>'/'</span>)
 <span class='no'>scores.test</span> <span class='kw'>&lt;-</span> <span class='no'>X2</span> <span class='kw'>%*%</span> <span class='no'>test</span>$<span class='no'>v</span>
@@ -268,6 +278,7 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#matrix-parallelization">Matrix parallelization</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

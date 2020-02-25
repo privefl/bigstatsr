@@ -70,7 +70,7 @@ after applying a particular scaling to it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -166,7 +166,7 @@ after applying a particular scaling to it.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>fun.scaling</th>
@@ -211,10 +211,12 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
 
     
 
-<p>Large matrix computations (crossprods) are made block-wise and won't
-be parallelized in order to not have to reduce the size of these blocks.
+<p>Large matrix computations are made block-wise and won't be parallelized
+in order to not have to reduce the size of these blocks.
 Instead, you may use <a href='https://mran.microsoft.com/open/'>Microsoft R Open</a>
-in order to accelerate these block matrix computations.</p>
+or OpenBLAS in order to accelerate these block matrix computations.
+You can also control the number of cores used with
+<code><a href='https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html'>bigparallelr::set_blas_ncores()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></p></div>
@@ -225,31 +227,18 @@ in order to accelerate these block matrix computations.</p>
 
 <span class='co'># No scaling</span>
 <span class='no'>K1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></span>(<span class='no'>X</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>K1</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>K1</span>, <span class='no'>true</span>))
-
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>K1</span>)</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>K1</span>, <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='no'>K2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>K2</span>)</div><div class='output co'>#&gt; [1] "FBM"
 #&gt; attr(,"package")
-#&gt; [1] "bigstatsr"</div><div class='input'><span class='no'>K2</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpUEgzDk/file506053fa6749.bk"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>K2</span>[], <span class='no'>true</span>))
-
-<span class='kw pkg'>microbenchmark</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html'>microbenchmark</a></span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></span>(<span class='no'>X</span>[]), <span class='fu'><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></span>(<span class='no'>X</span>), <span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>)
-)</div><div class='output co'>#&gt; Unit: microseconds
-#&gt;                  expr      min        lq      mean   median        uq
-#&gt;        crossprod(X[])  149.047  171.3390  197.9047  184.394  194.6110
-#&gt;          crossprod(X)   88.187  104.7775  128.0225  116.301  130.1495
-#&gt;  big_crossprodSelf(X) 3465.919 3903.4415 5591.8433 4118.097 4430.2530
-#&gt;         max neval
-#&gt;     485.534   100
-#&gt;     288.712   100
-#&gt;  135426.034   100</div><div class='input'>
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='no'>K2</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmpq8tKLv\\file2e3479b864e2.bk"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>K2</span>[], <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># big_crossprodSelf() provides some scaling and subsetting</span>
 <span class='co'># Example using only half of the data:</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>X</span>)
 <span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
 <span class='no'>K3</span> <span class='kw'>&lt;-</span> <span class='fu'>big_crossprodSelf</span>(<span class='no'>X</span>, <span class='kw'>fun.scaling</span> <span class='kw'>=</span> <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>)
 <span class='no'>true2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span>(<span class='no'>X</span>[<span class='no'>ind</span>, ]))
-<span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>K3</span>[], <span class='no'>true2</span>))</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>K3</span>[], <span class='no'>true2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

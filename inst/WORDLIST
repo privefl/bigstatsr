@@ -78,6 +78,7 @@ PSOCK
 Qiu
 randomSVD
 Rcpp
+RcppArmadillo
 rds
 rdsfile
 Recogn

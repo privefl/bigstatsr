@@ -70,7 +70,7 @@ Covariates can be added to correct for confounders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -166,6 +166,7 @@ Covariates can be added to correct for confounders.</p>
   <span class='kw'>nlam.min</span> <span class='kw'>=</span> <span class='fl'>50</span>,
   <span class='kw'>n.abort</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>dfmax</span> <span class='kw'>=</span> <span class='fl'>50000</span>,
+  <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='no'>...</span>
 )</pre>
@@ -175,7 +176,7 @@ Covariates can be added to correct for confounders.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>y01.train</th>
@@ -197,7 +198,8 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
       <th>covar.train</th>
       <td><p>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</p></td>
+Default is <code>NULL</code> and corresponds to only adding an intercept to each model.
+You can use <code><a href='covar_from_df.html'>covar_from_df()</a></code> to convert from a data frame.</p></td>
     </tr>
     <tr>
       <th>base.train</th>
@@ -258,6 +260,11 @@ set must decrease before stopping. Default is <code>10</code>.</p></td>
 heavy for models with a large number of nonzero coefficients.</p></td>
     </tr>
     <tr>
+      <th>warn</th>
+      <td><p>Whether to warn if some models may not have reached a minimum.
+Default is <code>TRUE</code>.</p></td>
+    </tr>
+    <tr>
       <th>ncores</th>
       <td><p>Number of cores used. Default doesn't use parallelism.
 You may use <a href='https://rdrr.io/pkg/bigparallelr/man/nb_cores.html'>nb_cores</a>.</p></td>
@@ -273,7 +280,6 @@ The algorithm iterates until the maximum change in the objective after any
 coefficient update is less than <code>eps</code> times the null deviance.
 Default value is <code>1e-5</code>.</p></dd>
     <dt><code>max.iter</code></dt><dd><p>Maximum number of iterations. Default is <code>1000</code>.</p></dd>
-    <dt><code>warn</code></dt><dd><p>Deprecated. Now return the reason of completion as <code>$message</code>.</p></dd>
     <dt><code>return.all</code></dt><dd><p>Deprecated. Now always return all models.</p></dd>
   
 </dl></td>
@@ -341,21 +347,44 @@ penalized regression for genetic risk prediction. Genetics, 212: 65-74.
 <span class='co'># fitting model for multiple lambdas and alphas</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_spLogReg</span>(<span class='no'>X</span>, <span class='no'>y01</span>[<span class='no'>ind.train</span>], <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>,
                      <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
-                     <span class='kw'>alphas</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>, <span class='fl'>0.1</span>, <span class='fl'>0.01</span>))
+                     <span class='kw'>alphas</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>, <span class='fl'>0.1</span>, <span class='fl'>0.01</span>), <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># peek at the models</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>)</div><div class='img'><img src='big_spLogReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 6</span><span>
-#&gt;   alpha validation_loss intercept beta        nb_var message   
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  0.01           0.554    0.258  </span><span style='color: #949494;'>&lt;dbl [733]&gt;</span><span>    454 </span><span style='color: #949494;'>&lt;chr [10]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  0.1            0.482    0.139  </span><span style='color: #949494;'>&lt;dbl [733]&gt;</span><span>    215 </span><span style='color: #949494;'>&lt;chr [10]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  0.5            0.435    0.075</span><span style='text-decoration: underline;'>8</span><span> </span><span style='color: #949494;'>&lt;dbl [733]&gt;</span><span>    164 </span><span style='color: #949494;'>&lt;chr [10]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  1              0.425    0.061</span><span style='text-decoration: underline;'>5</span><span> </span><span style='color: #949494;'>&lt;dbl [733]&gt;</span><span>    154 </span><span style='color: #949494;'>&lt;chr [10]&gt;</span><span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>)</div><div class='img'><img src='big_spLogReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>test</span>, <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 7</span><span>
+#&gt;   alpha validation_loss intercept beta        nb_var message    all_conv
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>   
+#&gt; </span><span style='color: #555555;'>1</span><span>  1              0.425    0.061</span><span style='text-decoration: underline;'>5</span><span> </span><span style='color: #555555;'>&lt;dbl [733]&gt;</span><span>    154 </span><span style='color: #555555;'>&lt;chr [10]&gt;</span><span> TRUE    
+#&gt; </span><span style='color: #555555;'>2</span><span>  0.5            0.435    0.075</span><span style='text-decoration: underline;'>8</span><span> </span><span style='color: #555555;'>&lt;dbl [733]&gt;</span><span>    164 </span><span style='color: #555555;'>&lt;chr [10]&gt;</span><span> TRUE    
+#&gt; </span><span style='color: #555555;'>3</span><span>  0.1            0.482    0.139  </span><span style='color: #555555;'>&lt;dbl [733]&gt;</span><span>    215 </span><span style='color: #555555;'>&lt;chr [10]&gt;</span><span> TRUE    
+#&gt; </span><span style='color: #555555;'>4</span><span>  0.01           0.554    0.258  </span><span style='color: #555555;'>&lt;dbl [733]&gt;</span><span>    454 </span><span style='color: #555555;'>&lt;chr [10]&gt;</span><span> TRUE    </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>test</span>, <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='no'>message</span></div><div class='output co'>#&gt; [[1]]
+#&gt;  [1] "No more improvement" "No more improvement" "No more improvement"
+#&gt;  [4] "No more improvement" "No more improvement" "No more improvement"
+#&gt;  [7] "No more improvement" "No more improvement" "No more improvement"
+#&gt; [10] "No more improvement"
+#&gt; 
+#&gt; [[2]]
+#&gt;  [1] "No more improvement" "No more improvement" "No more improvement"
+#&gt;  [4] "No more improvement" "No more improvement" "No more improvement"
+#&gt;  [7] "No more improvement" "No more improvement" "No more improvement"
+#&gt; [10] "No more improvement"
+#&gt; 
+#&gt; [[3]]
+#&gt;  [1] "No more improvement" "No more improvement" "No more improvement"
+#&gt;  [4] "No more improvement" "No more improvement" "No more improvement"
+#&gt;  [7] "No more improvement" "No more improvement" "No more improvement"
+#&gt; [10] "No more improvement"
+#&gt; 
+#&gt; [[4]]
+#&gt;  [1] "No more improvement" "No more improvement" "No more improvement"
+#&gt;  [4] "No more improvement" "No more improvement" "No more improvement"
+#&gt;  [7] "No more improvement" "No more improvement" "No more improvement"
+#&gt; [10] "No more improvement"
+#&gt; </div><div class='input'>
 <span class='co'># prediction for other data -&gt; only the best alpha is used</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>test</span>, <span class='kw'>best.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 6</span><span>
-#&gt;   alpha validation_loss intercept beta        nb_var message   
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     1           0.425    0.061</span><span style='text-decoration: underline;'>5</span><span> </span><span style='color: #949494;'>&lt;dbl [733]&gt;</span><span>    154 </span><span style='color: #949494;'>&lt;chr [10]&gt;</span><span></div><div class='input'><span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ])
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>test</span>, <span class='kw'>best.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 7</span><span>
+#&gt;   alpha validation_loss intercept beta        nb_var message    all_conv
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>   
+#&gt; </span><span style='color: #555555;'>1</span><span>     1           0.425    0.061</span><span style='text-decoration: underline;'>5</span><span> </span><span style='color: #555555;'>&lt;dbl [733]&gt;</span><span>    154 </span><span style='color: #555555;'>&lt;chr [10]&gt;</span><span> TRUE    </div><div class='input'><span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>test</span>, <span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind.test</span>, <span class='kw'>covar.row</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.test</span>, ])
 <span class='fu'><a href='AUC.html'>AUC</a></span>(<span class='no'>pred</span>, <span class='no'>y01</span>[<span class='no'>ind.test</span>])</div><div class='output co'>#&gt; [1] 0.8693182</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
 <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='no'>pred</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='no'>y01</span>[<span class='no'>ind.test</span>]),
       <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"density"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span>(<span class='fl'>0.4</span>)) +

@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@
   <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
   <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>X</span>), <span class='no'>ncores</span>),
+  <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fu'><a href='block_size.html'>block_size</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>X</span>)),
   <span class='kw'>center</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )
@@ -176,7 +176,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>A.row</th>
@@ -225,6 +225,16 @@ of <code>X</code>.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>\(X^T \cdot A\).</p>
+    <h2 class="hasAnchor" id="matrix-parallelization"><a class="anchor" href="#matrix-parallelization"></a>Matrix parallelization</h2>
+
+    
+
+<p>Large matrix computations are made block-wise and won't be parallelized
+in order to not have to reduce the size of these blocks.
+Instead, you may use <a href='https://mran.microsoft.com/open/'>Microsoft R Open</a>
+or OpenBLAS in order to accelerate these block matrix computations.
+You can also control the number of cores used with
+<code><a href='https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html'>bigparallelr::set_blas_ncores()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
@@ -253,6 +263,7 @@ of <code>X</code>.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#matrix-parallelization">Matrix parallelization</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

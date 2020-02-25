@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -160,7 +160,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>ind.row</th>
@@ -190,10 +190,12 @@ Default uses <a href='block_size.html'>block_size</a>.</p></td>
 
     
 
-<p>Large matrix computations (crossprods) are made block-wise and won't
-be parallelized in order to not have to reduce the size of these blocks.
+<p>Large matrix computations are made block-wise and won't be parallelized
+in order to not have to reduce the size of these blocks.
 Instead, you may use <a href='https://mran.microsoft.com/open/'>Microsoft R Open</a>
-in order to accelerate these block matrix computations.</p>
+or OpenBLAS in order to accelerate these block matrix computations.
+You can also control the number of cores used with
+<code><a href='https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html'>bigparallelr::set_blas_ncores()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://rdrr.io/r/stats/cor.html'>cor</a> <a href='big_crossprodSelf.html'>big_crossprodSelf</a></p></div>
@@ -205,7 +207,7 @@ in order to accelerate these block matrix computations.</p>
 <span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fu'>big_cor</span>(<span class='no'>X</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] "FBM"
 #&gt; attr(,"package")
-#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpUEgzDk/file50601072ffe7.bk"</div><div class='input'>
+#&gt; [1] "bigstatsr"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>K</span>)</div><div class='output co'>#&gt; [1] 17 17</div><div class='input'><span class='no'>K</span>$<span class='no'>backingfile</span></div><div class='output co'>#&gt; [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmpq8tKLv\\file2e34b9f6eaa.bk"</div><div class='input'>
 <span class='no'>true</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>X</span>[])
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>K</span>[], <span class='no'>true</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Using only half of the data</span>

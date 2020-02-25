@@ -89,3 +89,5 @@ reference:
       - nb_cores
       - without_downcast_warning
       - sub_bk
+      - covar_from_df
+

@@ -1,18 +1,22 @@
 ---
 title: "Packages bigstatsr and bigmemory"
 author: "Florian Privé"
-date: "January 7, 2018"
+date: "February 25, 2020"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
+Sys.setenv(LANGUAGE = "en")
+Sys.setlocale("LC_TIME", "C")
 ```
 
 
-I'm a fan of package {bigmemory}. It's by far the most convenient solution I found for analyzing large genomic data in R on my computer. I've been using it since early 2016 and have also contributed some features. 
+I'm a fan of package {bigmemory}. It's by far the most convenient solution I found for analyzing large genomic data in R on my computer. I've started using it in early 2016 and have also contributed some features. 
 
-At first, package {bigstatsr} was using the `big.matrix` objects of package {bigmemory}. Yet, at some point, I felt the need to become independent of package {bigmemory}. As package {bigstatsr} will be a central tool of all my thesis work, I need to add whatever feature I want whenever I want to. Thus, I reimplemented an object very similar to the filebacked `big.matrix` object, called "FBM" (Filebacked Big Matrix, very original) in this package. These two formats are so similar that you can easily convert (without copying the data) between the two objects.
+At first, package {bigstatsr} was using the `big.matrix` objects of package {bigmemory}. Yet, at some point, I felt the need to become independent of package {bigmemory}. As package {bigstatsr} was a central tool of all my thesis work, I needed to add whatever feature I wanted whenever I wanted to. Thus, I reimplemented an object very similar to the filebacked `big.matrix` object, called "FBM" (Filebacked Big Matrix, very original) in package {bigstatsr}. These two formats are so similar that you can easily convert (without copying the data) between the two objects.
 
 In this vignette, I explain the main differences between my package {bigstatsr} and the packages of the *bigmemory* family.
 
@@ -83,12 +87,12 @@ For now, package {bigstatsr} handles the following types:
 - float
 - double
 
-Additionally, the unsigned char type is used in the `FBM.code256` format, which instead of accessing integer values ranging from 0 to 255, it uses some code to access 256 arbitrary different values. I make a lot of use of this format in my other R package {bigsnpr} in order to store genotype dosages.
+Additionally, the unsigned char type is used in the `FBM.code256` format, which instead of accessing integer values ranging from 0 to 255, it uses some code to access 256 arbitrary different values. I use this format in my other R package {bigsnpr} to store genotype dosages.
 <!-- I have been thinking of using the unsigned short type to make a `FBM.code65536` in order to store 65536 different values. I would use it to store some strings in order to implement a "big.data.frame" feature (with no more than 65536 strings in it, unfortunately). Yet, as I'm not needing this right now, I haven't implemented it yet and I'm not sure I will. -->
 
 ## Class
 
-A `big.matrix` is basically an S4 class object that stores a pointer to a C++ object (an external pointer). When you restart your R session, this pointer becomes `Nil` and it may make your R session crash. You'll need a different object, a `big.matrix.descriptor` (using `describe()`) which stores enough information to make it possible to create this external pointer again (using `attach.big.matrix()`).
+A `big.matrix` is basically an S4 class object that stores a pointer to a C++ object (an external pointer). When you restart your R session, this pointer becomes `Nil` and it may make your R session crash. You need to use a different object, a `big.matrix.descriptor` (using `describe()`) which stores enough information to make it possible to create this external pointer again (using `attach.big.matrix()`).
 Therefore, one has to often switch between descriptors and `big.matrix` objects.
 
 ```{r, echo=FALSE, out.width="60%"}
@@ -98,23 +102,21 @@ knitr::include_graphics("https://i.stack.imgur.com/CZsnH.png")
 
 For FBMs, I use the nice idea of package [**bigmemoryExtras**](https://github.com/phaverty/bigmemoryExtras). Basically, I use a Reference Class (RC) object with active binding. In this object, I store the external pointer *and* the information needed to create the pointer to the C++ object. The active binding makes this automatic so that the user never need to use `attach.big.matrix()` or `describe()` anymore (and no more session crash!). 
 
-What this also means is that you can now serialize a FBM (for example, saving it in an rds file with `saveRDS()` or using it in a parallel algorithm). For instance, with a standard `big.matrix` object, you'll need to pass the descriptor object in paralell algorithms:
+What this also means is that you can now serialize a FBM (for example, saving it in an rds file with `saveRDS()` or using it in a parallel algorithm). For instance, with a standard `big.matrix` object, you'll need to pass the descriptor object in parallel algorithms:
 
 ```{r}
 X <- FBM(10, 10); X[] <- rnorm(length(X))
 bm <- X$bm()
 ```
 
-```{r}
+```{r, error=TRUE}
 library(foreach)
 cl <- parallel::makeCluster(2)
 doParallel::registerDoParallel(cl)
 # Won't work because bm will be Nil when copied to the cluster
-tryCatch({
-  foreach(j = 1:10, .combine = 'c') %dopar% {
-    sum(bm[, j])
-  }
-}, error = function(e) print(e))
+foreach(j = 1:10, .combine = 'c') %dopar% {
+  sum(bm[, j])
+}
 parallel::stopCluster(cl)
 ```
 
@@ -129,11 +131,17 @@ foreach(j = 1:10, .combine = 'c') %dopar% {
 }
 
 # You can directly pass FBMs, the address will be reattached automatically
+```
+
+In contrast, you can directly use FBMs in parallel algorithms, as the address will be reattached automatically thanks to the active bindings.
+
+```{r}
 foreach(j = 1:10, .combine = 'c') %dopar% {
   sum(X[, j])
 }
 parallel::stopCluster(cl)
 ```
+
 
 ## C++ accessors
 
@@ -186,11 +194,9 @@ NumericVector colsums_fbm(Environment fbm) {
   int m = macc.ncol();
   
   NumericVector res(m);
-  for (int j = 0; j < m; j++) {
-    for (int i = 0; i < n; i++) {
+  for (int j = 0; j < m; j++)
+    for (int i = 0; i < n; i++)
       res[j] += macc(i, j);
-    }
-  }
   
   return res;
 }
@@ -207,54 +213,28 @@ So, the main difference is that {bigmemory} uses `macc[j][i]` whereas `FBM` obje
 // [[Rcpp::depends(bigstatsr, rmio)]]
 #include <bigstatsr/BMAcc.h>
 
-template <class C>
-NumericVector colsums_fbm_templated(C macc) {
+// [[Rcpp::export]]
+NumericVector colsums_fbm_sub(Environment fbm,
+                              const IntegerVector& ind_row,
+                              const IntegerVector& ind_col) {
+  
+  XPtr<FBM> xpMat = fbm["address"];
+  SubBMAcc<double> macc(xpMat, ind_row, ind_col, 1);
   
   int n = macc.nrow();
   int m = macc.ncol();
   
   NumericVector res(m);
-  for (int j = 0; j < m; j++) {
-    for (int i = 0; i < n; i++) {
+  for (int j = 0; j < m; j++)
+    for (int i = 0; i < n; i++)
       res[j] += macc(i, j);
-    }
-  }
   
   return res;
-}
-
-// [[Rcpp::export]]
-NumericVector colsums_matrix(const NumericMatrix& x) {
-  
-  return colsums_fbm_templated(x);
-}
-
-// [[Rcpp::export]]
-NumericVector colsums_fbm2(Environment fbm) {
-  
-  XPtr<FBM> xpMat = fbm["address"];
-  BMAcc<double> macc(xpMat);
-  
-  return colsums_fbm_templated(macc);
-}
-
-// [[Rcpp::export]]
-NumericVector colsums_fbm2_sub(Environment fbm,
-                               const IntegerVector& ind_row,
-                               const IntegerVector& ind_col) {
-  
-  XPtr<FBM> xpMat = fbm["address"];
-  SubBMAcc<double> macc(xpMat, ind_row - 1, ind_col - 1);
-  
-  return colsums_fbm_templated(macc);
 }
 ```
 
 ```{r}
-class(mat <- X[]) 
-colsums_matrix(mat)
-colsums_fbm2(X)
-colsums_fbm2_sub(X, rows_along(X), 1:6)
+colsums_fbm_sub(X, rows_along(X), 1:6)
 ```
 
 ## Apply an R function
@@ -278,7 +258,9 @@ system.time(
 all.equal(test1, true)
 ```
 
-The {biganalytics} strategy is to make a loop, which is slow because there are a lot of elements to loop through. Package {bigstatsr} uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results. 
+The {biganalytics} strategy is to make a loop, which is slow because there are a lot of elements to loop through. 
+
+Package {bigstatsr} uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results. 
 
 ```{r, out.width="70%", echo=FALSE}
 knitr::include_graphics("https://privefl.github.io/useR-2017/split-apply-combine.svg")
@@ -319,27 +301,27 @@ library(bigalgebra)
 system.time(
   test <- m %*% a
 )
-stopifnot(identical(test[], true))
+identical(test[], true)
 
 m2 <- big_copy(m)
-# Function built on top of big_apply
+# Function that allows subsetting and scaling of the matrix
 system.time(
   test2 <- big_prodMat(m2, a)
 )
-stopifnot(identical(test2, true))
+identical(test2, true)
 
 # Standard products (without subsetting or scaling)
 # are implemented for 'double' FBMs
 system.time(
   test3 <- m2 %*% a
 )
-stopifnot(identical(test3[], true))
+identical(test3[], true)
 
 # Additionally, you could use {bigalgebra} if you don't need subsetting
 system.time(
   test4 <- m2$bm() %*% a
 )
-stopifnot(identical(test4[], true))
+identical(test4[], true)
 ```
 
-Making functions (not operators) makes it possible to use subsetting.
+Making functions (not operators) makes it possible to use subsetting and scaling.

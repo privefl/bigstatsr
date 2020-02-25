@@ -71,7 +71,7 @@ Covariates can be added to correct for confounders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -167,7 +167,7 @@ Covariates can be added to correct for confounders.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>y.train</th>
@@ -188,7 +188,8 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
       <th>covar.train</th>
       <td><p>Matrix of covariables to be added in each model to correct
 for confounders (e.g. the scores of PCA), corresponding to <code>ind.train</code>.
-Default is <code>NULL</code> and corresponds to only adding an intercept to each model.</p></td>
+Default is <code>NULL</code> and corresponds to only adding an intercept to each model.
+You can use <code><a href='covar_from_df.html'>covar_from_df()</a></code> to convert from a data frame.</p></td>
     </tr>
     <tr>
       <th>thr.eigval</th>
@@ -236,7 +237,7 @@ This is also an object of class <code>mhtest</code>. See <code><a href='https://
 #&gt; &lt;environment: base&gt;</div><div class='input'><span class='co'>## plot results</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>)</div><div class='img'><img src='big_univLinReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='big_univLinReg-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## To get p-values associated with the test</span>
 <span class='no'>test</span>$<span class='no'>p.value</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>test</span>, <span class='kw'>log10</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  4 variables:
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; Classes 'mhtest' and 'data.frame':	4542 obs. of  4 variables:
 #&gt;  $ estim  : num  -0.0311 0.0956 -0.0961 0.0327 -0.0246 ...
 #&gt;  $ std.err: num  0.0658 0.0783 0.071 0.08 0.062 ...
 #&gt;  $ score  : num  -0.473 1.221 -1.353 0.408 -0.397 ...
@@ -245,7 +246,7 @@ This is also an object of class <code>mhtest</code>. See <code><a href='https://
 #&gt;  - attr(*, "predict")=function (xtr)  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>y</span> ~ <span class='no'>X1</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) 
 #&gt; -0.03111113  0.06575485 -0.47313823  0.63631503 </div><div class='input'>
 <span class='co'># With all data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  3 variables:
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; Classes 'mhtest' and 'data.frame':	4542 obs. of  3 variables:
 #&gt;  $ estim  : num  -0.0295 0.0994 -0.0939 0.035 -0.0217 ...
 #&gt;  $ std.err: num  0.066 0.0785 0.0714 0.0803 0.0625 ...
 #&gt;  $ score  : num  -0.447 1.266 -1.316 0.436 -0.347 ...
@@ -256,7 +257,7 @@ This is also an object of class <code>mhtest</code>. See <code><a href='https://
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>big_univLinReg</span>(<span class='no'>X</span>, <span class='no'>y</span>[<span class='no'>ind.train</span>],
                    <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>[<span class='no'>ind.train</span>, ],
-                   <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt; Classes ‘mhtest’ and 'data.frame':	4542 obs. of  3 variables:
+                   <span class='kw'>ind.train</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))</div><div class='output co'>#&gt; Classes 'mhtest' and 'data.frame':	4542 obs. of  3 variables:
 #&gt;  $ estim  : num  0.00416 0.15009 0.03116 0.16321 -0.02771 ...
 #&gt;  $ std.err: num  0.0962 0.1131 0.1034 0.1102 0.0897 ...
 #&gt;  $ score  : num  0.0432 1.3267 0.3012 1.4807 -0.3088 ...

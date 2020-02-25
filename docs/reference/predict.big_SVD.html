@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -167,7 +167,7 @@
     </tr>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>ind.row</th>
@@ -227,7 +227,7 @@ the scores of the training set of <code>object</code>.</p>
 <span class='no'>scores</span> <span class='kw'>&lt;-</span> <span class='no'>test</span>$<span class='no'>u</span> <span class='kw'>%*%</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='no'>test</span>$<span class='no'>d</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "big_SVD"</div><div class='input'><span class='no'>scores2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>test</span>) <span class='co'># use this function to predict scores</span>
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>scores</span>, <span class='no'>scores2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>scores</span>)</div><div class='output co'>#&gt; [1] 258  10</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>pca</span>$<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 258 258</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>pca</span>$<span class='no'>sdev</span>)</div><div class='output co'>#&gt; [1] 3.023287e+00 3.008386e+00 2.990514e+00 2.984375e+00 2.965688e+00
-#&gt; [6] 7.635648e-15</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='predict.big_SVD-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='predict.big_SVD-3.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; [6] 1.130391e-14</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>scores2</span>, <span class='no'>pca</span>$<span class='no'>x</span>[, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='predict.big_SVD-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>$<span class='no'>v</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, ], <span class='no'>pca</span>$<span class='no'>rotation</span>[<span class='fl'>1</span>:<span class='fl'>100</span>, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>scores2</span>)])</div><div class='img'><img src='predict.big_SVD-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># projecting on new data</span>
 <span class='no'>X2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sweep.html'>sweep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sweep.html'>sweep</a></span>(<span class='no'>X</span>[-<span class='no'>ind</span>, ], <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>center</span>, <span class='st'>'-'</span>), <span class='fl'>2</span>, <span class='no'>test</span>$<span class='no'>scale</span>, <span class='st'>'/'</span>)
 <span class='no'>scores.test</span> <span class='kw'>&lt;-</span> <span class='no'>X2</span> <span class='kw'>%*%</span> <span class='no'>test</span>$<span class='no'>v</span>

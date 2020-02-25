@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transposition — big_transpose • bigstatsr</title>
+<title>Transpose an FBM — big_transpose • bigstatsr</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Transposition — big_transpose" />
+<meta property="og:title" content="Transpose an FBM — big_transpose" />
 <meta property="og:description" content="This function implements a simple cache-oblivious algorithm for
 the transposition of a Filebacked Big Matrix." />
 <meta name="twitter:card" content="summary" />
@@ -70,7 +70,7 @@ the transposition of a Filebacked Big Matrix." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@ the transposition of a Filebacked Big Matrix." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transposition</h1>
+    <h1>Transpose an FBM</h1>
     
     <div class="hidden name"><code>big_transpose.Rd</code></div>
     </div>
@@ -157,7 +157,7 @@ the transposition of a Filebacked Big Matrix.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>backingfile</th>
@@ -169,25 +169,18 @@ Default stores in the temporary directory.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
-and type are automatically determined from the input Filebacked Big Matrix.</p>
+    <p>The new transposed FBM. Dimensions and type are automatically
+determined from the input FBM.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>10</span>, <span class='fl'>5</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>50</span>))
-<span class='no'>X</span>[]</div><div class='output co'>#&gt;              [,1]        [,2]        [,3]       [,4]        [,5]
-#&gt;  [1,] -0.44496684  0.04993072  1.13897648 -1.8085971  0.72536274
-#&gt;  [2,] -0.36245836 -0.32330151  0.37670599 -0.2815420  0.08113190
-#&gt;  [3,] -0.70566422  1.48164700 -0.04948612  1.6317885 -1.66166634
-#&gt;  [4,] -0.27445529 -0.08985143  1.05238058  2.2263765  0.06787402
-#&gt;  [5,] -0.58019104  0.32373714 -1.78010392  0.2249905  1.51426278
-#&gt;  [6,]  0.97313773  1.69691638 -0.20695664  1.4240952 -0.20836444
-#&gt;  [7,] -1.77959969  1.10486797  1.66767961  1.9076996 -0.20527700
-#&gt;  [8,]  0.91717523  0.83644849 -0.23942115 -0.8606823 -1.55100430
-#&gt;  [9,]  0.03515448  0.41027383 -0.16755004 -0.1033174  0.84066493
-#&gt; [10,] -0.27424994 -1.13418129  1.84122844 -0.3354759  0.18879906</div><div class='input'><span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
+    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>6</span>, <span class='fl'>5</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>30</span>))
+<span class='no'>X</span>[]</div><div class='output co'>#&gt;            [,1]         [,2]       [,3]       [,4]       [,5]
+#&gt; [1,]  0.1066472 -0.350078968  0.3014073  1.6228060  1.3485703
+#&gt; [2,] -1.0103989  1.681213501 -1.6633137  0.8911158  0.1358977
+#&gt; [3,]  1.1788924 -2.290655613 -0.4913255 -0.5310150  1.5544532
+#&gt; [4,] -1.8382279 -0.004754315 -0.3598196  1.0204832 -0.1388967
+#&gt; [5,] -1.2122184 -1.556176609  1.6691504  1.1152850 -0.1206802
+#&gt; [6,] -0.7722889  0.699863428  0.9413492  0.1955967  0.7522782</div><div class='input'><span class='no'>Xt</span> <span class='kw'>&lt;-</span> <span class='fu'>big_transpose</span>(<span class='no'>X</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>X</span>[]), <span class='no'>Xt</span>[])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div></pre>
   </div>

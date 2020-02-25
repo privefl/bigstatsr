@@ -41,8 +41,8 @@ integer vectors or logical vectors passed to the [&amp;lt;- function as i
 (e.g. X[i]) or i and j (e.g. X[i, j]) into positive
 integer vectors. The converted indices are provided as the i parameter of
 replace_vector or i and j parameters of replace_matrix to facilitate
-implementing the replacement mechanism for custom matrix-like types. Values
-are recycled to match the replacement length." />
+implementing the replacement mechanism for custom matrix-like types.
+Single values are recycled to match the replacement length." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +75,7 @@ are recycled to match the replacement length." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -156,8 +156,8 @@ integer vectors or logical vectors passed to the <code>[&lt;-</code> function as
 (e.g. <code>X[i]</code>) or <code>i</code> and <code>j</code> (e.g. <code>X[i, j]</code>) into positive
 integer vectors. The converted indices are provided as the <code>i</code> parameter of
 <code>replace_vector</code> or <code>i</code> and <code>j</code> parameters of <code>replace_matrix</code> to facilitate
-implementing the replacement mechanism for custom matrix-like types. Values
-are recycled to match the replacement length.</p>
+implementing the replacement mechanism for custom matrix-like types.
+Single values are recycled to match the replacement length.</p>
     </div>
 
     <pre class="usage"><span class='fu'>Replace</span>(<span class='no'>replace_vector</span>, <span class='no'>replace_matrix</span>)</pre>
@@ -185,10 +185,7 @@ that replaces a matrix subset of <code>x</code> based on two vectors of indices 
 meant to be used as a method for <code>[&lt;-</code> for a custom type.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The custom type must implement methods for <code>dim</code> for this function
-to work. Implementing methods for <code>nrow</code> and <code>ncol</code> is not necessary
-as the default method of those generics calls <code>dim</code> internally.</p>
-<p><strong>This idea initially comes from <a href='https://goo.gl/3RDNQG'>package crochet</a>.</strong></p>
+    <p><strong>This idea initially comes from <a href='https://goo.gl/3RDNQG'>package crochet</a>.</strong></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

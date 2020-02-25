@@ -70,7 +70,7 @@ Filebacked Big Matrix." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ Filebacked Big Matrix.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A <a href='FBM-class.html'>FBM</a>.</p></td>
+      <td><p>An object of class <a href='FBM-class.html'>FBM</a>.</p></td>
     </tr>
     <tr>
       <th>a.FUN</th>
@@ -232,59 +232,7 @@ the results (on each cluster and then from each cluster).</p>
                          <span class='kw'>block.size</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt;  num [1:517] 6243 6168 6242 6249 6212 ...</div><div class='input'><span class='co'># it is usually preferred to split along columns</span>
 <span class='co'># because matrices are stored by column.</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>rowsums2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_apply</span>(<span class='no'>X</span>, <span class='kw'>a.FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>X</span>, <span class='no'>ind</span>) <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='no'>X</span>[, <span class='no'>ind</span>]),
-                          <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'plus'</span>))</div><div class='output co'>#&gt;  num [1:517] 6243 6168 6242 6249 6212 ...</div><div class='input'>
-<span class='co'>## Every extra parameter to `a.FUN` should be passed to `big_apply`</span>
-<span class='co'># get the crossproduct between X and a matrix A</span>
-<span class='co'># note that we don't explicitly pass `ind.col` to `a.FUN`</span>
-<span class='fu'><a href='https://rdrr.io/r/base/body.html'>body</a></span>(<span class='no'>big_cprodMat</span>)</div><div class='output co'>#&gt; {
-#&gt;     check_args()
-#&gt;     assert_lengths(ind.row, rows_along(A.row))
-#&gt;     if (length(ind.row) == 0 || length(ind.col) == 0) 
-#&gt;         return(matrix(0, length(ind.col), ncol(A.row)))
-#&gt;     if (!is.null(scale)) {
-#&gt;         assert_lengths(scale, ind.col)
-#&gt;         scale &lt;- as_vec(scale)
-#&gt;     }
-#&gt;     if (!is.null(center)) {
-#&gt;         assert_lengths(center, ind.col)
-#&gt;         center &lt;- as_vec(center)
-#&gt;     }
-#&gt;     res &lt;- big_apply(X, a.FUN = function(X, ind, M, ind.row) {
-#&gt;         crossprod(X[ind.row, ind, drop = FALSE], M)
-#&gt;     }, a.combine = rbind, ind = ind.col, ncores = ncores, block.size = block.size, 
-#&gt;         M = A.row, ind.row = ind.row)
-#&gt;     if (!is.null(center)) 
-#&gt;         res &lt;- res - tcrossprod(center, colSums(A.row))
-#&gt;     if (!is.null(scale)) 
-#&gt;         res &lt;- res/scale
-#&gt;     res
-#&gt; }</div><div class='input'>
-<span class='co'># get the product between X and a matrix B</span>
-<span class='co'># here, we must explicitly pass `ind.col` to `a.FUN`</span>
-<span class='co'># because the right matrix also needs to be subsetted.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/body.html'>body</a></span>(<span class='no'>big_prodMat</span>)</div><div class='output co'>#&gt; {
-#&gt;     check_args()
-#&gt;     assert_lengths(ind.col, rows_along(A.col))
-#&gt;     if (length(ind.row) == 0 || length(ind.col) == 0) 
-#&gt;         return(matrix(0, length(ind.row), ncol(A.col)))
-#&gt;     if (!is.null(scale)) {
-#&gt;         assert_lengths(scale, ind.col)
-#&gt;         A.col &lt;- A.col/as_vec(scale)
-#&gt;     }
-#&gt;     if (!is.null(center)) {
-#&gt;         assert_lengths(center, ind.col)
-#&gt;         center2 &lt;- crossprod(as_vec(center), A.col)
-#&gt;     }
-#&gt;     res &lt;- big_apply(X, a.FUN = function(X, ind, M, ind.row, 
-#&gt;         ind.col) {
-#&gt;         X[ind.row, ind.col[ind], drop = FALSE] %*% M[ind, , drop = FALSE]
-#&gt;     }, a.combine = plus, ind = seq_along(ind.col), ncores = ncores, 
-#&gt;         block.size = block.size, M = A.col, ind.row = ind.row, 
-#&gt;         ind.col = ind.col)
-#&gt;     if (is.null(center)) 
-#&gt;         res
-#&gt;     else centering(res, center2)
-#&gt; }</div></pre>
+                          <span class='kw'>a.combine</span> <span class='kw'>=</span> <span class='st'>'plus'</span>))</div><div class='output co'>#&gt;  num [1:517] 6243 6168 6242 6249 6212 ...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

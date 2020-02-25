@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read a file — big_read • bigstatsr</title>
+<title>Read a file as FBM — big_read • bigstatsr</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Read a file — big_read" />
+<meta property="og:title" content="Read a file as FBM — big_read" />
 <meta property="og:description" content="Read a file as a Filebacked Big Matrix by using package bigreadr.
 For a mini-tutorial, please see this vignette." />
 <meta name="twitter:card" content="summary" />
@@ -70,7 +70,7 @@ For a mini-tutorial, please see this vignette." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@ For a mini-tutorial, please see this vignette." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read a file</h1>
+    <h1>Read a file as FBM</h1>
     
     <div class="hidden name"><code>big_read.Rd</code></div>
     </div>
@@ -191,7 +191,7 @@ It is used in <a href='https://goo.gl/pHCCmo'>package <strong>bigsnpr</strong></
     </tr>
     <tr>
       <th>backingfile</th>
-      <td><p>Path to the file storing the Big Matrix on disk.
+      <td><p>Path to the file storing the FBM data on disk.
 An extension ".bk" will be automatically added.
 Default uses <code>file</code> without its extension.</p></td>
     </tr>
@@ -212,7 +212,7 @@ Default is <code>500 * 1024^2</code> (500 MB).</p></dd>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A Filebacked Big Matrix of type '&lt;type&gt;' with &lt;length(select)&gt; columns.</p>
+    <p>A Filebacked Big Matrix of type <code>type</code> with <code><a href='https://rdrr.io/r/base/length.html'>length(select)</a></code> columns.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
