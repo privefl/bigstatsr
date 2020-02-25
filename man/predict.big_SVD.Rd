@@ -16,7 +16,7 @@
 \arguments{
 \item{object}{A list returned by \code{big_SVD} or \code{big_randomSVD}.}
 
-\item{X}{A \link[=FBM-class]{FBM}.}
+\item{X}{An object of class \link[=FBM-class]{FBM}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}

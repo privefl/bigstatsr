@@ -2,7 +2,7 @@
 % Please edit documentation in R/read-write.R
 \name{big_write}
 \alias{big_write}
-\title{Write a file}
+\title{Write an FBM to a file}
 \usage{
 big_write(
   X,
@@ -15,14 +15,14 @@ big_write(
 )
 }
 \arguments{
-\item{X}{A \link[=FBM-class]{FBM}.}
+\item{X}{An object of class \link[=FBM-class]{FBM}.}
 
 \item{file}{File to write to.}
 
 \item{every_nrow}{Number of rows to write at once.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fwrite]{data.table::fwrite},
-excepted \code{x}, \code{file}, \code{append}, \code{row.names}, \code{col.names} and \code{showProgress}.}
+except \code{x}, \code{file}, \code{append}, \code{row.names}, \code{col.names} and \code{showProgress}.}
 
 \item{ind.row}{An optional vector of the row indices that are used.
 If not specified, all rows are used. \strong{Don't use negative indices.}}
@@ -41,4 +41,5 @@ Write a file from a Filebacked Big Matrix (by parts).
 \examples{
 X <- big_attachExtdata()
 csv <- big_write(X, tempfile(), every_nrow = 100, progress = interactive())
+
 }

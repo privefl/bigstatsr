@@ -25,14 +25,10 @@ integer vectors or logical vectors passed to the \verb{[<-} function as \code{i}
 (e.g. \code{X[i]}) or \code{i} and \code{j} (e.g. \code{X[i, j]}) into positive
 integer vectors. The converted indices are provided as the \code{i} parameter of
 \code{replace_vector} or \code{i} and \code{j} parameters of \code{replace_matrix} to facilitate
-implementing the replacement mechanism for custom matrix-like types. Values
-are recycled to match the replacement length.
+implementing the replacement mechanism for custom matrix-like types.
+Single values are recycled to match the replacement length.
 }
 \details{
-The custom type must implement methods for \code{dim} for this function
-to work. Implementing methods for \code{nrow} and \code{ncol} is not necessary
-as the default method of those generics calls \code{dim} internally.
-
 \strong{This idea initially comes from \href{https://goo.gl/3RDNQG}{package crochet}.}
 }
 \keyword{internal}

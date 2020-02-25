@@ -19,7 +19,7 @@ The \link{FBM} object stored in the rdsfile.
 Attach a Filebacked Big Matrix
 }
 \examples{
-# tmpFBM
+# temporary FBM
 X <- FBM(10, 10)$save()
 
 rdsfile <- sub_bk(X$backingfile, ".rds")

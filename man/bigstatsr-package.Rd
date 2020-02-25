@@ -6,9 +6,9 @@
 \alias{bigstatsr-package}
 \title{bigstatsr: Statistical Tools for Filebacked Big Matrices}
 \arguments{
-\item{X}{A \link[=FBM-class]{FBM}.}
+\item{X}{An object of class \link[=FBM-class]{FBM}.}
 
-\item{X.code}{A \link[=FBM.code256-class]{FBM.code256}.}
+\item{X.code}{An object of class \link[=FBM.code256-class]{FBM.code256}.}
 
 \item{y.train}{Vector of responses, corresponding to \code{ind.train}.}
 

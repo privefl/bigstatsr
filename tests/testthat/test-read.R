@@ -2,6 +2,8 @@
 
 context("READ")
 
+skip_if_not_installed("bigreadr")
+
 set.seed(SEED)
 
 ################################################################################

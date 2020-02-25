@@ -27,10 +27,6 @@ integer vectors. The converted indices are provided as the \code{i} parameter of
 implementing the extraction mechanism for custom matrix-like types.
 }
 \details{
-The custom type must implement methods for \code{dim} for this function
-to work. Implementing methods for \code{nrow} and \code{ncol} is not necessary
-as the default method of those generics calls \code{dim} internally.
-
 \strong{This idea initially comes from \href{https://goo.gl/3RDNQG}{package crochet}.}
 }
 \keyword{internal}

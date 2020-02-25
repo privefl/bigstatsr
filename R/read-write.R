@@ -4,7 +4,7 @@ drop_ext <- function(file) tools::file_path_sans_ext(file)
 
 ################################################################################
 
-#' Read a file
+#' Read a file as FBM
 #'
 #' Read a file as a Filebacked Big Matrix by using package {bigreadr}.
 #' For a mini-tutorial, please see [this vignette](https://goo.gl/91oNxU).
@@ -13,7 +13,7 @@ drop_ext <- function(file) tools::file_path_sans_ext(file)
 #' @param select Indices of columns to read (sorted).
 #'   The length of `select` will be the number of columns of the resulting FBM.
 #' @param filter Vector used to subset the rows of each data frame.
-#' @param backingfile Path to the file storing the Big Matrix on disk.
+#' @param backingfile Path to the file storing the FBM data on disk.
 #'   An extension ".bk" will be automatically added.
 #'   Default uses `file` without its extension.
 #' @inheritDotParams bigreadr::big_fread2 -file -select -.transform -.combine
@@ -63,7 +63,7 @@ big_read <- function(file, select, filter = NULL,
 
 ################################################################################
 
-#' Write a file
+#' Write an FBM to a file
 #'
 #' Write a file from a Filebacked Big Matrix (by parts).
 #'
@@ -71,7 +71,7 @@ big_read <- function(file, select, filter = NULL,
 #' @param file File to write to.
 #' @param every_nrow Number of rows to write at once.
 #' @param ... Other arguments to be passed to [data.table::fwrite],
-#'   excepted `x`, `file`, `append`, `row.names`, `col.names` and `showProgress`.
+#'   except `x`, `file`, `append`, `row.names`, `col.names` and `showProgress`.
 #' @param progress Show progress? Default is `FALSE`.
 #'
 #' @return Input parameter `file`, invisibly.
@@ -80,6 +80,7 @@ big_read <- function(file, select, filter = NULL,
 #' @examples
 #' X <- big_attachExtdata()
 #' csv <- big_write(X, tempfile(), every_nrow = 100, progress = interactive())
+#'
 big_write <- function(X, file, every_nrow,
                       ...,
                       ind.row = rows_along(X),

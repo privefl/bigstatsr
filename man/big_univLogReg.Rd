@@ -16,7 +16,7 @@ big_univLogReg(
 )
 }
 \arguments{
-\item{X}{A \link[=FBM-class]{FBM}.}
+\item{X}{An object of class \link[=FBM-class]{FBM}.}
 
 \item{y01.train}{Vector of responses, corresponding to \code{ind.train}.
 \strong{Must be only 0s and 1s.}}

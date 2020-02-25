@@ -1,6 +1,6 @@
 ################################################################################
 
-#' Transposition
+#' Transpose an FBM
 #'
 #' This function implements a simple cache-oblivious algorithm for
 #' the transposition of a Filebacked Big Matrix.
@@ -8,18 +8,14 @@
 #' @inheritParams bigstatsr-package
 #' @inheritParams FBM
 #'
-#' @return The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
-#' and type are automatically determined from the input Filebacked Big Matrix.
+#' @return The new transposed FBM. Dimensions and type are automatically
+#' determined from the input FBM.
 #'
 #' @export
 #'
 #' @examples
-#' X <- FBM(10, 5, init = rnorm(50))
+#' X <- FBM(6, 5, init = rnorm(30))
 #' X[]
-#' Xt <- big_transpose(X)
-#' identical(t(X[]), Xt[])
-#'
-#' X <- big_attachExtdata()
 #' Xt <- big_transpose(X)
 #' identical(t(X[]), Xt[])
 #'

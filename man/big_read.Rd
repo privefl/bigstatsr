@@ -2,7 +2,7 @@
 % Please edit documentation in R/read-write.R
 \name{big_read}
 \alias{big_read}
-\title{Read a file}
+\title{Read a file as FBM}
 \usage{
 big_read(
   file,
@@ -34,7 +34,7 @@ access 256 arbitrary different numeric values.
 It is used in \href{https://goo.gl/pHCCmo}{package \strong{bigsnpr}}.
 }}
 
-\item{backingfile}{Path to the file storing the Big Matrix on disk.
+\item{backingfile}{Path to the file storing the FBM data on disk.
 An extension ".bk" will be automatically added.
 Default uses \code{file} without its extension.}
 

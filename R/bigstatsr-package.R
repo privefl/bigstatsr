@@ -5,8 +5,8 @@
 #' @importFrom methods new
 #' @import foreach
 #'
-#' @param X A [FBM][FBM-class].
-#' @param X.code A [FBM.code256][FBM.code256-class].
+#' @param X An object of class [FBM][FBM-class].
+#' @param X.code An object of class [FBM.code256][FBM.code256-class].
 #'
 #' @param y.train Vector of responses, corresponding to `ind.train`.
 #' @param y01.train Vector of responses, corresponding to `ind.train`.

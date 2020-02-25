@@ -27,7 +27,7 @@ NIL_PTR <- methods::new("externalptr")
 #' @param path String with extension '.bk'.
 #' @param replacement Replacement of '.bk'. Default replaces by nothing.
 #' @param stop_if_not_ext If `replacement != ""`, whether to error if
-#'   replacement is not an extension (starting with a '.').
+#'   replacement is not an extension (i.e. starting with a dot).
 #'
 #' @return String with extension '.bk' replaced by `replacement`.
 #' @export
@@ -51,10 +51,10 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #'
 #' A reference class for storing and accessing matrix-like data stored in files
 #' on disk. This is very similar to Filebacked Big Matrices provided by the
-#' **bigmemory** package. Yet, the implementation is lighter.
+#' **bigmemory** package (see [the corresponding vignette](http://bit.ly/2SRX5w4)).
 #'
 #' @details
-#' An FBM object has many field:
+#' An object of class FBM has many fields:
 #'   - `$address`: address of the external pointer containing the underlying
 #'     C++ object for read-only mapping, to be used as a `XPtr<FBM>` in C++ code
 #'   - `$extptr`: (internal) use `$address` instead
@@ -76,8 +76,10 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #'   - `$save()`: Save the FBM object in `$rds`. Returns the FBM.
 #'   - `add_columns(<ncol_add>)`: Add some columns to the FBM by appending the
 #'     backingfile with some data. Returns the FBM invisibly.
-#'   - `$bm()`: Get this object as a `filebacked.big.matrix`.
-#'   - `$bm.desc()`: Get this object as a `filebacked.big.matrix` descriptor.
+#'   - `$bm()`: Get this object as a `filebacked.big.matrix`
+#'     to be used by package {bigmemory}.
+#'   - `$bm.desc()`: Get this object as a `filebacked.big.matrix` descriptor
+#'     to be used by package {bigmemory}.
 #'   - `$check_write_permissions()`: Error if the FBM is read-only.
 #'
 #' @examples
@@ -94,7 +96,8 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #' X[, -1]
 #' X[, c(TRUE, FALSE)]
 #' X[cbind(1:10, 1:10)] <- NA_real_
-#' X[]
+#'
+#' X[]  # access as standard R matrix
 #'
 #' @exportClass FBM
 #'
@@ -294,7 +297,7 @@ FBM_RC$lock("nrow", "type")
 #'   existing one (which should be named by the `backingfile` parameter and have
 #'   an extension ".bk"). For example, this could be used to convert a
 #'   filebacked `big.matrix` from package **bigmemory** to a [FBM][FBM-class]
-#'   (see [the corresponding vignette](https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html)).
+#'   (see [the corresponding vignette](http://bit.ly/2SRX5w4)).
 #' @param is_read_only Whether the FBM is read-only? Default is `FALSE`.
 #'
 #' @rdname FBM-class
@@ -326,9 +329,10 @@ FBM <- function(nrow, ncol,
 #'
 #' @examples
 #' X <- FBM(150, 5)
-#' X[] <- iris   ## you can replace with a df (factors -> integers)
+#' X[] <- iris   ## you can replace with a df (but factors -> integers)
 #' X2 <- as_FBM(iris)
 #' identical(X[], X2[])
+#'
 as_FBM <- function(x, type = c("double", "float", "integer",
                                "unsigned short", "unsigned char", "raw"),
                    backingfile = tempfile(),

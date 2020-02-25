@@ -2,13 +2,14 @@
 
 #' Copy a Filebacked Big Matrix
 #'
-#' Copy a Filebacked Big Matrix with possible subsetting.
+#' Deep copy of a Filebacked Big Matrix with possible subsetting.
+#' This should also work for any matrix-like object.
 #'
 #' @param X Could be any matrix-like object.
 #' @inheritParams bigstatsr-package
 #' @inheritParams FBM
 #'
-#' @return A copy of the [FBM][FBM-class].
+#' @return A copy of `X` as a new [FBM][FBM-class] object.
 #' @export
 #'
 #' @examples
@@ -18,7 +19,7 @@
 #' X2[]
 #'
 #' mat <- matrix(101:200, 10)
-#' X3 <- big_copy(mat, type = "double")
+#' X3 <- big_copy(mat, type = "double")  # as_FBM() would be faster here
 #' X3[]
 #'
 #' X.code <- big_attachExtdata()

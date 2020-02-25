@@ -28,7 +28,7 @@ big_cprodMat(
 \S4method{tcrossprod}{matrix,FBM}(x, y)
 }
 \arguments{
-\item{X}{A \link[=FBM-class]{FBM}.}
+\item{X}{An object of class \link[=FBM-class]{FBM}.}
 
 \item{A.row}{A matrix with \code{length(ind.row)} rows.}
 

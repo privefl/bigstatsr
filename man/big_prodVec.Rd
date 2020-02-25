@@ -14,7 +14,7 @@ big_prodVec(
 )
 }
 \arguments{
-\item{X}{A \link[=FBM-class]{FBM}.}
+\item{X}{An object of class \link[=FBM-class]{FBM}.}
 
 \item{y.col}{A vector of same size as \code{ind.col}.}
 

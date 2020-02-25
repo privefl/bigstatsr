@@ -49,7 +49,7 @@ reconstruct_if_old <- function(fbm,
 #' @rdname big_attach
 #'
 #' @examples
-#' # tmpFBM
+#' # temporary FBM
 #' X <- FBM(10, 10)$save()
 #'
 #' rdsfile <- sub_bk(X$backingfile, ".rds")

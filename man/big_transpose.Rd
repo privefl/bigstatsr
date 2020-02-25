@@ -2,32 +2,28 @@
 % Please edit documentation in R/transpose.R
 \name{big_transpose}
 \alias{big_transpose}
-\title{Transposition}
+\title{Transpose an FBM}
 \usage{
 big_transpose(X, backingfile = tempfile())
 }
 \arguments{
-\item{X}{A \link[=FBM-class]{FBM}.}
+\item{X}{An object of class \link[=FBM-class]{FBM}.}
 
 \item{backingfile}{Path to the file storing the Big Matrix on disk.
 \strong{An extension ".bk" will be automatically added.}
 Default stores in the temporary directory.}
 }
 \value{
-The new transposed Filebacked Big Matrix (or its descriptor). Its dimensions
-and type are automatically determined from the input Filebacked Big Matrix.
+The new transposed FBM. Dimensions and type are automatically
+determined from the input FBM.
 }
 \description{
 This function implements a simple cache-oblivious algorithm for
 the transposition of a Filebacked Big Matrix.
 }
 \examples{
-X <- FBM(10, 5, init = rnorm(50))
+X <- FBM(6, 5, init = rnorm(30))
 X[]
-Xt <- big_transpose(X)
-identical(t(X[]), Xt[])
-
-X <- big_attachExtdata()
 Xt <- big_transpose(X)
 identical(t(X[]), Xt[])
 

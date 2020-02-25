@@ -42,10 +42,6 @@ transform_i_only <- function(i, n, m) {
 #' `extract_vector` or `i` and `j` parameters of `extract_matrix` to facilitate
 #' implementing the extraction mechanism for custom matrix-like types.
 #'
-#' The custom type must implement methods for `dim` for this function
-#' to work. Implementing methods for `nrow` and `ncol` is not necessary
-#' as the default method of those generics calls `dim` internally.
-#'
 #' **This idea initially comes from [package crochet](https://goo.gl/3RDNQG).**
 #'
 #' @param extract_vector A function in the form of `function(x, i)` that takes
@@ -99,12 +95,8 @@ Extract <- function(extract_vector, extract_matrix) {
 #' (e.g. \code{X[i]}) or `i` and `j` (e.g. \code{X[i, j]}) into positive
 #' integer vectors. The converted indices are provided as the `i` parameter of
 #' `replace_vector` or `i` and `j` parameters of `replace_matrix` to facilitate
-#' implementing the replacement mechanism for custom matrix-like types. Values
-#' are recycled to match the replacement length.
-#'
-#' The custom type must implement methods for `dim` for this function
-#' to work. Implementing methods for `nrow` and `ncol` is not necessary
-#' as the default method of those generics calls `dim` internally.
+#' implementing the replacement mechanism for custom matrix-like types.
+#' Single values are recycled to match the replacement length.
 #'
 #' **This idea initially comes from [package crochet](https://goo.gl/3RDNQG).**
 #'

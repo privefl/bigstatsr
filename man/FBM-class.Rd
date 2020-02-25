@@ -54,7 +54,7 @@ Default stores in the temporary directory.}
 existing one (which should be named by the \code{backingfile} parameter and have
 an extension ".bk"). For example, this could be used to convert a
 filebacked \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}
-(see \href{https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html}{the corresponding vignette}).}
+(see \href{http://bit.ly/2SRX5w4}{the corresponding vignette}).}
 
 \item{is_read_only}{Whether the FBM is read-only? Default is \code{FALSE}.}
 
@@ -63,12 +63,12 @@ filebacked \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-cla
 \description{
 A reference class for storing and accessing matrix-like data stored in files
 on disk. This is very similar to Filebacked Big Matrices provided by the
-\strong{bigmemory} package. Yet, the implementation is lighter.
+\strong{bigmemory} package (see \href{http://bit.ly/2SRX5w4}{the corresponding vignette}).
 
 Convert a matrix (or a data frame) to an FBM.
 }
 \details{
-An FBM object has many field:
+An object of class FBM has many fields:
 \itemize{
 \item \verb{$address}: address of the external pointer containing the underlying
 C++ object for read-only mapping, to be used as a \verb{XPtr<FBM>} in C++ code
@@ -93,8 +93,10 @@ And some methods:
 \item \verb{$save()}: Save the FBM object in \verb{$rds}. Returns the FBM.
 \item \verb{add_columns(<ncol_add>)}: Add some columns to the FBM by appending the
 backingfile with some data. Returns the FBM invisibly.
-\item \verb{$bm()}: Get this object as a \code{filebacked.big.matrix}.
-\item \verb{$bm.desc()}: Get this object as a \code{filebacked.big.matrix} descriptor.
+\item \verb{$bm()}: Get this object as a \code{filebacked.big.matrix}
+to be used by package {bigmemory}.
+\item \verb{$bm.desc()}: Get this object as a \code{filebacked.big.matrix} descriptor
+to be used by package {bigmemory}.
 \item \verb{$check_write_permissions()}: Error if the FBM is read-only.
 }
 }
@@ -113,12 +115,14 @@ X[1, ]  # not recommended for large matrices
 X[, -1]
 X[, c(TRUE, FALSE)]
 X[cbind(1:10, 1:10)] <- NA_real_
-X[]
+
+X[]  # access as standard R matrix
 
 X <- FBM(150, 5)
-X[] <- iris   ## you can replace with a df (factors -> integers)
+X[] <- iris   ## you can replace with a df (but factors -> integers)
 X2 <- as_FBM(iris)
 identical(X[], X2[])
+
 }
 \seealso{
 \link{big_copy}

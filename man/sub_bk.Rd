@@ -12,7 +12,7 @@ sub_bk(path, replacement = "", stop_if_not_ext = TRUE)
 \item{replacement}{Replacement of '.bk'. Default replaces by nothing.}
 
 \item{stop_if_not_ext}{If \code{replacement != ""}, whether to error if
-replacement is not an extension (starting with a '.').}
+replacement is not an extension (i.e. starting with a dot).}
 }
 \value{
 String with extension '.bk' replaced by \code{replacement}.
