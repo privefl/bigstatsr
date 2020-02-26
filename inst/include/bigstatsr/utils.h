@@ -5,6 +5,9 @@
 
 #include <Rcpp.h>
 
+using namespace Rcpp;
+using std::size_t;
+
 /******************************************************************************/
 
 #define DISPATCH_TYPE(CALL) {                                                  \
@@ -45,12 +48,30 @@ inline void myassert(bool cond, const char *msg) {
   if (!cond) Rcpp::stop(msg);
 }
 
-inline void myassert_bounds(std::size_t ind, std::size_t lim) {
+inline void myassert_bounds(size_t ind, size_t lim) {
   if (!(ind < lim)) Rcpp::stop("Tested %s < %s. %s", ind, lim, ERROR_BOUNDS);
 }
 
-inline void myassert_size(std::size_t n1, std::size_t n2) {
+inline void myassert_size(size_t n1, size_t n2) {
   if (n1 != n2) Rcpp::stop("Tested %s == %s. %s", n1, n2, ERROR_DIM);
+}
+
+/******************************************************************************/
+
+inline std::vector<size_t> vec_int_to_size(const IntegerVector& vec_ind,
+                                           size_t limit,
+                                           int sub = 0) {
+
+  int n = vec_ind.size();
+  std::vector<size_t> vec_ind2(n);
+
+  for (int i = 0; i < n; i++) {
+    size_t ind = static_cast<size_t>(vec_ind[i] - sub);
+    myassert_bounds(ind, limit);
+    vec_ind2[i] = ind;
+  }
+
+  return vec_ind2;
 }
 
 /******************************************************************************/

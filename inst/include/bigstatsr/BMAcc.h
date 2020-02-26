@@ -12,24 +12,6 @@ using std::size_t;
 
 /******************************************************************************/
 
-inline std::vector<size_t> vec_int_to_size(const IntegerVector& vec_ind,
-                                           size_t limit,
-                                           int sub = 0) {
-
-  int n = vec_ind.size();
-  std::vector<size_t> vec_ind2(n);
-
-  for (int i = 0; i < n; i++) {
-    size_t ind = static_cast<size_t>(vec_ind[i] - sub);
-    myassert_bounds(ind, limit);
-    vec_ind2[i] = ind;
-  }
-
-  return vec_ind2;
-}
-
-/******************************************************************************/
-
 template <typename T>
 class BMAcc_RW {
 public:
@@ -173,8 +155,6 @@ public:
     if (j2 < 0) {
       // https://stackoverflow.com/a/32087373/6103040
       return SubBMAcc<T>::operator()(i, j);
-      // https://stackoverflow.com/a/7076312/6103040
-      // return this->_pMat[_row_ind[i] + _col_ind[j] * this->_nrow];
     } else {
       return _covar(i, j2);
     }
