@@ -1,6 +1,6 @@
 ################################################################################
 
-#' Copy a Filebacked Big Matrix
+#' Copy as a Filebacked Big Matrix
 #'
 #' Deep copy of a Filebacked Big Matrix with possible subsetting.
 #' This should also work for any matrix-like object.

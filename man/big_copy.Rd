@@ -2,7 +2,7 @@
 % Please edit documentation in R/FBM-copy.R
 \name{big_copy}
 \alias{big_copy}
-\title{Copy a Filebacked Big Matrix}
+\title{Copy as a Filebacked Big Matrix}
 \usage{
 big_copy(
   X,

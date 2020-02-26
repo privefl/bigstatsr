@@ -312,7 +312,7 @@ asPlotlyText <- function(df) {
 
 ################################################################################
 
-#' Get coordinates
+#' Get coordinates on plot
 #'
 #' Get coordinates on a plot by mouse-clicking.
 #'

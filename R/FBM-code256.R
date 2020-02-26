@@ -124,7 +124,7 @@ add_code256 <- function(x, code) {
 
 ################################################################################
 
-#' Counts
+#' Counts for class FBM.code256
 #'
 #' Counts by columns (or rows) the number of each unique element of a
 #' `FBM.code256`.

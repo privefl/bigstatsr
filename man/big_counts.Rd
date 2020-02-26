@@ -2,7 +2,7 @@
 % Please edit documentation in R/FBM-code256.R
 \name{big_counts}
 \alias{big_counts}
-\title{Counts}
+\title{Counts for class FBM.code256}
 \usage{
 big_counts(
   X.code,

@@ -1,6 +1,6 @@
 ## bigstatsr 1.2.1
 
-- It is now possible to use C++ FBM accessors without linking to {RcppArmadiilo}.
+- It is now possible to use C++ FBM accessors without linking to {RcppArmadillo}.
 
 ## bigstatsr 1.2.0
 
@@ -16,7 +16,7 @@
 
 - Add a new column `$all_conv` to output of `summary()` for `big_spLinReg()` and `big_spLogReg()` to check whether all models have stopped because of "no more improvement". Also add a new parameter `sort` to `summary()`.
 
-- Now `warn` (enabled by default) if not all models have converged when using `big_spLinReg()` and `big_spLogReg()`.
+- Now `warn` (enabled by default) if some models may not have reached a minimum when using `big_spLinReg()` and `big_spLogReg()`.
 
 ## bigstatsr 1.1.1
 

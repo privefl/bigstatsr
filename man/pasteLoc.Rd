@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{pasteLoc}
 \alias{pasteLoc}
-\title{Get coordinates}
+\title{Get coordinates on plot}
 \usage{
 pasteLoc(nb, digits = c(3, 3))
 }
