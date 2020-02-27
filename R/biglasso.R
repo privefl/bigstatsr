@@ -189,6 +189,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #'   penalization if some coefficients are thought to be more likely than others
 #'   to be in the model. Setting SOME to 0 allows to have unpenalized coefficients.
 #' @param pf.covar Same as `pf.X`, but for `covar.train`.
+#'   You might want to set some to 0 as variables with large effects can mask
+#'   small effects in penalized regression.
 #'
 #' @keywords internal
 #'
