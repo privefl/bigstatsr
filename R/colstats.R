@@ -1,5 +1,9 @@
 ################################################################################
 
+part_colstats <- function(X, ind, ind.row) {
+  data.frame(bigcolvars(X, ind.row, ind))
+}
+
 #' Standard univariate statistics
 #'
 #' Standard __univariate statistics__ for columns of a Filebacked Big Matrix.
@@ -14,13 +18,16 @@
 #'
 #' @seealso [colSums] [apply]
 #' @example examples/example-colstats.R
+#'
 big_colstats <- function(X,
                          ind.row = rows_along(X),
-                         ind.col = cols_along(X)) {
+                         ind.col = cols_along(X),
+                         ncores = 1) {
 
-  # check_args()
+  check_args(X = "assert_class(X, 'FBM')")
 
-  data.frame(bigcolvars(X, ind.row, ind.col))
+  big_parallelize(X, p.FUN = part_colstats, p.combine = "rbind",
+                  ind = ind.col, ind.row = ind.row, ncores = ncores)
 }
 
 ################################################################################

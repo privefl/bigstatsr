@@ -4,7 +4,7 @@
 \alias{big_colstats}
 \title{Standard univariate statistics}
 \usage{
-big_colstats(X, ind.row = rows_along(X), ind.col = cols_along(X))
+big_colstats(X, ind.row = rows_along(X), ind.col = cols_along(X), ncores = 1)
 }
 \arguments{
 \item{X}{An object of class \link[=FBM-class]{FBM}.}
@@ -14,6 +14,9 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 }
 \value{
 Data.frame of two numeric vectors \code{sum} and \code{var} with the

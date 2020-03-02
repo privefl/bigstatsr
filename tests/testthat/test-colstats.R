@@ -24,6 +24,8 @@ test_that("Equality with matrix operations", {
         "expect_equal(big_colstats(X)$%s, apply(X[,], 2, %s))", f, f)))
       eval(parse(text = sprintf(
         "expect_equal(big_colstats(X, ind)$%s, apply(X[ind, ], 2, %s))", f, f)))
+      eval(parse(text = sprintf(
+        "expect_equal(big_colstats(X, ind, ncores = 2)$%s, apply(X[ind, ], 2, %s))", f, f)))
     }
   }
 })

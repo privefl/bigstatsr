@@ -1,3 +1,7 @@
+## bigstatsr 1.2.2
+
+- Function `big_colstats()` can now be run in parallel (added parameter `ncores`).
+
 ## bigstatsr 1.2.1
 
 - It is now possible to use C++ FBM accessors without linking to {RcppArmadillo}.
