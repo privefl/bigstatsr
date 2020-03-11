@@ -299,10 +299,12 @@ test_that("Warns if not all converged", {
 
 test_that("code is used for FBM.code256", {
 
+  options(bigstatsr.downcast.warning = TRUE)
+
   # simulating some data
   N <- 230
   M <- 730
-  X <- FBM.code256(N, M, init = rnorm(N * M, sd = 5), code = rnorm(256))
+  X <- FBM.code256(N, M, init = round(100 + rnorm(N * M, sd = 5)), code = rnorm(256))
   y <- rowSums(X[, 1:10]) + rnorm(N)
   covar <- matrix(rnorm(N * 3), N)
 
