@@ -194,6 +194,7 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param pf.covar Same as `pf.X`, but for `covar.train`.
 #'   You might want to set some to 0 as variables with large effects can mask
 #'   small effects in penalized regression.
+#' @param weights Observation weights. Default is 1 for each observation
 #'
 #' @keywords internal
 #'
