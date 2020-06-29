@@ -1,8 +1,8 @@
 ################################################################################
 
-null_pred <- function(var0, y, base, family) {
+null_pred <- function(var0, y, weights, base, family) {
 
-  fit <- stats::glm.fit(var0, y, offset = base, intercept = FALSE,
+  fit <- stats::glm.fit(var0, y, weights, offset = base, intercept = FALSE,
                         family = switch(family,
                                         gaussian = stats::gaussian(),
                                         binomial = stats::binomial()))
@@ -68,7 +68,8 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
                                family, lambda, center, scale, resid, alpha,
                                eps, max.iter, dfmax,
                                ind.val, covar.val, y.val, n.abort, nlam.min,
-                               base.train, base.val, pf) {
+                               base.train, base.val, pf, weights.train,
+                               weights.val) {
 
   assert_lengths(y.train, base.train, ind.train, rows_along(covar.train))
   assert_lengths(y.val, base.val, ind.val, rows_along(covar.val))
@@ -84,14 +85,16 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
     res <- COPY_cdfit_gaussian_hsr(
       X, y.train - y.train.mean, ind.train, ind.col, covar.train,
       lambda, center, scale, pf, resid, alpha, eps, max.iter, dfmax,
-      ind.val, covar.val, y.val - base.val - y.train.mean, n.abort, nlam.min)
+      ind.val, covar.val, y.val - base.val - y.train.mean, n.abort,
+      nlam.min, weights.train, weights.val)
 
   } else if (family == "binomial") {
 
     res <- COPY_cdfit_binomial_hsr(
       X, y.train, base.train, ind.train, ind.col, covar.train,
       lambda, center, scale, pf, resid, alpha, eps, max.iter, dfmax,
-      ind.val, covar.val, y.val, base.val, n.abort, nlam.min)
+      ind.val, covar.val, y.val, base.val, n.abort, nlam.min,
+      weights.train, weights.val)
 
     a <- res[[1]]
     res <- res[-1]
@@ -212,7 +215,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                lambda.min = `if`(n > p, .0001, .001),
                                return.all = FALSE,
                                warn = TRUE,
-                               ncores = 1) {
+                               ncores = 1,
+                               weights = NULL) {
 
   if (!missing(return.all)) warning2("Parameter 'return.all' is deprecated.")
   if (!missing(lambda.min)) {
@@ -231,6 +235,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   if (is.null(covar.train)) covar.train <- matrix(0, n, 0)
   if (is.null(base.train))   base.train <- rep(0, n)
   if (is.null(ind.sets))       ind.sets <- sample(rep_len(1:K, n))
+  if (is.null(weights))         weights <- rep(1, n)
   assert_lengths(y.train, ind.train, rows_along(covar.train), base.train, ind.sets)
   base.train0 <- base.train
 
@@ -258,7 +263,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     X[ind.train, ind.col[ind0.X], drop = FALSE],
     covar.train[, ind0.covar, drop = FALSE]
   )
-  fit <- null_pred(var0.train, y.train, base.train, family)
+  fit <- null_pred(var0.train, y.train, weights, base.train, family)
   y_diff.train <- y.train - fit$fitted.values
   base.train <- fit$linear.predictors
   beta0 <- fit$coef[1]
@@ -320,7 +325,9 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       # base fitting
       base.train = base.train[!in.val],
       base.val = base.train[in.val],
-      pf.keep
+      pf.keep,
+      weights.train = weights[!in.val],
+      weights.val = weights[in.val]
     )
     # Add first solution
     res$intercept <- res$intercept + beta0
@@ -422,6 +429,7 @@ big_spLinReg <- function(X, y.train,
                          dfmax = 50e3,
                          warn = TRUE,
                          ncores = 1,
+                         weights = NULL,
                          ...) {
 
   check_args()
@@ -461,6 +469,7 @@ big_spLogReg <- function(X, y01.train,
                          dfmax = 50e3,
                          warn = TRUE,
                          ncores = 1,
+                         weights = NULL,
                          ...) {
 
   check_args()

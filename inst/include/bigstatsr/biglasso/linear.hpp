@@ -41,7 +41,9 @@ List COPY_cdfit_gaussian_hsr(C macc,
                              C macc_val,
                              const NumericVector& y_val,
                              int n_abort,
-                             int nlam_min) {
+                             int nlam_min,
+                             const NumericVector& weights,
+                             const NumericVector& weights_val) {
 
   size_t n = macc.nrow(); // number of observations used for fitting model
   size_t p = macc.ncol();
@@ -63,16 +65,25 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
   double l1, l2, lam_l, cutoff, shift;
   double max_update, update, thresh, shift_scaled, cpsum;
+  double sum_wx, sum_wx_sq, v, x, xw, cj, sj;
+
   size_t i, j, violations;
   LogicalVector in_A(p); // ever-active set
   LogicalVector in_S(p); // strong set
   NumericVector r = Rcpp::clone(y);
-  // double sumResid = Rcpp::sum(r);  // always 0..
-  // Rcout << Rcpp::sum(r) << std::endl;
+  double sumResid = Rcpp::sum(r);  // always 0..
+  double sum_w = Rcpp::sum(weights);
+  // Rcout << Rcpp::sum(weights) << std::endl;
   nb_active[0] = nb_candidate[0] = iter[0] = 0;
   loss[0] = COPY_gLoss(r);
   thresh = eps * loss[0] / n;
   metrics[0] = metric_min = COPY_gLoss(y_val);
+
+  NumericVector pred_val_w(n_val);
+  NumericVector y_val_w(n_val);
+  for (int i = 0; i < n_val; i++) {
+    y_val_w[i] = y_val[i] * weights_val[i];
+  }
 
   // Path
   for (int l = 1; l < L; l++) {
@@ -104,14 +115,21 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
           if (in_A[j]) {
             // Crossprod_resid - given specific rows of X: separate computation
-            cpsum = 0;
+            cpsum = sum_wx_sq = sum_wx = 0;
             for (i = 0; i < n; i++) {
-              cpsum += macc(i, j) * r[i];
+              x = macc(i, j);
+              xw = x * weights[i];
+              cpsum += xw * r[i];
+              sum_wx += xw;
+              sum_wx_sq += x * xw;
             }
-            // cpsum = (cpsum - center[j] * sumResid) / scale[j];
-            z[j] = cpsum / (scale[j] * n) + beta_old[j];
+            cj = center[j];
+            sj = scale[j];
+            v = (sum_wx_sq - 2 * cj * sum_wx + cj * cj * sum_w) / (sj * sj * n);
+            cpsum = cpsum - cj * sumResid;
+            z[j] = cpsum / (sj * n) + beta_old[j];
 
-            shift = COPY_lasso(z[j], l1 * pf[j], l2 * pf[j]) - beta_old[j];
+            shift = COPY_lasso(z[j], l1 * pf[j], l2 * pf[j], v) - beta_old[j];
             if (shift != 0) {
               // compute objective update for checking convergence
               update = shift * shift;
@@ -119,10 +137,10 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
               // update r (residuals)
               shift_scaled = shift / scale[j];
-              // sumResid = 0;
+              sumResid = 0;
               for (i = 0; i < n; i++) {
                 r[i] -= shift_scaled * (macc(i, j) - center[j]);
-                // sumResid += r[i];
+                sumResid += weights[i] * r[i];
               }
               // Rcout << sumResid << std::endl;
               beta_old[j] += shift; // update beta_old
@@ -135,7 +153,7 @@ List COPY_cdfit_gaussian_hsr(C macc,
 
       // Scan for violations in strong set
       violations = COPY_check_strong_set(
-        in_A, in_S, z, macc, center, scale, pf, beta_old, l1, l2, r, 0.0);
+        in_A, in_S, z, macc, center, scale, pf, beta_old, l1, l2, r, sumResid, weights);
       if (violations == 0) break;
     }
 
@@ -144,7 +162,11 @@ List COPY_cdfit_gaussian_hsr(C macc,
     nb_candidate[l] = Rcpp::sum(in_A);
 
     pred_val = predict(macc_val, beta_old, center, scale);
-    metric = COPY_gLoss(pred_val - y_val);
+    for (i = 0; i < n_val; i++) {
+      pred_val_w[i] = pred_val[i] * weights_val[i];
+    }
+
+    metric = COPY_gLoss(pred_val_w - y_val_w);
     // Rcout << metric << std::endl;
     metrics[l] = metric;
     if (metric < metric_min) {

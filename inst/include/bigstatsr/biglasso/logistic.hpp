@@ -46,7 +46,9 @@ List COPY_cdfit_binomial_hsr(C macc,
                              const NumericVector& y_val,
                              const NumericVector& base_val,
                              int n_abort,
-                             int nlam_min) {
+                             int nlam_min,
+                             const NumericVector& weights,
+                             const NumericVector& weights_val) {
 
   size_t n = macc.nrow(); // number of observations used for fitting model
   size_t p = macc.ncol();
@@ -210,7 +212,7 @@ List COPY_cdfit_binomial_hsr(C macc,
       // Scan for violations in strong set
       // Rcout << (Rcpp::sum(s) == sum_s) << std::endl;
       violations = COPY_check_strong_set(
-        in_A, in_S, z, macc, center, scale, pf, beta_old, l1, l2, s, sum_s);
+        in_A, in_S, z, macc, center, scale, pf, beta_old, l1, l2, s, sum_s, weights);
       if (violations == 0) break;
     }
 

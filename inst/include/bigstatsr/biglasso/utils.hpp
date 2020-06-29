@@ -101,7 +101,8 @@ size_t COPY_check_strong_set(LogicalVector& in_A,
                              const NumericVector& beta_old,
                              double l1, double l2,
                              const NumericVector& r,
-                             double sumResid) {
+                             double sumResid,
+                             const NumericVector& weights) {
 
   size_t n = macc.nrow();
   size_t p = macc.ncol();
@@ -111,7 +112,7 @@ size_t COPY_check_strong_set(LogicalVector& in_A,
     if (in_S[j] && !in_A[j]) {
       double cpsum = 0;
       for (i = 0; i < n; i++) {
-        cpsum += macc(i, j) * r[i];
+        cpsum += macc(i, j) * r[i] * weights[i];
       }
       z[j] = (cpsum - center[j] * sumResid) / (scale[j] * n);
 

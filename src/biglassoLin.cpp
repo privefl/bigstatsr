@@ -10,7 +10,7 @@ using namespace Rcpp;
 #define CALL_COPY_CDFIT_GAUSSIAN_HSR(ACC, ACC_VAL) {                           \
   return bigstatsr::biglassoLin::COPY_cdfit_gaussian_hsr(ACC, y,               \
     lambda, center, scale, pf, resid, alpha, eps, max_iter, dfmax,             \
-    ACC_VAL, y_val, n_abort, nlam_min);                                        \
+    ACC_VAL, y_val, n_abort, nlam_min, weights, weights_val);                                        \
 }
 
 // Dispatch function for COPY_cdfit_gaussian_hsr
@@ -33,7 +33,9 @@ List COPY_cdfit_gaussian_hsr(Environment BM,
                              const NumericMatrix& covar_val,
                              const NumericVector& y_val,
                              int n_abort,
-                             int nlam_min) {
+                             int nlam_min,
+                             const NumericVector& weights,
+                             const NumericVector& weights_val) {
 
   DISPATCH_SUBMATCOVACC_VAL(CALL_COPY_CDFIT_GAUSSIAN_HSR)
 }
