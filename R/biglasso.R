@@ -265,7 +265,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     covar.train[, ind0.covar, drop = FALSE]
   )
   fit <- null_pred(var0.train, y.train, weights, base.train, family)
-  y_diff.train <- y.train - fit$fitted.values
+  y_diff.train <- (y.train - fit$fitted.values)*weights
   base.train <- fit$linear.predictors
   beta0 <- fit$coef[1]
   beta.X <- rep(0, p1)

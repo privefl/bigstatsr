@@ -77,14 +77,13 @@ List COPY_cdfit_gaussian_hsr(C macc,
   nb_active[0] = nb_candidate[0] = iter[0] = 0;
   loss[0] = COPY_gLoss(r);
   thresh = eps * loss[0] / n;
-  metrics[0] = metric_min = COPY_gLoss(y_val);
 
   NumericVector pred_val_w(n_val);
   NumericVector y_val_w(n_val);
   for (int i = 0; i < n_val; i++) {
     y_val_w[i] = y_val[i] * weights_val[i];
   }
-
+  metrics[0] = metric_min = COPY_gLoss(y_val_w);
   // Path
   for (int l = 1; l < L; l++) {
 
