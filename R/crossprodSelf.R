@@ -67,7 +67,7 @@ big_crossprodSelf <- function(
 
 #' Correlation
 #'
-#' Compute the correlation matrix of a Filebacked Big Matrix.
+#' Compute the (Pearson) correlation matrix of a Filebacked Big Matrix.
 #'
 #' @inherit big_crossprodSelf params return
 #' @inheritSection bigstatsr-package Matrix parallelization

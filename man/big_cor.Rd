@@ -31,7 +31,7 @@ A temporary \link[=FBM-class]{FBM}, with the following two attributes:
 }
 }
 \description{
-Compute the correlation matrix of a Filebacked Big Matrix.
+Compute the (Pearson) correlation matrix of a Filebacked Big Matrix.
 }
 \section{Matrix parallelization}{
 
