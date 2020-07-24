@@ -25,6 +25,8 @@ COPY_biglasso_main(
   max.iter = 1000,
   dfmax = 50000,
   lambda.min = if (n > p) 1e-04 else 0.001,
+  power_scale = 1,
+  power_adaptive = 0,
   return.all = FALSE,
   warn = TRUE,
   ncores = 1

@@ -210,6 +210,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                max.iter = 1000,
                                dfmax = 50e3,
                                lambda.min = `if`(n > p, .0001, .001),
+                               power_scale = 1,
+                               power_adaptive = 0,
                                return.all = FALSE,
                                warn = TRUE,
                                ncores = 1) {
@@ -290,7 +292,10 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   register_parallel(ncores, type = getOption("bigstatsr.cluster.type"))
 
   alphas <- sort(alphas)
-  cross.res <- foreach(alpha = alphas) %:% foreach(ic = 1:K) %dopar% {
+  cross.res <- foreach(alpha = alphas) %:%
+    foreach(pow_sc = power_scale) %:%
+    foreach(pow_adapt = power_adaptive) %:%
+    foreach(ic = 1:K) %dopar% {
 
     in.val <- (ind.sets == ic)
 
@@ -303,7 +308,9 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     scale  <- c(scale,  summaries.covar[["scale"]][ic, ])
     resid  <- c(resid,  summaries.covar[["resid"]][ic, ])
     ## Compute lambdas of the path
-    lambda.max <- max(abs(resid / pf.keep)[pf.keep != 0]) / alpha
+    pf.keep2 <- pf.keep * scale^(pow_sc - 1)
+    pf.keep3 <- pf.keep2 * abs(resid / pf.keep2)^-pow_adapt
+    lambda.max <- max(abs(resid / pf.keep3)[pf.keep3 != 0]) / alpha
     lambda <- exp(
       seq(log(lambda.max), log(lambda.max * lambda.min.ratio), length.out = nlambda))
 
@@ -320,11 +327,13 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
       # base fitting
       base.train = base.train[!in.val],
       base.val = base.train[in.val],
-      pf.keep
+      pf.keep3
     )
     # Add first solution
     res$intercept <- res$intercept + beta0
     res$beta <- res$beta + c(beta.X[keep], beta.covar)
+    res$power_scale <- pow_sc
+    res$power_adaptive <- pow_adapt
     res
   }
 
@@ -335,7 +344,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
              "Access remaining columns with 'attr(<object>, \"ind.col\")'.")
 
   res <- structure(
-    cross.res,
+    unlist(unlist(cross.res, recursive = FALSE), recursive = FALSE),
     class = "big_sp_list",
     family = family,
     alphas = alphas,

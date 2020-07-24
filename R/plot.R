@@ -266,15 +266,21 @@ plot.big_sp_list <- function(x, coeff = 1, ...) {
     foreach(k = seq_along(mods), .combine = "rbind") %do% {
       mod <- mods[[k]]
       loss <- mod$loss.val
-      cbind.data.frame(set = k, alpha = mod$alpha, message = mod$message,
-                       loss_index = seq_along(loss), loss = loss)
+      cbind.data.frame(
+        set = k,
+        alpha = mod$alpha,
+        power_adaptive = mod$power_adaptive,
+        power_scale = mod$power_scale,
+        loss_index = seq_along(loss),
+        loss = loss
+      )
     }
   }
 
   ggplot(info) +
     theme_bigstatsr(size.rel = coeff) +
     geom_point(aes(loss_index, loss, color = as.factor(set))) +
-    facet_wrap(~alpha, labeller = signif) +
+    facet_wrap(~ alpha + power_adaptive + power_scale, labeller = signif) +
     scale_colour_discrete(guide = FALSE) +
     labs(x = "Index", y = "Loss for each validation set")
 }

@@ -52,10 +52,16 @@ sqrt(mean((pred.lasso2 - y[ind.test])^2)) # RMSE: 2.4
 
 library(bigstatsr)
 X2 <- as_FBM(X)
-mod.bigstatsr <- big_spLinReg(X2, y[ind.train], ind.train = ind.train, pf.X = pf)
-summary(mod.bigstatsr)
-plot(mod.bigstatsr)
-beta <- summary(mod.bigstatsr)$beta[[1]]
+mod.bigstatsr <- big_spLinReg(X2, y[ind.train], ind.train = ind.train,
+                              pf.X = pf, power_scale = c(0, 0.5, 1),
+                              power_adaptive = c(0, 0.5, 1, 1.5, 2),
+                              lambda.min.ratio = 1e-5, ncores = 4)
+str(mod.bigstatsr, max.level = 2)
+summary(mod.bigstatsr, sort = TRUE)
+plot(mod.bigstatsr) +
+  ggplot2::facet_grid(power_adaptive ~ power_scale, labeller = signif)
+beta <- summary(mod.bigstatsr, best.only = TRUE)$beta[[1]]
+
 cols <- rep(1, ncol(X)); cols[set] <- 2; cols[set[1]] <- 3
 plot(beta, pch = 20, col = cols)
 
