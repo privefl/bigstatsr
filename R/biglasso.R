@@ -293,8 +293,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
   alphas <- sort(alphas)
   cross.res <- foreach(alpha = alphas) %:%
+    foreach(pow_adapt = sort(power_adaptive)) %:%
     foreach(pow_sc = power_scale) %:%
-    foreach(pow_adapt = power_adaptive) %:%
     foreach(ic = 1:K) %dopar% {
 
     in.val <- (ind.sets == ic)
@@ -314,26 +314,31 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     lambda <- exp(
       seq(log(lambda.max), log(lambda.max * lambda.min.ratio), length.out = nlambda))
 
-    res <- COPY_biglasso_part(
-      X, y.train = y.train[!in.val],
-      ind.train = ind.train[!in.val],
-      ind.col = ind.col[keep],
-      covar.train = covar.train[!in.val, , drop = FALSE],
-      family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
-      ind.val = ind.train[in.val],
-      covar.val = covar.train[in.val, , drop = FALSE],
-      y.val = y.train[in.val],
-      n.abort, nlam.min,
-      # base fitting
-      base.train = base.train[!in.val],
-      base.val = base.train[in.val],
-      pf.keep3
+    time <- system.time(
+      res <- COPY_biglasso_part(
+        X, y.train = y.train[!in.val],
+        ind.train = ind.train[!in.val],
+        ind.col = ind.col[keep],
+        covar.train = covar.train[!in.val, , drop = FALSE],
+        family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
+        ind.val = ind.train[in.val],
+        covar.val = covar.train[in.val, , drop = FALSE],
+        y.val = y.train[in.val],
+        n.abort, nlam.min,
+        # base fitting
+        base.train = base.train[!in.val],
+        base.val = base.train[in.val],
+        pf.keep3
+      )
     )
+    res$power_scale <- pow_sc
+    res$power_adaptive <- pow_adapt
+    res$pf <- pf.keep3
+    res$time <- time[3]
     # Add first solution
     res$intercept <- res$intercept + beta0
     res$beta <- res$beta + c(beta.X[keep], beta.covar)
-    res$power_scale <- pow_sc
-    res$power_adaptive <- pow_adapt
+
     res
   }
 

@@ -36,10 +36,12 @@ summary.big_sp_list <- function(object, best.only = FALSE, sort = FALSE, ...) {
     )
   }
 
+  order_res <- order(signif(res$validation_loss, 4), res$nb_var)
+
   if (best.only) {
-    res[which.min(res$validation_loss), ]
+    res[order_res[1], ]
   } else if (sort) {
-    res[order(res$validation_loss, -res$alpha), ]
+    res[order_res, ]
   } else {
     res
   }
