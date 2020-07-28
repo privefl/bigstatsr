@@ -333,7 +333,6 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     )
     res$power_scale <- pow_sc
     res$power_adaptive <- pow_adapt
-    res$pf <- pf.keep3
     res$time <- time[3]
     # Add first solution
     res$intercept <- res$intercept + beta0
