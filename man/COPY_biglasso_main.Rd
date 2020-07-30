@@ -27,7 +27,8 @@ COPY_biglasso_main(
   lambda.min = if (n > p) 1e-04 else 0.001,
   return.all = FALSE,
   warn = TRUE,
-  ncores = 1
+  ncores = 1,
+  weights = NULL
 )
 }
 \arguments{
@@ -91,6 +92,8 @@ now deprecated.}
 
 \item{warn}{Whether to warn if some models may not have reached a minimum.
 Default is \code{TRUE}.}
+
+\item{weights}{Observation weights. Default is 1 for each observation}
 }
 \description{
 Fit solution paths for linear or logistic regression models penalized by

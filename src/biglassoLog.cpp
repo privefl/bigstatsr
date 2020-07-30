@@ -10,7 +10,7 @@ using namespace Rcpp;
 #define CALL_COPY_CDFIT_BINOMIAL_HSR(ACC, ACC_VAL) {                           \
   return bigstatsr::biglassoLog::COPY_cdfit_binomial_hsr(ACC, y, base,         \
     lambda, center, scale, pf, resid, alpha, eps, max_iter, dfmax,             \
-    ACC_VAL, y_val, base_val, n_abort, nlam_min);                              \
+    ACC_VAL, y_val, base_val, n_abort, nlam_min, weights, weights_val);                              \
 }
 
 // Dispatch function for COPY_cdfit_binomial_hsr
@@ -35,7 +35,9 @@ List COPY_cdfit_binomial_hsr(Environment BM,
                              const NumericVector& y_val,
                              const NumericVector& base_val,
                              int n_abort,
-                             int nlam_min) {
+                             int nlam_min,
+                             const NumericVector& weights,
+                             const NumericVector& weights_val) {
 
   DISPATCH_SUBMATCOVACC_VAL(CALL_COPY_CDFIT_BINOMIAL_HSR)
 }

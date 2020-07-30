@@ -26,7 +26,9 @@ COPY_biglasso_part(
   nlam.min,
   base.train,
   base.val,
-  pf
+  pf,
+  weights.train,
+  weights.val
 )
 }
 \value{

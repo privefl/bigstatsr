@@ -22,6 +22,7 @@ big_spLogReg(
   dfmax = 50000,
   warn = TRUE,
   ncores = 1,
+  weights = NULL,
   ...
 )
 }
@@ -88,6 +89,8 @@ Default is \code{TRUE}.}
 
 \item{ncores}{Number of cores used. Default doesn't use parallelism.
 You may use \link{nb_cores}.}
+
+\item{weights}{Observation weights. Default is 1 for each observation}
 
 \item{...}{
   Arguments passed on to \code{\link[=COPY_biglasso_main]{COPY_biglasso_main}}
