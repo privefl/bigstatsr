@@ -14,7 +14,7 @@ big_cprodMat(
   ind.row = rows_along(X),
   ind.col = cols_along(X),
   ncores = 1,
-  block.size = block_size(nrow(X)),
+  block.size = block_size(nrow(X), ncores),
   center = NULL,
   scale = NULL
 )

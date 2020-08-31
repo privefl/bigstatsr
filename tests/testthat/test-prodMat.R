@@ -38,30 +38,32 @@ for (t in TEST.TYPES) {
   })
 
   test_that("equality with %*%", {
-    replicate(20, {
+    replicate(10, {
       n <- sample(N, size = 1)
       m <- sample(M, size = 1)
       ind.row <- sample(N, size = n)
       ind.col <- sample(M, size = m)
       A.col <- matrix(rnorm(n * m), m, n)
-      expect_equal(big_prodMat(X, A.col, ind.row, ind.col),
+      expect_equal(big_prodMat(X, A.col, ind.row, ind.col, ncores = test_cores()),
                    X[ind.row, ind.col, drop = FALSE] %*% A.col)
       A.row <- matrix(rnorm(n * m), n, m)
-      expect_equal(big_cprodMat(X, A.row, ind.row, ind.col),
+      expect_equal(big_cprodMat(X, A.row, ind.row, ind.col, ncores = test_cores()),
                    crossprod(X[ind.row, ind.col, drop = FALSE], A.row))
 
       center <- rnorm(m); scale <- runif(m)
-      expect_equal(big_prodMat(X, A.col, ind.row, ind.col, center = center),
+      expect_equal(big_prodMat(X, A.col, ind.row, ind.col, center = center,
+                               ncores = test_cores()),
                    scale(X[ind.row, ind.col, drop = FALSE],
                          center = center, scale = FALSE) %*% A.col)
-      expect_equal(big_prodMat(X, A.col, ind.row, ind.col,
+      expect_equal(big_prodMat(X, A.col, ind.row, ind.col, ncores = test_cores(),
                                center = center, scale = scale),
                    scale(X[ind.row, ind.col, drop = FALSE],
                          center = center, scale = scale) %*% A.col)
-      expect_equal(big_cprodMat(X, A.row, ind.row, ind.col, center = center),
+      expect_equal(big_cprodMat(X, A.row, ind.row, ind.col, center = center,
+                                ncores = test_cores()),
                    crossprod(scale(X[ind.row, ind.col, drop = FALSE],
                                    center = center, scale = FALSE), A.row))
-      expect_equal(big_cprodMat(X, A.row, ind.row, ind.col,
+      expect_equal(big_cprodMat(X, A.row, ind.row, ind.col, ncores = test_cores(),
                                 center = center, scale = scale),
                    crossprod(scale(X[ind.row, ind.col, drop = FALSE],
                                    center = center, scale = scale), A.row))
@@ -82,19 +84,19 @@ for (t in TEST.TYPES) {
     ind.row <- sample(N, size = 17)
     ind.col <- sample(M, size = DIM)
     A.col <- matrix(1, DIM, 7)
-    expect_equal(big_prodMat(X, A.col, ind.row, ind.col),
+    expect_equal(big_prodMat(X, A.col, ind.row, ind.col, ncores = test_cores()),
                  X[ind.row, ind.col, drop = FALSE] %*% A.col)
     A.row <- matrix(1, 17, 7)
-    expect_equal(big_cprodMat(X, A.row, ind.row, ind.col),
+    expect_equal(big_cprodMat(X, A.row, ind.row, ind.col, ncores = test_cores()),
                  crossprod(X[ind.row, ind.col, drop = FALSE], A.row))
 
     ind.row <- sample(N, size = DIM)
     ind.col <- sample(M, size = 17)
     A.col <- matrix(1, 17, 7)
-    expect_equal(big_prodMat(X, A.col, ind.row, ind.col),
+    expect_equal(big_prodMat(X, A.col, ind.row, ind.col, ncores = test_cores()),
                  X[ind.row, ind.col, drop = FALSE] %*% A.col)
     A.row <- matrix(1, DIM, 7)
-    expect_equal(big_cprodMat(X, A.row, ind.row, ind.col),
+    expect_equal(big_cprodMat(X, A.row, ind.row, ind.col, ncores = test_cores()),
                  crossprod(X[ind.row, ind.col, drop = FALSE], A.row))
   })
 }
