@@ -53,13 +53,15 @@ if (not_cran) {
         }))
 
         if (is.null(covar)) {
-          expect_length(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]), N / 2)
+          expect_length(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind],
+                                ncores = test_cores()),
+                        N / 2)
         } else {
           expect_error(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]),
                        "You forgot to provide 'covar.row' in predict().")
         }
         preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],
-                         covar.row = covar[-ind, ])
+                         covar.row = covar[-ind, ], ncores = test_cores())
         expect_gt(cor(preds, y[-ind]), 0.75)
 
         expect_s3_class(plot(mod.bigstatsr), "ggplot")
@@ -70,7 +72,7 @@ if (not_cran) {
                                        ncores = test_cores(),
                                        warn = FALSE)
         preds2 <- predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
         expect_gt(cor(preds2, y[-ind]), 0.6)
 
         expect_error(predict(mod.bigstatsr2, X, covar.row = covar, abc = 2),
@@ -115,7 +117,7 @@ if (not_cran) {
           "10 variables with low/no variation have been removed.", fixed = TRUE
         )
         preds3 <- predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
         if (any(diff(preds3) != 0)) expect_lt(cor(preds3, y[-ind]), 0.2)
 
         # Test prediction with different penalizations of the explanatory variables
@@ -130,7 +132,7 @@ if (not_cran) {
         expect_equal(length(attr(mod.bigstatsr4, "ind.col")), M - 10)
         expect_lte(length(mod.bigstatsr4[[c(1, 1)]]$beta), M - 10 + ncol(covar0))
         preds4 <- predict(mod.bigstatsr4, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
         cor0 <- cor(preds4, y[-ind])
 
         pf <- rep(1, ncol(X)); pf[set] <- 10
@@ -143,7 +145,7 @@ if (not_cran) {
           "10 variables with low/no variation have been removed.", fixed = TRUE
         )
         preds5 <- predict(mod.bigstatsr5, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
 
         pf[set] <- 0
         expect_warning(
@@ -157,7 +159,7 @@ if (not_cran) {
         lapply(unlist(mod.bigstatsr6, recursive = FALSE),
                function(mod) expect_true(all(mod$beta[set2] != 0)))
         preds6 <- predict(mod.bigstatsr6, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
 
         expect_gt(cor(preds6, y[-ind]), cor0)
         if (any(diff(preds5) != 0)) expect_lt(cor(preds5, y[-ind]), cor0)
@@ -222,7 +224,7 @@ if (not_cran) {
                                       ind.sets = ind.sets,
                                       ncores = test_cores(),
                                       warn = FALSE)
-        preds <- predict(mod.bigstatsr, X, covar.row = covar)
+        preds <- predict(mod.bigstatsr, X, covar.row = covar, ncores = test_cores())
         expect_gt(cor(preds[-ind], y[-ind]), 0.6)
 
         expect_equal(nrow(summary(mod.bigstatsr)), length(alphas))
@@ -252,7 +254,8 @@ if (not_cran) {
                                        warn = FALSE)
         expect_error(predict(mod.bigstatsr3, X, covar.row = covar),
                      "You forgot to provide 'base.row' in predict().")
-        preds3 <- predict(mod.bigstatsr3, X, covar.row = covar, base.row = rep(0, N))
+        preds3 <- predict(mod.bigstatsr3, X, covar.row = covar, base.row = rep(0, N),
+                          ncores = test_cores())
         expect_equal(preds3, preds / 2, tolerance = 0.1)
       }
     }
