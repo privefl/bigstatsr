@@ -18,8 +18,8 @@ for (t in TEST.TYPES) {
 
   test_that("equality with %*%", {
     replicate(10, {
-      n <- sample(N, size = 1)
-      m <- sample(M, size = 1)
+      n <- sample(c(sample(N, size = 1), sample(0:1, size = 1)), size = 1)
+      m <- sample(c(sample(M, size = 1), sample(0:1, size = 1)), size = 1)
       ind.row <- sample(N, size = n)
       ind.col <- sample(M, size = m)
       y.col <- rnorm(m)

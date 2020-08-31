@@ -41,6 +41,9 @@ big_prodVec <- function(X, y.col,
   check_args()
   assert_lengths(y.col, ind.col)
 
+  if (length(ind.row) == 0 || length(ind.col) == 0)
+    return(rep(0, length(ind.row)))
+
   if (!is.null(scale)) {
     assert_lengths(scale, ind.col)
     y.col <- y.col / as_vec(scale)
@@ -100,6 +103,9 @@ big_cprodVec <- function(X, y.row,
 
   check_args()
   assert_lengths(y.row, ind.row)
+
+  if (length(ind.row) == 0 || length(ind.col) == 0)
+    return(rep(0, length(ind.col)))
 
   if (!is.null(scale)) {
     assert_lengths(scale, ind.col)
