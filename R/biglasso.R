@@ -191,6 +191,17 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param pf.covar Same as `pf.X`, but for `covar.train`.
 #'   You might want to set some to 0 as variables with large effects can mask
 #'   small effects in penalized regression.
+#' @param power_scale When using lasso (alpha = 1), penalization to apply that
+#'   is equivalent to scaling genotypes dividing by sd^power_scale. Default is 1
+#'   and corresponding to standard scaling. Using 0 would correspond to using
+#'   unscaled variables and using 0.5 is Pareto scaling. If you e.g. use
+#'   `power_scale = c(0, 0.5, 1)`, the best value in CMSA will be used
+#'   (like wich `alphas`.
+#' @param power_adaptive Multiplicative penalty factor to apply to variables
+#'   in the form of 1 / m_j^power_adaptive, where m_j is the marginal statistic
+#'   for variable j. Default is 0, which effectively disables this option.
+#'   If you e.g. use `power_adaptive = c(0, 0.5, 1.5)`, the best value in CMSA
+#'   will be used (like wich `alphas`).
 #'
 #' @keywords internal
 #'
@@ -427,6 +438,8 @@ big_spLinReg <- function(X, y.train,
                          pf.X = NULL,
                          pf.covar = NULL,
                          alphas = 1,
+                         power_scale = 1,
+                         power_adaptive = 0,
                          K = 10,
                          ind.sets = NULL,
                          nlambda = 200,
@@ -466,6 +479,8 @@ big_spLogReg <- function(X, y01.train,
                          pf.X = NULL,
                          pf.covar = NULL,
                          alphas = 1,
+                         power_scale = 1,
+                         power_adaptive = 0,
                          K = 10,
                          ind.sets = NULL,
                          nlambda = 200,

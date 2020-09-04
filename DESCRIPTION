@@ -47,6 +47,7 @@ Suggests:
     bigreadr (>= 0.2),
     covr,
     data.table,
+    dplyr,
     glmnet,
     hexbin,
     memuse,

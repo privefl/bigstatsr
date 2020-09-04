@@ -266,6 +266,7 @@ if (not_cran) {
 ################################################################################
 
 test_that("Warns if not all converged", {
+
   skip_if_not(not_cran)
   set.seed(1)
 
@@ -316,6 +317,55 @@ test_that("code is used for FBM.code256", {
   X2 <- X$copy(code = -X$code256)
   test2 <- big_spLinReg(X2, y, K = 5)
   expect_lt(cor(summary(test)$beta[[1]], summary(test2)$beta[[1]]), -0.9)
+})
+
+################################################################################
+
+test_that("New power parameters work", {
+
+  skip_if_not(not_cran)
+  set.seed(1)
+
+  # simulating some data
+  N <- 230
+  M <- 730
+  X <- FBM(N, M, init = rnorm(N * M, sd = 5))
+  y <- rowSums(X[, 1:10]) + rnorm(N)
+  covar <- matrix(rnorm(N * 3), N)
+
+  ind.train <- sort(sample(nrow(X), 150))
+  ind.test <- setdiff(rows_along(X), ind.train)
+
+  # fitting model for multiple lambdas and alphas
+  ALPHAS <- c(1, 0.5, 0.1, 0.01)
+  expect_warning(
+    test <- big_spLinReg(X, y[ind.train], ind.train = ind.train,
+                         covar.train = covar[ind.train, ], K = 4,
+                         alphas = ALPHAS,
+                         power_scale = c(0, 0.5, 1),
+                         power_adaptive = c(0, 0.5, 1.5)),
+    "Some models may not have reached a minimum", fixed = TRUE
+  )
+
+  # many models
+  test_summary <- summary(test)
+  expect_identical(test_summary$alpha, rep(sort(ALPHAS), each = 9))
+
+  library(dplyr)
+  nb_var <- test_summary %>%
+    group_by(alpha, power_adaptive) %>%
+    summarise(nb_var = mean(nb_var)) %>%
+    ungroup()
+  nb_var %>%
+    group_by(alpha) %>%
+    summarise(cor = cor(power_adaptive, nb_var, method = "spearman")) %>%
+    pull(cor) %>%
+    expect_equal(rep(-1, 4))
+  nb_var %>%
+    group_by(power_adaptive) %>%
+    summarise(cor = cor(alpha, nb_var, method = "spearman")) %>%
+    pull(cor) %>%
+    expect_equal(rep(-1, 3))
 })
 
 ################################################################################

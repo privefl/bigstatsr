@@ -14,6 +14,8 @@ big_spLogReg(
   pf.X = NULL,
   pf.covar = NULL,
   alphas = 1,
+  power_scale = 1,
+  power_adaptive = 0,
   K = 10,
   ind.sets = NULL,
   nlambda = 200,
@@ -63,6 +65,19 @@ defined as \deqn{ \alpha||\beta||_1 + (1-\alpha)/2||\beta||_2^2.}
 \code{alpha = 1} is the lasso penalty and \code{alpha} in between \code{0}
 (\code{1e-4}) and \code{1} is the elastic-net penalty. Default is \code{1}. \strong{You can
 pass multiple values, and only one will be used (optimized by grid-search).}}
+
+\item{power_scale}{When using lasso (alpha = 1), penalization to apply that
+is equivalent to scaling genotypes dividing by sd^power_scale. Default is 1
+and corresponding to standard scaling. Using 0 would correspond to using
+unscaled variables and using 0.5 is Pareto scaling. If you e.g. use
+\code{power_scale = c(0, 0.5, 1)}, the best value in CMSA will be used
+(like wich \code{alphas}.}
+
+\item{power_adaptive}{Multiplicative penalty factor to apply to variables
+in the form of 1 / m_j^power_adaptive, where m_j is the marginal statistic
+for variable j. Default is 0, which effectively disables this option.
+If you e.g. use \code{power_adaptive = c(0, 0.5, 1.5)}, the best value in CMSA
+will be used (like wich \code{alphas}).}
 
 \item{K}{Number of sets used in the Cross-Model Selection and Averaging
 (CMSA) procedure. Default is \code{10}.}
