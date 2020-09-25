@@ -106,7 +106,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
       scale_y_log10() +
       labs(title = "Scree Plot", x = "PC Index", y = "Singular Value")
 
-    `if`(nval > 12, p, p + scale_x_discrete(limits = seq_len(nval)))
+    `if`(nval > 12, p, p + scale_x_discrete(limits = factor(seq_len(nval))))
 
   } else if (type == "scores") {
 
@@ -160,7 +160,7 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
              x = "Column index", y = NULL)
 
       nval <- nrow(x$v)
-      `if`(nval > 12, p, p + scale_x_discrete(limits = seq_len(nval)))
+      `if`(nval > 12, p, p + scale_x_discrete(limits = factor(seq_len(nval))))
 
     }
 
