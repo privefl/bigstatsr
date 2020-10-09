@@ -90,17 +90,17 @@ heavy for models with a large number of nonzero coefficients.}
 now deprecated.}
 
 \item{power_scale}{When using lasso (alpha = 1), penalization to apply that
-is equivalent to scaling genotypes dividing by sd^power_scale. Default is 1
-and corresponding to standard scaling. Using 0 would correspond to using
-unscaled variables and using 0.5 is Pareto scaling. If you e.g. use
+is equivalent to scaling genotypes dividing by (standard deviation)^power_scale.
+Default is 1 and corresponding to standard scaling. Using 0 would correspond
+to using unscaled variables and using 0.5 is Pareto scaling. If you e.g. use
 \code{power_scale = c(0, 0.5, 1)}, the best value in CMSA will be used
-(like wich \code{alphas}.}
+(just like with \code{alphas}).}
 
 \item{power_adaptive}{Multiplicative penalty factor to apply to variables
 in the form of 1 / m_j^power_adaptive, where m_j is the marginal statistic
 for variable j. Default is 0, which effectively disables this option.
 If you e.g. use \code{power_adaptive = c(0, 0.5, 1.5)}, the best value in CMSA
-will be used (like wich \code{alphas}).}
+will be used (just like with \code{alphas}).}
 
 \item{return.all}{Deprecated. Now always return all models.}
 
