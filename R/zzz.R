@@ -5,7 +5,7 @@
   pkg.opt <- list(
     bigstatsr.cluster.type     = "PSOCK",
     bigstatsr.check.args       = TRUE,
-    bigstatsr.block.sizeGB     = 2,
+    bigstatsr.block.sizeGB     = 1,
     bigstatsr.downcast.warning = TRUE
   )
 
