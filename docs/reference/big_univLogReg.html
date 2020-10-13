@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -39,7 +43,6 @@
 <meta property="og:description" content="Slopes of column-wise logistic regressions of each column
 of a Filebacked Big Matrix, with some other associated statistics.
 Covariates can be added to correct for confounders." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -57,7 +60,7 @@ Covariates can be added to correct for confounders." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,7 +74,7 @@ Covariates can be added to correct for confounders." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -142,7 +145,7 @@ Covariates can be added to correct for confounders." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Column-wise logistic regression</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/privefl/bigstatsr/blob/master/R/univLogReg.R'><code>R/univLogReg.R</code></a></small>
     <div class="hidden name"><code>big_univLogReg.Rd</code></div>
     </div>
 
@@ -246,10 +249,11 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 <span class='co'># Without covar</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_univLogReg</span>(<span class='no'>X</span>, <span class='no'>y01</span>)
 <span class='co'>## new class `mhtest`</span>
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "mhtest"     "data.frame"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>test</span>, <span class='st'>"transfo"</span>)</div><div class='output co'>#&gt; function (x)  .Primitive("abs")</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>test</span>, <span class='st'>"predict"</span>)</div><div class='output co'>#&gt; function(xtr) {
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>test</span>)</div><div class='output co'>#&gt; [1] "mhtest"     "data.frame"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>test</span>, <span class='st'>"transfo"</span>)</div><div class='output co'>#&gt; function (x)  .Primitive("abs")</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>test</span>, <span class='st'>"predict"</span>)</div><div class='output co'>#&gt; function (xtr) 
+#&gt; {
 #&gt;     lpval &lt;- stats::pnorm(xtr, lower.tail = FALSE, log.p = TRUE)
-#&gt;     (log(2) + lpval) / log(10)
-#&gt;   }
+#&gt;     (log(2) + lpval)/log(10)
+#&gt; }
 #&gt; &lt;environment: base&gt;</div><div class='input'><span class='co'>## plot results</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>)</div><div class='img'><img src='big_univLogReg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"Volcano"</span>)</div><div class='img'><img src='big_univLogReg-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## To get p-values associated with the test</span>
 <span class='no'>test</span>$<span class='no'>p.value</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>test</span>, <span class='kw'>log10</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -260,9 +264,7 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 #&gt;  $ score  : num  -0.3324 0.0542 -0.4812 1.401 -0.5405 ...
 #&gt;  $ p.value: num  0.74 0.957 0.63 0.161 0.589 ...
 #&gt;  - attr(*, "transfo")=function (x)  
-#&gt;  - attr(*, "predict")=function (xtr)  
-#&gt;   ..- attr(*, "srcref")= 'srcref' int  105 15 108 3 15 3 3755 3758
-#&gt;   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x000000002e5a3a60&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y01</span> ~ <span class='no'>X1</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
+#&gt;  - attr(*, "predict")=function (xtr)  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y01</span> ~ <span class='no'>X1</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
 #&gt; -0.0431720  0.1298854 -0.3323854  0.7395983 </div><div class='input'>
 <span class='co'># With all data</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>big_univLogReg</span>(<span class='no'>X</span>, <span class='no'>y01</span>, <span class='kw'>covar.train</span> <span class='kw'>=</span> <span class='no'>covar</span>))</div><div class='output co'>#&gt; Classes 'mhtest' and 'data.frame':	4542 obs. of  4 variables:
@@ -271,9 +273,7 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 #&gt;  $ niter  : int  3 3 4 4 4 3 4 3 3 4 ...
 #&gt;  $ score  : num  -0.144 0.02 -0.513 1.35 -0.605 ...
 #&gt;  - attr(*, "transfo")=function (x)  
-#&gt;  - attr(*, "predict")=function (xtr)  
-#&gt;   ..- attr(*, "srcref")= 'srcref' int  105 15 108 3 15 3 3755 3758
-#&gt;   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x000000002e5a3a60&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
+#&gt;  - attr(*, "predict")=function (xtr)  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    Estimate  Std. Error     z value    Pr(&gt;|z|) 
 #&gt; -0.01898835  0.13210843 -0.14373310  0.88571124 </div><div class='input'>
 <span class='co'># With only half of the data</span>
 <span class='no'>ind.train</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>n</span>, <span class='no'>n</span>/<span class='fl'>2</span>))
@@ -285,22 +285,14 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 #&gt;  $ niter  : int  4 4 3 4 4 4 4 3 4 4 ...
 #&gt;  $ score  : num  -0.6953 1.0379 0.0707 1.1269 0.3293 ...
 #&gt;  - attr(*, "transfo")=function (x)  
-#&gt;  - attr(*, "predict")=function (xtr)  
-#&gt;   ..- attr(*, "srcref")= 'srcref' int  105 15 108 3 15 3 3755 3758
-#&gt;   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x000000002e5a3a60&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>,
+#&gt;  - attr(*, "predict")=function (xtr)  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y01</span> ~ <span class='no'>X1</span> + <span class='no'>covar</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>,
             <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>ind.train</span>))$<span class='no'>coefficients</span>[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    z value   Pr(&gt;|z|) 
 #&gt; -0.1311374  0.1886059 -0.6952985  0.4868683 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -311,7 +303,7 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
