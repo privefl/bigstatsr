@@ -53,13 +53,15 @@ if (not_cran) {
         }))
 
         if (is.null(covar)) {
-          expect_length(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]), N / 2)
+          expect_length(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind],
+                                ncores = test_cores()),
+                        N / 2)
         } else {
           expect_error(predict(mod.bigstatsr[2], X, ind.row = (1:N)[-ind]),
                        "You forgot to provide 'covar.row' in predict().")
         }
         preds <- predict(mod.bigstatsr, X, ind.row = (1:N)[-ind],
-                         covar.row = covar[-ind, ])
+                         covar.row = covar[-ind, ], ncores = test_cores())
         expect_gt(AUC(preds, y[-ind]), 0.85)
 
         expect_s3_class(plot(mod.bigstatsr), "ggplot")
@@ -70,7 +72,7 @@ if (not_cran) {
                                        ncores = test_cores(),
                                        warn = FALSE)
         preds2 <- predict(mod.bigstatsr2, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
         expect_gt(AUC(preds2, y[-ind]), 0.7)
 
         expect_error(predict(mod.bigstatsr2, X, covar.row = covar, abc = 2),
@@ -116,7 +118,7 @@ if (not_cran) {
 
         expect_equal(nrow(summary(mod.bigstatsr3)), length(alphas))
         preds3 <- predict(mod.bigstatsr3, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
         # Test that prediction is bad when removing the explanatory variables
         expect_lt(AUC(preds3, y[-ind]), 0.7)
 
@@ -132,7 +134,7 @@ if (not_cran) {
         expect_equal(length(attr(mod.bigstatsr4, "ind.col")), M - 10)
         expect_lte(length(mod.bigstatsr4[[c(1, 1)]]$beta), M - 10 + ncol(covar0))
         preds4 <- predict(mod.bigstatsr4, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
         auc0 <- AUC(preds4, y[-ind])
 
         pf <- rep(1, ncol(X)); pf[set] <- 10
@@ -145,7 +147,7 @@ if (not_cran) {
           "10 variables with low/no variation have been removed.", fixed = TRUE
         )
         preds5 <- predict(mod.bigstatsr5, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
         expect_lt(AUC(preds5, y[-ind]), auc0)
 
         pf[set] <- 0
@@ -160,7 +162,7 @@ if (not_cran) {
         lapply(unlist(mod.bigstatsr6, recursive = FALSE),
                function(mod) expect_true(all(mod$beta[set2] != 0)))
         preds6 <- predict(mod.bigstatsr6, X, ind.row = (1:N)[-ind],
-                          covar.row = covar[-ind, ])
+                          covar.row = covar[-ind, ], ncores = test_cores())
         expect_gt(AUC(preds6, y[-ind]), auc0)
       }
     }
@@ -224,7 +226,7 @@ if (not_cran) {
                                       ind.sets = ind.sets,
                                       ncores = test_cores(),
                                       warn = FALSE)
-        preds <- predict(mod.bigstatsr, X, covar.row = covar)
+        preds <- predict(mod.bigstatsr, X, covar.row = covar, ncores = test_cores())
         expect_gt(AUC(preds[-ind], y[-ind]), 0.7)
 
         mod.bigstatsr2 <- big_spLogReg(X, y[ind], ind.train = ind,
@@ -252,7 +254,8 @@ if (not_cran) {
                                        warn = FALSE)
         expect_error(predict(mod.bigstatsr3, X, covar.row = covar),
                      "You forgot to provide 'base.row' in predict().")
-        preds3 <- predict(mod.bigstatsr3, X, covar.row = covar, base.row = rep(0, N))
+        preds3 <- predict(mod.bigstatsr3, X, covar.row = covar, base.row = rep(0, N),
+                          ncores = test_cores())
         expect_gt(cor(preds3, preds), 0.9)
       }
     }
@@ -263,6 +266,7 @@ if (not_cran) {
 ################################################################################
 
 test_that("Warns if not all converged", {
+
   skip_if_not(not_cran)
   set.seed(1)
 
@@ -311,6 +315,55 @@ test_that("code is used for FBM.code256", {
   X2 <- X$copy(code = -X$code256)
   test2 <- big_spLogReg(X2, y01, K = 5)
   expect_lt(print(cor(summary(test)$beta[[1]], summary(test2)$beta[[1]])), -0.7)
+})
+
+################################################################################
+
+test_that("New power parameters work", {
+
+  skip_if_not(not_cran)
+  set.seed(1)
+
+  # simulating some data
+  N <- 230
+  M <- 730
+  X <- FBM(N, M, init = rnorm(N * M, sd = 5))
+  y01 <- as.numeric((rowSums(X[, 1:10]) + 2 * rnorm(N)) > 0)
+  covar <- matrix(rnorm(N * 3), N)
+
+  ind.train <- sort(sample(nrow(X), 150))
+  ind.test <- setdiff(rows_along(X), ind.train)
+
+  # fitting model for multiple lambdas and alphas
+  ALPHAS <- c(1, 0.5, 0.1, 0.01)
+  expect_warning(
+    test <- big_spLogReg(X, y01[ind.train], ind.train = ind.train,
+                         covar.train = covar[ind.train, ], K = 4,
+                         alphas = ALPHAS,
+                         power_scale = c(0, 0.5, 1),
+                         power_adaptive = c(0, 0.5, 1.5)),
+    "Some models may not have reached a minimum", fixed = TRUE
+  )
+
+  # peek at the models
+  test_summary <- summary(test)
+  expect_identical(test_summary$alpha, rep(sort(ALPHAS), each = 9))
+
+  library(dplyr)
+  nb_var <- test_summary %>%
+    group_by(alpha, power_adaptive) %>%
+    summarise(nb_var = mean(nb_var)) %>%
+    ungroup()
+  nb_var %>%
+    group_by(alpha) %>%
+    summarise(cor = cor(power_adaptive, nb_var, method = "spearman")) %>%
+    pull(cor) %>%
+    expect_equal(rep(-1, 4))
+  nb_var %>%
+    group_by(power_adaptive) %>%
+    summarise(cor = cor(alpha, nb_var, method = "spearman")) %>%
+    pull(cor) %>%
+    expect_equal(rep(-1, 3))
 })
 
 ################################################################################

@@ -4,7 +4,7 @@
 \alias{predict.big_sp}
 \title{Predict method}
 \usage{
-\method{predict}{big_sp}(object, X, ind.row, ind.col, covar.row = NULL, ...)
+\method{predict}{big_sp}(object, X, ind.row, ind.col, covar.row = NULL, ncores = 1, ...)
 }
 \arguments{
 \item{object}{Object of class \code{big_sp}.}
@@ -21,6 +21,9 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 for confounders (e.g. the scores of PCA), corresponding to \code{ind.row}.
 Default is \code{NULL} and corresponds to only adding an intercept to each model.
 You can use \code{\link[=covar_from_df]{covar_from_df()}} to convert from a data frame.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 
 \item{...}{Not used.}
 }

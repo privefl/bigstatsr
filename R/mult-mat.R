@@ -40,13 +40,9 @@ big_prodMat <- function(X, A.col,
                         ind.row = rows_along(X),
                         ind.col = cols_along(X),
                         ncores = 1,
-                        block.size = block_size(nrow(X)),
+                        block.size = block_size(nrow(X), ncores),
                         center = NULL,
                         scale = NULL) {
-
-  if (!missing(ncores))
-    warning2("Parameter 'ncores' is deprecated; please use '%s' instead.",
-             "bigparallelr::set_blas_ncores()")
 
   check_args()
   assert_lengths(ind.col, rows_along(A.col))
@@ -64,7 +60,10 @@ big_prodMat <- function(X, A.col,
     center2 <- crossprod(as_vec(center), A.col)
   }
 
-  res <- prod_FBM_block_mat(X, A.col, ind.row, ind.col, block.size)
+  res <- big_parallelize(X, function(X, ind, A.col, ind.row, ind.col, block.size) {
+    prod_FBM_block_mat(X, A.col[ind, , drop = FALSE], ind.row, ind.col[ind], block.size)
+  }, p.combine = plus, ind = seq_along(ind.col), ncores = ncores,
+  A.col = A.col, ind.row = ind.row, ind.col = ind.col, block.size = block.size)
 
   `if`(is.null(center), res, centering(res, center2))
 }
@@ -126,13 +125,9 @@ big_cprodMat <- function(X, A.row,
                          ind.row = rows_along(X),
                          ind.col = cols_along(X),
                          ncores = 1,
-                         block.size = block_size(nrow(X)),
+                         block.size = block_size(nrow(X), ncores),
                          center = NULL,
                          scale = NULL) {
-
-  if (!missing(ncores))
-    warning2("Parameter 'ncores' is deprecated; please use '%s' instead.",
-             "bigparallelr::set_blas_ncores()")
 
   check_args()
   assert_lengths(ind.row, rows_along(A.row))
@@ -150,7 +145,10 @@ big_cprodMat <- function(X, A.row,
     center <- as_vec(center)
   }
 
-  res <- cprod_FBM_block_mat(X, A.row, ind.row, ind.col, block.size)
+  res <- big_parallelize(X, function(X, ind, A.row, ind.row, block.size) {
+    cprod_FBM_block_mat(X, A.row, ind.row, ind, block.size)
+  }, p.combine = rbind, ind = ind.col, ncores = ncores,
+  A.row = A.row, ind.row = ind.row, block.size = block.size)
 
   if (!is.null(center)) res <- res - tcrossprod(center, colSums(A.row))
   if (!is.null(scale))  res <- res / scale

@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -53,7 +57,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -67,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -137,10 +141,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/privefl/bigstatsr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="bigstatsr-130" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-130" class="anchor"></a>bigstatsr 1.3.0</h2>
+<ul>
+<li><p>Add two options in <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>; <code>power_scale</code> for using a different scaling for LASSO and <code>power_adaptive</code> for using adaptive LASSO (where larger marginal effects are penalized less). See documentation for details.</p></li>
+<li><p><code>big_(c)prodVec()</code> and <code>big_(c)prodMat()</code> (re)gain a <code>ncores</code> parameter. Note that for <code>big_(c)prodMat()</code>, it might be beneficial to use the BLAS parallelism (with <code><a href="https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html">bigparallelr::set_blas_ncores()</a></code>) instead of this parameter, especially when the matrix <code>A</code> is large-ish.</p></li>
+</ul>
+</div>
+    <div id="bigstatsr-122" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-122" class="anchor"></a>bigstatsr 1.2.2</h2>
+<ul>
+<li>Function <code><a href="../reference/big_colstats.html">big_colstats()</a></code> can now be run in parallel (added parameter <code>ncores</code>).</li>
+</ul>
+</div>
     <div id="bigstatsr-121" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bigstatsr-121" class="anchor"></a>bigstatsr 1.2.1</h2>
@@ -353,7 +372,7 @@
 <h2 class="hasAnchor">
 <a href="#bigstatsr-032" class="anchor"></a>bigstatsr 0.3.2</h2>
 <ul>
-<li>you can now provide multiple $\alpha$ values (as a numeric vector) in <code>big_spLinReg</code> and <code>big_spLogReg</code>. One will be chosen by grid-search.</li>
+<li>you can now provide multiple <span class="math inline"><em>α</em></span> values (as a numeric vector) in <code>big_spLinReg</code> and <code>big_spLogReg</code>. One will be chosen by grid-search.</li>
 </ul>
 </div>
     <div id="bigstatsr-031" class="section level2">
@@ -381,8 +400,8 @@
 <h2 class="hasAnchor">
 <a href="#bigstatsr-024" class="anchor"></a>bigstatsr 0.2.4</h2>
 <ul>
-<li><p><strong>Integrate Cross-Model Selection and Averaging (CMSA) directly in <code>big_spLinReg</code> and <code>big_spLogReg</code>, a procedure that automatically chooses the value of the $\lambda$ hyper-parameter.</strong></p></li>
-<li><p><strong>Speed up <code>big_spLinReg</code> and <code>big_spLogReg</code> (<a href="https://github.com/privefl/bigstatsr/issues/12">issue #12</a>)</strong></p></li>
+<li><p><strong>Integrate Cross-Model Selection and Averaging (CMSA) directly in <code>big_spLinReg</code> and <code>big_spLogReg</code>, a procedure that automatically chooses the value of the <span class="math inline"><em>λ</em></span> hyper-parameter.</strong></p></li>
+<li><p><strong>Speed up <code>big_spLinReg</code> and <code>big_spLogReg</code> (<a href="https://github.com/privefl/bigstatsr/issues/12">issue <a href='https://github.com/privefl/bigstatsr/issues/12'>#12</a></a>)</strong></p></li>
 </ul>
 </div>
     <div id="bigstatsr-023" class="section level2">
@@ -401,46 +420,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#bigstatsr-121">1.2.1</a></li>
-        <li><a href="#bigstatsr-120">1.2.0</a></li>
-        <li><a href="#bigstatsr-114">1.1.4</a></li>
-        <li><a href="#bigstatsr-113">1.1.3</a></li>
-        <li><a href="#bigstatsr-111">1.1.1</a></li>
-        <li><a href="#bigstatsr-110">1.1.0</a></li>
-        <li><a href="#bigstatsr-100">1.0.0</a></li>
-        <li><a href="#bigstatsr-0910">0.9.10</a></li>
-        <li><a href="#bigstatsr-099">0.9.9</a></li>
-        <li><a href="#bigstatsr-096">0.9.6</a></li>
-        <li><a href="#bigstatsr-095">0.9.5</a></li>
-        <li><a href="#bigstatsr-093">0.9.3</a></li>
-        <li><a href="#bigstatsr-090">0.9.0</a></li>
-        <li><a href="#bigstatsr-084">0.8.4</a></li>
-        <li><a href="#bigstatsr-083">0.8.3</a></li>
-        <li><a href="#bigstatsr-080">0.8.0</a></li>
-        <li><a href="#bigstatsr-073">0.7.3</a></li>
-        <li><a href="#bigstatsr-071">0.7.1</a></li>
-        <li><a href="#bigstatsr-070">0.7.0</a></li>
-        <li><a href="#bigstatsr-062">0.6.2</a></li>
-        <li><a href="#bigstatsr-061">0.6.1</a></li>
-        <li><a href="#bigstatsr-060">0.6.0</a></li>
-        <li><a href="#bigstatsr-050">0.5.0</a></li>
-        <li><a href="#bigstatsr-041">0.4.1</a></li>
-        <li><a href="#bigstatsr-040">0.4.0</a></li>
-        <li><a href="#bigstatsr-034">0.3.4</a></li>
-        <li><a href="#bigstatsr-033">0.3.3</a></li>
-        <li><a href="#bigstatsr-032">0.3.2</a></li>
-        <li><a href="#bigstatsr-031">0.3.1</a></li>
-        <li><a href="#bigstatsr-030">0.3.0</a></li>
-        <li><a href="#bigstatsr-026">0.2.6</a></li>
-        <li><a href="#bigstatsr-024">0.2.4</a></li>
-        <li><a href="#bigstatsr-023">0.2.3</a></li>
-        <li><a href="#bigstatsr-020">0.2.0</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -452,7 +435,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

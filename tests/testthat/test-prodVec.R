@@ -17,30 +17,32 @@ for (t in TEST.TYPES) {
   X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
   test_that("equality with %*%", {
-    replicate(20, {
-      n <- sample(N, size = 1)
-      m <- sample(M, size = 1)
+    replicate(10, {
+      n <- sample(c(sample(N, size = 1), sample(0:1, size = 1)), size = 1)
+      m <- sample(c(sample(M, size = 1), sample(0:1, size = 1)), size = 1)
       ind.row <- sample(N, size = n)
       ind.col <- sample(M, size = m)
       y.col <- rnorm(m)
-      expect_equal(big_prodVec(X, y.col, ind.row, ind.col),
+      expect_equal(big_prodVec(X, y.col, ind.row, ind.col, ncores = test_cores()),
                    drop(X[ind.row, ind.col, drop = FALSE] %*% y.col))
       y.row <- rnorm(n)
-      expect_equal(big_cprodVec(X, y.row, ind.row, ind.col),
+      expect_equal(big_cprodVec(X, y.row, ind.row, ind.col, ncores = test_cores()),
                    drop(crossprod(X[ind.row, ind.col, drop = FALSE], y.row)))
 
       center <- rnorm(m); scale <- runif(m)
-      expect_equal(big_prodVec(X, y.col, ind.row, ind.col, center = center),
+      expect_equal(big_prodVec(X, y.col, ind.row, ind.col, center = center,
+                               ncores = test_cores()),
                    drop(scale(X[ind.row, ind.col, drop = FALSE],
                               center = center, scale = FALSE) %*% y.col))
-      expect_equal(big_prodVec(X, y.col, ind.row, ind.col,
+      expect_equal(big_prodVec(X, y.col, ind.row, ind.col, ncores = test_cores(),
                                center = center, scale = scale),
                    drop(scale(X[ind.row, ind.col, drop = FALSE],
                               center = center, scale = scale) %*% y.col))
-      expect_equal(big_cprodVec(X, y.row, ind.row, ind.col, center = center),
+      expect_equal(big_cprodVec(X, y.row, ind.row, ind.col, center = center,
+                                ncores = test_cores()),
                    drop(crossprod(scale(X[ind.row, ind.col, drop = FALSE],
                                         center = center, scale = FALSE), y.row)))
-      expect_equal(big_cprodVec(X, y.row, ind.row, ind.col,
+      expect_equal(big_cprodVec(X, y.row, ind.row, ind.col, ncores = test_cores(),
                                 center = center, scale = scale),
                    drop(crossprod(scale(X[ind.row, ind.col, drop = FALSE],
                                         center = center, scale = scale), y.row)))

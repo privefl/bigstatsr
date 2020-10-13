@@ -12,6 +12,7 @@
   covar.row = NULL,
   proba = (attr(object, "family") == "binomial"),
   base.row = NULL,
+  ncores = 1,
   ...
 )
 }
@@ -34,6 +35,9 @@ You can use \code{\link[=covar_from_df]{covar_from_df()}} to convert from a data
 \item{proba}{Whether to return probabilities?}
 
 \item{base.row}{Vector of base predictions, corresponding to \code{ind.row}.}
+
+\item{ncores}{Number of cores used. Default doesn't use parallelism.
+You may use \link{nb_cores}.}
 
 \item{...}{Not used.}
 }

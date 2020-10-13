@@ -17,6 +17,7 @@
 #'
 predict.big_sp <- function(object, X, ind.row, ind.col,
                            covar.row = NULL,
+                           ncores = 1,
                            ...) {
 
   assert_nodots()
@@ -27,18 +28,16 @@ predict.big_sp <- function(object, X, ind.row, ind.col,
   if (is.null(covar.row)) {
 
     ind.nozero <- which(beta != 0)
-    scores <- big_prodVec(X, beta[ind.nozero],
-                          ind.row = ind.row,
-                          ind.col = ind.col[ind.nozero])
+    scores <- big_prodVec(X, beta[ind.nozero], ind.row = ind.row,
+                          ind.col = ind.col[ind.nozero], ncores = ncores)
   } else {
 
     assert_lengths(ind.row, rows_along(covar.row))
 
     ind.X <- seq_along(ind.col)
     ind.nozero <- which(beta[ind.X] != 0)
-    scores <- big_prodVec(X, beta[ind.nozero],
-                          ind.row = ind.row,
-                          ind.col = ind.col[ind.nozero]) +
+    scores <- big_prodVec(X, beta[ind.nozero], ind.row = ind.row,
+                          ind.col = ind.col[ind.nozero], ncores = ncores) +
       drop(covar.row %*% beta[-ind.X])
   }
 
@@ -71,12 +70,11 @@ predict.big_sp_list <- function(object, X,
                                 covar.row = NULL,
                                 proba = (attr(object, "family") == "binomial"),
                                 base.row = NULL,
+                                ncores = 1,
                                 ...) {
 
   assert_nodots()
   check_args()
-
-
 
   if (is.null(base.row)) {
     if (any(attr(object, "base") != 0)) {
@@ -96,7 +94,7 @@ predict.big_sp_list <- function(object, X,
     list(intercept = summ_best$intercept, beta = summ_best$beta[[1]]),
     class = "big_sp")
 
-  one_score <- base.row + predict(obj.big_sp, X, ind.row, ind.col, covar.row)
+  one_score <- base.row + predict(obj.big_sp, X, ind.row, ind.col, covar.row, ncores)
   `if`(proba, 1 / (1 + exp(-one_score)), one_score)
 }
 

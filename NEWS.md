@@ -1,3 +1,9 @@
+## bigstatsr 1.3.0
+
+- Add two options in `big_spLinReg()` and `big_spLogReg()`; `power_scale` for using a different scaling for LASSO and `power_adaptive` for using adaptive LASSO (where larger marginal effects are penalized less). See documentation for details.
+
+- `big_(c)prodVec()` and `big_(c)prodMat()` (re)gain a `ncores` parameter. Note that for `big_(c)prodMat()`, it might be beneficial to use the BLAS parallelism (with `bigparallelr::set_blas_ncores()`) instead of this parameter, especially when the matrix `A` is large-ish.
+
 ## bigstatsr 1.2.2
 
 - Function `big_colstats()` can now be run in parallel (added parameter `ncores`).

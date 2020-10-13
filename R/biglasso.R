@@ -191,6 +191,17 @@ COPY_biglasso_part <- function(X, y.train, ind.train, ind.col, covar.train,
 #' @param pf.covar Same as `pf.X`, but for `covar.train`.
 #'   You might want to set some to 0 as variables with large effects can mask
 #'   small effects in penalized regression.
+#' @param power_scale When using lasso (alpha = 1), penalization to apply that
+#'   is equivalent to scaling genotypes dividing by (standard deviation)^power_scale.
+#'   Default is 1 and corresponding to standard scaling. Using 0 would correspond
+#'   to using unscaled variables and using 0.5 is Pareto scaling. If you e.g. use
+#'   `power_scale = c(0, 0.5, 1)`, the best value in CMSA will be used
+#'   (just like with `alphas`).
+#' @param power_adaptive Multiplicative penalty factor to apply to variables
+#'   in the form of 1 / m_j^power_adaptive, where m_j is the marginal statistic
+#'   for variable j. Default is 0, which effectively disables this option.
+#'   If you e.g. use `power_adaptive = c(0, 0.5, 1.5)`, the best value in CMSA
+#'   will be used (just like with `alphas`).
 #'
 #' @keywords internal
 #'
@@ -210,6 +221,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
                                max.iter = 1000,
                                dfmax = 50e3,
                                lambda.min = `if`(n > p, .0001, .001),
+                               power_scale = 1,
+                               power_adaptive = 0,
                                return.all = FALSE,
                                warn = TRUE,
                                ncores = 1) {
@@ -290,7 +303,10 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
   register_parallel(ncores, type = getOption("bigstatsr.cluster.type"))
 
   alphas <- sort(alphas)
-  cross.res <- foreach(alpha = alphas) %:% foreach(ic = 1:K) %dopar% {
+  cross.res <- foreach(alpha = alphas) %:%
+    foreach(pow_adapt = sort(power_adaptive)) %:%
+    foreach(pow_sc = power_scale) %:%
+    foreach(ic = 1:K) %dopar% {
 
     in.val <- (ind.sets == ic)
 
@@ -303,28 +319,36 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
     scale  <- c(scale,  summaries.covar[["scale"]][ic, ])
     resid  <- c(resid,  summaries.covar[["resid"]][ic, ])
     ## Compute lambdas of the path
-    lambda.max <- max(abs(resid / pf.keep)[pf.keep != 0]) / alpha
+    pf.keep2 <- pf.keep * scale^(pow_sc - 1)
+    pf.keep3 <- pf.keep2 * abs(resid / pf.keep2)^-pow_adapt
+    lambda.max <- max(abs(resid / pf.keep3)[pf.keep3 != 0]) / alpha
     lambda <- exp(
       seq(log(lambda.max), log(lambda.max * lambda.min.ratio), length.out = nlambda))
 
-    res <- COPY_biglasso_part(
-      X, y.train = y.train[!in.val],
-      ind.train = ind.train[!in.val],
-      ind.col = ind.col[keep],
-      covar.train = covar.train[!in.val, , drop = FALSE],
-      family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
-      ind.val = ind.train[in.val],
-      covar.val = covar.train[in.val, , drop = FALSE],
-      y.val = y.train[in.val],
-      n.abort, nlam.min,
-      # base fitting
-      base.train = base.train[!in.val],
-      base.val = base.train[in.val],
-      pf.keep
+    time <- system.time(
+      res <- COPY_biglasso_part(
+        X, y.train = y.train[!in.val],
+        ind.train = ind.train[!in.val],
+        ind.col = ind.col[keep],
+        covar.train = covar.train[!in.val, , drop = FALSE],
+        family, lambda, center, scale, resid, alpha, eps, max.iter, dfmax,
+        ind.val = ind.train[in.val],
+        covar.val = covar.train[in.val, , drop = FALSE],
+        y.val = y.train[in.val],
+        n.abort, nlam.min,
+        # base fitting
+        base.train = base.train[!in.val],
+        base.val = base.train[in.val],
+        pf.keep3
+      )
     )
+    res$power_scale <- pow_sc
+    res$power_adaptive <- pow_adapt
+    res$time <- time[3]
     # Add first solution
     res$intercept <- res$intercept + beta0
     res$beta <- res$beta + c(beta.X[keep], beta.covar)
+
     res
   }
 
@@ -335,7 +359,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
              "Access remaining columns with 'attr(<object>, \"ind.col\")'.")
 
   res <- structure(
-    cross.res,
+    unlist(unlist(cross.res, recursive = FALSE), recursive = FALSE),
     class = "big_sp_list",
     family = family,
     alphas = alphas,
@@ -414,6 +438,8 @@ big_spLinReg <- function(X, y.train,
                          pf.X = NULL,
                          pf.covar = NULL,
                          alphas = 1,
+                         power_scale = 1,
+                         power_adaptive = 0,
                          K = 10,
                          ind.sets = NULL,
                          nlambda = 200,
@@ -453,6 +479,8 @@ big_spLogReg <- function(X, y01.train,
                          pf.X = NULL,
                          pf.covar = NULL,
                          alphas = 1,
+                         power_scale = 1,
+                         power_adaptive = 0,
                          K = 10,
                          ind.sets = NULL,
                          nlambda = 200,
