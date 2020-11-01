@@ -31,10 +31,10 @@ pcor <- function(x, y, z, alpha = 0.05) {
   } else if (all(mod1$residuals == 0)) {
     rep(0, 3)
   } else {
-    r <- cor(mod1$residuals, mod2$residuals)
+    r <- stats::cor(mod1$residuals, mod2$residuals)
     # Fisher's Z-transformation
     z <- (log(1 + r) - log(1 - r)) / 2
-    rad <- qnorm(alpha / 2, lower.tail = FALSE) / sqrt(mod2$df.residual - 2)
+    rad <- stats::qnorm(alpha / 2, lower.tail = FALSE) / sqrt(mod2$df.residual - 2)
     c(r, tanh(z - rad), tanh(z + rad))
   }
 }
