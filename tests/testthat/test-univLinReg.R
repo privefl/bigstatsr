@@ -81,18 +81,21 @@ test_that("equality with lm with only half the data", {
 test_that("covar_from_df() works", {
 
   iris2 <- datasets::iris
-
   mat <- covar_from_df(iris2)
   expect_type(mat, "double")
   expect_equal(nrow(mat), nrow(iris2))
   expect_equal(qr(mat)$rank, ncol(mat))
 
   names(iris2) <- NULL
-
   mat <- covar_from_df(iris2)
   expect_type(mat, "double")
   expect_equal(nrow(mat), nrow(iris2))
   expect_equal(qr(mat)$rank, ncol(mat))
+
+  iris2[c(1, 3, 57), ] <- NA
+  mat2 <- covar_from_df(iris2)
+  mat[c(1, 3, 57), ] <- NA
+  expect_equal(mat2, mat)
 })
 
 ################################################################################

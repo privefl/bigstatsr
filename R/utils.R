@@ -104,7 +104,8 @@ covar_from_df <- function(df) {
 
   if (is.null(names(df))) names(df) <- paste0("V", seq_along(df))
 
-  stats::model.matrix(~ ., data = df)[, -1, drop = FALSE]
+  # https://stackoverflow.com/a/49071411/6103040
+  stats::model.matrix.lm(~ ., data = df, na.action = "na.pass")[, -1, drop = FALSE]
 }
 
 ################################################################################
