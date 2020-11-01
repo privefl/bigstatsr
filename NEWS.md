@@ -1,3 +1,7 @@
+## bigstatsr 1.3.1
+
+- Add function `pcor()` to compute partial correlations.
+
 ## bigstatsr 1.3.0
 
 - Add two options in `big_spLinReg()` and `big_spLogReg()`; `power_scale` for using a different scaling for LASSO and `power_adaptive` for using adaptive LASSO (where larger marginal effects are penalized less). See documentation for details.
