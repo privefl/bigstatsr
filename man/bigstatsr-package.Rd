@@ -72,7 +72,7 @@ You can also control the number of cores used with
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://privefl.github.io/bigstatsr}
+  \item \url{https://privefl.github.io/bigstatsr/}
   \item Report bugs at \url{https://github.com/privefl/bigstatsr/issues}
 }
 

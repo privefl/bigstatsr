@@ -33,7 +33,7 @@ and possibly its 95\% confidence interval.
 }
 \details{
 Other packages provide ways to compute the AUC (see this
-\href{http://stats.stackexchange.com/a/146174/135793}{answer}).
+\href{https://stats.stackexchange.com/a/146174/135793}{answer}).
 I chose to compute the AUC through its statistical definition as a
 probability: \deqn{P(score(x_{case}) > score(x_{control})).}
 Note that I consider equality between scores as a 50\%-probability of

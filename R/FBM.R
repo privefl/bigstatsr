@@ -51,7 +51,8 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #'
 #' A reference class for storing and accessing matrix-like data stored in files
 #' on disk. This is very similar to Filebacked Big Matrices provided by the
-#' **bigmemory** package (see [the corresponding vignette](http://bit.ly/2SRX5w4)).
+#' **bigmemory** package (see [the corresponding vignette](
+#' https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html)).
 #'
 #' @details
 #' An object of class FBM has many fields:
@@ -297,7 +298,7 @@ FBM_RC$lock("nrow", "type")
 #'   existing one (which should be named by the `backingfile` parameter and have
 #'   an extension ".bk"). For example, this could be used to convert a
 #'   filebacked `big.matrix` from package **bigmemory** to a [FBM][FBM-class]
-#'   (see [the corresponding vignette](http://bit.ly/2SRX5w4)).
+#'   (see [the corresponding vignette](https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html)).
 #' @param is_read_only Whether the FBM is read-only? Default is `FALSE`.
 #'
 #' @rdname FBM-class

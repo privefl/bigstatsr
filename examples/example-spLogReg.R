@@ -13,7 +13,7 @@ ind.test <- setdiff(rows_along(X), ind.train)
 # fitting model for multiple lambdas and alphas
 test <- big_spLogReg(X, y01[ind.train], ind.train = ind.train,
                      covar.train = covar[ind.train, ],
-                     alphas = c(1, 0.5, 0.1, 0.01), warn = FALSE)
+                     alphas = c(1, 0.1), ncores = 2, warn = FALSE)
 
 # peek at the models
 plot(test)

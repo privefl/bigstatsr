@@ -54,7 +54,7 @@ Default stores in the temporary directory.}
 existing one (which should be named by the \code{backingfile} parameter and have
 an extension ".bk"). For example, this could be used to convert a
 filebacked \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-class]{FBM}
-(see \href{http://bit.ly/2SRX5w4}{the corresponding vignette}).}
+(see \href{https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html}{the corresponding vignette}).}
 
 \item{is_read_only}{Whether the FBM is read-only? Default is \code{FALSE}.}
 
@@ -63,7 +63,7 @@ filebacked \code{big.matrix} from package \strong{bigmemory} to a \link[=FBM-cla
 \description{
 A reference class for storing and accessing matrix-like data stored in files
 on disk. This is very similar to Filebacked Big Matrices provided by the
-\strong{bigmemory} package (see \href{http://bit.ly/2SRX5w4}{the corresponding vignette}).
+\strong{bigmemory} package (see \href{https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html}{the corresponding vignette}).
 
 Convert a matrix (or a data frame) to an FBM.
 }
