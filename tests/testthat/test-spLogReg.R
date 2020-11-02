@@ -4,7 +4,7 @@ context("SP_LOG_REG")
 
 set.seed(SEED)
 
-options(bigstatsr.downcast.warning = FALSE)
+# options(bigstatsr.downcast.warning = FALSE)
 
 ################################################################################
 
