@@ -4,6 +4,8 @@ context("SVD")
 
 set.seed(SEED)
 
+options(bigstatsr.downcast.warning = FALSE)
+
 ################################################################################
 
 TOL <- 1e-3

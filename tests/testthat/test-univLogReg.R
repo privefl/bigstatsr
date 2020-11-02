@@ -4,6 +4,8 @@ context("UNIV_LOG_REG")
 
 set.seed(SEED)
 
+options(bigstatsr.downcast.warning = FALSE)
+
 ################################################################################
 
 # Bug when no variation -> glm drop variable and intercept is returned first...

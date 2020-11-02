@@ -4,6 +4,8 @@ context("TCROSSPROD_SELF")
 
 set.seed(SEED)
 
+options(bigstatsr.downcast.warning = FALSE)
+
 ################################################################################
 
 # Simulating some data

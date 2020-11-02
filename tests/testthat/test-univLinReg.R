@@ -4,6 +4,8 @@ context("UNIV_LIN_REG")
 
 set.seed(SEED)
 
+options(bigstatsr.downcast.warning = FALSE)
+
 ################################################################################
 
 # Simulating some data

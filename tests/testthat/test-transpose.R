@@ -4,6 +4,8 @@ context("TRANSPOSE")
 
 set.seed(SEED)
 
+options(bigstatsr.downcast.warning = FALSE)
+
 ################################################################################
 
 # Simulating some data
