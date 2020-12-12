@@ -23,3 +23,22 @@ test_that("pcor() works", {
 })
 
 ################################################################################
+
+test_that("pcor() is consistent with ppcor::pcor.test()", {
+
+  skip_on_cran()
+  skip_if_not_installed("ppcor")
+
+  N <- 100
+  x <- rnorm(N)
+  y <- rep(0, N); y[sample(N, 3)] <- 1
+  z <- matrix(rnorm(N * 5), N)
+
+  test <- ppcor::pcor.test(x, y, z)
+  est <- pcor(x, y, z, alpha = test$p.value)
+
+  expect_equal(est[1], test$estimate)
+  expect_equal(`if`(est[1] < 0, est[3], est[2]), 0, tolerance = 0.001)
+})
+
+################################################################################

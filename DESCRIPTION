@@ -52,6 +52,7 @@ Suggests:
     hexbin,
     memuse,
     ModelMetrics,
+    ppcor,
     RhpcBLASctl,
     spelling (>= 1.2),
     testthat
