@@ -153,8 +153,8 @@ transpose3 <- function(BM, BM2) {
     invisible(.Call(`_bigstatsr_transpose3`, BM, BM2))
 }
 
-univLinReg5 <- function(BM, covar_U, y, rowInd, colInd) {
-    .Call(`_bigstatsr_univLinReg5`, BM, covar_U, y, rowInd, colInd)
+univLinReg5 <- function(BM, covar_U, y, rowInd, colInd, ncores) {
+    .Call(`_bigstatsr_univLinReg5`, BM, covar_U, y, rowInd, colInd, ncores)
 }
 
 IRLS <- function(BM, covar, y, z0, w0, rowInd, colInd, tol, maxiter) {
