@@ -25,3 +25,21 @@ test_that("parallel big_univLinReg() works", {
 })
 
 ################################################################################
+
+test_that("parallel big_cprodVec() works", {
+
+  G <- big_attachExtdata()
+  rows <- sample(nrow(G), replace = TRUE)
+  cols <- sample(ncol(G), replace = TRUE)
+  n <- length(rows)
+  y <- rnorm(n)
+
+  test <- replicate(20, simplify = FALSE, {
+    big_cprodVec(G, y, rows, cols, ncores = 2)
+  })
+  true <- big_cprodVec(G, y, rows, cols, ncores = 1)
+
+  expect_true(all(sapply(test, all.equal, current = true)))
+})
+
+################################################################################

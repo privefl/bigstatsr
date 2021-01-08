@@ -116,10 +116,7 @@ big_cprodVec <- function(X, y.row,
     center2 <- sum(y.row) * as_vec(center)
   }
 
-  res <- big_parallelize(X, function(X, ind, y.row, ind.row) {
-    cpMatVec4(X, y.row, ind.row, ind)
-  }, p.combine = 'c', ind = ind.col, ncores = ncores,
-  y.row = y.row, ind.row = ind.row)
+  res <- cpMatVec4(X, y.row, ind.row, ind.col, ncores = ncores)
 
   if (!is.null(center)) res <- res - center2
   if (!is.null(scale))  res <- res / scale

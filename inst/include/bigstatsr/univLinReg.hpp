@@ -19,7 +19,7 @@ template <class C>
 ListOf<NumericVector> univLinReg5(C macc,
                                   const arma::mat& U,
                                   const arma::vec& y,
-                                  int ncores) {
+                                  int ncores = 1) {
 
   size_t n = macc.nrow();
   size_t m = macc.ncol();
