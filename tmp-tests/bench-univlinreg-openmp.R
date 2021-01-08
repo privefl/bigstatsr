@@ -26,3 +26,13 @@ system.time(
 # 27 / 13
 # cols x2 - 4 cores: 22 - 6 cores: 19.5 - 20 cores: 23 sec
 head(gwas2, 4)
+
+y2 <- celiac$fam$affection - 1L
+cols2 <- 1:10000
+system.time(
+  gwas3 <- big_univLogReg(G, y2[rows], ind.train = rows, ind.col = cols2,
+                          covar.train = covar, ncores = 4)
+)
+# Before: 34 sec with 1 core / 14 sec with 4 cores
+# After:  34 sec with 1 core / 13 sec with 4 cores
+head(gwas3, 4)
