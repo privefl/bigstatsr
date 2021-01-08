@@ -13,22 +13,26 @@ using std::size_t;
 namespace bigstatsr {
 
 template <class C>
-ListOf<NumericVector> bigcolvars(C macc) {
+ListOf<NumericVector> bigcolvars(C macc, int ncores = 1) {
 
   size_t n = macc.nrow();
   size_t m = macc.ncol();
 
   NumericVector res(m), res2(m);
-  double x, xSum, xxSum;
-  size_t i, j;
 
-  for (j = 0; j < m; j++) {
-    xSum = xxSum = 0;
-    for (i = 0; i < n; i++) {
-      x = macc(i, j);
-      xSum += x;
+  int chunk_size = ceil(m / (10.0 * ncores));
+
+  #pragma omp parallel for num_threads(ncores) schedule(dynamic, chunk_size)
+  for (size_t j = 0; j < m; j++) {
+
+    double xSum = 0, xxSum = 0;
+
+    for (size_t i = 0; i < n; i++) {
+      double x = macc(i, j);
+      xSum  += x;
       xxSum += x*x;
     }
+
     res[j] = xxSum - xSum * xSum / n;
     res2[j] = xSum;
   }

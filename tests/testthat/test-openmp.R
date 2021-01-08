@@ -59,3 +59,19 @@ test_that("parallel big_cprodVec() works", {
 })
 
 ################################################################################
+
+test_that("parallel big_colstats() works", {
+
+  G <- big_attachExtdata()
+  rows <- sample(nrow(G), replace = TRUE)
+  cols <- sample(ncol(G), replace = TRUE)
+
+  test <- replicate(20, simplify = FALSE, {
+    big_colstats(G, rows, cols, ncores = 2)
+  })
+  true <- big_colstats(G, rows, cols, ncores = 1)
+
+  expect_true(all(sapply(test, all.equal, current = true)))
+})
+
+################################################################################
