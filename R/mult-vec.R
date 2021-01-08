@@ -53,10 +53,7 @@ big_prodVec <- function(X, y.col,
     center2 <- drop(crossprod(as_vec(center), y.col))
   }
 
-  res <- big_parallelize(X, function(X, ind, y.col, ind.row, ind.col) {
-    pMatVec4(X, y.col[ind], ind.row, ind.col[ind])
-  }, p.combine = plus, ind = seq_along(ind.col), ncores = ncores,
-  y.col = y.col, ind.row = ind.row, ind.col = ind.col)
+  res <- pMatVec4(X, y.col, ind.row, ind.col, ncores = ncores)
 
   `if`(is.null(center), res, res - center2)
 }

@@ -486,8 +486,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // pMatVec4
-NumericVector pMatVec4(Environment BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd);
-RcppExport SEXP _bigstatsr_pMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP) {
+NumericVector pMatVec4(Environment BM, const NumericVector& x, const IntegerVector& rowInd, const IntegerVector& colInd, int ncores);
+RcppExport SEXP _bigstatsr_pMatVec4(SEXP BMSEXP, SEXP xSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP ncoresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -495,7 +495,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type rowInd(rowIndSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type colInd(colIndSEXP);
-    rcpp_result_gen = Rcpp::wrap(pMatVec4(BM, x, rowInd, colInd));
+    Rcpp::traits::input_parameter< int >::type ncores(ncoresSEXP);
+    rcpp_result_gen = Rcpp::wrap(pMatVec4(BM, x, rowInd, colInd, ncores));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -645,7 +646,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_GET_ERROR_TYPE", (DL_FUNC) &_bigstatsr_GET_ERROR_TYPE, 0},
     {"_bigstatsr_GET_ERROR_DIM", (DL_FUNC) &_bigstatsr_GET_ERROR_DIM, 0},
     {"_bigstatsr_GET_ERROR_BOUNDS", (DL_FUNC) &_bigstatsr_GET_ERROR_BOUNDS, 0},
-    {"_bigstatsr_pMatVec4", (DL_FUNC) &_bigstatsr_pMatVec4, 4},
+    {"_bigstatsr_pMatVec4", (DL_FUNC) &_bigstatsr_pMatVec4, 5},
     {"_bigstatsr_cpMatVec4", (DL_FUNC) &_bigstatsr_cpMatVec4, 5},
     {"_bigstatsr_transpose3", (DL_FUNC) &_bigstatsr_transpose3, 2},
     {"_bigstatsr_univLinReg5", (DL_FUNC) &_bigstatsr_univLinReg5, 6},

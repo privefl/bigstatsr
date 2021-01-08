@@ -7,14 +7,15 @@ using namespace Rcpp;
 
 /******************************************************************************/
 
-#define CALL_PMATVEC4(ACC) return bigstatsr::pMatVec4(ACC, x);
+#define CALL_PMATVEC4(ACC) return bigstatsr::pMatVec4(ACC, x, ncores);
 
 // Dispatch function for pMatVec4
 // [[Rcpp::export]]
 NumericVector pMatVec4(Environment BM,
                        const NumericVector& x,
                        const IntegerVector& rowInd,
-                       const IntegerVector& colInd) {
+                       const IntegerVector& colInd,
+                       int ncores) {
 
   myassert_size(colInd.size(), x.size());
 

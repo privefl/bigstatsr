@@ -141,8 +141,8 @@ GET_ERROR_BOUNDS <- function() {
     .Call(`_bigstatsr_GET_ERROR_BOUNDS`)
 }
 
-pMatVec4 <- function(BM, x, rowInd, colInd) {
-    .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd)
+pMatVec4 <- function(BM, x, rowInd, colInd, ncores) {
+    .Call(`_bigstatsr_pMatVec4`, BM, x, rowInd, colInd, ncores)
 }
 
 cpMatVec4 <- function(BM, x, rowInd, colInd, ncores) {
