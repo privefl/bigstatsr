@@ -155,8 +155,7 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose,
 #'
 #' @inheritParams bigstatsr-package
 #' @param k Number of singular vectors/values to compute. Default is `10`.
-#' __This algorithm should be used to compute only a
-#' few singular vectors/values.__
+#' __This algorithm should be used to compute only a few singular vectors/values.__
 #' @param tol Precision parameter of [svds][RSpectra::svds]. Default is `1e-4`.
 #' @param verbose Should some progress be printed? Default is `FALSE`.
 #' @param fun.prod Function that takes 6 arguments (in this order):
