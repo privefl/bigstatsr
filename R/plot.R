@@ -267,12 +267,12 @@ plot.big_sp_list <- function(x, coeff = 1, ...) {
       mod <- mods[[k]]
       loss <- mod$loss.val
       cbind.data.frame(
-        set = k,
-        alpha = mod$alpha,
-        power_adaptive = mod$power_adaptive,
-        power_scale = mod$power_scale,
-        loss_index = seq_along(loss),
-        loss = loss
+        set            = k,
+        alpha          = mod$alpha,
+        power_adaptive = other_if_null(mod$power_adaptive, 0),
+        power_scale    = other_if_null(mod$power_scale,    1),
+        loss_index     = seq_along(loss),
+        loss           = loss
       )
     }
   }

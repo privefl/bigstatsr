@@ -1,3 +1,7 @@
+## bigstatsr 1.3.2
+
+- Fix `summary()` and `plot()` for old (< v1.3) `big_sp_list` models.
+
 ## bigstatsr 1.3.1
 
 - Add function `pcor()` to compute partial correlations.
