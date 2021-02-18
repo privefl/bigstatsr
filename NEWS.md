@@ -1,3 +1,7 @@
+## bigstatsr 1.3.3
+
+- Fix `pcor()` for singular systems, e.g. when `x` has all the same values.
+
 ## bigstatsr 1.3.2
 
 - Fix `summary()` and `plot()` for old (< v1.3) `big_sp_list` models.
