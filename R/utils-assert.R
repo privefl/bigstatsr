@@ -82,3 +82,18 @@ assert_noNA <- function(x) {
 }
 
 ################################################################################
+
+# SIZE
+assert_disk_space <- function(path, size) {
+
+  avail <- ps::ps_disk_usage(dirname(path))$available
+
+  if (size > (0.95 * avail))
+    stop2("Not enough disk space to create '%s'.", path)
+
+  if (size > (0.2 * avail))
+    warning2("'%s' will take %.1f%% of the available disk space.",
+             path, size / avail * 100)
+}
+
+################################################################################

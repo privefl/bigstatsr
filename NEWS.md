@@ -1,3 +1,7 @@
+## bigstatsr 1.4.0
+
+- Now detects and errors if there is not enough disk space to create an FBM.
+
 ## bigstatsr 1.3.3
 
 - Fix `pcor()` for singular systems, e.g. when `x` has all the same values.
