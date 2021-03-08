@@ -38,7 +38,7 @@ test_that("pcor() is consistent with ppcor::pcor.test()", {
   est <- pcor(x, y, z, alpha = test$p.value)
 
   expect_equal(est[1], test$estimate)
-  expect_equal(`if`(est[1] < 0, est[3], est[2]), 0, tolerance = 0.001)
+  expect_equal(`if`(est[1] < 0, est[3], est[2]), 0, tolerance = 0.002)
 })
 
 ################################################################################

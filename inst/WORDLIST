@@ -68,6 +68,7 @@ nb
 newcommand
 nrow
 OpenBLAS
+OpenMP
 parApply
 parallelization
 parallelize
@@ -75,7 +76,6 @@ plotly
 Plotly
 pre
 preprint
-PrivÃ
 PSOCK
 Qiu
 randomSVD
@@ -83,6 +83,8 @@ Rcpp
 RcppArmadillo
 rds
 rdsfile
+recode
+recoded
 Recogn
 reproducibility
 Rokhlin
@@ -93,6 +95,7 @@ semismooth
 sparseSVM
 spLinReg
 spLogReg
+stackoverflow
 strsplit
 svd
 svds
