@@ -27,7 +27,9 @@ If not specified, all rows are used. \strong{Don't use negative indices.}}
 \item{ind.col}{An optional vector of the column indices that are used.
 If not specified, all columns are used. \strong{Don't use negative indices.}}
 
-\item{k}{Number of singular vectors/values to compute. Default is \code{10}.}
+\item{k}{Number of singular vectors/values to compute. Default is \code{10}.
+\strong{This algorithm should be used to compute only a few singular vectors/values.}
+If more is needed, have a look at https://stackoverflow.com/a/46380540/6103040.}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}

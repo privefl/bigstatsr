@@ -74,6 +74,8 @@ PrimalBigPCA <- function(X, fun.scaling,
 #'
 #' @inheritParams bigstatsr-package
 #' @param k Number of singular vectors/values to compute. Default is `10`.
+#' __This algorithm should be used to compute only a few singular vectors/values.__
+#' If more is needed, have a look at https://stackoverflow.com/a/46380540/6103040.
 #'
 #' @inheritSection bigstatsr-package Matrix parallelization
 #'

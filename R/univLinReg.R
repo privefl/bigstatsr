@@ -1,12 +1,5 @@
 ################################################################################
 
-univLinReg_sub <- function(X, ind, U, y.train, ind.train) {
-
-  as.data.frame(univLinReg5(X, U, y.train, ind.train, ind))
-}
-
-################################################################################
-
 #' Column-wise linear regression
 #'
 #' Slopes of column-wise linear regressions of each column
@@ -48,16 +41,16 @@ big_univLinReg <- function(X, y.train,
   K <- sum(eigval.scaled > thr.eigval)
 
   # main computation
-  res <- big_parallelize(X = X,
-                         p.FUN = univLinReg_sub,
-                         p.combine = "rbind",
-                         ind = ind.col,
-                         ncores = ncores,
-                         U = SVD$u[, 1:K, drop = FALSE],
-                         y.train = y.train,
-                         ind.train = ind.train)
-
+  res <- univLinReg5(
+    BM      = X,
+    covar_U = SVD$u[, 1:K, drop = FALSE],
+    y       = y.train,
+    rowInd  = ind.train,
+    colInd  = ind.col,
+    ncores  = ncores
+  )
   res$score <- res$estim / res$std.err
+
   fun.pred <- eval(parse(text = sprintf(
     "function(xtr) {
        lpval <- stats::pt(xtr, df = %d, lower.tail = FALSE, log.p = TRUE)
@@ -65,7 +58,7 @@ big_univLinReg <- function(X, y.train,
      }", n - K - 1)))
   environment(fun.pred) <- baseenv()
 
-  structure(res,
+  structure(as.data.frame(res),
             class = c("mhtest", "data.frame"),
             transfo = abs,
             predict = fun.pred)

@@ -40,15 +40,16 @@
 #' str(big_scale()(X))
 big_scale <- function(center = TRUE, scale = TRUE) {
 
-  function(X, ind.row = rows_along(X), ind.col = cols_along(X)) {
+  function(X, ind.row = rows_along(X), ind.col = cols_along(X), ncores = 1) {
 
     check_args()
 
     m <- length(ind.col)
+
     if (center) {
-      tmp <- big_colstats(X, ind.row, ind.col)
-      means <- tmp$sum / length(ind.row)
-      sds <- `if`(scale, sqrt(tmp$var), rep(1, m))
+      stats <- big_colstats(X, ind.row, ind.col, ncores = ncores)
+      means <- stats$sum / length(ind.row)
+      sds <- `if`(scale, sqrt(stats$var), rep(1, m))
     } else {
       means <- rep(0, m)
       sds <- rep(1, m)
