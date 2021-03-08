@@ -1,3 +1,7 @@
+## bigstatsr 1.5.0
+
+- Recode some parallel algorithms with OpenMP. For now, functions `big_prodVec()`, `big_cprodVec()`, `big_colstats()` and `big_univLinReg()` have been recoded.
+
 ## bigstatsr 1.4.0
 
 - Now detects and errors if there is not enough disk space to create an FBM.
