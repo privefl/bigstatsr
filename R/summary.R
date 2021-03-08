@@ -24,15 +24,15 @@ summary.big_sp_list <- function(object, best.only = FALSE, sort = FALSE, ...) {
 
   res <- foreach(mods = object, .combine = "rbind") %do% {
     tibble::tibble(
-      alpha = mods[[1]]$alpha,
-      power_adaptive = mods[[1]]$power_adaptive,
-      power_scale = mods[[1]]$power_scale,
+      alpha           = mods[[1]]$alpha,
+      power_adaptive  = other_if_null(mods[[1]]$power_adaptive, 0),
+      power_scale     = other_if_null(mods[[1]]$power_scale,    1),
       validation_loss = mean(sapply(mods, function(mod) min(mod$loss.val))),
-      intercept = mean(sapply(mods, function(mod) mod$intercept)),
-      beta = list(rowMeans(sapply(mods, function(mod) mod$beta))),
-      nb_var = sapply(beta, function(x) sum(x != 0)),
-      message = list(sapply(mods, function(mod) mod$message)),
-      all_conv = sapply(message, function(msg) all(msg == "No more improvement"))
+      intercept       = mean(sapply(mods, function(mod) mod$intercept)),
+      beta            = list(rowMeans(sapply(mods, function(mod) mod$beta))),
+      nb_var          = sapply(beta, function(x) sum(x != 0)),
+      message         = list(sapply(mods, function(mod) mod$message)),
+      all_conv        = sapply(message, function(msg) all(msg == "No more improvement"))
     )
   }
 

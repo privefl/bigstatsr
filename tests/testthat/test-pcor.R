@@ -42,3 +42,18 @@ test_that("pcor() is consistent with ppcor::pcor.test()", {
 })
 
 ################################################################################
+
+test_that("pcor() handle singular systems", {
+
+  skip_on_cran()
+
+  set.seed(1)
+  N <- 100
+  x <- rep(1, N)
+  y <- sample(0:1, N, replace = TRUE, prob = c(0.9, 0.1))
+  covar <- matrix(rnorm(N * 10), N)
+
+  expect_identical(pcor(x, y, covar), rep(0, 3))
+})
+
+################################################################################

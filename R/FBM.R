@@ -150,7 +150,8 @@ FBM_RC <- methods::setRefClass(
     rds = function() sub_bk(.self$bk, ".rds"),
     is_saved = function() file.exists(.self$rds),
     type_chr = function() names(.self$type),
-    type_size = function() ALL.SIZES[[.self$type_chr]]
+    type_size = function() ALL.SIZES[[.self$type_chr]],
+    file_size = function() .self$nrow * as.double(.self$ncol) * .self$type_size
   ),
 
   methods = list(
@@ -161,18 +162,20 @@ FBM_RC <- methods::setRefClass(
       assert_int(ncol)
       bkfile <- path.expand(paste0(backingfile, ".bk"))
 
+      .self$nrow <- nrow
+      .self$ncol <- ncol
+      .self$type <- ALL.TYPES[type]  # keep int and string
+
       if (create_bk) {
         assert_noexist(bkfile)
         assert_dir(dirname(bkfile))
+        assert_disk_space(bkfile, .self$file_size)
         createFile(bkfile, nrow, ncol, ALL.TYPES[[type]])
       } else {
         assert_exist(bkfile)
       }
 
-      .self$backingfile  <- normalizePath(bkfile)
-      .self$nrow         <- nrow
-      .self$ncol         <- ncol
-      .self$type         <- ALL.TYPES[type]  # keep int and string
+      .self$backingfile <- normalizePath(bkfile)
       .self$check_dimensions()
 
       ## init pointers
@@ -265,8 +268,7 @@ FBM_RC <- methods::setRefClass(
         stop2("You don't have write permissions for this FBM.")
     },
     check_dimensions = function() {
-      size <- .self$nrow * 1 * .self$ncol
-      if (file.size(.self$backingfile) != (size * .self$type_size))
+      if (file.size(.self$backingfile) != .self$file_size)
         stop2("Inconsistency between size of backingfile and dimensions.")
     }
   )

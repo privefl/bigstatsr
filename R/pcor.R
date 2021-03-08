@@ -1,5 +1,11 @@
 ################################################################################
 
+is_all_0ish <- function(x) {
+  isTRUE(all.equal(x, rep(0, length(x)), check.attributes = FALSE))
+}
+
+################################################################################
+
 #' Partial correlation
 #'
 #' Partial correlation between x and y, after having adjusted both for z.
@@ -26,10 +32,10 @@ pcor <- function(x, y, z, alpha = 0.05) {
   mod1 <- stats::lm.fit(x = m[, -(2:3), drop = FALSE], y = m[, 2])
   mod2 <- stats::lm.fit(x = m[, -(2:3), drop = FALSE], y = m[, 3])
 
-  if (mod1$df.residual < 3 || mod2$df.residual < 3) {
-    rep(NA_real_, 3)
-  } else if (all(mod1$residuals == 0)) {
+  if (is_all_0ish(mod1$residuals) || is_all_0ish(mod2$residuals)) {
     rep(0, 3)
+  } else if (mod1$df.residual < 3 || mod2$df.residual < 3) {
+    rep(NA_real_, 3)
   } else {
     r <- stats::cor(mod1$residuals, mod2$residuals)
     # Fisher's Z-transformation

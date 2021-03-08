@@ -44,6 +44,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -71,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -111,20 +113,20 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fa fa-user"></span>
+    <span class="fas fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -145,6 +147,27 @@
       <small>Source: <a href='https://github.com/privefl/bigstatsr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="bigstatsr-140" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-140" class="anchor"></a>bigstatsr 1.4.0</h2>
+<ul>
+<li>Now detects and errors if there is not enough disk space to create an FBM.</li>
+</ul>
+</div>
+    <div id="bigstatsr-133" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-133" class="anchor"></a>bigstatsr 1.3.3</h2>
+<ul>
+<li>Fix <code><a href="../reference/pcor.html">pcor()</a></code> for singular systems, e.g. when <code>x</code> has all the same values.</li>
+</ul>
+</div>
+    <div id="bigstatsr-132" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-132" class="anchor"></a>bigstatsr 1.3.2</h2>
+<ul>
+<li>Fix <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> for old (&lt; v1.3) <code>big_sp_list</code> models.</li>
+</ul>
+</div>
     <div id="bigstatsr-131" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bigstatsr-131" class="anchor"></a>bigstatsr 1.3.1</h2>
@@ -209,7 +232,7 @@
 <a href="#bigstatsr-110" class="anchor"></a>bigstatsr 1.1.0</h2>
 <ul>
 <li><p>Make two different memory-mappings: one that is read-only (using <code>$address</code>) and one where it is possible to write (using <code>$address_rw</code>). This enables to use file permissions to prevent modifying data.</p></li>
-<li><p>Also add a new field <code>$is_read_only</code> to be used to prevent modifying data (at least with <code>&lt;-</code>) even when you have write permissions to it. Functions creating an FBM now gain a parameter <code>is_read_only</code>.</p></li>
+<li><p>Also add a new field <code>$is_read_only</code> to be used to prevent modifying data (at least with <code><a href="https://rdrr.io/r/base/assignOps.html">&lt;-</a></code>) even when you have write permissions to it. Functions creating an FBM now gain a parameter <code>is_read_only</code>.</p></li>
 <li><p>Make vector accessors (e.g. <code>X[1:10]</code>) faster.</p></li>
 </ul>
 </div>
@@ -237,7 +260,7 @@
 <li><p>Can now plot many PCA scores (more than two) at once.</p></li>
 <li><p>Use <code>coord_fixed()</code> when plotting PCA scores because it is good practice.</p></li>
 <li><p>Use log-scale in scree plot to better see small differences in singular values.</p></li>
-<li><p>Reexport <code><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">cowplot::plot_grid()</a></code> to merge multiple ggplots.</p></li>
+<li><p>Reexport <code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">cowplot::plot_grid()</a></code> to merge multiple ggplots.</p></li>
 </ul>
 </div>
     <div id="bigstatsr-096" class="section level2">
@@ -365,7 +388,7 @@
 <a href="#bigstatsr-034" class="anchor"></a>bigstatsr 0.3.4</h2>
 <ul>
 <li><p>Fix a bug in <code>big_spLinReg</code> related to the computation of summaries.</p></li>
-<li><p>Now provides function <code>plus</code> to be used as the <code>combine</code> argument in <code>big_apply</code> and <code>big_parallelize</code> instead of <code><a href="https://rdrr.io/r/base/Arithmetic.html">'+'</a></code>.</p></li>
+<li><p>Now provides function <code>plus</code> to be used as the <code>combine</code> argument in <code>big_apply</code> and <code>big_parallelize</code> instead of <code>'+'</code>.</p></li>
 </ul>
 </div>
     <div id="bigstatsr-033" class="section level2">
@@ -442,7 +465,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

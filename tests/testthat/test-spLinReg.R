@@ -371,3 +371,13 @@ test_that("New power parameters work", {
 })
 
 ################################################################################
+
+test_that("Can still use old models", {
+
+  mod <- readRDS(system.file("testdata/old-mod.rds", package = "bigstatsr"))
+
+  expect_s3_class(summary(mod), "tbl")
+  expect_s3_class(plot(mod), "ggplot")
+})
+
+################################################################################

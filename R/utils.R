@@ -5,6 +5,10 @@ globalVariables(c("ic", "mods", "k", "loss_index", "set", "pow_sc", "pow_adapt")
 
 ################################################################################
 
+other_if_null <- function(x, other) `if`(is.null(x), other, x)
+
+################################################################################
+
 #' Determine a correct value for the block.size parameter
 #'
 #' It determines the value of `block.size` such that a matrix of doubles of
