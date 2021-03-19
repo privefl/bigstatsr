@@ -7,7 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(bigstatsr)
+options(max.print = 20)
 ```
 
 Function `big_apply()` enables to apply standard R functions to an FBM, by relying on split-apply-combine strategy where only a subset of the matrix is accessed at once. This allows for a compromise between the amount of maximum memory needed, and the speed of the operation.
@@ -18,6 +18,7 @@ In this tutorial, I showcase two examples, the imputation of a 'double' FBM and 
 Some data to work with:
 
 ```{r}
+library(bigstatsr)
 X <- FBM(2000, 2000, init = rnorm(2000^2))
 X[1, ] <- NA
 ```
