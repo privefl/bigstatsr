@@ -51,6 +51,7 @@ subset matrix and finally combine the results. If parallelization is used,
 this function splits indices in parts for parallelization, then split again
 them on each core, apply a given function to each part and finally combine
 the results (on each cluster and then from each cluster).
+See also \href{https://privefl.github.io/bigstatsr/articles/big-apply.html}{the corresponding vignette}.
 }
 \examples{
 X <- big_attachExtdata()

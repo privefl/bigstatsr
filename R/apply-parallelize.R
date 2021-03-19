@@ -78,6 +78,7 @@ big_applySeq <- function(X, a.FUN, block.size, ind, ...) {
 #' this function splits indices in parts for parallelization, then split again
 #' them on each core, apply a given function to each part and finally combine
 #' the results (on each cluster and then from each cluster).
+#' See also [the corresponding vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 #'
 #' @inheritParams bigstatsr-package
 #' @param a.FUN The function to be applied to each subset matrix.

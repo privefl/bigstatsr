@@ -21,6 +21,8 @@ navbar:
         href: articles/operations-with-scaling.html
       - text: "Read a FBM from a text file"
         href: articles/read-FBM-from-file.html
+      - text: "Showcasing big_apply()"
+        href: articles/big-apply.html
   right:
     - text: "About"
       icon: fa-user

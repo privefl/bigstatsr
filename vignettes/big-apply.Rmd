@@ -1,0 +1,130 @@
+---
+title: "Showcasing big_apply(): imputation and multiplication of large FBMs"
+author: "Florian Privé"
+date: "March 19, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(bigstatsr)
+```
+
+Function `big_apply()` enables to apply standard R functions to an FBM, by relying on split-apply-combine strategy where only a subset of the matrix is accessed at once. This allows for a compromise between the amount of maximum memory needed, and the speed of the operation.
+In this tutorial, I showcase two examples, the imputation of a 'double' FBM and the multiplication of two FBMs.
+
+## Example 1: Imputation of a 'double' FBM
+
+Some data to work with:
+
+```{r}
+X <- FBM(2000, 2000, init = rnorm(2000^2))
+X[1, ] <- NA
+```
+
+To impute by the mean of each column, you can use the following code:
+
+```{r}
+big_apply(X, function(X, ind) {
+  # have an idea of progress
+  print(ind[1])
+  # access a subset of columns as a standard R matrix
+  X.sub <- X[, ind, drop = FALSE]
+  # get the location (i, j) of missing values
+  ind_na <- which(is.na(X.sub), arr.ind = TRUE)
+  # compute the corresponding mean for each column j
+  means <- colMeans(X.sub, na.rm = TRUE)[ind_na[, 2]]
+  # update j (relative to subset) to global 'ind'
+  ind_na[, 2] <- ind[ind_na[, 2]]
+  # fill positions with corresponding means
+  X[ind_na] <- means
+  # here we don't want to return anything, so `NULL`
+  NULL
+}, a.combine = 'c', block.size = 500)
+```
+
+What is going on:
+
+- The function **split** indices (`cols_along(X)` by default, can be changed using parameter `ind`) to have maximum size of `block.size`.
+
+- Then, this is passed as `ind` into the function and can be used to access a subset of columns of the FBM with `X[, ind, drop = FALSE]` (which is then a standard R matrix).
+
+- Then you can compute the colmeans by **apply**ing a standard R function on this subset, using e.g. `colMeans(X.sub, na.rm = TRUE)`.
+
+- Then, the missing values can be filled with the corresponding column means and assigned back to the FBM (be aware of the relative column indices `ind` versus the global ones `cols_along(X)`).
+
+- Then, we return `NULL` because we are not interested in returning anything here. We also use `a.combine = 'c'` to **combine** all `NULL` corresponding to each block to return only one `NULL` instead of a list of `NULL`.
+
+- If you would like to return e.g. the column means that you used for imputation, you could e.g. replace `NULL` by the result of `colMeans(X.sub, na.rm = TRUE)`, and keep `a.combine = 'c'`.
+
+```{r}
+# Verification
+X[1, ]
+big_scale()(X)$center
+```
+
+## Example 2: multiplication of two FBMs
+
+Imagine you have two large FBMs
+
+```{r}
+# here they are not that large but it is just for the example
+N <- 5000
+M1 <- 1000
+M2 <- 2000
+library(bigstatsr)
+X1 <- FBM(N, M1, init = 1)
+X2 <- FBM(N, M2, init = 2)
+```
+
+How to compute the cross-product $X_1^T X_2$?
+
+The first thing is to ask whether you really want to do this, and questioned the dimension of the resulting matrix (here `M1` $\times$ `M2`).
+
+There are many solutions to this problem, that depends mainly of the size of your matrices.
+
+The first simple solution when `X2` is small is to access it as a standard R matrix and to use.
+
+```{r}
+cprod1 <- big_cprodMat(X1, X2[])
+dim(cprod1)
+```
+
+If `X1` is small and the resulting product is small, then you can also use
+
+```{r}
+cprod2 <- t(big_cprodMat(X2, X1[]))
+all.equal(cprod2, cprod1)
+```
+
+If the matrices are larger, especially `X2`, then you can compute the cross-product only for a subset of columns of `X2`, which gives you only a subset of columns of the result, which you can then combine.
+This can be implemented using
+
+```{r}
+cprod3 <- big_apply(X2, function(X, ind) {
+  print(ind[1])
+  big_cprodMat(X1, X[, ind, drop = FALSE])
+}, a.combine  = "cbind", block.size = 500)
+all.equal(cprod3, cprod1)
+```
+
+To use parallelism, you can e.g. use `bigparallelr::set_blas_ncores()` to allow for parallel matrix operations if R is linked to some parallel matrix library such as MKL or OpenBLAS. 
+You can also use the parallelism from `big_apply()`; this won't work as is:
+```{r, error = TRUE}
+big_apply(X2, function(X, ind) {
+  print(ind[1])
+  big_cprodMat(X1, X[, ind, drop = FALSE])
+}, a.combine  = "cbind", block.size = 500, ncores = nb_cores())
+```
+
+You need two things here, which is basically telling the parallel clusters what are `big_cprodMat` and `X1`; you can do
+```{r, error = TRUE}
+cprod4 <- big_apply(X2, function(X, ind, X1) {
+  print(ind[1])
+  bigstatsr::big_cprodMat(X1, X[, ind, drop = FALSE])
+}, a.combine  = "cbind", block.size = 500, ncores = nb_cores(), X1 = X1)
+all.equal(cprod4, cprod1)
+```
+
+Basically, you need to tell explicitly in which package to find the function, and to pass the other variables as parameters in the function and in `big_apply()`. For more information on these matters, please have a look at [this tutorial on parallelism with R](https://privefl.github.io/blog/a-guide-to-parallelism-in-r/).
+Also note that each core will use at most a block size of 500 here, so at most 500 x ncores, so you might need to reduce the block size a bit when using parallelism (this is done by default when not specifying `block.size`).
