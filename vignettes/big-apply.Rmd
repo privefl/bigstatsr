@@ -129,3 +129,14 @@ all.equal(cprod4, cprod1)
 
 Basically, you need to tell explicitly in which package to find the function, and to pass the other variables as parameters in the function and in `big_apply()`. For more information on these matters, please have a look at [this tutorial on parallelism with R](https://privefl.github.io/blog/a-guide-to-parallelism-in-r/).
 Also note that each core will use at most a block size of 500 here, so at most 500 x ncores, so you might need to reduce the block size a bit when using parallelism (this is done by default when not specifying `block.size`).
+
+Another strategy, to save a bit of memory, is to preallocate a resulting FBM and fill it:
+```{r}
+cprod5 <- FBM(ncol(X1), ncol(X2))
+big_apply(X2, function(X, ind, X1, res) {
+  res[, ind] <- bigstatsr::big_cprodMat(X1, X[, ind, drop = FALSE])
+  NULL
+}, a.combine  = "c", block.size = 500, ncores = nb_cores(), X1 = X1, res = cprod5)
+all.equal(cprod5[], cprod1)
+```
+

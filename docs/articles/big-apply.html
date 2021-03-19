@@ -160,17 +160,17 @@
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="co"># Verification</span>
 <span class="va">X</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></pre></div>
-<pre><code>##  [1] -0.005892949  0.009886400 -0.034165398  0.012688226  0.021578010
-##  [6]  0.025782775  0.011138442  0.003818885 -0.034045495 -0.014669111
-## [11] -0.024619833  0.015940570  0.017715777 -0.014823947 -0.041149496
-## [16]  0.007980559  0.040265304  0.028738127  0.008274921  0.030011878
+<pre><code>##  [1]  0.0278673566 -0.0011900960  0.0025620198  0.0082756920  0.0010035890
+##  [6]  0.0212498086  0.0019672753  0.0090996911  0.0124744854  0.0092489544
+## [11] -0.0255669210 -0.0009051463  0.0045421984 -0.0347613670 -0.0305215947
+## [16]  0.0314256092  0.0159625018  0.0055185271  0.0195322208 -0.0246828571
 ##  [ reached getOption("max.print") -- omitted 1980 entries ]</code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="fu"><a href="../reference/big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">$</span><span class="va">center</span></pre></div>
-<pre><code>##  [1] -0.005892949  0.009886400 -0.034165398  0.012688226  0.021578010
-##  [6]  0.025782775  0.011138442  0.003818885 -0.034045495 -0.014669111
-## [11] -0.024619833  0.015940570  0.017715777 -0.014823947 -0.041149496
-## [16]  0.007980559  0.040265304  0.028738127  0.008274921  0.030011878
+<pre><code>##  [1]  0.0278673566 -0.0011900960  0.0025620198  0.0082756920  0.0010035890
+##  [6]  0.0212498086  0.0019672753  0.0090996911  0.0124744854  0.0092489544
+## [11] -0.0255669210 -0.0009051463  0.0045421984 -0.0347613670 -0.0305215947
+## [16]  0.0314256092  0.0159625018  0.0055185271  0.0195322208 -0.0246828571
 ##  [ reached getOption("max.print") -- omitted 1980 entries ]</code></pre>
 </div>
 <div id="example-2-multiplication-of-two-fbms" class="section level2">
@@ -227,6 +227,17 @@
 <span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">cprod4</span>, <span class="va">cprod1</span><span class="op">)</span></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Basically, you need to tell explicitly in which package to find the function, and to pass the other variables as parameters in the function and in <code><a href="../reference/big_apply.html">big_apply()</a></code>. For more information on these matters, please have a look at <a href="https://privefl.github.io/blog/a-guide-to-parallelism-in-r/">this tutorial on parallelism with R</a>. Also note that each core will use at most a block size of 500 here, so at most 500 x ncores, so you might need to reduce the block size a bit when using parallelism (this is done by default when not specifying <code>block.size</code>).</p>
+<p>Another strategy, to save a bit of memory, is to preallocate a resulting FBM and fill it:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit">
+<span class="va">cprod5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">X1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">X2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">X1</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">res</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">bigstatsr</span><span class="fu">::</span><span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X1</span>, <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>
+  <span class="cn">NULL</span>
+<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"c"</span>, block.size <span class="op">=</span> <span class="fl">500</span>, ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html">nb_cores</a></span><span class="op">(</span><span class="op">)</span>, X1 <span class="op">=</span> <span class="va">X1</span>, res <span class="op">=</span> <span class="va">cprod5</span><span class="op">)</span></pre></div>
+<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb24"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">cprod5</span><span class="op">[</span><span class="op">]</span>, <span class="va">cprod1</span><span class="op">)</span></pre></div>
+<pre><code>## [1] TRUE</code></pre>
 </div>
   </div>
 
