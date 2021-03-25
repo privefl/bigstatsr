@@ -92,11 +92,13 @@ plot(pred, y[ind.test], pch = 20); abline(0, 1, col = "red")
 
 - You can add covariates as a standard R matrix using parameter `covar.train`; it will fit the model as if `X[ind.train, ]` and `covar.train` were `cbind`ed.
 
-- You can add an offset to your model using `base.train` (on the linear scale, do not provide probabilities!).
+- You can now use different scalings with `power_scale` (1 is the default standardization, 0 corresponds to no scaling, and 0.5 to Pareto scaling), and some adaptive lasso with `power_adaptive` that, when > 0, penalizes less variables with larger marginal effects. These two new parameters have been introduced in https://doi.org/10.1101/2021.02.05.21251061, and you can specify a vector of values, where the best value will be chosen within the CMSA procedure (same as with `alphas`). Note that these new parameters assume that you use lasso (i.e. $\alpha = 1$).
 
 - You can apply some multiplicative penalization factors (`pf.X` and `pf.covar`) to penalize variables differently (possibly no penalization for *some* variables using `0`).
 
 - Functions `big_spLinReg()` and `big_spLogReg()` are not deterministic because folds are chosen randomly. One way that should ensure reproducibility is to define your own folds using parameter `ind.sets` (using e.g. `sample(rep_len(1:K, length(ind.train)))`).
+
+- You can add an offset to your model using `base.train` (on the linear scale, do not provide probabilities!).
 
 
 ## Time and memory requirements (from the paper)
