@@ -21,7 +21,6 @@ Description: Easy-to-use, efficient, flexible and scalable statistical tools.
   <doi:10.1093/bioinformatics/bty185>.
 License: GPL-3
 Language: en-US
-LazyData: TRUE
 ByteCompile: TRUE
 Depends: R (>= 3.3)
 Imports:

@@ -419,15 +419,15 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #' Strong rules for discarding predictors in lasso-type problems.
 #' Journal of the Royal Statistical Society:
 #' Series B (Statistical Methodology), 74: 245-266.
-#' \url{https://doi.org/10.1111/j.1467-9868.2011.01004.x}.
+#' \doi{10.1111/j.1467-9868.2011.01004.x}.
 #'
 #' Zeng, Y., and Breheny, P. (2017). The biglasso Package: A Memory- and
 #' Computation-Efficient Solver for Lasso Model Fitting with Big Data in R.
-#' arXiv preprint arXiv:1701.05936. \url{https://arxiv.org/abs/1701.05936}.
+#' \doi{10.32614/RJ-2021-001}.
 #'
 #' Privé, F., Aschard, H., and Blum, M. G.B. (2019). Efficient implementation of
 #' penalized regression for genetic risk prediction. Genetics, 212: 65-74.
-#' \url{https://doi.org/10.1534/genetics.119.302019}.
+#' \doi{10.1534/genetics.119.302019}.
 #'
 #' @export
 big_spLinReg <- function(X, y.train,

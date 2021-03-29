@@ -145,13 +145,13 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose,
 #' @note The idea of using this Implicitly Restarted Arnoldi Method algorithm
 #' comes from G. Abraham, Y. Qiu, and M. Inouye,
 #' FlashPCA2: principal component analysis of biobank-scale genotype datasets,
-#' bioRxiv: \url{https://doi.org/10.1101/094714}.
+#' bioRxiv: \doi{10.1101/094714}.
 #' \cr
 #' It proved to be faster than our implementation of the "blanczos" algorithm
 #' in Rokhlin, V., Szlam, A., & Tygert, M. (2010).
 #' A Randomized Algorithm for Principal Component Analysis.
 #' SIAM Journal on Matrix Analysis and Applications, 31(3), 1100-1124.
-#' \url{https://doi.org/10.1137/080736417}.
+#' \doi{10.1137/080736417}.
 #'
 #' @inheritParams bigstatsr-package
 #' @param k Number of singular vectors/values to compute. Default is `10`.
