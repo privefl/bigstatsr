@@ -86,7 +86,8 @@ assert_noNA <- function(x) {
 # SIZE
 assert_disk_space <- function(path, size) {
 
-  avail <- ps::ps_disk_usage(dirname(path))$available
+  avail <- tryCatch(ps::ps_disk_usage(dirname(path))$available,
+                    error = function(e) Inf)
 
   if (size > (0.95 * avail))
     stop2("Not enough disk space to create '%s'.", path)
