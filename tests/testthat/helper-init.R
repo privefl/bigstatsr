@@ -20,7 +20,9 @@ opt.save <- options(bigstatsr.downcast.warning = FALSE,
 not_cran <- identical(Sys.getenv("BIGSTATSR_CRAN"), "false")
 
 test_cores <- function() {
-  `if`(not_cran && (parallel::detectCores() > 2), sample(2, size = 1), 1)
+  `if`(not_cran && (parallel::detectCores() > 2) &&
+         identical(Sys.getenv("_R_CHECK_LIMIT_CORES_"), "false"),
+       sample(2, size = 1), 1)
 }
 
 ################################################################################
