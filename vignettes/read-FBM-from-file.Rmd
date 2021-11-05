@@ -65,3 +65,14 @@ filter <- fread2(csv, select = "cyl")[[1]] == 4
 (test2 <- big_read(csv, select = 2:12, filter = filter,
                    backingfile = tempfile()))
 ```
+
+```{r}
+test2$is_saved
+(rds <- test2$rds)
+```
+
+You need to read from the text file **only once**. To get the FBM object in another R session, just use `big_attach()`:
+
+```{r}
+(test3 <- big_attach(rds))
+```

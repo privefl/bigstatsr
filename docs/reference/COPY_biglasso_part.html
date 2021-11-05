@@ -45,6 +45,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -72,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -106,26 +108,29 @@
     <li>
       <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
+    <li>
+      <a href="../articles/big-apply.html">Showcasing big_apply()</a>
+    </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fa fa-user"></span>
+    <span class="fas fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -151,30 +156,30 @@
     <p>Train one model</p>
     </div>
 
-    <pre class="usage"><span class='fu'>COPY_biglasso_part</span>(
-  <span class='no'>X</span>,
-  <span class='no'>y.train</span>,
-  <span class='no'>ind.train</span>,
-  <span class='no'>ind.col</span>,
-  <span class='no'>covar.train</span>,
-  <span class='no'>family</span>,
-  <span class='no'>lambda</span>,
-  <span class='no'>center</span>,
-  <span class='no'>scale</span>,
-  <span class='no'>resid</span>,
-  <span class='no'>alpha</span>,
-  <span class='no'>eps</span>,
-  <span class='no'>max.iter</span>,
-  <span class='no'>dfmax</span>,
-  <span class='no'>ind.val</span>,
-  <span class='no'>covar.val</span>,
-  <span class='no'>y.val</span>,
-  <span class='no'>n.abort</span>,
-  <span class='no'>nlam.min</span>,
-  <span class='no'>base.train</span>,
-  <span class='no'>base.val</span>,
-  <span class='no'>pf</span>
-)</pre>
+    <pre class="usage"><span class='fu'>COPY_biglasso_part</span><span class='op'>(</span>
+  <span class='va'>X</span>,
+  <span class='va'>y.train</span>,
+  <span class='va'>ind.train</span>,
+  <span class='va'>ind.col</span>,
+  <span class='va'>covar.train</span>,
+  <span class='va'>family</span>,
+  <span class='va'>lambda</span>,
+  <span class='va'>center</span>,
+  <span class='va'>scale</span>,
+  <span class='va'>resid</span>,
+  <span class='va'>alpha</span>,
+  <span class='va'>eps</span>,
+  <span class='va'>max.iter</span>,
+  <span class='va'>dfmax</span>,
+  <span class='va'>ind.val</span>,
+  <span class='va'>covar.val</span>,
+  <span class='va'>y.val</span>,
+  <span class='va'>n.abort</span>,
+  <span class='va'>nlam.min</span>,
+  <span class='va'>base.train</span>,
+  <span class='va'>base.val</span>,
+  <span class='va'>pf</span>
+<span class='op'>)</span></pre>
 
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -215,7 +220,7 @@ descent) along the regularization path.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

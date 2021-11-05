@@ -45,6 +45,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -72,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -106,26 +108,29 @@
     <li>
       <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
+    <li>
+      <a href="../articles/big-apply.html">Showcasing big_apply()</a>
+    </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fa fa-user"></span>
+    <span class="fas fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -151,15 +156,15 @@
     <p>Write a file from a Filebacked Big Matrix (by parts).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>big_write</span>(
-  <span class='no'>X</span>,
-  <span class='no'>file</span>,
-  <span class='no'>every_nrow</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>),
-  <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>),
-  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>big_write</span><span class='op'>(</span>
+  <span class='va'>X</span>,
+  <span class='va'>file</span>,
+  <span class='va'>every_nrow</span>,
+  <span class='va'>...</span>,
+  ind.row <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>rows_along</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,
+  ind.col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>cols_along</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,
+  progress <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,8 +207,10 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
     <p>Input parameter <code>file</code>, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>csv</span> <span class='kw'>&lt;-</span> <span class='fu'>big_write</span>(<span class='no'>X</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(), <span class='kw'>every_nrow</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>())</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>csv</span> <span class='op'>&lt;-</span> <span class='fu'>big_write</span><span class='op'>(</span><span class='va'>X</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>, every_nrow <span class='op'>=</span> <span class='fl'>100</span>, progress <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -219,7 +226,7 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

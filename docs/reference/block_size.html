@@ -47,6 +47,8 @@ getOption(&quot;bigstatsr.block.sizeGB&quot;) GigaBytes (default is 1GB)." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -74,7 +76,7 @@ getOption(&quot;bigstatsr.block.sizeGB&quot;) GigaBytes (default is 1GB)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -108,26 +110,29 @@ getOption(&quot;bigstatsr.block.sizeGB&quot;) GigaBytes (default is 1GB)." />
     <li>
       <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
+    <li>
+      <a href="../articles/big-apply.html">Showcasing big_apply()</a>
+    </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fa fa-user"></span>
+    <span class="fas fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -155,7 +160,7 @@ size <code>n</code> x <code>block.size</code> takes less memory than
 <code><a href='https://rdrr.io/r/base/options.html'>getOption("bigstatsr.block.sizeGB")</a></code> GigaBytes (default is 1GB).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>block_size</span>(<span class='no'>n</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>block_size</span><span class='op'>(</span><span class='va'>n</span>, ncores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,7 +180,10 @@ size <code>n</code> x <code>block.size</code> takes less memory than
     <p>An integer &gt;= 1.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>block_size</span>(<span class='fl'>1e3</span>)</div><div class='output co'>#&gt; [1] 268435</div><div class='input'><span class='fu'>block_size</span>(<span class='fl'>1e6</span>)</div><div class='output co'>#&gt; [1] 268</div><div class='input'><span class='fu'>block_size</span>(<span class='fl'>1e6</span>, <span class='fl'>6</span>)</div><div class='output co'>#&gt; [1] 44</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>block_size</span><span class='op'>(</span><span class='fl'>1e3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 134217</div><div class='input'><span class='fu'>block_size</span><span class='op'>(</span><span class='fl'>1e6</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 134</div><div class='input'><span class='fu'>block_size</span><span class='op'>(</span><span class='fl'>1e6</span>, <span class='fl'>6</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 22</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -191,7 +199,7 @@ size <code>n</code> x <code>block.size</code> takes less memory than
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

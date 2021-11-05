@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -65,26 +65,29 @@
     <li>
       <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
+    <li>
+      <a href="../articles/big-apply.html">Showcasing big_apply()</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fa fa-user"></span>
+    <span class="fas fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -98,7 +101,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="bigstatsr-and-bigmemory_files/header-attrs-2.7.2/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Packages bigstatsr and bigmemory</h1>
@@ -129,16 +132,18 @@
 <li>a filebacked <code>big.matrix</code> (so, shared between processes), which stores the data on disk and access it via memory-mapping.</li>
 </ul>
 <p>I placed a lot of interest for shared matrices (filebacked or not). Yet, I encountered memory limitations with the shared <code>big.matrix</code> (non-filebacked). So, at some point, I was using only filebacked <code>big.matrix</code> objects. So, in {bigstatsr}, you will found only the <code>FBM</code> format, which is very similar to the filebacked <code>big.matrix</code> format. To prove it, let us convert from one to the other (without copying the backingfile).</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">bigmemory</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kaneplusplus/bigmemory">bigmemory</a></span><span class="op">)</span></pre></div>
 <pre><code>## Warning: package 'bigmemory' was built under R version 3.6.3</code></pre>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">bigstatsr</span>)</pre></body></html></div>
-<pre><code>## Warning: replacing previous import 'vctrs::data_frame' by 'tibble::data_frame'
-## when loading 'dplyr'</code></pre>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># Create a temporary FBM</span>
-<span class="no">fbm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span>(<span class="fl">10</span>, <span class="fl">10</span>)
-<span class="no">fbm</span>$<span class="no">backingfile</span></pre></body></html></div>
-<pre><code>## [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpCY5O4L\\file4dfc81c4ae0.bk"</code></pre>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">fbm</span>[]</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/">bigstatsr</a></span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># Create a temporary FBM</span>
+<span class="va">fbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span>
+<span class="va">fbm</span><span class="op">$</span><span class="va">backingfile</span></pre></div>
+<pre><code>## [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpCc5bv2\\file51846400981.bk"</code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="va">fbm</span><span class="op">[</span><span class="op">]</span></pre></div>
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 ##  [1,]    0    0    0    0    0    0    0    0    0     0
 ##  [2,]    0    0    0    0    0    0    0    0    0     0
@@ -150,13 +155,15 @@
 ##  [8,]    0    0    0    0    0    0    0    0    0     0
 ##  [9,]    0    0    0    0    0    0    0    0    0     0
 ## [10,]    0    0    0    0    0    0    0    0    0     0</code></pre>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co"># Convert it to a big.matrix</span>
-<span class="no">bm</span> <span class="kw">&lt;-</span> <span class="no">fbm</span>$<span class="fu">bm</span>()
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># Convert it to a big.matrix</span>
+<span class="va">bm</span> <span class="op">&lt;-</span> <span class="va">fbm</span><span class="op">$</span><span class="fu">bm</span><span class="op">(</span><span class="op">)</span>
 <span class="co"># Same backingfile</span>
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">dir.name</a></span>(<span class="no">bm</span>), <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">file.name</a></span>(<span class="no">bm</span>))</pre></body></html></div>
-<pre><code>## [1] "C:/Users/au639593/AppData/Local/Temp/RtmpCY5O4L/file4dfc81c4ae0.bk"</code></pre>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># Changing values of one changes the value of the other</span>
-<span class="no">bm</span>[]</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">dir.name</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">file.name</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span><span class="op">)</span></pre></div>
+<pre><code>## [1] "C:/Users/au639593/AppData/Local/Temp/RtmpCc5bv2/file51846400981.bk"</code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="co"># Changing values of one changes the value of the other</span>
+<span class="va">bm</span><span class="op">[</span><span class="op">]</span></pre></div>
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 ##  [1,]    0    0    0    0    0    0    0    0    0     0
 ##  [2,]    0    0    0    0    0    0    0    0    0     0
@@ -168,19 +175,21 @@
 ##  [8,]    0    0    0    0    0    0    0    0    0     0
 ##  [9,]    0    0    0    0    0    0    0    0    0     0
 ## [10,]    0    0    0    0    0    0    0    0    0     0</code></pre>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">bm</span>[<span class="fl">1</span>, <span class="fl">1</span>] <span class="kw">&lt;-</span> <span class="fl">2</span>
-<span class="no">fbm</span>[<span class="fl">1</span>, <span class="fl">1</span>]</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="va">bm</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">2</span>
+<span class="va">fbm</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">BM2FBM</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">bm</span>) {
-  <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span>(<span class="kw">nrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">bm</span>), <span class="kw">ncol</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(<span class="no">bm</span>), <span class="kw">type</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span>(<span class="no">bm</span>),
-      <span class="kw">backingfile</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">dir.name</a></span>(<span class="no">bm</span>), <span class="fu"><a href="../reference/sub_bk.html">sub_bk</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">file.name</a></span>(<span class="no">bm</span>))),
-      <span class="kw">create_bk</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-}
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="va">BM2FBM</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">bm</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>,
+      backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">dir.name</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>, <span class="fu"><a href="../reference/sub_bk.html">sub_bk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">file.name</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+      create_bk <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="op">}</span>
 
 <span class="co"># Convert the filebacked big.matrix to a FBM</span>
-<span class="no">fbm2</span> <span class="kw">&lt;-</span> <span class="fu">BM2FBM</span>(<span class="no">bm</span>)
-<span class="no">bm</span>[, <span class="fl">3</span>] <span class="kw">&lt;-</span> <span class="fl">1</span>
-<span class="no">fbm2</span>[]</pre></body></html></div>
+<span class="va">fbm2</span> <span class="op">&lt;-</span> <span class="fu">BM2FBM</span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>
+<span class="va">bm</span><span class="op">[</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">fbm2</span><span class="op">[</span><span class="op">]</span></pre></div>
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 ##  [1,]    2    0    1    0    0    0    0    0    0     0
 ##  [2,]    0    0    1    0    0    0    0    0    0     0
@@ -224,211 +233,238 @@
 <p><img src="https://i.stack.imgur.com/CZsnH.png" width="60%" style="display: block; margin: auto;"></p>
 <p>For FBMs, I use the nice idea of package <a href="https://github.com/phaverty/bigmemoryExtras"><strong>bigmemoryExtras</strong></a>. Basically, I use a Reference Class (RC) object with active binding. In this object, I store the external pointer <em>and</em> the information needed to create the pointer to the C++ object. The active binding makes this automatic so that the user never need to use <code><a href="https://rdrr.io/pkg/bigmemory/man/attach.big.matrix.html">attach.big.matrix()</a></code> or <code><a href="https://rdrr.io/pkg/bigmemory/man/attach.big.matrix.html">describe()</a></code> anymore (and no more session crash!).</p>
 <p>What this also means is that you can now serialize a FBM (for example, saving it in an rds file with <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> or using it in a parallel algorithm). For instance, with a standard <code>big.matrix</code> object, you’ll need to pass the descriptor object in parallel algorithms:</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">X</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span>(<span class="fl">10</span>, <span class="fl">10</span>); <span class="no">X</span>[] <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">X</span>))
-<span class="no">bm</span> <span class="kw">&lt;-</span> <span class="no">X</span>$<span class="fu">bm</span>()</pre></body></html></div>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">foreach</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span>; <span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span>
+<span class="va">bm</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">$</span><span class="fu">bm</span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach">foreach</a></span><span class="op">)</span></pre></div>
 <pre><code>## Warning: package 'foreach' was built under R version 3.6.3</code></pre>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">cl</span> <span class="kw">&lt;-</span> <span class="kw pkg">parallel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span>(<span class="fl">2</span>)
-<span class="kw pkg">doParallel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span>(<span class="no">cl</span>)
+<div class="sourceCode" id="cb19"><pre class="downlit">
+<span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<span class="fu">doParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span>
 <span class="co"># Won't work because bm will be Nil when copied to the cluster</span>
-<span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html">foreach</a></span>(<span class="kw">j</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">.combine</span> <span class="kw">=</span> <span class="st">'c'</span>) <span class="kw">%dopar%</span> {
-  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">bm</span>[, <span class="no">j</span>])
-}</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html">foreach</a></span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, .combine <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span> <span class="op">%dopar%</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">bm</span><span class="op">[</span>, <span class="va">j</span><span class="op">]</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
 <pre><code>## Error in unserialize(socklist[[n]]): error reading from connection</code></pre>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="kw pkg">parallel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">stopCluster</a></span>(<span class="no">cl</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb21"><pre class="downlit">
+<span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></pre></div>
 <pre><code>## Error in serialize(data, node$con): error writing to connection</code></pre>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="no">cl</span> <span class="kw">&lt;-</span> <span class="kw pkg">parallel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span>(<span class="fl">2</span>)
-<span class="kw pkg">doParallel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span>(<span class="no">cl</span>)
+<div class="sourceCode" id="cb23"><pre class="downlit">
+<span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<span class="fu">doParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span>
 <span class="co"># Need to pass the descriptor instead and to reattach</span>
-<span class="no">bm.desc</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/attach.big.matrix.html">describe</a></span>(<span class="no">bm</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html">foreach</a></span>(<span class="kw">j</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">.combine</span> <span class="kw">=</span> <span class="st">'c'</span>) <span class="kw">%dopar%</span> {
-  <span class="no">x</span> <span class="kw">&lt;-</span> <span class="kw pkg">bigmemory</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/attach.big.matrix.html">attach.big.matrix</a></span>(<span class="no">bm.desc</span>)
-  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">x</span>[, <span class="no">j</span>])
-}</pre></body></html></div>
-<pre><code>##  [1]  0.5512963  3.7523457 -2.9474015  1.7970454 -1.0684268 -1.9055384
-##  [7]  2.8844333  1.1121937  2.9236426  0.0204960</code></pre>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"># You can directly pass FBMs, the address will be reattached automatically</pre></body></html></div>
+<span class="va">bm.desc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/attach.big.matrix.html">describe</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html">foreach</a></span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, .combine <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span> <span class="op">%dopar%</span> <span class="op">{</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">bigmemory</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/attach.big.matrix.html">attach.big.matrix</a></span><span class="op">(</span><span class="va">bm.desc</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="va">j</span><span class="op">]</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
+<pre><code>##  [1]  2.595938 -4.041722 -0.239458  2.526879  2.758523  1.419717  1.672947
+##  [8] -1.261917  1.919542  6.121828</code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit">
+<span class="co"># You can directly pass FBMs, the address will be reattached automatically</span></pre></div>
 <p>In contrast, you can directly use FBMs in parallel algorithms, as the address will be reattached automatically thanks to the active bindings.</p>
-<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html">foreach</a></span>(<span class="kw">j</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">.combine</span> <span class="kw">=</span> <span class="st">'c'</span>) <span class="kw">%dopar%</span> {
-  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">X</span>[, <span class="no">j</span>])
-}</pre></body></html></div>
-<pre><code>##  [1]  0.5512963  3.7523457 -2.9474015  1.7970454 -1.0684268 -1.9055384
-##  [7]  2.8844333  1.1121937  2.9236426  0.0204960</code></pre>
-<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="kw pkg">parallel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">stopCluster</a></span>(<span class="no">cl</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb26"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html">foreach</a></span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, .combine <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span> <span class="op">%dopar%</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">j</span><span class="op">]</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
+<pre><code>##  [1]  2.595938 -4.041722 -0.239458  2.526879  2.758523  1.419717  1.672947
+##  [8] -1.261917  1.919542  6.121828</code></pre>
+<div class="sourceCode" id="cb28"><pre class="downlit">
+<span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></pre></div>
 </div>
 <div id="c-accessors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#c-accessors" class="anchor"></a>C++ accessors</h2>
 <p>Let us compute the column sums of a <code>big.matrix</code> object in Rcpp.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb30-1" title="1"><span class="co">// [[Rcpp::depends(BH, bigmemory)]]</span></a>
-<a class="sourceLine" id="cb30-2" title="2"><span class="pp">#include </span><span class="im">&lt;bigmemory/MatrixAccessor.hpp&gt;</span></a>
-<a class="sourceLine" id="cb30-3" title="3"><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></a>
-<a class="sourceLine" id="cb30-4" title="4"><span class="kw">using</span> <span class="kw">namespace</span> Rcpp;</a>
-<a class="sourceLine" id="cb30-5" title="5"></a>
-<a class="sourceLine" id="cb30-6" title="6"><span class="co">// [[Rcpp::export]]</span></a>
-<a class="sourceLine" id="cb30-7" title="7">NumericVector colsums_bm(SEXP pBigMat) {</a>
-<a class="sourceLine" id="cb30-8" title="8">  </a>
-<a class="sourceLine" id="cb30-9" title="9">  XPtr&lt;BigMatrix&gt; xpMat(pBigMat);</a>
-<a class="sourceLine" id="cb30-10" title="10">  MatrixAccessor&lt;<span class="dt">double</span>&gt; macc(*xpMat);</a>
-<a class="sourceLine" id="cb30-11" title="11">  </a>
-<a class="sourceLine" id="cb30-12" title="12">  <span class="dt">int</span> n = macc.nrow();</a>
-<a class="sourceLine" id="cb30-13" title="13">  <span class="dt">int</span> m = macc.ncol();</a>
-<a class="sourceLine" id="cb30-14" title="14">  </a>
-<a class="sourceLine" id="cb30-15" title="15">  NumericVector res(m);</a>
-<a class="sourceLine" id="cb30-16" title="16">  <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++) {</a>
-<a class="sourceLine" id="cb30-17" title="17">    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</a>
-<a class="sourceLine" id="cb30-18" title="18">      res[j] += macc[j][i];</a>
-<a class="sourceLine" id="cb30-19" title="19">    }</a>
-<a class="sourceLine" id="cb30-20" title="20">  }</a>
-<a class="sourceLine" id="cb30-21" title="21">  </a>
-<a class="sourceLine" id="cb30-22" title="22">  <span class="cf">return</span> res;</a>
-<a class="sourceLine" id="cb30-23" title="23">}</a></code></pre></div>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="fu">colsums_bm</span>(<span class="no">bm</span>@<span class="kw">address</span>)</pre></body></html></div>
-<pre><code>##  [1]  0.5512963  3.7523457 -2.9474015  1.7970454 -1.0684268 -1.9055384
-##  [7]  2.8844333  1.1121937  2.9236426  0.0204960</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::depends(BH, bigmemory)]]</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigmemory/MatrixAccessor.hpp&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> Rcpp;</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>NumericVector colsums_bm(SEXP pBigMat) {</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  XPtr&lt;BigMatrix&gt; xpMat(pBigMat);</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  MatrixAccessor&lt;<span class="dt">double</span>&gt; macc(*xpMat);</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = macc.nrow();</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> m = macc.ncol();</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  NumericVector res(m);</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++) {</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>      res[j] += macc[j][i];</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> res;</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit">
+<span class="fu">colsums_bm</span><span class="op">(</span><span class="va">bm</span><span class="op">@</span><span class="va">address</span><span class="op">)</span></pre></div>
+<pre><code>##  [1]  2.595938 -4.041722 -0.239458  2.526879  2.758523  1.419717  1.672947
+##  [8] -1.261917  1.919542  6.121828</code></pre>
 <p>Now, let us do it for an <code>FBM</code>.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb33-1" title="1"><span class="co">// [[Rcpp::plugins(cpp11)]]</span></a>
-<a class="sourceLine" id="cb33-2" title="2"><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></a>
-<a class="sourceLine" id="cb33-3" title="3"><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span></a>
-<a class="sourceLine" id="cb33-4" title="4"></a>
-<a class="sourceLine" id="cb33-5" title="5"><span class="co">// [[Rcpp::export]]</span></a>
-<a class="sourceLine" id="cb33-6" title="6">NumericVector colsums_fbm(Environment fbm) {</a>
-<a class="sourceLine" id="cb33-7" title="7">  </a>
-<a class="sourceLine" id="cb33-8" title="8">  XPtr&lt;FBM&gt; xpMat = fbm[<span class="st">"address"</span>];</a>
-<a class="sourceLine" id="cb33-9" title="9">  BMAcc&lt;<span class="dt">double</span>&gt; macc(xpMat);</a>
-<a class="sourceLine" id="cb33-10" title="10">  </a>
-<a class="sourceLine" id="cb33-11" title="11">  <span class="dt">int</span> n = macc.nrow();</a>
-<a class="sourceLine" id="cb33-12" title="12">  <span class="dt">int</span> m = macc.ncol();</a>
-<a class="sourceLine" id="cb33-13" title="13">  </a>
-<a class="sourceLine" id="cb33-14" title="14">  NumericVector res(m);</a>
-<a class="sourceLine" id="cb33-15" title="15">  <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++)</a>
-<a class="sourceLine" id="cb33-16" title="16">    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++)</a>
-<a class="sourceLine" id="cb33-17" title="17">      res[j] += macc(i, j);</a>
-<a class="sourceLine" id="cb33-18" title="18">  </a>
-<a class="sourceLine" id="cb33-19" title="19">  <span class="cf">return</span> res;</a>
-<a class="sourceLine" id="cb33-20" title="20">}</a></code></pre></div>
-<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="fu">colsums_fbm</span>(<span class="no">X</span>)</pre></body></html></div>
-<pre><code>##  [1]  0.5512963  3.7523457 -2.9474015  1.7970454 -1.0684268 -1.9055384
-##  [7]  2.8844333  1.1121937  2.9236426  0.0204960</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>NumericVector colsums_fbm(Environment fbm) {</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  XPtr&lt;FBM&gt; xpMat = fbm[<span class="st">"address"</span>];</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  BMAcc&lt;<span class="dt">double</span>&gt; macc(xpMat);</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = macc.nrow();</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> m = macc.ncol();</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  NumericVector res(m);</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++)</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++)</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>      res[j] += macc(i, j);</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> res;</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="downlit">
+<span class="fu">colsums_fbm</span><span class="op">(</span><span class="va">X</span><span class="op">)</span></pre></div>
+<pre><code>##  [1]  2.595938 -4.041722 -0.239458  2.526879  2.758523  1.419717  1.672947
+##  [8] -1.261917  1.919542  6.121828</code></pre>
 <p>So, the main difference is that {bigmemory} uses <code>macc[j][i]</code> whereas <code>FBM</code> objects use the same accessor in C++ as standard Rcpp matrices, <code>macc(i, j)</code>. So, it is easier to adapt existing Rcpp algorithms to be used for <code>FBM</code> objects, e.g. using templates. Note that there is also a sub-FBM accessor, so that you can also use the same algorithms on a subset of the FBM object. For example:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb36-1" title="1"><span class="co">// [[Rcpp::plugins(cpp11)]]</span></a>
-<a class="sourceLine" id="cb36-2" title="2"><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></a>
-<a class="sourceLine" id="cb36-3" title="3"><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span></a>
-<a class="sourceLine" id="cb36-4" title="4"></a>
-<a class="sourceLine" id="cb36-5" title="5"><span class="co">// [[Rcpp::export]]</span></a>
-<a class="sourceLine" id="cb36-6" title="6">NumericVector colsums_fbm_sub(Environment fbm,</a>
-<a class="sourceLine" id="cb36-7" title="7">                              <span class="at">const</span> IntegerVector&amp; ind_row,</a>
-<a class="sourceLine" id="cb36-8" title="8">                              <span class="at">const</span> IntegerVector&amp; ind_col) {</a>
-<a class="sourceLine" id="cb36-9" title="9">  </a>
-<a class="sourceLine" id="cb36-10" title="10">  XPtr&lt;FBM&gt; xpMat = fbm[<span class="st">"address"</span>];</a>
-<a class="sourceLine" id="cb36-11" title="11">  SubBMAcc&lt;<span class="dt">double</span>&gt; macc(xpMat, ind_row, ind_col, <span class="dv">1</span>);</a>
-<a class="sourceLine" id="cb36-12" title="12">  </a>
-<a class="sourceLine" id="cb36-13" title="13">  <span class="dt">int</span> n = macc.nrow();</a>
-<a class="sourceLine" id="cb36-14" title="14">  <span class="dt">int</span> m = macc.ncol();</a>
-<a class="sourceLine" id="cb36-15" title="15">  </a>
-<a class="sourceLine" id="cb36-16" title="16">  NumericVector res(m);</a>
-<a class="sourceLine" id="cb36-17" title="17">  <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++)</a>
-<a class="sourceLine" id="cb36-18" title="18">    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++)</a>
-<a class="sourceLine" id="cb36-19" title="19">      res[j] += macc(i, j);</a>
-<a class="sourceLine" id="cb36-20" title="20">  </a>
-<a class="sourceLine" id="cb36-21" title="21">  <span class="cf">return</span> res;</a>
-<a class="sourceLine" id="cb36-22" title="22">}</a></code></pre></div>
-<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="fu">colsums_fbm_sub</span>(<span class="no">X</span>, <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html">rows_along</a></span>(<span class="no">X</span>), <span class="fl">1</span>:<span class="fl">6</span>)</pre></body></html></div>
-<pre><code>## [1]  0.5512963  3.7523457 -2.9474015  1.7970454 -1.0684268 -1.9055384</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMAcc.h&gt;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>NumericVector colsums_fbm_sub(Environment fbm,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">const</span> IntegerVector&amp; ind_row,</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">const</span> IntegerVector&amp; ind_col) {</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  XPtr&lt;FBM&gt; xpMat = fbm[<span class="st">"address"</span>];</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  SubBMAcc&lt;<span class="dt">double</span>&gt; macc(xpMat, ind_row, ind_col, <span class="dv">1</span>);</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = macc.nrow();</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> m = macc.ncol();</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  NumericVector res(m);</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++)</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>      res[j] += macc(i, j);</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> res;</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit">
+<span class="fu">colsums_fbm_sub</span><span class="op">(</span><span class="va">X</span>, <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></pre></div>
+<pre><code>## [1]  2.595938 -4.041722 -0.239458  2.526879  2.758523  1.419717</code></pre>
 </div>
 <div id="apply-an-r-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#apply-an-r-function" class="anchor"></a>Apply an R function</h2>
-<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="no">m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">1e5</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">50</span>)
-<span class="no">m</span>[] <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">m</span>))
-<span class="no">m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">as.big.matrix</a></span>(<span class="no">m</span>)
+<div class="sourceCode" id="cb38"><pre class="downlit">
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">1e5</span>, ncol <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>
+<span class="va">m</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span>
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">as.big.matrix</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
 
 <span class="co"># Brute force solution (if you have enough RAM)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">true</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="no">m</span>[]^<span class="fl">2</span>))
-)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">m</span><span class="op">[</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.02    0.00    0.01</code></pre>
-<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="co"># Using package biganalytics (of the bigmemory family)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">test1</span> <span class="kw">&lt;-</span> <span class="kw pkg">biganalytics</span><span class="kw ns">::</span><span class="fu">apply</span>(<span class="no">m</span>, <span class="fl">1</span>, <span class="kw">function</span>(<span class="no">x</span>) {
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">x</span>^<span class="fl">2</span>))
-  })
-)</pre></body></html></div>
+##    0.01    0.02    0.03</code></pre>
+<div class="sourceCode" id="cb40"><pre class="downlit">
+<span class="co"># Using package biganalytics (of the bigmemory family)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">test1</span> <span class="op">&lt;-</span> <span class="fu">biganalytics</span><span class="fu">::</span><span class="fu">apply</span><span class="op">(</span><span class="va">m</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##    1.99    0.03    2.02</code></pre>
-<div class="sourceCode" id="cb43"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">test1</span>, <span class="no">true</span>)</pre></body></html></div>
+##    1.90    0.03    1.96</code></pre>
+<div class="sourceCode" id="cb42"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">test1</span>, <span class="va">true</span><span class="op">)</span></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>The {biganalytics} strategy is to make a loop, which is slow because there are a lot of elements to loop through.</p>
 <p>Package {bigstatsr} uses a trade-off between accessing all the matrix at once and accessing only one column/row at each iteration. You can access blocks of the big matrix and apply efficient vectorized R functions to each block, and then combine the results.</p>
 <p><img src="https://privefl.github.io/useR-2017/split-apply-combine.svg" width="70%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb45"><html><body><pre class="r"><span class="no">m2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/big_copy.html">big_copy</a></span>(<span class="no">m</span>)
+<div class="sourceCode" id="cb44"><pre class="downlit">
+<span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_copy.html">big_copy</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
 <span class="co"># Here, I split the rows, which is NOT the default</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">test2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span>(<span class="no">m2</span>, <span class="kw">a.FUN</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">X</span>, <span class="no">ind</span>) {
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="no">X</span>[<span class="no">ind</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>]^<span class="fl">2</span>))
-  }, <span class="kw">a.combine</span> <span class="kw">=</span> <span class="st">'c'</span>, <span class="kw">ind</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html">rows_along</a></span>(<span class="no">m2</span>), <span class="kw">block.size</span> <span class="kw">=</span> <span class="fl">1000</span>)
-)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">m2</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="va">ind</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>, ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html">rows_along</a></span><span class="op">(</span><span class="va">m2</span><span class="op">)</span>, block.size <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.09    0.00    0.10</code></pre>
-<div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="no">test2</span>, <span class="no">true</span>)</pre></body></html></div>
+##    0.08    0.01    0.09</code></pre>
+<div class="sourceCode" id="cb46"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">test2</span>, <span class="va">true</span><span class="op">)</span></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="co"># Here, I split the columns (the default)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">test3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span>(<span class="no">m2</span>, <span class="kw">a.FUN</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">X</span>, <span class="no">ind</span>) {
-    <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="no">X</span>[, <span class="no">ind</span>, <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>]^<span class="fl">2</span>)
-  }, <span class="kw">a.combine</span> <span class="kw">=</span> <span class="st">'plus'</span>, <span class="kw">block.size</span> <span class="kw">=</span> <span class="fl">10</span>)
-)</pre></body></html></div>
+<div class="sourceCode" id="cb48"><pre class="downlit">
+<span class="co"># Here, I split the columns (the default)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">test3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">m2</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">ind</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
+  <span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'plus'</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.04    0.01    0.05</code></pre>
-<div class="sourceCode" id="cb51"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="no">test3</span>), <span class="no">true</span>)</pre></body></html></div>
+##    0.03    0.04    0.07</code></pre>
+<div class="sourceCode" id="cb50"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">test3</span><span class="op">)</span>, <span class="va">true</span><span class="op">)</span></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="matrix-operations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#matrix-operations" class="anchor"></a>Matrix operations</h2>
-<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="no">m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">10e3</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">2000</span>)
-<span class="no">m</span>[] <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">m</span>))
-<span class="no">m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">as.big.matrix</a></span>(<span class="no">m</span>)
-<span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">20</span> * <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(<span class="no">m</span>)), <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(<span class="no">m</span>), <span class="fl">20</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">true</span> <span class="kw">&lt;-</span> <span class="no">m</span>[] <span class="kw">%*%</span> <span class="no">a</span>
-)</pre></body></html></div>
+<div class="sourceCode" id="cb52"><pre class="downlit">
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">10e3</span>, ncol <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span>
+<span class="va">m</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span>
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html">as.big.matrix</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
+<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">20</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">true</span> <span class="op">&lt;-</span> <span class="va">m</span><span class="op">[</span><span class="op">]</span> <span class="op">%*%</span> <span class="va">a</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##     0.3     0.0     0.3</code></pre>
-<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">bigalgebra</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">test</span> <span class="kw">&lt;-</span> <span class="no">m</span> <span class="kw">%*%</span> <span class="no">a</span>
-)</pre></body></html></div>
+##    0.31    0.03    0.34</code></pre>
+<div class="sourceCode" id="cb54"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.bigmemory.org">bigalgebra</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">test</span> <span class="op">&lt;-</span> <span class="va">m</span> <span class="op">%*%</span> <span class="va">a</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.20    0.00    0.21</code></pre>
-<div class="sourceCode" id="cb57"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="no">test</span>[], <span class="no">true</span>)</pre></body></html></div>
+##    0.24    0.01    0.25</code></pre>
+<div class="sourceCode" id="cb56"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span><span class="op">]</span>, <span class="va">true</span><span class="op">)</span></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb59"><html><body><pre class="r"><span class="no">m2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/big_copy.html">big_copy</a></span>(<span class="no">m</span>)
+<div class="sourceCode" id="cb58"><pre class="downlit">
+<span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_copy.html">big_copy</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
 <span class="co"># Function that allows subsetting and scaling of the matrix</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">test2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/big_prodMat.html">big_prodMat</a></span>(<span class="no">m2</span>, <span class="no">a</span>)
-)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_prodMat.html">big_prodMat</a></span><span class="op">(</span><span class="va">m2</span>, <span class="va">a</span><span class="op">)</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.23    0.18    0.41</code></pre>
-<div class="sourceCode" id="cb61"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="no">test2</span>, <span class="no">true</span>)</pre></body></html></div>
+##    0.36    0.26    0.62</code></pre>
+<div class="sourceCode" id="cb60"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">test2</span>, <span class="va">true</span><span class="op">)</span></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb63"><html><body><pre class="r"><span class="co"># Standard products (without subsetting or scaling)</span>
+<div class="sourceCode" id="cb62"><pre class="downlit">
+<span class="co"># Standard products (without subsetting or scaling)</span>
 <span class="co"># are implemented for 'double' FBMs</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">test3</span> <span class="kw">&lt;-</span> <span class="no">m2</span> <span class="kw">%*%</span> <span class="no">a</span>
-)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">test3</span> <span class="op">&lt;-</span> <span class="va">m2</span> <span class="op">%*%</span> <span class="va">a</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.22    0.00    0.22</code></pre>
-<div class="sourceCode" id="cb65"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="no">test3</span>[], <span class="no">true</span>)</pre></body></html></div>
+##    0.24    0.00    0.24</code></pre>
+<div class="sourceCode" id="cb64"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">test3</span><span class="op">[</span><span class="op">]</span>, <span class="va">true</span><span class="op">)</span></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb67"><html><body><pre class="r"><span class="co"># Additionally, you could use {bigalgebra} if you don't need subsetting</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">test4</span> <span class="kw">&lt;-</span> <span class="no">m2</span>$<span class="fu">bm</span>() <span class="kw">%*%</span> <span class="no">a</span>
-)</pre></body></html></div>
+<div class="sourceCode" id="cb66"><pre class="downlit">
+<span class="co"># Additionally, you could use {bigalgebra} if you don't need subsetting</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">test4</span> <span class="op">&lt;-</span> <span class="va">m2</span><span class="op">$</span><span class="fu">bm</span><span class="op">(</span><span class="op">)</span> <span class="op">%*%</span> <span class="va">a</span>
+<span class="op">)</span></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.18    0.04    0.24</code></pre>
-<div class="sourceCode" id="cb69"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="no">test4</span>[], <span class="no">true</span>)</pre></body></html></div>
+##    0.29    0.03    0.33</code></pre>
+<div class="sourceCode" id="cb68"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">test4</span><span class="op">[</span><span class="op">]</span>, <span class="va">true</span><span class="op">)</span></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Making functions (not operators) makes it possible to use subsetting and scaling.</p>
 </div>
@@ -449,7 +485,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

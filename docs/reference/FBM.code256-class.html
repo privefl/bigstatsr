@@ -48,6 +48,8 @@ a lookup table of size 256." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,7 +77,7 @@ a lookup table of size 256." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -109,26 +111,29 @@ a lookup table of size 256." />
     <li>
       <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
+    <li>
+      <a href="../articles/big-apply.html">Showcasing big_apply()</a>
+    </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fa fa-user"></span>
+    <span class="fas fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -157,17 +162,17 @@ values using a Filebacked Big Matrix of type <code>unsigned char</code>. Compare
 a lookup table of size 256.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>FBM.code256</span>(
-  <span class='no'>nrow</span>,
-  <span class='no'>ncol</span>,
-  <span class='kw'>code</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA_real_</span>, <span class='fl'>256</span>),
-  <span class='kw'>init</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>backingfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(),
-  <span class='kw'>create_bk</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>is_read_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+    <pre class="usage"><span class='fu'>FBM.code256</span><span class='op'>(</span>
+  <span class='va'>nrow</span>,
+  <span class='va'>ncol</span>,
+  code <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA_real_</span>, <span class='fl'>256</span><span class='op'>)</span>,
+  init <span class='op'>=</span> <span class='cn'>NULL</span>,
+  backingfile <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>,
+  create_bk <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  is_read_only <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>add_code256</span>(<span class='no'>x</span>, <span class='no'>code</span>)</pre>
+<span class='fu'>add_code256</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>code</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,7 +208,7 @@ Default stores in the temporary directory.</p></td>
 existing one (which should be named by the <code>backingfile</code> parameter and have
 an extension ".bk"). For example, this could be used to convert a
 filebacked <code>big.matrix</code> from package <strong>bigmemory</strong> to a <a href='FBM-class.html'>FBM</a>
-(see <a href='http://bit.ly/2SRX5w4'>the corresponding vignette</a>).</p></td>
+(see <a href='https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html'>the corresponding vignette</a>).</p></td>
     </tr>
     <tr>
       <th>is_read_only</th>
@@ -217,9 +222,10 @@ filebacked <code>big.matrix</code> from package <strong>bigmemory</strong> to a 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"raw"</span>)
-<span class='no'>X</span>[] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/raw.html'>as.raw</a></span>(<span class='fl'>0</span>:<span class='fl'>3</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>X</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>X</span>[]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+    <pre class="examples"><div class='input'><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='FBM-class.html'>FBM</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>10</span>, type <span class='op'>=</span> <span class='st'>"raw"</span><span class='op'>)</span>
+<span class='va'>X</span><span class='op'>[</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/raw.html'>as.raw</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>X</span><span class='op'>[</span><span class='op'>]</span>
+</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 #&gt;  [1,]   03   00   01   02   01   02   03   01   03    03
 #&gt;  [2,]   01   03   00   01   00   03   01   02   01    03
 #&gt;  [3,]   01   03   00   00   01   01   03   00   01    03
@@ -231,11 +237,12 @@ filebacked <code>big.matrix</code> from package <strong>bigmemory</strong> to a 
 #&gt;  [9,]   03   00   01   00   00   01   03   01   00    01
 #&gt; [10,]   00   00   02   03   00   01   02   00   03    02</div><div class='input'>
 <span class='co'># From an FBM of type 'raw' ('unsigned char')</span>
-<span class='no'>code</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA_real_</span>, <span class='fl'>256</span>)
-<span class='no'>code</span>[<span class='fl'>1</span>:<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)
+<span class='va'>code</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA_real_</span>, <span class='fl'>256</span><span class='op'>)</span>
+<span class='va'>code</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span><span class='op'>)</span>
 
-<span class='no'>X.code</span> <span class='kw'>&lt;-</span> <span class='fu'>add_code256</span>(<span class='no'>X</span>, <span class='no'>code</span>)
-<span class='no'>X.code</span>[]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+<span class='va'>X.code</span> <span class='op'>&lt;-</span> <span class='fu'>add_code256</span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>code</span><span class='op'>)</span>
+<span class='va'>X.code</span><span class='op'>[</span><span class='op'>]</span>
+</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 #&gt;  [1,]   NA    1    3    5    3    5   NA    3   NA    NA
 #&gt;  [2,]    3   NA    1    3    1   NA    3    5    3    NA
 #&gt;  [3,]    3   NA    1    1    3    3   NA    1    3    NA
@@ -247,8 +254,9 @@ filebacked <code>big.matrix</code> from package <strong>bigmemory</strong> to a 
 #&gt;  [9,]   NA    1    3    1    1    3   NA    3    1     3
 #&gt; [10,]    1    1    5   NA    1    3    5    1   NA     5</div><div class='input'>
 <span class='co'># Or directly</span>
-<span class='no'>X.code2</span> <span class='kw'>&lt;-</span> <span class='fu'>FBM.code256</span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='no'>code</span>, <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/raw.html'>as.raw</a></span>(<span class='fl'>0</span>:<span class='fl'>3</span>), <span class='fl'>100</span>, <span class='fl'>TRUE</span>))
-<span class='no'>X.code2</span>[]</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+<span class='va'>X.code2</span> <span class='op'>&lt;-</span> <span class='fu'>FBM.code256</span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>10</span>, <span class='va'>code</span>, init <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/raw.html'>as.raw</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, <span class='fl'>100</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>X.code2</span><span class='op'>[</span><span class='op'>]</span>
+</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 #&gt;  [1,]    1    3    3   NA    3    5    1   NA    5     3
 #&gt;  [2,]    5    5    3   NA    3   NA    5    5    1    NA
 #&gt;  [3,]    1   NA    1    1   NA   NA    3    1    1     3
@@ -260,8 +268,9 @@ filebacked <code>big.matrix</code> from package <strong>bigmemory</strong> to a 
 #&gt;  [9,]    3   NA   NA    3    5    3    5   NA    3     5
 #&gt; [10,]   NA   NA    1    5    3   NA   NA    3    1     3</div><div class='input'>
 <span class='co'># Get a new FBM.code256 object with another code (but same underlying data)</span>
-<span class='no'>X.code3</span> <span class='kw'>&lt;-</span> <span class='no'>X.code</span>$<span class='fu'>copy</span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>256</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>X.code</span>$<span class='no'>code256</span>, <span class='no'>code</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='va'>X.code3</span> <span class='op'>&lt;-</span> <span class='va'>X.code</span><span class='op'>$</span><span class='fu'>copy</span><span class='op'>(</span>code <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>256</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>X.code</span><span class='op'>$</span><span class='va'>code256</span>, <span class='va'>code</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -278,7 +287,7 @@ filebacked <code>big.matrix</code> from package <strong>bigmemory</strong> to a 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

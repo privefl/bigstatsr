@@ -45,6 +45,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -72,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -106,26 +108,29 @@
     <li>
       <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
+    <li>
+      <a href="../articles/big-apply.html">Showcasing big_apply()</a>
+    </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fa fa-user"></span>
+    <span class="fas fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -152,18 +157,18 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for big_SVD</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(
-  <span class='no'>x</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"screeplot"</span>, <span class='st'>"scores"</span>, <span class='st'>"loadings"</span>),
-  <span class='kw'>nval</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>x</span>$<span class='no'>d</span>),
-  <span class='kw'>scores</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>),
-  <span class='kw'>loadings</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>viridis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='no'>...</span>
-)</pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"screeplot"</span>, <span class='st'>"scores"</span>, <span class='st'>"loadings"</span><span class='op'>)</span>,
+  nval <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>d</span><span class='op'>)</span>,
+  scores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+  loadings <span class='op'>=</span> <span class='fl'>1</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  coeff <span class='op'>=</span> <span class='fl'>1</span>,
+  viridis <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cols <span class='op'>=</span> <span class='fl'>2</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -221,35 +226,47 @@ the number of columns of the resulting multiplot.</p></td>
 
     <p>A <code>ggplot2</code> object. You can plot it using the <code>print</code> method.
 You can modify it as you wish by adding layers. You might want to read
-<a href='http://r4ds.had.co.nz/data-visualisation.html'>this chapter</a>
+<a href='https://r4ds.had.co.nz/data-visualisation.html'>this chapter</a>
 to get more familiar with the package <strong>ggplot2</strong>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='big_SVD.html'>big_SVD</a>, <a href='big_randomSVD.html'>big_randomSVD</a> and <a href='asPlotlyText.html'>asPlotlyText</a>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
 
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
-<span class='no'>svd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span>(<span class='no'>X</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span>(), <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>svd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='big_SVD.html'>big_SVD</a></span><span class='op'>(</span><span class='va'>X</span>, <span class='fu'><a href='big_scale.html'>big_scale</a></span><span class='op'>(</span><span class='op'>)</span>, k <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 
 <span class='co'># screeplots</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>svd</span>) <span class='co'># 3 PCs seems "significant"</span></div><div class='img'><img src='plot.big_SVD-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>svd</span>, <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>1.5</span>) <span class='co'># larger font for papers</span></div><div class='img'><img src='plot.big_SVD-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>svd</span><span class='op'>)</span> <span class='co'># 3 PCs seems "significant"</span>
+</div><div class='img'><img src='plot.big_SVD-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>svd</span>, coeff <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span> <span class='co'># larger font for papers</span>
+</div><div class='img'><img src='plot.big_SVD-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># scores plot</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>) <span class='co'># first 2 PCs</span></div><div class='img'><img src='plot.big_SVD-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>, <span class='kw'>scores</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>))</div><div class='img'><img src='plot.big_SVD-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>, <span class='kw'>scores</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)</div><div class='img'><img src='plot.big_SVD-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## add color (recall that this return a `ggplot2` object)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"scores"</span>))</div><div class='output co'>#&gt; [1] "gg"     "ggplot"</div><div class='input'><span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POP1"</span>, <span class='st'>"POP2"</span>, <span class='st'>"POP3"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>143</span>, <span class='fl'>167</span>, <span class='fl'>207</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>obj2</span> <span class='kw'>&lt;-</span> <span class='no'>obj</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>pop</span>) + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Population"</span>))</div><div class='img'><img src='plot.big_SVD-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## change the place of the legend</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>obj3</span> <span class='kw'>&lt;-</span> <span class='no'>obj2</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span>(<span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.82</span>, <span class='fl'>0.17</span>)))</div><div class='img'><img src='plot.big_SVD-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## change the title and the labels of the axes</span>
-<span class='no'>obj3</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"Yet another title"</span>) + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span>(<span class='st'>"with an other 'x' label"</span>)</div><div class='img'><img src='plot.big_SVD-8.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>svd</span>, type <span class='op'>=</span> <span class='st'>"scores"</span><span class='op'>)</span> <span class='co'># first 2 PCs</span>
+</div><div class='img'><img src='plot.big_SVD-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>svd</span>, type <span class='op'>=</span> <span class='st'>"scores"</span>, scores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.big_SVD-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>svd</span>, type <span class='op'>=</span> <span class='st'>"scores"</span>, scores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, ncol <span class='op'>=</span> <span class='fl'>2</span>, coeff <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.big_SVD-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## add color (recall that this return a `ggplot2` object)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>obj</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>svd</span>, type <span class='op'>=</span> <span class='st'>"scores"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "gg"     "ggplot"</div><div class='input'><span class='va'>pop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POP1"</span>, <span class='st'>"POP2"</span>, <span class='st'>"POP3"</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>143</span>, <span class='fl'>167</span>, <span class='fl'>207</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>obj2</span> <span class='op'>&lt;-</span> <span class='va'>obj</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>pop</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"Population"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.big_SVD-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## change the place of the legend</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>obj3</span> <span class='op'>&lt;-</span> <span class='va'>obj2</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.82</span>, <span class='fl'>0.17</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.big_SVD-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## change the title and the labels of the axes</span>
+<span class='va'>obj3</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"Yet another title"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"with an other 'x' label"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.big_SVD-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># loadings</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"loadings"</span>, <span class='kw'>loadings</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='plot.big_SVD-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## all loadings</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>svd</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"loadings"</span>, <span class='kw'>loadings</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='plot.big_SVD-10.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>svd</span>, type <span class='op'>=</span> <span class='st'>"loadings"</span>, loadings <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.big_SVD-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## all loadings</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>svd</span>, type <span class='op'>=</span> <span class='st'>"loadings"</span>, loadings <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, coeff <span class='op'>=</span> <span class='fl'>0.7</span>, ncol <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='img'><img src='plot.big_SVD-10.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Percentage of variance explained by the PCs</span>
 <span class='co'># See https://github.com/privefl/bigstatsr/issues/83</span>
 
 <span class='co'># dynamic plots, require the package **plotly**</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) <span class='kw pkg'>plotly</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/plotly/man/ggplotly.html'>ggplotly</a></span>(<span class='no'>obj3</span>)</div></pre>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='fu'>plotly</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/plotly/man/ggplotly.html'>ggplotly</a></span><span class='op'>(</span><span class='va'>obj3</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -265,7 +282,7 @@ to get more familiar with the package <strong>ggplot2</strong>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -22,6 +22,8 @@ As inputs, package {bigstatsr} uses [Filebacked Big Matrices (FBM)](https://priv
 ## Installation
 
 ```r
+# For the CRAN version
+install.packages("bigstatsr")
 # For the latest version
 remotes::install_github("privefl/bigstatsr")
 ```

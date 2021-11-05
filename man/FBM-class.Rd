@@ -105,6 +105,15 @@ to be used by package {bigmemory}.
 mat <- matrix(1:4, 2)
 X_from_mat <- as_FBM(mat)
 
+## You can save this object in an .rds file to use it in another session
+X_from_mat$is_saved
+X_from_mat$save()
+X_from_mat$is_saved
+(rds <- X_from_mat$rds)
+## Use big_attach() to load the FBM object in another session
+X_from_mat <- big_attach(rds)
+
+## Standard accessors
 X <- FBM(10, 10)
 typeof(X)
 X[] <- rnorm(length(X))
@@ -125,5 +134,5 @@ identical(X[], X2[])
 
 }
 \seealso{
-\link{big_copy}
+\link{big_attach} \link{big_copy}
 }

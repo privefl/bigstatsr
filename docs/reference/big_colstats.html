@@ -47,6 +47,8 @@ For now, the sum and var are implemented
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -74,7 +76,7 @@ For now, the sum and var are implemented
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -108,26 +110,29 @@ For now, the sum and var are implemented
     <li>
       <a href="../articles/read-FBM-from-file.html">Read a FBM from a text file</a>
     </li>
+    <li>
+      <a href="../articles/big-apply.html">Showcasing big_apply()</a>
+    </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fa fa-user"></span>
+    <span class="fas fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -155,7 +160,7 @@ For now, the <code>sum</code> and <code>var</code> are implemented
 (the <code>mean</code> and <code>sd</code> can easily be deduced, see examples).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>big_colstats</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>rows_along</a></span>(<span class='no'>X</span>), <span class='kw'>ind.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>cols_along</a></span>(<span class='no'>X</span>), <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>big_colstats</span><span class='op'>(</span><span class='va'>X</span>, ind.row <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>rows_along</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>, ind.col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/bigparallelr/man/seq-dim.html'>cols_along</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>, ncores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,27 +195,35 @@ corresponding column statistics.</p>
     <div class='dont-index'><p><a href='https://rdrr.io/r/base/colSums.html'>colSums</a> <a href='https://rdrr.io/r/base/apply.html'>apply</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
 
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span>()
+<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='big_attach.html'>big_attachExtdata</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Check the results</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>))</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>test</span> <span class='op'>&lt;-</span> <span class='fu'>big_colstats</span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
 #&gt;  $ sum: num  680 821 789 843 562 666 902 537 536 553 ...
 #&gt;  $ var: num  0.46 0.324 0.393 0.311 0.518 ...</div><div class='input'>
 <span class='co'># Only with the first 100 rows</span>
-<span class='no'>ind</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'>big_colstats</span>(<span class='no'>X</span>, <span class='kw'>ind.row</span> <span class='kw'>=</span> <span class='no'>ind</span>))</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
+<span class='va'>ind</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>test2</span> <span class='op'>&lt;-</span> <span class='fu'>big_colstats</span><span class='op'>(</span><span class='va'>X</span>, ind.row <span class='op'>=</span> <span class='va'>ind</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 'data.frame':	4542 obs. of  2 variables:
 #&gt;  $ sum: num  138 157 115 181 92 106 167 124 120 94 ...
-#&gt;  $ var: num  0.46 0.369 0.513 0.176 0.579 ...</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>test</span>$<span class='no'>sum</span>, <span class='no'>test2</span>$<span class='no'>sum</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>test2</span>$<span class='no'>sum</span> ~ <span class='no'>test</span>$<span class='no'>sum</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='big_colstats-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>X.ind</span> <span class='kw'>&lt;-</span> <span class='no'>X</span>[<span class='no'>ind</span>, ]
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>test2</span>$<span class='no'>sum</span>, <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colSums</a></span>(<span class='no'>X.ind</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>test2</span>$<span class='no'>var</span>, <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='no'>X.ind</span>, <span class='fl'>2</span>, <span class='no'>var</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt;  $ var: num  0.46 0.369 0.513 0.176 0.579 ...</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>test</span><span class='op'>$</span><span class='va'>sum</span>, <span class='va'>test2</span><span class='op'>$</span><span class='va'>sum</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>test2</span><span class='op'>$</span><span class='va'>sum</span> <span class='op'>~</span> <span class='va'>test</span><span class='op'>$</span><span class='va'>sum</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, lwd <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='img'><img src='big_colstats-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>X.ind</span> <span class='op'>&lt;-</span> <span class='va'>X</span><span class='op'>[</span><span class='va'>ind</span>, <span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>test2</span><span class='op'>$</span><span class='va'>sum</span>, <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colSums</a></span><span class='op'>(</span><span class='va'>X.ind</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>test2</span><span class='op'>$</span><span class='va'>var</span>, <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>X.ind</span>, <span class='fl'>2</span>, <span class='va'>var</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># deduce mean and sd</span>
 <span class='co'># note that the are also implemented in big_scale()</span>
-<span class='no'>means</span> <span class='kw'>&lt;-</span> <span class='no'>test2</span>$<span class='no'>sum</span> / <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>ind</span>) <span class='co'># if using all rows,</span>
+<span class='va'>means</span> <span class='op'>&lt;-</span> <span class='va'>test2</span><span class='op'>$</span><span class='va'>sum</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>ind</span><span class='op'>)</span> <span class='co'># if using all rows,</span>
                                  <span class='co'># divide by nrow(X) instead</span>
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>means</span>, <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colMeans</a></span>(<span class='no'>X.ind</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>sds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='no'>test2</span>$<span class='no'>var</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>sds</span>, <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='no'>X.ind</span>, <span class='fl'>2</span>, <span class='no'>sd</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>means</span>, <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colMeans</a></span><span class='op'>(</span><span class='va'>X.ind</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>sds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>test2</span><span class='op'>$</span><span class='va'>var</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>sds</span>, <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>X.ind</span>, <span class='fl'>2</span>, <span class='va'>sd</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -226,7 +239,7 @@ corresponding column statistics.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

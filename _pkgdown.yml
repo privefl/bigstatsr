@@ -39,6 +39,7 @@ reference:
       - FBM-class
       - FBM-methods
       - FBM.code256-class
+      - big_attach
       - big_copy
   - title: "Statistical models"
     desc: "Column-wise and sparse multivariate linear and logistic models."
@@ -48,7 +49,7 @@ reference:
       - big_spLinReg
       - big_spLogReg
       - AUC
-      - get_beta
+      - pcor
   - title: "SVD (and PCA)"
     contents:
       - big_SVD
@@ -92,4 +93,3 @@ reference:
       - without_downcast_warning
       - sub_bk
       - covar_from_df
-

@@ -87,6 +87,15 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #' mat <- matrix(1:4, 2)
 #' X_from_mat <- as_FBM(mat)
 #'
+#' ## You can save this object in an .rds file to use it in another session
+#' X_from_mat$is_saved
+#' X_from_mat$save()
+#' X_from_mat$is_saved
+#' (rds <- X_from_mat$rds)
+#' ## Use big_attach() to load the FBM object in another session
+#' X_from_mat <- big_attach(rds)
+#'
+#' ## Standard accessors
 #' X <- FBM(10, 10)
 #' typeof(X)
 #' X[] <- rnorm(length(X))
@@ -328,7 +337,7 @@ FBM <- function(nrow, ncol,
 #' @rdname FBM-class
 #' @export
 #'
-#' @seealso [big_copy]
+#' @seealso [big_attach] [big_copy]
 #'
 #' @examples
 #' X <- FBM(150, 5)
