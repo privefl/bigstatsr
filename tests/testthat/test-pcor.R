@@ -7,6 +7,8 @@ context("PARTIAL_COR")
 test_that("pcor() works", {
 
   iris <- datasets::iris
+  expect_error(pcor(iris$Sepal.Length[-1], iris$Sepal.Width, NULL),
+               "Incompatibility between dimensions.", fixed = TRUE)
   test <- pcor(iris$Sepal.Length, iris$Sepal.Width, NULL)
   # (r <- cor(iris$Sepal.Length, iris$Sepal.Width))
   # dput(c(r, psychometric::CIr(r, nrow(iris))))
@@ -47,13 +49,19 @@ test_that("pcor() handle singular systems", {
 
   skip_on_cran()
 
+  expect_false(bigstatsr:::is_singular(matrix(rnorm(300), 30, 10)))
+  expect_true( bigstatsr:::is_singular(matrix(rnorm(300), 10, 30)))
+  m <- matrix(rnorm(300), 30, 10); m <- cbind(m, rowSums(m))
+  expect_true(bigstatsr:::is_singular(m))
+
   set.seed(1)
   N <- 100
   x <- rep(1, N)
   y <- sample(0:1, N, replace = TRUE, prob = c(0.9, 0.1))
   covar <- matrix(rnorm(N * 10), N)
 
-  expect_identical(pcor(x, y, covar), rep(0, 3))
+  expect_identical(pcor(x, y, covar), rep(NA_real_, 3))
+  expect_equal(pcor(1:5, 1:5, NULL), rep(1, 3))
 })
 
 ################################################################################

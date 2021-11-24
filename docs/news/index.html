@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.3</span>
       </span>
     </div>
 
@@ -150,6 +150,14 @@
       <small>Source: <a href='https://github.com/privefl/bigstatsr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="bigstatsr-153" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bigstatsr-153" class="anchor"></a>bigstatsr 1.5.3</h2>
+<ul>
+<li>
+<code><a href="../reference/pcor.html">pcor()</a></code> now returns NAs (instead of 0s) for singular systems.</li>
+</ul>
+</div>
     <div id="bigstatsr-150" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bigstatsr-150" class="anchor"></a>bigstatsr 1.5.0</h2>
@@ -268,9 +276,9 @@
 <p>In <code><a href="../reference/plot.big_SVD.html">plot.big_SVD()</a></code>,</p>
 <ul>
 <li><p>Can now plot many PCA scores (more than two) at once.</p></li>
-<li><p>Use <code><a href="https://rdrr.io/pkg/ggplot2/man/coord_fixed.html">coord_fixed()</a></code> when plotting PCA scores because it is good practice.</p></li>
+<li><p>Use <code>coord_fixed()</code> when plotting PCA scores because it is good practice.</p></li>
 <li><p>Use log-scale in scree plot to better see small differences in singular values.</p></li>
-<li><p>Reexport <code><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">cowplot::plot_grid()</a></code> to merge multiple ggplots.</p></li>
+<li><p>Reexport <code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">cowplot::plot_grid()</a></code> to merge multiple ggplots.</p></li>
 </ul>
 </div>
     <div id="bigstatsr-096" class="section level2">

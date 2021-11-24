@@ -1,3 +1,7 @@
+## bigstatsr 1.5.3
+
+- `pcor()` now returns NAs (instead of 0s) for singular systems.
+
 ## bigstatsr 1.5.0
 
 - Recode some parallel algorithms with OpenMP. For now, functions `big_prodVec()`, `big_cprodVec()`, `big_colstats()` and `big_univLinReg()` have been recoded.
