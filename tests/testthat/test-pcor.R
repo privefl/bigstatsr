@@ -62,6 +62,11 @@ test_that("pcor() handle singular systems", {
 
   expect_identical(pcor(x, y, covar), rep(NA_real_, 3))
   expect_equal(pcor(1:5, 1:5, NULL), rep(1, 3))
+  expect_equal(
+    expect_warning(
+      pcor(1:5, 1:5, matrix(1, 5, 1)),
+      "Discarding some covariates in `z` with no variation.."),
+    rep(1, 3))
 })
 
 ################################################################################

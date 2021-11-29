@@ -1,3 +1,7 @@
+## bigstatsr 1.5.4
+
+- Now automatically discard covariates with no variation in `pcor()` (with a warning).
+
 ## bigstatsr 1.5.3
 
 - `pcor()` now returns NAs (instead of 0s) for singular systems.

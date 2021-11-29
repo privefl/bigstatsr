@@ -30,6 +30,12 @@ pcor <- function(x, y, z, alpha = 0.05) {
   assert_lengths(x, y, rows_along(z))
 
   m <- stats::model.matrix(~ ., data = cbind.data.frame(x, y, z))
+  to_keep <- apply(m, 2, stats::sd) > 0
+  to_keep[1:3] <- TRUE
+  if (any(!to_keep)) {
+    warning2("Discarding some covariates in `z` with no variation..")
+    m <- m[, to_keep]
+  }
 
   if (is_singular(m[, -2]) | is_singular(m[, -3]))
     return(rep(NA_real_, 3))
