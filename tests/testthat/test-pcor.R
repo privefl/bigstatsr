@@ -67,6 +67,10 @@ test_that("pcor() handle singular systems", {
       pcor(1:5, 1:5, matrix(1, 5, 1)),
       "Discarding some covariates in `z` with no variation.."),
     rep(1, 3))
+
+  expect_identical(pcor(NA,  1,   matrix(1:2, nrow = 1)), rep(NA_real_, 3))
+  expect_identical(pcor(1,   1,   matrix(1:2, nrow = 1)), rep(NA_real_, 3))
+  expect_identical(pcor(1:2, 2:1, matrix(1:2, nrow = 2)), rep(NA_real_, 3))
 })
 
 ################################################################################

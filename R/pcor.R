@@ -30,7 +30,9 @@ pcor <- function(x, y, z, alpha = 0.05) {
   assert_lengths(x, y, rows_along(z))
 
   m <- stats::model.matrix(~ ., data = cbind.data.frame(x, y, z))
-  to_keep <- apply(m, 2, stats::sd) > 0
+  if (nrow(m) < 2) return(rep(NA_real_, 3))
+
+  to_keep <- apply(m, 2, function(x) any(x != x[1]))
   to_keep[1:3] <- TRUE
   if (any(!to_keep)) {
     warning2("Discarding some covariates in `z` with no variation..")
