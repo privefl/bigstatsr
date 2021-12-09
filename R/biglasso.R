@@ -32,6 +32,8 @@ summaries <- function(X, y_diff.train, ind.train, ind.col, ind.sets, K,
   resid.sets  <- (SUM_XY - sweep(center.sets, 1, SUM_Y, '*')) /
     sweep(scale.sets, 1, n.sets, '*')
 
+  keep[is.na(keep)] <- FALSE
+
   list(keep = keep, center = center.sets, scale = scale.sets, resid = resid.sets)
 }
 
