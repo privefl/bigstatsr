@@ -123,8 +123,8 @@ Return an object of class \code{big_sp_list} (a list of \code{length(alphas)}
 x \code{K}) that has 3 methods \code{predict}, \code{summary} and \code{plot}.
 }
 \description{
-Fit lasso penalized linear regression path for a Filebacked Big Matrix.
-Covariates can be added to correct for confounders.
+Fit lasso (or elastic-net) penalized logistic regression for a Filebacked
+Big Matrix. Covariables can be added (/!\ penalized by default /!\).
 }
 \details{
 \strong{This is a modified version of one function of

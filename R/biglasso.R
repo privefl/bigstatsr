@@ -382,8 +382,8 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
 #' Sparse linear regression
 #'
-#' Fit lasso penalized linear regression path for a Filebacked Big Matrix.
-#' Covariates can be added to correct for confounders.
+#' Fit lasso (or elastic-net) penalized linear regression for a Filebacked
+#' Big Matrix. Covariables can be added (/!\ penalized by default /!\).
 #'
 #' __This is a modified version of one function of
 #' [package biglasso](https://github.com/YaohuiZeng/biglasso)__.
@@ -464,11 +464,14 @@ big_spLinReg <- function(X, y.train,
 
 #' Sparse logistic regression
 #'
+#' Fit lasso (or elastic-net) penalized logistic regression for a Filebacked
+#' Big Matrix. Covariables can be added (/!\ penalized by default /!\).
+#'
 #' @inheritParams bigstatsr-package
 #' @inheritParams COPY_biglasso_main
 #' @inheritDotParams COPY_biglasso_main lambda.min.ratio eps max.iter return.all
 #'
-#' @inherit big_spLinReg return description details seealso references
+#' @inherit big_spLinReg return details seealso references
 #'
 #' @example examples/example-spLogReg.R
 #'
