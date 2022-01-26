@@ -30,8 +30,8 @@ fun.scaling2(NULL, NULL, 1:3)
 X <- big_attachExtdata()
 sc <- big_scale()(X)
 fun <- as_scaling_fun(center = sc$center, scale = sc$scale)
-obj.svd <- big_randomSVD(X, fun.scaling = fun, ncores = 2)
-obj.svd2 <- big_randomSVD(X, fun.scaling = big_scale(), ncores = 2)
+obj.svd <- big_randomSVD(X, fun.scaling = fun)
+obj.svd2 <- big_randomSVD(X, fun.scaling = big_scale())
 all.equal(obj.svd, obj.svd2)
 
 }

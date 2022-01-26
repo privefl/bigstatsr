@@ -136,8 +136,8 @@ covar_from_df <- function(df) {
 #' X <- big_attachExtdata()
 #' sc <- big_scale()(X)
 #' fun <- as_scaling_fun(center = sc$center, scale = sc$scale)
-#' obj.svd <- big_randomSVD(X, fun.scaling = fun, ncores = 2)
-#' obj.svd2 <- big_randomSVD(X, fun.scaling = big_scale(), ncores = 2)
+#' obj.svd <- big_randomSVD(X, fun.scaling = fun)
+#' obj.svd2 <- big_randomSVD(X, fun.scaling = big_scale())
 #' all.equal(obj.svd, obj.svd2)
 #'
 as_scaling_fun <- function(center.col, scale.col, ind.col = seq_along(center.col)) {
