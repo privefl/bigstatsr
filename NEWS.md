@@ -1,3 +1,7 @@
+## bigstatsr 1.5.6
+
+- Add convenience function `as_scaling_fun()` to create your own `fun.scaling` parameters.
+
 ## bigstatsr 1.5.4
 
 - Now automatically discard covariates with no variation in `pcor()` (with a warning).

@@ -44,5 +44,5 @@ str(big_center(X))
 str(big_scale()(X))
 }
 \seealso{
-\link{scale}
+\link{as_scaling_fun}
 }

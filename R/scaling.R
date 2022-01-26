@@ -19,7 +19,7 @@
 #' A new **function** that returns a data.frame of two vectors
 #' "center" and "scale" which are of the length of `ind.col`.
 #'
-#' @seealso [scale]
+#' @seealso [as_scaling_fun]
 #'
 #' @export
 #'

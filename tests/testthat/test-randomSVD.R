@@ -24,6 +24,7 @@ x <- matrix(rnorm(N * M, mean = 100, sd = 5), N)
 ################################################################################
 
 test_that("equality with prcomp", {
+
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
@@ -55,6 +56,7 @@ test_that("equality with prcomp", {
 ################################################################################
 
 test_that("equality with prcomp with half of the data", {
+
   ind <- sample(N, N / 2)
   ind2 <- setdiff(1:N, ind)
 
@@ -87,6 +89,7 @@ test_that("equality with prcomp with half of the data", {
 ################################################################################
 
 test_that("equality with prcomp with half of half of the data", {
+
   ind <- sample(N, N / 2)
   ind2 <- setdiff(1:N, ind)
   ind.col <- sample(M, M / 2)
@@ -114,6 +117,24 @@ test_that("equality with prcomp with half of half of the data", {
     p <- plot(test, type = sample(c("screeplot", "scores", "loadings"), 1))
     expect_s3_class(p, "ggplot")
   }
+})
+
+################################################################################
+
+test_that("as_scaling_fun() works", {
+
+  df0 <- data.frame(center = 1:6, scale = 2:7)
+  fun.scaling <- as_scaling_fun(df0$center, df0$scale)
+  expect_identical(fun.scaling(NULL, NULL, 1:3), df0[1:3, ])
+  fun.scaling2 <- as_scaling_fun(1:6, 2:7, ind.col = 6:1)
+  expect_identical(fun.scaling2(NULL, NULL, 1:3), df0[6:4, ])
+
+  X <- big_attachExtdata()
+  sc <- big_scale()(X)
+  fun <- as_scaling_fun(center = sc$center, scale = sc$scale)
+  obj.svd <- big_randomSVD(X, fun.scaling = fun, ncores = test_cores())
+  obj.svd2 <- big_randomSVD(X, fun.scaling = big_scale(), ncores = test_cores())
+  expect_equal(obj.svd, obj.svd2)
 })
 
 ################################################################################
