@@ -93,3 +93,4 @@ reference:
       - without_downcast_warning
       - sub_bk
       - covar_from_df
+      - as_scaling_fun

@@ -77,7 +77,7 @@ that is much smaller than the other. Otherwise use big_randomSVD." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.6</span>
       </span>
     </div>
 
@@ -120,20 +120,20 @@ that is much smaller than the other. Otherwise use big_randomSVD." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://privefl.github.io/about.html">
-    <span class="fas fa-user"></span>
+    <span class="fa fa-user"></span>
      
     About
   </a>
 </li>
 <li>
   <a href="https://github.com/privefl/bigstatsr">
-    <span class="fas fa-github fa"></span>
+    <span class="fa fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o fa"></span>
+    <span class="fa fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -180,10 +180,11 @@ that is much smaller than the other. Otherwise use <a href='big_randomSVD.html'>
     </tr>
     <tr>
       <th>fun.scaling</th>
-      <td><p>A function that returns a named list of
-<code>mean</code> and <code>sd</code> for every column, to scale each of their elements
-such as followed: $$\frac{X_{i,j} - mean_j}{sd_j}.$$
-Default doesn't use any scaling.</p></td>
+      <td><p>A function with parameters <code>X</code>, <code>ind.row</code> and <code>ind.col</code>,
+and that returns a data.frame with <code>$center</code> and <code>$scale</code> for the columns
+corresponding to <code>ind.col</code>, to scale each of their elements such as followed:
+$$\frac{X_{i,j} - center_j}{scale_j}.$$ Default doesn't use any scaling.
+You can also provide your own <code>center</code> and <code>scale</code> by using <code><a href='as_scaling_fun.html'>as_scaling_fun()</a></code>.</p></td>
     </tr>
     <tr>
       <th>ind.row</th>
