@@ -1,7 +1,8 @@
 ################################################################################
 
 # Global variables
-globalVariables(c("ic", "mods", "k", "loss_index", "set", "pow_sc", "pow_adapt"))
+globalVariables(c("ic", "mods", "k", "loss_index", "set", "pow_sc", "pow_adapt",
+                  "_DF_", "_IND_COL_"))
 
 ################################################################################
 

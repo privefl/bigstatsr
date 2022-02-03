@@ -414,7 +414,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #'
 #' @example examples/example-spLinReg.R
 #'
-#' @seealso [glmnet][glmnet::glmnet] [biglasso][biglasso::biglasso]
+#' @seealso [glmnet][glmnet::glmnet]
 #' @references
 #' Tibshirani, R., Bien, J., Friedman, J., Hastie, T.,
 #' Simon, N., Taylor, J. and Tibshirani, R. J. (2012),

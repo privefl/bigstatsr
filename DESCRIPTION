@@ -42,7 +42,6 @@ LinkingTo:
     RcppArmadillo,
     rmio (>= 0.1.3)
 Suggests: 
-    biglasso,
     bigmemory (>= 4.5.33),
     bigreadr (>= 0.2),
     covr,

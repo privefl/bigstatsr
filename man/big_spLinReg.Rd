@@ -195,5 +195,5 @@ penalized regression for genetic risk prediction. Genetics, 212: 65-74.
 \doi{10.1534/genetics.119.302019}.
 }
 \seealso{
-\link[glmnet:glmnet]{glmnet} \link[biglasso:biglasso]{biglasso}
+\link[glmnet:glmnet]{glmnet}
 }
