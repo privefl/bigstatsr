@@ -160,6 +160,7 @@ FBM_RC <- methods::setRefClass(
     is_saved = function() file.exists(.self$rds),
     type_chr = function() names(.self$type),
     type_size = function() ALL.SIZES[[.self$type_chr]],
+    # maybe the name is misleading as the file size is inferred
     file_size = function() .self$nrow * as.double(.self$ncol) * .self$type_size
   ),
 
@@ -176,10 +177,8 @@ FBM_RC <- methods::setRefClass(
       .self$type <- ALL.TYPES[type]  # keep int and string
 
       if (create_bk) {
-        assert_noexist(bkfile)
-        assert_dir(dirname(bkfile))
         assert_disk_space(bkfile, .self$file_size)
-        createFile(bkfile, nrow, ncol, ALL.TYPES[[type]])
+        rmio::file_create(bkfile, .self$file_size)
       } else {
         assert_exist(bkfile)
       }
@@ -212,17 +211,19 @@ FBM_RC <- methods::setRefClass(
 
       assert_int(ncol_add)
       size_before <- file.size(bkfile <- .self$bk)
-      addColumns(bkfile, .self$nrow, ncol_add, .self$type)
+      add_size <- .self$nrow * as.double(ncol_add) * .self$type_size
 
-      ncol_after <- .self$ncol + ncol_add
-      if ( (file.size(bkfile) / ncol_after) != (size_before / .self$ncol) )
+      ## reset pointers -> need this before resizing
+      .self$extptr <- .self$extptr_rw <- NIL_PTR
+      gc()
+
+      rmio::file_resize_off(bkfile, add_size)
+
+      if ( file.size(bkfile) != (size_before + add_size) )
         warning2("Inconsistency of backingfile size after adding columns.")
 
-      .self$ncol <- ncol_after
+      .self$ncol <- .self$ncol + ncol_add
       if (.self$is_saved && save_again) .self$save()
-
-      ## reset pointers
-      .self$extptr <- .self$extptr_rw <- NIL_PTR
 
       invisible(.self)
     },

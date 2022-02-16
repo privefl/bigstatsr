@@ -80,32 +80,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// createFile
-void createFile(std::string fileName, std::size_t nrow, std::size_t ncol, int type);
-RcppExport SEXP _bigstatsr_createFile(SEXP fileNameSEXP, SEXP nrowSEXP, SEXP ncolSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type fileName(fileNameSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type nrow(nrowSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type ncol(ncolSEXP);
-    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
-    createFile(fileName, nrow, ncol, type);
-    return R_NilValue;
-END_RCPP
-}
-// addColumns
-void addColumns(std::string fileName, std::size_t nrow, std::size_t ncol_add, int type);
-RcppExport SEXP _bigstatsr_addColumns(SEXP fileNameSEXP, SEXP nrowSEXP, SEXP ncol_addSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type fileName(fileNameSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type nrow(nrowSEXP);
-    Rcpp::traits::input_parameter< std::size_t >::type ncol_add(ncol_addSEXP);
-    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
-    addColumns(fileName, nrow, ncol_add, type);
-    return R_NilValue;
-END_RCPP
-}
 // replaceVecOne
 void replaceVecOne(SEXP xpbm, const NumericVector& elemInd, SEXP val);
 RcppExport SEXP _bigstatsr_replaceVecOne(SEXP xpbmSEXP, SEXP elemIndSEXP, SEXP valSEXP) {
@@ -618,8 +592,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigstatsr_conv_NA_float", (DL_FUNC) &_bigstatsr_conv_NA_float, 1},
     {"_bigstatsr_extractVec", (DL_FUNC) &_bigstatsr_extractVec, 2},
     {"_bigstatsr_extractMat", (DL_FUNC) &_bigstatsr_extractMat, 3},
-    {"_bigstatsr_createFile", (DL_FUNC) &_bigstatsr_createFile, 4},
-    {"_bigstatsr_addColumns", (DL_FUNC) &_bigstatsr_addColumns, 4},
     {"_bigstatsr_replaceVecOne", (DL_FUNC) &_bigstatsr_replaceVecOne, 3},
     {"_bigstatsr_replaceVec", (DL_FUNC) &_bigstatsr_replaceVec, 3},
     {"_bigstatsr_replaceMatOne", (DL_FUNC) &_bigstatsr_replaceMatOne, 4},

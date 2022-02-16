@@ -25,15 +25,16 @@ test_that("sub_bk() works", {
 
 ################################################################################
 
-test_that("addColums() works", {
+test_that("add_columns() works", {
+
   init <- rnorm(100)
   X <- FBM(10, 10, init = init)
-  expect_equal(file.size(X$bk), 800)
+  expect_equal(file.size(X$bk), 10 * 10 * 8)
   X$add_columns(5)
+  expect_equal(file.size(X$bk), 10 * 15 * 8)
   X[, 11:15] <- 5
   expect_equal(as.vector(X[, 1:10]), init)
   expect_true(all(X[, 11:15] == 5))
-  expect_equal(file.size(X$bk), 10 * 15 * 8)
 
   X$is_read_only <- TRUE
   expect_error(X$add_columns(5), "This FBM is read-only.")
@@ -48,7 +49,8 @@ test_that("addColums() works", {
 
 ################################################################################
 
-test_that("addColums() works with FBM.code256", {
+test_that("add_columns() works with FBM.code256", {
+
   init <- sample(0:255, 100)
   X <- FBM.code256(10, 10, init = init, code = 0:255)
   expect_equal(file.size(X$bk), 100)
@@ -69,6 +71,31 @@ test_that("addColums() works with FBM.code256", {
                  "You don't have write permissions for this FBM.")
     expect_equal(dim(X), c(10, 15))
   }
+})
+
+################################################################################
+
+test_that("add_columns() works with large files", {
+
+  skip_if_not(not_cran)
+  skip_on_covr()
+
+  system.time({
+    X <- FBM(1e5, 1e4, type = "raw")
+    X[, 1] <- 1
+    expect_identical(file.size(X$backingfile), 1e9)
+    X$add_columns(1e4)
+    expect_identical(file.size(X$backingfile), 2e9)
+    X$add_columns(1e4)
+    X$add_columns(1e4)
+    expect_identical(file.size(X$backingfile), 4e9)
+    X$add_columns(1e4)
+    # Problem was starting here before (no more appending)
+    X$add_columns(1e4)
+    expect_identical(file.size(X$backingfile), 6e9)
+    expect_equal(dim(X), c(1e5, 6e4))
+    expect_equal(X[, 1], rep(as.raw(1), nrow(X)))
+  })
 })
 
 ################################################################################

@@ -1,3 +1,7 @@
+## bigstatsr 1.5.7
+
+- New strategy for `$add_columns()`.
+
 ## bigstatsr 1.5.6
 
 - Add convenience function `as_scaling_fun()` to create your own `fun.scaling` parameters.
