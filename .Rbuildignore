@@ -20,7 +20,6 @@
 ^code_of_conduct\.md$
 ^useR$
 ^\.lintr$
-^appveyor\.yml$
 ^cran-comments\.md$
 ^bigstatsr\.png$
 ^cran-errors\.txt$

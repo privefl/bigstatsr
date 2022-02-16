@@ -1,6 +1,5 @@
 <!-- badges: start -->
 [![R build status](https://github.com/privefl/bigstatsr/workflows/R-CMD-check/badge.svg)](https://github.com/privefl/bigstatsr/actions)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/privefl/bigstatsr?branch=master&svg=true)](https://ci.appveyor.com/project/privefl/bigstatsr)
 [![Coverage Status](https://img.shields.io/codecov/c/github/privefl/bigstatsr/master.svg)](https://codecov.io/github/privefl/bigstatsr?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bigstatsr)](https://cran.r-project.org/package=bigstatsr)
 [![DOI](https://zenodo.org/badge/doi/10.1093/bioinformatics/bty185.svg)](https://doi.org/10.1093/bioinformatics/bty185)
@@ -9,10 +8,10 @@
 
 # bigstatsr
 
+<img src="https://raw.githubusercontent.com/privefl/bigstatsr/master/bigstatsr.png" width="130" align="right">
+
 R package {bigstatsr} provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format `big.matrix` provided by [R package {bigmemory}](https://github.com/kaneplusplus/bigmemory), which is **no longer used** by this package (see [the corresponding vignette](https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html)).
 As inputs, package {bigstatsr} uses [Filebacked Big Matrices (FBM)](https://privefl.github.io/bigstatsr/reference/FBM-class.html).
-
-<img src="https://raw.githubusercontent.com/privefl/bigstatsr/master/bigstatsr.png" width="130" align="right">
 
 [**LIST OF FEATURES**](https://privefl.github.io/bigstatsr/reference/index.html)
 
