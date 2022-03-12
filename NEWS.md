@@ -1,3 +1,7 @@
+## bigstatsr 1.5.8
+
+- Enable `ARMA_64BIT_WORD`.
+
 ## bigstatsr 1.5.7
 
 - New strategy for `$add_columns()`.
