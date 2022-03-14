@@ -32,7 +32,7 @@ test_that("option 'FBM.dir' works", {
   opt <- options(FBM.dir = dir)
 
   expect_message(X2 <- big_transpose(X), "Creating directory")
-  expect_identical(normalizePath(dirname(X2$backingfile)), dir)
+  expect_identical(normalizePath(dirname(X2$backingfile)), normalizePath(dir))
 
   options(opt)  # back to normal
 })

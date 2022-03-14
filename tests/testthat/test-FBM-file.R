@@ -21,13 +21,13 @@ test_that("option 'FBM.dir' works", {
   opt <- options(FBM.dir = dir)
 
   expect_message(X <- FBM(10, 10), "Creating directory")
-  expect_identical(normalizePath(dirname(X$backingfile)), dir)
+  expect_identical(normalizePath(dirname(X$backingfile)), normalizePath(dir))
 
   X2 <- FBM.code256(10, 10)
-  expect_identical(normalizePath(dirname(X2$backingfile)), dir)
+  expect_identical(normalizePath(dirname(X2$backingfile)), normalizePath(dir))
 
   X3 <- as_FBM(matrix(1, 10, 10))
-  expect_identical(normalizePath(dirname(X3$backingfile)), dir)
+  expect_identical(normalizePath(dirname(X3$backingfile)), normalizePath(dir))
 
   options(opt)  # back to normal
 })

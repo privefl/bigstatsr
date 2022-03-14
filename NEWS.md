@@ -1,6 +1,6 @@
 ## bigstatsr 1.5.9
 
-- Add global option `FBM.dir` (that defaults to `tempdir()` as before). This can be used to change the default directory used to create FBMs when calling either `FBM()`, `FBM.code256()`, `as_FBM()`, `big_copy()`, or `big_transpose()`. Note that, if not using the temporary directory anymore, you must clean up yourself the files you do not want to keep.
+- Add global option `FBM.dir` (that defaults to `tempdir()` as before). This can be used to change the default directory used to create FBMs when calling either `FBM()`, `FBM.code256()`, `as_FBM()`, `big_copy()`, or `big_transpose()`. Note that, if not using the temporary directory anymore, you must clean up the files you do not want to keep.
 
 ## bigstatsr 1.5.8
 
