@@ -106,3 +106,18 @@ test_that("Copy from big.matrix", {
 })
 
 ################################################################################
+
+test_that("option 'FBM.dir' works", {
+
+  X <- FBM(10, 10)
+
+  dir <- paste0(tempdir(), "_", basename(tempfile(pattern = "")))
+  opt <- options(FBM.dir = dir)
+
+  expect_message(X2 <- big_copy(X), "Creating directory")
+  expect_identical(normalizePath(dirname(X2$backingfile)), dir)
+
+  options(opt)  # back to normal
+})
+
+################################################################################

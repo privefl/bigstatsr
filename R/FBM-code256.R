@@ -88,7 +88,7 @@ FBM.code256_RC <- methods::setRefClass(
 FBM.code256 <- function(nrow, ncol,
                         code = rep(NA_real_, 256),
                         init = NULL,
-                        backingfile = tempfile(),
+                        backingfile = tempfile(tmpdir = getOption("FBM.dir")),
                         create_bk = TRUE,
                         is_read_only = FALSE) {
 

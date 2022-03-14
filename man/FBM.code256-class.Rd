@@ -13,7 +13,7 @@ FBM.code256(
   ncol,
   code = rep(NA_real_, 256),
   init = NULL,
-  backingfile = tempfile(),
+  backingfile = tempfile(tmpdir = getOption("FBM.dir")),
   create_bk = TRUE,
   is_read_only = FALSE
 )

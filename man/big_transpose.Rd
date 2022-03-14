@@ -4,7 +4,7 @@
 \alias{big_transpose}
 \title{Transpose an FBM}
 \usage{
-big_transpose(X, backingfile = tempfile())
+big_transpose(X, backingfile = tempfile(tmpdir = getOption("FBM.dir")))
 }
 \arguments{
 \item{X}{An object of class \link[=FBM-class]{FBM}.}

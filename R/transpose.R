@@ -19,7 +19,7 @@
 #' Xt <- big_transpose(X)
 #' identical(t(X[]), Xt[])
 #'
-big_transpose <- function(X, backingfile = tempfile()) {
+big_transpose <- function(X, backingfile = tempfile(tmpdir = getOption("FBM.dir"))) {
 
   check_args(X = "assert_class(X, 'FBM')")
 

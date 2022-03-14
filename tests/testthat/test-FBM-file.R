@@ -15,6 +15,25 @@ test_that("$save() works", {
 
 ################################################################################
 
+test_that("option 'FBM.dir' works", {
+
+  dir <- paste0(tempdir(), "_", basename(tempfile(pattern = "")))
+  opt <- options(FBM.dir = dir)
+
+  expect_message(X <- FBM(10, 10), "Creating directory")
+  expect_identical(normalizePath(dirname(X$backingfile)), dir)
+
+  X2 <- FBM.code256(10, 10)
+  expect_identical(normalizePath(dirname(X2$backingfile)), dir)
+
+  X3 <- as_FBM(matrix(1, 10, 10))
+  expect_identical(normalizePath(dirname(X3$backingfile)), dir)
+
+  options(opt)  # back to normal
+})
+
+################################################################################
+
 test_that("sub_bk() works", {
   expect_identical(sub_bk("toto.bk"), "toto")
   expect_identical(sub_bk("toto.bk", ".rds"), "toto.rds")

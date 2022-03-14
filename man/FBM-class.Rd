@@ -13,7 +13,7 @@ FBM(
   ncol,
   type = c("double", "float", "integer", "unsigned short", "unsigned char", "raw"),
   init = NULL,
-  backingfile = tempfile(),
+  backingfile = tempfile(tmpdir = getOption("FBM.dir")),
   create_bk = TRUE,
   is_read_only = FALSE
 )
@@ -21,7 +21,7 @@ FBM(
 as_FBM(
   x,
   type = c("double", "float", "integer", "unsigned short", "unsigned char", "raw"),
-  backingfile = tempfile(),
+  backingfile = tempfile(tmpdir = getOption("FBM.dir")),
   is_read_only = FALSE
 )
 }

@@ -75,9 +75,9 @@ big_attach <- function(rdsfile) {
 big_attachExtdata <- function() {
   tmp <- tempfile()
   EXTS <- c(".rds", ".bk")
-  file.copy(system.file("extdata", paste0("example", EXTS),
-                        package = "bigstatsr"),
-            paste0(tmp, EXTS))
+  file.copy(
+    system.file("extdata", paste0("example", EXTS), package = "bigstatsr"),
+    paste0(tmp, EXTS))
   big_attach(paste0(tmp, ".rds"))
 }
 

@@ -31,7 +31,7 @@
 big_copy <- function(X, ind.row = rows_along(X),
                      ind.col = cols_along(X),
                      type = typeof(X),
-                     backingfile = tempfile(),
+                     backingfile = tempfile(tmpdir = getOption("FBM.dir")),
                      block.size = block_size(length(ind.row)),
                      is_read_only = FALSE) {
 

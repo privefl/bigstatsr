@@ -6,7 +6,8 @@
     bigstatsr.cluster.type     = "PSOCK",
     bigstatsr.check.args       = TRUE,
     bigstatsr.block.sizeGB     = 1,
-    bigstatsr.downcast.warning = TRUE
+    bigstatsr.downcast.warning = TRUE,
+    FBM.dir                    = tempdir()
   )
 
   toset <- !(names(pkg.opt) %in% names(.Options))
