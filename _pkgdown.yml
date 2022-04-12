@@ -9,8 +9,8 @@ navbar:
       href: reference/index.html
     - text: "Vignettes"
       menu:
-      - text: "Introduction to package bigstatsr"
-        href: https://privefl.github.io/R-presentation/bigstatsr.html
+      - text: "Video presentation of package bigstatsr"
+        href: https://www.youtube.com/watch?v=UXKYqpAo6cs
       - text: "Exercise"
         href: https://privefl.github.io/bigsnpr/articles/exo.html
       - text: "Fitting penalized regressions"

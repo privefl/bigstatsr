@@ -23,8 +23,6 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.9</span>
       </span>
     </div>
 
@@ -54,10 +52,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://privefl.github.io/R-presentation/bigstatsr.html" class="external-link">Introduction to package bigstatsr</a>
+      <a href="https://www.youtube.com/watch?v=UXKYqpAo6cs">Video presentation of package bigstatsr</a>
     </li>
     <li>
-      <a href="https://privefl.github.io/bigsnpr/articles/exo.html" class="external-link">Exercise</a>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
     </li>
     <li>
       <a href="articles/penalized-regressions.html">Fitting penalized regressions</a>
@@ -79,14 +77,14 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://privefl.github.io/about.html" class="external-link">
+  <a href="https://privefl.github.io/about.html">
     <span class="fa fa-user"></span>
      
     About
   </a>
 </li>
 <li>
-  <a href="https://github.com/privefl/bigstatsr" class="external-link">
+  <a href="https://github.com/privefl/bigstatsr">
     <span class="fa fa-github fa"></span>
      
   </a>
@@ -111,27 +109,27 @@
   <div class="contents col-md-9">
 
 
-<div class="section level1">
-<div class="page-header"><h1 id="bigstatsr">bigstatsr<a class="anchor" aria-label="anchor" href="#bigstatsr"></a>
-</h1></div>
+<div id="bigstatsr" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#bigstatsr" class="anchor"></a>bigstatsr</h1></div>
 <p><img src="https://raw.githubusercontent.com/privefl/bigstatsr/master/bigstatsr.png" width="130" align="right"></p>
-<p>R package {bigstatsr} provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format <code>big.matrix</code> provided by <a href="https://github.com/kaneplusplus/bigmemory" class="external-link">R package {bigmemory}</a>, which is <strong>no longer used</strong> by this package (see <a href="https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html" class="external-link">the corresponding vignette</a>). As inputs, package {bigstatsr} uses <a href="https://privefl.github.io/bigstatsr/reference/FBM-class.html" class="external-link">Filebacked Big Matrices (FBM)</a>.</p>
-<p><a href="https://privefl.github.io/bigstatsr/reference/index.html" class="external-link"><strong>LIST OF FEATURES</strong></a></p>
+<p>R package {bigstatsr} provides functions for fast statistical analysis of large-scale data encoded as matrices. The package can handle matrices that are too large to fit in memory thanks to memory-mapping to binary files on disk. This is very similar to the format <code>big.matrix</code> provided by <a href="https://github.com/kaneplusplus/bigmemory">R package {bigmemory}</a>, which is <strong>no longer used</strong> by this package (see <a href="https://privefl.github.io/bigstatsr/articles/bigstatsr-and-bigmemory.html">the corresponding vignette</a>). As inputs, package {bigstatsr} uses <a href="https://privefl.github.io/bigstatsr/reference/FBM-class.html">Filebacked Big Matrices (FBM)</a>.</p>
+<p><a href="https://privefl.github.io/bigstatsr/reference/index.html"><strong>LIST OF FEATURES</strong></a></p>
 <p><strong>Note that most of the algorithms of this package don’t handle missing values.</strong></p>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># For the CRAN version</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"bigstatsr"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"bigstatsr"</span><span class="op">)</span>
 <span class="co"># For the latest version</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"privefl/bigstatsr"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"privefl/bigstatsr"</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="small-example">Small example<a class="anchor" aria-label="anchor" href="#small-example"></a>
-</h2>
+<div id="small-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#small-example" class="anchor"></a>Small example</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/" class="external-link">bigstatsr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/">bigstatsr</a></span><span class="op">)</span>
 
 <span class="co"># Create the data on disk</span>
 <span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">5e3</span>, <span class="fl">10e3</span>, backingfile <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span>
@@ -139,12 +137,12 @@
 <span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/big_attach.html">big_attach</a></span><span class="op">(</span><span class="st">"test.rds"</span><span class="op">)</span>
 
 <span class="co"># Fill it by chunks with random values</span>
-<span class="va">U</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>; <span class="va">U</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">U</span><span class="op">)</span><span class="op">)</span>
-<span class="va">V</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>; <span class="va">V</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span>
-<span class="va">NCORES</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html" class="external-link">nb_cores</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">U</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>; <span class="va">U</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">U</span><span class="op">)</span><span class="op">)</span>
+<span class="va">V</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>; <span class="va">V</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span>
+<span class="va">NCORES</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html">nb_cores</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co"># X = U V^T + E</span>
 <span class="fu"><a href="reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">U</span>, <span class="va">V</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">tcrossprod</a></span><span class="op">(</span><span class="va">U</span>, <span class="va">V</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ind</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html">tcrossprod</a></span><span class="op">(</span><span class="va">U</span>, <span class="va">V</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ind</span><span class="op">)</span><span class="op">)</span>
   <span class="cn">NULL</span>  <span class="co">## you don't want to return anything here</span>
 <span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>, ncores <span class="op">=</span> <span class="va">NCORES</span>, U <span class="op">=</span> <span class="va">U</span>, V <span class="op">=</span> <span class="va">V</span><span class="op">)</span>
 <span class="co"># Check some values</span>
@@ -153,46 +151,46 @@
 <span class="co"># Compute first 10 PCs</span>
 <span class="va">obj.svd</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/big_randomSVD.html">big_randomSVD</a></span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="fu"><a href="reference/big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span>, 
                          k <span class="op">=</span> <span class="fl">10</span>, ncores <span class="op">=</span> <span class="va">NCORES</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">obj.svd</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">obj.svd</span><span class="op">)</span>
 
 <span class="co"># Cleanup</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".bk"</span>, <span class="st">".rds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Learn more with this <a href="https://privefl.github.io/R-presentation/bigstatsr.html" class="external-link">introduction to package {bigstatsr}</a>.</p>
-<p>If you want to use Rcpp code, look at <a href="https://privefl.github.io/R-presentation/Rcpp.html" class="external-link">this tutorial</a>.</p>
+<span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">".bk"</span>, <span class="st">".rds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>Learn more with this <a href="https://privefl.github.io/R-presentation/bigstatsr.html">introduction to package {bigstatsr}</a>.</p>
+<p>If you want to use Rcpp code, look at <a href="https://privefl.github.io/R-presentation/Rcpp.html">this tutorial</a>.</p>
 </div>
-<div class="section level2">
-<h2 id="some-use-cases">Some use cases<a class="anchor" aria-label="anchor" href="#some-use-cases"></a>
-</h2>
-<div class="section level3">
-<h3 id="parallelization">Parallelization<a class="anchor" aria-label="anchor" href="#parallelization"></a>
-</h3>
-<p>Package {bigstatsr} uses package {foreach} for its parallelization tasks. Learn more on parallelism with {foreach} with <a href="https://privefl.github.io/blog/a-guide-to-parallelism-in-r/" class="external-link">this tutorial</a>.</p>
+<div id="some-use-cases" class="section level2">
+<h2 class="hasAnchor">
+<a href="#some-use-cases" class="anchor"></a>Some use cases</h2>
+<div id="parallelization" class="section level3">
+<h3 class="hasAnchor">
+<a href="#parallelization" class="anchor"></a>Parallelization</h3>
+<p>Package {bigstatsr} uses package {foreach} for its parallelization tasks. Learn more on parallelism with {foreach} with <a href="https://privefl.github.io/blog/a-guide-to-parallelism-in-r/">this tutorial</a>.</p>
 <ul>
-<li><p><a href="https://stackoverflow.com/q/48832010/6103040" class="external-link">Permute matrix columns in parallel</a></p></li>
-<li><p><a href="https://stackoverflow.com/q/49056271/6103040" class="external-link">Parallelized search until found</a></p></li>
+<li><p><a href="https://stackoverflow.com/q/48832010/6103040">Permute matrix columns in parallel</a></p></li>
+<li><p><a href="https://stackoverflow.com/q/49056271/6103040">Parallelized search until found</a></p></li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="large-datasets">Large datasets<a class="anchor" aria-label="anchor" href="#large-datasets"></a>
-</h3>
+<div id="large-datasets" class="section level3">
+<h3 class="hasAnchor">
+<a href="#large-datasets" class="anchor"></a>Large datasets</h3>
 <ul>
-<li><p><a href="https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/" class="external-link">Computing the null space of a big matrix</a> (works if one dimension is not too large)</p></li>
-<li><p><a href="https://stackoverflow.com/q/48879643/6103040" class="external-link">Rowwise matrix multiplication</a></p></li>
-<li><p><a href="https://stackoverflow.com/q/42111876/6103040" class="external-link">Operating with a big.matrix</a></p></li>
+<li><p><a href="https://stackoverflow.com/questions/46253537/computing-the-null-space-of-a-bigmatrix-in-r/">Computing the null space of a big matrix</a> (works if one dimension is not too large)</p></li>
+<li><p><a href="https://stackoverflow.com/q/48879643/6103040">Rowwise matrix multiplication</a></p></li>
+<li><p><a href="https://stackoverflow.com/q/42111876/6103040">Operating with a big.matrix</a></p></li>
 </ul>
 </div>
 </div>
-<div class="section level2">
-<h2 id="bug-report--help">Bug report / Help<a class="anchor" aria-label="anchor" href="#bug-report--help"></a>
-</h2>
-<p><a href="https://stackoverflow.com/q/5963269/6103040" class="external-link">How to make a great R reproducible example?</a></p>
+<div id="bug-report--help" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-report--help" class="anchor"></a>Bug report / Help</h2>
+<p><a href="https://stackoverflow.com/q/5963269/6103040">How to make a great R reproducible example?</a></p>
 <p>Please open an issue if you find a bug.</p>
 <p>If you want help using {bigstatsr}, please open an issue as well or post on Stack Overflow with the tag <em>bigstatsr</em>.</p>
 <p>I will always redirect you to GitHub issues if you email me, so that others can benefit from our discussion.</p>
 </div>
-<div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h2>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
 <ul>
 <li><p>Privé, Florian, et al. “Efficient analysis of large-scale genome-wide data with two R packages: bigstatsr and bigsnpr.” Bioinformatics 34.16 (2018): 2781-2787.</p></li>
 <li><p>Privé, Florian, Hugues Aschard, and Michael GB Blum. “Efficient implementation of penalized regression for genetic risk prediction.” Genetics 212.1 (2019): 65-74.</p></li>
@@ -205,59 +203,55 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2 data-toc-skip>Links</h2>
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://cloud.r-project.org/package=bigstatsr" class="external-link">View on CRAN</a></li>
-<li><a href="https://github.com/privefl/bigstatsr/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/privefl/bigstatsr/issues" class="external-link">Report a bug</a></li>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=bigstatsr">https://​cloud.r-project.org/​package=bigstatsr</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/privefl/bigstatsr/">https://​github.com/​privefl/​bigstatsr/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/privefl/bigstatsr/issues">https://​github.com/​privefl/​bigstatsr/​issues</a>
+</li>
 </ul>
 </div>
-
 <div class="license">
-<h2 data-toc-skip>License</h2>
+<h2>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
 </ul>
 </div>
-
-
 <div class="citation">
-<h2 data-toc-skip>Citation</h2>
+<h2>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing bigstatsr</a></li>
+<li><a href="authors.html">Citing bigstatsr</a></li>
 </ul>
 </div>
-
 <div class="developers">
-<h2 data-toc-skip>Developers</h2>
+<h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Florian Privé <br><small class="roles"> Author, maintainer </small>  </li>
-<li><a href="authors.html">More about authors...</a></li>
+<li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
+  <div class="dev-status">
+<h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/privefl/bigstatsr/actions" class="external-link"><img src="https://github.com/privefl/bigstatsr/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/github/privefl/bigstatsr?branch=master" class="external-link"><img src="https://img.shields.io/codecov/c/github/privefl/bigstatsr/master.svg" alt="Coverage Status"></a></li>
-<li><a href="https://cran.r-project.org/package=bigstatsr" class="external-link"><img src="http://www.r-pkg.org/badges/version/bigstatsr" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://doi.org/10.1093/bioinformatics/bty185" class="external-link"><img src="https://zenodo.org/badge/doi/10.1093/bioinformatics/bty185.svg" alt="DOI"></a></li>
+<li><a href="https://github.com/privefl/bigstatsr/actions"><img src="https://github.com/privefl/bigstatsr/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/github/privefl/bigstatsr?branch=master"><img src="https://img.shields.io/codecov/c/github/privefl/bigstatsr/master.svg" alt="Coverage Status"></a></li>
+<li><a href="https://cran.r-project.org/package=bigstatsr"><img src="http://www.r-pkg.org/badges/version/bigstatsr" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://doi.org/10.1093/bioinformatics/bty185"><img src="https://zenodo.org/badge/doi/10.1093/bioinformatics/bty185.svg" alt="DOI"></a></li>
 </ul>
 </div>
-
-  </div>
+</div>
 </div>
 
 
       <footer><div class="copyright">
-  <p></p>
-<p>Developed by Florian Privé.</p>
+  <p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -265,8 +259,6 @@
 
   
 
-
-  
 
   </body>
 </html>
