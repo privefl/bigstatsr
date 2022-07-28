@@ -11,7 +11,7 @@ transform_ind <- function(k, lim) {
 
   res <- seq_len(lim)[k]
 
-  if (any(is.na(res)))
+  if (anyNA(res))
     stop2("Error when subsetting (missing values? out of bounds?)")
 
   res
@@ -20,10 +20,10 @@ transform_ind <- function(k, lim) {
 transform_i_only <- function(i, n, m) {
 
   if (is.logical(i))
-    stop2("Logical vector subsetting is not allowed")
+    stop2("Logical vector subsetting is not allowed.")
 
   if (!isTRUE(all(i > 0)))
-    stop2("Only positive vector subsetting is allowed")
+    stop2("Only positive vector subsetting is allowed.")
 
   if (is.matrix(i))
     i <- (transform_ind(i[, 2], m) - 1) * n + transform_ind(i[, 1], n)

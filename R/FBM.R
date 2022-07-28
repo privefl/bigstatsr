@@ -379,7 +379,7 @@ NULL
 #'   (but only positive ones).
 #' @param j A vector of indices (or nothing). You can use positive and negative
 #'   indices, logical indices (that are recycled).
-#' @param ... Not used. Just to make [nargs] works.
+#' @param ... Not used. Just to make [nargs] work.
 #' @param drop Whether to delete the dimensions of a matrix which have
 #'   one dimension equals to 1.
 #'

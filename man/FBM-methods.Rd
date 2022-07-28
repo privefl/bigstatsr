@@ -32,7 +32,7 @@ indices, logical indices (that are recycled) and also a matrix of indices
 \item{j}{A vector of indices (or nothing). You can use positive and negative
 indices, logical indices (that are recycled).}
 
-\item{...}{Not used. Just to make \link{nargs} works.}
+\item{...}{Not used. Just to make \link{nargs} work.}
 
 \item{drop}{Whether to delete the dimensions of a matrix which have
 one dimension equals to 1.}
