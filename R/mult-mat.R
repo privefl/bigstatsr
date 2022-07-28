@@ -46,6 +46,7 @@ big_prodMat <- function(X, A.col,
 
   check_args()
   assert_lengths(ind.col, rows_along(A.col))
+  stopifnot(all(ind.col <= ncol(X)))
   # assert_class(A.col, 'matrix')  # not only (e.g. sparse matrices)
 
   if (length(ind.row) == 0 || length(ind.col) == 0)

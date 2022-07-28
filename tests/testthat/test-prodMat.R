@@ -123,3 +123,17 @@ test_that("OK with matrix as scaling", {
 })
 
 ################################################################################
+
+test_that("errors when out of bounds", {
+
+  X <- FBM(10, 10, init = 1)
+
+  expect_identical(big_prodMat(X, X[]), matrix(10, 10, 10))
+  expect_error(big_prodMat(X, X[], ind.col = rep(11, 10)))
+  expect_error(big_prodMat(X, X[], ind.col = rep(0, 10)))
+  expect_error(big_prodMat(X, X[], ind.col = rep(-1, 10)))
+  expect_error(big_prodMat(X, X[], ind.row = rep(11, 10)))
+  expect_error(big_prodMat(X, X[, 1:2], ind.col = as.character(1:10)))
+})
+
+################################################################################
