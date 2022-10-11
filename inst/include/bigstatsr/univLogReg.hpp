@@ -9,6 +9,12 @@
 using namespace Rcpp;
 using std::size_t;
 
+#if defined(_OPENMP)
+#include <omp.h>
+#else
+inline int omp_set_num_threads(int n) { return 0; }
+#endif
+
 /******************************************************************************/
 
 namespace bigstatsr {
@@ -21,6 +27,9 @@ List IRLS(C macc,
           const arma::vec& w0,
           double tol,
           size_t maxiter) {
+
+  // make sure not to use two levels of parallelism
+  omp_set_num_threads(1);
 
   size_t n = macc.nrow();
   size_t m = macc.ncol();
