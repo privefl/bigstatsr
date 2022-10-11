@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
       </span>
     </div>
 
@@ -41,17 +43,17 @@
   <a href="../reference/index.html">Manual</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+      <a href="https://www.youtube.com/watch?v=UXKYqpAo6cs" class="external-link">Video presentation of package bigstatsr</a>
     </li>
     <li>
-      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html" class="external-link">Exercise</a>
     </li>
     <li>
       <a href="../articles/penalized-regressions.html">Fitting penalized regressions</a>
@@ -73,21 +75,21 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://privefl.github.io/about.html">
-    <span class="fas fa-user"></span>
+  <a href="https://privefl.github.io/about.html" class="external-link">
+    <span class="fa fa-user"></span>
      
     About
   </a>
 </li>
 <li>
-  <a href="https://github.com/privefl/bigstatsr">
-    <span class="fas fa-github fa"></span>
+  <a href="https://github.com/privefl/bigstatsr" class="external-link">
+    <span class="fa fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o fa"></span>
+    <span class="fa fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -101,15 +103,15 @@
 
       
 
-      </header><script src="big-apply_files/header-attrs-2.7.2/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Showcasing big_apply(): imputation and multiplication of large FBMs</h1>
-                        <h4 class="author">Florian Privé</h4>
+                        <h4 data-toc-skip class="author">Florian Privé</h4>
             
-            <h4 class="date">March 19, 2020</h4>
+            <h4 data-toc-skip class="date">March 19, 2020</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/privefl/bigstatsr/blob/master/vignettes/big-apply.Rmd"><code>vignettes/big-apply.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/privefl/bigstatsr/blob/HEAD/vignettes/big-apply.Rmd" class="external-link"><code>vignettes/big-apply.Rmd</code></a></small>
       <div class="hidden name"><code>big-apply.Rmd</code></div>
 
     </div>
@@ -117,127 +119,127 @@
     
     
 <p>Function <code><a href="../reference/big_apply.html">big_apply()</a></code> enables to apply standard R functions to an FBM, by relying on split-apply-combine strategy where only a subset of the matrix is accessed at once. This allows for a compromise between the amount of maximum memory needed, and the speed of the operation. In this tutorial, I showcase two examples, the imputation of a ‘double’ FBM and the multiplication of two FBMs.</p>
-<div id="example-1-imputation-of-a-double-fbm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-1-imputation-of-a-double-fbm" class="anchor"></a>Example 1: Imputation of a ‘double’ FBM</h2>
+<div class="section level2">
+<h2 id="example-1-imputation-of-a-double-fbm">Example 1: Imputation of a ‘double’ FBM<a class="anchor" aria-label="anchor" href="#example-1-imputation-of-a-double-fbm"></a>
+</h2>
 <p>Some data to work with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/">bigstatsr</a></span><span class="op">)</span>
-<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2000</span>, init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="va">X</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/" class="external-link">bigstatsr</a></span><span class="op">)</span>
+<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2000</span>, init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">X</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></code></pre></div>
 <p>To impute by the mean of each column, you can use the following code:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># have an idea of progress</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ind</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ind</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
   <span class="co"># access a subset of columns as a standard R matrix</span>
   <span class="va">X.sub</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
   <span class="co"># get the location (i, j) of missing values</span>
-  <span class="va">ind_na</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">X.sub</span><span class="op">)</span>, arr.ind <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="va">ind_na</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">X.sub</span><span class="op">)</span>, arr.ind <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
   <span class="co"># compute the corresponding mean for each column j</span>
-  <span class="va">means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span><span class="op">(</span><span class="va">X.sub</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="va">ind_na</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">]</span>
+  <span class="va">means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">X.sub</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="va">ind_na</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">]</span>
   <span class="co"># update j (relative to subset) to global 'ind'</span>
   <span class="va">ind_na</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">ind</span><span class="op">[</span><span class="va">ind_na</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">]</span>
   <span class="co"># fill positions with corresponding means</span>
   <span class="va">X</span><span class="op">[</span><span class="va">ind_na</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">means</span>
   <span class="co"># here we don't want to return anything, so `NULL`</span>
   <span class="cn">NULL</span>
-<span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>, block.size <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 1
-## [1] 501
-## [1] 1001
-## [1] 1501</code></pre>
-<pre><code>## NULL</code></pre>
+<span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>, block.size <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 1</span>
+<span class="co">## [1] 501</span>
+<span class="co">## [1] 1001</span>
+<span class="co">## [1] 1501</span></code></pre>
+<pre><code><span class="co">## NULL</span></code></pre>
 <p>What is going on:</p>
 <ul>
-<li><p>The function <strong>split</strong> indices (<code><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html">cols_along(X)</a></code> by default, can be changed using parameter <code>ind</code>) to have maximum size of <code>block.size</code>.</p></li>
+<li><p>The function <strong>split</strong> indices (<code>cols_along(X)</code> by default, can be changed using parameter <code>ind</code>) to have maximum size of <code>block.size</code>.</p></li>
 <li><p>Then, this is passed as <code>ind</code> into the function and can be used to access a subset of columns of the FBM with <code>X[, ind, drop = FALSE]</code> (which is then a standard R matrix).</p></li>
-<li><p>Then you can compute the colmeans by <strong>apply</strong>ing a standard R function on this subset, using e.g. <code><a href="https://rdrr.io/r/base/colSums.html">colMeans(X.sub, na.rm = TRUE)</a></code>.</p></li>
-<li><p>Then, the missing values can be filled with the corresponding column means and assigned back to the FBM (be aware of the relative column indices <code>ind</code> versus the global ones <code><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html">cols_along(X)</a></code>).</p></li>
+<li><p>Then you can compute the colmeans by <strong>apply</strong>ing a standard R function on this subset, using e.g. <code>colMeans(X.sub, na.rm = TRUE)</code>.</p></li>
+<li><p>Then, the missing values can be filled with the corresponding column means and assigned back to the FBM (be aware of the relative column indices <code>ind</code> versus the global ones <code>cols_along(X)</code>).</p></li>
 <li><p>Then, we return <code>NULL</code> because we are not interested in returning anything here. We also use <code>a.combine = 'c'</code> to <strong>combine</strong> all <code>NULL</code> corresponding to each block to return only one <code>NULL</code> instead of a list of <code>NULL</code>.</p></li>
-<li><p>If you would like to return e.g. the column means that you used for imputation, you could e.g. replace <code>NULL</code> by the result of <code><a href="https://rdrr.io/r/base/colSums.html">colMeans(X.sub, na.rm = TRUE)</a></code>, and keep <code>a.combine = 'c'</code>.</p></li>
+<li><p>If you would like to return e.g. the column means that you used for imputation, you could e.g. replace <code>NULL</code> by the result of <code>colMeans(X.sub, na.rm = TRUE)</code>, and keep <code>a.combine = 'c'</code>.</p></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># Verification</span>
-<span class="va">X</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></pre></div>
-<pre><code>##  [1] -1.267660e-02  3.282387e-02  3.315054e-04 -2.392106e-02 -5.341066e-02
-##  [6]  1.382311e-02 -1.692490e-02 -3.555750e-02  2.448234e-02 -2.054286e-02
-## [11]  5.787257e-03 -2.372889e-02  9.233218e-03 -3.948486e-02 -1.765272e-05
-## [16] -1.623886e-02  1.675917e-02  4.250739e-02 -4.906126e-03 -1.519135e-02
-##  [ reached getOption("max.print") -- omitted 1980 entries ]</code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="../reference/big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">$</span><span class="va">center</span></pre></div>
-<pre><code>##  [1] -1.267660e-02  3.282387e-02  3.315054e-04 -2.392106e-02 -5.341066e-02
-##  [6]  1.382311e-02 -1.692490e-02 -3.555750e-02  2.448234e-02 -2.054286e-02
-## [11]  5.787257e-03 -2.372889e-02  9.233218e-03 -3.948486e-02 -1.765272e-05
-## [16] -1.623886e-02  1.675917e-02  4.250739e-02 -4.906126e-03 -1.519135e-02
-##  [ reached getOption("max.print") -- omitted 1980 entries ]</code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Verification</span>
+<span class="va">X</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></code></pre></div>
+<pre><code><span class="co">##  [1]  0.010520060 -0.041189393 -0.007159965  0.029880753 -0.010079563</span>
+<span class="co">##  [6]  0.016221740 -0.008603091  0.008339420  0.021619000 -0.019624951</span>
+<span class="co">## [11] -0.008526862 -0.015380537  0.029820804  0.019034167  0.012067827</span>
+<span class="co">## [16] -0.023784796  0.002046061  0.013514294 -0.029228193  0.017538793</span>
+<span class="co">##  [ reached getOption("max.print") -- omitted 1980 entries ]</span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">$</span><span class="va">center</span></code></pre></div>
+<pre><code><span class="co">##  [1]  0.010520060 -0.041189393 -0.007159965  0.029880753 -0.010079563</span>
+<span class="co">##  [6]  0.016221740 -0.008603091  0.008339420  0.021619000 -0.019624951</span>
+<span class="co">## [11] -0.008526862 -0.015380537  0.029820804  0.019034167  0.012067827</span>
+<span class="co">## [16] -0.023784796  0.002046061  0.013514294 -0.029228193  0.017538793</span>
+<span class="co">##  [ reached getOption("max.print") -- omitted 1980 entries ]</span></code></pre>
 </div>
-<div id="example-2-multiplication-of-two-fbms" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-2-multiplication-of-two-fbms" class="anchor"></a>Example 2: multiplication of two FBMs</h2>
+<div class="section level2">
+<h2 id="example-2-multiplication-of-two-fbms">Example 2: multiplication of two FBMs<a class="anchor" aria-label="anchor" href="#example-2-multiplication-of-two-fbms"></a>
+</h2>
 <p>Imagine you have two large FBMs</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="co"># here they are not that large but it is just for the example</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># here they are not that large but it is just for the example</span>
 <span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">5000</span>
 <span class="va">M1</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
 <span class="va">M2</span> <span class="op">&lt;-</span> <span class="fl">2000</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/">bigstatsr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/" class="external-link">bigstatsr</a></span><span class="op">)</span>
 <span class="va">X1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">M1</span>, init <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">M2</span>, init <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></pre></div>
+<span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">M2</span>, init <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p>How to compute the cross-product <span class="math inline">\(X_1^T X_2\)</span>?</p>
 <p>The first thing is to ask whether you really want to do this, and questioned the dimension of the resulting matrix (here <code>M1</code> <span class="math inline">\(\times\)</span> <code>M2</code>).</p>
 <p>There are many solutions to this problem, that depends mainly of the size of your matrices.</p>
 <p>The first simple solution when <code>X2</code> is small is to access it as a standard R matrix and to use.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">cprod1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X1</span>, <span class="va">X2</span><span class="op">[</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">cprod1</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 1000 2000</code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cprod1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X1</span>, <span class="va">X2</span><span class="op">[</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">cprod1</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 1000 2000</span></code></pre>
 <p>If <code>X1</code> is small and the resulting product is small, then you can also use</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">cprod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X2</span>, <span class="va">X1</span><span class="op">[</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">cprod2</span>, <span class="va">cprod1</span><span class="op">)</span></pre></div>
-<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cprod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X2</span>, <span class="va">X1</span><span class="op">[</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">cprod2</span>, <span class="va">cprod1</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] TRUE</span></code></pre>
 <p>If the matrices are larger, especially <code>X2</code>, then you can compute the cross-product only for a subset of columns of <code>X2</code>, which gives you only a subset of columns of the result, which you can then combine. This can be implemented using</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="va">cprod3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ind</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cprod3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ind</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
   <span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X1</span>, <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>
-<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"cbind"</span>, block.size <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 1
-## [1] 501
-## [1] 1001
-## [1] 1501</code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">cprod3</span>, <span class="va">cprod1</span><span class="op">)</span></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>To use parallelism, you can e.g. use <code><a href="https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html">bigparallelr::set_blas_ncores()</a></code> to allow for parallel matrix operations if R is linked to some parallel matrix library such as MKL or OpenBLAS. You can also use the parallelism from <code><a href="../reference/big_apply.html">big_apply()</a></code>; this won’t work as is:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ind</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"cbind"</span>, block.size <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 1</span>
+<span class="co">## [1] 501</span>
+<span class="co">## [1] 1001</span>
+<span class="co">## [1] 1501</span></code></pre>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">cprod3</span>, <span class="va">cprod1</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] TRUE</span></code></pre>
+<p>To use parallelism, you can e.g. use <code><a href="https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html" class="external-link">bigparallelr::set_blas_ncores()</a></code> to allow for parallel matrix operations if R is linked to some parallel matrix library such as MKL or OpenBLAS. You can also use the parallelism from <code><a href="../reference/big_apply.html">big_apply()</a></code>; this won’t work as is:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ind</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
   <span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X1</span>, <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>
-<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"cbind"</span>, block.size <span class="op">=</span> <span class="fl">500</span>, ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html">nb_cores</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>## Error in {: task 1 failed - "task 1 failed - "could not find function "big_cprodMat"""</code></pre>
+<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"cbind"</span>, block.size <span class="op">=</span> <span class="fl">500</span>, ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html" class="external-link">nb_cores</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Error in {: task 1 failed - "task 1 failed - "could not find function "big_cprodMat"""</span></code></pre>
 <p>You need two things here, which is basically telling the parallel clusters what are <code>big_cprodMat</code> and <code>X1</code>; you can do</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="va">cprod4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">X1</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ind</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cprod4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">X1</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ind</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
   <span class="fu">bigstatsr</span><span class="fu">::</span><span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X1</span>, <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>
-<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"cbind"</span>, block.size <span class="op">=</span> <span class="fl">500</span>, ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html">nb_cores</a></span><span class="op">(</span><span class="op">)</span>, X1 <span class="op">=</span> <span class="va">X1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">cprod4</span>, <span class="va">cprod1</span><span class="op">)</span></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>Basically, you need to tell explicitly in which package to find the function, and to pass the other variables as parameters in the function and in <code><a href="../reference/big_apply.html">big_apply()</a></code>. For more information on these matters, please have a look at <a href="https://privefl.github.io/blog/a-guide-to-parallelism-in-r/">this tutorial on parallelism with R</a>. Also note that each core will use at most a block size of 500 here, so at most 500 x ncores, so you might need to reduce the block size a bit when using parallelism (this is done by default when not specifying <code>block.size</code>).</p>
+<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"cbind"</span>, block.size <span class="op">=</span> <span class="fl">500</span>, ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html" class="external-link">nb_cores</a></span><span class="op">(</span><span class="op">)</span>, X1 <span class="op">=</span> <span class="va">X1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">cprod4</span>, <span class="va">cprod1</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] TRUE</span></code></pre>
+<p>Basically, you need to tell explicitly in which package to find the function, and to pass the other variables as parameters in the function and in <code><a href="../reference/big_apply.html">big_apply()</a></code>. For more information on these matters, please have a look at <a href="https://privefl.github.io/blog/a-guide-to-parallelism-in-r/" class="external-link">this tutorial on parallelism with R</a>. Also note that each core will use at most a block size of 500 here, so at most 500 x ncores, so you might need to reduce the block size a bit when using parallelism (this is done by default when not specifying <code>block.size</code>).</p>
 <p>Another strategy, to save a bit of memory, is to preallocate a resulting FBM and fill it:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="va">cprod5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">X1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">X2</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cprod5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">X1</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">res</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">bigstatsr</span><span class="fu">::</span><span class="fu"><a href="../reference/big_cprodMat.html">big_cprodMat</a></span><span class="op">(</span><span class="va">X1</span>, <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>
   <span class="cn">NULL</span>
-<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"c"</span>, block.size <span class="op">=</span> <span class="fl">500</span>, ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html">nb_cores</a></span><span class="op">(</span><span class="op">)</span>, X1 <span class="op">=</span> <span class="va">X1</span>, res <span class="op">=</span> <span class="va">cprod5</span><span class="op">)</span></pre></div>
-<pre><code>## NULL</code></pre>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">cprod5</span><span class="op">[</span><span class="op">]</span>, <span class="va">cprod1</span><span class="op">)</span></pre></div>
-<pre><code>## [1] TRUE</code></pre>
+<span class="op">}</span>, a.combine  <span class="op">=</span> <span class="st">"c"</span>, block.size <span class="op">=</span> <span class="fl">500</span>, ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html" class="external-link">nb_cores</a></span><span class="op">(</span><span class="op">)</span>, X1 <span class="op">=</span> <span class="va">X1</span>, res <span class="op">=</span> <span class="va">cprod5</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## NULL</span></code></pre>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">cprod5</span><span class="op">[</span><span class="op">]</span>, <span class="va">cprod1</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] TRUE</span></code></pre>
 </div>
   </div>
 
@@ -252,11 +254,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Florian Privé.</p>
+  <p></p>
+<p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -264,6 +268,8 @@
 
   
 
+
+  
 
   </body>
 </html>

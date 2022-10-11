@@ -53,6 +53,8 @@
 #'   You can also control the number of cores used with
 #'   `bigparallelr::set_blas_ncores()`.
 #'
+#' @keywords internal
+#'
 "_PACKAGE"
 
 ################################################################################

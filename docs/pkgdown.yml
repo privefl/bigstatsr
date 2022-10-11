@@ -1,11 +1,11 @@
 pandoc: 2.11.2
-pkgdown: 1.6.1.9000
-pkgdown_sha: c931fe24c135c6ca704ae9f300470e9c66d8bfe7
+pkgdown: 2.0.6
+pkgdown_sha: ~
 articles:
   big-apply: big-apply.html
   bigstatsr-and-bigmemory: bigstatsr-and-bigmemory.html
   operations-with-scaling: operations-with-scaling.html
   penalized-regressions: penalized-regressions.html
   read-FBM-from-file: read-FBM-from-file.html
-last_built: 2021-11-05T10:38Z
+last_built: 2022-10-11T06:50Z
 

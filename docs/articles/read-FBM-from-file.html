@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
       </span>
     </div>
 
@@ -41,17 +43,17 @@
   <a href="../reference/index.html">Manual</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://privefl.github.io/R-presentation/bigstatsr.html">Introduction to package bigstatsr</a>
+      <a href="https://www.youtube.com/watch?v=UXKYqpAo6cs" class="external-link">Video presentation of package bigstatsr</a>
     </li>
     <li>
-      <a href="https://privefl.github.io/bigsnpr/articles/exo.html">Exercise</a>
+      <a href="https://privefl.github.io/bigsnpr/articles/exo.html" class="external-link">Exercise</a>
     </li>
     <li>
       <a href="../articles/penalized-regressions.html">Fitting penalized regressions</a>
@@ -73,21 +75,21 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://privefl.github.io/about.html">
-    <span class="fas fa-user"></span>
+  <a href="https://privefl.github.io/about.html" class="external-link">
+    <span class="fa fa-user"></span>
      
     About
   </a>
 </li>
 <li>
-  <a href="https://github.com/privefl/bigstatsr">
-    <span class="fas fa-github fa"></span>
+  <a href="https://github.com/privefl/bigstatsr" class="external-link">
+    <span class="fa fa-github fa"></span>
      
   </a>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o fa"></span>
+    <span class="fa fa-newspaper-o fa"></span>
      
   </a>
 </li>
@@ -101,60 +103,60 @@
 
       
 
-      </header><script src="read-FBM-from-file_files/header-attrs-2.7.2/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Read a FBM from a file</h1>
-                        <h4 class="author">Florian Privé</h4>
+                        <h4 data-toc-skip class="author">Florian Privé</h4>
             
-            <h4 class="date">July 2, 2018</h4>
+            <h4 data-toc-skip class="date">July 2, 2018</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/privefl/bigstatsr/blob/master/vignettes/read-FBM-from-file.Rmd"><code>vignettes/read-FBM-from-file.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/privefl/bigstatsr/blob/HEAD/vignettes/read-FBM-from-file.Rmd" class="external-link"><code>vignettes/read-FBM-from-file.Rmd</code></a></small>
       <div class="hidden name"><code>read-FBM-from-file.Rmd</code></div>
 
     </div>
 
     
     
-<p>In this vignette, you learn how to read a Filebacked Big Matrix from a text file. <a href="https://github.com/privefl/bigreadr">Package {bigreadr}</a> is required.</p>
-<div id="data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data" class="anchor"></a>Data</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/">bigstatsr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/privefl/bigreadr">bigreadr</a></span><span class="op">)</span>
+<p>In this vignette, you learn how to read a Filebacked Big Matrix from a text file. <a href="https://github.com/privefl/bigreadr" class="external-link">Package {bigreadr}</a> is required.</p>
+<div class="section level2">
+<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/" class="external-link">bigstatsr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/privefl/bigreadr" class="external-link">bigreadr</a></span><span class="op">)</span>
 
 <span class="co">## LONG CSV</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/mtcars.html">mtcars</a></span>
-<span class="va">csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/fwrite2.html">fwrite2</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>, <span class="fl">500000</span><span class="op">)</span>, <span class="op">]</span>, 
-               <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span>, 
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/mtcars.html" class="external-link">mtcars</a></span>
+<span class="va">csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/fwrite2.html" class="external-link">fwrite2</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>, <span class="fl">500000</span><span class="op">)</span>, <span class="op">]</span>, 
+               <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span>, 
                row.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html">file.size</a></span><span class="op">(</span><span class="va">csv</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span></pre></div>
-<pre><code>## [1] "948,944,463"</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="va">csv</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] "948,944,463"</span></code></pre>
 </div>
-<div id="check-file-content" class="section level2">
-<h2 class="hasAnchor">
-<a href="#check-file-content" class="anchor"></a>Check file content</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/nlines.html">nlines</a></span><span class="op">(</span><span class="va">csv</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 1.6e+07</code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="op">(</span><span class="va">first_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/fread2.html">fread2</a></span><span class="op">(</span><span class="va">csv</span>, nrows <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>##                  V1  mpg cyl disp  hp drat    wt  qsec vs am gear carb
-## 1         Mazda RX4 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
-## 2     Mazda RX4 Wag 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
-## 3        Datsun 710 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
-## 4    Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
-## 5 Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">first_rows</span>, <span class="va">typeof</span><span class="op">)</span></pre></div>
-<pre><code>##          V1         mpg         cyl        disp          hp        drat 
-## "character"    "double"   "integer"   "integer"   "integer"    "double" 
-##          wt        qsec          vs          am        gear        carb 
-##    "double"    "double"   "integer"   "integer"   "integer"   "integer"</code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">first_rows</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 12</code></pre>
+<div class="section level2">
+<h2 id="check-file-content">Check file content<a class="anchor" aria-label="anchor" href="#check-file-content"></a>
+</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/nlines.html" class="external-link">nlines</a></span><span class="op">(</span><span class="va">csv</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 1.6e+07</span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">first_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/fread2.html" class="external-link">fread2</a></span><span class="op">(</span><span class="va">csv</span>, nrows <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##                  V1  mpg cyl disp  hp drat    wt  qsec vs am gear carb</span>
+<span class="co">## 1         Mazda RX4 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4</span>
+<span class="co">## 2     Mazda RX4 Wag 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4</span>
+<span class="co">## 3        Datsun 710 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</span>
+<span class="co">## 4    Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1</span>
+<span class="co">## 5 Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">first_rows</span>, <span class="va">typeof</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##          V1         mpg         cyl        disp          hp        drat </span>
+<span class="co">## "character"    "double"   "integer"   "integer"   "integer"    "double" </span>
+<span class="co">##          wt        qsec          vs          am        gear        carb </span>
+<span class="co">##    "double"    "double"   "integer"   "integer"   "integer"   "integer"</span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">first_rows</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 12</span></code></pre>
 <p>What you can see with these first lines:</p>
 <ul>
 <li>there are some column names (header),</li>
@@ -163,60 +165,60 @@
 <li>and the other elements seems to be all numeric.</li>
 </ul>
 </div>
-<div id="read-those-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#read-those-data" class="anchor"></a>Read those data</h2>
+<div class="section level2">
+<h2 id="read-those-data">Read those data<a class="anchor" aria-label="anchor" href="#read-those-data"></a>
+</h2>
 <ul>
 <li>
 <p>Read all numeric columns in an FBM</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="op">(</span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_read.html">big_read</a></span><span class="op">(</span><span class="va">csv</span>, select <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>## A Filebacked Big Matrix of type 'double' with 16000000 rows and 11 columns.</code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">csv</span>, <span class="va">test</span><span class="op">$</span><span class="va">backingfile</span><span class="op">)</span></pre></div>
-<pre><code>##     [,1]                                                                        
-## csv "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpqKSRwz\\file4920317959b.csv"
-##     "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpqKSRwz\\file4920317959b.bk"</code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">test</span>, <span class="st">"fbm_names"</span><span class="op">)</span></pre></div>
-<pre><code>##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
-## [11] "carb"</code></pre>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_read.html">big_read</a></span><span class="op">(</span><span class="va">csv</span>, select <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## A Filebacked Big Matrix of type 'double' with 16000000 rows and 11 columns.</span></code></pre>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">csv</span>, <span class="va">test</span><span class="op">$</span><span class="va">backingfile</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##     [,1]                                                                       </span>
+<span class="co">## csv "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpGMKY1U\\file1064416dbc.csv"</span>
+<span class="co">##     "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpGMKY1U\\file1064416dbc.bk"</span></code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">test</span>, <span class="st">"fbm_names"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"</span>
+<span class="co">## [11] "carb"</span></code></pre>
 </li>
 <li>
 <p>Read other non-numeric data afterwards</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/fread2.html">fread2</a></span><span class="op">(</span><span class="va">csv</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span></pre></div>
-<pre><code>##                  V1
-## 1         Mazda RX4
-## 2     Mazda RX4 Wag
-## 3        Datsun 710
-## 4    Hornet 4 Drive
-## 5 Hornet Sportabout
-## 6           Valiant</code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/fread2.html" class="external-link">fread2</a></span><span class="op">(</span><span class="va">csv</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##                  V1</span>
+<span class="co">## 1         Mazda RX4</span>
+<span class="co">## 2     Mazda RX4 Wag</span>
+<span class="co">## 3        Datsun 710</span>
+<span class="co">## 4    Hornet 4 Drive</span>
+<span class="co">## 5 Hornet Sportabout</span>
+<span class="co">## 6           Valiant</span></code></pre>
 </li>
 </ul>
 </div>
-<div id="read-filtered-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#read-filtered-data" class="anchor"></a>Read filtered data</h2>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="co">## Get the filter data</span>
-<span class="va">filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/fread2.html">fread2</a></span><span class="op">(</span><span class="va">csv</span>, select <span class="op">=</span> <span class="st">"cyl"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">4</span>
+<div class="section level2">
+<h2 id="read-filtered-data">Read filtered data<a class="anchor" aria-label="anchor" href="#read-filtered-data"></a>
+</h2>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Get the filter data</span>
+<span class="va">filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigreadr/man/fread2.html" class="external-link">fread2</a></span><span class="op">(</span><span class="va">csv</span>, select <span class="op">=</span> <span class="st">"cyl"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">4</span>
 <span class="co">## Read only rows corresponding to 'filter'</span>
 <span class="op">(</span><span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_read.html">big_read</a></span><span class="op">(</span><span class="va">csv</span>, select <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">12</span>, filter <span class="op">=</span> <span class="va">filter</span>,
-                   backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>## A Filebacked Big Matrix of type 'double' with 5500000 rows and 11 columns.</code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="va">test2</span><span class="op">$</span><span class="va">is_saved</span></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="op">(</span><span class="va">rds</span> <span class="op">&lt;-</span> <span class="va">test2</span><span class="op">$</span><span class="va">rds</span><span class="op">)</span></pre></div>
-<pre><code>## [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpqKSRwz\\file49203a69138f.rds"</code></pre>
+                   backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## A Filebacked Big Matrix of type 'double' with 5500000 rows and 11 columns.</span></code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">test2</span><span class="op">$</span><span class="va">is_saved</span></code></pre></div>
+<pre><code><span class="co">## [1] TRUE</span></code></pre>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">rds</span> <span class="op">&lt;-</span> <span class="va">test2</span><span class="op">$</span><span class="va">rds</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpGMKY1U\\file10643a132634.rds"</span></code></pre>
 <p>You need to read from the text file <strong>only once</strong>. To get the FBM object in another R session, just use <code><a href="../reference/big_attach.html">big_attach()</a></code>:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="op">(</span><span class="va">test3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_attach.html">big_attach</a></span><span class="op">(</span><span class="va">rds</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>## A Filebacked Big Matrix of type 'double' with 5500000 rows and 11 columns.</code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">test3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_attach.html">big_attach</a></span><span class="op">(</span><span class="va">rds</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## A Filebacked Big Matrix of type 'double' with 5500000 rows and 11 columns.</span></code></pre>
 </div>
   </div>
 
@@ -231,11 +233,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Florian Privé.</p>
+  <p></p>
+<p>Developed by Florian Privé.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -243,6 +247,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -94,3 +94,4 @@ reference:
       - sub_bk
       - covar_from_df
       - as_scaling_fun
+      - get_beta
