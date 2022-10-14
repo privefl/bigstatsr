@@ -259,7 +259,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 
   if (nlambda < 2) stop("nlambda must be at least 2")
 
-  if (class(y.train) != "numeric")
+  if (!is.numeric(y.train))
     tryCatch(y.train <- as.numeric(y.train), error = function(e)
       stop("y.train must numeric or able to be coerced to numeric"))
 

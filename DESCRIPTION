@@ -2,7 +2,7 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 1.5.11
+Version: 1.5.12
 Date: 2022-10-11
 Authors@R: c(
   person("Florian", "Privé", email = "florian.prive.21@gmail.com", 
@@ -47,6 +47,7 @@ Suggests:
     hexbin,
     memuse,
     ModelMetrics,
+    plotly,
     ppcor,
     RhpcBLASctl,
     spelling (>= 1.2),

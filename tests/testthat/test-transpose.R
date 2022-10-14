@@ -28,7 +28,7 @@ test_that("option 'FBM.dir' works", {
 
   X <- FBM(10, 10)
 
-  dir <- paste0(tempdir(), "_", basename(tempfile(pattern = "")))
+  dir <- tempfile(pattern = "tmpdir")
   opt <- options(FBM.dir = dir)
 
   expect_message(X2 <- big_transpose(X), "Creating directory")
