@@ -46,9 +46,9 @@ It is used in \href{https://goo.gl/pHCCmo}{package \strong{bigsnpr}}.
 \item{init}{Either a single value (e.g. \code{0}) or as many value as the number
 of elements of the FBM. \strong{Default doesn't initialize the matrix.}}
 
-\item{backingfile}{Path to the file storing the Big Matrix on disk.
-\strong{An extension ".bk" will be automatically added.}
-Default stores in the temporary directory.}
+\item{backingfile}{Path to the file storing the FBM data on disk.
+\strong{An extension ".bk" will be automatically added.} Default stores in the
+temporary directory, which you can change using global option "FBM.dir".}
 
 \item{create_bk}{Whether to create a backingfile (the default) or use an
 existing one (which should be named by the \code{backingfile} parameter and have

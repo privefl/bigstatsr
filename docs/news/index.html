@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.13</span>
       </span>
     </div>
 
@@ -86,45 +86,62 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="1.5.13" id="bigstatsr-1513">bigstatsr 1.5.13<a class="anchor" aria-label="anchor" href="#bigstatsr-1513"></a></h2>
+<ul><li>Add parameter <code>backingfile</code> to <code><a href="../reference/big_crossprodSelf.html">big_crossprodSelf()</a></code> and <code><a href="../reference/big_cor.html">big_cor()</a></code> (<a href="https://github.com/privefl/bigstatsr/issues/170" class="external-link">#170</a>).</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.11" id="bigstatsr-1511">bigstatsr 1.5.11<a class="anchor" aria-label="anchor" href="#bigstatsr-1511"></a></h2>
-<ul><li>Make sure not to use two levels of parallelism in <code><a href="../reference/big_univLogReg.html">big_univLogReg()</a></code> (<a href="https://github.com/privefl/bigstatsr/issues/137" class="external-link">#137</a>).</li></ul></div>
+<ul><li>Make sure not to use two levels of parallelism in <code><a href="../reference/big_univLogReg.html">big_univLogReg()</a></code> (<a href="https://github.com/privefl/bigstatsr/issues/137" class="external-link">#137</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.10" id="bigstatsr-1510">bigstatsr 1.5.10<a class="anchor" aria-label="anchor" href="#bigstatsr-1510"></a></h2>
-<ul><li>Check out-of-bounds <code>ind.col</code> in <code><a href="../reference/big_prodMat.html">big_prodMat()</a></code> (<a href="https://github.com/privefl/bigstatsr/issues/154" class="external-link">#154</a>).</li></ul></div>
+<ul><li>Check out-of-bounds <code>ind.col</code> in <code><a href="../reference/big_prodMat.html">big_prodMat()</a></code> (<a href="https://github.com/privefl/bigstatsr/issues/154" class="external-link">#154</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.9" id="bigstatsr-159">bigstatsr 1.5.9<a class="anchor" aria-label="anchor" href="#bigstatsr-159"></a></h2>
-<ul><li>Add global option <code>FBM.dir</code> (that defaults to <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> as before). This can be used to change the default directory used to create FBMs when calling either <code><a href="../reference/FBM-class.html">FBM()</a></code>, <code><a href="../reference/FBM.code256-class.html">FBM.code256()</a></code>, <code><a href="../reference/FBM-class.html">as_FBM()</a></code>, <code><a href="../reference/big_copy.html">big_copy()</a></code>, or <code><a href="../reference/big_transpose.html">big_transpose()</a></code>. Note that, if not using the temporary directory anymore, you must clean up the files you do not want to keep.</li></ul></div>
+<ul><li>Add global option <code>FBM.dir</code> (that defaults to <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> as before). This can be used to change the default directory used to create FBMs when calling either <code><a href="../reference/FBM-class.html">FBM()</a></code>, <code><a href="../reference/FBM.code256-class.html">FBM.code256()</a></code>, <code><a href="../reference/FBM-class.html">as_FBM()</a></code>, <code><a href="../reference/big_copy.html">big_copy()</a></code>, or <code><a href="../reference/big_transpose.html">big_transpose()</a></code>. Note that, if not using the temporary directory anymore, you must clean up the files you do not want to keep.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.8" id="bigstatsr-158">bigstatsr 1.5.8<a class="anchor" aria-label="anchor" href="#bigstatsr-158"></a></h2>
-<ul><li>Enable <code>ARMA_64BIT_WORD</code>.</li></ul></div>
+<ul><li>Enable <code>ARMA_64BIT_WORD</code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.7" id="bigstatsr-157">bigstatsr 1.5.7<a class="anchor" aria-label="anchor" href="#bigstatsr-157"></a></h2>
-<ul><li>New strategy for <code>$add_columns()</code>.</li></ul></div>
+<ul><li>New strategy for <code>$add_columns()</code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.6" id="bigstatsr-156">bigstatsr 1.5.6<small>2022-02-03</small><a class="anchor" aria-label="anchor" href="#bigstatsr-156"></a></h2>
-<ul><li>Add convenience function <code><a href="../reference/as_scaling_fun.html">as_scaling_fun()</a></code> to create your own <code>fun.scaling</code> parameters.</li></ul></div>
+<ul><li>Add convenience function <code><a href="../reference/as_scaling_fun.html">as_scaling_fun()</a></code> to create your own <code>fun.scaling</code> parameters.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.4" id="bigstatsr-154">bigstatsr 1.5.4<a class="anchor" aria-label="anchor" href="#bigstatsr-154"></a></h2>
-<ul><li>Now automatically discard covariates with no variation in <code><a href="../reference/pcor.html">pcor()</a></code> (with a warning).</li></ul></div>
+<ul><li>Now automatically discard covariates with no variation in <code><a href="../reference/pcor.html">pcor()</a></code> (with a warning).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.3" id="bigstatsr-153">bigstatsr 1.5.3<a class="anchor" aria-label="anchor" href="#bigstatsr-153"></a></h2>
 <ul><li>
-<code><a href="../reference/pcor.html">pcor()</a></code> now returns NAs (instead of 0s) for singular systems.</li></ul></div>
+<code><a href="../reference/pcor.html">pcor()</a></code> now returns NAs (instead of 0s) for singular systems.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.0" id="bigstatsr-150">bigstatsr 1.5.0<small>2021-03-29</small><a class="anchor" aria-label="anchor" href="#bigstatsr-150"></a></h2>
-<ul><li>Recode some parallel algorithms with OpenMP. For now, functions <code><a href="../reference/big_prodVec.html">big_prodVec()</a></code>, <code><a href="../reference/big_cprodVec.html">big_cprodVec()</a></code>, <code><a href="../reference/big_colstats.html">big_colstats()</a></code> and <code><a href="../reference/big_univLinReg.html">big_univLinReg()</a></code> have been recoded.</li></ul></div>
+<ul><li>Recode some parallel algorithms with OpenMP. For now, functions <code><a href="../reference/big_prodVec.html">big_prodVec()</a></code>, <code><a href="../reference/big_cprodVec.html">big_cprodVec()</a></code>, <code><a href="../reference/big_colstats.html">big_colstats()</a></code> and <code><a href="../reference/big_univLinReg.html">big_univLinReg()</a></code> have been recoded.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.0" id="bigstatsr-140">bigstatsr 1.4.0<a class="anchor" aria-label="anchor" href="#bigstatsr-140"></a></h2>
-<ul><li>Now detects and errors if there is not enough disk space to create an FBM.</li></ul></div>
+<ul><li>Now detects and errors if there is not enough disk space to create an FBM.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.3" id="bigstatsr-133">bigstatsr 1.3.3<a class="anchor" aria-label="anchor" href="#bigstatsr-133"></a></h2>
-<ul><li>Fix <code><a href="../reference/pcor.html">pcor()</a></code> for singular systems, e.g. when <code>x</code> has all the same values.</li></ul></div>
+<ul><li>Fix <code><a href="../reference/pcor.html">pcor()</a></code> for singular systems, e.g. when <code>x</code> has all the same values.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.2" id="bigstatsr-132">bigstatsr 1.3.2<a class="anchor" aria-label="anchor" href="#bigstatsr-132"></a></h2>
-<ul><li>Fix <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot()</a></code> for old (&lt; v1.3) <code>big_sp_list</code> models.</li></ul></div>
+<ul><li>Fix <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> for old (&lt; v1.3) <code>big_sp_list</code> models.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.1" id="bigstatsr-131">bigstatsr 1.3.1<small>2020-11-06</small><a class="anchor" aria-label="anchor" href="#bigstatsr-131"></a></h2>
-<ul><li>Add function <code><a href="../reference/pcor.html">pcor()</a></code> to compute partial correlations.</li></ul></div>
+<ul><li>Add function <code><a href="../reference/pcor.html">pcor()</a></code> to compute partial correlations.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.0" id="bigstatsr-130">bigstatsr 1.3.0<a class="anchor" aria-label="anchor" href="#bigstatsr-130"></a></h2>
 <ul><li><p>Add two options in <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>; <code>power_scale</code> for using a different scaling for LASSO and <code>power_adaptive</code> for using adaptive LASSO (where larger marginal effects are penalized less). See documentation for details.</p></li>
@@ -132,10 +149,12 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2.2" id="bigstatsr-122">bigstatsr 1.2.2<small>2020-03-09</small><a class="anchor" aria-label="anchor" href="#bigstatsr-122"></a></h2>
-<ul><li>Function <code><a href="../reference/big_colstats.html">big_colstats()</a></code> can now be run in parallel (added parameter <code>ncores</code>).</li></ul></div>
+<ul><li>Function <code><a href="../reference/big_colstats.html">big_colstats()</a></code> can now be run in parallel (added parameter <code>ncores</code>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2.1" id="bigstatsr-121">bigstatsr 1.2.1<a class="anchor" aria-label="anchor" href="#bigstatsr-121"></a></h2>
-<ul><li>It is now possible to use C++ FBM accessors without linking to {RcppArmadillo}.</li></ul></div>
+<ul><li>It is now possible to use C++ FBM accessors without linking to {RcppArmadillo}.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2.0" id="bigstatsr-120">bigstatsr 1.2.0<a class="anchor" aria-label="anchor" href="#bigstatsr-120"></a></h2>
 <ul><li><p>Functions <code>big_(c)prodMat()</code> and <code>big_(t)crossprodSelf()</code> now use much less memory, and may be faster.</p></li>
@@ -143,7 +162,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.4" id="bigstatsr-114">bigstatsr 1.1.4<small>2020-02-01</small><a class="anchor" aria-label="anchor" href="#bigstatsr-114"></a></h2>
-<ul><li>Remove some ‘Suggests’ dependencies.</li></ul></div>
+<ul><li>Remove some ‘Suggests’ dependencies.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.3" id="bigstatsr-113">bigstatsr 1.1.3<a class="anchor" aria-label="anchor" href="#bigstatsr-113"></a></h2>
 <ul><li><p>Add a new column <code>$all_conv</code> to output of <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> for <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code> to check whether all models have stopped because of “no more improvement”. Also add a new parameter <code>sort</code> to <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>.</p></li>
@@ -151,7 +171,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.1" id="bigstatsr-111">bigstatsr 1.1.1<a class="anchor" aria-label="anchor" href="#bigstatsr-111"></a></h2>
-<ul><li>Fix <code>In .self$nrow * .self$ncol : NAs produced by integer overflow</code>.</li></ul></div>
+<ul><li>Fix <code>In .self$nrow * .self$ncol : NAs produced by integer overflow</code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="bigstatsr-110">bigstatsr 1.1.0<a class="anchor" aria-label="anchor" href="#bigstatsr-110"></a></h2>
 <ul><li><p>Make two different memory-mappings: one that is read-only (using <code>$address</code>) and one where it is possible to write (using <code>$address_rw</code>). This enables to use file permissions to prevent modifying data.</p></li>
@@ -166,25 +187,29 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.10" id="bigstatsr-0910">bigstatsr 0.9.10<a class="anchor" aria-label="anchor" href="#bigstatsr-0910"></a></h2>
-<ul><li>Add <code><a href="../reference/big_increment.html">big_increment()</a></code>.</li></ul></div>
+<ul><li>Add <code><a href="../reference/big_increment.html">big_increment()</a></code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.9" id="bigstatsr-099">bigstatsr 0.9.9<a class="anchor" aria-label="anchor" href="#bigstatsr-099"></a></h2>
 <p>In <code><a href="../reference/plot.big_SVD.html">plot.big_SVD()</a></code>,</p>
 <ul><li><p>Can now plot many PCA scores (more than two) at once.</p></li>
-<li><p>Use <code><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html" class="external-link">coord_fixed()</a></code> when plotting PCA scores because it is good practice.</p></li>
+<li><p>Use <code>coord_fixed()</code> when plotting PCA scores because it is good practice.</p></li>
 <li><p>Use log-scale in scree plot to better see small differences in singular values.</p></li>
 <li><p>Reexport <code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">cowplot::plot_grid()</a></code> to merge multiple ggplots.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.6" id="bigstatsr-096">bigstatsr 0.9.6<a class="anchor" aria-label="anchor" href="#bigstatsr-096"></a></h2>
 <ul><li>
-<code><a href="../reference/AUC.html">AUCBoot()</a></code> is now 6-7 times faster.</li></ul></div>
+<code><a href="../reference/AUC.html">AUCBoot()</a></code> is now 6-7 times faster.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.5" id="bigstatsr-095">bigstatsr 0.9.5<a class="anchor" aria-label="anchor" href="#bigstatsr-095"></a></h2>
-<ul><li>Add parameters <code>center</code> and <code>scale</code> to products.</li></ul></div>
+<ul><li>Add parameters <code>center</code> and <code>scale</code> to products.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.3" id="bigstatsr-093">bigstatsr 0.9.3<a class="anchor" aria-label="anchor" href="#bigstatsr-093"></a></h2>
-<ul><li>Fix a bug in <code><a href="../reference/big_univLogReg.html">big_univLogReg()</a></code> for variables with no variation. IRLS was not converging, so <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> was used instead. The problem is that <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> drops dimensions causing singularities so that Z-score of the first covariate (or intercept) was used instead of a missing value.</li></ul></div>
+<ul><li>Fix a bug in <code><a href="../reference/big_univLogReg.html">big_univLogReg()</a></code> for variables with no variation. IRLS was not converging, so <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> was used instead. The problem is that <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> drops dimensions causing singularities so that Z-score of the first covariate (or intercept) was used instead of a missing value.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.0" id="bigstatsr-090">bigstatsr 0.9.0<a class="anchor" aria-label="anchor" href="#bigstatsr-090"></a></h2>
 <ul><li><p>Use <em>mio</em> instead of <em>boost</em> for memory-mapping.</p></li>
@@ -202,7 +227,8 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.0" id="bigstatsr-080">bigstatsr 0.8.0<a class="anchor" aria-label="anchor" href="#bigstatsr-080"></a></h2>
-<ul><li>Parameters <code>warn</code> and <code>return.all</code> of <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code> are deprecated; now always return the maximum information. Now provide two methods (<code>summary</code> and <code>plot</code>) to get a quick assessment of the fitted models.</li></ul></div>
+<ul><li>Parameters <code>warn</code> and <code>return.all</code> of <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code> are deprecated; now always return the maximum information. Now provide two methods (<code>summary</code> and <code>plot</code>) to get a quick assessment of the fitted models.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.3" id="bigstatsr-073">bigstatsr 0.7.3<a class="anchor" aria-label="anchor" href="#bigstatsr-073"></a></h2>
 <ul><li><p>Check of missing values for input vectors (indices and targets) and matrices (covariables).</p></li>
@@ -211,14 +237,17 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.1" id="bigstatsr-071">bigstatsr 0.7.1<a class="anchor" aria-label="anchor" href="#bigstatsr-071"></a></h2>
 <ul><li>
-<code>$bm()</code> and <code>$bm.desc()</code> have been added in order to get an <code>FBM</code> as a <code>filebacked.big.matrix</code>. This enables using {bigmemory} functions.</li></ul></div>
+<code>$bm()</code> and <code>$bm.desc()</code> have been added in order to get an <code>FBM</code> as a <code>filebacked.big.matrix</code>. This enables using {bigmemory} functions.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.0" id="bigstatsr-070">bigstatsr 0.7.0<a class="anchor" aria-label="anchor" href="#bigstatsr-070"></a></h2>
-<ul><li>Type <code>float</code> added.</li></ul></div>
+<ul><li>Type <code>float</code> added.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.2" id="bigstatsr-062">bigstatsr 0.6.2<small>2018-08-17</small><a class="anchor" aria-label="anchor" href="#bigstatsr-062"></a></h2>
 <ul><li>
-<code>big_write</code> added.</li></ul></div>
+<code>big_write</code> added.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.1" id="bigstatsr-061">bigstatsr 0.6.1<a class="anchor" aria-label="anchor" href="#bigstatsr-061"></a></h2>
 <ul><li><p><code>big_read</code> now has a <code>filter</code> argument to filter rows, and argument <code>nrow</code> has been removed because it is now determined when reading the first block of data.</p></li>
@@ -231,10 +260,12 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="bigstatsr-050">bigstatsr 0.5.0<a class="anchor" aria-label="anchor" href="#bigstatsr-050"></a></h2>
-<ul><li>There have been some changes regarding how conversion between types is checked. Before, you would get a warning for any possible loss of precision (without actually checking it). Now, any loss of precision due to conversion between types is reported as a warning, and only in this case. If you want to disable this feature, you can use <code>options(bigstatsr.downcast.warning = FALSE)</code>, or you can use <code><a href="../reference/without_downcast_warning.html">without_downcast_warning()</a></code> to disable this warning for one call.</li></ul></div>
+<ul><li>There have been some changes regarding how conversion between types is checked. Before, you would get a warning for any possible loss of precision (without actually checking it). Now, any loss of precision due to conversion between types is reported as a warning, and only in this case. If you want to disable this feature, you can use <code>options(bigstatsr.downcast.warning = FALSE)</code>, or you can use <code><a href="../reference/without_downcast_warning.html">without_downcast_warning()</a></code> to disable this warning for one call.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1" id="bigstatsr-041">bigstatsr 0.4.1<a class="anchor" aria-label="anchor" href="#bigstatsr-041"></a></h2>
-<ul><li>change <code>big_read</code> so that it is faster (corresponding vignette updated).</li></ul></div>
+<ul><li>change <code>big_read</code> so that it is faster (corresponding vignette updated).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0" id="bigstatsr-040">bigstatsr 0.4.0<a class="anchor" aria-label="anchor" href="#bigstatsr-040"></a></h2>
 <ul><li><p>possibility to add a “base predictor” for <code>big_spLinReg</code> and <code>big_spLogReg</code>.</p></li>
@@ -249,19 +280,24 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.3" id="bigstatsr-033">bigstatsr 0.3.3<a class="anchor" aria-label="anchor" href="#bigstatsr-033"></a></h2>
-<ul><li>Before, this package used only the “PSOCK” type of cluster, which has some significant overhead. Now, it uses the “FORK” type on non-Windows systems. You can change this with <code>options(bigstatsr.cluster.type = "PSOCK")</code>. Uses “PSOCK” in 0.4.0.</li></ul></div>
+<ul><li>Before, this package used only the “PSOCK” type of cluster, which has some significant overhead. Now, it uses the “FORK” type on non-Windows systems. You can change this with <code>options(bigstatsr.cluster.type = "PSOCK")</code>. Uses “PSOCK” in 0.4.0.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.2" id="bigstatsr-032">bigstatsr 0.3.2<a class="anchor" aria-label="anchor" href="#bigstatsr-032"></a></h2>
-<ul><li>you can now provide multiple <span class="math inline"><em>α</em></span> values (as a numeric vector) in <code>big_spLinReg</code> and <code>big_spLogReg</code>. One will be chosen by grid-search.</li></ul></div>
+<ul><li>you can now provide multiple <span class="math inline"><em>α</em></span> values (as a numeric vector) in <code>big_spLinReg</code> and <code>big_spLogReg</code>. One will be chosen by grid-search.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.1" id="bigstatsr-031">bigstatsr 0.3.1<a class="anchor" aria-label="anchor" href="#bigstatsr-031"></a></h2>
-<ul><li>fixed a bug in <code>big_prodMat</code> when using a dimension of 1 or 0.</li></ul></div>
+<ul><li>fixed a bug in <code>big_prodMat</code> when using a dimension of 1 or 0.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.0" id="bigstatsr-030">bigstatsr 0.3.0<a class="anchor" aria-label="anchor" href="#bigstatsr-030"></a></h2>
-<ul><li><strong>Package {bigstatsr} is published in <a href="https://doi.org/10.1093/bioinformatics/bty185" class="external-link">Bioinformatics</a></strong></li></ul></div>
+<ul><li><strong>Package {bigstatsr} is published in <a href="https://doi.org/10.1093/bioinformatics/bty185" class="external-link">Bioinformatics</a></strong></li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.6" id="bigstatsr-026">bigstatsr 0.2.6<a class="anchor" aria-label="anchor" href="#bigstatsr-026"></a></h2>
-<ul><li>no scaling is used by default for <code>big_crossprod</code>, <code>big_tcrossprod</code>, <code>big_SVD</code> and <code>big_randomSVD</code> (before, there was no default at all)</li></ul></div>
+<ul><li>no scaling is used by default for <code>big_crossprod</code>, <code>big_tcrossprod</code>, <code>big_SVD</code> and <code>big_randomSVD</code> (before, there was no default at all)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.4" id="bigstatsr-024">bigstatsr 0.2.4<small>2018-01-31</small><a class="anchor" aria-label="anchor" href="#bigstatsr-024"></a></h2>
 <ul><li><p><strong>Integrate Cross-Model Selection and Averaging (CMSA) directly in <code>big_spLinReg</code> and <code>big_spLogReg</code>, a procedure that automatically chooses the value of the <span class="math inline"><em>λ</em></span> hyper-parameter.</strong></p></li>
@@ -269,10 +305,12 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.3" id="bigstatsr-023">bigstatsr 0.2.3<small>2017-11-30</small><a class="anchor" aria-label="anchor" href="#bigstatsr-023"></a></h2>
-<ul><li>Speed up AUC computations</li></ul></div>
+<ul><li>Speed up AUC computations</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0" id="bigstatsr-020">bigstatsr 0.2.0<a class="anchor" aria-label="anchor" href="#bigstatsr-020"></a></h2>
-<ul><li><strong>No longer use the <code>big.matrix</code> format of package bigmemory</strong></li></ul></div>
+<ul><li><strong>No longer use the <code>big.matrix</code> format of package bigmemory</strong></li>
+</ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

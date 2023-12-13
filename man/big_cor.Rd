@@ -8,7 +8,8 @@ big_cor(
   X,
   ind.row = rows_along(X),
   ind.col = cols_along(X),
-  block.size = block_size(nrow(X))
+  block.size = block_size(nrow(X)),
+  backingfile = tempfile(tmpdir = getOption("FBM.dir"))
 )
 }
 \arguments{
@@ -22,6 +23,10 @@ If not specified, all columns are used. \strong{Don't use negative indices.}}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}
+
+\item{backingfile}{Path to the file storing the FBM data on disk.
+\strong{An extension ".bk" will be automatically added.} Default stores in the
+temporary directory, which you can change using global option "FBM.dir".}
 }
 \value{
 A temporary \link[=FBM-class]{FBM}, with the following two attributes:

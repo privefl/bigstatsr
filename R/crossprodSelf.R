@@ -6,6 +6,7 @@
 #' after applying a particular scaling to it.
 #'
 #' @inheritParams bigstatsr-package
+#' @inheritParams FBM
 #'
 #' @inheritSection bigstatsr-package Matrix parallelization
 #'
@@ -22,13 +23,14 @@ big_crossprodSelf <- function(
   fun.scaling = big_scale(center = FALSE, scale = FALSE),
   ind.row = rows_along(X),
   ind.col = cols_along(X),
-  block.size = block_size(nrow(X))
+  block.size = block_size(nrow(X)),
+  backingfile = tempfile(tmpdir = getOption("FBM.dir"))
 ) {
 
   check_args()
 
   m <- length(ind.col)
-  K <- FBM(m, m)
+  K <- FBM(m, m, backingfile = backingfile)
 
   mu    <- numeric(m)
   delta <- numeric(m)
@@ -80,7 +82,8 @@ big_crossprodSelf <- function(
 big_cor <- function(X,
                     ind.row = rows_along(X),
                     ind.col = cols_along(X),
-                    block.size = block_size(nrow(X))) {
+                    block.size = block_size(nrow(X)),
+                    backingfile = tempfile(tmpdir = getOption("FBM.dir"))) {
 
   cor.scaling <- function(X, ind.row, ind.col) {
     ms <- big_scale(center = TRUE, scale = TRUE)(X, ind.row, ind.col)
@@ -91,7 +94,8 @@ big_cor <- function(X,
   big_crossprodSelf(X, fun.scaling = cor.scaling,
                     ind.row = ind.row,
                     ind.col = ind.col,
-                    block.size = block.size)
+                    block.size = block.size,
+                    backingfile = backingfile)
 }
 
 ################################################################################

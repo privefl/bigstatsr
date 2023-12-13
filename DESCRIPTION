@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: bigstatsr
 Type: Package
 Title: Statistical Tools for Filebacked Big Matrices
-Version: 1.5.12
-Date: 2022-10-11
+Version: 1.5.13
+Date: 2023-12-13
 Authors@R: c(
   person("Florian", "Privé", email = "florian.prive.21@gmail.com", 
          role = c("aut", "cre")),
@@ -52,7 +52,7 @@ Suggests:
     RhpcBLASctl,
     spelling (>= 1.2),
     testthat
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 URL: https://privefl.github.io/bigstatsr/
 BugReports: https://github.com/privefl/bigstatsr/issues

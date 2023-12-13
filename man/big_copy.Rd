@@ -36,9 +36,9 @@ access 256 arbitrary different numeric values.
 It is used in \href{https://goo.gl/pHCCmo}{package \strong{bigsnpr}}.
 }}
 
-\item{backingfile}{Path to the file storing the Big Matrix on disk.
-\strong{An extension ".bk" will be automatically added.}
-Default stores in the temporary directory.}
+\item{backingfile}{Path to the file storing the FBM data on disk.
+\strong{An extension ".bk" will be automatically added.} Default stores in the
+temporary directory, which you can change using global option "FBM.dir".}
 
 \item{block.size}{Maximum number of columns read at once.
 Default uses \link{block_size}.}

@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // auc_sorted
 double auc_sorted(const NumericVector& x, const LogicalVector& y);
 RcppExport SEXP _bigstatsr_auc_sorted(SEXP xSEXP, SEXP ySEXP) {

@@ -9,9 +9,9 @@ big_transpose(X, backingfile = tempfile(tmpdir = getOption("FBM.dir")))
 \arguments{
 \item{X}{An object of class \link[=FBM-class]{FBM}.}
 
-\item{backingfile}{Path to the file storing the Big Matrix on disk.
-\strong{An extension ".bk" will be automatically added.}
-Default stores in the temporary directory.}
+\item{backingfile}{Path to the file storing the FBM data on disk.
+\strong{An extension ".bk" will be automatically added.} Default stores in the
+temporary directory, which you can change using global option "FBM.dir".}
 }
 \value{
 The new transposed FBM. Dimensions and type are automatically

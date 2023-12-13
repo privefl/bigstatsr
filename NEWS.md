@@ -1,3 +1,7 @@
+## bigstatsr 1.5.13
+
+- Add parameter `backingfile` to `big_crossprodSelf()` and `big_cor()` (#170).
+
 ## bigstatsr 1.5.11
 
 - Make sure not to use two levels of parallelism in `big_univLogReg()` (#137).

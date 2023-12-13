@@ -303,9 +303,9 @@ FBM_RC$lock("nrow", "type")
 #'   It is used in [package **bigsnpr**](https://goo.gl/pHCCmo).
 #' @param init Either a single value (e.g. `0`) or as many value as the number
 #'   of elements of the FBM. **Default doesn't initialize the matrix.**
-#' @param backingfile Path to the file storing the Big Matrix on disk.
-#'   **An extension ".bk" will be automatically added.**
-#'   Default stores in the temporary directory.
+#' @param backingfile Path to the file storing the FBM data on disk.
+#'   **An extension ".bk" will be automatically added.** Default stores in the
+#'   temporary directory, which you can change using global option "FBM.dir".
 #' @param create_bk Whether to create a backingfile (the default) or use an
 #'   existing one (which should be named by the `backingfile` parameter and have
 #'   an extension ".bk"). For example, this could be used to convert a

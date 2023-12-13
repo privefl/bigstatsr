@@ -17,8 +17,10 @@ test_that("equality with cor", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
-    K <- big_cor(X, block.size = 10)
+    tmp <- tempfile()
+    K <- big_cor(X, block.size = 10, backingfile = tmp)
     expect_equal(K[], cor(X[]))
+    expect_identical(K$backingfile, normalizePath(paste0(tmp, ".bk")))
   }
 })
 
