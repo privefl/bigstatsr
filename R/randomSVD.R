@@ -61,7 +61,9 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
 
       # Scaling
       ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col.part)
-
+      if (any(ms$scale<=0)){
+        stop("Some variables have zero variance; remove them before attempting to scale")
+      }
       repeat {
         # Slaves wait for their master to give them orders
         while (calc[ic] == 0) Sys.sleep(TIME)
@@ -110,7 +112,9 @@ svds4.seq <- function(X, fun.scaling, ind.row, ind.col, k, tol, verbose,
 
   # scaling
   ms <- fun.scaling(X, ind.row, ind.col)
-
+  if (any(ms$scale<=0)){
+    stop("Some variables have zero variance; remove them before attempting to scale")
+  }
   printf <- function(...) if (verbose) cat(sprintf(...))
   it <- 0
   # A

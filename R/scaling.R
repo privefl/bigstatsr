@@ -55,6 +55,9 @@ big_scale <- function(center = TRUE, scale = TRUE) {
       sds <- rep(1, m)
     }
 
+    if (any(sds<=0)){
+      stop("Some variables have zero variance; remove them before attempting to scale")
+    }
     data.frame(center = means, scale = sds)
   }
 }
