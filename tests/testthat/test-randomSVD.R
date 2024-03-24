@@ -152,7 +152,7 @@ test_that("zero variance is caught", {
 
   expect_error(big_randomSVD(X, custom_scaling),
                "Some variables have zero scaling")
-  expect_error(big_randomSVD(X, custom_scaling, ncores = 2),
+  expect_error(big_randomSVD(X, custom_scaling, ncores = test_cores()),
                "Some variables have zero scaling")
 })
 
