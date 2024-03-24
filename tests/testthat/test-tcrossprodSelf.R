@@ -75,3 +75,15 @@ test_that("equality with tcrossprod with half of the data", {
 })
 
 ################################################################################
+
+test_that("we catch zero variance variables when scaling", {
+
+  X <- FBM(20, 20, init = rnorm(400))
+  expect_no_error(big_tcrossprodSelf(X, fun.scaling = custom_scaling))
+
+  X[, 1] <- 0
+  expect_error(big_tcrossprodSelf(X, fun.scaling = custom_scaling),
+               "Some variables have zero scaling")
+})
+
+################################################################################

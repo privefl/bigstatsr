@@ -55,6 +55,14 @@ diffPCs <- function(test, rot) {
 
 ################################################################################
 
+custom_scaling <- function(X, ind.row = rows_along(X),
+                           ind.col = cols_along(X), ncores = 1) {
+  stats <- big_colstats(X, ind.row, ind.col, ncores = ncores)
+  data.frame(center = stats$sum / length(ind.row), scale = sqrt(stats$var))
+}
+
+################################################################################
+
 set.seed(NULL)
 if (not_cran) {
   # Seeds that won't work (because of bad luck)

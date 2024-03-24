@@ -12,9 +12,9 @@
 #'
 #' @examples
 #' library(ggplot2)
-#' qplot(y = 1:10)
-#' qplot(y = 1:10) + theme_bw()
-#' qplot(y = 1:10) + theme_bigstatsr()
+#' (p <- ggplot(mapping = aes(x = 1:10, y = 1:10)) + geom_point())
+#' p + theme_bw()
+#' p + theme_bigstatsr()
 theme_bigstatsr <- function(size.rel = 1) {
   theme_bw() +
     theme(
@@ -29,10 +29,6 @@ theme_bigstatsr <- function(size.rel = 1) {
       legend.key.height = unit(1.3 * size.rel, "line"),
       legend.key.width  = unit(1.3 * size.rel, "line")
     )
-}
-
-MY_THEME <- function(p, coeff = 1) {
-  p + theme_bigstatsr(size.rel = coeff)
 }
 
 #' @importFrom cowplot plot_grid
@@ -101,7 +97,9 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 
     assert_lengths(nval, 1)
 
-    p <- MY_THEME(qplot(y = x$d[seq_len(nval)]), coeff = coeff) +
+    p <- ggplot(mapping = aes(x = seq_len(nval), y = x$d[seq_len(nval)])) +
+      theme_bigstatsr(size.rel = coeff) +
+      geom_point() +
       geom_line() +
       scale_y_log10() +
       labs(title = "Scree Plot", x = "PC Index", y = "Singular Value")
@@ -133,7 +131,9 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
         nx <- scores[1]
         ny <- scores[2]
 
-        MY_THEME(qplot(x = sc[, nx], y = sc[, ny]), coeff = coeff) +
+        ggplot(mapping = aes(x = sc[, nx], y = sc[, ny])) +
+          geom_point() +
+          theme_bigstatsr(size.rel = coeff) +
           coord_fixed() +
           labs(title = "Scores of PCA", x = paste0("PC", nx), y = paste0("PC", ny))
 
@@ -155,7 +155,9 @@ plot.big_SVD <- function(x, type = c("screeplot", "scores", "loadings"),
 
     } else {
 
-      p <- MY_THEME(qplot(y = x$v[, loadings]), coeff = coeff) +
+      p <- ggplot(mapping = aes(x = rows_along(x$v), y = x$v[, loadings])) +
+        geom_point() +
+        theme_bigstatsr(size.rel = coeff) +
         labs(title = paste0("Loadings of PC", loadings),
              x = "Column index", y = NULL)
 
@@ -215,17 +217,20 @@ plot.mhtest <- function(x, type = c("hist", "Manhattan", "Q-Q", "Volcano"),
   type <- match.arg(type)
   main <- paste(type, "plot")
 
-  if (type == "Manhattan") {
-    qplot(y = -lpval) +
+  p <- if (type == "Manhattan") {
+    ggplot(mapping = aes(x = seq_along(lpval), y = -lpval)) +
+      geom_point() +
       labs(title = main, x = "Column Index",
            y = expression(-log[10](italic("p-value"))))
   } else if (type == "Volcano") {
-    qplot(x = x[["estim"]], y = -lpval) +
+    ggplot(mapping = aes(x = x[["estim"]], y = -lpval)) +
+      geom_point() +
       labs(title = main, x = "Estimate",
            y = expression(-log[10](italic("p-value"))))
   } else if (type == "Q-Q") {
     unif.ranked <- stats::ppoints(length(lpval))[rank(lpval)]
-    qplot(x = -log10(unif.ranked), y = -lpval) +
+    ggplot(mapping = aes(x = -log10(unif.ranked), y = -lpval)) +
+      geom_point() +
       labs(title = main,
            x = expression(Expected~~-log[10](italic("p-value"))),
            y = expression(Observed~~-log[10](italic("p-value")))) +
@@ -239,7 +244,7 @@ plot.mhtest <- function(x, type = c("hist", "Manhattan", "Q-Q", "Volcano"),
       labs(x = "p-value")
   }
 
-  last_plot() + theme_bigstatsr(size.rel = coeff)
+  p + theme_bigstatsr(size.rel = coeff)
 }
 
 ################################################################################
