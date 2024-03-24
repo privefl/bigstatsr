@@ -14,7 +14,7 @@ Theme ggplot2 used by this package.
 }
 \examples{
 library(ggplot2)
-qplot(y = 1:10)
-qplot(y = 1:10) + theme_bw()
-qplot(y = 1:10) + theme_bigstatsr()
+(p <- ggplot(mapping = aes(x = 1:10, y = 1:10)) + geom_point())
+p + theme_bw()
+p + theme_bigstatsr()
 }
