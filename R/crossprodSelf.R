@@ -44,9 +44,8 @@ big_crossprodSelf <- function(
     tmp1 <- X[ind.row, ind.col[ind1]]
 
     ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col[ind1])
-    if (any(ms$scale<=0)){
-      stop("Some variables have zero variance; remove them before attempting to scale")
-    }
+    if (any_near0(ms$scale)) stop2(MSG_ZERO_SCALE)
+
     mu[ind1]    <- ms$center
     delta[ind1] <- ms$scale
     sums[ind1]  <- colSums(tmp1)

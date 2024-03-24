@@ -42,9 +42,8 @@ big_tcrossprodSelf <- function(
     ind <- seq2(intervals[j, ])
     ind.col.ind <- ind.col[ind]
     ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col.ind)
-    if (any(ms$scale<=0)){
-      stop("Some variables have zero variance; remove them before attempting to scale")
-    }
+    if (any_near0(ms$scale)) stop2(MSG_ZERO_SCALE)
+
     means[ind] <- ms$center
     sds[ind]   <- ms$scale
     increment_scaled_tcrossprod(K, X_part_temp, X,
