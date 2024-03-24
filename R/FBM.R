@@ -110,6 +110,7 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #' X[]  # access as standard R matrix
 #'
 #' @exportClass FBM
+#' @import rmio
 #'
 FBM_RC <- methods::setRefClass(
 
