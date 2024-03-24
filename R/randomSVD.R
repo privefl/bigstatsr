@@ -13,7 +13,7 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
 
   Ax   <- FBM(n, ncores)
   Atx  <- FBM(m, 1)
-  calc <- FBM(ncores, 1, init = 0)
+  calc <- FBM(ncores, 1, init = -1)
 
   cluster_type <- getOption("bigstatsr.cluster.type")
   if (verbose) {
@@ -26,6 +26,14 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
 
     if (ic == 0) { # I'm the master
 
+      # Wait for the slaves to finish computing the scalings
+      while (any(calc[] < 0)) {
+        if (any(calc[] == -2)) {
+          calc[] <- 3  # signal all slaves to stop
+          stop2(MSG_ZERO_SCALE)
+        } else Sys.sleep(TIME)
+      }
+
       printf <- function(...) cat(sprintf(...))
       it <- 0
       # A
@@ -33,8 +41,8 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
         printf("%d - computing A * x\n", it <<- it + 1)
         Atx[] <- x
         calc[] <- 1  # make them work
-        # Master wait for its slaves to finish working
-        while (sum(calc[]) > 0) Sys.sleep(TIME)
+        # the master wait for its slaves to finish working
+        while (any(calc[] > 0)) Sys.sleep(TIME)
         rowSums(Ax[])
       }
       # Atrans
@@ -42,8 +50,8 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
         printf("%d - computing At * x\n", it <<- it + 1)
         Ax[, 1] <- x
         calc[] <- 2  # make them work
-        # Master wait for its slaves to finish working
-        while (sum(calc[]) > 0) Sys.sleep(TIME)
+        # the master wait for its slaves to finish working
+        while (any(calc[] > 0)) Sys.sleep(TIME)
         Atx[]
       }
 
@@ -61,7 +69,12 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
 
       # Scaling
       ms <- fun.scaling(X, ind.row = ind.row, ind.col = ind.col.part)
-      if (any_near0(ms$scale)) stop2(MSG_ZERO_SCALE)
+      if (any_near0(ms$scale)) {
+        calc[ic] <- -2  # signal the master there is an issue with the scaling
+        return(ms)
+      } else {
+        calc[ic] <- 0
+      }
 
       repeat {
         # Slaves wait for their master to give them orders
@@ -79,8 +92,6 @@ svds4.par <- function(X, fun.scaling, ind.row, ind.col, k,
         } else if (c == 3) {
           # End
           break
-        } else {
-          stop("RandomSVD: unclear order from the master.")
         }
         calc[ic] <- 0
       }

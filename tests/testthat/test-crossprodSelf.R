@@ -77,15 +77,14 @@ test_that("equality with crossprod with half of the data", {
 
 ################################################################################
 
-test_that("we catch zero variance variables when scaling",{
-  #create a simple dataset
-  set.seed(123)
-  X <- FBM(20, 20, init = rnorm(400))
-  # big_scale() catches zero variance already. Make sure that we also catch custom functions
-  custom_scaling <- function (X, ind.row=1, ind.col=1){
-    return(data.frame(center=rep(1,ncol(X)),scale=c(0,rep(1,ncol(X)-1))))
-  }
-  expect_error(big_crossprodSelf(X, fun.scaling = custom_scaling),
-               "Some variables have zero variance")
+test_that("we catch zero variance variables when scaling", {
 
+  X <- FBM(20, 20, init = rnorm(400))
+  expect_no_error(big_crossprodSelf(X, fun.scaling = custom_scaling))
+
+  X[, 1] <- 0
+  expect_error(big_crossprodSelf(X, fun.scaling = custom_scaling),
+               "Some variables have zero scaling")
 })
+
+################################################################################
