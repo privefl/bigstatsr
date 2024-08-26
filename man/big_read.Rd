@@ -54,6 +54,6 @@ Default is \code{500 * 1024^2} (500 MB).}
 A Filebacked Big Matrix of type \code{type} with \code{length(select)} columns.
 }
 \description{
-Read a file as a Filebacked Big Matrix by using package {bigreadr}.
+Read a file as a Filebacked Big Matrix by using package \{bigreadr\}.
 For a mini-tutorial, please see \href{https://goo.gl/91oNxU}{this vignette}.
 }

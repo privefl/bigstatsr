@@ -6,7 +6,7 @@ drop_ext <- function(file) tools::file_path_sans_ext(file)
 
 #' Read a file as FBM
 #'
-#' Read a file as a Filebacked Big Matrix by using package {bigreadr}.
+#' Read a file as a Filebacked Big Matrix by using package \{bigreadr\}.
 #' For a mini-tutorial, please see [this vignette](https://goo.gl/91oNxU).
 #'
 #' @param file File to read.

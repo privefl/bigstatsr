@@ -78,9 +78,9 @@ sub_bk <- function(path, replacement = "", stop_if_not_ext = TRUE) {
 #'   - `add_columns(<ncol_add>)`: Add some columns to the FBM by appending the
 #'     backingfile with some data. Returns the FBM invisibly.
 #'   - `$bm()`: Get this object as a `filebacked.big.matrix`
-#'     to be used by package {bigmemory}.
+#'     to be used by package \{bigmemory\}.
 #'   - `$bm.desc()`: Get this object as a `filebacked.big.matrix` descriptor
-#'     to be used by package {bigmemory}.
+#'     to be used by package \{bigmemory\}.
 #'   - `$check_write_permissions()`: Error if the FBM is read-only.
 #'
 #' @examples
