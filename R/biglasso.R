@@ -386,7 +386,7 @@ COPY_biglasso_main <- function(X, y.train, ind.train, ind.col, covar.train,
 #' Big Matrix. Covariables can be added (/!\ penalized by default /!\).
 #'
 #' __This is a modified version of one function of
-#' [package biglasso](https://github.com/YaohuiZeng/biglasso)__.
+#' [package biglasso](https://github.com/pbreheny/biglasso)__.
 #' It adds the possibility to train models with covariables and use many
 #' types of `FBM` (not only `double` ones).
 #' Yet, it only corresponds to `screen = "SSR"` (Sequential Strong Rules).

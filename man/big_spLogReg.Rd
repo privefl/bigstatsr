@@ -128,7 +128,7 @@ Big Matrix. Covariables can be added (/!\ penalized by default /!\).
 }
 \details{
 \strong{This is a modified version of one function of
-\href{https://github.com/YaohuiZeng/biglasso}{package biglasso}}.
+\href{https://github.com/pbreheny/biglasso}{package biglasso}}.
 It adds the possibility to train models with covariables and use many
 types of \code{FBM} (not only \code{double} ones).
 Yet, it only corresponds to \code{screen = "SSR"} (Sequential Strong Rules).
