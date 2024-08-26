@@ -138,3 +138,22 @@ test_that("as_scaling_fun() works", {
 })
 
 ################################################################################
+
+test_that("zero variance is caught", {
+
+  X <- FBM(20, 20, init = rnorm(400))
+  expect_no_error(big_randomSVD(X, big_scale()))
+
+  X[, 1] <- 0  # set a variable to have zero variance
+  # this is also catched as a warning in big_scale()
+  expect_error(expect_warning(big_randomSVD(X, big_scale()),
+                              "Some variables have zero scaling"),
+               "Some variables have zero scaling")
+
+  expect_error(big_randomSVD(X, custom_scaling),
+               "Some variables have zero scaling")
+  expect_error(big_randomSVD(X, custom_scaling, ncores = test_cores()),
+               "Some variables have zero scaling")
+})
+
+################################################################################

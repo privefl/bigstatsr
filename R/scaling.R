@@ -55,6 +55,8 @@ big_scale <- function(center = TRUE, scale = TRUE) {
       sds <- rep(1, m)
     }
 
+    if (any_near0(sds)) warning2(MSG_ZERO_SCALE)
+
     data.frame(center = means, scale = sds)
   }
 }
