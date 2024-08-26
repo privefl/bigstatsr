@@ -47,11 +47,11 @@
 #'
 #' @section Matrix parallelization:
 #'   Large matrix computations are made block-wise and won't be parallelized
-#'   in order to not have to reduce the size of these blocks.
-#'   Instead, you may use [Microsoft R Open](https://mran.microsoft.com/open/)
+#'   in order to not have to reduce the size of these blocks. Instead, you can use
+#'   the [MKL](https://forum.posit.co/t/intel-mkl-integration-to-r-on-windows/176071)
 #'   or OpenBLAS in order to accelerate these block matrix computations.
-#'   You can also control the number of cores used with
-#'   `bigparallelr::set_blas_ncores()`.
+#'   You can control the number of cores used by these optimized matrix libraries
+#'   with `bigparallelr::set_blas_ncores()`.
 #'
 #' @keywords internal
 #'
