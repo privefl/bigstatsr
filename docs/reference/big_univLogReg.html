@@ -19,7 +19,7 @@ Covariates can be added to correct for confounders."><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.16</span>
       </span>
     </div>
 
@@ -216,8 +216,8 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ p.value: num  0.74 0.957 0.63 0.161 0.589 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "transfo")=function (x)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "predict")=function (xtr)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3874 3877</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000029716a9e398&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3898 3901</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000014ddfbfbf28&gt; </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Estimate Std. Error    z value   Pr(&gt;|z|) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.0431720  0.1298854 -0.3323854  0.7395983 </span>
@@ -231,8 +231,8 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ score  : num  -0.144 0.02 -0.513 1.35 -0.605 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "transfo")=function (x)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "predict")=function (xtr)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3874 3877</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000029716a9e398&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3898 3901</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000014ddfbfbf28&gt; </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">covar</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Estimate  Std. Error     z value    Pr(&gt;|z|) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.01898835  0.13210843 -0.14373310  0.88571124 </span>
@@ -249,8 +249,8 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ score  : num  -0.6953 1.0379 0.0707 1.1269 0.3293 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "transfo")=function (x)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "predict")=function (xtr)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3874 3877</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000029716a9e398&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3898 3901</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000014ddfbfbf28&gt; </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">covar</span>, family <span class="op">=</span> <span class="st">"binomial"</span>,</span></span>
 <span class="r-in"><span>            subset <span class="op">=</span> <span class="va">ind.train</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Estimate Std. Error    z value   Pr(&gt;|z|) </span>

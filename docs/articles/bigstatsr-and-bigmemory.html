@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.16</span>
       </span>
     </div>
 
@@ -166,7 +166,7 @@ convert from one to the other (without copying the backingfile).</p>
 <code class="sourceCode R"><span><span class="co"># Create a temporary FBM</span></span>
 <span><span class="va">fbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">fbm</span><span class="op">$</span><span class="va">backingfile</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpOkaX2a\\file41ec645068c2.bk"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpUdr0fH\\file54fc15d93a92.bk"</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fbm</span><span class="op">[</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
@@ -185,7 +185,7 @@ convert from one to the other (without copying the backingfile).</p>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="va">fbm</span><span class="op">$</span><span class="fu">bm</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># Same backingfile</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html" class="external-link">dir.name</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/big.matrix.html" class="external-link">file.name</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "C:/Users/au639593/AppData/Local/Temp/RtmpOkaX2a/file41ec645068c2.bk"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "C:/Users/au639593/AppData/Local/Temp/RtmpUdr0fH/file54fc15d93a92.bk"</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Changing values of one changes the value of the other</span></span>
 <span><span class="va">bm</span><span class="op">[</span><span class="op">]</span></span></code></pre></div>
@@ -305,8 +305,8 @@ object in parallel algorithms:</p>
 <span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">bigmemory</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bigmemory/man/attach.big.matrix.html" class="external-link">attach.big.matrix</a></span><span class="op">(</span><span class="va">bm.desc</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="va">j</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1]  4.2004991 -1.0591208  2.6576308 -2.5993601 -0.1305354 -0.5252874</span></span>
-<span><span class="co">##  [7] -2.6281299  0.1974874 -4.4555715 -4.4542146</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] -4.0808142 -0.6354808 -3.0578644 -2.7322787  1.4110698 -1.4794974</span></span>
+<span><span class="co">##  [7]  0.9597882 -1.7836563  1.3499387  8.0163466</span></span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can directly pass FBMs, the address will be reattached automatically</span></span></code></pre></div>
 <p>In contrast, you can directly use FBMs in parallel algorithms, as the
@@ -316,8 +316,8 @@ bindings.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, .combine <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%dopar%</a></span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">j</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1]  4.2004991 -1.0591208  2.6576308 -2.5993601 -0.1305354 -0.5252874</span></span>
-<span><span class="co">##  [7] -2.6281299  0.1974874 -4.4555715 -4.4542146</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] -4.0808142 -0.6354808 -3.0578644 -2.7322787  1.4110698 -1.4794974</span></span>
+<span><span class="co">##  [7]  0.9597882 -1.7836563  1.3499387  8.0163466</span></span></code></pre>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -351,8 +351,8 @@ Rcpp.</p>
 <span id="cb27-23"><a href="#cb27-23" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">colsums_bm</span><span class="op">(</span><span class="va">bm</span><span class="op">@</span><span class="va">address</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1]  4.2004991 -1.0591208  2.6576308 -2.5993601 -0.1305354 -0.5252874</span></span>
-<span><span class="co">##  [7] -2.6281299  0.1974874 -4.4555715 -4.4542146</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] -4.0808142 -0.6354808 -3.0578644 -2.7322787  1.4110698 -1.4794974</span></span>
+<span><span class="co">##  [7]  0.9597882 -1.7836563  1.3499387  8.0163466</span></span></code></pre>
 <p>Now, let us do it for an <code>FBM</code>.</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
 <span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
@@ -376,8 +376,8 @@ Rcpp.</p>
 <span id="cb30-20"><a href="#cb30-20" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">colsums_fbm</span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1]  4.2004991 -1.0591208  2.6576308 -2.5993601 -0.1305354 -0.5252874</span></span>
-<span><span class="co">##  [7] -2.6281299  0.1974874 -4.4555715 -4.4542146</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] -4.0808142 -0.6354808 -3.0578644 -2.7322787  1.4110698 -1.4794974</span></span>
+<span><span class="co">##  [7]  0.9597882 -1.7836563  1.3499387  8.0163466</span></span></code></pre>
 <p>So, the main difference is that {bigmemory} uses
 <code>macc[j][i]</code> whereas <code>FBM</code> objects use the same
 accessor in C++ as standard Rcpp matrices, <code>macc(i, j)</code>. So,
@@ -409,7 +409,7 @@ subset of the FBM object. For example:</p>
 <span id="cb33-22"><a href="#cb33-22" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">colsums_fbm_sub</span><span class="op">(</span><span class="va">X</span>, <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1]  4.2004991 -1.0591208  2.6576308 -2.5993601 -0.1305354 -0.5252874</span></span></code></pre>
+<pre><code><span><span class="co">## [1] -4.0808142 -0.6354808 -3.0578644 -2.7322787  1.4110698 -1.4794974</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="apply-an-r-function">Apply an R function<a class="anchor" aria-label="anchor" href="#apply-an-r-function"></a>
@@ -424,7 +424,7 @@ subset of the FBM object. For example:</p>
 <span>  <span class="va">true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">m</span><span class="op">[</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    0.01    0.00    0.03</span></span></code></pre>
+<span><span class="co">##    0.03    0.00    0.03</span></span></code></pre>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Using package biganalytics (of the bigmemory family)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
@@ -433,7 +433,7 @@ subset of the FBM object. For example:</p>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    2.19    0.14    2.67</span></span></code></pre>
+<span><span class="co">##    2.09    0.12    2.34</span></span></code></pre>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test1</span>, <span class="va">true</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
@@ -453,7 +453,7 @@ functions to each block, and then combine the results.</p>
 <span>  <span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>, ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">m2</span><span class="op">)</span>, block.size <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    0.03    0.00    0.11</span></span></code></pre>
+<span><span class="co">##    0.06    0.03    0.09</span></span></code></pre>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test2</span>, <span class="va">true</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
@@ -465,7 +465,7 @@ functions to each block, and then combine the results.</p>
 <span>  <span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'plus'</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    0.03    0.00    0.05</span></span></code></pre>
+<span><span class="co">##    0.04    0.00    0.05</span></span></code></pre>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">test3</span><span class="op">)</span>, <span class="va">true</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
@@ -482,7 +482,7 @@ functions to each block, and then combine the results.</p>
 <span>  <span class="va">true</span> <span class="op">&lt;-</span> <span class="va">m</span><span class="op">[</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">a</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    0.29    0.00    0.36</span></span></code></pre>
+<span><span class="co">##    0.33    0.00    0.34</span></span></code></pre>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fbertran.github.io/bigalgebra/" class="external-link">bigalgebra</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning: package 'bigalgebra' was built under R version 4.2.3</span></span></code></pre>
@@ -491,7 +491,7 @@ functions to each block, and then combine the results.</p>
 <span>  <span class="va">test</span> <span class="op">&lt;-</span> <span class="va">m</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">a</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    0.30    0.00    0.32</span></span></code></pre>
+<span><span class="co">##    0.33    0.00    0.31</span></span></code></pre>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span><span class="op">]</span>, <span class="va">true</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
@@ -502,7 +502,7 @@ functions to each block, and then combine the results.</p>
 <span>  <span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_prodMat.html">big_prodMat</a></span><span class="op">(</span><span class="va">m2</span>, <span class="va">a</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    0.40    0.15    0.69</span></span></code></pre>
+<span><span class="co">##    0.41    0.15    0.64</span></span></code></pre>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">test2</span>, <span class="va">true</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
@@ -513,7 +513,7 @@ functions to each block, and then combine the results.</p>
 <span>  <span class="va">test3</span> <span class="op">&lt;-</span> <span class="va">m2</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">a</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    0.30    0.00    0.34</span></span></code></pre>
+<span><span class="co">##    0.31    0.00    0.31</span></span></code></pre>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">test3</span><span class="op">[</span><span class="op">]</span>, <span class="va">true</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
@@ -523,7 +523,7 @@ functions to each block, and then combine the results.</p>
 <span>  <span class="va">test4</span> <span class="op">&lt;-</span> <span class="va">m2</span><span class="op">$</span><span class="fu">bm</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">a</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    user  system elapsed </span></span>
-<span><span class="co">##    0.28    0.05    0.41</span></span></code></pre>
+<span><span class="co">##    0.30    0.05    0.35</span></span></code></pre>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">test4</span><span class="op">[</span><span class="op">]</span>, <span class="va">true</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.16</span>
       </span>
     </div>
 
@@ -181,8 +181,8 @@ a text file. <a href="https://github.com/privefl/bigreadr" class="external-link"
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">csv</span>, <span class="va">test</span><span class="op">$</span><span class="va">backingfile</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##     [,1]                                                                         </span></span>
-<span><span class="co">## csv "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpyOZp7N\\file3e2c547913a9.csv"</span></span>
-<span><span class="co">##     "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpyOZp7N\\file3e2c547913a9.bk"</span></span></code></pre>
+<span><span class="co">## csv "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpeuJKQN\\file30485001141c.csv"</span></span>
+<span><span class="co">##     "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpeuJKQN\\file30485001141c.bk"</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">test</span>, <span class="st">"fbm_names"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"</span></span>
@@ -218,7 +218,7 @@ a text file. <a href="https://github.com/privefl/bigreadr" class="external-link"
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">rds</span> <span class="op">&lt;-</span> <span class="va">test2</span><span class="op">$</span><span class="va">rds</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpyOZp7N\\file3e2c27242c3.rds"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpeuJKQN\\file3048541b5413.rds"</span></span></code></pre>
 <p>You need to read from the text file <strong>only once</strong>. To
 get the FBM object in another R session, just use
 <code><a href="../reference/big_attach.html">big_attach()</a></code>:</p>
