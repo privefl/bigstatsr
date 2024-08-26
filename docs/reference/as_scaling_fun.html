@@ -18,7 +18,7 @@ when you want to use your own precomputed center and scale."><!-- mathjax --><sc
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ when you want to use your own precomputed center and scale.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_scaling_fun</span><span class="op">(</span><span class="va">center.col</span>, <span class="va">scale.col</span>, ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">center.col</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as_scaling_fun</span><span class="op">(</span><span class="va">center.col</span>, <span class="va">scale.col</span>, ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">center.col</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -119,28 +119,28 @@ when you want to use your own precomputed center and scale.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">fun.scaling</span> <span class="op">&lt;-</span> <span class="fu">as_scaling_fun</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">fun.scaling</span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>  <span class="co"># first two parameters X and ind.row are not used here</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">fun.scaling</span> <span class="op">&lt;-</span> <span class="fu">as_scaling_fun</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">fun.scaling</span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>  <span class="co"># first two parameters X and ind.row are not used here</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   center scale</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      1     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      2     3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      3     4</span>
-<span class="r-in"><span class="va">fun.scaling2</span> <span class="op">&lt;-</span> <span class="fu">as_scaling_fun</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">7</span>, ind.col <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">fun.scaling2</span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">fun.scaling2</span> <span class="op">&lt;-</span> <span class="fu">as_scaling_fun</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">7</span>, ind.col <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">fun.scaling2</span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   center scale</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6      6     7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5      5     6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4      4     5</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fun</span> <span class="op">&lt;-</span> <span class="fu">as_scaling_fun</span><span class="op">(</span>center <span class="op">=</span> <span class="va">sc</span><span class="op">$</span><span class="va">center</span>, scale <span class="op">=</span> <span class="va">sc</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">obj.svd</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_randomSVD.html">big_randomSVD</a></span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="va">fun</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">obj.svd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_randomSVD.html">big_randomSVD</a></span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="fu"><a href="big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">obj.svd</span>, <span class="va">obj.svd2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fun</span> <span class="op">&lt;-</span> <span class="fu">as_scaling_fun</span><span class="op">(</span>center <span class="op">=</span> <span class="va">sc</span><span class="op">$</span><span class="va">center</span>, scale <span class="op">=</span> <span class="va">sc</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">obj.svd</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_randomSVD.html">big_randomSVD</a></span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="va">fun</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">obj.svd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_randomSVD.html">big_randomSVD</a></span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="fu"><a href="big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">obj.svd</span>, <span class="va">obj.svd2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

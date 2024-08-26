@@ -18,7 +18,7 @@ Filebacked Big Matrix."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -93,15 +93,15 @@ Filebacked Big Matrix.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_apply</span><span class="op">(</span>
-  <span class="va">X</span>,
-  <span class="va">a.FUN</span>,
-  a.combine <span class="op">=</span> <span class="cn">NULL</span>,
-  ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  ncores <span class="op">=</span> <span class="fl">1</span>,
-  block.size <span class="op">=</span> <span class="fu"><a href="block_size.html">block_size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="va">ncores</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_apply</span><span class="op">(</span></span>
+<span>  <span class="va">X</span>,</span>
+<span>  <span class="va">a.FUN</span>,</span>
+<span>  a.combine <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  block.size <span class="op">=</span> <span class="fu"><a href="block_size.html">block_size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="va">ncores</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -162,28 +162,28 @@ See also <a href="https://privefl.github.io/bigstatsr/articles/big-apply.html" c
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># get the means of each column</span></span>
-<span class="r-in"><span class="va">colMeans_sub</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">colmeans</span> <span class="op">&lt;-</span> <span class="fu">big_apply</span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="va">colMeans_sub</span>, a.combine <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># get the means of each column</span></span></span>
+<span class="r-in"><span><span class="va">colMeans_sub</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">colmeans</span> <span class="op">&lt;-</span> <span class="fu">big_apply</span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="va">colMeans_sub</span>, a.combine <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  num [1:4542] 1.32 1.59 1.53 1.63 1.09 ...</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># get the norms of each column</span></span>
-<span class="r-in"><span class="va">colNorms_sub</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">colnorms</span> <span class="op">&lt;-</span> <span class="fu">big_apply</span><span class="op">(</span><span class="va">X</span>, <span class="va">colNorms_sub</span>, a.combine <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># get the norms of each column</span></span></span>
+<span class="r-in"><span><span class="va">colNorms_sub</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">colnorms</span> <span class="op">&lt;-</span> <span class="fu">big_apply</span><span class="op">(</span><span class="va">X</span>, <span class="va">colNorms_sub</span>, a.combine <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  num [1:4542] 33.6 38.4 37.5 39.2 29.6 ...</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># get the sums of each row</span></span>
-<span class="r-in"><span class="co"># split along rows: need to change the "complete" `ind` parameter</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">rowsums</span> <span class="op">&lt;-</span> <span class="fu">big_apply</span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span>,</span>
-<span class="r-in">                         ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>,</span>
-<span class="r-in">                         block.size <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># get the sums of each row</span></span></span>
+<span class="r-in"><span><span class="co"># split along rows: need to change the "complete" `ind` parameter</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">rowsums</span> <span class="op">&lt;-</span> <span class="fu">big_apply</span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                         ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>,</span></span>
+<span class="r-in"><span>                         block.size <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  num [1:517] 6243 6168 6242 6249 6212 ...</span>
-<span class="r-in"><span class="co"># it is usually preferred to split along columns</span></span>
-<span class="r-in"><span class="co"># because matrices are stored by column.</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">rowsums2</span> <span class="op">&lt;-</span> <span class="fu">big_apply</span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span><span class="op">)</span>,</span>
-<span class="r-in">                          a.combine <span class="op">=</span> <span class="st">'plus'</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># it is usually preferred to split along columns</span></span></span>
+<span class="r-in"><span><span class="co"># because matrices are stored by column.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">rowsums2</span> <span class="op">&lt;-</span> <span class="fu">big_apply</span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                          a.combine <span class="op">=</span> <span class="st">'plus'</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  num [1:517] 6243 6168 6242 6249 6212 ...</span>
 </code></pre></div>
     </div>

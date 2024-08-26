@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -107,7 +107,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Fitting penalized regressions</h1>
-                        <h4 data-toc-skip class="author">Florian Privé</h4>
+                        <h4 data-toc-skip class="author">Florian
+Privé</h4>
             
             <h4 data-toc-skip class="date">May 22, 2019</h4>
       
@@ -118,78 +119,131 @@
 
     
     
-<p>In R package {bigstatsr}, you can fit efficient penalized (linear and logistic) regressions using functions <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>. Similar implementation of Cox regression is an area of future development.</p>
+<p>In R package {bigstatsr}, you can fit efficient penalized (linear and
+logistic) regressions using functions <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and
+<code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>. Similar implementation of Cox regression is
+an area of future development.</p>
 <p>You might want to look at the corresponding paper and cite it:</p>
-<p>Privé, Florian, Hugues Aschard, and Michael GB Blum. “Efficient implementation of penalized regression for genetic risk prediction.” Genetics (2019). [<a href="https://doi.org/10.1534/genetics.119.302019" class="external-link">Open access</a>]</p>
+<p>Privé, Florian, Hugues Aschard, and Michael GB Blum. “Efficient
+implementation of penalized regression for genetic risk prediction.”
+Genetics (2019). [<a href="https://doi.org/10.1534/genetics.119.302019" class="external-link">Open access</a>]</p>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h2>
-<p>To illustrate how to use <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>, let us use some simulated data:</p>
+<p>To illustrate how to use <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and
+<code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>, let us use some simulated data:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/" class="external-link">bigstatsr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-
-<span class="co"># simulating some data</span>
-<span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">530</span>
-<span class="va">M</span> <span class="op">&lt;-</span> <span class="fl">730</span>
-<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">M</span>, init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="va">M</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">20</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span>
-
-<span class="va">ind.train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">400</span><span class="op">)</span><span class="op">)</span>
-<span class="va">ind.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="va">ind.train</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/" class="external-link">bigstatsr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># simulating some data</span></span>
+<span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">530</span></span>
+<span><span class="va">M</span> <span class="op">&lt;-</span> <span class="fl">730</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">M</span>, init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="va">M</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">20</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ind.train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">400</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ind.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="va">ind.train</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="cross-model-selection-and-averaging-cmsa">Cross-Model Selection and Averaging (CMSA)<a class="anchor" aria-label="anchor" href="#cross-model-selection-and-averaging-cmsa"></a>
 </h2>
-<p>Functions <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code> automatically perform a procedure similar to cross-validation to choose hyper-parameters <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\alpha\)</span> of the elastic net regularization:</p>
+<p>Functions <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code>
+automatically perform a procedure similar to cross-validation to choose
+hyper-parameters <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\alpha\)</span> of the elastic net
+regularization:</p>
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/privefl/paper2-PRS/master/figures/simple-CMSA.png" alt='Illustration of one turn of the Cross-Model Selection and Averaging (CMSA) procedure. First, this procedure separates the outer training set (blue *and* red) in K folds (e.g. 10 folds). Secondly, in turn, each fold is considered as an inner validation set (red) and the other (K - 1) folds form an inner training set (blue). A "regularization path" of models is trained on the inner training set and the corresponding predictions (scores) for the inner validation set are computed. The model that minimizes the loss on the inner validation set is selected.  Finally, the K resulting models are averaged. We also use this procedure to derive an early stopping criterion so that the algorithm does not need to evaluate the whole regularization paths, making this procedure much faster than standard cross-validation.' width="70%"><p class="caption">
-Illustration of one turn of the Cross-Model Selection and Averaging (CMSA) procedure. First, this procedure separates the outer training set (blue <em>and</em> red) in K folds (e.g. 10 folds). Secondly, in turn, each fold is considered as an inner validation set (red) and the other (K - 1) folds form an inner training set (blue). A “regularization path” of models is trained on the inner training set and the corresponding predictions (scores) for the inner validation set are computed. The model that minimizes the loss on the inner validation set is selected. Finally, the K resulting models are averaged. We also use this procedure to derive an early stopping criterion so that the algorithm does not need to evaluate the whole regularization paths, making this procedure much faster than standard cross-validation.
+Illustration of one turn of the Cross-Model Selection and Averaging
+(CMSA) procedure. First, this procedure separates the outer training set
+(blue <em>and</em> red) in K folds (e.g. 10 folds). Secondly, in turn,
+each fold is considered as an inner validation set (red) and the other
+(K - 1) folds form an inner training set (blue). A “regularization path”
+of models is trained on the inner training set and the corresponding
+predictions (scores) for the inner validation set are computed. The
+model that minimizes the loss on the inner validation set is selected.
+Finally, the K resulting models are averaged. We also use this procedure
+to derive an early stopping criterion so that the algorithm does not
+need to evaluate the whole regularization paths, making this procedure
+much faster than standard cross-validation.
 </p>
 </div>
 <div class="section level3">
 <h3 id="sequences-of-hyper-parameters">Sequences of hyper-parameters<a class="anchor" aria-label="anchor" href="#sequences-of-hyper-parameters"></a>
 </h3>
 <ul>
-<li><p>The first (maximum) value of the lambda sequence (<span class="math inline">\(\lambda_{max}\)</span>) is computed automatically and corresponds to enough regularization to have no variable entering the model. Then, a sequence of <code>nlambda</code> (200 by default) values is used, equally spaces on a log-scale between <span class="math inline">\(\lambda_{max}\)</span> and <span class="math inline">\(\lambda_{max}\)</span> * <code>lambda.min</code>.</p></li>
-<li><p>A sequence of <span class="math inline">\(\alpha\)</span> can be defined by the user using <code>alphas</code> (default is <code>1</code>). We recommend to use a grid on a log-scale (e.g. <code>10^(-(0:4))</code>).</p></li>
+<li><p>The first (maximum) value of the lambda sequence (<span class="math inline">\(\lambda_{max}\)</span>) is computed automatically
+and corresponds to enough regularization to have no variable entering
+the model. Then, a sequence of <code>nlambda</code> (200 by default)
+values is used, equally spaces on a log-scale between <span class="math inline">\(\lambda_{max}\)</span> and <span class="math inline">\(\lambda_{max}\)</span> *
+<code>lambda.min</code>.</p></li>
+<li><p>A sequence of <span class="math inline">\(\alpha\)</span> can be
+defined by the user using <code>alphas</code> (default is
+<code>1</code>). We recommend to use a grid on a log-scale
+(e.g. <code>10^(-(0:4))</code>).</p></li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="stopping-criterion-for-regularization-path">Stopping criterion for regularization path<a class="anchor" aria-label="anchor" href="#stopping-criterion-for-regularization-path"></a>
 </h3>
-<p>There are three main reasons for which regularization paths can end:</p>
+<p>There are three main reasons for which regularization paths can
+end:</p>
 <ul>
-<li><p>the current model include too many non-zero variables (<code>dfmax</code> equals <code>50e3</code> by default, you can use <code>Inf</code>)</p></li>
-<li><p>the early stopping criterion is reached, which means that models are getting worse for the inner validation set; you can control this using <code>nlam.min</code> (the minimal number of <span class="math inline">\(\lambda\)</span> values to try before stopping) and <code>n.abort</code> (the number of <span class="math inline">\(\lambda\)</span> values for which the model is getting worse)</p></li>
-<li><p>the <code>nlambda</code> <span class="math inline">\(\lambda\)</span> values have been used; you might want to reduce <code>lambda.min</code> to go further down the path</p></li>
+<li><p>the current model include too many non-zero variables
+(<code>dfmax</code> equals <code>50e3</code> by default, you can use
+<code>Inf</code>)</p></li>
+<li><p>the early stopping criterion is reached, which means that models
+are getting worse for the inner validation set; you can control this
+using <code>nlam.min</code> (the minimal number of <span class="math inline">\(\lambda\)</span> values to try before stopping)
+and <code>n.abort</code> (the number of <span class="math inline">\(\lambda\)</span> values for which the model is
+getting worse)</p></li>
+<li><p>the <code>nlambda</code> <span class="math inline">\(\lambda\)</span> values have been used; you might
+want to reduce <code>lambda.min</code> to go further down the
+path</p></li>
 </ul>
-<p>It is possible to fit the <code>K</code> folds for each value of <code>alphas</code> in parallel using parameter <code>ncores</code>.</p>
-<p>You <em>should</em> check why regularization paths stop. For this, you can use both methods <code><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>. Let us make an example below.</p>
+<p>It is possible to fit the <code>K</code> folds for each value of
+<code>alphas</code> in parallel using parameter <code>ncores</code>.</p>
+<p>You <em>should</em> check why regularization paths stop. For this,
+you can use both methods <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>.
+Let us make an example below.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_spLinReg.html">big_spLinReg</a></span><span class="op">(</span><span class="va">X</span>, <span class="va">y</span><span class="op">[</span><span class="va">ind.train</span><span class="op">]</span>, ind.train <span class="op">=</span> <span class="va">ind.train</span>, K <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 x 9</span></span>
-<span class="co">##   alpha power_adaptive power_scale validation_loss intercept beta        nb_var</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>     1              0           1           <span style="text-decoration: underline;">1</span>794.     -<span style="color: #BB0000;">2.23</span> <span style="color: #949494;">&lt;dbl [730]&gt;</span>    369</span>
-<span class="co">## <span style="color: #949494;"># ... with 2 more variables: message &lt;list&gt;, all_conv &lt;lgl&gt;</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/big_spLinReg.html">big_spLinReg</a></span><span class="op">(</span><span class="va">X</span>, <span class="va">y</span><span class="op">[</span><span class="va">ind.train</span><span class="op">]</span>, ind.train <span class="op">=</span> <span class="va">ind.train</span>, K <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 9</span></span></span>
+<span><span class="co">##   alpha power_adaptive power_scale validation_loss intercept beta        nb_var</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>     1              0           1           <span style="text-decoration: underline;">1</span>794.     -<span style="color: #BB0000;">2.23</span> <span style="color: #949494;">&lt;dbl [730]&gt;</span>    369</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: message &lt;list&gt;, all_conv &lt;lgl&gt;</span></span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">$</span><span class="va">message</span></code></pre></div>
-<pre><code><span class="co">## [[1]]</span>
-<span class="co">## [1] "No more improvement" "No more improvement" "No more improvement"</span>
-<span class="co">## [4] "No more improvement"</span></code></pre>
-<p>Here, <code>"No more improvement"</code> means that the early stopping criterion has been reached. We can see the validation loss getting worse at some point:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">$</span><span class="va">message</span></span></code></pre></div>
+<pre><code><span><span class="co">## [[1]]</span></span>
+<span><span class="co">## [1] "No more improvement" "No more improvement" "No more improvement"</span></span>
+<span><span class="co">## [4] "No more improvement"</span></span></code></pre>
+<p>Here, <code>"No more improvement"</code> means that the early
+stopping criterion has been reached. We can see the validation loss
+getting worse at some point:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning: It is deprecated to specify `guide = FALSE` to remove a guide. Please</span>
-<span class="co">## use `guide = "none"` instead.</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in</span></span>
+<span><span class="co">## ggplot2 3.3.4.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use "none" instead.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">bigstatsr</span> package.</span></span>
+<span><span class="co">##   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/privefl/bigstatsr/issues&gt;</span>.</span></span>
+<span><span class="co">## <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
 <p><img src="penalized-regressions_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;"></p>
-<p>For small datasets, you might want to reduce the number of folds (<code>K</code> = 10 bu default). For large datasets, you might want to decrease <code>n.abort</code> (i.e. stop the regularization path quickly) as the path is usually much more smooth and fitting is more and more demanding as we advance along the regularization path (because more and more variables are used in the model).</p>
-<p>Use <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> to use the model for data in the test set:</p>
+<p>For small datasets, you might want to reduce the number of folds
+(<code>K</code> = 10 bu default). For large datasets, you might want to
+decrease <code>n.abort</code> (i.e. stop the regularization path
+quickly) as the path is usually much more smooth and fitting is more and
+more demanding as we advance along the regularization path (because more
+and more variables are used in the model).</p>
+<p>Use <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> to use the model for data in the test
+set:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">X</span>, <span class="va">ind.test</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pred</span>, <span class="va">y</span><span class="op">[</span><span class="va">ind.test</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">X</span>, <span class="va">ind.test</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pred</span>, <span class="va">y</span><span class="op">[</span><span class="va">ind.test</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="penalized-regressions_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -197,19 +251,62 @@ Illustration of one turn of the Cross-Model Selection and Averaging (CMSA) proce
 <h2 id="other-parameters">Other parameters<a class="anchor" aria-label="anchor" href="#other-parameters"></a>
 </h2>
 <ul>
-<li><p>You can add covariates as a standard R matrix using parameter <code>covar.train</code>; it will fit the model as if <code>X[ind.train, ]</code> and <code>covar.train</code> were <code>cbind</code>ed.</p></li>
-<li><p>You can now use different scalings with <code>power_scale</code> (1 is the default standardization, 0 corresponds to no scaling, and 0.5 to Pareto scaling), and some adaptive lasso with <code>power_adaptive</code> that, when &gt; 0, penalizes less variables with larger marginal effects. These two new parameters have been introduced in <a href="https://doi.org/10.1101/2021.02.05.21251061" class="external-link uri">https://doi.org/10.1101/2021.02.05.21251061</a>, and you can specify a vector of values, where the best value will be chosen within the CMSA procedure (same as with <code>alphas</code>). Note that these new parameters assume that you use lasso (i.e. <span class="math inline">\(\alpha = 1\)</span>).</p></li>
-<li><p>You can apply some multiplicative penalization factors (<code>pf.X</code> and <code>pf.covar</code>) to penalize variables differently (possibly no penalization for <em>some</em> variables using <code>0</code>).</p></li>
-<li><p>Functions <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and <code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code> are not deterministic because folds are chosen randomly. One way that should ensure reproducibility is to define your own folds using parameter <code>ind.sets</code> (using e.g. <code>sample(rep_len(1:K, length(ind.train)))</code>).</p></li>
-<li><p>You can add an offset to your model using <code>base.train</code> (on the linear scale, do not provide probabilities!).</p></li>
+<li><p>You can add covariates as a standard R matrix using parameter
+<code>covar.train</code>; it will fit the model as if
+<code>X[ind.train, ]</code> and <code>covar.train</code> were
+<code>cbind</code>ed.</p></li>
+<li><p>You can now use different scalings with <code>power_scale</code>
+(1 is the default standardization, 0 corresponds to no scaling, and 0.5
+to Pareto scaling), and some adaptive lasso with
+<code>power_adaptive</code> that, when &gt; 0, penalizes less variables
+with larger marginal effects. These two new parameters have been
+introduced in <a href="https://doi.org/10.1101/2021.02.05.21251061" class="external-link uri">https://doi.org/10.1101/2021.02.05.21251061</a>, and you can
+specify a vector of values, where the best value will be chosen within
+the CMSA procedure (same as with <code>alphas</code>). Note that these
+new parameters assume that you use lasso (i.e. <span class="math inline">\(\alpha = 1\)</span>).</p></li>
+<li><p>You can apply some multiplicative penalization factors
+(<code>pf.X</code> and <code>pf.covar</code>) to penalize variables
+differently (possibly no penalization for <em>some</em> variables using
+<code>0</code>).</p></li>
+<li><p>Functions <code><a href="../reference/big_spLinReg.html">big_spLinReg()</a></code> and
+<code><a href="../reference/big_spLogReg.html">big_spLogReg()</a></code> are not deterministic because folds are
+chosen randomly. One way that should ensure reproducibility is to define
+your own folds using parameter <code>ind.sets</code> (using
+e.g. <code>sample(rep_len(1:K, length(ind.train)))</code>).</p></li>
+<li><p>You can add an offset to your model using <code>base.train</code>
+(on the linear scale, do not provide probabilities!).</p></li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="time-and-memory-requirements-from-the-paper">Time and memory requirements (from the paper)<a class="anchor" aria-label="anchor" href="#time-and-memory-requirements-from-the-paper"></a>
 </h2>
-<p>The computation time of our PLR implementation mainly depends on the sample size and the number of candidate variables (variables that are included in the gradient descent). Indeed, the algorithm is composed of <strong>two steps</strong>: first, for each variable, the algorithm computes an univariate statistic that is used to decide if the variable is included in the model (for each value of <span class="math inline">\(\lambda\)</span>). This first step is very fast (if data can be quickly read from disk). Then, the algorithm iterates over a regularization path of decreasing values of <span class="math inline">\(\lambda\)</span>, which progressively enables variables to enter the model (see first figure). In the second step, the number of variables increases and computations stop when an early stopping criterion is reached (when prediction is getting worse on the corresponding validation set, see first figure).</p>
-<p>For outcomes that require lots of variables to predict, such as predicting height and when using huge datasets such as the UK Biobank, the algorithm might iterate over &gt;100,000 variables, which is computationally demanding. On the contrary, for outcomes that require only a few variables to predict, such as autoimmune diseases, the number of variables included in the model is much smaller so that fitting is very fast (only 13 min for 150K women of the UK Biobank for breast cancer).</p>
-<p><strong>Memory requirements are tightly linked to computation time.</strong> Indeed, variables are accessed in memory thanks to memory-mapping when they are used. When there is not enough memory left, the operating system (OS) frees some memory for new incoming variables. Yet, if too many variables are used in the gradient descent, the OS would regularly swap memory between disk and RAM, severely slowing down computations.</p>
+<p>The computation time of our PLR implementation mainly depends on the
+sample size and the number of candidate variables (variables that are
+included in the gradient descent). Indeed, the algorithm is composed of
+<strong>two steps</strong>: first, for each variable, the algorithm
+computes an univariate statistic that is used to decide if the variable
+is included in the model (for each value of <span class="math inline">\(\lambda\)</span>). This first step is very fast
+(if data can be quickly read from disk). Then, the algorithm iterates
+over a regularization path of decreasing values of <span class="math inline">\(\lambda\)</span>, which progressively enables
+variables to enter the model (see first figure). In the second step, the
+number of variables increases and computations stop when an early
+stopping criterion is reached (when prediction is getting worse on the
+corresponding validation set, see first figure).</p>
+<p>For outcomes that require lots of variables to predict, such as
+predicting height and when using huge datasets such as the UK Biobank,
+the algorithm might iterate over &gt;100,000 variables, which is
+computationally demanding. On the contrary, for outcomes that require
+only a few variables to predict, such as autoimmune diseases, the number
+of variables included in the model is much smaller so that fitting is
+very fast (only 13 min for 150K women of the UK Biobank for breast
+cancer).</p>
+<p><strong>Memory requirements are tightly linked to computation
+time.</strong> Indeed, variables are accessed in memory thanks to
+memory-mapping when they are used. When there is not enough memory left,
+the operating system (OS) frees some memory for new incoming variables.
+Yet, if too many variables are used in the gradient descent, the OS
+would regularly swap memory between disk and RAM, severely slowing down
+computations.</p>
 </div>
   </div>
 

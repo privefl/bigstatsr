@@ -18,7 +18,7 @@ after applying a particular scaling to it."><!-- mathjax --><script src="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -93,16 +93,17 @@ after applying a particular scaling to it.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_crossprodSelf</span><span class="op">(</span>
-  <span class="va">X</span>,
-  fun.scaling <span class="op">=</span> <span class="fu"><a href="big_scale.html">big_scale</a></span><span class="op">(</span>center <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
-  ind.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  block.size <span class="op">=</span> <span class="fu"><a href="block_size.html">block_size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for FBM,missing</span>
-<span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_crossprodSelf</span><span class="op">(</span></span>
+<span>  <span class="va">X</span>,</span>
+<span>  fun.scaling <span class="op">=</span> <span class="fu"><a href="big_scale.html">big_scale</a></span><span class="op">(</span>center <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  ind.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  block.size <span class="op">=</span> <span class="fu"><a href="block_size.html">block_size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"FBM.dir"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for FBM,missing</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -134,6 +135,12 @@ If not specified, all columns are used. <strong>Don't use negative indices.</str
 Default uses <a href="block_size.html">block_size</a>.</p></dd>
 
 
+<dt>backingfile</dt>
+<dd><p>Path to the file storing the FBM data on disk.
+<strong>An extension ".bk" will be automatically added.</strong> Default stores in the
+temporary directory, which you can change using global option "FBM.dir".</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A 'double' FBM.</p></dd>
 
@@ -154,11 +161,11 @@ Default uses <a href="block_size.html">block_size</a>.</p></dd>
     
 
 <p>Large matrix computations are made block-wise and won't be parallelized
-in order to not have to reduce the size of these blocks.
-Instead, you may use <a href="https://mran.microsoft.com/open/" class="external-link">Microsoft R Open</a>
+in order to not have to reduce the size of these blocks. Instead, you can use
+the <a href="https://forum.posit.co/t/intel-mkl-integration-to-r-on-windows/176071" class="external-link">MKL</a>
 or OpenBLAS in order to accelerate these block matrix computations.
-You can also control the number of cores used with
-<code><a href="https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html" class="external-link">bigparallelr::set_blas_ncores()</a></code>.</p>
+You can control the number of cores used by these optimized matrix libraries
+with <code><a href="https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html" class="external-link">bigparallelr::set_blas_ncores()</a></code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -167,33 +174,33 @@ You can also control the number of cores used with
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">13</span>, <span class="fl">17</span>, init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">221</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># No scaling</span></span>
-<span class="r-in"><span class="va">K1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">K1</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">K1</span>, <span class="va">true</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">13</span>, <span class="fl">17</span>, init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">221</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># No scaling</span></span></span>
+<span class="r-in"><span><span class="va">K1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">K1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix" "array" </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">K1</span>, <span class="va">true</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">K2</span> <span class="op">&lt;-</span> <span class="fu">big_crossprodSelf</span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">K2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">K2</span> <span class="op">&lt;-</span> <span class="fu">big_crossprodSelf</span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">K2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FBM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"package")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bigstatsr"</span>
-<span class="r-in"><span class="va">K2</span><span class="op">$</span><span class="va">backingfile</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpAlUR66\\file23844b4a3212.bk"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">K2</span><span class="op">[</span><span class="op">]</span>, <span class="va">true</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">K2</span><span class="op">$</span><span class="va">backingfile</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmp8iJRs3\\file282068331aa7.bk"</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">K2</span><span class="op">[</span><span class="op">]</span>, <span class="va">true</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># big_crossprodSelf() provides some scaling and subsetting</span></span>
-<span class="r-in"><span class="co"># Example using only half of the data:</span></span>
-<span class="r-in"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">K3</span> <span class="op">&lt;-</span> <span class="fu">big_crossprodSelf</span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="fu"><a href="big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span>, ind.row <span class="op">=</span> <span class="va">ind</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">true2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">K3</span><span class="op">[</span><span class="op">]</span>, <span class="va">true2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># big_crossprodSelf() provides some scaling and subsetting</span></span></span>
+<span class="r-in"><span><span class="co"># Example using only half of the data:</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">K3</span> <span class="op">&lt;-</span> <span class="fu">big_crossprodSelf</span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="fu"><a href="big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span>, ind.row <span class="op">=</span> <span class="va">ind</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">true2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">K3</span><span class="op">[</span><span class="op">]</span>, <span class="va">true2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>

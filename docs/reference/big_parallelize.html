@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -91,14 +91,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_parallelize</span><span class="op">(</span>
-  <span class="va">X</span>,
-  <span class="va">p.FUN</span>,
-  p.combine <span class="op">=</span> <span class="cn">NULL</span>,
-  ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html" class="external-link">nb_cores</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_parallelize</span><span class="op">(</span></span>
+<span>  <span class="va">X</span>,</span>
+<span>  <span class="va">p.FUN</span>,</span>
+<span>  p.combine <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html" class="external-link">nb_cores</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -158,59 +158,59 @@ part and finally combine the results.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>  <span class="co"># CRAN is super slow when parallelism.</span></span>
-<span class="r-in">  <span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co">### Computation on all the matrix</span></span>
-<span class="r-in">  <span class="va">true</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_colstats.html">big_colstats</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>  <span class="co"># CRAN is super slow when parallelism.</span></span></span>
+<span class="r-in"><span>  <span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co">### Computation on all the matrix</span></span></span>
+<span class="r-in"><span>  <span class="va">true</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_colstats.html">big_colstats</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in as.list.environment(parent.frame()):</span> object 'X' not found</span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="va">big_colstats_sub</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="fu"><a href="big_colstats.html">big_colstats</a></span><span class="op">(</span><span class="va">X</span>, ind.col <span class="op">=</span> <span class="va">ind</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span></span>
-<span class="r-in">  <span class="co"># 1. the computation is split along all the columns</span></span>
-<span class="r-in">  <span class="co"># 2. for each part the computation is done, using `big_colstats`</span></span>
-<span class="r-in">  <span class="co"># 3. the results (data.frames) are combined via `rbind`.</span></span>
-<span class="r-in">  <span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">big_parallelize</span><span class="op">(</span><span class="va">X</span>, p.FUN <span class="op">=</span> <span class="va">big_colstats_sub</span>,</span>
-<span class="r-in">                          p.combine <span class="op">=</span> <span class="st">'rbind'</span>, ncores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">big_colstats_sub</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="big_colstats.html">big_colstats</a></span><span class="op">(</span><span class="va">X</span>, ind.col <span class="op">=</span> <span class="va">ind</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="co"># 1. the computation is split along all the columns</span></span></span>
+<span class="r-in"><span>  <span class="co"># 2. for each part the computation is done, using `big_colstats`</span></span></span>
+<span class="r-in"><span>  <span class="co"># 3. the results (data.frames) are combined via `rbind`.</span></span></span>
+<span class="r-in"><span>  <span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">big_parallelize</span><span class="op">(</span><span class="va">X</span>, p.FUN <span class="op">=</span> <span class="va">big_colstats_sub</span>,</span></span>
+<span class="r-in"><span>                          p.combine <span class="op">=</span> <span class="st">'rbind'</span>, ncores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in ncol(x):</span> object 'X' not found</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">true</span><span class="op">)</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">true</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in all.equal(test, true):</span> object 'test' not found</span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co">### Computation on a part of the matrix</span></span>
-<span class="r-in">  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co">### Computation on a part of the matrix</span></span></span>
+<span class="r-in"><span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in nrow(X):</span> object 'X' not found</span>
-<span class="r-in">  <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
+<span class="r-in"><span>  <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in ncol(X):</span> object 'X' not found</span>
-<span class="r-in">  <span class="va">rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># sort to provide some locality in accesses</span></span>
+<span class="r-in"><span>  <span class="va">rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># sort to provide some locality in accesses</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in sample(n, n/2):</span> object 'n' not found</span>
-<span class="r-in">  <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># idem</span></span>
+<span class="r-in"><span>  <span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co"># idem</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in sample(m, m/2):</span> object 'm' not found</span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="va">true2</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_colstats.html">big_colstats</a></span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="va">rows</span>, ind.col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">true2</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_colstats.html">big_colstats</a></span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="va">rows</span>, ind.col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in as.list.environment(parent.frame()):</span> object 'X' not found</span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="va">big_colstats_sub2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="fu"><a href="big_colstats.html">big_colstats</a></span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="va">rows</span>, ind.col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="va">ind</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span></span>
-<span class="r-in">  <span class="co"># This doesn't work because, by default, the computation is spread</span></span>
-<span class="r-in">  <span class="co"># along all columns. We must explictly specify the `ind` parameter.</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="fu">big_parallelize</span><span class="op">(</span><span class="va">X</span>, p.FUN <span class="op">=</span> <span class="va">big_colstats_sub2</span>,</span>
-<span class="r-in">                           p.combine <span class="op">=</span> <span class="st">'rbind'</span>, ncores <span class="op">=</span> <span class="fl">2</span>,</span>
-<span class="r-in">                           rows <span class="op">=</span> <span class="va">rows</span>, cols <span class="op">=</span> <span class="va">cols</span><span class="op">)</span>,</span>
-<span class="r-in">           error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">big_colstats_sub2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="big_colstats.html">big_colstats</a></span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="va">rows</span>, ind.col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="va">ind</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="co"># This doesn't work because, by default, the computation is spread</span></span></span>
+<span class="r-in"><span>  <span class="co"># along all columns. We must explictly specify the `ind` parameter.</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="fu">big_parallelize</span><span class="op">(</span><span class="va">X</span>, p.FUN <span class="op">=</span> <span class="va">big_colstats_sub2</span>,</span></span>
+<span class="r-in"><span>                           p.combine <span class="op">=</span> <span class="st">'rbind'</span>, ncores <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>                           rows <span class="op">=</span> <span class="va">rows</span>, cols <span class="op">=</span> <span class="va">cols</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>           error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in ncol(x):</span> object 'X' not found</span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># This now works, using `ind = seq_along(cols)`.</span></span>
-<span class="r-in">  <span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu">big_parallelize</span><span class="op">(</span><span class="va">X</span>, p.FUN <span class="op">=</span> <span class="va">big_colstats_sub2</span>,</span>
-<span class="r-in">                           p.combine <span class="op">=</span> <span class="st">'rbind'</span>, ncores <span class="op">=</span> <span class="fl">2</span>,</span>
-<span class="r-in">                           ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span>,</span>
-<span class="r-in">                           rows <span class="op">=</span> <span class="va">rows</span>, cols <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># This now works, using `ind = seq_along(cols)`.</span></span></span>
+<span class="r-in"><span>  <span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu">big_parallelize</span><span class="op">(</span><span class="va">X</span>, p.FUN <span class="op">=</span> <span class="va">big_colstats_sub2</span>,</span></span>
+<span class="r-in"><span>                           p.combine <span class="op">=</span> <span class="st">'rbind'</span>, ncores <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>                           ind <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                           rows <span class="op">=</span> <span class="va">rows</span>, cols <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in assert_one_int(total_len):</span> object 'cols' not found</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test2</span>, <span class="va">true2</span><span class="op">)</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test2</span>, <span class="va">true2</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in all.equal(test2, true2):</span> object 'test2' not found</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

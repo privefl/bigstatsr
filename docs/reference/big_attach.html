@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -91,9 +91,9 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_attach</span><span class="op">(</span><span class="va">rdsfile</span><span class="op">)</span>
-
-<span class="fu">big_attachExtdata</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_attach</span><span class="op">(</span><span class="va">rdsfile</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">big_attachExtdata</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -111,13 +111,13 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># temporary FBM</span></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rdsfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="sub_bk.html">sub_bk</a></span><span class="op">(</span><span class="va">X</span><span class="op">$</span><span class="va">backingfile</span>, <span class="st">".rds"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu">big_attach</span><span class="op">(</span><span class="va">rdsfile</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="op">]</span>, <span class="va">X2</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># temporary FBM</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rdsfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="sub_bk.html">sub_bk</a></span><span class="op">(</span><span class="va">X</span><span class="op">$</span><span class="va">backingfile</span>, <span class="st">".rds"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu">big_attach</span><span class="op">(</span><span class="va">rdsfile</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="op">]</span>, <span class="va">X2</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>

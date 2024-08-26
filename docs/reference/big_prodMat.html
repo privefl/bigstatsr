@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -166,43 +166,43 @@ Default uses <a href="block_size.html">block_size</a>.</p></dd>
     
 
 <p>Large matrix computations are made block-wise and won't be parallelized
-in order to not have to reduce the size of these blocks.
-Instead, you may use <a href="https://mran.microsoft.com/open/" class="external-link">Microsoft R Open</a>
+in order to not have to reduce the size of these blocks. Instead, you can use
+the <a href="https://forum.posit.co/t/intel-mkl-integration-to-r-on-windows/176071" class="external-link">MKL</a>
 or OpenBLAS in order to accelerate these block matrix computations.
-You can also control the number of cores used with
-<code><a href="https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html" class="external-link">bigparallelr::set_blas_ncores()</a></code>.</p>
+You can control the number of cores used by these optimized matrix libraries
+with <code><a href="https://rdrr.io/pkg/bigparallelr/man/get_blas_ncores.html" class="external-link">bigparallelr::set_blas_ncores()</a></code>.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span>, <span class="fl">10</span><span class="op">)</span>; <span class="va">A</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">big_prodMat</span><span class="op">(</span><span class="va">X</span>, <span class="va">A</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">true</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">A</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">true</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span>, <span class="fl">10</span><span class="op">)</span>; <span class="va">A</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">big_prodMat</span><span class="op">(</span><span class="va">X</span>, <span class="va">A</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">true</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">A</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">true</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_copy.html">big_copy</a></span><span class="op">(</span><span class="va">X</span>, type <span class="op">=</span> <span class="st">"double"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">X2</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">A</span>, <span class="va">true</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_copy.html">big_copy</a></span><span class="op">(</span><span class="va">X</span>, type <span class="op">=</span> <span class="st">"double"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">X2</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">A</span>, <span class="va">true</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># subsetting</span></span>
-<span class="r-in"><span class="va">ind.row</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ind.col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu">big_prodMat</span><span class="op">(</span><span class="va">X</span>, <span class="va">A</span>, <span class="va">ind.row</span>, <span class="va">ind.col</span><span class="op">)</span>,</span>
-<span class="r-in">         error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># subsetting</span></span></span>
+<span class="r-in"><span><span class="va">ind.row</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ind.col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu">big_prodMat</span><span class="op">(</span><span class="va">X</span>, <span class="va">A</span>, <span class="va">ind.row</span>, <span class="va">ind.col</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;simpleError: Incompatibility between dimensions.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'ind.col' and 'rows_along(A.col)' should have the same length.&gt;</span>
-<span class="r-in"><span class="co"># returns an error. You need to use the subset of A:</span></span>
-<span class="r-in"><span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu">big_prodMat</span><span class="op">(</span><span class="va">X</span>, <span class="va">A</span><span class="op">[</span><span class="va">ind.col</span>, <span class="op">]</span>, <span class="va">ind.row</span>, <span class="va">ind.col</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">true2</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="va">ind.row</span>, <span class="va">ind.col</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">A</span><span class="op">[</span><span class="va">ind.col</span>, <span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test2</span>, <span class="va">true2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># returns an error. You need to use the subset of A:</span></span></span>
+<span class="r-in"><span><span class="va">test2</span> <span class="op">&lt;-</span> <span class="fu">big_prodMat</span><span class="op">(</span><span class="va">X</span>, <span class="va">A</span><span class="op">[</span><span class="va">ind.col</span>, <span class="op">]</span>, <span class="va">ind.row</span>, <span class="va">ind.col</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">true2</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="va">ind.row</span>, <span class="va">ind.col</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">A</span><span class="op">[</span><span class="va">ind.col</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">test2</span>, <span class="va">true2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

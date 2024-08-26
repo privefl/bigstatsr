@@ -18,7 +18,7 @@ This should also work for any matrix-like object."><!-- mathjax --><script src="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -93,15 +93,15 @@ This should also work for any matrix-like object.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_copy</span><span class="op">(</span>
-  <span class="va">X</span>,
-  ind.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"FBM.dir"</span><span class="op">)</span><span class="op">)</span>,
-  block.size <span class="op">=</span> <span class="fu"><a href="block_size.html">block_size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ind.row</span><span class="op">)</span><span class="op">)</span>,
-  is_read_only <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_copy</span><span class="op">(</span></span>
+<span>  <span class="va">X</span>,</span>
+<span>  ind.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"FBM.dir"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  block.size <span class="op">=</span> <span class="fu"><a href="block_size.html">block_size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ind.row</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  is_read_only <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -134,9 +134,9 @@ It is used in <a href="https://goo.gl/pHCCmo" class="external-link">package <str
 
 
 <dt>backingfile</dt>
-<dd><p>Path to the file storing the Big Matrix on disk.
-<strong>An extension ".bk" will be automatically added.</strong>
-Default stores in the temporary directory.</p></dd>
+<dd><p>Path to the file storing the FBM data on disk.
+<strong>An extension ".bk" will be automatically added.</strong> Default stores in the
+temporary directory, which you can change using global option "FBM.dir".</p></dd>
 
 
 <dt>block.size</dt>
@@ -157,8 +157,8 @@ Default uses <a href="block_size.html">block_size</a>.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span>, init <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span><span class="op">]</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span>, init <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    1   11   21   31   41   51   61   71   81    91</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]    2   12   22   32   42   52   62   72   82    92</span>
@@ -170,18 +170,18 @@ Default uses <a href="block_size.html">block_size</a>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    8   18   28   38   48   58   68   78   88    98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]    9   19   29   39   49   59   69   79   89    99</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   10   20   30   40   50   60   70   80   90   100</span>
-<span class="r-in"><span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu">big_copy</span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X2</span><span class="op">[</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu">big_copy</span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X2</span><span class="op">[</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    1   11   21   31   41   51   61   71   81    91</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    2   12   22   32   42   52   62   72   82    92</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    3   13   23   33   43   53   63   73   83    93</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,]    4   14   24   34   44   54   64   74   84    94</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5,]    5   15   25   35   45   55   65   75   85    95</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">101</span><span class="op">:</span><span class="fl">200</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X3</span> <span class="op">&lt;-</span> <span class="fu">big_copy</span><span class="op">(</span><span class="va">mat</span>, type <span class="op">=</span> <span class="st">"double"</span><span class="op">)</span>  <span class="co"># as_FBM() would be faster here</span></span>
-<span class="r-in"><span class="va">X3</span><span class="op">[</span><span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">101</span><span class="op">:</span><span class="fl">200</span>, <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X3</span> <span class="op">&lt;-</span> <span class="fu">big_copy</span><span class="op">(</span><span class="va">mat</span>, type <span class="op">=</span> <span class="st">"double"</span><span class="op">)</span>  <span class="co"># as_FBM() would be faster here</span></span></span>
+<span class="r-in"><span><span class="va">X3</span><span class="op">[</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]  101  111  121  131  141  151  161  171  181   191</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]  102  112  122  132  142  152  162  172  182   192</span>
@@ -193,20 +193,20 @@ Default uses <a href="block_size.html">block_size</a>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]  108  118  128  138  148  158  168  178  188   198</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]  109  119  129  139  149  159  169  179  189   199</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,]  110  120  130  140  150  160  170  180  190   200</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">X.code</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">X.code</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">X.code</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">X.code</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FBM.code256"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"package")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bigstatsr"</span>
-<span class="r-in"><span class="va">X2.code</span> <span class="op">&lt;-</span> <span class="fu">big_copy</span><span class="op">(</span><span class="va">X.code</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">X2.code</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">X2.code</span> <span class="op">&lt;-</span> <span class="fu">big_copy</span><span class="op">(</span><span class="va">X.code</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">X2.code</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FBM.code256"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"package")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bigstatsr"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">X.code</span><span class="op">[</span><span class="op">]</span>, <span class="va">X2.code</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">X.code</span><span class="op">[</span><span class="op">]</span>, <span class="va">X2.code</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

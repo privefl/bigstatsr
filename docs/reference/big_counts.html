@@ -18,7 +18,7 @@ FBM.code256."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -93,12 +93,12 @@ FBM.code256."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_counts</span><span class="op">(</span>
-  <span class="va">X.code</span>,
-  ind.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X.code</span><span class="op">)</span>,
-  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X.code</span><span class="op">)</span>,
-  byrow <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_counts</span><span class="op">(</span></span>
+<span>  <span class="va">X.code</span>,</span>
+<span>  ind.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X.code</span><span class="op">)</span>,</span>
+<span>  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X.code</span><span class="op">)</span>,</span>
+<span>  byrow <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -137,35 +137,35 @@ Matrix of one million columns, you will create a matrix of nearly 1GB!</strong><
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>  <span class="co"># big_counts() is available for class FBM.code256 only</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>  <span class="co"># big_counts() is available for class FBM.code256 only</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FBM.code256"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"package")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bigstatsr"</span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    2    2    0    2    1    1    2    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    1    2    1    2    2    1    2    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    2    1    1    2    0    1    2    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,]    2    2    0    2    0    1    2    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5,]    1    2    2    2    0    0    1    2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># by columns</span></span>
-<span class="r-in"><span class="fu">big_counts</span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, ind.col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># by columns</span></span></span>
+<span class="r-in"><span><span class="fu">big_counts</span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, ind.col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0       0    0    2    0    3    1    0    4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       2    1    2    0    1    4    1    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       3    4    1    5    1    0    4    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;NA&gt;    0    0    0    0    0    0    0    0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># by rows</span></span>
-<span class="r-in"><span class="fu">big_counts</span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, ind.col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># by rows</span></span></span>
+<span class="r-in"><span><span class="fu">big_counts</span><span class="op">(</span><span class="va">X</span>, ind.row <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, ind.col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4] [,5]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0       2    1    2    3    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       2    3    3    1    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       4    4    3    4    4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;NA&gt;    0    0    0    0    0</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

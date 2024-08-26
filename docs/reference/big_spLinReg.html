@@ -18,7 +18,7 @@ Big Matrix. Covariables can be added (/!\ penalized by default /!\)."><!-- mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -93,28 +93,28 @@ Big Matrix. Covariables can be added (/!\ penalized by default /!\).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_spLinReg</span><span class="op">(</span>
-  <span class="va">X</span>,
-  <span class="va">y.train</span>,
-  ind.train <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  covar.train <span class="op">=</span> <span class="cn">NULL</span>,
-  base.train <span class="op">=</span> <span class="cn">NULL</span>,
-  pf.X <span class="op">=</span> <span class="cn">NULL</span>,
-  pf.covar <span class="op">=</span> <span class="cn">NULL</span>,
-  alphas <span class="op">=</span> <span class="fl">1</span>,
-  power_scale <span class="op">=</span> <span class="fl">1</span>,
-  power_adaptive <span class="op">=</span> <span class="fl">0</span>,
-  K <span class="op">=</span> <span class="fl">10</span>,
-  ind.sets <span class="op">=</span> <span class="cn">NULL</span>,
-  nlambda <span class="op">=</span> <span class="fl">200</span>,
-  nlam.min <span class="op">=</span> <span class="fl">50</span>,
-  n.abort <span class="op">=</span> <span class="fl">10</span>,
-  dfmax <span class="op">=</span> <span class="fl">50000</span>,
-  warn <span class="op">=</span> <span class="cn">TRUE</span>,
-  ncores <span class="op">=</span> <span class="fl">1</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_spLinReg</span><span class="op">(</span></span>
+<span>  <span class="va">X</span>,</span>
+<span>  <span class="va">y.train</span>,</span>
+<span>  ind.train <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  covar.train <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  base.train <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pf.X <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pf.covar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  alphas <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  power_scale <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  power_adaptive <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  K <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  ind.sets <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nlambda <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  nlam.min <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  n.abort <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  dfmax <span class="op">=</span> <span class="fl">50000</span>,</span>
+<span>  warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -266,7 +266,7 @@ Default value is <code>1e-5</code>.</p></dd>
     <div id="details">
     <h2>Details</h2>
     <p><strong>This is a modified version of one function of
-<a href="https://github.com/YaohuiZeng/biglasso" class="external-link">package biglasso</a></strong>.
+<a href="https://github.com/pbreheny/biglasso" class="external-link">package biglasso</a></strong>.
 It adds the possibility to train models with covariables and use many
 types of <code>FBM</code> (not only <code>double</code> ones).
 Yet, it only corresponds to <code>screen = "SSR"</code> (Sequential Strong Rules).</p>
@@ -290,15 +290,15 @@ Simon, N., Taylor, J. and Tibshirani, R. J. (2012),
 Strong rules for discarding predictors in lasso-type problems.
 Journal of the Royal Statistical Society:
 Series B (Statistical Methodology), 74: 245-266.
-doi: <a href="https://doi.org/10.1111/j.1467-9868.2011.01004.x" class="external-link">10.1111/j.1467-9868.2011.01004.x</a>
+<a href="https://doi.org/10.1111/j.1467-9868.2011.01004.x" class="external-link">doi:10.1111/j.1467-9868.2011.01004.x</a>
 .</p>
 <p>Zeng, Y., and Breheny, P. (2017). The biglasso Package: A Memory- and
 Computation-Efficient Solver for Lasso Model Fitting with Big Data in R.
-doi: <a href="https://doi.org/10.32614/RJ-2021-001" class="external-link">10.32614/RJ-2021-001</a>
+<a href="https://doi.org/10.32614/RJ-2021-001" class="external-link">doi:10.32614/RJ-2021-001</a>
 .</p>
 <p>Privé, F., Aschard, H., and Blum, M. G.B. (2019). Efficient implementation of
 penalized regression for genetic risk prediction. Genetics, 212: 65-74.
-doi: <a href="https://doi.org/10.1534/genetics.119.302019" class="external-link">10.1534/genetics.119.302019</a>
+<a href="https://doi.org/10.1534/genetics.119.302019" class="external-link">doi:10.1534/genetics.119.302019</a>
 .</p>
     </div>
     <div id="see-also">
@@ -308,51 +308,55 @@ doi: <a href="https://doi.org/10.1534/genetics.119.302019" class="external-link"
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># simulating some data</span></span>
-<span class="r-in"><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">230</span></span>
-<span class="r-in"><span class="va">M</span> <span class="op">&lt;-</span> <span class="fl">730</span></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="FBM-class.html">FBM</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">M</span>, init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="va">M</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">covar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="va">N</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ind.train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ind.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="va">ind.train</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># fitting model for multiple lambdas and alphas</span></span>
-<span class="r-in"><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">big_spLinReg</span><span class="op">(</span><span class="va">X</span>, <span class="va">y</span><span class="op">[</span><span class="va">ind.train</span><span class="op">]</span>, ind.train <span class="op">=</span> <span class="va">ind.train</span>,</span>
-<span class="r-in">                     covar.train <span class="op">=</span> <span class="va">covar</span><span class="op">[</span><span class="va">ind.train</span>, <span class="op">]</span>,</span>
-<span class="r-in">                     alphas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span>, K <span class="op">=</span> <span class="fl">3</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># peek at the models</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>It is deprecated to specify `guide = FALSE` to remove a guide. Please use `guide = "none"` instead.</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># simulating some data</span></span></span>
+<span class="r-in"><span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">230</span></span></span>
+<span class="r-in"><span><span class="va">M</span> <span class="op">&lt;-</span> <span class="fl">730</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="FBM-class.html">FBM</a></span><span class="op">(</span><span class="va">N</span>, <span class="va">M</span>, init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="va">M</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">covar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="va">N</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ind.train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ind.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="va">ind.train</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># fitting model for multiple lambdas and alphas</span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">big_spLinReg</span><span class="op">(</span><span class="va">X</span>, <span class="va">y</span><span class="op">[</span><span class="va">ind.train</span><span class="op">]</span>, ind.train <span class="op">=</span> <span class="va">ind.train</span>,</span></span>
+<span class="r-in"><span>                     covar.train <span class="op">=</span> <span class="va">covar</span><span class="op">[</span><span class="va">ind.train</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>                     alphas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span>, K <span class="op">=</span> <span class="fl">3</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># peek at the models</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> ggplot2 3.3.4.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use "none" instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">bigstatsr</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/privefl/bigstatsr/issues&gt;</span>.</span>
 <span class="r-plt img"><img src="big_spLinReg-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 x 9</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   alpha power_adaptive power_scale validation_loss intercept beta        nb_var</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>   1                0           1            1.56   -<span style="color: #BB0000;">0.069</span><span style="color: #BB0000; text-decoration: underline;">8</span> <span style="color: #949494;">&lt;dbl [733]&gt;</span>    171</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>   0.1              0           1          207.     -<span style="color: #BB0000;">1.18</span>   <span style="color: #949494;">&lt;dbl [733]&gt;</span>    718</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ... with 2 more variables: message &lt;list&gt;, all_conv &lt;lgl&gt;</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">message</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: message &lt;list&gt;, all_conv &lt;lgl&gt;</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">message</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "No more improvement" "No more improvement" "No more improvement"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Complete path" "Complete path" "Complete path"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># prediction for other data -&gt; only the best alpha is used</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test</span>, best.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 x 9</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># prediction for other data -&gt; only the best alpha is used</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test</span>, best.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   alpha power_adaptive power_scale validation_loss intercept beta        nb_var</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1              0           1            1.56   -<span style="color: #BB0000;">0.069</span><span style="color: #BB0000; text-decoration: underline;">8</span> <span style="color: #949494;">&lt;dbl [733]&gt;</span>    171</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ... with 2 more variables: message &lt;list&gt;, all_conv &lt;lgl&gt;</span></span>
-<span class="r-in"><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">X</span>, ind.row <span class="op">=</span> <span class="va">ind.test</span>, covar.row <span class="op">=</span> <span class="va">covar</span><span class="op">[</span><span class="va">ind.test</span>, <span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pred</span>, <span class="va">y</span><span class="op">[</span><span class="va">ind.test</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: message &lt;list&gt;, all_conv &lt;lgl&gt;</span></span>
+<span class="r-in"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">X</span>, ind.row <span class="op">=</span> <span class="va">ind.test</span>, covar.row <span class="op">=</span> <span class="va">covar</span><span class="op">[</span><span class="va">ind.test</span>, <span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pred</span>, <span class="va">y</span><span class="op">[</span><span class="va">ind.test</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="big_spLinReg-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

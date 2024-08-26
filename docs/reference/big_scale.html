@@ -18,7 +18,7 @@ the fun.scaling parameter of some functions of this package."><!-- mathjax --><s
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ the <strong><code>fun.scaling</code></strong> parameter of some functions of thi
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_scale</span><span class="op">(</span>center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_scale</span><span class="op">(</span>center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -129,30 +129,30 @@ and <code>big_univLinReg</code> to get betas (and then inverse them).</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># No scaling</span></span>
-<span class="r-in"><span class="va">big_noscale</span> <span class="op">&lt;-</span> <span class="fu">big_scale</span><span class="op">(</span>center <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">big_noscale</span><span class="op">)</span> <span class="co"># big_scale returns a new function</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># No scaling</span></span></span>
+<span class="r-in"><span><span class="va">big_noscale</span> <span class="op">&lt;-</span> <span class="fu">big_scale</span><span class="op">(</span>center <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">big_noscale</span><span class="op">)</span> <span class="co"># big_scale returns a new function</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "function"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_noscale</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_noscale</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	4542 obs. of  2 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ center: num  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ scale : num  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-in"><span class="va">big_noscale2</span> <span class="op">&lt;-</span> <span class="fu">big_scale</span><span class="op">(</span>center <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_noscale2</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span> <span class="co"># you can't scale without centering</span></span>
+<span class="r-in"><span><span class="va">big_noscale2</span> <span class="op">&lt;-</span> <span class="fu">big_scale</span><span class="op">(</span>center <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_noscale2</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span> <span class="co"># you can't scale without centering</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	4542 obs. of  2 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ center: num  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ scale : num  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Centering</span></span>
-<span class="r-in"><span class="va">big_center</span> <span class="op">&lt;-</span> <span class="fu">big_scale</span><span class="op">(</span>scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_center</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Centering</span></span></span>
+<span class="r-in"><span><span class="va">big_center</span> <span class="op">&lt;-</span> <span class="fu">big_scale</span><span class="op">(</span>scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_center</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	4542 obs. of  2 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ center: num  1.32 1.59 1.53 1.63 1.09 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ scale : num  1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-in"><span class="co"># + scaling</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_scale</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># + scaling</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_scale</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	4542 obs. of  2 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ center: num  1.32 1.59 1.53 1.63 1.09 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ scale : num  0.679 0.569 0.627 0.558 0.719 ...</span>

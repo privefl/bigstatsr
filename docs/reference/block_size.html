@@ -19,7 +19,7 @@ getOption("bigstatsr.block.sizeGB") GigaBytes (default is 1GB).'><!-- mathjax --
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@ size <code>n</code> x <code>block.size</code> takes less memory than
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">block_size</span><span class="op">(</span><span class="va">n</span>, ncores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">block_size</span><span class="op">(</span><span class="va">n</span>, ncores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -117,11 +117,11 @@ size <code>n</code> x <code>block.size</code> takes less memory than
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">block_size</span><span class="op">(</span><span class="fl">1e3</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">block_size</span><span class="op">(</span><span class="fl">1e3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 134217</span>
-<span class="r-in"><span class="fu">block_size</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">block_size</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 134</span>
-<span class="r-in"><span class="fu">block_size</span><span class="op">(</span><span class="fl">1e6</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">block_size</span><span class="op">(</span><span class="fl">1e6</span>, <span class="fl">6</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 22</span>
 </code></pre></div>
     </div>

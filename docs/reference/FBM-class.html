@@ -20,7 +20,7 @@ Convert a matrix (or a data frame) to an FBM."><!-- mathjax --><script src="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -97,22 +97,22 @@ on disk. This is very similar to Filebacked Big Matrices provided by the
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">FBM</span><span class="op">(</span>
-  <span class="va">nrow</span>,
-  <span class="va">ncol</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"double"</span>, <span class="st">"float"</span>, <span class="st">"integer"</span>, <span class="st">"unsigned short"</span>, <span class="st">"unsigned char"</span>, <span class="st">"raw"</span><span class="op">)</span>,
-  init <span class="op">=</span> <span class="cn">NULL</span>,
-  backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"FBM.dir"</span><span class="op">)</span><span class="op">)</span>,
-  create_bk <span class="op">=</span> <span class="cn">TRUE</span>,
-  is_read_only <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">as_FBM</span><span class="op">(</span>
-  <span class="va">x</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"double"</span>, <span class="st">"float"</span>, <span class="st">"integer"</span>, <span class="st">"unsigned short"</span>, <span class="st">"unsigned char"</span>, <span class="st">"raw"</span><span class="op">)</span>,
-  backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"FBM.dir"</span><span class="op">)</span><span class="op">)</span>,
-  is_read_only <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">FBM</span><span class="op">(</span></span>
+<span>  <span class="va">nrow</span>,</span>
+<span>  <span class="va">ncol</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"double"</span>, <span class="st">"float"</span>, <span class="st">"integer"</span>, <span class="st">"unsigned short"</span>, <span class="st">"unsigned char"</span>, <span class="st">"raw"</span><span class="op">)</span>,</span>
+<span>  init <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"FBM.dir"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  create_bk <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  is_read_only <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">as_FBM</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"double"</span>, <span class="st">"float"</span>, <span class="st">"integer"</span>, <span class="st">"unsigned short"</span>, <span class="st">"unsigned char"</span>, <span class="st">"raw"</span><span class="op">)</span>,</span>
+<span>  backingfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"FBM.dir"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  is_read_only <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -144,9 +144,9 @@ of elements of the FBM. <strong>Default doesn't initialize the matrix.</strong><
 
 
 <dt>backingfile</dt>
-<dd><p>Path to the file storing the Big Matrix on disk.
-<strong>An extension ".bk" will be automatically added.</strong>
-Default stores in the temporary directory.</p></dd>
+<dd><p>Path to the file storing the FBM data on disk.
+<strong>An extension ".bk" will be automatically added.</strong> Default stores in the
+temporary directory, which you can change using global option "FBM.dir".</p></dd>
 
 
 <dt>create_bk</dt>
@@ -187,9 +187,9 @@ data of the FBM</p></li>
 <li><p><code>add_columns(&lt;ncol_add&gt;)</code>: Add some columns to the FBM by appending the
 backingfile with some data. Returns the FBM invisibly.</p></li>
 <li><p><code>$bm()</code>: Get this object as a <code>filebacked.big.matrix</code>
-to be used by package bigmemory.</p></li>
+to be used by package {bigmemory}.</p></li>
 <li><p><code>$bm.desc()</code>: Get this object as a <code>filebacked.big.matrix</code> descriptor
-to be used by package bigmemory.</p></li>
+to be used by package {bigmemory}.</p></li>
 <li><p><code>$check_write_permissions()</code>: Error if the FBM is read-only.</p></li>
 </ul></div>
     <div id="see-also">
@@ -199,27 +199,27 @@ to be used by package bigmemory.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X_from_mat</span> <span class="op">&lt;-</span> <span class="fu">as_FBM</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## You can save this object in an .rds file to use it in another session</span></span>
-<span class="r-in"><span class="va">X_from_mat</span><span class="op">$</span><span class="va">is_saved</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X_from_mat</span> <span class="op">&lt;-</span> <span class="fu">as_FBM</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## You can save this object in an .rds file to use it in another session</span></span></span>
+<span class="r-in"><span><span class="va">X_from_mat</span><span class="op">$</span><span class="va">is_saved</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span class="va">X_from_mat</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">X_from_mat</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A Filebacked Big Matrix of type 'double' with 2 rows and 2 columns.</span>
-<span class="r-in"><span class="va">X_from_mat</span><span class="op">$</span><span class="va">is_saved</span></span>
+<span class="r-in"><span><span class="va">X_from_mat</span><span class="op">$</span><span class="va">is_saved</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="op">(</span><span class="va">rds</span> <span class="op">&lt;-</span> <span class="va">X_from_mat</span><span class="op">$</span><span class="va">rds</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpAlUR66\\file2384481561eb.rds"</span>
-<span class="r-in"><span class="co">## Use big_attach() to load the FBM object in another session</span></span>
-<span class="r-in"><span class="va">X_from_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attach</a></span><span class="op">(</span><span class="va">rds</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Standard accessors</span></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu">FBM</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">rds</span> <span class="op">&lt;-</span> <span class="va">X_from_mat</span><span class="op">$</span><span class="va">rds</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmp8iJRs3\\file282026607d73.rds"</span>
+<span class="r-in"><span><span class="co">## Use big_attach() to load the FBM object in another session</span></span></span>
+<span class="r-in"><span><span class="va">X_from_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attach</a></span><span class="op">(</span><span class="va">rds</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Standard accessors</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu">FBM</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "double"</span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             [,1]        [,2]       [,3]       [,4]       [,5]        [,6]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] -0.6251050 -0.42650040  2.0085900 -0.2615856 -2.0828546 -1.17887937</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,] -0.8751468 -1.70309521 -1.8544195  1.7879817 -1.4171540  0.49559328</span>
@@ -231,12 +231,12 @@ to be used by package bigmemory.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]  0.3748210 -0.06230052 -1.8689043 -0.3132811 -0.4211682 -0.04652522</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]  2.3833280  1.61961511 -1.2069966 -0.9221298 -0.9583552 -0.65859154</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,] -0.4639130  1.24621141  1.8972581 -0.2564806  0.2491163  1.60258408</span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1  2  3  4  5  6  7  8  9 10</span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>  <span class="co"># not recommended for large matrices</span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>  <span class="co"># not recommended for large matrices</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1 11 21 31 41 51 61 71 81 91</span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   11   21   31   41   51   61   71   81   91</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   12   22   32   42   52   62   72   82   92</span>
@@ -248,7 +248,7 @@ to be used by package bigmemory.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]   18   28   38   48   58   68   78   88   98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]   19   29   39   49   59   69   79   89   99</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   20   30   40   50   60   70   80   90  100</span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3] [,4] [,5]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    1   21   41   61   81</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]    2   22   42   62   82</span>
@@ -260,9 +260,9 @@ to be used by package bigmemory.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    8   28   48   68   88</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]    9   29   49   69   89</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   10   30   50   70   90</span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span><span class="op">]</span>  <span class="co"># access as standard R matrix</span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="op">]</span>  <span class="co"># access as standard R matrix</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   NA   11   21   31   41   51   61   71   81    91</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]    2   NA   22   32   42   52   62   72   82    92</span>
@@ -274,13 +274,13 @@ to be used by package bigmemory.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    8   18   28   38   48   58   68   NA   88    98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]    9   19   29   39   49   59   69   79   NA    99</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   10   20   30   40   50   60   70   80   90    NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu">FBM</span><span class="op">(</span><span class="fl">150</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">iris</span>   <span class="co">## you can replace with a df (but factors -&gt; integers)</span></span>
-<span class="r-in"><span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu">as_FBM</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="op">]</span>, <span class="va">X2</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu">FBM</span><span class="op">(</span><span class="fl">150</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">iris</span>   <span class="co">## you can replace with a df (but factors -&gt; integers)</span></span></span>
+<span class="r-in"><span><span class="va">X2</span> <span class="op">&lt;-</span> <span class="fu">as_FBM</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">X</span><span class="op">[</span><span class="op">]</span>, <span class="va">X2</span><span class="op">[</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

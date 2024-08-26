@@ -19,7 +19,7 @@ for the regularization parameter lambda."><!-- mathjax --><script src="https://c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -95,33 +95,33 @@ for the regularization parameter lambda.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">COPY_biglasso_main</span><span class="op">(</span>
-  <span class="va">X</span>,
-  <span class="va">y.train</span>,
-  <span class="va">ind.train</span>,
-  <span class="va">ind.col</span>,
-  <span class="va">covar.train</span>,
-  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gaussian"</span>, <span class="st">"binomial"</span><span class="op">)</span>,
-  alphas <span class="op">=</span> <span class="fl">1</span>,
-  K <span class="op">=</span> <span class="fl">10</span>,
-  ind.sets <span class="op">=</span> <span class="cn">NULL</span>,
-  nlambda <span class="op">=</span> <span class="fl">200</span>,
-  lambda.min.ratio <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="va">p</span><span class="op">)</span> <span class="fl">1e-04</span> <span class="kw">else</span> <span class="fl">0.001</span>,
-  nlam.min <span class="op">=</span> <span class="fl">50</span>,
-  n.abort <span class="op">=</span> <span class="fl">10</span>,
-  base.train <span class="op">=</span> <span class="cn">NULL</span>,
-  pf.X <span class="op">=</span> <span class="cn">NULL</span>,
-  pf.covar <span class="op">=</span> <span class="cn">NULL</span>,
-  eps <span class="op">=</span> <span class="fl">1e-05</span>,
-  max.iter <span class="op">=</span> <span class="fl">1000</span>,
-  dfmax <span class="op">=</span> <span class="fl">50000</span>,
-  lambda.min <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="va">p</span><span class="op">)</span> <span class="fl">1e-04</span> <span class="kw">else</span> <span class="fl">0.001</span>,
-  power_scale <span class="op">=</span> <span class="fl">1</span>,
-  power_adaptive <span class="op">=</span> <span class="fl">0</span>,
-  return.all <span class="op">=</span> <span class="cn">FALSE</span>,
-  warn <span class="op">=</span> <span class="cn">TRUE</span>,
-  ncores <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">COPY_biglasso_main</span><span class="op">(</span></span>
+<span>  <span class="va">X</span>,</span>
+<span>  <span class="va">y.train</span>,</span>
+<span>  <span class="va">ind.train</span>,</span>
+<span>  <span class="va">ind.col</span>,</span>
+<span>  <span class="va">covar.train</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gaussian"</span>, <span class="st">"binomial"</span><span class="op">)</span>,</span>
+<span>  alphas <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  K <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  ind.sets <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nlambda <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  lambda.min.ratio <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="va">p</span><span class="op">)</span> <span class="fl">1e-04</span> <span class="kw">else</span> <span class="fl">0.001</span>,</span>
+<span>  nlam.min <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  n.abort <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  base.train <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pf.X <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pf.covar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  eps <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  max.iter <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  dfmax <span class="op">=</span> <span class="fl">50000</span>,</span>
+<span>  lambda.min <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="va">p</span><span class="op">)</span> <span class="fl">1e-04</span> <span class="kw">else</span> <span class="fl">0.001</span>,</span>
+<span>  power_scale <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  power_adaptive <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  return.all <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">

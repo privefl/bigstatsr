@@ -19,7 +19,7 @@ Covariates can be added to correct for confounders."><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -95,16 +95,16 @@ Covariates can be added to correct for confounders.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">big_univLogReg</span><span class="op">(</span>
-  <span class="va">X</span>,
-  <span class="va">y01.train</span>,
-  ind.train <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,
-  covar.train <span class="op">=</span> <span class="cn">NULL</span>,
-  tol <span class="op">=</span> <span class="fl">1e-08</span>,
-  maxiter <span class="op">=</span> <span class="fl">20</span>,
-  ncores <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">big_univLogReg</span><span class="op">(</span></span>
+<span>  <span class="va">X</span>,</span>
+<span>  <span class="va">y01.train</span>,</span>
+<span>  ind.train <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">rows_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  ind.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/seq-dim.html" class="external-link">cols_along</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,</span>
+<span>  covar.train <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tol <span class="op">=</span> <span class="fl">1e-08</span>,</span>
+<span>  maxiter <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -178,36 +178,36 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y01</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, size <span class="op">=</span> <span class="va">n</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">covar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">X1</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="co"># only first column of the Filebacked Big Matrix</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Without covar</span></span>
-<span class="r-in"><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">big_univLogReg</span><span class="op">(</span><span class="va">X</span>, <span class="va">y01</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## new class `mhtest`</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="big_attach.html">big_attachExtdata</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y01</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, size <span class="op">=</span> <span class="va">n</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">covar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">X1</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="co"># only first column of the Filebacked Big Matrix</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Without covar</span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">big_univLogReg</span><span class="op">(</span><span class="va">X</span>, <span class="va">y01</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## new class `mhtest`</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mhtest"     "data.frame"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">test</span>, <span class="st">"transfo"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">test</span>, <span class="st">"transfo"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x)  .Primitive("abs")</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">test</span>, <span class="st">"predict"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">test</span>, <span class="st">"predict"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function(xtr) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lpval &lt;- stats::pnorm(xtr, lower.tail = FALSE, log.p = TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     (log(2) + lpval) / log(10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: base&gt;</span>
-<span class="r-in"><span class="co">## plot results</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## plot results</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="big_univLogReg-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">test</span>, type <span class="op">=</span> <span class="st">"Volcano"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">test</span>, type <span class="op">=</span> <span class="st">"Volcano"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="big_univLogReg-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="co">## To get p-values associated with the test</span></span>
-<span class="r-in"><span class="va">test</span><span class="op">$</span><span class="va">p.value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">test</span>, log10 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## To get p-values associated with the test</span></span></span>
+<span class="r-in"><span><span class="va">test</span><span class="op">$</span><span class="va">p.value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">test</span>, log10 <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes 'mhtest' and 'data.frame':	4542 obs. of  5 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ estim  : num  -0.04317 0.00839 -0.06761 0.22375 -0.06625 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ std.err: num  0.13 0.155 0.141 0.16 0.123 ...</span>
@@ -216,14 +216,14 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ p.value: num  0.74 0.957 0.63 0.161 0.589 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "transfo")=function (x)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "predict")=function (xtr)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int  105 15 108 3 15 3 3869 3872</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x00000000144a9130&gt; </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3874 3877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000029716a9e398&gt; </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Estimate Std. Error    z value   Pr(&gt;|z|) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.0431720  0.1298854 -0.3323854  0.7395983 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># With all data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_univLogReg</span><span class="op">(</span><span class="va">X</span>, <span class="va">y01</span>, covar.train <span class="op">=</span> <span class="va">covar</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With all data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_univLogReg</span><span class="op">(</span><span class="va">X</span>, <span class="va">y01</span>, covar.train <span class="op">=</span> <span class="va">covar</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes 'mhtest' and 'data.frame':	4542 obs. of  4 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ estim  : num  -0.01899 0.00312 -0.07282 0.21818 -0.07458 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ std.err: num  0.132 0.156 0.142 0.162 0.123 ...</span>
@@ -231,17 +231,17 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ score  : num  -0.144 0.02 -0.513 1.35 -0.605 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "transfo")=function (x)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "predict")=function (xtr)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int  105 15 108 3 15 3 3869 3872</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x00000000144a9130&gt; </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">covar</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3874 3877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000029716a9e398&gt; </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">covar</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Estimate  Std. Error     z value    Pr(&gt;|z|) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.01898835  0.13210843 -0.14373310  0.88571124 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># With only half of the data</span></span>
-<span class="r-in"><span class="va">ind.train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_univLogReg</span><span class="op">(</span><span class="va">X</span>, <span class="va">y01</span><span class="op">[</span><span class="va">ind.train</span><span class="op">]</span>,</span>
-<span class="r-in">                   covar.train <span class="op">=</span> <span class="va">covar</span><span class="op">[</span><span class="va">ind.train</span>, <span class="op">]</span>,</span>
-<span class="r-in">                   ind.train <span class="op">=</span> <span class="va">ind.train</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With only half of the data</span></span></span>
+<span class="r-in"><span><span class="va">ind.train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">big_univLogReg</span><span class="op">(</span><span class="va">X</span>, <span class="va">y01</span><span class="op">[</span><span class="va">ind.train</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                   covar.train <span class="op">=</span> <span class="va">covar</span><span class="op">[</span><span class="va">ind.train</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>                   ind.train <span class="op">=</span> <span class="va">ind.train</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes 'mhtest' and 'data.frame':	4542 obs. of  4 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ estim  : num  -0.1311 0.2373 0.0139 0.2585 0.0569 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ std.err: num  0.189 0.229 0.197 0.229 0.173 ...</span>
@@ -249,10 +249,10 @@ If it can't converge either, all corresponding estimations are set to <code>NA</
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ score  : num  -0.6953 1.0379 0.0707 1.1269 0.3293 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "transfo")=function (x)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "predict")=function (xtr)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int  105 15 108 3 15 3 3869 3872</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x00000000144a9130&gt; </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">covar</span>, family <span class="op">=</span> <span class="st">"binomial"</span>,</span>
-<span class="r-in">            subset <span class="op">=</span> <span class="va">ind.train</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "srcref")= 'srcref' int [1:8] 105 15 108 3 15 3 3874 3877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x0000029716a9e398&gt; </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">covar</span>, family <span class="op">=</span> <span class="st">"binomial"</span>,</span></span>
+<span class="r-in"><span>            subset <span class="op">=</span> <span class="va">ind.train</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Estimate Std. Error    z value   Pr(&gt;|z|) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.1311374  0.1886059 -0.6952985  0.4868683 </span>
 </code></pre></div>

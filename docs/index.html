@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bigstatsr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.14</span>
       </span>
     </div>
 
@@ -122,41 +122,41 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># For the CRAN version</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"bigstatsr"</span><span class="op">)</span>
-<span class="co"># For the latest version</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"privefl/bigstatsr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># For the CRAN version</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"bigstatsr"</span><span class="op">)</span></span>
+<span><span class="co"># For the latest version</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"privefl/bigstatsr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="small-example">Small example<a class="anchor" aria-label="anchor" href="#small-example"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/" class="external-link">bigstatsr</a></span><span class="op">)</span>
-
-<span class="co"># Create the data on disk</span>
-<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">5e3</span>, <span class="fl">10e3</span>, backingfile <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span>
-<span class="co"># If you open a new session you can do</span>
-<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/big_attach.html">big_attach</a></span><span class="op">(</span><span class="st">"test.rds"</span><span class="op">)</span>
-
-<span class="co"># Fill it by chunks with random values</span>
-<span class="va">U</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>; <span class="va">U</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">U</span><span class="op">)</span><span class="op">)</span>
-<span class="va">V</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>; <span class="va">V</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span>
-<span class="va">NCORES</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html" class="external-link">nb_cores</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co"># X = U V^T + E</span>
-<span class="fu"><a href="reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">U</span>, <span class="va">V</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">tcrossprod</a></span><span class="op">(</span><span class="va">U</span>, <span class="va">V</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ind</span><span class="op">)</span><span class="op">)</span>
-  <span class="cn">NULL</span>  <span class="co">## you don't want to return anything here</span>
-<span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>, ncores <span class="op">=</span> <span class="va">NCORES</span>, U <span class="op">=</span> <span class="va">U</span>, V <span class="op">=</span> <span class="va">V</span><span class="op">)</span>
-<span class="co"># Check some values</span>
-<span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-
-<span class="co"># Compute first 10 PCs</span>
-<span class="va">obj.svd</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/big_randomSVD.html">big_randomSVD</a></span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="fu"><a href="reference/big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span>, 
-                         k <span class="op">=</span> <span class="fl">10</span>, ncores <span class="op">=</span> <span class="va">NCORES</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">obj.svd</span><span class="op">)</span>
-
-<span class="co"># Cleanup</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".bk"</span>, <span class="st">".rds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://privefl.github.io/bigstatsr/" class="external-link">bigstatsr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create the data on disk</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/FBM-class.html">FBM</a></span><span class="op">(</span><span class="fl">5e3</span>, <span class="fl">10e3</span>, backingfile <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># If you open a new session you can do</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/big_attach.html">big_attach</a></span><span class="op">(</span><span class="st">"test.rds"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Fill it by chunks with random values</span></span>
+<span><span class="va">U</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>; <span class="va">U</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">U</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">V</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>; <span class="va">V</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">NCORES</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bigparallelr/man/nb_cores.html" class="external-link">nb_cores</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># X = U V^T + E</span></span>
+<span><span class="fu"><a href="reference/big_apply.html">big_apply</a></span><span class="op">(</span><span class="va">X</span>, a.FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">X</span>, <span class="va">ind</span>, <span class="va">U</span>, <span class="va">V</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">X</span><span class="op">[</span>, <span class="va">ind</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">tcrossprod</a></span><span class="op">(</span><span class="va">U</span>, <span class="va">V</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ind</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="cn">NULL</span>  <span class="co">## you don't want to return anything here</span></span>
+<span><span class="op">}</span>, a.combine <span class="op">=</span> <span class="st">'c'</span>, ncores <span class="op">=</span> <span class="va">NCORES</span>, U <span class="op">=</span> <span class="va">U</span>, V <span class="op">=</span> <span class="va">V</span><span class="op">)</span></span>
+<span><span class="co"># Check some values</span></span>
+<span><span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Compute first 10 PCs</span></span>
+<span><span class="va">obj.svd</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/big_randomSVD.html">big_randomSVD</a></span><span class="op">(</span><span class="va">X</span>, fun.scaling <span class="op">=</span> <span class="fu"><a href="reference/big_scale.html">big_scale</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>                         k <span class="op">=</span> <span class="fl">10</span>, ncores <span class="op">=</span> <span class="va">NCORES</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">obj.svd</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Cleanup</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".bk"</span>, <span class="st">".rds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Learn more with this <a href="https://privefl.github.io/R-presentation/bigstatsr.html" class="external-link">introduction to package {bigstatsr}</a>.</p>
 <p>If you want to use Rcpp code, look at <a href="https://privefl.github.io/R-presentation/Rcpp.html" class="external-link">this tutorial</a>.</p>
 </div>
