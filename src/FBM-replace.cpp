@@ -118,11 +118,7 @@ bool do_warn_downcast() {
   Function get_option = base["getOption"];
   SEXP warn = get_option("bigstatsr.downcast.warning");
 
-  if (TYPEOF(warn) == LGLSXP) {
-    return as<LogicalVector>(warn)[0];
-  } else {
-    return true;  // but this shoud not happen
-  }
+  return Rf_isNull(warn) ? true : Rf_asLogical(warn);
 }
 
 /******************************************************************************/
