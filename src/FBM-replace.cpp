@@ -20,7 +20,7 @@ inline double int2dbl(int x) {
 }
 
 inline int dbl2int(double x) {
-  return (x != x) ? NA_INTEGER : x;
+  return (x != x) ? NA_INTEGER : static_cast<int>(x);
 }
 
 template<typename T_IN, typename T_OUT>
