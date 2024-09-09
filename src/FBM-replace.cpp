@@ -20,7 +20,7 @@ inline double int2dbl(int x) {
 }
 
 inline int dbl2int(double x) {
-  return (x != x) ? NA_INTEGER : static_cast<int>(x);
+  return (x != x || x == R_PosInf) ? NA_INTEGER : x;
 }
 
 template<typename T_IN, typename T_OUT>
@@ -180,10 +180,9 @@ NumericVector check_conv_dbl2int(NumericVector nv) {
   if (do_warn_downcast()) {
 
     size_t n = nv.size();
-    int test;
 
     for (size_t i = 0; i < n; i++) {
-      test = nv[i];
+      int test = dbl2int(nv[i]);
       if (test != nv[i] && !R_IsNA(nv[i])) {
         warning("%s (%s -> %s)\n  %s",
                 "At least one value changed", nv[i], test,
@@ -201,10 +200,9 @@ NumericVector check_conv_dbl2flt(NumericVector nv) {
   if (do_warn_downcast()) {
 
     size_t n = nv.size();
-    float test;
 
     for (size_t i = 0; i < n; i++) {
-      test = nv[i];
+      float test = nv[i];
       if (test != nv[i] && !std::isnan(test)) {
         warning("%s (%s -> %s)\n  %s",
                 "At least one value changed", nv[i], test,
