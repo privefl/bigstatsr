@@ -19,6 +19,10 @@ inline double int2dbl(int x) {
   return (x == NA_INTEGER) ? NA_REAL : x;
 }
 
+inline int dbl2int(double x) {
+  return (x != x) ? NA_INTEGER : x;
+}
+
 template<typename T_IN, typename T_OUT>
 inline T_OUT identity(T_IN x) {
   return x;
@@ -79,7 +83,7 @@ case 4:                                                                        \
   case INTSXP: REPLACE(int, as<IntegerVector>(VEC))                            \
   case REALSXP: {                                                              \
     NumericVector vec2 = check_conv_dbl2int(VEC);                              \
-    REPLACE(int, vec2)                                                         \
+    REPLACE_CONV(int, vec2, dbl2int)                                           \
   }                                                                            \
   default: stop("R type '%s' is not supported.", Rf_type2char(r_type));        \
   }                                                                            \
@@ -88,7 +92,7 @@ case 6:                                                                        \
   case RAWSXP: REPLACE(float, as<RawVector>(VEC))                              \
   case LGLSXP: REPLACE_CONV(float, as<LogicalVector>(VEC), int2flt)            \
   case INTSXP: {                                                               \
-    IntegerVector vec2 = check_conv<INTSXP,  float>(VEC);                      \
+    IntegerVector vec2 = check_conv<INTSXP, float>(VEC);                       \
     REPLACE_CONV(float, vec2, int2flt)                                         \
   }                                                                            \
   case REALSXP: {                                                              \

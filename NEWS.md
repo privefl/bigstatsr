@@ -1,3 +1,7 @@
+## bigstatsr 1.6.0
+
+- Fix conversion from `NA_real` to FBM type integer on new Macs.
+
 ## bigstatsr 1.5.14
 
 - Error when variables with a zero scaling are used in e.g. `big_randomSVD()` and `big_crossprodSelf()` (#52).

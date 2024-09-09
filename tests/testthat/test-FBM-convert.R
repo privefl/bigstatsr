@@ -52,7 +52,7 @@ test_that("Downcast warnings work", {
 
   for (gen in c("scalar", "vector", "matrix")) {
 
-    # From double
+    ## From double
     x1 <- to_gen(runif(100))
     # To raw
     expect_warning(X <- FBM(10, 10, x1, type = "raw"),
@@ -79,21 +79,27 @@ test_that("Downcast warnings work", {
     expect_identical(X[2], NA_integer_)
     expect_warning(X[2] <- Inf,
                    get_text("double", "integer"), fixed = TRUE)
+    expect_identical(X[2], NA_integer_)
     expect_warning(X[2] <- NaN,
                    get_text("double", "integer"), fixed = TRUE)
+    expect_identical(X[2], NA_integer_)
     expect_FBM(without_downcast_warning( FBM(10, 10, x1, type = "integer") ))
     # To float
     expect_warning(X <- FBM(10, 10, x1, type = "float"))
-    X[2] <- NA_real_
-    expect_identical(X[2], NA_real_)
+    X[2] <- NA_real_; expect_identical(X[2], NA_real_)
+    X[2] <- Inf;      expect_identical(X[2], Inf)
+    X[2] <- -Inf;     expect_identical(X[2], -Inf)
+    X[2] <- NaN;      expect_identical(X[2], NaN)
     # To double
     expect_FBM(X <- FBM(10, 10, x1, type = "double"))
     expect_identical(X[1:5] <- x1[1:5], x1[1:5])
-    X[2] <- NA_real_
-    expect_identical(X[2], NA_real_)
+    X[2] <- NA_real_; expect_identical(X[2], NA_real_)
+    X[2] <- Inf;      expect_identical(X[2], Inf)
+    X[2] <- -Inf;     expect_identical(X[2], -Inf)
+    X[2] <- NaN;      expect_identical(X[2], NaN)
 
 
-    # From integer
+    ## From integer
     x2 <- to_gen(1:100 + 1e6L)
     # To raw
     expect_warning(X <- FBM(10, 10, x2, type = "raw"),
@@ -128,7 +134,7 @@ test_that("Downcast warnings work", {
     expect_identical(X[2], NA_real_)
 
 
-    # From logical
+    ## From logical
     x3 <- to_gen(sample(c(TRUE, FALSE), 100, TRUE))
     # To raw
     expect_FBM(X <- FBM(10, 10, x3, type = "raw"))
@@ -157,7 +163,7 @@ test_that("Downcast warnings work", {
     expect_identical(X[2], NA_real_)
 
 
-    # From raw
+    ## From raw
     x4 <- to_gen(sample(as.raw(0:255), 100, TRUE))
     expect_FBM(X <- FBM(10, 10, x4, type = "raw"))
     expect_identical(X[1:5] <- x4[1:5], x4[1:5])
