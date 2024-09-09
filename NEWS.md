@@ -1,3 +1,7 @@
+## bigstatsr 1.6.1
+
+- Remove {dplyr} dependency for internal function `any_near0()`.
+
 ## bigstatsr 1.6.0
 
 - Fix conversion from `NA_real` to FBM type integer on new Macs.
