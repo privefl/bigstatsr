@@ -1,7 +1,7 @@
 <!-- badges: start -->
 [![R build status](https://github.com/privefl/bigstatsr/workflows/R-CMD-check/badge.svg)](https://github.com/privefl/bigstatsr/actions)
 [![Codecov test coverage](https://codecov.io/gh/privefl/bigstatsr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/privefl/bigstatsr?branch=master)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bigstatsr)](https://cran.r-project.org/package=bigstatsr)
+[![CRAN status](https://www.r-pkg.org/badges/version/bigstatsr)](https://CRAN.R-project.org/package=bigstatsr)
 [![DOI](https://zenodo.org/badge/doi/10.1093/bioinformatics/bty185.svg)](https://doi.org/10.1093/bioinformatics/bty185)
 <!-- badges: end -->
 
