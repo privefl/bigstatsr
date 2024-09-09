@@ -77,11 +77,11 @@ test_that("Downcast warnings work", {
                    get_text("double", "integer"), fixed = TRUE)
     X[2] <- NA_real_
     expect_identical(X[2], NA_integer_)
-    expect_warning(X[2] <- Inf,
-                   get_text("double", "integer"), fixed = TRUE)
+    expect_warning(X[2] <- Inf,  get_text("double", "integer"), fixed = TRUE)
     expect_identical(X[2], NA_integer_)
-    expect_warning(X[2] <- NaN,
-                   get_text("double", "integer"), fixed = TRUE)
+    expect_warning(X[2] <- -Inf, get_text("double", "integer"), fixed = TRUE)
+    expect_identical(X[2], NA_integer_)
+    expect_warning(X[2] <- NaN,  get_text("double", "integer"), fixed = TRUE)
     expect_identical(X[2], NA_integer_)
     expect_FBM(without_downcast_warning( FBM(10, 10, x1, type = "integer") ))
     # To float
