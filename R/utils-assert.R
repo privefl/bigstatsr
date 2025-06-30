@@ -43,7 +43,7 @@ without_downcast_warning <- function(expr) {
 
 ################################################################################
 
-#' @importFrom bigassertr assert_args assert_nodots
+#' @importFrom bigassertr assert_args assert_nodots assert_not_null
 #' @importFrom bigassertr assert_int assert_pos assert_all assert_nona
 #' @importFrom bigassertr assert_01 assert_multiple assert_lengths
 #' @importFrom bigassertr assert_class assert_class_or_null
@@ -65,9 +65,9 @@ check_args <- function(...) {
           "assert_class(X.code, 'FBM.code256'); assert_noNA(X.code)",
         y.train      = "assert_nona(y.train); assert_multiple(y.train)",
         y01.train    = "assert_01(y01.train)",
-        ind.train    = "assert_int(ind.train); assert_pos(ind.train)",
-        ind.row      = "assert_int(ind.row);   assert_pos(ind.row)",
-        ind.col      = "assert_int(ind.col);   assert_pos(ind.col)",
+        ind.train    = "assert_not_null(ind.train); assert_int(ind.train); assert_pos(ind.train)",
+        ind.row      = "assert_not_null(ind.row);   assert_int(ind.row);   assert_pos(ind.row)",
+        ind.col      = "assert_not_null(ind.col);   assert_int(ind.col);   assert_pos(ind.col)",
         ncores       = "assert_cores(ncores)",
         fun.scaling  = "assert_args(fun.scaling, c('ind.row', 'ind.col'))",
         covar.train  =

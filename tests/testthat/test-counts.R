@@ -16,6 +16,9 @@ X <- asFBMcode(x)
 
 test_that("equality with table", {
 
+  expect_error(big_counts(X, ind.row = NULL), "'ind.row' can't be `NULL`.")
+  expect_error(big_counts(X, ind.col = NULL), "'ind.col' can't be `NULL`.")
+
   test2 <- big_counts(X)
   code2 <- as.numeric(rownames(test2))
   true2 <- apply(X[], 2, function(x)

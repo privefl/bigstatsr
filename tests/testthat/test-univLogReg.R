@@ -66,6 +66,9 @@ test_that("equality with glm with all data", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
+    expect_error(big_univLogReg(X, y, ind.train = NULL), "'ind.train' can't be `NULL`.")
+    expect_error(big_univLogReg(X, y, ind.col = NULL),   "'ind.col' can't be `NULL`.")
+
     for (covar in lcovar) {
       mod <- big_univLogReg(X, y, covar.train = covar, ncores = test_cores())
       mod$p.value <- predict(mod, log10 = FALSE)

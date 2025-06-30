@@ -28,6 +28,9 @@ test_that("equality with prcomp", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
+    expect_error(big_randomSVD(X, ind.row = NULL), "'ind.row' can't be `NULL`.")
+    expect_error(big_randomSVD(X, ind.col = NULL), "'ind.col' can't be `NULL`.")
+
     k <- sample(c(2, 5, 20), 1) # 2, 5 or 20
 
     test <- big_randomSVD(X, k = k, tol = 1e-10, ncores = test_cores())

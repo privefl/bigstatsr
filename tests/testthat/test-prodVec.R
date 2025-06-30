@@ -46,6 +46,9 @@ for (t in TEST.TYPES) {
                                 center = center, scale = scale),
                    drop(crossprod(scale(X[ind.row, ind.col, drop = FALSE],
                                         center = center, scale = scale), y.row)))
+
+      expect_error(big_prodVec (X, y.col, ind.row = NULL), "'ind.row' can't be `NULL`.")
+      expect_error(big_cprodVec(X, y.row, ind.col = NULL), "'ind.col' can't be `NULL`.")
     })
   })
 

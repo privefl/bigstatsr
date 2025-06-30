@@ -36,6 +36,9 @@ test_that("equality with lm with all data", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
+    expect_error(big_univLinReg(X, y, ind.train = NULL), "'ind.train' can't be `NULL`.")
+    expect_error(big_univLinReg(X, y, ind.col = NULL),   "'ind.col' can't be `NULL`.")
+
     for (covar in lcovar) {
 
       expect_error(big_univLinReg(X, y3, covar.train = covar, ncores = test_cores()),

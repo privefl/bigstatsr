@@ -36,6 +36,9 @@ test_that("equality with crossprod with half of the data", {
   for (t in TEST.TYPES) {
     X <- `if`(t == "raw", asFBMcode(x), big_copy(x, type = t))
 
+    expect_error(big_crossprodSelf(X, ind.row = NULL), "'ind.row' can't be `NULL`.")
+    expect_error(big_crossprodSelf(X, ind.col = NULL), "'ind.col' can't be `NULL`.")
+
     # no scaling
     K <- big_crossprodSelf(X, ind.col = ind, block.size = 10)
     expect_equal(K[], crossprod(X[, ind]))
