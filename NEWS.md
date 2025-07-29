@@ -1,3 +1,7 @@
+## bigstatsr 1.6.2
+
+- Check that parameters ind.row/ind.col are not `NULL`.
+
 ## bigstatsr 1.6.1
 
 - Remove {dplyr} dependency for internal function `any_near0()`.
